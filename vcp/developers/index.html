@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>開発者向け統合ガイド | VeritasChain Protocol (VCP)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        .tier-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .tier-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .sdk-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .nav-link {
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover {
+            color: #667eea;
+        }
+        .integration-flow {
+            position: relative;
+        }
+        .integration-flow::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            width: 2px;
+            height: 30px;
+            background: #667eea;
+            transform: translateX(-50%);
+        }
+        .integration-flow:last-child::after {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- ヘッダー -->
+    <header class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center mb-6">
+                <a href="/" class="text-white hover:text-gray-200 transition mr-4">
+                    <i class="fas fa-arrow-left"></i> トップへ戻る
+                </a>
+            </div>
+            <h1 class="text-5xl font-bold mb-4">
+                <i class="fas fa-code mr-3"></i>開発者向け統合ガイド
+            </h1>
+            <p class="text-xl text-purple-100 max-w-3xl">
+                プロップファーム、ブローカー、取引所のCTO・開発者向け<br>
+                VCPを既存システムに組み込むための完全ガイド
+            </p>
+        </div>
+    </header>
+
+    <!-- ナビゲーション -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6">
+            <ul class="flex space-x-8 py-4 overflow-x-auto">
+                <li><a href="#quickstart" class="nav-link font-semibold text-gray-700"><i class="fas fa-rocket mr-2"></i>クイックスタート</a></li>
+                <li><a href="#sdks" class="nav-link font-semibold text-gray-700"><i class="fas fa-cube mr-2"></i>SDK一覧</a></li>
+                <li><a href="#tiers" class="nav-link font-semibold text-gray-700"><i class="fas fa-layer-group mr-2"></i>Tier別実装</a></li>
+                <li><a href="#patterns" class="nav-link font-semibold text-gray-700"><i class="fas fa-diagram-project mr-2"></i>統合パターン</a></li>
+                <li><a href="#code" class="nav-link font-semibold text-gray-700"><i class="fas fa-file-code mr-2"></i>コード例</a></li>
+                <li><a href="#github" class="nav-link font-semibold text-gray-700"><i class="fab fa-github mr-2"></i>GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <main class="container mx-auto px-6 py-12">
+        
+        <!-- クイックスタート -->
+        <section id="quickstart" class="mb-20">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800">
+                <i class="fas fa-rocket mr-3 text-purple-600"></i>5分でVCPを試す
+            </h2>
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="integration-flow">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-download text-3xl text-purple-600"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">1. SDKをインストール</h3>
+                            <p class="text-gray-600">お使いの環境に合わせたSDKを選択</p>
+                        </div>
+                    </div>
+                    <div class="integration-flow">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-plug text-3xl text-purple-600"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">2. イベントをログ</h3>
+                            <p class="text-gray-600">取引イベントをVCP形式で記録</p>
+                        </div>
+                    </div>
+                    <div class="integration-flow">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-check-circle text-3xl text-purple-600"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">3. 検証完了</h3>
+                            <p class="text-gray-600">VCP Explorerで透明性を確認</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Silver Tier 最小構成 -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+                <h3 class="text-2xl font-bold mb-4 text-blue-900">
+                    <i class="fas fa-lightbulb mr-2"></i>推奨：まずはSilver Tierでログだけ取り始める
+                </h3>
+                <p class="text-blue-800 mb-4">
+                    本番システムに影響を与えず、並行してVCPログを生成する「シャドーロギング」から始めることを推奨します。
+                </p>
+                <div class="code-block">
+                    <pre># Python でのシンプルな実装例
+pip install vcp-core-py
+
+from vcp import VCPLogger, Tier
+
+# Silver Tier ロガーを初期化
+logger = VCPLogger(tier=Tier.SILVER, private_key="your-key")
+
+# 取引イベントを記録
+logger.log_order(
+    symbol="EURUSD",
+    side="BUY",
+    quantity="100000",
+    price="1.08450"
+)
+
+# ローカルにJSON形式で保存（本番システムと並行稼働）
+logger.save("./vcp_logs/")
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SDK一覧 -->
+        <section id="sdks" class="mb-20">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800">
+                <i class="fas fa-cube mr-3 text-purple-600"></i>公式SDK一覧
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Python SDK -->
+                <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition">
+                    <div class="flex items-center mb-4">
+                        <i class="fab fa-python text-5xl text-blue-500 mr-4"></i>
+                        <div>
+                            <h3 class="text-2xl font-bold">vcp-core-py</h3>
+                            <span class="sdk-badge bg-blue-100 text-blue-700">Python 3.8+</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        データサイエンティスト、リスク管理者、バックテスト向け。高レベルAPIで簡単に統合可能。
+                    </p>
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            バックテスト監査
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            VCP-RISKログ生成
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            RFC 8785準拠のJSON正規化
+                        </div>
+                    </div>
+                    <div class="code-block mb-4">
+                        <pre>pip install vcp-core-py</pre>
+                    </div>
+                    <a href="#code-python" class="text-purple-600 hover:text-purple-800 font-semibold">
+                        コード例を見る <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
+                <!-- C++ SDK -->
+                <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-bolt text-5xl text-red-500 mr-4"></i>
+                        <div>
+                            <h3 class="text-2xl font-bold">vcp-core-cpp</h3>
+                            <span class="sdk-badge bg-red-100 text-red-700">C++17/20</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        HFTエンジニア、取引所開発者向け。マイクロ秒レベルの超低レイテンシ実装。
+                    </p>
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            SBEバイナリエンコーディング
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            PTPクロック連携
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            ゼロコピー・メモリプール
+                        </div>
+                    </div>
+                    <div class="code-block mb-4">
+                        <pre># CMake経由でインストール
+git clone https://github.com/vso/vcp-core-cpp
+cmake -B build && cmake --build build</pre>
+                    </div>
+                    <a href="#code-cpp" class="text-purple-600 hover:text-purple-800 font-semibold">
+                        コード例を見る <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
+                <!-- MQL Bridge -->
+                <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-chart-line text-5xl text-green-500 mr-4"></i>
+                        <div>
+                            <h3 class="text-2xl font-bold">vcp-mql-bridge</h3>
+                            <span class="sdk-badge bg-green-100 text-green-700">MQL4/5</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        リテールプロップ開発者、EA開発者向け。MT4/MT5に簡単統合可能なDLL/EA。
+                    </p>
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            非同期HTTP通信
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            クライアントサイド署名
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            MT4/5イベントフック
+                        </div>
+                    </div>
+                    <div class="code-block mb-4">
+                        <pre>// MT4/MT5のExpertフォルダにコピー
+// #include &lt;VCP_Bridge.mqh&gt;</pre>
+                    </div>
+                    <a href="#code-mql" class="text-purple-600 hover:text-purple-800 font-semibold">
+                        コード例を見る <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tier別実装ガイド -->
+        <section id="tiers" class="mb-20">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800">
+                <i class="fas fa-layer-group mr-3 text-purple-600"></i>Tier別実装パターン
+            </h2>
+            <p class="text-lg text-gray-600 mb-8">
+                ビジネス要件と技術的制約に応じて、3つのコンプライアンスTierから選択できます。
+            </p>
+
+            <div class="space-y-6">
+                <!-- Platinum Tier -->
+                <div class="tier-card bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-8 border-2 border-purple-300">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-3xl font-bold text-purple-900 mb-2">
+                                <i class="fas fa-gem mr-2"></i>Platinum Tier
+                            </h3>
+                            <p class="text-purple-700 font-semibold">HFT・取引所・機関投資家向け</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="sdk-badge bg-purple-600 text-white text-lg">最高精度</span>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3">技術要件</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><i class="fas fa-clock text-purple-600 mr-2"></i><strong>時刻同期:</strong> PTP (IEEE 1588) ナノ秒精度</li>
+                                <li><i class="fas fa-microchip text-purple-600 mr-2"></i><strong>実装:</strong> カーネルバイパス (DPDK/AF_XDP)</li>
+                                <li><i class="fas fa-bolt text-purple-600 mr-2"></i><strong>レイテンシ:</strong> &lt;1μs ロギングオーバーヘッド</li>
+                                <li><i class="fas fa-code text-purple-600 mr-2"></i><strong>SDK:</strong> vcp-core-cpp (C++17/20)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3">ユースケース</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><i class="fas fa-chart-line mr-2"></i>高頻度取引 (HFT)</li>
+                                <li><i class="fas fa-building mr-2"></i>暗号資産取引所</li>
+                                <li><i class="fas fa-landmark mr-2"></i>機関投資家のアルゴ取引</li>
+                                <li><i class="fas fa-gavel mr-2"></i>MiFID II 完全準拠</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="code-block">
+                        <pre>// C++ Platinum実装例 (SBEバイナリエンコーディング)
+#include &lt;vcp/platinum.hpp&gt;
+
+vcp::PlatinumLogger logger(
+    vcp::ClockSource::PTP_HARDWARE,  // PTCハードウェアクロック
+    vcp::Encoding::SBE                // Simple Binary Encoding
+);
+
+// マイクロ秒単位の高精度ロギング
+logger.log_order_accepted(order_id, timestamp_ns);</pre>
+                    </div>
+                </div>
+
+                <!-- Gold Tier -->
+                <div class="tier-card bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg shadow-lg p-8 border-2 border-yellow-300">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-3xl font-bold text-yellow-900 mb-2">
+                                <i class="fas fa-medal mr-2"></i>Gold Tier
+                            </h3>
+                            <p class="text-yellow-700 font-semibold">中規模ブローカー・Propファーム向け</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="sdk-badge bg-yellow-600 text-white text-lg">推奨</span>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3">技術要件</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><i class="fas fa-clock text-yellow-600 mr-2"></i><strong>時刻同期:</strong> NTP マイクロ秒精度</li>
+                                <li><i class="fas fa-server text-yellow-600 mr-2"></i><strong>実装:</strong> サーバーサイド統合</li>
+                                <li><i class="fas fa-tachometer-alt text-yellow-600 mr-2"></i><strong>レイテンシ:</strong> &lt;100μs ロギングオーバーヘッド</li>
+                                <li><i class="fas fa-code text-yellow-600 mr-2"></i><strong>SDK:</strong> vcp-core-py / vcp-core-cpp</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3">ユースケース</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><i class="fas fa-building mr-2"></i>中規模ブローカー</li>
+                                <li><i class="fas fa-users mr-2"></i>プロップトレーディングファーム</li>
+                                <li><i class="fas fa-robot mr-2"></i>アルゴリズム取引プラットフォーム</li>
+                                <li><i class="fas fa-balance-scale mr-2"></i>規制準拠が必要な業者</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="code-block">
+                        <pre># Python Gold実装例 (サーバーサイド統合)
+from vcp import VCPLogger, Tier, ClockSync
+
+logger = VCPLogger(
+    tier=Tier.GOLD,
+    clock_sync=ClockSync.NTP_SYNCED,
+    private_key_path="./server_key.pem"
+)
+
+# サーバー側で取引イベントをインターセプト
+@trading_engine.on_order_executed
+def log_execution(order):
+    logger.log_execution(
+        order_id=order.id,
+        symbol=order.symbol,
+        side=order.side,
+        quantity=str(order.quantity),
+        price=str(order.price)
+    )</pre>
+                    </div>
+                </div>
+
+                <!-- Silver Tier -->
+                <div class="tier-card bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg shadow-lg p-8 border-2 border-gray-300">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-3xl font-bold text-gray-900 mb-2">
+                                <i class="fas fa-shield-alt mr-2"></i>Silver Tier
+                            </h3>
+                            <p class="text-gray-700 font-semibold">ホワイトラベル・小規模業者向け</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="sdk-badge bg-gray-600 text-white text-lg">最速導入</span>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3">技術要件</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><i class="fas fa-clock text-gray-600 mr-2"></i><strong>時刻同期:</strong> NTP/Best-effort ミリ秒精度</li>
+                                <li><i class="fas fa-laptop text-gray-600 mr-2"></i><strong>実装:</strong> クライアントサイド統合</li>
+                                <li><i class="fas fa-plug text-gray-600 mr-2"></i><strong>レイテンシ:</strong> 非同期（取引に影響なし）</li>
+                                <li><i class="fas fa-code text-gray-600 mr-2"></i><strong>SDK:</strong> vcp-mql-bridge (MT4/MT5)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3">ユースケース</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><i class="fas fa-tag mr-2"></i>ホワイトラベルPropファーム</li>
+                                <li><i class="fas fa-store mr-2"></i>小規模ブローカー</li>
+                                <li><i class="fas fa-user mr-2"></i>個人トレーダーのEA</li>
+                                <li><i class="fas fa-flask mr-2"></i>パイロット導入・PoC</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r">
+                        <p class="text-blue-900 font-semibold">
+                            <i class="fas fa-star mr-2"></i>Silver Tierの戦略的価値
+                        </p>
+                        <p class="text-blue-800 text-sm mt-2">
+                            ホワイトラベル業者はサーバーに手を出せない制約がありますが、Silver Tierの「クライアントサイド署名」により、
+                            ブローカーを経由せずに独立した監査ログを生成できます。これは技術的妥協ではなく、ガバナンス上の革新です。
+                        </p>
+                    </div>
+                    <div class="code-block">
+                        <pre>// MQL5 Silver実装例 (クライアントサイド署名)
+#include &lt;VCP_Bridge.mqh&gt;
+
+// EA初期化時にVCPロガーをセットアップ
+int OnInit() {
+    VCP_Init(TIER_SILVER, "client_private_key");
+    return INIT_SUCCEEDED;
+}
+
+// 注文時に自動ロギング
+void OnTradeTransaction(const MqlTradeTransaction& trans) {
+    if (trans.type == TRADE_TRANSACTION_ORDER_ADD) {
+        // 非同期でVCPログを送信（取引に影響なし）
+        VCP_LogOrder(trans.order, trans.symbol, trans.volume);
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 統合パターン -->
+        <section id="patterns" class="mb-20">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800">
+                <i class="fas fa-diagram-project mr-3 text-purple-600"></i>統合パターン詳細
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- パターンA: サイドカー -->
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">
+                        <i class="fas fa-car-side mr-2 text-blue-500"></i>パターンA: サイドカー統合
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        取引プラットフォームのコアエンジンを修正せず、外部プロセスとして並行稼働
+                    </p>
+                    <!-- 統合パターン図は将来追加予定 -->
+                    <h4 class="font-bold text-gray-800 mb-2">データフロー</h4>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-4">
+                        <li>トレーダーの端末で注文発生</li>
+                        <li>ブリッジEAがイベント検知、UUID生成</li>
+                        <li>JSONペイロードを構築し署名</li>
+                        <li>VeritasChain Cloud (VCC)へ非同期送信</li>
+                    </ol>
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r">
+                        <p class="text-green-900 font-semibold">
+                            <i class="fas fa-check-circle mr-2"></i>メリット
+                        </p>
+                        <ul class="text-green-800 text-sm mt-2 space-y-1">
+                            <li>• ブローカーのインフラに依存しない</li>
+                            <li>• 独立した監査ログを生成</li>
+                            <li>• データ改ざんの検知が可能</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- パターンB: カーネルバイパス -->
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">
+                        <i class="fas fa-bolt mr-2 text-red-500"></i>パターンB: カーネルバイパス
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        OSネットワークスタックをバイパスし、NICから直接データアクセス
+                    </p>
+                    <!-- 統合パターン図は将来追加予定 -->
+                    <h4 class="font-bold text-gray-800 mb-2">技術詳細</h4>
+                    <ul class="space-y-2 text-gray-700 mb-4">
+                        <li><i class="fas fa-microchip text-red-600 mr-2"></i>SBE (Simple Binary Encoding)</li>
+                        <li><i class="fas fa-memory text-red-600 mr-2"></i>ゼロコピー・シリアライゼーション</li>
+                        <li><i class="fas fa-circle-notch text-red-600 mr-2"></i>ロックフリー・リングバッファ</li>
+                        <li><i class="fas fa-clock text-red-600 mr-2"></i>PTCハードウェアクロック連携</li>
+                    </ul>
+                    <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r">
+                        <p class="text-purple-900 font-semibold">
+                            <i class="fas fa-crown mr-2"></i>HFT向け最適化
+                        </p>
+                        <p class="text-purple-800 text-sm mt-2">
+                            マイクロ秒を争うHFT環境で、ロギング処理が取引スレッドをブロックしないよう設計。
+                            Platinum Tier専用の超低レイテンシ実装。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- パターンC: シャドーロギング -->
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">
+                        <i class="fas fa-layer-group mr-2 text-yellow-500"></i>パターンC: シャドーロギング
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        既存システムと並行してVCPログを生成（移行初期フェーズ）
+                    </p>
+                    <h4 class="font-bold text-gray-800 mb-2">段階的移行プロセス</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">1</div>
+                            <div>
+                                <h5 class="font-bold text-gray-800">シャドーロギング</h5>
+                                <p class="text-gray-600 text-sm">既存システムと並行稼働、本番に影響なし</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">2</div>
+                            <div>
+                                <h5 class="font-bold text-gray-800">ハイブリッド運用</h5>
+                                <p class="text-gray-600 text-sm">内部監査・紛争解決でVCPログを参照開始</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">3</div>
+                            <div>
+                                <h5 class="font-bold text-gray-800">完全移行</h5>
+                                <p class="text-gray-600 text-sm">VCPチェーンを正本（Golden Source）として指定</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- パターンD: API統合 -->
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">
+                        <i class="fas fa-cloud mr-2 text-green-500"></i>パターンD: VeritasChain Cloud (VCC)
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        SaaS型ソリューション：自社ノード不要でVCP準拠を実現
+                    </p>
+                    <h4 class="font-bold text-gray-800 mb-2">VCC の特徴</h4>
+                    <ul class="space-y-2 text-gray-700 mb-4">
+                        <li><i class="fas fa-server text-green-600 mr-2"></i>インフラ管理不要</li>
+                        <li><i class="fas fa-key text-green-600 mr-2"></i>REST API経由でログ送信</li>
+                        <li><i class="fas fa-shield-alt text-green-600 mr-2"></i>自動アンカリング・検証</li>
+                        <li><i class="fas fa-chart-bar text-green-600 mr-2"></i>ダッシュボード・Explorer提供</li>
+                    </ul>
+                    <div class="code-block">
+                        <pre># VCC API 使用例
+curl -X POST https://api.veritaschain.cloud/v1/events \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "event_type": "ORDER_ACCEPTED",
+    "symbol": "BTCUSD",
+    "side": "BUY",
+    "quantity": "0.5",
+    "price": "45000.00"
+  }'</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- コード例 -->
+        <section id="code" class="mb-20">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800">
+                <i class="fas fa-file-code mr-3 text-purple-600"></i>実装コード例
+            </h2>
+
+            <!-- Python -->
+            <div id="code-python" class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">
+                    <i class="fab fa-python mr-2 text-blue-500"></i>Python: バックテスト監査の実装
+                </h3>
+                <div class="code-block">
+                    <pre>#!/usr/bin/env python3
+"""
+VCP Backtest Audit Logger
+バックテストの全取引を監査可能な形式で記録
+"""
+from vcp import VCPLogger, Tier, EventType
+from datetime import datetime
+import uuid
+
+# ロガー初期化（Silver Tier、テスト環境向け）
+logger = VCPLogger(
+    tier=Tier.SILVER,
+    private_key_path="./test_key.pem",
+    output_dir="./vcp_audit_logs/"
+)
+
+# バックテストの取引イベントをロギング
+def log_backtest_trade(symbol, side, quantity, price, timestamp):
+    """
+    バックテスト取引をVCP形式でログ
+    
+    Args:
+        symbol: 通貨ペア (例: "EURUSD")
+        side: BUY / SELL
+        quantity: 数量（String型で精度維持）
+        price: 価格（String型で精度維持）
+        timestamp: 取引時刻
+    """
+    event_id = str(uuid.uuid7())  # UUID v7で時系列ソート可能
+    
+    logger.log_event(
+        event_id=event_id,
+        event_type=EventType.ORDER_ACCEPTED,
+        timestamp=timestamp,
+        payload={
+            "symbol": symbol,
+            "side": side,
+            "quantity": str(quantity),  # 必ずString型
+            "price": str(price),        # 必ずString型
+            "backtest": True,
+            "strategy": "mean_reversion_v2"
+        }
+    )
+
+# 使用例
+if __name__ == "__main__":
+    # バックテストループ
+    trades = [
+        ("EURUSD", "BUY", "100000", "1.08450", datetime.now()),
+        ("GBPUSD", "SELL", "50000", "1.26320", datetime.now()),
+    ]
+    
+    for symbol, side, qty, price, ts in trades:
+        log_backtest_trade(symbol, side, qty, price, ts)
+    
+    # VCPチェーンを検証
+    if logger.verify_chain():
+        print("✓ バックテストログの整合性確認完了")
+        logger.export_json("backtest_audit_2024.json")
+    else:
+        print("✗ チェーン整合性エラー検出")
+</pre>
+                </div>
+            </div>
+
+            <!-- C++ -->
+            <div id="code-cpp" class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">
+                    <i class="fas fa-bolt mr-2 text-red-500"></i>C++: HFT向け超低レイテンシ実装
+                </h3>
+                <div class="code-block">
+                    <pre>/**
+ * VCP Platinum Tier Logger for HFT
+ * マイクロ秒レベルの低レイテンシ実装
+ */
+#include &lt;vcp/platinum.hpp&gt;
+#include &lt;vcp/sbe_encoder.hpp&gt;
+#include &lt;vcp/ptp_clock.hpp&gt;
+
+class HFTVCPLogger {
+private:
+    vcp::PlatinumLogger logger_;
+    vcp::PTPClock ptp_clock_;
+    vcp::SBEEncoder encoder_;
+    vcp::RingBuffer&lt;vcp::TradeEvent, 65536&gt; event_buffer_;
+
+public:
+    HFTVCPLogger() 
+        : logger_(vcp::ClockSource::PTP_HARDWARE, vcp::Encoding::SBE),
+          ptp_clock_("/dev/ptp0"),
+          encoder_(),
+          event_buffer_() {
+        // ロックフリー・リングバッファで非同期ロギング
+        logger_.set_async_mode(true);
+    }
+
+    // 注文受付イベントをナノ秒精度でログ
+    inline void log_order_accepted(
+        uint64_t order_id,
+        const char* symbol,
+        Side side,
+        const char* quantity,
+        const char* price
+    ) {
+        // PTCハードウェアクロックから直接タイムスタンプ取得
+        uint64_t timestamp_ns = ptp_clock_.now_ns();
+        
+        // SBEでゼロコピー・エンコーディング
+        vcp::TradeEvent event;
+        event.event_id = vcp::uuid_v7_generate(timestamp_ns);
+        event.event_type = vcp::EventType::ORDER_ACCEPTED;
+        event.timestamp_ns = timestamp_ns;
+        event.order_id = order_id;
+        std::strncpy(event.symbol, symbol, sizeof(event.symbol));
+        event.side = side;
+        std::strncpy(event.quantity, quantity, sizeof(event.quantity));
+        std::strncpy(event.price, price, sizeof(event.price));
+        
+        // リングバッファにプッシュ（ロックフリー、取引スレッドをブロックしない）
+        event_buffer_.push(event);
+    }
+
+    // バックグラウンドスレッドで定期的にフラッシュ
+    void async_flush_worker() {
+        while (running_) {
+            vcp::TradeEvent event;
+            if (event_buffer_.pop(event)) {
+                logger_.write_event(event);
+            }
+        }
+    }
+};
+
+// 使用例
+int main() {
+    HFTVCPLogger vcp_logger;
+    
+    // 取引エンジンのコールバック
+    trading_engine.on_order_accepted([&](const Order& order) {
+        // 1マイクロ秒未満のオーバーヘッド
+        vcp_logger.log_order_accepted(
+            order.id,
+            order.symbol.c_str(),
+            order.side,
+            order.quantity_str.c_str(),
+            order.price_str.c_str()
+        );
+    });
+    
+    return 0;
+}
+</pre>
+                </div>
+            </div>
+
+            <!-- MQL -->
+            <div id="code-mql" class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">
+                    <i class="fas fa-chart-line mr-2 text-green-500"></i>MQL5: MT5向けクライアントサイド署名EA
+                </h3>
+                <div class="code-block">
+                    <pre>//+------------------------------------------------------------------+
+//|                                            VCP_ClientLogger.mq5 |
+//|                                  VeritasChain Standards Org     |
+//|                                       https://veritaschain.org  |
+//+------------------------------------------------------------------+
+#property copyright "VeritasChain Standards Organization"
+#property link      "https://veritaschain.org"
+#property version   "1.00"
+
+#include &lt;VCP_Bridge.mqh&gt;
+
+// グローバル変数
+CVCPBridge vcp;
+string private_key = "your_private_key_here";  // 本番では暗号化ストレージから取得
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit() {
+    // VCP Bridge初期化（Silver Tier、クライアントサイド署名）
+    if (!vcp.Init(TIER_SILVER, private_key)) {
+        Print("VCP初期化エラー");
+        return INIT_FAILED;
+    }
+    
+    Print("VCP Logger初期化完了 (Silver Tier)");
+    Print("クライアントサイド署名モード: ブローカー非依存");
+    
+    return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Trade transaction event handler                                  |
+//+------------------------------------------------------------------+
+void OnTradeTransaction(
+    const MqlTradeTransaction& trans,
+    const MqlTradeRequest& request,
+    const MqlTradeResult& result
+) {
+    // 注文が追加された時
+    if (trans.type == TRADE_TRANSACTION_ORDER_ADD) {
+        LogOrderAccepted(trans, request);
+    }
+    
+    // 注文が執行された時
+    if (trans.type == TRADE_TRANSACTION_DEAL_ADD) {
+        LogOrderExecuted(trans, result);
+    }
+}
+
+//+------------------------------------------------------------------+
+//| 注文受付をVCPログに記録                                          |
+//+------------------------------------------------------------------+
+void LogOrderAccepted(
+    const MqlTradeTransaction& trans,
+    const MqlTradeRequest& request
+) {
+    // VCPイベント構築
+    VCPEvent event;
+    event.event_id = vcp.GenerateUUIDv7();  // UUID v7生成
+    event.event_type = "ORDER_ACCEPTED";
+    event.timestamp = TimeGMT();
+    
+    // ペイロード（JSON形式）
+    string payload = StringFormat(
+        "{\"symbol\":\"%s\",\"side\":\"%s\",\"quantity\":\"%s\",\"price\":\"%s\",\"order_id\":%I64d}",
+        trans.symbol,
+        (trans.order_type == ORDER_TYPE_BUY || trans.order_type == ORDER_TYPE_BUY_LIMIT) ? "BUY" : "SELL",
+        DoubleToString(trans.volume, 2),  // String型に変換（精度維持）
+        DoubleToString(trans.price, _Digits),  // String型に変換
+        trans.order
+    );
+    event.payload = payload;
+    
+    // クライアントサイドで署名してVCCに送信
+    if (vcp.SendEventAsync(event)) {
+        Print("✓ VCPログ送信成功: ", event.event_id);
+    } else {
+        Print("✗ VCPログ送信失敗（リトライキューに追加）");
+    }
+}
+
+//+------------------------------------------------------------------+
+//| 注文執行をVCPログに記録                                          |
+//+------------------------------------------------------------------+
+void LogOrderExecuted(
+    const MqlTradeTransaction& trans,
+    const MqlTradeResult& result
+) {
+    VCPEvent event;
+    event.event_id = vcp.GenerateUUIDv7();
+    event.event_type = "ORDER_EXECUTED";
+    event.timestamp = TimeGMT();
+    
+    string payload = StringFormat(
+        "{\"deal_id\":%I64d,\"order_id\":%I64d,\"symbol\":\"%s\",\"volume\":\"%s\",\"price\":\"%s\"}",
+        trans.deal,
+        trans.order,
+        trans.symbol,
+        DoubleToString(trans.volume, 2),
+        DoubleToString(trans.price, _Digits)
+    );
+    event.payload = payload;
+    
+    vcp.SendEventAsync(event);
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason) {
+    // 未送信のイベントをフラッシュ
+    vcp.FlushPendingEvents();
+    Print("VCP Logger停止");
+}
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- GitHub リポジトリ -->
+        <section id="github" class="mb-20">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800">
+                <i class="fab fa-github mr-3 text-purple-600"></i>GitHubリポジトリ
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold mb-4">
+                        <i class="fas fa-book mr-2 text-gray-700"></i>VCP Specification
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        公式仕様書、スキーマ定義、コンフォーマンステスト
+                    </p>
+                    <a href="https://github.com/veritaschain/vcp-spec" 
+                       class="inline-block bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-6 rounded-lg transition">
+                        <i class="fab fa-github mr-2"></i>vcp-spec を見る
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold mb-4">
+                        <i class="fab fa-python mr-2 text-blue-500"></i>Python SDK
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        vcp-core-py: Pythonライブラリとドキュメント
+                    </p>
+                    <a href="https://github.com/veritaschain/vcp-core-py" 
+                       class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                        <i class="fab fa-github mr-2"></i>vcp-core-py を見る
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold mb-4">
+                        <i class="fas fa-bolt mr-2 text-red-500"></i>C++ SDK
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        vcp-core-cpp: HFT向けC++ライブラリ
+                    </p>
+                    <a href="https://github.com/veritaschain/vcp-core-cpp" 
+                       class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                        <i class="fab fa-github mr-2"></i>vcp-core-cpp を見る
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold mb-4">
+                        <i class="fas fa-chart-line mr-2 text-green-500"></i>MQL Bridge
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        vcp-mql-bridge: MT4/MT5統合ライブラリ
+                    </p>
+                    <a href="https://github.com/veritaschain/vcp-mql-bridge" 
+                       class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                        <i class="fab fa-github mr-2"></i>vcp-mql-bridge を見る
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-6 rounded-r-lg mt-8">
+                <h3 class="text-xl font-bold mb-2 text-purple-900">
+                    <i class="fas fa-hands-helping mr-2"></i>コミュニティへの貢献
+                </h3>
+                <p class="text-purple-800 mb-4">
+                    VCPはオープンスタンダードです。プルリクエスト、バグレポート、機能提案を歓迎します。
+                </p>
+                <a href="https://github.com/veritaschain" 
+                   class="text-purple-700 hover:text-purple-900 font-semibold">
+                    GitHub Organizationを見る <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- サポート・お問い合わせ -->
+        <section class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg shadow-2xl p-12 text-white text-center">
+            <h2 class="text-4xl font-bold mb-4">
+                <i class="fas fa-question-circle mr-3"></i>技術サポートが必要ですか?
+            </h2>
+            <p class="text-xl text-purple-100 mb-8">
+                統合に関するご質問、PoC支援、エンタープライズ導入のご相談はお気軽にお問い合わせください
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="mailto:developers@veritaschain.org" 
+                   class="bg-white text-purple-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-lg transition">
+                    <i class="fas fa-envelope mr-2"></i>メールで問い合わせ
+                </a>
+                <a href="https://discord.gg/veritaschain" 
+                   class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold py-3 px-8 rounded-lg transition">
+                    <i class="fab fa-discord mr-2"></i>Discord コミュニティ
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-gray-900 text-white py-12 mt-20">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">VeritasChain</h4>
+                    <p class="text-gray-400 text-sm">
+                        アルゴリズム時代の信頼基盤を構築する国際標準化団体
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">ドキュメント</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="/vcp/specification/" class="hover:text-white">仕様書</a></li>
+                        <li><a href="/vcp/developers/" class="hover:text-white">開発者ガイド</a></li>
+                        <li><a href="/vcp/api-reference/" class="hover:text-white">APIリファレンス</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">リソース</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="https://github.com/veritaschain" class="hover:text-white" target="_blank" rel="noopener">GitHub</a></li>
+                        <li><a href="/blog/" class="hover:text-white">ブログ</a></li>
+                        <li><a href="/propfirms/" class="hover:text-white">導入事例</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">お問い合わせ</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="mailto:info@veritaschain.org" class="hover:text-white">info@veritaschain.org</a></li>
+                        <li><a href="https://discord.gg/veritaschain" class="hover:text-white">Discord</a></li>
+                        <li><a href="https://twitter.com/veritaschain" class="hover:text-white">Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2025 VeritasChain Standards Organization. Licensed under CC BY 4.0.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // スムーススクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

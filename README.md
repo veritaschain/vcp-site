@@ -1,206 +1,230 @@
-# VeritasChain Certified (VC-Certified) - FAQ Website
+# VeritasChain Protocol (VCP) - Official Landing Page
 
-## Project Overview
-- **Name**: VeritasChain Certified FAQ
-- **Goal**: Proactively address common questions about VCP certification and enhance trust
-- **Features**: 
-  - Interactive accordion-style FAQ with category-based organization
-  - Bilingual support: English (default) and Japanese
-  - Responsive design with Tailwind CSS
-  - Static site generation for GitHub Pages deployment
-  - Language switcher between English and Japanese
+**Global audit standard for algorithmic and AI-driven trading**
 
-## URLs
-- **GitHub Pages**: (Will be available after deployment)
-  - English: `https://YOUR_USERNAME.github.io/YOUR_REPO/`
-  - Japanese: `https://YOUR_USERNAME.github.io/YOUR_REPO/ja.html`
-- **Local Development**: http://localhost:3000
+Official website for VeritasChain Protocol (VCP) - An open standard for recording decision-making and execution results of algorithmic and AI-driven trading in an immutable and verifiable format.
 
-## FAQ Categories
+---
 
-### 1. Certification Scope & Limitations
-- **Q: Does VC-Certified guarantee financial stability?** → **No. Technical compliance only.**
-- **Q: Does VSO endorse specific strategies?** → **No. Vendor-neutral stance.**
+## 🌏 Live Site
 
-### 2. Data Privacy & Security
-- **Q: Is personal information exposed?** → **No. Protected by VCP-PRIVACY / Crypto-shredding**
-- **Q: Can anyone view blockchain data?** → **Only verification-necessary data is transparent**
+**Production:** https://veritaschain.github.io/vcp-site/
 
-### 3. Certification Tiers & Technical Value
-- **Q: Is Silver Tier meaningful?** → **Yes. Guarantees irreversibility of fraud**
-- **Q: Does it require system replacement?** → **No. Sidecar deployment possible**
+### Available Pages
 
-### 4. Governance & Future-Proofing
-- **Q: What about quantum computers?** → **Crypto Agility ensures future-proofing**
-- **Q: EU AI Act compliance?** → **Supported via VCP-GOV module**
+- 🏠 **VCP Protocol Landing:** [index.html](index.html)
+- 🏛️ **VSO (Standards Organization):** [vso/index.html](vso/index.html)
+- 📜 **VSO Independence Statement:** [vso/policies/](vso/policies/)
+  - 🇬🇧 English: [vso/policies/index.html](vso/policies/index.html)
+  - 🇯🇵 Japanese: [vso/policies/ja/index.html](vso/policies/ja/index.html)
+- ✅ **VC-Certified Program:** [certified/index.html](certified/index.html) ⭐ NEW
+  - 🇬🇧 English certification program page
+  - Compliance tiers, target audience, module coverage
+- 🏦 **Prop Firms Landing:** [propfirms/index.html](propfirms/index.html) ⭐ NEW
+  - 🇬🇧 English: [propfirms/index.html](propfirms/index.html)
+  - 🇯🇵 Japanese: [propfirms/ja/index.html](propfirms/ja/index.html)
+  - Trust recovery solution for proprietary trading firms
 
-## Tech Stack
-- **Frontend**: Hono (JSX/TSX) with Tailwind CSS + Font Awesome
-- **Backend**: Hono on Cloudflare Workers (for dynamic version)
-- **Static Generation**: Node.js build script
-- **Deployment**: GitHub Pages (static HTML)
-- **Storage**: No database required
+### Available Languages (VCP Landing)
 
-## Development
+- 🇬🇧 **English:** [index.html](index.html)
+- 🇯🇵 **日本語:** [ja/index.html](ja/index.html)
+- 🇨🇳 **中文 (简体):** [zh/index.html](zh/index.html)
 
-### Setup
-```bash
-cd /home/user/webapp
-npm install
+---
+
+## 📂 Project Structure
+
 ```
-
-### Local Development
-```bash
-# Build and start dev server
-npm run build
-pm2 start ecosystem.config.cjs
-
-# Test
-curl http://localhost:3000
-```
-
-### Build Static Site for GitHub Pages
-```bash
-# Generate static HTML files in docs/ directory
-npm run build:static
-```
-
-This creates:
-- `docs/index.html` - English FAQ (default)
-- `docs/ja.html` - Japanese FAQ
-- `docs/404.html` - Not found page
-- `docs/.nojekyll` - Disables Jekyll processing
-
-## Deployment to GitHub Pages
-
-### Step 1: Commit Static Files
-```bash
-git add docs/
-git commit -m "Add static site for GitHub Pages"
-```
-
-### Step 2: Push to GitHub
-```bash
-# Setup GitHub authentication first
-# Call setup_github_environment tool
-
-# Add remote and push
-git remote add origin https://github.com/YOUR_ORG/YOUR_REPO.git
-git push -u origin main
-```
-
-### Step 3: Enable GitHub Pages
-1. Go to repository **Settings** → **Pages**
-2. Under **Source**, select **Deploy from a branch**
-3. Under **Branch**, select **main** and **/docs** folder
-4. Click **Save**
-5. Wait a few minutes for deployment
-
-Your site will be live at: `https://YOUR_USERNAME.github.io/YOUR_REPO/`
-
-## Project Structure
-```
-webapp/
-├── src/
-│   ├── index.tsx           # Main Hono application with routing
-│   └── pages/
-│       ├── faq-en.tsx      # English FAQ page (default)
-│       └── faq.tsx         # Japanese FAQ page (/ja)
-├── docs/                   # Generated static site (GitHub Pages)
-│   ├── index.html          # English FAQ
-│   ├── ja.html             # Japanese FAQ
-│   ├── 404.html            # Not found page
-│   └── .nojekyll           # Disables Jekyll
-├── dist/                   # Vite build output (Cloudflare Workers)
-├── build-static.mjs        # Static site generator script
-├── ecosystem.config.cjs    # PM2 configuration (for dev)
-├── package.json            # Dependencies and scripts
-├── wrangler.jsonc          # Cloudflare configuration
+vcp-site/
+├── index.html              # 🇬🇧 VCP Protocol landing (English)
+├── ja/
+│   └── index.html          # 🇯🇵 Japanese version
+├── zh/
+│   └── index.html          # 🇨🇳 Chinese (Simplified) version
+├── certified/              # ⭐ VC-Certified Program (NEW)
+│   ├── index.html          # 🇬🇧 Certification program page
+│   └── static/
+│       └── style.css       # Custom styles
+├── propfirms/              # ⭐ Prop Firms Landing (NEW)
+│   ├── index.html          # 🇬🇧 English version
+│   ├── ja/
+│   │   └── index.html      # 🇯🇵 Japanese version
+│   ├── css/
+│   │   └── styles.css      # Custom styles
+│   └── js/
+│       └── main.js         # Custom JavaScript
+├── vso/                    # VSO Pages
+│   ├── index.html          # VSO landing page
+│   ├── policies/           # VSO Independence Statement
+│   │   ├── index.html      # 🇬🇧 English version (default)
+│   │   └── ja/
+│   │       └── index.html  # 🇯🇵 Japanese version
+│   └── README.md           # VSO documentation
+├── assets/
+│   ├── css/
+│   │   └── main.css        # Custom styles
+│   ├── img/
+│   │   ├── logo.png        # VSO logo
+│   │   └── vso-badge.png   # VSO badge
+│   └── js/
+│       └── main.js         # Custom JavaScript
 └── README.md               # This file
 ```
 
-## Key Features Implementation
+---
 
-### Interactive Accordion UI
-- Click to expand/collapse answers
-- Auto-close other FAQs when opening a new one
-- Smooth animations with CSS transitions
-- Chevron icon rotation for visual feedback
+## 🚀 Deployment
 
-### Category-Based Design
-- 4 main categories with color-coded badges:
-  - 🟡 Scope & Limitations
-  - 🔵 Data Privacy & Security
-  - 🟢 Certification Tiers & Value
-  - 🟣 Governance & Future-Proofing
-- Font Awesome icons for visual hierarchy
-- Highlight effects for important terms
+This is a **static website** that can be deployed to any static hosting service:
 
-### Bilingual Support
-- English as default language (`/` or `/faq`)
-- Japanese version at `/ja`
-- Fixed language switcher button (top-right)
-- Consistent UI across both languages
+### GitHub Pages (Recommended)
 
-### Security & Privacy Highlights
-- VCP-PRIVACY module explanation
-- Crypto-shredding mechanism
-- GDPR "Right to be Forgotten" compliance
-- Hashing vs. encryption clarification
+Already configured! The site is automatically deployed to:
+https://veritaschain.github.io/vcp-site/
 
-## Build Scripts
+### Other Hosting Options
 
-### `npm run build`
-Builds the Vite project for Cloudflare Workers deployment.
+- **Cloudflare Pages:** Deploy from GitHub repository
+- **Netlify:** Connect repository and deploy
+- **Vercel:** Import GitHub repository
+- **AWS S3 + CloudFront:** Upload files to S3 bucket
+- **Traditional Web Server:** Upload files to any Apache/Nginx server
 
-### `npm run build:static`
-Generates static HTML files in `docs/` directory:
-1. Builds Vite project
-2. Imports built worker module
-3. Renders each route to HTML
-4. Creates supporting files (.nojekyll, 404.html, README.md)
+---
 
-### `npm run dev`
-Starts Vite development server (localhost only).
+## 🎨 Features
 
-### `npm run dev:sandbox`
-Starts Wrangler Pages dev server for sandbox environment.
+### Design & Standards Compliance
 
-## Git Workflow
+- ✅ **ISO/W3C/ETSI-grade** presentation standards
+- ✅ **Responsive design** - Mobile, tablet, desktop optimized
+- ✅ **Dark theme** with professional color scheme
+- ✅ **Accessibility** features (ARIA labels, semantic HTML)
 
-```bash
-# Initial setup
-git init
-git add .
-git commit -m "Initial commit: Bilingual FAQ with static generation"
+### Technical Highlights
 
-# Build static site
-npm run build:static
+- ✅ **Zero dependencies** - Pure HTML/CSS/JS
+- ✅ **Fast loading** - Optimized assets, CDN fonts
+- ✅ **SEO optimized** - Meta tags, Open Graph, language alternates
+- ✅ **Multi-language** - Full i18n support with language switcher
 
-# Commit generated files
-git add docs/
-git commit -m "Add static site for GitHub Pages"
+### Content Sections
 
-# Setup GitHub and push (use setup_github_environment tool first)
-git remote add origin https://github.com/YOUR_ORG/YOUR_REPO.git
-git push -u origin main
-```
+1. **Hero Section** - Protocol introduction with VSO badge
+2. **What is VCP?** - Protocol explanation with FIX comparison
+3. **Why Now?** - Regulatory landscape explanation (MiFID II, EU AI Act, CAT, APAC)
+4. **Key Features** - 6 feature cards with crypto agility, multi-tier support
+5. **Technology Stack** - Technical specifications (UUIDv7, Ed25519, Merkle Tree, PTP/NTP)
+6. **Use Cases** - 6 application scenarios (HFT, CEX, DeFi, On-Chain Proofs)
+7. **Get Started** - Target-specific CTAs (Developers, Exchanges, Regulators)
+8. **VC-Certified** - Certification program details with SVG badge
+9. **Company Info** - VeritasChain Inc. structure
+10. **Contact** - Contact information with standardization inquiry
+11. **Footer** - Disclaimers, revision history, independence statement
 
-## Deployment Status
-- **Platform**: GitHub Pages (Static HTML)
-- **Status**: ✅ Ready for Deployment
-- **Tech Stack**: Hono + TypeScript + Tailwind CSS + Font Awesome
-- **Languages**: English (default), Japanese
-- **Last Updated**: 2025-11-23
+---
 
-## Credits
-- **Organization**: VeritasChain Standards Organization (VSO)
-- **Tagline**: "Verify, Don't Trust" — Encoding Trust in the Algorithmic Age
-- **License**: Production Ready
-- **Website**: https://veritaschain.org (planned)
+## 📋 Technical Specifications
 
-## Support
-For questions or issues:
-- **Email**: info@veritaschain.org
-- **Documentation**: https://veritaschain.org/docs (planned)
-- **GitHub Issues**: (after repository creation)
+### Timestamp Precision (Critical)
+
+- **Platinum:** <1µs (PTP IEEE 1588-2019)
+- **Gold:** <1ms (NTP Chrony)
+- **Silver:** Best-effort (system time; no guaranteed precision)
+
+### Event ID
+
+- **UUIDv7** (RFC 9562, time-ordered, v4 fallback)
+
+### Cryptographic Standards
+
+- **Default:** Ed25519
+- **Alternatives:** ECDSA, Dilithium (Post-Quantum Cryptography)
+- **Verification:** Merkle Tree + Chain Validation
+
+### Storage Formats
+
+- SBE (Simple Binary Encoding)
+- JSON
+- Parquet
+- FlatBuffers
+- Zero-Copy / Kernel Bypass / RDMA ready
+
+---
+
+## 🏛️ Standards & Compliance
+
+### Regulatory Compliance
+
+- ✅ **MiFID II RTS 25** (EU algorithmic trading)
+- ✅ **EU AI Act** (2024/2026 - High-risk AI systems)
+- ✅ **GDPR** (Data privacy)
+- ✅ **CAT Rule 613** (US SEC Consolidated Audit Trail)
+- ✅ **APAC Standards** (Japan, Singapore, Hong Kong alignment)
+
+### Standards Body Conventions
+
+- **"as-is" warranty disclaimer** (ISO/IEEE standard)
+- **Revision history** in footer (v1.0 → v1.1)
+- **Module coverage** explicitly stated (CORE, TRADE, GOV, RISK, PRIVACY, RECOVERY)
+- **Technical precision** - Only guaranteed values stated
+
+---
+
+## 🎯 Target Audiences
+
+1. **Developers** - Integrate VCP with open-source SDK
+2. **Exchanges & Brokers** - Deploy as FIX protocol sidecar
+3. **Regulators** - Join international standardization initiative
+4. **HFT Firms** - Platinum-tier compliance
+5. **Institutional Investors** - Gold-tier compliance
+6. **Retail Platforms** - Silver-tier transparency
+
+---
+
+## 📊 Version History
+
+### v1.0 (Released: 2025-01-20)
+
+- Initial release with trilingual support
+- Complete ISO/W3C/ETSI-grade presentation
+- Technical accuracy (timestamp precision corrections)
+- Module coverage (CORE, TRADE, GOV, RISK, PRIVACY, RECOVERY)
+- "Why Now?" regulatory landscape explanation
+- On-Chain Audit Proofs (ZK-based)
+- VC-Certified SVG badge
+
+### Next Update: v1.1 (Q2 2026)
+
+---
+
+## 📞 Contact
+
+**VeritasChain Standards Organization (VSO)**
+
+- **Email:** info@veritaschain.org
+- **GitHub:** https://github.com/VeritasChain/vcp-spec
+- **Support Portal:** https://support.veritaschain.org
+
+---
+
+## 📄 License
+
+© 2025 VeritasChain Inc. All rights reserved.
+
+**Important Disclaimers:**
+
+- VSO operates independently and does not provide trading services.
+- VSO does not endorse or certify any financial performance claims.
+- All specifications are provided "as-is" without warranties of any kind.
+
+---
+
+## 🛠️ Development
+
+This site is maintained by VeritasChain Standards Organization (VSO) as part of an international standardization initiative for auditability and AI governance.
+
+**Maintained by:** TOKACHI & Ayano
+**Created:** 2025-01
+**Status:** Production-Ready ✅
