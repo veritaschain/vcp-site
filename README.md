@@ -14,9 +14,12 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 
 - 🏠 **VCP Protocol Landing:** [index.html](index.html)
 - 🏛️ **VSO (Standards Organization):** [vso/index.html](vso/index.html)
-- 📜 **VSO Independence Statement:** [vso/policies/](vso/policies/) ⭐ NEW
+- 📜 **VSO Independence Statement:** [vso/policies/](vso/policies/)
   - 🇯🇵 Japanese: [vso/policies/index.html](vso/policies/index.html)
   - 🇬🇧 English: [vso/policies/en/index.html](vso/policies/en/index.html)
+- ✅ **VC-Certified Program:** [certified/index.html](certified/index.html) ⭐ NEW
+  - 🇬🇧 English certification program page
+  - Compliance tiers, target audience, module coverage
 
 ### Available Languages (VCP Landing)
 
@@ -35,9 +38,13 @@ vcp-site/
 │   └── index.html          # 🇯🇵 Japanese version
 ├── zh/
 │   └── index.html          # 🇨🇳 Chinese (Simplified) version
+├── certified/              # ⭐ VC-Certified Program (NEW)
+│   ├── index.html          # 🇬🇧 Certification program page
+│   └── static/
+│       └── style.css       # Custom styles
 ├── vso/                    # VSO Pages
 │   ├── index.html          # VSO landing page
-│   ├── policies/           # ⭐ VSO Independence Statement
+│   ├── policies/           # VSO Independence Statement
 │   │   ├── index.html      # 🇯🇵 Japanese version
 │   │   └── en/
 │   │       └── index.html  # 🇬🇧 English version
