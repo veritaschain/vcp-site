@@ -23,6 +23,28 @@
 - **開発環境**: https://3000-igzldmgok7fa8iamx8niq-6532622b.e2b.dev
 - **本番環境**: (デプロイ後に更新予定)
 
+## 📁 ファイル構成
+
+```
+public/
+├── index.html              # 英語版トップページ
+├── ja/
+│   └── index.html         # 日本語版トップページ
+├── assets/
+│   ├── css/
+│   │   └── main.css       # メインスタイルシート
+│   ├── js/
+│   │   └── main.js        # メインJavaScript
+│   └── img/
+│       └── favicon.txt    # Faviconプレースホルダー
+└── static/                # 旧静的ファイル（使用中）
+```
+
+### パス構造
+- **英語版**: `/` → `/index.html` → CSS: `/assets/css/main.css`
+- **日本語版**: `/ja/` → `/ja/index.html` → CSS: `../assets/css/main.css`
+- **相対パス**: 各ページから適切な相対パスでアセットを参照
+
 ## 📋 完成済み機能
 
 ### ✅ Hero Section
@@ -98,22 +120,19 @@
 
 ## 💻 技術スタック
 
-- **フレームワーク**: Hono (v4.10.6)
-- **ランタイム**: Cloudflare Workers
-- **ビルドツール**: Vite (v6.3.5)
+- **構成**: 静的HTML + CSS + JavaScript
+- **ランタイム**: Cloudflare Pages
 - **デプロイ**: Wrangler (v4.4.0)
-- **スタイリング**: Tailwind CSS + Custom CSS
-- **フォント**: Inter + JetBrains Mono
-- **アイコン**: Font Awesome 6.4.0
+- **スタイリング**: Tailwind CSS (CDN) + Custom CSS
+- **フォント**: Inter + Noto Sans JP + JetBrains Mono (Google Fonts)
+- **アイコン**: Font Awesome 6.4.0 (CDN)
+- **JavaScript**: Vanilla JS（依存関係なし）
 
 ## 🛠️ 開発環境セットアップ
 
 ```bash
 # 依存関係インストール
 npm install
-
-# ビルド
-npm run build
 
 # 開発サーバー起動（PM2）
 pm2 start ecosystem.config.cjs
@@ -127,26 +146,50 @@ npm run clean-port
 
 # テスト
 npm run test
+
+# 英語版アクセス
+curl http://localhost:3000/
+
+# 日本語版アクセス
+curl http://localhost:3000/ja/
 ```
+
+**注意**: 静的HTML構成のため、ビルドプロセスは不要です。
 
 ## 📦 デプロイメント
 
 ### 開発環境
 ```bash
-# ビルド
-npm run build
-
 # PM2で起動
 pm2 start ecosystem.config.cjs
 
 # 確認
-curl http://localhost:3000
+curl http://localhost:3000        # 英語版
+curl http://localhost:3000/ja/    # 日本語版
 ```
 
 ### 本番環境（Cloudflare Pages）
+
+#### 前提条件
+1. Cloudflare API Keyの設定（Deployタブから設定）
+2. `setup_cloudflare_api_key` の実行
+3. `meta_info` でプロジェクト名管理
+
+#### デプロイ手順
 ```bash
-# ビルド & デプロイ
+# 1. API Key設定確認
+npx wrangler whoami
+
+# 2. プロジェクト作成（初回のみ）
+npx wrangler pages project create webapp \
+  --production-branch main \
+  --compatibility-date 2025-11-23
+
+# 3. デプロイ
 npm run deploy:prod
+
+# または直接
+wrangler pages deploy public --project-name webapp
 ```
 
 ## 📊 デプロイステータス
