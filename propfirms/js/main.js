@@ -27,34 +27,50 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(el);
   });
 
-  // Contact form submission
+  // Contact form submission with Formspree
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       
       const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
       const messageDiv = document.getElementById('form-message');
+      const submitButton = e.target.querySelector('button[type="submit"]');
       const lang = document.documentElement.lang || 'en';
       
-      // Simulate form submission (replace with actual API call in production)
+      // Disable submit button during submission
+      submitButton.disabled = true;
+      submitButton.textContent = lang === 'ja' ? '送信中...' : 'Submitting...';
+      
       try {
-        // In production: await fetch('/api/contact', { method: 'POST', body: JSON.stringify(data) })
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        const response = await fetch('https://formspree.io/f/xrbdjyjq', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
         
-        messageDiv.className = 'mt-4 p-4 bg-green-100 text-green-800 rounded-lg';
-        messageDiv.textContent = lang === 'ja' 
-          ? 'お問い合わせを受け付けました。担当者より3営業日以内にご連絡いたします。'
-          : 'Thank you for your inquiry. Our team will contact you within 3 business days.';
-        messageDiv.classList.remove('hidden');
-        e.target.reset();
+        if (response.ok) {
+          messageDiv.className = 'mt-4 p-4 bg-green-100 text-green-800 rounded-lg';
+          messageDiv.textContent = lang === 'ja' 
+            ? 'お問い合わせを受け付けました。担当者より3営業日以内にご連絡いたします。'
+            : 'Thank you for your inquiry. Our team will contact you within 3 business days.';
+          messageDiv.classList.remove('hidden');
+          e.target.reset();
+        } else {
+          throw new Error('Form submission failed');
+        }
       } catch (error) {
         messageDiv.className = 'mt-4 p-4 bg-red-100 text-red-800 rounded-lg';
         messageDiv.textContent = lang === 'ja'
           ? '送信に失敗しました。お手数ですが、info@veritaschain.orgまで直接ご連絡ください。'
           : 'Submission failed. Please contact us directly at info@veritaschain.org';
         messageDiv.classList.remove('hidden');
+      } finally {
+        // Re-enable submit button
+        submitButton.disabled = false;
+        submitButton.textContent = lang === 'ja' ? '送信する' : 'Submit Inquiry';
       }
     });
   }
