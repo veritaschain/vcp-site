@@ -13,7 +13,13 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 ### Available Pages
 
 - 🏠 **VCP Protocol Landing:** [index.html](index.html)
-- 🏛️ **VSO (Standards Organization):** [vso/index.html](vso/index.html) ⭐ NEW
+- 🏛️ **VSO (Standards Organization):** [vso/index.html](vso/index.html)
+- 📜 **VSO Independence Statement:** [vso/policies/](vso/policies/)
+  - 🇬🇧 English: [vso/policies/index.html](vso/policies/index.html)
+  - 🇯🇵 Japanese: [vso/policies/ja/index.html](vso/policies/ja/index.html)
+- ✅ **VC-Certified Program:** [certified/index.html](certified/index.html) ⭐ NEW
+  - 🇬🇧 English certification program page
+  - Compliance tiers, target audience, module coverage
 
 ### Available Languages (VCP Landing)
 
@@ -32,12 +38,23 @@ vcp-site/
 │   └── index.html          # 🇯🇵 Japanese version
 ├── zh/
 │   └── index.html          # 🇨🇳 Chinese (Simplified) version
-├── vso/                    # ⭐ VSO About page
+├── certified/              # ⭐ VC-Certified Program (NEW)
+│   ├── index.html          # 🇬🇧 Certification program page
+│   └── static/
+│       └── style.css       # Custom styles
+├── vso/                    # VSO Pages
 │   ├── index.html          # VSO landing page
+│   ├── policies/           # VSO Independence Statement
+│   │   ├── index.html      # 🇬🇧 English version (default)
+│   │   └── ja/
+│   │       └── index.html  # 🇯🇵 Japanese version
 │   └── README.md           # VSO documentation
 ├── assets/
 │   ├── css/
 │   │   └── main.css        # Custom styles
+│   ├── img/
+│   │   ├── logo.png        # VSO logo
+│   │   └── vso-badge.png   # VSO badge
 │   └── js/
 │       └── main.js         # Custom JavaScript
 └── README.md               # This file
