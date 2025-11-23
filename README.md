@@ -11,6 +11,8 @@
 
 ## URLs
 - **Sandbox Development**: http://localhost:3000
+- **Public URL**: https://3000-iyhu4hw1xfl7oap42n8ug-6532622b.e2b.dev
+- **FAQ Page**: https://3000-iyhu4hw1xfl7oap42n8ug-6532622b.e2b.dev/faq
 - **GitHub**: (設定後に追加)
 - **Production**: (デプロイ後に追加)
 
