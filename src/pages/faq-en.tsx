@@ -1,8 +1,8 @@
 import { html } from 'hono/html'
 
-export const faqPage = () => html`
+export const faqPageEn = () => html`
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -85,9 +85,9 @@ export const faqPage = () => html`
 <body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
     <!-- Language Switcher -->
     <div class="lang-switcher">
-        <a href="/faq" class="bg-white hover:bg-gray-50 px-4 py-2 rounded-lg shadow-md text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+        <a href="/ja" class="bg-white hover:bg-gray-50 px-4 py-2 rounded-lg shadow-md text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
             <i class="fas fa-language"></i>
-            English
+            日本語
         </a>
     </div>
 
@@ -98,7 +98,7 @@ export const faqPage = () => html`
                 <i class="fas fa-shield-alt text-4xl text-blue-400"></i>
                 <div>
                     <h1 class="text-3xl font-bold tracking-tight">VeritasChain Certified (VC-Certified)</h1>
-                    <p class="text-slate-300 text-sm mt-1">よくある質問 (FAQ)</p>
+                    <p class="text-slate-300 text-sm mt-1">Frequently Asked Questions (FAQ)</p>
                 </div>
             </div>
             <p class="text-slate-200 text-lg italic border-l-4 border-blue-400 pl-4">
@@ -111,13 +111,14 @@ export const faqPage = () => html`
     <div class="max-w-5xl mx-auto px-6 py-8">
         <div class="bg-white rounded-lg shadow-md p-6 mb-8">
             <p class="text-gray-700 leading-relaxed">
-                このFAQセクションでは、<strong>VeritasChain Standards Organization (VSO)</strong> が運営する認証プログラム
-                <strong class="highlight">「VC-Certified」</strong>に関する、技術的・法的・倫理的な重要事項について回答します。
+                This FAQ section addresses key technical, legal, and ethical questions about the 
+                <strong class="highlight">VC-Certified</strong> certification program operated by 
+                <strong>VeritasChain Standards Organization (VSO)</strong>.
             </p>
             <div class="mt-4 info-box p-4 rounded-md">
                 <p class="text-sm text-gray-700">
                     <i class="fas fa-info-circle text-blue-500 mr-2"></i>
-                    <strong>重要:</strong> 毎回説明しがちな質問を事前に解決し、信頼感を高めることを目的としています。
+                    <strong>Purpose:</strong> To proactively address common questions and enhance trust by clarifying what VC-Certified does—and doesn't—guarantee.
                 </p>
             </div>
         </div>
@@ -126,9 +127,9 @@ export const faqPage = () => html`
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <span class="category-badge badge-scope">
-                    <i class="fas fa-chart-line mr-1"></i>範囲と限界
+                    <i class="fas fa-chart-line mr-1"></i>Scope
                 </span>
-                <span>1. 認証の範囲と限界 (Scope & Limitations)</span>
+                <span>1. Certification Scope & Limitations</span>
             </h2>
             
             <!-- FAQ Item 1 -->
@@ -137,7 +138,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-university text-yellow-600 mr-2"></i>
-                            Q. VC-Certifiedを取得している企業は、財務的に安全ですか？(倒産しませんか？)
+                            Q. Does VC-Certified guarantee a company's financial stability or solvency?
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -146,27 +147,31 @@ export const faqPage = () => html`
                     <div class="warning-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-amber-900">
                             <i class="fas fa-exclamation-triangle mr-2"></i>
-                            A. いいえ、本認証は財務的な健全性を保証するものではありません。
+                            A. No, this certification does NOT guarantee financial health or solvency.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong class="highlight">VC-Certified</strong>は、対象システムが国際標準規格
-                            <strong>「Veritas Chain Protocol (VCP)」</strong>に
-                            <strong class="text-blue-600">「技術的に適合していること」</strong>のみを証明するものです。
+                            <strong class="highlight">VC-Certified</strong> certifies only that a system 
+                            <strong class="text-blue-600">technically complies</strong> with the 
+                            <strong>VeritasChain Protocol (VCP)</strong> international standard.
                         </p>
-                        <p class="font-semibold text-gray-800">具体的には、以下の点が数学的・暗号学的に正しいことを検証しています:</p>
+                        <p class="font-semibold text-gray-800">Specifically, we verify that the following are mathematically and cryptographically correct:</p>
                         <ul class="list-disc list-inside space-y-2 ml-4">
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>取引データが<strong>改ざん不可能 (Immutable)</strong> であること</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>アルゴリズムの<strong>意思決定プロセス</strong>が記録されていること</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>時刻同期や数値精度が規定の<strong>基準 (Tier)</strong> を満たしていること</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Trading data is <strong>immutable</strong> (tamper-proof)</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Algorithm <strong>decision-making processes</strong> are recorded</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Time synchronization and numerical precision meet specified <strong>Tier requirements</strong></li>
                         </ul>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-ban text-red-500 mr-2"></i>ご注意:</strong> 
-                                企業の<strong>支払い能力 (Solvency)</strong>、事業継続性、または投資商品の収益性を
-                                <strong>VSOが保証・推奨することは一切ありません。</strong>
+                                <strong><i class="fas fa-ban text-red-500 mr-2"></i>Important:</strong> 
+                                VSO does <strong>NOT guarantee or endorse</strong> any company's:
                             </p>
+                            <ul class="text-sm text-gray-700 mt-2 space-y-1 ml-4">
+                                <li>• Solvency or ability to meet financial obligations</li>
+                                <li>• Business continuity or long-term viability</li>
+                                <li>• Investment product profitability or returns</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -178,7 +183,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-handshake text-purple-600 mr-2"></i>
-                            Q. VSOは特定の投資戦略やブローカーを推奨していますか？
+                            Q. Does VSO endorse specific investment strategies or brokers?
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -187,17 +192,18 @@ export const faqPage = () => html`
                     <div class="warning-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-amber-900">
                             <i class="fas fa-times-circle mr-2"></i>
-                            A. いいえ、VSOは厳格な「非推奨 (Non-Endorsement) ポリシー」を維持しています。
+                            A. No, VSO maintains a strict "Non-Endorsement Policy."
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong>VSOは中立的な国際標準化団体です。</strong>
-                            認証バッジの発行は、そのシステムが<strong class="highlight">透明性の基準を満たしている</strong>ことを示すものであり、
-                            その企業の商品やサービス自体を推奨するものではありません。
+                            <strong>VSO is a neutral international standards organization.</strong>
+                            Issuing a certification badge indicates only that a system 
+                            <strong class="highlight">meets transparency standards</strong>—it is NOT an endorsement 
+                            of that company's products or services.
                         </p>
                         <p>
-                            VSOは<strong class="text-blue-600">ベンダー・ニュートラル</strong>な立場を堅持し、市場全体の健全化を目指しています。
+                            VSO maintains a <strong class="text-blue-600">vendor-neutral</strong> stance and aims to improve the health of the entire market ecosystem.
                         </p>
                     </div>
                 </div>
@@ -208,9 +214,9 @@ export const faqPage = () => html`
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <span class="category-badge badge-privacy">
-                    <i class="fas fa-lock mr-1"></i>プライバシー
+                    <i class="fas fa-lock mr-1"></i>Privacy
                 </span>
-                <span>2. データプライバシーとセキュリティ (Data & Privacy)</span>
+                <span>2. Data Privacy & Security</span>
             </h2>
             
             <!-- FAQ Item 3 -->
@@ -219,7 +225,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-user-shield text-blue-600 mr-2"></i>
-                            Q. 認証を受けると、顧客の個人情報がVSOや外部に漏れる恐れはありませんか？
+                            Q. Can certification lead to customer personal information being exposed to VSO or third parties?
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -228,22 +234,22 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-shield-alt mr-2"></i>
-                            A. いいえ、VCP-PRIVACYモジュールにより個人情報は保護されます。
+                            A. No, personal information is protected by the VCP-PRIVACY module.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            VCPの設計思想は<strong class="highlight">「真実 (Veritas) の公開」</strong>と
-                            <strong class="highlight">「プライバシーの保護」</strong>を両立させることです。
+                            VCP's design philosophy balances <strong class="highlight">"public truth (Veritas)"</strong> with 
+                            <strong class="highlight">"privacy protection."</strong>
                         </p>
                         <div class="grid md:grid-cols-2 gap-4 mt-4">
                             <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded">
                                 <h4 class="font-bold text-blue-900 mb-2">
-                                    <i class="fas fa-hashtag mr-2"></i>ハッシュ化
+                                    <i class="fas fa-hashtag mr-2"></i>Hashing
                                 </h4>
                                 <p class="text-sm text-gray-700">
-                                    ブロックチェーンや監査ログに記録されるのは、データの<strong>「ハッシュ値 (指紋)」</strong>であり、
-                                    元の個人情報は含まれません。
+                                    What's recorded on blockchain or audit logs are <strong>hash values (fingerprints)</strong> 
+                                    of data—not the original personal information.
                                 </p>
                             </div>
                             <div class="border-l-4 border-purple-500 bg-purple-50 p-4 rounded">
@@ -251,15 +257,15 @@ export const faqPage = () => html`
                                     <i class="fas fa-trash-alt mr-2"></i>Crypto-shredding
                                 </h4>
                                 <p class="text-sm text-gray-700">
-                                    個人情報 (PII) は、ユーザーごとの固有鍵で暗号化されて記録されます。
-                                    <strong>GDPRの「忘れられる権利」</strong>などの削除要請があった場合、
-                                    その復号鍵を破棄することで、データの実体を<strong class="text-red-600">数学的に復元不可能</strong>にします。
+                                    Personal Identifiable Information (PII) is encrypted with unique per-user keys. 
+                                    For <strong>GDPR's "Right to be Forgotten,"</strong> destroying the decryption key 
+                                    makes the data <strong class="text-red-600">mathematically unrecoverable.</strong>
                                 </p>
                             </div>
                         </div>
                         <p class="mt-4 font-semibold text-gray-800">
                             <i class="fas fa-check-double text-green-500 mr-2"></i>
-                            したがって、<strong>VSOや第三者が、監査ログから顧客の氏名や住所を特定することは技術的に不可能</strong>です。
+                            Therefore, <strong>it is technically impossible for VSO or third parties to extract customer names or addresses</strong> from audit logs.
                         </p>
                     </div>
                 </div>
@@ -271,7 +277,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-cubes text-indigo-600 mr-2"></i>
-                            Q. ブロックチェーンに記録されたデータは誰でも見ることができますか？
+                            Q. Can anyone view data recorded on the blockchain?
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -280,28 +286,28 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-eye mr-2"></i>
-                            A. 「検証に必要なデータ」のみが透明化されます。
+                            A. Only "data necessary for verification" is made transparent.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            VCP準拠のシステムでは、取引の<strong>ハッシュ値</strong>や
-                            <strong>マークルルート (Merkle Root)</strong> がパブリックチェーン等にアンカーされます。
+                            In VCP-compliant systems, transaction <strong>hash values</strong> and 
+                            <strong>Merkle Roots</strong> are anchored to public chains.
                         </p>
                         <p>
-                            これにより、ユーザーは<strong class="highlight">「自分の取引が改ざんされていないか」</strong>を
-                            Explorer (探索ツール) で検証できます。
+                            This allows users to verify <strong class="highlight">"whether my trades were tampered with"</strong> 
+                            using Explorer tools.
                         </p>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-shield-alt text-amber-600 mr-2"></i>保護される情報:</strong>
-                                アルゴリズムの具体的なロジック (知的財産) や、他人の詳細な取引内容が丸見えになるわけではありません。
+                                <strong><i class="fas fa-shield-alt text-amber-600 mr-2"></i>Protected Information:</strong>
+                                The specific logic of algorithms (intellectual property) and detailed trading information of others are NOT exposed.
                             </p>
                         </div>
                         <p class="mt-4">
-                            VCPは<strong class="text-red-600">「ブラックボックス (中身が見えない)」</strong>と
-                            <strong class="text-green-600">「ガラス張り (全て丸見え)」</strong>の間にある、
-                            <strong class="highlight text-blue-600">「検証可能な透明性」</strong>を提供します。
+                            VCP provides <strong class="highlight text-blue-600">"verifiable transparency"</strong> that sits between 
+                            <strong class="text-red-600">"black box (opaque)"</strong> and 
+                            <strong class="text-green-600">"glass house (fully exposed)."</strong>
                         </p>
                     </div>
                 </div>
@@ -312,9 +318,9 @@ export const faqPage = () => html`
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <span class="category-badge badge-tier">
-                    <i class="fas fa-layer-group mr-1"></i>Tier
+                    <i class="fas fa-layer-group mr-1"></i>Tiers
                 </span>
-                <span>3. 認証ティアと技術的価値 (Tiers & Value)</span>
+                <span>3. Certification Tiers & Technical Value</span>
             </h2>
             
             <!-- FAQ Item 5 -->
@@ -323,7 +329,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-medal text-gray-400 mr-2"></i>
-                            Q. Silver Tier (リテール/Prop向け) は、時刻同期が "Best-Effort" ですが、意味はありますか？
+                            Q. Is Silver Tier (for retail/prop firms) meaningful if time sync is "Best-Effort"?
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -332,45 +338,45 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-check-circle mr-2"></i>
-                            A. はい、極めて大きな「証明力」を持ちます。
+                            A. Yes, it provides extremely strong "proof value."
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong>Silver Tier</strong>は原子時計並みの精度 (PTPv2) こそ求めませんが、
-                            <strong class="highlight">「不正の不可逆性 (Irreversibility of Fraud)」</strong>を保証します。
+                            While <strong>Silver Tier</strong> doesn't require atomic-clock precision (PTPv2), 
+                            it guarantees <strong class="highlight">"Irreversibility of Fraud."</strong>
                         </p>
                         <div class="grid gap-3 mt-4">
                             <div class="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded">
                                 <i class="fas fa-fingerprint text-green-600 text-xl mt-1"></i>
                                 <div>
-                                    <h4 class="font-bold text-green-900">UUID v7の順序性</h4>
-                                    <p class="text-sm text-gray-700">すべてのイベントには時間順序性を持つIDが付与されます。</p>
+                                    <h4 class="font-bold text-green-900">UUID v7 Ordering</h4>
+                                    <p class="text-sm text-gray-700">All events are assigned time-ordered IDs.</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded">
                                 <i class="fas fa-chain-broken text-blue-600 text-xl mt-1"></i>
                                 <div>
-                                    <h4 class="font-bold text-blue-900">事後改ざんの防止</h4>
-                                    <p class="text-sm text-gray-700">データは24時間ごとにブロックチェーンへアンカーされます。</p>
+                                    <h4 class="font-bold text-blue-900">Retroactive Tampering Prevention</h4>
+                                    <p class="text-sm text-gray-700">Data is anchored to blockchain every 24 hours.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>防止される不正:</strong>
+                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>Fraud Types Prevented:</strong>
                             </p>
                             <ul class="text-sm text-gray-700 mt-2 space-y-1">
-                                <li>• 「後から都合の悪い取引を削除する」</li>
-                                <li>• 「過去の日時に偽のデータを挿入する」</li>
+                                <li>• "Deleting unfavorable trades after the fact"</li>
+                                <li>• "Inserting fake data with past timestamps"</li>
                             </ul>
                             <p class="text-sm text-gray-800 mt-2">
-                                といった典型的な不正は、<strong>たとえデータベース管理者であっても不可能</strong>になります。
+                                These typical frauds become <strong>impossible even for database administrators.</strong>
                             </p>
                         </div>
                         <p class="mt-4 font-semibold text-green-700">
                             <i class="fas fa-star text-yellow-500 mr-2"></i>
-                            Silver Tierは、コストを抑えつつ、顧客との<strong>信頼トラブル (言った言わないの水掛け論)</strong> を解決する強力な手段です。
+                            Silver Tier is a powerful tool to resolve <strong>trust disputes ("he said, she said")</strong> while keeping costs low.
                         </p>
                     </div>
                 </div>
@@ -382,7 +388,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-plug text-green-600 mr-2"></i>
-                            Q. 導入には既存システムの入れ替えが必要ですか？
+                            Q. Does implementation require replacing existing systems?
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -391,21 +397,22 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-check-circle mr-2"></i>
-                            A. いいえ、「サイドカー」方式での導入が可能です。
+                            A. No, "sidecar" deployment is possible.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            VCPは、既存の<strong>FIXエンジン</strong>や取引サーバー (MT4/MT5など) を変更することなく、
-                            <strong class="highlight">並走して監査ログを生成するアダプター</strong> (SDKやブリッジ) を提供しています。
+                            VCP provides adapters (SDKs and bridges) that <strong class="highlight">run alongside</strong> existing 
+                            <strong>FIX engines</strong> and trading servers (MT4/MT5, etc.) to generate audit logs 
+                            <strong>without modifying</strong> the existing infrastructure.
                         </p>
                         <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 p-4 rounded-lg mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-code text-green-600 mr-2"></i>リテールブローカー・Prop Firm向け:</strong>
+                                <strong><i class="fas fa-code text-green-600 mr-2"></i>For Retail Brokers & Prop Firms:</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-mql-bridge</code> を用意しており、
-                                既存環境への影響を最小限に抑えながら認証を取得できます。
+                                We provide <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-mql-bridge</code>, 
+                                which minimizes impact on existing environments while enabling certification.
                             </p>
                         </div>
                     </div>
@@ -417,9 +424,9 @@ export const faqPage = () => html`
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <span class="category-badge badge-governance">
-                    <i class="fas fa-balance-scale mr-1"></i>ガバナンス
+                    <i class="fas fa-balance-scale mr-1"></i>Governance
                 </span>
-                <span>4. ガバナンスと将来性 (Governance & Future)</span>
+                <span>4. Governance & Future-Proofing</span>
             </h2>
             
             <!-- FAQ Item 7 -->
@@ -428,7 +435,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-atom text-purple-600 mr-2"></i>
-                            Q. 将来、量子コンピュータが登場したらセキュリティは破られませんか？
+                            Q. What happens when quantum computers arrive? Will security be compromised?
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -437,23 +444,24 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-rocket mr-2"></i>
-                            A. VCPは「Crypto Agility (暗号学的敏捷性)」を備えており、対策済みです。
+                            A. VCP is equipped with "Crypto Agility" and is already prepared.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            現在は高速な<strong class="text-blue-600">「Ed25519」署名</strong>をデフォルトとしていますが、
-                            仕様レベルで<strong class="highlight">ポスト量子暗号 (PQC)</strong> への移行パスを定義しています。
+                            Currently, we default to the fast <strong class="text-blue-600">Ed25519 signature</strong> algorithm, 
+                            but the specification defines a migration path to 
+                            <strong class="highlight">Post-Quantum Cryptography (PQC)</strong>.
                         </p>
                         <div class="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 p-4 rounded-lg mt-4">
                             <h4 class="font-bold text-purple-900 mb-2">
-                                <i class="fas fa-road mr-2"></i>将来の移行パス
+                                <i class="fas fa-road mr-2"></i>Future Migration Path
                             </h4>
                             <p class="text-sm text-gray-700">
-                                将来的に量子コンピュータの脅威が現実化した際は、NIST標準の
-                                <strong class="text-purple-700">「Dilithium」アルゴリズム</strong>などへ
-                                <strong>シームレスにアップグレード</strong>を行い、
-                                記録の真正性を未来にわたって保護します。
+                                When quantum computing threats become real, we will 
+                                <strong>seamlessly upgrade</strong> to NIST-standard algorithms like 
+                                <strong class="text-purple-700">Dilithium</strong>, 
+                                ensuring the authenticity of records for the future.
                             </p>
                         </div>
                     </div>
@@ -466,7 +474,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-gavel text-blue-600 mr-2"></i>
-                            Q. EU AI法 (EU AI Act) への対応は含まれていますか？
+                            Q. Does VCP address the EU AI Act?
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -475,22 +483,25 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-check-circle mr-2"></i>
-                            A. はい、プロトコルレベルで対応しています。
+                            A. Yes, support is built into the protocol.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            VCPの拡張モジュール<strong class="text-blue-600"> VCP-GOV</strong> は、
-                            AIアルゴリズムの意思決定要因 (Decision Factors) やリスク分類、
-                            人間による監視記録 (Human Oversight) を保存するフィールドを備えています。
+                            The <strong class="text-blue-600">VCP-GOV</strong> extension module includes fields for storing:
                         </p>
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>AI algorithm decision factors</li>
+                            <li>Risk classification</li>
+                            <li>Human oversight records</li>
+                        </ul>
                         <div class="bg-gradient-to-r from-blue-50 to-sky-50 border border-blue-200 p-4 rounded-lg mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-shield-alt text-blue-600 mr-2"></i>コンプライアンスサポート:</strong>
+                                <strong><i class="fas fa-shield-alt text-blue-600 mr-2"></i>Compliance Support:</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                これにより、<strong>高リスクAIシステム</strong>に求められる
-                                <strong class="highlight">透明性と記録保持要件の遵守</strong>を強力にサポートします。
+                                This strongly supports compliance with <strong>high-risk AI system</strong> requirements for 
+                                <strong class="highlight">transparency and record-keeping.</strong>
                             </p>
                         </div>
                     </div>
@@ -503,20 +514,20 @@ export const faqPage = () => html`
             <div class="text-center">
                 <h3 class="text-2xl font-bold mb-3">
                     <i class="fas fa-question-circle mr-2"></i>
-                    さらに詳しい情報が必要ですか？
+                    Need More Information?
                 </h3>
                 <p class="text-slate-300 mb-6">
-                    VeritasChain Standards Organization (VSO) は、アルゴリズム時代の信頼基盤構築を支援します。
+                    VeritasChain Standards Organization (VSO) supports building trust infrastructure for the algorithmic age.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <a href="https://veritaschain.org" class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg font-semibold transition-colors">
-                        <i class="fas fa-home mr-2"></i>公式サイト
+                        <i class="fas fa-home mr-2"></i>Official Site
                     </a>
                     <a href="https://veritaschain.org/docs" class="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-lg font-semibold transition-colors">
-                        <i class="fas fa-book mr-2"></i>技術仕様書
+                        <i class="fas fa-book mr-2"></i>Technical Specs
                     </a>
                     <a href="mailto:info@veritaschain.org" class="bg-purple-500 hover:bg-purple-600 px-6 py-3 rounded-lg font-semibold transition-colors">
-                        <i class="fas fa-envelope mr-2"></i>お問い合わせ
+                        <i class="fas fa-envelope mr-2"></i>Contact Us
                     </a>
                 </div>
             </div>
