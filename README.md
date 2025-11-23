@@ -10,7 +10,12 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 
 **Production:** https://veritaschain.github.io/vcp-site/
 
-### Available Languages
+### Available Pages
+
+- 🏠 **VCP Protocol Landing:** [index.html](index.html)
+- 🏛️ **VSO (Standards Organization):** [vso/index.html](vso/index.html) ⭐ NEW
+
+### Available Languages (VCP Landing)
 
 - 🇬🇧 **English:** [index.html](index.html)
 - 🇯🇵 **日本語:** [ja/index.html](ja/index.html)
@@ -22,11 +27,14 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 
 ```
 vcp-site/
-├── index.html              # 🇬🇧 English version
+├── index.html              # 🇬🇧 VCP Protocol landing (English)
 ├── ja/
 │   └── index.html          # 🇯🇵 Japanese version
 ├── zh/
 │   └── index.html          # 🇨🇳 Chinese (Simplified) version
+├── vso/                    # ⭐ VSO About page
+│   ├── index.html          # VSO landing page
+│   └── README.md           # VSO documentation
 ├── assets/
 │   ├── css/
 │   │   └── main.css        # Custom styles
