@@ -21,11 +21,23 @@ function initLanguageSwitcher() {
     const lang = link.getAttribute('data-lang');
     
     // Highlight current language
-    if ((currentPath === '/' && lang === 'en') || (currentPath === '/ja' && lang === 'ja')) {
+    if ((currentPath.includes('/explorer/') && lang === 'en' && !currentPath.includes('/ja') && !currentPath.includes('/zh')) ||
+        (currentPath.includes('/ja') && lang === 'ja') ||
+        (currentPath.includes('/zh') && lang === 'zh')) {
       link.classList.add('bg-cyan-500', 'text-white');
       link.classList.remove('hover:bg-slate-700');
     }
   });
+  
+  // Mobile menu toggle
+  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  if (mobileMenuToggle && mobileMenu) {
+    mobileMenuToggle.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
 }
 
 // Search functionality
