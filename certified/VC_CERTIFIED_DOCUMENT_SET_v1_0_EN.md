@@ -249,9 +249,7 @@ github.com/veritaschain/
 | Resource | URL |
 |----------|-----|
 | Website | https://veritaschain.org |
-| Documentation | https://docs.veritaschain.org |
-| API Sandbox | https://sandbox.veritaschain.org |
-| Certification Portal | https://certified.veritaschain.org |
+| Certification Portal | https://veritaschain.org/certified/ |
 | GitHub | https://github.com/veritaschain |
 
 ### Support
