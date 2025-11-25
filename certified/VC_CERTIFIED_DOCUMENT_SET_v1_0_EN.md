@@ -2,8 +2,6 @@
 
 **The World's First Algorithmic Transparency Standard Package**
 
-*世界初のアルゴリズム透明性標準パッケージ*
-
 ---
 
 ## 🎯 Overview
