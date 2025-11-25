@@ -247,10 +247,12 @@ github.com/veritaschain/
 
 ### Official Channels
 | Resource | URL |
-|----------|-----|
-| Website | https://veritaschain.org |
-| Certification Portal | https://veritaschain.org/certified |
-| GitHub | https://github.com/veritaschain |
+|------------------------------|---------------------------------------------------------------------|
+| Website                      | https://veritaschain.org                                           |
+| Developers Integration Guide | https://veritaschain.org/vcp/developers/                           |
+| VC-Certified Overview        | https://veritaschain.org/certified/                                |
+| Conformance Package v1.0     | https://github.com/veritaschain/vcp-conformance-guide              |
+| GitHub Organization          | https://github.com/veritaschain
 
 ### Support
 | Type | Contact |
