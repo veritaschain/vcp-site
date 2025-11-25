@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP Explorer API v1.1 - VeritasChain Standards Organization</title>
+    <meta name="description" content="VCP Explorer API v1.1 - 使用加密证明搜索、验证和审计VCP事件链">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/explorer-api.css" rel="stylesheet">
+    <style>
+        .lang-switcher {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            background: white;
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover {
+            background: #f3f4f6;
+            border-color: #1e40af;
+            color: #1e40af;
+        }
+        .lang-btn.active {
+            background: #1e40af;
+            color: white;
+            border-color: #1e40af;
+        }
+        @media (max-width: 768px) {
+            .lang-switcher {
+                top: 70px;
+                right: 10px;
+                padding: 0.35rem;
+            }
+            .lang-btn {
+                padding: 0.35rem 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+        <a href="/vcp/explorer-api/" class="lang-btn">English</a>
+        <a href="/vcp/explorer-api/ja/" class="lang-btn">日本語</a>
+        <a href="/vcp/explorer-api/zh/" class="lang-btn active">中文</a>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="https://veritaschain.org/zh" class="logo">
+                    <i class="fas fa-shield-alt"></i> VeritasChain
+                </a>
+            </div>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="https://veritaschain.org/zh" class="navbar-item">首页</a>
+                <a href="https://veritaschain.org/zh/vcp" class="navbar-item">VCP协议</a>
+                <a href="https://veritaschain.org/zh/vcp/specification" class="navbar-item">规范</a>
+                <a href="https://veritaschain.org/zh/vcp/developers" class="navbar-item">开发者</a>
+                <a href="/vcp/explorer-api/zh/" class="navbar-item active">Explorer API</a>
+                <a href="https://veritaschain.org/zh/certification" class="navbar-item">认证</a>
+                <a href="https://veritaschain.org/zh/contact" class="navbar-item navbar-cta">联系我们</a>
+            </div>
+            <div class="navbar-burger" id="navbarBurger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="header">
+        <div class="container">
+            <h1><i class="fas fa-search-dollar"></i> VCP Explorer API v1.1</h1>
+            <p class="subtitle">使用加密证明搜索、验证和审计VCP事件链</p>
+            <a href="https://github.com/veritaschain/vcp-explorer-api" class="btn" target="_blank">
+                <i class="fab fa-github"></i> 在GitHub上查看API
+            </a>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">概述</h2>
+            <p>VCP Explorer API为VeritasChain协议(VCP)提供事件搜索、Merkle证明检索和事件证书生成功能。它完全符合<strong>VCP规范v1.0</strong>,使外部方(监管机构、经纪商、自营交易公司、审计师)能够独立验证记录的事件。</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-lock"></i> 加密验证</h3>
+                    <p>符合RFC 6962的Merkle证明实现无需信任API的外部验证。践行"验证,不要信任"的原则。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-search"></i> 高级搜索</h3>
+                    <p>使用TraceID跟踪完整的交易生命周期,按符号、时间范围、事件类型和算法ID进行过滤。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-certificate"></i> 监管证书</h3>
+                    <p>生成包含事件数据、Merkle证明和加密签名的审计就绪证书,实现合规性。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-cubes"></i> VCP模块结构</h3>
+                    <p>通过VCP-TRADE、VCP-RISK和VCP-GOV模块组织的事件数据,实现清晰的关注点分离。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-clock"></i> 纳秒精度</h3>
+                    <p>基于字符串的时间戳避免了JavaScript 2^53限制,支持真正的纳秒级精度。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-anchor"></i> 区块链锚定(计划中)</h3>
+                    <p>VCP Explorer的未来版本将支持将审计根锚定到以太坊,提供额外的不可变性保证。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Base URL Section -->
+    <section class="section" style="background-color: #f9fafb;">
+        <div class="container">
+            <h2 class="section-title">基础URL</h2>
+            <div class="base-url">
+                <code>https://explorer.veritaschain.org/api/v1</code>
+            </div>
+            <div class="alert alert-warning">
+                <strong>注意:</strong> Explorer API部署正在进行中。在实时端点可用之前,本文档作为实施参考。开发者不应在部署公告之前尝试调用这些端点。
+            </div>
+        </div>
+    </section>
+
+    <!-- Authentication Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">认证</h2>
+            <p>所有API请求都需要在请求头中使用API密钥进行认证:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">HTTP头</span>
+                </div>
+                <pre><code>X-VCP-API-Key: &lt;your_api_key&gt;</code></pre>
+            </div>
+            <div class="alert alert-warning">
+                <strong>安全:</strong> 不要在客户端代码中暴露API密钥。始终使用服务器端请求和适当的密钥管理。
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p><strong>VCP Explorer API v1.1</strong> | 构建者: <strong>VeritasChain Standards Organization (VSO)</strong></p>
+            <p style="margin-top: 0.5rem; opacity: 0.9;">VCP规范v1.0 | 生产就绪 | "验证,不要信任"</p>
+            <div class="footer-links">
+                <a href="https://github.com/veritaschain" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://veritaschain.org/zh" target="_blank"><i class="fas fa-home"></i> VSO主页</a>
+                <a href="https://explorer.veritaschain.org" target="_blank"><i class="fas fa-search"></i> VCP Explorer</a>
+                <a href="https://veritaschain.org/zh/contact" target="_blank"><i class="fas fa-envelope"></i> 联系我们</a>
+            </div>
+            <p style="margin-top: 1.5rem; font-size: 0.875rem; opacity: 0.8;">© 2025 VeritasChain Standards Organization. Apache 2.0许可证</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script src="/assets/js/explorer-api.js"></script>
+</body>
+</html>
