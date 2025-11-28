@@ -210,7 +210,7 @@
   // Close mobile menu when clicking on a link
   document.querySelectorAll('.dropdown-item').forEach(item => {
     item.addEventListener('click', () => {
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 1024) {
         navToggle.classList.remove('active');
         navMenu.classList.remove('active');
         document.body.style.overflow = '';
@@ -223,7 +223,7 @@
   
   // Close mobile menu on resize
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 1024) {
       navToggle.classList.remove('active');
       navMenu.classList.remove('active');
       document.body.style.overflow = '';

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .title { font: bold 24px sans-serif; fill: #1a365d; }
+      .label { font: 14px sans-serif; fill: #2d3748; }
+      .sublabel { font: 12px sans-serif; fill: #718096; }
+      .box { fill: #fff; stroke: #2b6cb0; stroke-width: 2; }
+      .hash { fill: #ebf8ff; stroke: #3182ce; stroke-width: 1.5; }
+      .arrow { fill: none; stroke: #4a5568; stroke-width: 2; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4a5568" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" class="title">VCP Cryptographic Chain of Evidence</text>
+  
+  <!-- Event Blocks -->
+  <g id="event1">
+    <rect x="50" y="100" width="180" height="120" class="box" rx="8"/>
+    <text x="140" y="125" text-anchor="middle" class="label" font-weight="bold">Event 1</text>
+    <text x="140" y="145" text-anchor="middle" class="sublabel">Signal Generated</text>
+    <rect x="70" y="160" width="140" height="30" class="hash" rx="4"/>
+    <text x="140" y="180" text-anchor="middle" class="sublabel" font-family="monospace">H₁ = SHA256(E₁)</text>
+    <text x="140" y="210" text-anchor="middle" class="sublabel" font-size="10">UUIDv7: 01934abc...</text>
+  </g>
+  
+  <g id="event2">
+    <rect x="310" y="100" width="180" height="120" class="box" rx="8"/>
+    <text x="400" y="125" text-anchor="middle" class="label" font-weight="bold">Event 2</text>
+    <text x="400" y="145" text-anchor="middle" class="sublabel">Risk Checked</text>
+    <rect x="330" y="160" width="140" height="30" class="hash" rx="4"/>
+    <text x="400" y="180" text-anchor="middle" class="sublabel" font-family="monospace">H₂ = SHA256(E₂||H₁)</text>
+    <text x="400" y="210" text-anchor="middle" class="sublabel" font-size="10">UUIDv7: 01934abd...</text>
+  </g>
+  
+  <g id="event3">
+    <rect x="570" y="100" width="180" height="120" class="box" rx="8"/>
+    <text x="660" y="125" text-anchor="middle" class="label" font-weight="bold">Event 3</text>
+    <text x="660" y="145" text-anchor="middle" class="sublabel">Order Executed</text>
+    <rect x="590" y="160" width="140" height="30" class="hash" rx="4"/>
+    <text x="660" y="180" text-anchor="middle" class="sublabel" font-family="monospace">H₃ = SHA256(E₃||H₂)</text>
+    <text x="660" y="210" text-anchor="middle" class="sublabel" font-size="10">UUIDv7: 01934abe...</text>
+  </g>
+  
+  <!-- Arrows -->
+  <path d="M 230 160 L 310 160" class="arrow"/>
+  <path d="M 490 160 L 570 160" class="arrow"/>
+  
+  <!-- Merkle Root -->
+  <g id="merkle-root">
+    <rect x="300" y="280" width="200" height="60" fill="#2b6cb0" stroke="#1a365d" stroke-width="2" rx="8"/>
+    <text x="400" y="305" text-anchor="middle" class="label" fill="#fff" font-weight="bold">Merkle Root</text>
+    <text x="400" y="325" text-anchor="middle" class="sublabel" fill="#e6f7ff" font-family="monospace">Root = H(H₁||H₂||H₃)</text>
+  </g>
+  
+  <!-- Verification Box -->
+  <g id="verification">
+    <rect x="250" y="380" width="300" height="180" fill="#f7fafc" stroke="#4a5568" stroke-width="1.5" rx="8" stroke-dasharray="5,5"/>
+    <text x="400" y="410" text-anchor="middle" class="label" font-weight="bold">🔒 Tamper-Evident Properties</text>
+    
+    <text x="270" y="440" class="sublabel">✓ Any modification changes all subsequent hashes</text>
+    <text x="270" y="465" class="sublabel">✓ UUIDv7 ensures chronological ordering</text>
+    <text x="270" y="490" class="sublabel">✓ Independent third-party verification possible</text>
+    <text x="270" y="515" class="sublabel">✓ No trust required in record keeper</text>
+    <text x="270" y="540" class="sublabel">✓ Cryptographically provable audit trail</text>
+  </g>
+  
+  <!-- Footer -->
+  <text x="400" y="580" text-anchor="middle" class="sublabel" font-size="10">VeritasChain Protocol v1.0 — Cryptographic Standard for Algorithmic Trading</text>
+</svg>
