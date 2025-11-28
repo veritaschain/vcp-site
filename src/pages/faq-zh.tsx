@@ -1,19 +1,19 @@
 import { html } from 'hono/html'
 
-export const faqPage = () => html`
+export const faqPageZh = () => html`
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - VeritasChain Certified (VC-Certified)</title>
+    <title>常见问题 - VeritasChain Certified (VC-Certified)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
         
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
         }
         
         .faq-item {
@@ -123,12 +123,12 @@ export const faqPage = () => html`
         <div class="lang-dropdown">
             <button class="bg-white hover:bg-gray-50 px-4 py-2 rounded-lg shadow-md text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                 <i class="fas fa-language"></i>
-                日本語
+                中文
                 <i class="fas fa-chevron-down text-xs"></i>
             </button>
             <div class="lang-dropdown-content">
-                <a href="/faq"><i class="fas fa-globe mr-2"></i>English</a>
-                <a href="/zh"><i class="fas fa-globe mr-2"></i>中文</a>
+                <a href="/certified/faq/"><i class="fas fa-globe mr-2"></i>English</a>
+                <a href="/certified/faq/ja.html"><i class="fas fa-globe mr-2"></i>日本語</a>
             </div>
         </div>
     </div>
@@ -140,11 +140,11 @@ export const faqPage = () => html`
                 <i class="fas fa-shield-alt text-4xl text-blue-400"></i>
                 <div>
                     <h1 class="text-3xl font-bold tracking-tight">VeritasChain Certified (VC-Certified)</h1>
-                    <p class="text-slate-300 text-sm mt-1">よくある質問 (FAQ)</p>
+                    <p class="text-slate-300 text-sm mt-1">常见问题 (FAQ)</p>
                 </div>
             </div>
             <p class="text-slate-200 text-lg italic border-l-4 border-blue-400 pl-4">
-                Encoding Trust in the Algorithmic Age
+                在算法时代编码信任
             </p>
         </div>
     </header>
@@ -153,13 +153,13 @@ export const faqPage = () => html`
     <div class="max-w-5xl mx-auto px-6 py-8">
         <div class="bg-white rounded-lg shadow-md p-6 mb-8">
             <p class="text-gray-700 leading-relaxed">
-                このFAQセクションでは、<strong>VeritasChain Standards Organization (VSO)</strong> が運営する認証プログラム
-                <strong class="highlight">「VC-Certified」</strong>に関する、技術的・法的・倫理的な重要事項について回答します。
+                本常见问题页面解答了关于 <strong class="highlight">VC-Certified</strong> 认证计划的关键技术、法律和道德问题。
+                该计划由 <strong>VeritasChain 标准组织 (VSO)</strong> 运营。
             </p>
             <div class="mt-4 info-box p-4 rounded-md">
                 <p class="text-sm text-gray-700">
                     <i class="fas fa-info-circle text-blue-500 mr-2"></i>
-                    <strong>重要:</strong> 毎回説明しがちな質問を事前に解決し、信頼感を高めることを目的としています。
+                    <strong>目的：</strong>主动回应常见问题，通过明确 VC-Certified 的保证范围和限制来增强信任。
                 </p>
             </div>
         </div>
@@ -168,9 +168,9 @@ export const faqPage = () => html`
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <span class="category-badge badge-scope">
-                    <i class="fas fa-chart-line mr-1"></i>範囲と限界
+                    <i class="fas fa-chart-line mr-1"></i>范围
                 </span>
-                <span>1. 認証の範囲と限界 (Scope & Limitations)</span>
+                <span>1. 认证范围与限制</span>
             </h2>
             
             <!-- FAQ Item 1 -->
@@ -179,7 +179,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-university text-yellow-600 mr-2"></i>
-                            Q. VC-Certifiedを取得している企業は、財務的に安全ですか？(倒産しませんか？)
+                            Q. VC-Certified 是否保证公司的财务稳定性或偿付能力？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -188,27 +188,31 @@ export const faqPage = () => html`
                     <div class="warning-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-amber-900">
                             <i class="fas fa-exclamation-triangle mr-2"></i>
-                            A. いいえ、本認証は財務的な健全性を保証するものではありません。
+                            A. 否，本认证不保证财务健康或偿付能力。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong class="highlight">VC-Certified</strong>は、対象システムが国際標準規格
-                            <strong>「Veritas Chain Protocol (VCP)」</strong>に
-                            <strong class="text-blue-600">「技術的に適合していること」</strong>のみを証明するものです。
+                            <strong class="highlight">VC-Certified</strong> 仅认证系统在技术上
+                            <strong class="text-blue-600">符合</strong>
+                            <strong>VeritasChain Protocol (VCP)</strong> 国际标准。
                         </p>
-                        <p class="font-semibold text-gray-800">具体的には、以下の点が数学的・暗号学的に正しいことを検証しています:</p>
+                        <p class="font-semibold text-gray-800">具体而言，我们验证以下内容在数学和密码学上是正确的：</p>
                         <ul class="list-disc list-inside space-y-2 ml-4">
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>取引データが<strong>改ざん不可能 (Immutable)</strong> であること</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>アルゴリズムの<strong>意思決定プロセス</strong>が記録されていること</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>時刻同期や数値精度が規定の<strong>基準 (Tier)</strong> を満たしていること</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>交易数据<strong>不可篡改</strong>（防篡改）</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>算法<strong>决策过程</strong>已被记录</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>时间同步和数值精度符合指定的<strong>层级要求</strong></li>
                         </ul>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-ban text-red-500 mr-2"></i>ご注意:</strong> 
-                                企業の<strong>支払い能力 (Solvency)</strong>、事業継続性、または投資商品の収益性を
-                                <strong>VSOが保証・推奨することは一切ありません。</strong>
+                                <strong><i class="fas fa-ban text-red-500 mr-2"></i>重要声明：</strong>
+                                VSO 不保证或背书任何公司的：
                             </p>
+                            <ul class="text-sm text-gray-700 mt-2 space-y-1 ml-4">
+                                <li>• 偿付能力或履行财务义务的能力</li>
+                                <li>• 业务连续性或长期生存能力</li>
+                                <li>• 投资产品的盈利能力或回报</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -220,7 +224,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-handshake text-purple-600 mr-2"></i>
-                            Q. VSOは特定の投資戦略やブローカーを推奨していますか？
+                            Q. VSO 是否推荐特定的投资策略或经纪商？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -229,17 +233,17 @@ export const faqPage = () => html`
                     <div class="warning-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-amber-900">
                             <i class="fas fa-times-circle mr-2"></i>
-                            A. いいえ、VSOは厳格な「非推奨 (Non-Endorsement) ポリシー」を維持しています。
+                            A. 否，VSO 严格遵守"非背书政策"。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong>VSOは中立的な国際標準化団体です。</strong>
-                            認証バッジの発行は、そのシステムが<strong class="highlight">透明性の基準を満たしている</strong>ことを示すものであり、
-                            その企業の商品やサービス自体を推奨するものではありません。
+                            <strong>VSO 是中立的国际标准组织。</strong>
+                            颁发认证徽章仅表示系统
+                            <strong class="highlight">符合透明度标准</strong>——这并非对该公司产品或服务的背书。
                         </p>
                         <p>
-                            VSOは<strong class="text-blue-600">ベンダー・ニュートラル</strong>な立場を堅持し、市場全体の健全化を目指しています。
+                            VSO 保持<strong class="text-blue-600">供应商中立</strong>立场，旨在改善整个市场生态系统的健康状况。
                         </p>
                     </div>
                 </div>
@@ -250,9 +254,9 @@ export const faqPage = () => html`
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <span class="category-badge badge-privacy">
-                    <i class="fas fa-lock mr-1"></i>プライバシー
+                    <i class="fas fa-lock mr-1"></i>隐私
                 </span>
-                <span>2. データプライバシーとセキュリティ (Data & Privacy)</span>
+                <span>2. 数据隐私与安全</span>
             </h2>
             
             <!-- FAQ Item 3 -->
@@ -261,7 +265,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-user-shield text-blue-600 mr-2"></i>
-                            Q. 認証を受けると、顧客の個人情報がVSOや外部に漏れる恐れはありませんか？
+                            Q. 认证是否会导致客户个人信息暴露给 VSO 或第三方？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -270,38 +274,37 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-shield-alt mr-2"></i>
-                            A. いいえ、VCP-PRIVACYモジュールにより個人情報は保護されます。
+                            A. 否，个人信息受 VCP-PRIVACY 模块保护。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            VCPの設計思想は<strong class="highlight">「真実 (Veritas) の公開」</strong>と
-                            <strong class="highlight">「プライバシーの保護」</strong>を両立させることです。
+                            VCP 的设计理念平衡了<strong class="highlight">"公共真相 (Veritas)"</strong>与
+                            <strong class="highlight">"隐私保护"</strong>。
                         </p>
                         <div class="grid md:grid-cols-2 gap-4 mt-4">
                             <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded">
                                 <h4 class="font-bold text-blue-900 mb-2">
-                                    <i class="fas fa-hashtag mr-2"></i>ハッシュ化
+                                    <i class="fas fa-hashtag mr-2"></i>哈希处理
                                 </h4>
                                 <p class="text-sm text-gray-700">
-                                    ブロックチェーンや監査ログに記録されるのは、データの<strong>「ハッシュ値 (指紋)」</strong>であり、
-                                    元の個人情報は含まれません。
+                                    记录在区块链或审计日志中的是数据的<strong>哈希值（指纹）</strong>——而非原始个人信息。
                                 </p>
                             </div>
                             <div class="border-l-4 border-purple-500 bg-purple-50 p-4 rounded">
                                 <h4 class="font-bold text-purple-900 mb-2">
-                                    <i class="fas fa-trash-alt mr-2"></i>Crypto-shredding
+                                    <i class="fas fa-trash-alt mr-2"></i>密码学销毁
                                 </h4>
                                 <p class="text-sm text-gray-700">
-                                    個人情報 (PII) は、ユーザーごとの固有鍵で暗号化されて記録されます。
-                                    <strong>GDPRの「忘れられる権利」</strong>などの削除要請があった場合、
-                                    その復号鍵を破棄することで、データの実体を<strong class="text-red-600">数学的に復元不可能</strong>にします。
+                                    个人身份信息 (PII) 使用每用户唯一密钥加密。
+                                    对于 <strong>GDPR 的"被遗忘权"</strong>，销毁解密密钥可使数据
+                                    <strong class="text-red-600">在数学上不可恢复</strong>。
                                 </p>
                             </div>
                         </div>
                         <p class="mt-4 font-semibold text-gray-800">
                             <i class="fas fa-check-double text-green-500 mr-2"></i>
-                            したがって、<strong>VSOや第三者が、監査ログから顧客の氏名や住所を特定することは技術的に不可能</strong>です。
+                            因此，<strong>VSO 或第三方在技术上不可能从审计日志中提取客户姓名或地址</strong>。
                         </p>
                     </div>
                 </div>
@@ -313,7 +316,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-cubes text-indigo-600 mr-2"></i>
-                            Q. ブロックチェーンに記録されたデータは誰でも見ることができますか？
+                            Q. 区块链上记录的数据是否可以被任何人查看？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -322,28 +325,27 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-eye mr-2"></i>
-                            A. 「検証に必要なデータ」のみが透明化されます。
+                            A. 仅"验证所需数据"是透明的。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            VCP準拠のシステムでは、取引の<strong>ハッシュ値</strong>や
-                            <strong>マークルルート (Merkle Root)</strong> がパブリックチェーン等にアンカーされます。
+                            在符合 VCP 的系统中，交易的<strong>哈希值</strong>和
+                            <strong>Merkle 根</strong>被锚定到公共链上。
                         </p>
                         <p>
-                            これにより、ユーザーは<strong class="highlight">「自分の取引が改ざんされていないか」</strong>を
-                            Explorer (探索ツール) で検証できます。
+                            这允许用户使用浏览器工具验证<strong class="highlight">"我的交易是否被篡改"</strong>。
                         </p>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-shield-alt text-amber-600 mr-2"></i>保護される情報:</strong>
-                                アルゴリズムの具体的なロジック (知的財産) や、他人の詳細な取引内容が丸見えになるわけではありません。
+                                <strong><i class="fas fa-shield-alt text-amber-600 mr-2"></i>受保护信息：</strong>
+                                算法的具体逻辑（知识产权）和他人的详细交易信息不会被暴露。
                             </p>
                         </div>
                         <p class="mt-4">
-                            VCPは<strong class="text-red-600">「ブラックボックス (中身が見えない)」</strong>と
-                            <strong class="text-green-600">「ガラス張り (全て丸見え)」</strong>の間にある、
-                            <strong class="highlight text-blue-600">「検証可能な透明性」</strong>を提供します。
+                            VCP 提供介于<strong class="text-red-600">"黑箱（不透明）"</strong>和
+                            <strong class="text-green-600">"玻璃房（完全暴露）"</strong>之间的
+                            <strong class="highlight text-blue-600">"可验证透明度"</strong>。
                         </p>
                     </div>
                 </div>
@@ -354,9 +356,9 @@ export const faqPage = () => html`
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <span class="category-badge badge-tier">
-                    <i class="fas fa-layer-group mr-1"></i>Tier
+                    <i class="fas fa-layer-group mr-1"></i>层级
                 </span>
-                <span>3. 認証ティアと技術的価値 (Tiers & Value)</span>
+                <span>3. 认证层级与技术价值</span>
             </h2>
             
             <!-- FAQ Item 5 -->
@@ -365,7 +367,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-medal text-gray-400 mr-2"></i>
-                            Q. Silver Tier (リテール/Prop向け) は、時刻同期が "Best-Effort" ですが、意味はありますか？
+                            Q. Silver 层级（零售/自营）在时间同步为"尽力而为"的情况下是否有意义？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -374,45 +376,45 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-check-circle mr-2"></i>
-                            A. はい、極めて大きな「証明力」を持ちます。
+                            A. 是的，它提供极强的"证明价值"。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong>Silver Tier</strong>は原子時計並みの精度 (PTPv2) こそ求めませんが、
-                            <strong class="highlight">「不正の不可逆性 (Irreversibility of Fraud)」</strong>を保証します。
+                            虽然 <strong>Silver 层级</strong>不要求原子钟精度（PTPv2），
+                            但它保证了<strong class="highlight">"欺诈不可逆"</strong>。
                         </p>
                         <div class="grid gap-3 mt-4">
                             <div class="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded">
                                 <i class="fas fa-fingerprint text-green-600 text-xl mt-1"></i>
                                 <div>
-                                    <h4 class="font-bold text-green-900">UUID v7の順序性</h4>
-                                    <p class="text-sm text-gray-700">すべてのイベントには時間順序性を持つIDが付与されます。</p>
+                                    <h4 class="font-bold text-green-900">UUID v7 排序</h4>
+                                    <p class="text-sm text-gray-700">所有事件都被分配时间排序的 ID。</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded">
                                 <i class="fas fa-chain-broken text-blue-600 text-xl mt-1"></i>
                                 <div>
-                                    <h4 class="font-bold text-blue-900">事後改ざんの防止</h4>
-                                    <p class="text-sm text-gray-700">データは24時間ごとにブロックチェーンへアンカーされます。</p>
+                                    <h4 class="font-bold text-blue-900">防止事后篡改</h4>
+                                    <p class="text-sm text-gray-700">数据每 24 小时锚定到区块链。</p>
                                 </div>
                             </div>
                         </div>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>防止される不正:</strong>
+                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>可防止的欺诈类型：</strong>
                             </p>
                             <ul class="text-sm text-gray-700 mt-2 space-y-1">
-                                <li>• 「後から都合の悪い取引を削除する」</li>
-                                <li>• 「過去の日時に偽のデータを挿入する」</li>
+                                <li>• "事后删除不利交易"</li>
+                                <li>• "用过去时间戳插入虚假数据"</li>
                             </ul>
                             <p class="text-sm text-gray-800 mt-2">
-                                といった典型的な不正は、<strong>たとえデータベース管理者であっても不可能</strong>になります。
+                                这些典型欺诈行为<strong>即使对数据库管理员也是不可能的</strong>。
                             </p>
                         </div>
                         <p class="mt-4 font-semibold text-green-700">
                             <i class="fas fa-star text-yellow-500 mr-2"></i>
-                            Silver Tierは、コストを抑えつつ、顧客との<strong>信頼トラブル (言った言わないの水掛け論)</strong> を解決する強力な手段です。
+                            Silver 层级是以低成本解决<strong>信任争议（各执一词）</strong>的强大工具。
                         </p>
                     </div>
                 </div>
@@ -424,7 +426,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-plug text-green-600 mr-2"></i>
-                            Q. 導入には既存システムの入れ替えが必要ですか？
+                            Q. 实施是否需要更换现有系统？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -433,34 +435,35 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-check-circle mr-2"></i>
-                            A. いいえ、「サイドカー」方式での導入が可能です。
+                            A. 否，可以进行"边车"部署。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            VCPは、既存の<strong>FIXエンジン</strong>や取引サーバー (MT4/MT5など) を変更することなく、
-                            <strong class="highlight">並走して監査ログを生成するアダプター</strong> (SDKやブリッジ) を提供しています。
+                            VCP 提供适配器（SDK 和桥接器），可<strong class="highlight">与现有系统并行运行</strong>，
+                            包括 <strong>FIX 引擎</strong>和交易服务器（MT4/MT5 等），
+                            <strong>无需修改</strong>现有基础设施即可生成审计日志。
                         </p>
                         <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 p-4 rounded-lg mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-code text-green-600 mr-2"></i>リテールブローカー・Prop Firm向け:</strong>
+                                <strong><i class="fas fa-code text-green-600 mr-2"></i>面向零售经纪商和自营公司：</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-mql-bridge</code> を用意しており、
-                                既存環境への影響を最小限に抑えながら認証を取得できます。
+                                我们提供 <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-mql-bridge</code>，
+                                在最小化对现有环境影响的同时实现认证。
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- FAQ: Prop Firms Silver Tier -->
+            <!-- FAQ Item: Prop Firms Silver Tier -->
             <div class="bg-white rounded-lg shadow-md mb-4 faq-item">
                 <button class="w-full text-left p-6 flex items-start justify-between gap-4" onclick="toggleFAQ(this)">
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-briefcase text-amber-600 mr-2"></i>
-                            Q. プロップファームはSilver Tierを本番環境で使用できますか？
+                            Q. 自营交易公司可以在生产环境中使用 Silver 层级吗？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -469,34 +472,34 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-check-circle mr-2"></i>
-                            A. はい。Silver Tierはベストエフォート同期が許容されるリテール/プロップ環境向けに設計されています。
+                            A. 是的。Silver 层级专为尽力而为同步可接受的零售/自营环境设计。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong>Silver Tier</strong>はVCPコンプライアンスの主要な利点をすべて提供します：
+                            <strong>Silver 层级</strong>提供 VCP 合规的所有核心优势：
                         </p>
                         <ul class="list-disc list-inside space-y-1 ml-4">
-                            <li>暗号学的完全性を持つ改ざん不可能な監査証跡</li>
-                            <li>UUID v7による時間順序付きイベントログ</li>
-                            <li>24時間ごとのブロックチェーンアンカリング</li>
-                            <li>遡及的データ操作からの保護</li>
+                            <li>具有密码学完整性的不可变审计记录</li>
+                            <li>UUID v7 时间排序事件日志</li>
+                            <li>24 小时区块链锚定</li>
+                            <li>防止事后数据篡改</li>
                         </ul>
                         <p class="mt-3">
-                            <strong>ミリ秒レベルのタイミング</strong>で十分なプロップファーム（マイクロ秒/ナノ秒のHFTではない）にとって、
-                            Silver Tierは<strong class="highlight">コンプライアンス価値と実装コストの優れたバランス</strong>を提供します。
+                            对于<strong>毫秒级精度</strong>足够（非微秒/纳秒高频交易）的自营公司，
+                            Silver 层级提供了<strong class="highlight">合规价值和实施成本</strong>的极佳平衡。
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- FAQ: Exchanges Platinum Tier -->
+            <!-- FAQ Item: Exchanges Platinum Tier -->
             <div class="bg-white rounded-lg shadow-md mb-4 faq-item">
                 <button class="w-full text-left p-6 flex items-start justify-between gap-4" onclick="toggleFAQ(this)">
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-exchange-alt text-indigo-600 mr-2"></i>
-                            Q. 取引所はPlatinum Tierが必須ですか？
+                            Q. 交易所是否必须获得 Platinum 层级？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -505,45 +508,45 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-info-circle mr-2"></i>
-                            A. 厳密には必須ではありませんが、高頻度取引環境では推奨されます。
+                            A. 不是严格要求，但对于高频交易环境推荐使用。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong class="text-purple-700">Platinum Tier</strong>は以下を必要とする環境に推奨されます：
+                            <strong class="text-purple-700">Platinum 层级</strong>推荐用于需要以下条件的环境：
                         </p>
                         <div class="grid md:grid-cols-2 gap-3 mt-3">
                             <div class="flex items-start gap-2 p-3 bg-purple-50 border border-purple-200 rounded">
                                 <i class="fas fa-clock text-purple-600 mt-1"></i>
                                 <div>
-                                    <strong class="text-purple-900">PTP v2同期</strong>
-                                    <p class="text-sm text-gray-600">マイクロ秒/ナノ秒精度</p>
+                                    <strong class="text-purple-900">PTP v2 同步</strong>
+                                    <p class="text-sm text-gray-600">微秒/纳秒精度</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-2 p-3 bg-purple-50 border border-purple-200 rounded">
                                 <i class="fas fa-bolt text-purple-600 mt-1"></i>
                                 <div>
-                                    <strong class="text-purple-900">SBEエンコーディング</strong>
-                                    <p class="text-sm text-gray-600">高速化のためのシンプルバイナリエンコーディング</p>
+                                    <strong class="text-purple-900">SBE 编码</strong>
+                                    <p class="text-sm text-gray-600">简单二进制编码以提高速度</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-2 p-3 bg-purple-50 border border-purple-200 rounded">
                                 <i class="fas fa-network-wired text-purple-600 mt-1"></i>
                                 <div>
-                                    <strong class="text-purple-900">FIXエンジン統合</strong>
-                                    <p class="text-sm text-gray-600">ネイティブプロトコルサポート</p>
+                                    <strong class="text-purple-900">FIX 引擎集成</strong>
+                                    <p class="text-sm text-gray-600">原生协议支持</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-2 p-3 bg-purple-50 border border-purple-200 rounded">
                                 <i class="fas fa-key text-purple-600 mt-1"></i>
                                 <div>
-                                    <strong class="text-purple-900">HSM鍵管理</strong>
-                                    <p class="text-sm text-gray-600">ハードウェアセキュリティモジュール</p>
+                                    <strong class="text-purple-900">HSM 密钥管理</strong>
+                                    <p class="text-sm text-gray-600">硬件安全模块</p>
                                 </div>
                             </div>
                         </div>
                         <p class="mt-3 text-sm text-gray-600">
-                            組織は運用要件に合ったTierを選択できます。
+                            组织可以选择与其运营需求相匹配的层级。
                         </p>
                     </div>
                 </div>
@@ -554,9 +557,9 @@ export const faqPage = () => html`
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <span class="category-badge badge-governance">
-                    <i class="fas fa-balance-scale mr-1"></i>ガバナンス
+                    <i class="fas fa-balance-scale mr-1"></i>治理
                 </span>
-                <span>4. ガバナンスと将来性 (Governance & Future)</span>
+                <span>4. 治理与面向未来</span>
             </h2>
             
             <!-- FAQ Item 7 -->
@@ -565,7 +568,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-atom text-purple-600 mr-2"></i>
-                            Q. 将来、量子コンピュータが登場したらセキュリティは破られませんか？
+                            Q. 量子计算机到来时会发生什么？安全性会受到威胁吗？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -574,23 +577,22 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-rocket mr-2"></i>
-                            A. VCPは「Crypto Agility (暗号学的敏捷性)」を備えており、対策済みです。
+                            A. VCP 配备了"密码敏捷性"，已做好准备。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            現在は高速な<strong class="text-blue-600">「Ed25519」署名</strong>をデフォルトとしていますが、
-                            仕様レベルで<strong class="highlight">ポスト量子暗号 (PQC)</strong> への移行パスを定義しています。
+                            目前，我们默认使用快速的 <strong class="text-blue-600">Ed25519 签名</strong>算法，
+                            但规范中定义了向<strong class="highlight">后量子密码学 (PQC)</strong> 的迁移路径。
                         </p>
                         <div class="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 p-4 rounded-lg mt-4">
                             <h4 class="font-bold text-purple-900 mb-2">
-                                <i class="fas fa-road mr-2"></i>将来の移行パス
+                                <i class="fas fa-road mr-2"></i>未来迁移路径
                             </h4>
                             <p class="text-sm text-gray-700">
-                                将来的に量子コンピュータの脅威が現実化した際は、NIST標準の
-                                <strong class="text-purple-700">「Dilithium」アルゴリズム</strong>などへ
-                                <strong>シームレスにアップグレード</strong>を行い、
-                                記録の真正性を未来にわたって保護します。
+                                当量子计算威胁成为现实时，我们将<strong>无缝升级</strong>到 NIST 标准算法，
+                                如 <strong class="text-purple-700">Dilithium</strong>，
+                                确保记录的未来真实性。
                             </p>
                         </div>
                     </div>
@@ -603,7 +605,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-gavel text-blue-600 mr-2"></i>
-                            Q. EU AI法 (EU AI Act) への対応は含まれていますか？
+                            Q. VCP 是否支持欧盟 AI 法案？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -612,22 +614,25 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-check-circle mr-2"></i>
-                            A. はい、プロトコルレベルで対応しています。
+                            A. 是的，协议内置了支持。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            VCPの拡張モジュール<strong class="text-blue-600"> VCP-GOV</strong> は、
-                            AIアルゴリズムの意思決定要因 (Decision Factors) やリスク分類、
-                            人間による監視記録 (Human Oversight) を保存するフィールドを備えています。
+                            <strong class="text-blue-600">VCP-GOV</strong> 扩展模块包含用于存储以下内容的字段：
                         </p>
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>AI 算法决策因素</li>
+                            <li>风险分类</li>
+                            <li>人工监督记录</li>
+                        </ul>
                         <div class="bg-gradient-to-r from-blue-50 to-sky-50 border border-blue-200 p-4 rounded-lg mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-shield-alt text-blue-600 mr-2"></i>コンプライアンスサポート:</strong>
+                                <strong><i class="fas fa-shield-alt text-blue-600 mr-2"></i>合规支持：</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                これにより、<strong>高リスクAIシステム</strong>に求められる
-                                <strong class="highlight">透明性と記録保持要件の遵守</strong>を強力にサポートします。
+                                这强力支持<strong>高风险 AI 系统</strong>
+                                关于<strong class="highlight">透明度和记录保存</strong>的合规要求。
                             </p>
                         </div>
                     </div>
@@ -639,9 +644,9 @@ export const faqPage = () => html`
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <span class="category-badge badge-process">
-                    <i class="fas fa-clipboard-check mr-1"></i>プロセス
+                    <i class="fas fa-clipboard-check mr-1"></i>流程
                 </span>
-                <span>5. 認証プロセスとコンプライアンス</span>
+                <span>5. 认证流程与合规</span>
             </h2>
             
             <!-- FAQ: Is certification mandatory? -->
@@ -650,7 +655,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-question-circle text-red-600 mr-2"></i>
-                            Q. VCPを使用するにはVC-Certified認証は必須ですか？
+                            Q. 使用 VCP 是否必须获得 VC-Certified 认证？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -659,20 +664,21 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-times-circle mr-2"></i>
-                            A. いいえ。VC-Certifiedは任意であり、VeritasChain Protocol (VCP) の実装に必須ではありません。
+                            A. 否。VC-Certified 是可选的，实施 VeritasChain Protocol (VCP) 不需要认证。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            組織はオープンスタンダードライセンスの下で、認証の有無にかかわらず<strong>自由にVCPを導入</strong>できます。
+                            组织可以在<strong>开放标准许可</strong>下自由部署 VCP，
+                            无论是否获得认证。
                         </p>
                         <div class="bg-gradient-to-r from-blue-50 to-sky-50 border border-blue-200 p-4 rounded-lg mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-unlock text-blue-600 mr-2"></i>オープンスタンダード:</strong>
+                                <strong><i class="fas fa-unlock text-blue-600 mr-2"></i>开放标准：</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                VCPは<strong class="highlight">オープンな国際標準</strong>として設計されています。
-                                認証は第三者による検証を提供しますが、実装の前提条件ではありません。
+                                VCP 被设计为<strong class="highlight">开放的国际标准</strong>。
+                                认证提供第三方验证，但不是实施的前提条件。
                             </p>
                         </div>
                     </div>
@@ -685,7 +691,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-file-contract text-orange-600 mr-2"></i>
-                            Q. VC-Certifiedは法的・財務・規制監査の代わりになりますか？
+                            Q. VC-Certified 是否可以替代法律、财务或监管审计？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -694,26 +700,26 @@ export const faqPage = () => html`
                     <div class="warning-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-amber-900">
                             <i class="fas fa-exclamation-triangle mr-2"></i>
-                            A. いいえ。VC-CertifiedはVCPへの技術的準拠のみを評価します。
+                            A. 否。VC-Certified 仅评估 VCP 的技术合规性。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            以下の<strong class="text-red-600">代替にはなりません</strong>：
+                            它<strong class="text-red-600">不能替代</strong>：
                         </p>
                         <ul class="list-disc list-inside space-y-1 ml-4">
-                            <li>法定財務監査</li>
-                            <li>ライセンス要件</li>
-                            <li>規制当局による審査</li>
-                            <li>法的コンプライアンスレビュー</li>
+                            <li>法定财务审计</li>
+                            <li>许可要求</li>
+                            <li>监管检查</li>
+                            <li>法律合规审查</li>
                         </ul>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-info-circle text-amber-600 mr-2"></i>重要な区別:</strong>
+                                <strong><i class="fas fa-info-circle text-amber-600 mr-2"></i>重要区别：</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                VC-Certifiedは<strong>技術的コンプライアンス認証</strong>であり、規制ライセンスや財務監査ではありません。
-                                組織は必要なすべての規制・財務コンプライアンスを独自に維持する必要があります。
+                                VC-Certified 是<strong>技术合规认证</strong>，而非监管许可或财务审计。
+                                组织应独立维护所有必需的监管和财务合规。
                             </p>
                         </div>
                     </div>
@@ -726,7 +732,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-calendar-alt text-teal-600 mr-2"></i>
-                            Q. 認証にはどのくらいの期間がかかりますか？
+                            Q. 认证需要多长时间？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -735,32 +741,32 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-clock mr-2"></i>
-                            A. ほとんどの組織は2〜6週間で認証プロセスを完了します。
+                            A. 大多数组织在 2-6 周内完成认证流程。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            期間は以下の要因によって異なります：
+                            时间线取决于以下几个因素：
                         </p>
                         <div class="grid md:grid-cols-3 gap-3 mt-3">
                             <div class="flex flex-col items-center p-4 bg-teal-50 border border-teal-200 rounded-lg text-center">
                                 <i class="fas fa-layer-group text-teal-600 text-2xl mb-2"></i>
-                                <strong class="text-teal-900">統合の深さ</strong>
-                                <p class="text-xs text-gray-600 mt-1">システム統合の複雑さ</p>
+                                <strong class="text-teal-900">集成深度</strong>
+                                <p class="text-xs text-gray-600 mt-1">系统集成的复杂性</p>
                             </div>
                             <div class="flex flex-col items-center p-4 bg-teal-50 border border-teal-200 rounded-lg text-center">
                                 <i class="fas fa-database text-teal-600 text-2xl mb-2"></i>
-                                <strong class="text-teal-900">ログ量</strong>
-                                <p class="text-xs text-gray-600 mt-1">検証するデータ量</p>
+                                <strong class="text-teal-900">日志量</strong>
+                                <p class="text-xs text-gray-600 mt-1">需要验证的数据量</p>
                             </div>
                             <div class="flex flex-col items-center p-4 bg-teal-50 border border-teal-200 rounded-lg text-center">
                                 <i class="fas fa-tools text-teal-600 text-2xl mb-2"></i>
-                                <strong class="text-teal-900">技術的準備状況</strong>
-                                <p class="text-xs text-gray-600 mt-1">既存のVCP実装</p>
+                                <strong class="text-teal-900">技术准备度</strong>
+                                <p class="text-xs text-gray-600 mt-1">现有 VCP 实施情况</p>
                             </div>
                         </div>
                         <p class="mt-4 text-sm text-gray-600">
-                            既存のVCP実装を持つ組織は、通常より早く認証を完了できます。
+                            已有 VCP 实施的组织通常能更快完成认证。
                         </p>
                     </div>
                 </div>
@@ -772,7 +778,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-ban text-red-600 mr-2"></i>
-                            Q. 認証が対象としないものは何ですか？
+                            Q. 认证不涵盖哪些内容？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -781,47 +787,47 @@ export const faqPage = () => html`
                     <div class="warning-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-amber-900">
                             <i class="fas fa-exclamation-circle mr-2"></i>
-                            A. VC-Certifiedは技術的なVCPコンプライアンスのみに焦点を当てています。
+                            A. VC-Certified 仅专注于 VCP 技术合规。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong class="text-red-600">VC-Certifiedが評価しない項目：</strong>
+                            <strong class="text-red-600">VC-Certified 不评估：</strong>
                         </p>
                         <div class="grid md:grid-cols-2 gap-3 mt-3">
                             <div class="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded">
                                 <i class="fas fa-times-circle text-red-500"></i>
-                                <span>財務健全性</span>
+                                <span>财务稳健性</span>
                             </div>
                             <div class="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded">
                                 <i class="fas fa-times-circle text-red-500"></i>
-                                <span>取引戦略の品質</span>
+                                <span>交易策略质量</span>
                             </div>
                             <div class="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded">
                                 <i class="fas fa-times-circle text-red-500"></i>
-                                <span>収益性やリターン</span>
+                                <span>盈利能力或回报</span>
                             </div>
                             <div class="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded">
                                 <i class="fas fa-times-circle text-red-500"></i>
-                                <span>リスク許容度の適切性</span>
+                                <span>风险偏好适当性</span>
                             </div>
                             <div class="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded">
                                 <i class="fas fa-times-circle text-red-500"></i>
-                                <span>事業パフォーマンス</span>
+                                <span>业务绩效</span>
                             </div>
                             <div class="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded">
                                 <i class="fas fa-times-circle text-red-500"></i>
-                                <span>AML/KYCコンプライアンス</span>
+                                <span>AML/KYC 合规</span>
                             </div>
                             <div class="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded md:col-span-2">
                                 <i class="fas fa-times-circle text-red-500"></i>
-                                <span>顧客資金の取扱いやカストディ慣行</span>
+                                <span>客户资金处理或托管实践</span>
                             </div>
                         </div>
                         <div class="info-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-check-circle text-blue-600 mr-2"></i>対象とするもの：</strong>
-                                VCP仕様への技術的準拠—データの完全性、暗号学的正確性、監査証跡の不変性を確保します。
+                                <strong><i class="fas fa-check-circle text-blue-600 mr-2"></i>涵盖内容：</strong>
+                                VCP 规范的技术合规——确保数据完整性、密码学正确性和审计跟踪不可变性。
                             </p>
                         </div>
                     </div>
@@ -834,7 +840,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-user-slash text-red-700 mr-2"></i>
-                            Q. VSOはVC-Certified認証を取り消すことができますか？
+                            Q. VSO 可以撤销 VC-Certified 认证吗？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -843,57 +849,57 @@ export const faqPage = () => html`
                     <div class="warning-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-amber-900">
                             <i class="fas fa-gavel mr-2"></i>
-                            A. はい。特定の条件下で認証が取り消される場合があります。
+                            A. 是的。在特定条件下可能撤销认证。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong>取り消しの根拠となる事項：</strong>
+                            <strong>撤销理由包括：</strong>
                         </p>
                         <div class="space-y-2 mt-3">
                             <div class="flex items-start gap-3 p-3 bg-red-50 border-l-4 border-red-500 rounded-r">
                                 <i class="fas fa-edit text-red-600 mt-1"></i>
                                 <div>
-                                    <strong class="text-red-900">ログの改ざん</strong>
-                                    <p class="text-sm text-gray-600">監査ログの改ざんまたは偽造</p>
+                                    <strong class="text-red-900">日志篡改</strong>
+                                    <p class="text-sm text-gray-600">篡改或伪造审计日志</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 p-3 bg-red-50 border-l-4 border-red-500 rounded-r">
                                 <i class="fas fa-trash-alt text-red-600 mt-1"></i>
                                 <div>
-                                    <strong class="text-red-900">モジュールの削除</strong>
-                                    <p class="text-sm text-gray-600">認証後にVCP必須モジュールを削除</p>
+                                    <strong class="text-red-900">模块移除</strong>
+                                    <p class="text-sm text-gray-600">认证后移除 VCP 必需模块</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 p-3 bg-red-50 border-l-4 border-red-500 rounded-r">
                                 <i class="fas fa-robot text-red-600 mt-1"></i>
                                 <div>
-                                    <strong class="text-red-900">AIメタデータの偽造</strong>
-                                    <p class="text-sm text-gray-600">AIガバナンスメタデータ（VCP-GOV）の偽造</p>
+                                    <strong class="text-red-900">AI 元数据造假</strong>
+                                    <p class="text-sm text-gray-600">伪造 AI 治理元数据 (VCP-GOV)</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 p-3 bg-red-50 border-l-4 border-red-500 rounded-r">
                                 <i class="fas fa-unlink text-red-600 mt-1"></i>
                                 <div>
-                                    <strong class="text-red-900">検証失敗</strong>
-                                    <p class="text-sm text-gray-600">暗号学的検証に失敗する監査証明</p>
+                                    <strong class="text-red-900">验证失败</strong>
+                                    <p class="text-sm text-gray-600">审计证明未能通过密码学验证</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 p-3 bg-red-50 border-l-4 border-red-500 rounded-r">
                                 <i class="fas fa-exclamation-triangle text-red-600 mt-1"></i>
                                 <div>
-                                    <strong class="text-red-900">ポリシー違反</strong>
-                                    <p class="text-sm text-gray-600">VSO非推奨ポリシーの重大な違反</p>
+                                    <strong class="text-red-900">政策违反</strong>
+                                    <p class="text-sm text-gray-600">实质性违反 VSO 非背书政策</p>
                                 </div>
                             </div>
                         </div>
                         <div class="bg-gradient-to-r from-slate-100 to-slate-200 p-4 rounded-lg mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-shield-alt text-slate-600 mr-2"></i>完全性の保証:</strong>
+                                <strong><i class="fas fa-shield-alt text-slate-600 mr-2"></i>诚信保证：</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                この取り消しポリシーにより、<strong class="highlight">VC-Certifiedが真の技術的コンプライアンスのマークとしての完全性を維持</strong>できます。
-                                組織はVCP基準を継続的に遵守する必要があります。
+                                此撤销政策确保 <strong class="highlight">VC-Certified 作为真正技术合规标志的诚信</strong>。
+                                组织必须持续维护 VCP 标准。
                             </p>
                         </div>
                     </div>
@@ -906,7 +912,7 @@ export const faqPage = () => html`
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">
                             <i class="fas fa-globe text-blue-600 mr-2"></i>
-                            Q. 認証は国際的に認められますか？
+                            Q. 认证是否会获得国际认可？
                         </h3>
                     </div>
                     <i class="fas fa-chevron-down text-gray-400 faq-icon mt-1"></i>
@@ -915,33 +921,32 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-handshake mr-2"></i>
-                            A. VSOはグローバルな規制機関、学術機関、技術団体と協力して相互運用性を促進しています。
+                            A. VSO 与全球监管、学术和技术机构合作，促进互操作性。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong class="highlight">VC-Certifiedは規制ライセンスではありません</strong>が、
-                            様々な法域でコンプライアンス文書をサポートする場合があります。
+                            <strong class="highlight">VC-Certified 不是监管许可</strong>，但可能支持各司法管辖区的合规文档。
                         </p>
                         <div class="grid md:grid-cols-3 gap-3 mt-4">
                             <div class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg text-center">
                                 <i class="fas fa-university text-blue-600 text-2xl mb-2"></i>
-                                <strong class="text-blue-900 text-sm">規制機関</strong>
-                                <p class="text-xs text-gray-600 mt-1">金融規制当局との連携</p>
+                                <strong class="text-blue-900 text-sm">监管机构</strong>
+                                <p class="text-xs text-gray-600 mt-1">与金融监管机构合作</p>
                             </div>
                             <div class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg text-center">
                                 <i class="fas fa-graduation-cap text-blue-600 text-2xl mb-2"></i>
-                                <strong class="text-blue-900 text-sm">学術パートナー</strong>
-                                <p class="text-xs text-gray-600 mt-1">研究協力</p>
+                                <strong class="text-blue-900 text-sm">学术伙伴</strong>
+                                <p class="text-xs text-gray-600 mt-1">研究合作</p>
                             </div>
                             <div class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg text-center">
                                 <i class="fas fa-cogs text-blue-600 text-2xl mb-2"></i>
-                                <strong class="text-blue-900 text-sm">技術標準</strong>
-                                <p class="text-xs text-gray-600 mt-1">業界間の相互運用性</p>
+                                <strong class="text-blue-900 text-sm">技术标准</strong>
+                                <p class="text-xs text-gray-600 mt-1">行业互操作性</p>
                             </div>
                         </div>
                         <p class="mt-4 text-sm text-gray-600">
-                            VCPはオープンな国際標準として設計されており、異なる規制環境での採用を促進します。
+                            VCP 被设计为开放的国际标准，便于在不同监管环境中采用。
                         </p>
                     </div>
                 </div>
@@ -953,20 +958,20 @@ export const faqPage = () => html`
             <div class="text-center">
                 <h3 class="text-2xl font-bold mb-3">
                     <i class="fas fa-question-circle mr-2"></i>
-                    さらに詳しい情報が必要ですか？
+                    需要更多信息？
                 </h3>
                 <p class="text-slate-300 mb-6">
-                    VeritasChain Standards Organization (VSO) は、アルゴリズム時代の信頼基盤構築を支援します。
+                    VeritasChain 标准组织 (VSO) 致力于为算法时代构建信任基础设施。
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <a href="https://veritaschain.org" class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg font-semibold transition-colors">
-                        <i class="fas fa-home mr-2"></i>公式サイト
+                        <i class="fas fa-home mr-2"></i>官方网站
                     </a>
                     <a href="https://veritaschain.org/docs" class="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-lg font-semibold transition-colors">
-                        <i class="fas fa-book mr-2"></i>技術仕様書
+                        <i class="fas fa-book mr-2"></i>技术规范
                     </a>
                     <a href="mailto:info@veritaschain.org" class="bg-purple-500 hover:bg-purple-600 px-6 py-3 rounded-lg font-semibold transition-colors">
-                        <i class="fas fa-envelope mr-2"></i>お問い合わせ
+                        <i class="fas fa-envelope mr-2"></i>联系我们
                     </a>
                 </div>
             </div>
@@ -974,8 +979,8 @@ export const faqPage = () => html`
 
         <!-- Footer -->
         <div class="text-center text-gray-500 text-sm mt-8 pb-8">
-            <p>© 2025 VeritasChain Standards Organization (VSO). All rights reserved.</p>
-            <p class="mt-2 italic">"Verify, Don't Trust" — Encoding Trust in the Algorithmic Age</p>
+            <p>© 2025 VeritasChain 标准组织 (VSO). 保留所有权利。</p>
+            <p class="mt-2 italic">"验证，而非信任" — 在算法时代编码信任</p>
         </div>
     </div>
 

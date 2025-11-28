@@ -38,7 +38,11 @@ const executionCtx = {
 function fixAssetPaths(html, lang) {
   // Fix language switcher links
   html = html.replace(/href="\/ja"/g, 'href="/certified/faq/ja.html"');
+  html = html.replace(/href="\/zh"/g, 'href="/certified/faq/zh.html"');
   html = html.replace(/href="\/faq"/g, 'href="/certified/faq/"');
+  html = html.replace(/href="\/certified\/faq\/ja\.html"/g, 'href="/certified/faq/ja.html"');
+  html = html.replace(/href="\/certified\/faq\/zh\.html"/g, 'href="/certified/faq/zh.html"');
+  html = html.replace(/href="\/certified\/faq\/"/g, 'href="/certified/faq/"');
   return html;
 }
 
@@ -64,6 +68,18 @@ try {
   console.log('   ✓ Generated: certified/faq/ja.html (Japanese FAQ)');
 } catch (error) {
   console.error('   ✗ Failed to generate ja.html:', error.message);
+}
+
+// Generate Chinese FAQ (zh.html)
+try {
+  const req = new Request('http://localhost/zh', { method: 'GET' });
+  const response = await app.fetch(req, env, executionCtx);
+  let html = await response.text();
+  html = fixAssetPaths(html, 'zh');
+  fs.writeFileSync(path.join(faqDir, 'zh.html'), html, 'utf-8');
+  console.log('   ✓ Generated: certified/faq/zh.html (Chinese FAQ)');
+} catch (error) {
+  console.error('   ✗ Failed to generate zh.html:', error.message);
 }
 
 // Create .nojekyll at root to disable Jekyll processing
@@ -104,7 +120,8 @@ docs/
 ├── certified/
 │   └── faq/
 │       ├── index.html    # English FAQ (default)
-│       └── ja.html       # Japanese FAQ
+│       ├── ja.html       # Japanese FAQ
+│       └── zh.html       # Chinese FAQ
 ├── .nojekyll             # Disables Jekyll processing
 └── 404.html              # Not found page
 \`\`\`

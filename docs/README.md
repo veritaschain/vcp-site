@@ -10,7 +10,8 @@ docs/
 ├── certified/
 │   └── faq/
 │       ├── index.html    # English FAQ (default)
-│       └── ja.html       # Japanese FAQ
+│       ├── ja.html       # Japanese FAQ
+│       └── zh.html       # Chinese FAQ
 ├── .nojekyll             # Disables Jekyll processing
 └── 404.html              # Not found page
 ```
