@@ -6,8 +6,9 @@
  *   <vcp-header></vcp-header>
  *
  * Attributes:
- *   - theme: "dark" (default) or "light"
+ *   - theme: "dark" (default), "light", or "blue"
  *     <vcp-header theme="light"></vcp-header>
+ *     <vcp-header theme="blue"></vcp-header>
  *   - lang: "en" (default), "ja", or "zh" - sets active language
  *     <vcp-header lang="ja"></vcp-header>
  *   - show-lang-switcher: "true" (default) or "false" - show/hide language switcher
@@ -114,7 +115,7 @@ class VCPHeader extends HTMLElement {
 
     connectedCallback() {
         const theme = this.getAttribute('theme') || 'dark';
-        const themeClass = theme === 'light' ? 'theme-light' : '';
+        const themeClass = theme === 'light' ? 'theme-light' : (theme === 'blue' ? 'theme-blue' : '');
 
         // Check if language switcher should be shown (default: true)
         const showLangSwitcher = this.getAttribute('show-lang-switcher') !== 'false';
