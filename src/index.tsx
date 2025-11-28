@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { renderer } from './renderer'
 import { faqPage } from './pages/faq'
 import { faqPageEn } from './pages/faq-en'
+import { faqPageZh } from './pages/faq-zh'
 
 const app = new Hono()
 
@@ -20,6 +21,11 @@ app.get('/faq', (c) => {
 // Japanese FAQ
 app.get('/ja', (c) => {
   return c.html(faqPage())
+})
+
+// Chinese FAQ
+app.get('/zh', (c) => {
+  return c.html(faqPageZh())
 })
 
 export default app
