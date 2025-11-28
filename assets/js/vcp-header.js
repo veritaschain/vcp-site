@@ -16,10 +16,33 @@
  *   - available-langs: comma-separated list of languages to show in switcher (default: "en,ja,zh")
  *     <vcp-header available-langs="en,ja"></vcp-header>
  *
- * Make sure to include:
- *   - /assets/css/main.css for styling
- *   - Font Awesome for icons
+ * The component automatically loads vcp-header.css for styling.
+ * Font Awesome is required for icons.
  */
+
+// Auto-load vcp-header.css if not already loaded
+(function() {
+    const cssId = 'vcp-header-css';
+    if (!document.getElementById(cssId)) {
+        const head = document.getElementsByTagName('head')[0];
+        const link = document.createElement('link');
+        link.id = cssId;
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        // Determine the base path from the script location
+        const scripts = document.getElementsByTagName('script');
+        let basePath = '/assets/css/';
+        for (let i = 0; i < scripts.length; i++) {
+            const src = scripts[i].src;
+            if (src.includes('vcp-header.js')) {
+                basePath = src.replace('/js/vcp-header.js', '/css/');
+                break;
+            }
+        }
+        link.href = basePath + 'vcp-header.css';
+        head.appendChild(link);
+    }
+})();
 
 class VCPHeader extends HTMLElement {
     constructor() {
