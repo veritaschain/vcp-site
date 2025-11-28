@@ -164,7 +164,7 @@ class VCPHeader extends HTMLElement {
         <nav class="main-nav ${themeClass}">
             <div class="nav-container">
                 <a href="/" class="nav-logo">
-                    <span class="logo-icon">🔱</span>
+                    <span class="logo-icon">🛡️</span>
                     <span class="logo-text">VeritasChain</span>
                 </a>
 

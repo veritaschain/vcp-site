@@ -159,7 +159,7 @@
   }
 
   // ===== Console Easter Egg =====
-  console.log('%c🔱 VeritasChain Protocol (VCP)', 'color: #3b82f6; font-size: 24px; font-weight: bold;');
+  console.log('%c🛡️ VeritasChain Protocol (VCP)', 'color: #3b82f6; font-size: 24px; font-weight: bold;');
   console.log('%cEncoding Trust in the Algorithmic Age', 'color: #8b5cf6; font-size: 14px; font-style: italic;');
   console.log('%c\nInterested in contributing? Visit: https://github.com/VeritasChain/vcp-spec', 'color: #10b981; font-size: 12px;');
 
