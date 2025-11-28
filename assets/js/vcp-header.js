@@ -164,7 +164,7 @@ class VCPHeader extends HTMLElement {
         <nav class="main-nav ${themeClass}">
             <div class="nav-container">
                 <a href="/" class="nav-logo">
-                    <span class="logo-icon">🔱</span>
+                    <span class="logo-icon">🛡️</span>
                     <span class="logo-text">VeritasChain</span>
                 </a>
 
@@ -335,18 +335,26 @@ class VCPHeader extends HTMLElement {
                 navToggle.classList.toggle('active');
                 navMenu.classList.toggle('active');
             });
+
+            // Close all dropdowns when closing the menu
+            if (!navMenu.classList.contains('active')) {
+                const dropdowns = this.querySelectorAll('.dropdown');
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
         }
 
-        // Dropdown functionality for desktop
+        // Dropdown functionality
         const dropdowns = this.querySelectorAll('.dropdown');
 
-        dropdowns.forEach(dropdown => {
+         dropdowns.forEach(dropdown => {
             const toggle = dropdown.querySelector('.dropdown-toggle');
             const menu = dropdown.querySelector('.dropdown-menu');
 
-            // Desktop: hover behavior
+            // Desktop: hover behavior (only apply inline styles on desktop)
             dropdown.addEventListener('mouseenter', () => {
-                if (window.innerWidth > 768) {
+                if (window.innerWidth > 1024) {
                     menu.style.opacity = '1';
                     menu.style.visibility = 'visible';
                     menu.style.transform = 'translateY(0)';
@@ -354,17 +362,26 @@ class VCPHeader extends HTMLElement {
             });
 
             dropdown.addEventListener('mouseleave', () => {
-                if (window.innerWidth > 768) {
+                if (window.innerWidth > 1024) {
                     menu.style.opacity = '0';
                     menu.style.visibility = 'hidden';
                     menu.style.transform = 'translateY(-10px)';
                 }
             });
 
-            // Mobile: click behavior
+            // Mobile: click behavior - toggle active class only
             toggle.addEventListener('click', (e) => {
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 1024) {
                     e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Close other dropdowns
+                    dropdowns.forEach(otherDropdown => {
+                        if (otherDropdown !== dropdown) {
+                            otherDropdown.classList.remove('active');
+                        }
+                    });
+                    
                     dropdown.classList.toggle('active');
                 }
             });
@@ -376,11 +393,30 @@ class VCPHeader extends HTMLElement {
                 dropdowns.forEach(dropdown => {
                     dropdown.classList.remove('active');
                     const menu = dropdown.querySelector('.dropdown-menu');
-                    if (window.innerWidth > 768) {
+                    if (window.innerWidth > 1024) {
                         menu.style.opacity = '0';
                         menu.style.visibility = 'hidden';
                         menu.style.transform = 'translateY(-10px)';
                     }
+                });
+                
+                // Also close mobile menu
+                if (navToggle && navMenu) {
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            }
+        });
+        
+        // Handle window resize - reset inline styles when switching to mobile
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 1024) {
+                dropdowns.forEach(dropdown => {
+                    const menu = dropdown.querySelector('.dropdown-menu');
+                    // Remove desktop inline styles so CSS can control mobile behavior
+                    menu.style.opacity = '';
+                    menu.style.visibility = '';
+                    menu.style.transform = '';
                 });
             }
         });
