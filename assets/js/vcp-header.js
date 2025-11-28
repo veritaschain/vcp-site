@@ -13,6 +13,8 @@
  *     <vcp-header lang="ja"></vcp-header>
  *   - show-lang-switcher: "true" (default) or "false" - show/hide language switcher
  *     <vcp-header show-lang-switcher="false"></vcp-header>
+ *   - available-langs: comma-separated list of languages to show in switcher (default: "en,ja,zh")
+ *     <vcp-header available-langs="en,ja"></vcp-header>
  *
  * Make sure to include:
  *   - /assets/css/main.css for styling
@@ -110,7 +112,7 @@ class VCPHeader extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['theme', 'lang', 'show-lang-switcher'];
+        return ['theme', 'lang', 'show-lang-switcher', 'available-langs'];
     }
 
     connectedCallback() {
@@ -128,6 +130,12 @@ class VCPHeader extends HTMLElement {
 
         // Generate language-specific URLs for current page
         const langUrls = this.generateLangUrls();
+
+        // Get available languages (default: all three)
+        const availableLangsAttr = this.getAttribute('available-langs');
+        const availableLangs = availableLangsAttr
+            ? availableLangsAttr.split(',').map(l => l.trim())
+            : ['en', 'ja', 'zh'];
 
         this.innerHTML = `
         <nav class="main-nav ${themeClass}">
@@ -227,11 +235,7 @@ class VCPHeader extends HTMLElement {
         ${showLangSwitcher ? `
         <!-- Language Switcher -->
         <div class="language-switcher ${themeClass}">
-            <a href="${langUrls.zh}" class="lang-link ${lang === 'zh' ? 'active' : ''}">🇨🇳 中文</a>
-            <span class="lang-separator">|</span>
-            <a href="${langUrls.ja}" class="lang-link ${lang === 'ja' ? 'active' : ''}">🇯🇵 日本語</a>
-            <span class="lang-separator">|</span>
-            <a href="${langUrls.en}" class="lang-link ${lang === 'en' ? 'active' : ''}">🇬🇧 English</a>
+            ${this.generateLangSwitcherLinks(availableLangs, langUrls, lang)}
         </div>
         ` : ''}
         `;
@@ -274,6 +278,28 @@ class VCPHeader extends HTMLElement {
             ja: basePath + 'ja',
             zh: basePath + 'zh'
         };
+    }
+
+    generateLangSwitcherLinks(availableLangs, langUrls, currentLang) {
+        // Language display configuration
+        const langConfig = {
+            zh: { flag: '🇨🇳', label: '中文' },
+            ja: { flag: '🇯🇵', label: '日本語' },
+            en: { flag: '🇬🇧', label: 'English' }
+        };
+
+        // Build links for available languages only
+        const links = [];
+        ['zh', 'ja', 'en'].forEach(langCode => {
+            if (availableLangs.includes(langCode)) {
+                const config = langConfig[langCode];
+                const isActive = currentLang === langCode ? 'active' : '';
+                links.push(`<a href="${langUrls[langCode]}" class="lang-link ${isActive}">${config.flag} ${config.label}</a>`);
+            }
+        });
+
+        // Join with separators
+        return links.join('<span class="lang-separator">|</span>');
     }
 
     initializeNavigation() {
