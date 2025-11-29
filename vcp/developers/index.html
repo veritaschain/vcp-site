@@ -1,191 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-XTK1LJKRGV');
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="VCP Developer Integration Guide - Learn how to integrate VeritasChain Protocol into your trading infrastructure">
-    <title>Developers Integration Guide | VeritasChain Protocol (VCP)</title>
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
-    <meta name="twitter:title" content="Developers Integration Guide | VeritasChain Protocol (VCP)">
-    <meta name="twitter:description" content="VCP Developer Integration Guide - Learn how to integrate VeritasChain Protocol into your trading infrastructure">
-    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
-
+    <meta name="description" content="VCP Developer Hub - All tools, specifications, and SDKs required to implement and verify VCP v1.0">
+    <title>Developer Hub | VeritasChain Protocol (VCP)</title>
     <link rel="icon" type="image/png" href="/assets/img/logo.png">
     <link rel="apple-touch-icon" href="/assets/img/logo.png">
     <link rel="shortcut icon" type="image/png" href="/assets/img/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <script src="/assets/js/vcp-header.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0C8DE7',
+                        accent: '#6A57FF',
+                        dark: '#1A1A1C',
+                        light: '#F7F9FC',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'card': '12px',
+                    },
+                    boxShadow: {
+                        'card': '0px 4px 14px rgba(0,0,0,0.06)',
+                        'card-hover': '0px 8px 24px rgba(0,0,0,0.12)',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0C8DE7 0%, #6A57FF 100%);
+        }
+        .cta-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .cta-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0px 8px 24px rgba(0,0,0,0.12);
         }
         .code-block {
             background: #1e293b;
-            border-radius: 8px;
-            padding: 1rem;
+            border-radius: 12px;
+            padding: 1.25rem;
             overflow-x: auto;
         }
         .code-block pre {
             margin: 0;
             color: #e2e8f0;
-            font-family: 'Monaco', 'Menlo', monospace;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
             font-size: 0.875rem;
-            line-height: 1.6;
+            line-height: 1.7;
         }
-        .tier-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .pattern-card {
+            transition: all 0.2s ease;
         }
-        .tier-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        .pattern-card:hover {
+            border-color: #0C8DE7;
         }
-        .sdk-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
+        .lang-btn {
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 500;
             font-size: 0.875rem;
-            font-weight: 600;
+            transition: all 0.2s ease;
         }
-        .nav-link {
-            transition: color 0.2s ease;
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.2);
         }
-        .nav-link:hover {
-            color: #667eea;
-        }
-        .integration-flow {
-            position: relative;
-        }
-        .integration-flow::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 100%;
-            width: 2px;
-            height: 30px;
-            background: #667eea;
-            transform: translateX(-50%);
-        }
-        .integration-flow:last-child::after {
-            display: none;
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Shared Header -->
-    <vcp-header theme="blue" lang="en" available-langs="en,ja,zh"></vcp-header>
+<body class="bg-light text-dark">
 
-    <!-- Header -->
-    <header class="gradient-bg text-white py-20">
-        <div class="container mx-auto px-6">
-            <div class="flex items-center justify-between mb-6">
-                <a href="/" class="text-white hover:text-gray-200 transition">
+    <!-- ========== HERO SECTION ========== -->
+    <header class="hero-gradient text-white">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <a href="/" class="text-white/80 hover:text-white transition text-sm font-medium">
                     <i class="fas fa-arrow-left mr-2"></i>Back to Home
                 </a>
+                <div class="flex items-center gap-2">
+                    <span class="text-white/60 text-sm mr-2"><i class="fas fa-globe mr-1"></i></span>
+                    <a href="/vcp/developers/" class="lang-btn active">EN</a>
+                    <a href="/vcp/developers/ja/" class="lang-btn">日本語</a>
+                    <a href="/vcp/developers/zh/" class="lang-btn">中文</a>
+                </div>
             </div>
-            <h1 class="text-5xl font-bold mb-4">
-                <i class="fas fa-code mr-3"></i>Developers Integration Guide
+        </div>
+        
+        <div class="container mx-auto px-6 pt-12 pb-20 text-center">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">
+                VeritasChain Developer Hub
             </h1>
-            <p class="text-xl text-purple-100 max-w-3xl">
-                Complete guide for CTOs and developers of prop firms, brokers, and exchanges<br>
-                Learn how to integrate VCP into your existing systems
+            <p class="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-10 leading-relaxed">
+                All tools, specifications, and SDKs required to implement and verify VCP v1.0.
             </p>
+            <a href="/vcp/specification/" 
+               class="inline-flex items-center bg-white text-primary font-bold text-lg py-4 px-10 rounded-card shadow-lg hover:shadow-xl transition transform hover:scale-105">
+                <i class="fas fa-book-open mr-3"></i>
+                View VCP v1.0 Specification
+                <i class="fas fa-arrow-right ml-3"></i>
+            </a>
         </div>
     </header>
 
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-6">
-            <ul class="flex space-x-8 py-4 overflow-x-auto">
-                <li><a href="#quickstart" class="nav-link font-semibold text-gray-700"><i class="fas fa-rocket mr-2"></i>Quick Start</a></li>
-                <li><a href="#sdks" class="nav-link font-semibold text-gray-700"><i class="fas fa-cube mr-2"></i>SDKs</a></li>
-                <li><a href="#tiers" class="nav-link font-semibold text-gray-700"><i class="fas fa-layer-group mr-2"></i>Tiers</a></li>
-                <li><a href="#patterns" class="nav-link font-semibold text-gray-700"><i class="fas fa-diagram-project mr-2"></i>Integration Patterns</a></li>
-                <li><a href="#code" class="nav-link font-semibold text-gray-700"><i class="fas fa-file-code mr-2"></i>Code Examples</a></li>
-                <li><a href="#github" class="nav-link font-semibold text-gray-700"><i class="fab fa-github mr-2"></i>GitHub</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- ========== 5 CTA CARDS ========== -->
+    <section class="container mx-auto px-6 -mt-10 relative z-10 mb-16">
+        <div class="grid md:grid-cols-3 gap-6 mb-6">
+            <!-- Card 1: VCP v1.0 Specification -->
+            <a href="/vcp/specification/" class="cta-card bg-white rounded-card shadow-card p-6 block border-2 border-transparent hover:border-primary">
+                <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-file-contract text-2xl text-primary"></i>
+                </div>
+                <h3 class="text-xl font-bold text-dark mb-2">VCP v1.0 Specification</h3>
+                <p class="text-gray-600 text-sm mb-4">The cryptographic audit standard for AI & algorithmic trading.</p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li><i class="fas fa-check text-primary mr-2"></i>Event lifecycle & data model</li>
+                    <li><i class="fas fa-check text-primary mr-2"></i>Compliance tiers</li>
+                    <li><i class="fas fa-check text-primary mr-2"></i>Regulatory alignment (MiFID II / EU AI Act)</li>
+                </ul>
+            </a>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-6 py-12">
-        
-        <!-- Quick Start -->
-        <section id="quickstart" class="mb-20">
-            <h2 class="text-4xl font-bold mb-8 text-gray-800">
-                <i class="fas fa-rocket mr-3 text-purple-600"></i>Get Started in 5 Minutes
-            </h2>
-            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="integration-flow">
-                        <div class="text-center">
-                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-download text-3xl text-purple-600"></i>
-                            </div>
-                            <h3 class="text-xl font-bold mb-2">1. Install SDK</h3>
-                            <p class="text-gray-600">Choose SDK for your environment</p>
+            <!-- Card 2: Explorer API v1.1 -->
+            <a href="/vcp/explorer-api/" class="cta-card bg-white rounded-card shadow-card p-6 block border-2 border-transparent hover:border-primary">
+                <div class="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-search text-2xl text-accent"></i>
+                </div>
+                <h3 class="text-xl font-bold text-dark mb-2">Explorer API v1.1</h3>
+                <p class="text-gray-600 text-sm mb-4">Search, verify, and certify VCP events.</p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li><i class="fas fa-check text-accent mr-2"></i>REST endpoints</li>
+                    <li><i class="fas fa-check text-accent mr-2"></i>Merkle proof verification</li>
+                    <li><i class="fas fa-check text-accent mr-2"></i>Event certificates</li>
+                </ul>
+            </a>
+
+            <!-- Card 3: SDKs -->
+            <a href="#sdks" class="cta-card bg-white rounded-card shadow-card p-6 block border-2 border-transparent hover:border-primary">
+                <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-cube text-2xl text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-dark mb-2">SDKs (TS / Python)</h3>
+                <p class="text-gray-600 text-sm mb-4">Official SDKs for building VCP integrations.</p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li><i class="fas fa-check text-green-600 mr-2"></i>TypeScript, Python</li>
+                    <li><i class="fas fa-check text-green-600 mr-2"></i>Hash-chain & Merkle helpers</li>
+                    <li><i class="fas fa-check text-green-600 mr-2"></i>Ready-to-use examples</li>
+                </ul>
+            </a>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Card 4: VC-Certified & Conformance -->
+            <a href="/vcp/certified/" class="cta-card bg-white rounded-card shadow-card p-6 block border-2 border-transparent hover:border-primary">
+                <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-certificate text-2xl text-yellow-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-dark mb-2">VC-Certified & Conformance</h3>
+                <p class="text-gray-600 text-sm mb-4">Checklists & test suites for certification.</p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li><i class="fas fa-check text-yellow-600 mr-2"></i>Silver / Gold / Platinum tiers</li>
+                    <li><i class="fas fa-check text-yellow-600 mr-2"></i>Log format rules</li>
+                    <li><i class="fas fa-check text-yellow-600 mr-2"></i>Submission workflow</li>
+                </ul>
+            </a>
+
+            <!-- Card 5: Sidecar Integration -->
+            <a href="#patterns" class="cta-card bg-white rounded-card shadow-card p-6 block border-2 border-transparent hover:border-primary">
+                <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-plug text-2xl text-red-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-dark mb-2">Sidecar Integration Guide</h3>
+                <p class="text-gray-600 text-sm mb-4">Non-invasive integration for MT4/5, cTrader, and WL brokers.</p>
+                <ul class="text-sm text-gray-500 space-y-1">
+                    <li><i class="fas fa-check text-red-600 mr-2"></i>Shadow logging</li>
+                    <li><i class="fas fa-check text-red-600 mr-2"></i>Manager API patterns</li>
+                    <li><i class="fas fa-check text-red-600 mr-2"></i>24h anchoring examples</li>
+                </ul>
+            </a>
+        </div>
+    </section>
+
+    <!-- ========== QUICK START ========== -->
+    <section id="quickstart" class="bg-accent/5 py-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
+                    <i class="fas fa-rocket text-primary mr-3"></i>Get Started in 5 Minutes
+                </h2>
+                <p class="text-gray-600 text-lg">Three simple steps to start logging VCP events</p>
+            </div>
+
+            <div class="bg-white rounded-card shadow-card p-8 md:p-12">
+                <div class="grid md:grid-cols-3 gap-8 md:gap-12">
+                    <!-- Step 1 -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-download text-4xl text-primary"></i>
                         </div>
+                        <div class="text-sm font-bold text-primary mb-2">STEP 1</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">Install SDK</h3>
+                        <p class="text-gray-600">Choose an SDK for your environment (TypeScript or Python)</p>
                     </div>
-                    <div class="integration-flow">
-                        <div class="text-center">
-                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-plug text-3xl text-purple-600"></i>
-                            </div>
-                            <h3 class="text-xl font-bold mb-2">2. Log Events</h3>
-                            <p class="text-gray-600">Record trading events in VCP format</p>
+
+                    <!-- Step 2 -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-code text-4xl text-primary"></i>
                         </div>
+                        <div class="text-sm font-bold text-primary mb-2">STEP 2</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">Log Events</h3>
+                        <p class="text-gray-600">Record trading events in VCP-compliant format</p>
                     </div>
-                    <div class="integration-flow">
-                        <div class="text-center">
-                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-check-circle text-3xl text-purple-600"></i>
-                            </div>
-                            <h3 class="text-xl font-bold mb-2">3. Verify</h3>
-                            <p class="text-gray-600">Check transparency with VCP Explorer</p>
+
+                    <!-- Step 3 -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-check-circle text-4xl text-primary"></i>
                         </div>
+                        <div class="text-sm font-bold text-primary mb-2">STEP 3</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">Verify & Certify</h3>
+                        <p class="text-gray-600">Use Explorer API to verify chain integrity</p>
                     </div>
                 </div>
-                
-                <!-- VCP Explorer CTA -->
-                <div class="text-center mt-8">
-                    <a href="https://veritaschain.org/explorer/app/" 
+
+                <div class="text-center mt-10">
+                    <a href="https://github.com/veritaschain/vcp-explorer-api" 
                        target="_blank" 
                        rel="noopener"
-                       class="inline-flex items-center bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-lg shadow-lg transition transform hover:scale-105">
-                        <i class="fas fa-search mr-3 text-xl"></i>
-                        <span class="text-lg">Open VCP Explorer</span>
-                        <i class="fas fa-external-link-alt ml-3"></i>
+                       class="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-card shadow-card transition">
+                        <i class="fab fa-github mr-2"></i>
+                        Open VCP Explorer API
+                        <i class="fas fa-external-link-alt ml-2 text-sm"></i>
                     </a>
-                    <p class="text-gray-600 text-sm mt-3">
-                        <i class="fas fa-shield-check mr-2 text-green-600"></i>
-                        Verify your VCP chain integrity in real-time
-                    </p>
+                    <p class="text-gray-500 text-sm mt-3">Web UI explorer coming soon. API provides full verification features.</p>
                 </div>
             </div>
 
-            <!-- Silver Tier Minimum Configuration -->
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
-                <h3 class="text-2xl font-bold mb-4 text-blue-900">
-                    <i class="fas fa-lightbulb mr-2"></i>Recommended: Start with Silver Tier Shadow Logging
-                </h3>
-                <p class="text-blue-800 mb-4">
-                    Begin with "shadow logging" to generate VCP logs in parallel with your production system without any impact.
-                </p>
+            <!-- Quick Start Code Example -->
+            <div class="mt-8 bg-white rounded-card shadow-card p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-dark">
+                        <i class="fab fa-python text-blue-500 mr-2"></i>Quick Start with Python
+                    </h3>
+                    <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">Silver Tier</span>
+                </div>
                 <div class="code-block">
-                    <pre># Simple Python implementation
-pip install vcp-core-py
+                    <pre>pip install vcp-core-py
 
 from vcp import VCPLogger, Tier
 
@@ -193,882 +265,468 @@ from vcp import VCPLogger, Tier
 logger = VCPLogger(tier=Tier.SILVER, private_key="your-key")
 
 # Record trading events
-logger.log_order(
-    symbol="EURUSD",
-    side="BUY",
-    quantity="100000",
-    price="1.08450"
-)
+logger.log_order(symbol="EURUSD", side="BUY", quantity="100000", price="1.08450")
 
 # Save locally (runs parallel to production)
-logger.save("./vcp_logs/")
-</pre>
+logger.save("./vcp_logs/")</pre>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- SDKs -->
-        <section id="sdks" class="mb-20">
-            <h2 class="text-4xl font-bold mb-8 text-gray-800">
-                <i class="fas fa-cube mr-3 text-purple-600"></i>Official SDKs
+    <!-- ========== SDKs ========== -->
+    <section id="sdks" class="container mx-auto px-6 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
+                <i class="fas fa-cube text-primary mr-3"></i>Official SDKs
             </h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                
-                <!-- Python SDK -->
-                <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition">
-                    <div class="flex items-center mb-4">
-                        <i class="fab fa-python text-5xl text-blue-500 mr-4"></i>
-                        <div>
-                            <h3 class="text-2xl font-bold">vcp-core-py</h3>
-                            <span class="sdk-badge bg-blue-100 text-blue-700">Python 3.8+</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-4">
-                        For data scientists, risk managers, and backtesting. Easy integration with high-level API.
-                    </p>
-                    <div class="space-y-2 mb-6">
-                        <div class="flex items-center text-sm text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            Backtest auditing
-                        </div>
-                        <div class="flex items-center text-sm text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            VCP-RISK log generation
-                        </div>
-                        <div class="flex items-center text-sm text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            RFC 8785 JSON canonicalization
-                        </div>
-                    </div>
-                    <div class="code-block mb-4">
-                        <pre>pip install vcp-core-py</pre>
-                    </div>
-                    <a href="#code-python" class="text-purple-600 hover:text-purple-800 font-semibold">
-                        View code examples <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
+            <p class="text-gray-600 text-lg">Production-ready libraries for VCP integration</p>
+        </div>
 
-                <!-- C++ SDK -->
-                <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-bolt text-5xl text-red-500 mr-4"></i>
-                        <div>
-                            <h3 class="text-2xl font-bold">vcp-core-cpp</h3>
-                            <span class="sdk-badge bg-red-100 text-red-700">C++17/20</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-4">
-                        For HFT engineers and exchange developers. Ultra-low latency implementation at microsecond level.
-                    </p>
-                    <div class="space-y-2 mb-6">
-                        <div class="flex items-center text-sm text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            SBE binary encoding
-                        </div>
-                        <div class="flex items-center text-sm text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            PTP clock integration
-                        </div>
-                        <div class="flex items-center text-sm text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            Zero-copy memory pool
-                        </div>
-                    </div>
-                    <div class="code-block mb-4">
-                        <pre># Install via CMake
-git clone https://github.com/vso/vcp-core-cpp
-cmake -B build && cmake --build build</pre>
-                    </div>
-                    <a href="#code-cpp" class="text-purple-600 hover:text-purple-800 font-semibold">
-                        View code examples <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-
-                <!-- MQL Bridge -->
-                <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-chart-line text-5xl text-green-500 mr-4"></i>
-                        <div>
-                            <h3 class="text-2xl font-bold">vcp-mql-bridge</h3>
-                            <span class="sdk-badge bg-green-100 text-green-700">MQL4/5</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-4">
-                        For retail prop developers and EA developers. Easy MT4/MT5 integration via DLL/EA.
-                    </p>
-                    <div class="space-y-2 mb-6">
-                        <div class="flex items-center text-sm text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            Async HTTP communication
-                        </div>
-                        <div class="flex items-center text-sm text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            Client-side signing
-                        </div>
-                        <div class="flex items-center text-sm text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            MT4/5 event hooks
-                        </div>
-                    </div>
-                    <div class="code-block mb-4">
-                        <pre>// Copy to MT4/MT5 Expert folder
-// #include &lt;VCP_Bridge.mqh&gt;</pre>
-                    </div>
-                    <a href="#code-mql" class="text-purple-600 hover:text-purple-800 font-semibold">
-                        View code examples <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Compliance Tiers -->
-        <section id="tiers" class="mb-20">
-            <h2 class="text-4xl font-bold mb-8 text-gray-800">
-                <i class="fas fa-layer-group mr-3 text-purple-600"></i>Compliance Tiers
-            </h2>
-            <p class="text-lg text-gray-600 mb-8">
-                Choose from three compliance tiers based on your business requirements and technical constraints.
+        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-card mb-8">
+            <p class="text-yellow-800 text-sm">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <strong>Note:</strong> SDKs follow <a href="https://github.com/veritaschain/vcp-sdk-spec" target="_blank" class="underline font-semibold">VCP SDK Specification v1.0</a>. 
+                Implementations are reference prototypes. Verify status in GitHub repositories before production use.
             </p>
+        </div>
 
-            <div class="space-y-6">
-                <!-- Platinum Tier -->
-                <div class="tier-card bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-lg p-8 border-2 border-purple-300">
-                    <div class="flex items-center justify-between mb-6">
-                        <div>
-                            <h3 class="text-3xl font-bold text-purple-900 mb-2">
-                                <i class="fas fa-gem mr-2"></i>Platinum Tier
-                            </h3>
-                            <p class="text-purple-700 font-semibold">For HFT, Exchanges, Institutional Traders</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="sdk-badge bg-purple-600 text-white text-lg">Highest Precision</span>
-                        </div>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3">Technical Requirements</h4>
-                            <ul class="space-y-2 text-gray-700">
-                                <li><i class="fas fa-clock text-purple-600 mr-2"></i><strong>Clock Sync:</strong> PTP (IEEE 1588) nanosecond precision</li>
-                                <li><i class="fas fa-microchip text-purple-600 mr-2"></i><strong>Implementation:</strong> Kernel bypass (DPDK/AF_XDP)</li>
-                                <li><i class="fas fa-bolt text-purple-600 mr-2"></i><strong>Latency:</strong> &lt;1μs logging overhead</li>
-                                <li><i class="fas fa-code text-purple-600 mr-2"></i><strong>SDK:</strong> vcp-core-cpp (C++17/20)</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3">Use Cases</h4>
-                            <ul class="space-y-2 text-gray-700">
-                                <li><i class="fas fa-chart-line mr-2"></i>High-Frequency Trading (HFT)</li>
-                                <li><i class="fas fa-building mr-2"></i>Cryptocurrency Exchanges</li>
-                                <li><i class="fas fa-landmark mr-2"></i>Institutional Algorithmic Trading</li>
-                                <li><i class="fas fa-gavel mr-2"></i>Full MiFID II Compliance</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="code-block">
-                        <pre>// C++ Platinum implementation (SBE binary encoding)
-#include &lt;vcp/platinum.hpp&gt;
-
-vcp::PlatinumLogger logger(
-    vcp::ClockSource::PTP_HARDWARE,  // PTP hardware clock
-    vcp::Encoding::SBE                // Simple Binary Encoding
-);
-
-// High-precision logging in microseconds
-logger.log_order_accepted(order_id, timestamp_ns);</pre>
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Python SDK -->
+            <div class="bg-white rounded-card shadow-card p-6 border-2 border-transparent hover:border-primary transition">
+                <div class="flex items-center mb-4">
+                    <i class="fab fa-python text-4xl text-blue-500 mr-4"></i>
+                    <div>
+                        <h3 class="text-xl font-bold">vcp-core-py</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Python 3.8+</span>
                     </div>
                 </div>
-
-                <!-- Gold Tier -->
-                <div class="tier-card bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg shadow-lg p-8 border-2 border-yellow-300">
-                    <div class="flex items-center justify-between mb-6">
-                        <div>
-                            <h3 class="text-3xl font-bold text-yellow-900 mb-2">
-                                <i class="fas fa-medal mr-2"></i>Gold Tier
-                            </h3>
-                            <p class="text-yellow-700 font-semibold">For Mid-Size Brokers & Prop Firms</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="sdk-badge bg-yellow-600 text-white text-lg">Recommended</span>
-                        </div>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3">Technical Requirements</h4>
-                            <ul class="space-y-2 text-gray-700">
-                                <li><i class="fas fa-clock text-yellow-600 mr-2"></i><strong>Clock Sync:</strong> NTP microsecond precision</li>
-                                <li><i class="fas fa-server text-yellow-600 mr-2"></i><strong>Implementation:</strong> Server-side integration</li>
-                                <li><i class="fas fa-tachometer-alt text-yellow-600 mr-2"></i><strong>Latency:</strong> &lt;100μs logging overhead</li>
-                                <li><i class="fas fa-code text-yellow-600 mr-2"></i><strong>SDK:</strong> vcp-core-py / vcp-core-cpp</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3">Use Cases</h4>
-                            <ul class="space-y-2 text-gray-700">
-                                <li><i class="fas fa-building mr-2"></i>Mid-size brokers</li>
-                                <li><i class="fas fa-users mr-2"></i>Prop trading firms</li>
-                                <li><i class="fas fa-robot mr-2"></i>Algorithmic trading platforms</li>
-                                <li><i class="fas fa-balance-scale mr-2"></i>Regulatory compliance</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="code-block">
-                        <pre># Python Gold implementation (server-side integration)
-from vcp import VCPLogger, Tier, ClockSync
-
-logger = VCPLogger(
-    tier=Tier.GOLD,
-    clock_sync=ClockSync.NTP_SYNCED,
-    private_key_path="./server_key.pem"
-)
-
-# Intercept trading events on server side
-@trading_engine.on_order_executed
-def log_execution(order):
-    logger.log_execution(
-        order_id=order.id,
-        symbol=order.symbol,
-        side=order.side,
-        quantity=str(order.quantity),
-        price=str(order.price)
-    )</pre>
-                    </div>
-                </div>
-
-                <!-- Silver Tier -->
-                <div class="tier-card bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg shadow-lg p-8 border-2 border-gray-300">
-                    <div class="flex items-center justify-between mb-6">
-                        <div>
-                            <h3 class="text-3xl font-bold text-gray-900 mb-2">
-                                <i class="fas fa-shield-alt mr-2"></i>Silver Tier
-                            </h3>
-                            <p class="text-gray-700 font-semibold">For White-Label & Small-Scale Operators</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="sdk-badge bg-gray-600 text-white text-lg">Fastest Setup</span>
-                        </div>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3">Technical Requirements</h4>
-                            <ul class="space-y-2 text-gray-700">
-                                <li><i class="fas fa-clock text-gray-600 mr-2"></i><strong>Clock Sync:</strong> NTP/Best-effort millisecond precision</li>
-                                <li><i class="fas fa-laptop text-gray-600 mr-2"></i><strong>Implementation:</strong> Client-side integration</li>
-                                <li><i class="fas fa-plug text-gray-600 mr-2"></i><strong>Latency:</strong> Async (no impact on trading)</li>
-                                <li><i class="fas fa-code text-gray-600 mr-2"></i><strong>SDK:</strong> vcp-mql-bridge (MT4/MT5)</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3">Use Cases</h4>
-                            <ul class="space-y-2 text-gray-700">
-                                <li><i class="fas fa-tag mr-2"></i>White-label prop firms</li>
-                                <li><i class="fas fa-store mr-2"></i>Small brokers</li>
-                                <li><i class="fas fa-user mr-2"></i>Individual trader EAs</li>
-                                <li><i class="fas fa-flask mr-2"></i>Pilot deployment & PoC</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r">
-                        <p class="text-blue-900 font-semibold">
-                            <i class="fas fa-star mr-2"></i>Strategic Value of Silver Tier
-                        </p>
-                        <p class="text-blue-800 text-sm mt-2">
-                            White-label operators cannot modify broker servers, but Silver Tier's "client-side signing" 
-                            allows independent audit logs without broker involvement. This is not a technical compromise—it's a governance innovation.
-                        </p>
-                    </div>
-                    <div class="code-block">
-                        <pre>// MQL5 Silver implementation (client-side signing)
-#include &lt;VCP_Bridge.mqh&gt;
-
-// Setup VCP logger on EA initialization
-int OnInit() {
-    VCP_Init(TIER_SILVER, "client_private_key");
-    return INIT_SUCCEEDED;
-}
-
-// Automatic logging on orders
-void OnTradeTransaction(const MqlTradeTransaction& trans) {
-    if (trans.type == TRADE_TRANSACTION_ORDER_ADD) {
-        // Send VCP log async (no impact on trading)
-        VCP_LogOrder(trans.order, trans.symbol, trans.volume);
-    }
-}</pre>
-                    </div>
+                <p class="text-gray-600 text-sm mb-4">For data scientists, risk managers, and backtesting.</p>
+                <ul class="text-sm text-gray-500 space-y-2 mb-4">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Backtest auditing</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>VCP-RISK log generation</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>RFC 8785 JSON canonicalization</li>
+                </ul>
+                <div class="code-block text-sm">
+                    <pre>pip install vcp-core-py</pre>
                 </div>
             </div>
-        </section>
 
-        <!-- Integration Patterns -->
-        <section id="patterns" class="mb-20">
-            <h2 class="text-4xl font-bold mb-8 text-gray-800">
-                <i class="fas fa-diagram-project mr-3 text-purple-600"></i>Integration Patterns
-            </h2>
-
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Pattern A: Sidecar -->
-                <div class="bg-white rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-800">
-                        <i class="fas fa-car-side mr-2 text-blue-500"></i>Pattern A: Sidecar Integration
-                    </h3>
-                    <p class="text-gray-600 mb-4">
-                        Run as external process parallel to trading platform without modifying core engine.
-                    </p>
-                    <h4 class="font-bold text-gray-800 mb-2">Data Flow</h4>
-                    <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-4">
-                        <li>Order placed from trader's terminal</li>
-                        <li>Bridge EA detects event, generates UUID</li>
-                        <li>Build JSON payload and sign</li>
-                        <li>Send async to VeritasChain Cloud (VCC)</li>
-                    </ol>
-                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r">
-                        <p class="text-green-900 font-semibold">
-                            <i class="fas fa-check-circle mr-2"></i>Benefits
-                        </p>
-                        <ul class="text-green-800 text-sm mt-2 space-y-1">
-                            <li>• Independent from broker infrastructure</li>
-                            <li>• Generate independent audit logs</li>
-                            <li>• Detect data tampering</li>
-                        </ul>
+            <!-- C++ SDK -->
+            <div class="bg-white rounded-card shadow-card p-6 border-2 border-transparent hover:border-primary transition">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-bolt text-4xl text-orange-500 mr-4"></i>
+                    <div>
+                        <h3 class="text-xl font-bold">vcp-core-cpp</h3>
+                        <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full">C++17</span>
                     </div>
                 </div>
+                <p class="text-gray-600 text-sm mb-4">For HFT and low-latency environments.</p>
+                <ul class="text-sm text-gray-500 space-y-2 mb-4">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Microsecond precision</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Lock-free ring buffer</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>PTP clock integration</li>
+                </ul>
+                <div class="code-block text-sm">
+                    <pre>vcpkg install vcp-core-cpp</pre>
+                </div>
+            </div>
 
-                <!-- Pattern B: Shadow Logging (RECOMMENDED FOR MOST) -->
-                <div class="bg-white rounded-lg shadow-lg p-8 border-2 border-yellow-400">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-800">
-                            <i class="fas fa-layer-group mr-2 text-yellow-500"></i>Pattern B: Shadow Logging
-                        </h3>
-                        <span class="sdk-badge bg-yellow-500 text-white">RECOMMENDED</span>
+            <!-- MQL SDK -->
+            <div class="bg-white rounded-card shadow-card p-6 border-2 border-transparent hover:border-primary transition">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-chart-line text-4xl text-green-500 mr-4"></i>
+                    <div>
+                        <h3 class="text-xl font-bold">vcp-mql-bridge</h3>
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">MQL4/5</span>
                     </div>
-                    <p class="text-gray-600 mb-4">
-                        Generate VCP logs parallel to existing system (initial migration phase). <strong>Perfect for PoC and risk-free deployment.</strong>
-                    </p>
-                    <h4 class="font-bold text-gray-800 mb-2">Phased Migration Process</h4>
-                    <div class="space-y-4 mb-4">
-                        <div class="flex items-start">
-                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">1</div>
-                            <div>
-                                <h5 class="font-bold text-gray-800">Shadow Logging</h5>
-                                <p class="text-gray-600 text-sm">Run parallel to existing system, no production impact</p>
-                            </div>
+                </div>
+                <p class="text-gray-600 text-sm mb-4">For MetaTrader EA integration.</p>
+                <ul class="text-sm text-gray-500 space-y-2 mb-4">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>MT4/MT5 EA integration</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Retail forex logging</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Cross-broker auditing</li>
+                </ul>
+                <div class="code-block text-sm">
+                    <pre>#include &lt;VCPLogger.mqh&gt;</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== INTEGRATION PATTERNS ========== -->
+    <section id="patterns" class="bg-white py-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
+                    <i class="fas fa-diagram-project text-primary mr-3"></i>Integration Patterns
+                </h2>
+                <p class="text-gray-600 text-lg">Choose the right integration approach for your infrastructure</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Pattern A: Sidecar -->
+                <div class="pattern-card bg-light rounded-card p-6 border-2 border-gray-200">
+                    <div class="flex items-start mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-car-side text-xl text-blue-600"></i>
                         </div>
-                        <div class="flex items-start">
-                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">2</div>
-                            <div>
-                                <h5 class="font-bold text-gray-800">Hybrid Operation</h5>
-                                <p class="text-gray-600 text-sm">Start referencing VCP logs for internal audits and dispute resolution</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">3</div>
-                            <div>
-                                <h5 class="font-bold text-gray-800">Full Migration</h5>
-                                <p class="text-gray-600 text-sm">Designate VCP chain as Golden Source</p>
-                            </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-dark">Pattern A: Sidecar Integration</h3>
+                            <p class="text-sm text-gray-500">External process, no core modification</p>
                         </div>
                     </div>
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r">
-                        <p class="text-blue-900 font-semibold">
-                            <i class="fas fa-star mr-2"></i>Why This Works for Prop Firms
-                        </p>
-                        <p class="text-blue-800 text-sm mt-2">
-                            Silver/Gold Tier operators can start logging without touching production systems. 
-                            This is the standard path recommended in VCP Specification for initial deployment.
-                        </p>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-blue-500 mr-2"></i>Independent from broker infrastructure</li>
+                        <li><i class="fas fa-check text-blue-500 mr-2"></i>Generate independent audit logs</li>
+                        <li><i class="fas fa-check text-blue-500 mr-2"></i>Detect data tampering</li>
+                    </ul>
+                </div>
+
+                <!-- Pattern B: Shadow Logging -->
+                <div class="pattern-card bg-yellow-50 rounded-card p-6 border-2 border-yellow-300">
+                    <div class="flex items-start mb-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-layer-group text-xl text-yellow-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-dark">Pattern B: Shadow Logging</h3>
+                            <span class="text-xs bg-yellow-500 text-white px-2 py-0.5 rounded-full font-bold">RECOMMENDED</span>
+                        </div>
                     </div>
+                    <p class="text-sm text-gray-600 mb-3">Generate VCP logs parallel to existing system. Perfect for PoC.</p>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-yellow-600 mr-2"></i>No production impact</li>
+                        <li><i class="fas fa-check text-yellow-600 mr-2"></i>Phased migration path</li>
+                        <li><i class="fas fa-check text-yellow-600 mr-2"></i>Risk-free evaluation</li>
+                    </ul>
                 </div>
 
                 <!-- Pattern C: VCC API -->
-                <div class="bg-white rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-800">
-                        <i class="fas fa-cloud mr-2 text-green-500"></i>Pattern C: VeritasChain Cloud (VCC)
-                    </h3>
-                    <p class="text-gray-600 mb-4">
-                        SaaS solution: Achieve VCP compliance without running your own nodes.
-                    </p>
-                    <h4 class="font-bold text-gray-800 mb-2">VCC Features</h4>
-                    <ul class="space-y-2 text-gray-700 mb-4">
-                        <li><i class="fas fa-server text-green-600 mr-2"></i>No infrastructure management</li>
-                        <li><i class="fas fa-key text-green-600 mr-2"></i>Send logs via REST API</li>
-                        <li><i class="fas fa-shield-alt text-green-600 mr-2"></i>Automatic anchoring & verification</li>
-                        <li><i class="fas fa-chart-bar text-green-600 mr-2"></i>Dashboard & Explorer provided</li>
-                    </ul>
-                    <div class="code-block">
-                        <pre># VCC API usage example
-curl -X POST https://api.veritaschain.cloud/v1/events \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "event_type": "ORDER_ACCEPTED",
-    "symbol": "BTCUSD",
-    "side": "BUY",
-    "quantity": "0.5",
-    "price": "45000.00"
-  }'</pre>
+                <div class="pattern-card bg-light rounded-card p-6 border-2 border-gray-200">
+                    <div class="flex items-start mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-cloud text-xl text-green-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-dark">Pattern C: VeritasChain Cloud (VCC)</h3>
+                            <p class="text-sm text-gray-500">SaaS solution, no infrastructure needed</p>
+                        </div>
                     </div>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>No infrastructure management</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>REST API integration</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Automatic anchoring</li>
+                    </ul>
                 </div>
 
-                <!-- Pattern D: Kernel Bypass (HFT Specialist) -->
-                <div class="bg-white rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-800">
-                        <i class="fas fa-bolt mr-2 text-red-500"></i>Pattern D: Kernel Bypass (HFT)
-                    </h3>
-                    <p class="text-gray-600 mb-4">
-                        Bypass OS network stack for ultra-low latency. <strong>Platinum Tier only.</strong>
-                    </p>
-                    <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r">
-                        <p class="text-purple-900 font-semibold">
-                            <i class="fas fa-crown mr-2"></i>HFT Optimization
-                        </p>
-                        <p class="text-purple-800 text-sm mt-2">
-                            Microsecond-competitive logging designed not to block trading threads.
-                        </p>
+                <!-- Pattern D: Kernel Bypass -->
+                <div class="pattern-card bg-light rounded-card p-6 border-2 border-gray-200">
+                    <div class="flex items-start mb-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-bolt text-xl text-red-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-dark">Pattern D: Kernel Bypass (HFT)</h3>
+                            <p class="text-sm text-gray-500">Ultra-low latency for Platinum Tier</p>
+                        </div>
                     </div>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-red-500 mr-2"></i>DPDK/RDMA for kernel bypass</li>
+                        <li><i class="fas fa-check text-red-500 mr-2"></i>PTP hardware clock</li>
+                        <li><i class="fas fa-check text-red-500 mr-2"></i>Lock-free ring buffer</li>
+                    </ul>
                 </div>
             </div>
-        </section>
-        <!-- Code Examples -->
-        <section id="code" class="mb-20">
-            <h2 class="text-4xl font-bold mb-8 text-gray-800">
-                <i class="fas fa-file-code mr-3 text-purple-600"></i>Code Examples
+        </div>
+    </section>
+
+    <!-- ========== CODE EXAMPLES ========== -->
+    <section id="code" class="container mx-auto px-6 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
+                <i class="fas fa-file-code text-primary mr-3"></i>Code Examples
             </h2>
+            <p class="text-gray-600 text-lg">Production-ready implementation patterns</p>
+        </div>
 
-            <!-- Python -->
-            <div id="code-python" class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h3 class="text-2xl font-bold mb-4 text-gray-800">
-                    <i class="fab fa-python mr-2 text-blue-500"></i>Python: Backtest Audit Implementation
-                </h3>
-                <div class="code-block">
-                    <pre>#!/usr/bin/env python3
-"""
-VCP Backtest Audit Logger
-Record all backtest trades in auditable format
-"""
-from vcp import VCPLogger, Tier, EventType
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Python Example -->
+            <div class="bg-white rounded-card shadow-card overflow-hidden">
+                <div class="bg-gray-800 px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fab fa-python text-blue-400 mr-2"></i>
+                        <span class="text-white text-sm font-medium">Python: Backtest Audit</span>
+                    </div>
+                    <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded">Silver Tier</span>
+                </div>
+                <div class="code-block rounded-none">
+                    <pre>from vcp import VCPLogger, Tier, EventType
 from datetime import datetime
-import uuid
 
-# Initialize logger (Silver Tier, test environment)
 logger = VCPLogger(
     tier=Tier.SILVER,
-    private_key_path="./test_key.pem",
-    output_dir="./vcp_audit_logs/"
+    private_key_path="./key.pem"
 )
 
-# Log backtest trade events
-def log_backtest_trade(symbol, side, quantity, price, timestamp):
-    """
-    Log backtest trade in VCP format
-    
-    Args:
-        symbol: Currency pair (e.g., "EURUSD")
-        side: BUY / SELL
-        quantity: Quantity (String type to maintain precision)
-        price: Price (String type to maintain precision)
-        timestamp: Trading timestamp
-    """
-    event_id = str(uuid.uuid7())  # UUID v7 for chronological sorting
-    
+def log_backtest_trade(symbol, side, qty, price):
     logger.log_event(
-        event_id=event_id,
         event_type=EventType.ORDER_ACCEPTED,
-        timestamp=timestamp,
-        payload={
-            "symbol": symbol,
-            "side": side,
-            "quantity": str(quantity),  # Must be String type
-            "price": str(price),        # Must be String type
-            "backtest": True,
-            "strategy": "mean_reversion_v2"
-        }
+        timestamp=datetime.now(),
+        payload={"symbol": symbol, "side": side,
+                 "quantity": qty, "price": price}
     )
 
-# Usage example
-if __name__ == "__main__":
-    # Backtest loop
-    trades = [
-        ("EURUSD", "BUY", "100000", "1.08450", datetime.now()),
-        ("GBPUSD", "SELL", "50000", "1.26320", datetime.now()),
-    ]
-    
-    for symbol, side, qty, price, ts in trades:
-        log_backtest_trade(symbol, side, qty, price, ts)
-    
-    # Verify VCP chain
-    if logger.verify_chain():
-        print("✓ Backtest log integrity confirmed")
-        logger.export_json("backtest_audit_2024.json")
-    else:
-        print("✗ Chain integrity error detected")
-</pre>
+# Verify chain integrity
+if logger.verify_chain():
+    logger.export_json("backtest_audit.json")</pre>
                 </div>
             </div>
 
-            <!-- C++ -->
-            <div id="code-cpp" class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h3 class="text-2xl font-bold mb-4 text-gray-800">
-                    <i class="fas fa-bolt mr-2 text-red-500"></i>C++: Ultra-Low Latency HFT Implementation
-                </h3>
-                <div class="code-block">
-                    <pre>/**
- * VCP Platinum Tier Logger for HFT
- * Microsecond-level low latency implementation
- */
-#include &lt;vcp/platinum.hpp&gt;
-#include &lt;vcp/sbe_encoder.hpp&gt;
-#include &lt;vcp/ptp_clock.hpp&gt;
+            <!-- C++ Example -->
+            <div class="bg-white rounded-card shadow-card overflow-hidden">
+                <div class="bg-gray-800 px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-bolt text-orange-400 mr-2"></i>
+                        <span class="text-white text-sm font-medium">C++: HFT Logger</span>
+                    </div>
+                    <span class="text-xs bg-orange-500/20 text-orange-300 px-2 py-1 rounded">Platinum Tier</span>
+                </div>
+                <div class="code-block rounded-none">
+                    <pre>#include &lt;vcp/platinum.hpp&gt;
 
 class HFTVCPLogger {
-private:
     vcp::PlatinumLogger logger_;
     vcp::PTPClock ptp_clock_;
-    vcp::SBEEncoder encoder_;
-    vcp::RingBuffer&lt;vcp::TradeEvent, 65536&gt; event_buffer_;
-
 public:
     HFTVCPLogger() 
-        : logger_(vcp::ClockSource::PTP_HARDWARE, vcp::Encoding::SBE),
-          ptp_clock_("/dev/ptp0"),
-          encoder_(),
-          event_buffer_() {
-        // Lock-free ring buffer for async logging
-        logger_.set_async_mode(true);
-    }
+        : logger_(vcp::ClockSource::PTP_HARDWARE),
+          ptp_clock_("/dev/ptp0") {}
 
-    // Log order accepted event with nanosecond precision
-    inline void log_order_accepted(
-        uint64_t order_id,
-        const char* symbol,
-        Side side,
-        const char* quantity,
-        const char* price
-    ) {
-        // Get timestamp directly from PTP hardware clock
-        uint64_t timestamp_ns = ptp_clock_.now_ns();
-        
-        // Zero-copy encoding with SBE
-        vcp::TradeEvent event;
-        event.event_id = vcp::uuid_v7_generate(timestamp_ns);
-        event.event_type = vcp::EventType::ORDER_ACCEPTED;
-        event.timestamp_ns = timestamp_ns;
-        event.order_id = order_id;
-        std::strncpy(event.symbol, symbol, sizeof(event.symbol));
-        event.side = side;
-        std::strncpy(event.quantity, quantity, sizeof(event.quantity));
-        std::strncpy(event.price, price, sizeof(event.price));
-        
-        // Push to ring buffer (lock-free, doesn't block trading thread)
-        event_buffer_.push(event);
+    inline void log_order(uint64_t order_id,
+                          const char* symbol,
+                          Side side) {
+        uint64_t ts = ptp_clock_.now_ns();
+        logger_.write_event(order_id, symbol, ts);
     }
-
-    // Periodic flush in background thread
-    void async_flush_worker() {
-        while (running_) {
-            vcp::TradeEvent event;
-            if (event_buffer_.pop(event)) {
-                logger_.write_event(event);
-            }
-        }
-    }
-};
-
-// Usage example
-int main() {
-    HFTVCPLogger vcp_logger;
-    
-    // Trading engine callback
-    trading_engine.on_order_accepted([&](const Order& order) {
-        // Less than 1 microsecond overhead
-        vcp_logger.log_order_accepted(
-            order.id,
-            order.symbol.c_str(),
-            order.side,
-            order.quantity_str.c_str(),
-            order.price_str.c_str()
-        );
-    });
-    
-    return 0;
-}
-</pre>
+};</pre>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- MQL -->
-            <div id="code-mql" class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h3 class="text-2xl font-bold mb-4 text-gray-800">
-                    <i class="fas fa-chart-line mr-2 text-green-500"></i>MQL5: Client-Side Signing EA for MT5
-                </h3>
-                <div class="code-block">
-                    <pre>//+------------------------------------------------------------------+
-//|                                            VCP_ClientLogger.mq5 |
-//|                                  VeritasChain Standards Org     |
-//|                                       https://veritaschain.org  |
-//+------------------------------------------------------------------+
-#property copyright "VeritasChain Standards Organization"
-#property link      "https://veritaschain.org"
-#property version   "1.00"
-
-#include &lt;VCP_Bridge.mqh&gt;
-
-// Global variables
-CVCPBridge vcp;
-string private_key = "your_private_key_here";  // Retrieve from encrypted storage in production
-
-//+------------------------------------------------------------------+
-//| Expert initialization function                                   |
-//+------------------------------------------------------------------+
-int OnInit() {
-    // Initialize VCP Bridge (Silver Tier, client-side signing)
-    if (!vcp.Init(TIER_SILVER, private_key)) {
-        Print("VCP initialization error");
-        return INIT_FAILED;
-    }
-    
-    Print("VCP Logger initialized (Silver Tier)");
-    Print("Client-side signing mode: Broker-independent");
-    
-    return INIT_SUCCEEDED;
-}
-
-//+------------------------------------------------------------------+
-//| Trade transaction event handler                                  |
-//+------------------------------------------------------------------+
-void OnTradeTransaction(
-    const MqlTradeTransaction& trans,
-    const MqlTradeRequest& request,
-    const MqlTradeResult& result
-) {
-    // When order is added
-    if (trans.type == TRADE_TRANSACTION_ORDER_ADD) {
-        LogOrderAccepted(trans, request);
-    }
-    
-    // When order is executed
-    if (trans.type == TRADE_TRANSACTION_DEAL_ADD) {
-        LogOrderExecuted(trans, result);
-    }
-}
-
-//+------------------------------------------------------------------+
-//| Log order accepted to VCP                                        |
-//+------------------------------------------------------------------+
-void LogOrderAccepted(
-    const MqlTradeTransaction& trans,
-    const MqlTradeRequest& request
-) {
-    // Build VCP event
-    VCPEvent event;
-    event.event_id = vcp.GenerateUUIDv7();  // Generate UUID v7
-    event.event_type = "ORDER_ACCEPTED";
-    event.timestamp = TimeGMT();
-    
-    // Payload (JSON format)
-    string payload = StringFormat(
-        "{\"symbol\":\"%s\",\"side\":\"%s\",\"quantity\":\"%s\",\"price\":\"%s\",\"order_id\":%I64d}",
-        trans.symbol,
-        (trans.order_type == ORDER_TYPE_BUY || trans.order_type == ORDER_TYPE_BUY_LIMIT) ? "BUY" : "SELL",
-        DoubleToString(trans.volume, 2),  // Convert to String (maintain precision)
-        DoubleToString(trans.price, _Digits),  // Convert to String
-        trans.order
-    );
-    event.payload = payload;
-    
-    // Sign client-side and send to VCC
-    if (vcp.SendEventAsync(event)) {
-        Print("✓ VCP log sent successfully: ", event.event_id);
-    } else {
-        Print("✗ VCP log send failed (added to retry queue)");
-    }
-}
-
-//+------------------------------------------------------------------+
-//| Log order execution to VCP                                       |
-//+------------------------------------------------------------------+
-void LogOrderExecuted(
-    const MqlTradeTransaction& trans,
-    const MqlTradeResult& result
-) {
-    VCPEvent event;
-    event.event_id = vcp.GenerateUUIDv7();
-    event.event_type = "ORDER_EXECUTED";
-    event.timestamp = TimeGMT();
-    
-    string payload = StringFormat(
-        "{\"deal_id\":%I64d,\"order_id\":%I64d,\"symbol\":\"%s\",\"volume\":\"%s\",\"price\":\"%s\"}",
-        trans.deal,
-        trans.order,
-        trans.symbol,
-        DoubleToString(trans.volume, 2),
-        DoubleToString(trans.price, _Digits)
-    );
-    event.payload = payload;
-    
-    vcp.SendEventAsync(event);
-}
-
-//+------------------------------------------------------------------+
-//| Expert deinitialization function                                 |
-//+------------------------------------------------------------------+
-void OnDeinit(const int reason) {
-    // Flush pending events
-    vcp.FlushPendingEvents();
-    Print("VCP Logger stopped");
-}
-</pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- GitHub Repositories -->
-        <section id="github" class="mb-20">
-            <h2 class="text-4xl font-bold mb-8 text-gray-800">
-                <i class="fab fa-github mr-3 text-purple-600"></i>GitHub Repositories
-            </h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold mb-4">
-                        <i class="fas fa-book mr-2 text-gray-700"></i>VCP Specification
-                    </h3>
-                    <p class="text-gray-600 mb-4">
-                        Official specification, schema definitions, conformance tests
-                    </p>
-                    <a href="https://github.com/veritaschain/vcp-spec" 
-                       target="_blank" 
-                       rel="noopener"
-                       class="inline-block bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-6 rounded-lg transition">
-                        <i class="fab fa-github mr-2"></i>View vcp-spec
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold mb-4">
-                        <i class="fab fa-python mr-2 text-blue-500"></i>Python SDK
-                    </h3>
-                    <p class="text-gray-600 mb-4">
-                        vcp-core-py: Python library and documentation
-                    </p>
-                    <a href="https://github.com/veritaschain/vcp-core-py" 
-                       target="_blank" 
-                       rel="noopener"
-                       class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition">
-                        <i class="fab fa-github mr-2"></i>View vcp-core-py
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold mb-4">
-                        <i class="fas fa-bolt mr-2 text-red-500"></i>C++ SDK
-                    </h3>
-                    <p class="text-gray-600 mb-4">
-                        vcp-core-cpp: C++ library for HFT
-                    </p>
-                    <a href="https://github.com/veritaschain/vcp-core-cpp" 
-                       target="_blank" 
-                       rel="noopener"
-                       class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition">
-                        <i class="fab fa-github mr-2"></i>View vcp-core-cpp
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold mb-4">
-                        <i class="fas fa-chart-line mr-2 text-green-500"></i>MQL Bridge
-                    </h3>
-                    <p class="text-gray-600 mb-4">
-                        vcp-mql-bridge: MT4/MT5 integration library
-                    </p>
-                    <a href="https://github.com/veritaschain/vcp-mql-bridge" 
-                       target="_blank" 
-                       rel="noopener"
-                       class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition">
-                        <i class="fab fa-github mr-2"></i>View vcp-mql-bridge
-                    </a>
-                </div>
-            </div>
-
-            <div class="bg-purple-50 border-l-4 border-purple-500 p-6 rounded-r-lg mt-8">
-                <h3 class="text-xl font-bold mb-2 text-purple-900">
-                    <i class="fas fa-hands-helping mr-2"></i>Community Contributions
-                </h3>
-                <p class="text-purple-800 mb-4">
-                    VCP is an open standard. We welcome pull requests, bug reports, and feature proposals.
-                </p>
-                <a href="https://github.com/veritaschain" 
-                   target="_blank" 
-                   rel="noopener"
-                   class="text-purple-700 hover:text-purple-900 font-semibold">
-                    View GitHub Organization <i class="fas fa-arrow-right ml-1"></i>
-                </a>
-            </div>
-        </section>
-
-        <!-- Support & Contact -->
-        <section class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg shadow-2xl p-12 text-white text-center">
-            <h2 class="text-4xl font-bold mb-4">
-                <i class="fas fa-question-circle mr-3"></i>Need Technical Support?
-            </h2>
-            <p class="text-xl text-purple-100 mb-8">
-                Contact us for integration questions, PoC support, or enterprise deployment consultation
-            </p>
-            <div class="flex justify-center space-x-4">
-                <a href="mailto:developers@veritaschain.org" 
-                   class="bg-white text-purple-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-lg transition">
-                    <i class="fas fa-envelope mr-2"></i>Email Us
-                </a>
-                <a href="https://discord.gg/veritaschain" 
-                   target="_blank" 
-                   rel="noopener"
-                   class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold py-3 px-8 rounded-lg transition">
-                    <i class="fab fa-discord mr-2"></i>Discord Community
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12 mt-20">
+    <!-- ========== GITHUB REPOS ========== -->
+    <section id="github" class="bg-white py-16">
         <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
+                    <i class="fab fa-github text-dark mr-3"></i>GitHub Repositories
+                </h2>
+                <p class="text-gray-600 text-lg">Open source tools and specifications</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <!-- Spec Repo -->
+                <a href="https://github.com/veritaschain/vcp-specification" 
+                   target="_blank" rel="noopener"
+                   class="cta-card bg-light rounded-card p-6 block border-2 border-gray-200 hover:border-primary">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-file-contract text-2xl text-primary mr-3"></i>
+                        <h3 class="font-bold text-dark">vcp-specification</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">VCP v1.0 formal specification and schema definitions</p>
+                    <span class="text-xs text-primary font-medium"><i class="fab fa-github mr-1"></i>View on GitHub</span>
+                </a>
+
+                <!-- SDK Repo -->
+                <a href="https://github.com/veritaschain/vcp-sdk-spec" 
+                   target="_blank" rel="noopener"
+                   class="cta-card bg-light rounded-card p-6 block border-2 border-gray-200 hover:border-primary">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-cube text-2xl text-green-600 mr-3"></i>
+                        <h3 class="font-bold text-dark">vcp-sdk-spec</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">SDK implementation specification and API contracts</p>
+                    <span class="text-xs text-primary font-medium"><i class="fab fa-github mr-1"></i>View on GitHub</span>
+                </a>
+
+                <!-- Conformance Repo -->
+                <a href="https://github.com/veritaschain/vcp-conformance-guide" 
+                   target="_blank" rel="noopener"
+                   class="cta-card bg-light rounded-card p-6 block border-2 border-gray-200 hover:border-primary">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-vial text-2xl text-yellow-600 mr-3"></i>
+                        <h3 class="font-bold text-dark">vcp-conformance-guide</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">Conformance tests and example payloads for certification</p>
+                    <span class="text-xs text-primary font-medium"><i class="fab fa-github mr-1"></i>View on GitHub</span>
+                </a>
+            </div>
+
+            <!-- Support Banner -->
+            <div class="bg-accent/10 rounded-card p-8 text-center">
+                <h3 class="text-2xl font-bold text-dark mb-3">
+                    <i class="fas fa-headset text-accent mr-2"></i>Need Technical Support?
+                </h3>
+                <p class="text-gray-600 mb-6">Integration questions, PoC support, or enterprise deployment — we're here to help.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="mailto:developers@veritaschain.org" 
+                       class="inline-flex items-center justify-center bg-white text-primary font-bold py-3 px-8 rounded-card shadow-card hover:shadow-card-hover transition">
+                        <i class="fas fa-envelope mr-2"></i>Email Us
+                    </a>
+                    <a href="https://discord.gg/veritaschain" 
+                       target="_blank" rel="noopener"
+                       class="inline-flex items-center justify-center bg-accent text-white font-bold py-3 px-8 rounded-card shadow-card hover:bg-accent/90 transition">
+                        <i class="fab fa-discord mr-2"></i>Discord Community
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT FORM ========== -->
+    <section id="contact" class="container mx-auto px-6 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
+                <i class="fas fa-envelope text-primary mr-3"></i>Contact Us
+            </h2>
+            <p class="text-gray-600 text-lg">Have questions about VCP integration? Reach out to our technical team.</p>
+        </div>
+        
+        <div class="max-w-3xl mx-auto bg-white rounded-card shadow-card p-8">
+            <form action="https://formspree.io/f/xjkqpvqk" method="POST" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-dark mb-2">Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-card focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                               placeholder="Your name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-dark mb-2">Organization <span class="text-gray-400 text-xs">(optional)</span></label>
+                        <input type="text" name="organization"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-card focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                               placeholder="Company name">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-dark mb-2">Country / Region</label>
+                        <input type="text" name="country"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-card focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                               placeholder="e.g., Japan, United States">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-dark mb-2">Email <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-card focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                               placeholder="your@email.com">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-dark mb-2">Technical Interest <span class="text-red-500">*</span></label>
+                    <select name="technical_interest" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-card focus:ring-2 focus:ring-primary focus:border-transparent transition bg-white">
+                        <option value="">Select your area of interest</option>
+                        <option value="VCP Event Schema">VCP Event Schema</option>
+                        <option value="Canonical JSON / RFC 8785">Canonical JSON / RFC 8785</option>
+                        <option value="Merkle Proof / RFC 6962">Merkle Proof / RFC 6962</option>
+                        <option value="SDK Integration">SDK Integration (TS / Python)</option>
+                        <option value="Explorer API">Explorer API Integration</option>
+                        <option value="Sidecar Integration">Sidecar Integration (MT4/MT5)</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-dark mb-2">Use Case <span class="text-gray-400 text-xs">(optional)</span></label>
+                        <select name="use_case"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-card focus:ring-2 focus:ring-primary focus:border-transparent transition bg-white">
+                            <option value="">Select use case</option>
+                            <option value="Broker integration">Broker integration</option>
+                            <option value="Exchange infrastructure">Exchange infrastructure</option>
+                            <option value="Proprietary trading">Proprietary trading system</option>
+                            <option value="Risk engine">Risk engine / surveillance</option>
+                            <option value="Research">Research / academic</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-dark mb-2">Project Stage <span class="text-gray-400 text-xs">(optional)</span></label>
+                        <select name="project_stage"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-card focus:ring-2 focus:ring-primary focus:border-transparent transition bg-white">
+                            <option value="">Select stage</option>
+                            <option value="Research">Research / Evaluation</option>
+                            <option value="PoC">Proof of Concept (PoC)</option>
+                            <option value="Implementation">Implementation in progress</option>
+                            <option value="Production">Production-ready</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-dark mb-2">Message <span class="text-red-500">*</span></label>
+                    <textarea name="message" rows="4" required
+                              class="w-full px-4 py-3 border border-gray-300 rounded-card focus:ring-2 focus:ring-primary focus:border-transparent transition resize-none"
+                              placeholder="Describe your integration requirements or technical questions..."></textarea>
+                </div>
+
+                <div class="text-right">
+                    <button type="submit"
+                            class="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-bold py-3 px-10 rounded-card shadow-card transition transform hover:scale-105">
+                        <i class="fas fa-paper-plane mr-2"></i>Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <h4 class="text-xl font-bold mb-4">VeritasChain</h4>
-                    <p class="text-gray-400 text-sm">
-                        Building trust infrastructure for the algorithmic age through international standardization
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Building trust infrastructure for the algorithmic age through international standardization.
                     </p>
                 </div>
                 <div>
                     <h4 class="font-bold mb-4">Documentation</h4>
                     <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="/vcp/specification/" class="hover:text-white">Specification</a></li>
-                        <li><a href="/vcp/developers/" class="hover:text-white">Developer Guide</a></li>
-                        <li><a href="https://veritaschain.github.io/vcp-explorer-api/" class="hover:text-white">API Reference</a></li>
+                        <li><a href="/vcp/specification/" class="hover:text-white transition">Specification</a></li>
+                        <li><a href="/vcp/developers/" class="hover:text-white transition">Developer Hub</a></li>
+                        <li><a href="/vcp/explorer-api/" class="hover:text-white transition">API Reference</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-bold mb-4">Resources</h4>
                     <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="https://github.com/veritaschain" target="_blank" rel="noopener" class="hover:text-white">GitHub</a></li>
-                        <li><a href="/" class="hover:text-white">Blog</a></li>
-                        <li><a href="/propfirms/" class="hover:text-white">Case Studies</a></li>
+                        <li><a href="https://github.com/veritaschain" target="_blank" rel="noopener" class="hover:text-white transition">GitHub</a></li>
+                        <li><a href="/blog/" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="/propfirms/" class="hover:text-white transition">Case Studies</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-bold mb-4">Contact</h4>
                     <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="mailto:info@veritaschain.org" class="hover:text-white">info@veritaschain.org</a></li>
-                        <li><a href="https://discord.gg/veritaschain" target="_blank" rel="noopener" class="hover:text-white">Discord</a></li>
-                        <li><a href="https://twitter.com/veritaschain" target="_blank" rel="noopener" class="hover:text-white">Twitter</a></li>
+                        <li><a href="mailto:info@veritaschain.org" class="hover:text-white transition">info@veritaschain.org</a></li>
+                        <li><a href="https://discord.gg/veritaschain" target="_blank" rel="noopener" class="hover:text-white transition">Discord</a></li>
+                        <li><a href="https://twitter.com/veritaschain" target="_blank" rel="noopener" class="hover:text-white transition">Twitter</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
                 <p>&copy; 2025 VeritasChain Standards Organization. Licensed under CC BY 4.0.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Smooth scrolling
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
