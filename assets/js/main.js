@@ -159,80 +159,13 @@
   }
 
   // ===== Console Easter Egg =====
-  console.log('%c🔱 VeritasChain Protocol (VCP)', 'color: #3b82f6; font-size: 24px; font-weight: bold;');
+  console.log('%c🛡️ VeritasChain Protocol (VCP)', 'color: #3b82f6; font-size: 24px; font-weight: bold;');
   console.log('%cEncoding Trust in the Algorithmic Age', 'color: #8b5cf6; font-size: 14px; font-style: italic;');
   console.log('%c\nInterested in contributing? Visit: https://github.com/VeritasChain/vcp-spec', 'color: #10b981; font-size: 12px;');
 
-  // ===== Navigation Dropdown & Mobile Menu =====
-  const navToggle = document.querySelector('.nav-toggle');
-  const navMenu = document.querySelector('.nav-menu');
-  const dropdowns = document.querySelectorAll('.dropdown');
-  
-  // Mobile menu toggle
-  if (navToggle) {
-    navToggle.addEventListener('click', () => {
-      navToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
-      document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
-    });
-  }
-  
-  // Dropdown toggles
-  dropdowns.forEach(dropdown => {
-    const toggle = dropdown.querySelector('.dropdown-toggle');
-    
-    if (toggle) {
-      toggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        
-        // Close other dropdowns
-        dropdowns.forEach(d => {
-          if (d !== dropdown) {
-            d.classList.remove('active');
-          }
-        });
-        
-        // Toggle current dropdown
-        dropdown.classList.toggle('active');
-      });
-    }
-  });
-  
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.dropdown')) {
-      dropdowns.forEach(dropdown => {
-        dropdown.classList.remove('active');
-      });
-    }
-  });
-  
-  // Close mobile menu when clicking on a link
-  document.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', () => {
-      if (window.innerWidth <= 768) {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-      dropdowns.forEach(dropdown => {
-        dropdown.classList.remove('active');
-      });
-    });
-  });
-  
-  // Close mobile menu on resize
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      navToggle.classList.remove('active');
-      navMenu.classList.remove('active');
-      document.body.style.overflow = '';
-      dropdowns.forEach(dropdown => {
-        dropdown.classList.remove('active');
-      });
-    }
-  });
-
+  // ===== Navigation =====
+  // Navigation is handled by vcp-header.js web component
+  // No additional navigation code needed here
   // ===== Initialize =====
   console.log('✅ VCP Website initialized');
 })();

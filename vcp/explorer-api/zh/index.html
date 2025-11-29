@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP Explorer API v1.1 - VeritasChain Standards Organization</title>
+    <meta name="description" content="VCP Explorer API v1.1 - 通过密码学证明搜索、验证和审计VCP事件链">
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="shortcut icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/explorer-api.css" rel="stylesheet">
+    <style>
+        .lang-switcher {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            background: white;
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover {
+            background: #f3f4f6;
+            border-color: #1e40af;
+            color: #1e40af;
+        }
+        .lang-btn.active {
+            background: #1e40af;
+            color: white;
+            border-color: #1e40af;
+        }
+        @media (max-width: 768px) {
+            .lang-switcher {
+                top: 70px;
+                right: 10px;
+                padding: 0.35rem;
+            }
+            .lang-btn {
+                padding: 0.35rem 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+        <a href="/vcp/explorer-api/" class="lang-btn">English</a>
+        <a href="/vcp/explorer-api/ja/" class="lang-btn">日本語</a>
+        <a href="/vcp/explorer-api/zh/" class="lang-btn active">中文</a>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="https://veritaschain.org" class="logo">
+                    <i class="fas fa-shield-alt"></i> VeritasChain
+                </a>
+            </div>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="https://veritaschain.org/zh" class="navbar-item">首页</a>
+                <a href="https://veritaschain.org/zh/vcp" class="navbar-item">VCP协议</a>
+                <a href="https://veritaschain.org/zh/vcp/specification" class="navbar-item">技术规范</a>
+                <a href="https://veritaschain.org/zh/vcp/developers" class="navbar-item">开发者</a>
+                <a href="https://veritaschain.org/vcp/explorer-api/zh/" class="navbar-item active">Explorer API</a>
+                <a href="https://veritaschain.org/zh/certification" class="navbar-item">认证</a>
+                <a href="https://veritaschain.org/zh/contact" class="navbar-item navbar-cta">联系我们</a>
+            </div>
+            <div class="navbar-burger" id="navbarBurger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="header">
+        <div class="container">
+            <h1><i class="fas fa-search-dollar"></i> VCP Explorer API v1.1</h1>
+            <p class="subtitle">通过密码学证明搜索、验证和审计VCP事件链</p>
+            <a href="https://github.com/veritaschain/vcp-explorer-api" class="btn" target="_blank">
+                <i class="fab fa-github"></i> 在GitHub查看API
+            </a>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">概述</h2>
+            <p>VCP Explorer API为VeritasChain Protocol (VCP)提供事件搜索、Merkle证明检索和事件证书生成。完全符合<strong>VCP规范v1.0</strong>,使外部方(监管机构、经纪商、自营交易公司、审计员)能够独立验证记录的事件。</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-lock"></i> 密码学验证</h3>
+                    <p>符合RFC 6962的Merkle证明支持无需信任API的外部验证。实践"验证,不信任"原则。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-search"></i> 高级搜索</h3>
+                    <p>通过TraceID追踪完整交易生命周期。按符号、时间范围、事件类型和算法ID过滤。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-certificate"></i> 监管证书</h3>
+                    <p>生成包含事件数据、Merkle证明和密码签名的合规审计证书。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-cubes"></i> VCP模块结构</h3>
+                    <p>通过VCP-TRADE、VCP-RISK和VCP-GOV模块清晰分离关注点来组织事件数据。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-clock"></i> 纳秒精度</h3>
+                    <p>基于字符串的时间戳避免JavaScript 2^53限制,支持真正的纳秒级精度。</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-anchor"></i> 区块链锚定(计划中)</h3>
+                    <p>未来版本的VCP Explorer将支持将审计根锚定到以太坊以提供额外的不可变性保证。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Base URL Section -->
+    <section class="section" style="background-color: #f9fafb;">
+        <div class="container">
+            <h2 class="section-title">基础URL</h2>
+            <div class="base-url">
+                <code>https://explorer.veritaschain.org/api/v1</code>
+            </div>
+            <div class="alert alert-warning">
+                <strong>注意:</strong> Explorer API部署正在进行中。在实时端点可用之前,本文档作为实现参考。开发者不应在部署公告前尝试调用这些端点。
+            </div>
+        </div>
+    </section>
+
+    <!-- Authentication Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">认证</h2>
+            <p>所有API请求需要在请求头中使用API密钥进行认证:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">HTTP头</span>
+                </div>
+                <pre><code>X-VCP-API-Key: &lt;your_api_key&gt;</code></pre>
+            </div>
+            <div class="alert alert-warning">
+                <strong>安全:</strong> 不要在客户端代码中暴露API密钥。始终使用服务器端请求并妥善管理密钥。
+            </div>
+        </div>
+    </section>
+
+    <!-- API Endpoints Section -->
+    <section class="section" style="background-color: #f9fafb;">
+        <div class="container">
+            <h2 class="section-title">API端点</h2>
+
+            <!-- GET /v1/events -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="http-method get">GET</span>
+                    <span class="endpoint-path">/v1/events</span>
+                </div>
+                <p class="endpoint-description">通过符号、事件类型、trace_id、时间戳等搜索和过滤VCP事件。</p>
+                
+                <h3 class="section-subtitle">查询参数</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>参数</th>
+                                <th>类型</th>
+                                <th>必填</th>
+                                <th>说明</th>
+                                <th>示例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>symbol</code></td>
+                                <td>String</td>
+                                <td>否</td>
+                                <td>交易符号</td>
+                                <td>XAUUSD, EURUSD</td>
+                            </tr>
+                            <tr>
+                                <td><code>event_type</code></td>
+                                <td>String</td>
+                                <td>否</td>
+                                <td>事件类型名称</td>
+                                <td>ORD, EXE, REJ</td>
+                            </tr>
+                            <tr>
+                                <td><code>trace_id</code></td>
+                                <td>UUID v7</td>
+                                <td>否</td>
+                                <td>交易跟踪ID</td>
+                                <td>01934e3a-6a1b...</td>
+                            </tr>
+                            <tr>
+                                <td><code>start_time</code></td>
+                                <td>ISO8601</td>
+                                <td>否</td>
+                                <td>时间范围开始</td>
+                                <td>2025-11-24T00:00:00Z</td>
+                            </tr>
+                            <tr>
+                                <td><code>end_time</code></td>
+                                <td>ISO8601</td>
+                                <td>否</td>
+                                <td>时间范围结束</td>
+                                <td>2025-11-24T23:59:59Z</td>
+                            </tr>
+                            <tr>
+                                <td><code>limit</code></td>
+                                <td>Integer</td>
+                                <td>否</td>
+                                <td>最大结果数(1-500)</td>
+                                <td>20 (默认)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-subtitle">请求示例</h3>
+                <div class="code-block">
+                    <pre><code>GET https://explorer.veritaschain.org/api/v1/events?symbol=XAUUSD&limit=20
+
+curl -H "X-VCP-API-Key: your_api_key" \\
+  "https://explorer.veritaschain.org/api/v1/events?symbol=XAUUSD&limit=20"</code></pre>
+                </div>
+            </div>
+
+            <!-- GET /v1/events/{event_id} -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="http-method get">GET</span>
+                    <span class="endpoint-path">/v1/events/{event_id}</span>
+                </div>
+                <p class="endpoint-description">通过ID检索完整事件详情,包括头部、载荷(VCP-TRADE, VCP-RISK, VCP-GOV)和安全元数据。</p>
+            </div>
+
+            <!-- GET /v1/events/{event_id}/proof -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="http-method get">GET</span>
+                    <span class="endpoint-path">/v1/events/{event_id}/proof</span>
+                </div>
+                <p class="endpoint-description">返回VCP Merkle包含证明(RFC 6962样式),支持无需信任API的外部验证。</p>
+
+                <div class="alert alert-success">
+                    <strong>"验证,不信任":</strong> 此端点通过密码学证明支持事件真实性的独立验证。
+                </div>
+            </div>
+
+            <!-- GET /v1/events/{event_id}/certificate -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="http-method get">GET</span>
+                    <span class="endpoint-path">/v1/events/{event_id}/certificate</span>
+                </div>
+                <p class="endpoint-description">生成包含事件数据、Merkle证明、签名元数据和验证结果的监管级证书。</p>
+
+                <h3 class="section-subtitle">使用场景</h3>
+                <ul>
+                    <li><strong>监管审计:</strong> 提供算法交易事件的可验证证据</li>
+                    <li><strong>支付争议:</strong> 证明执行的真实性和时间</li>
+                    <li><strong>合规报告:</strong> 为金融监管机构生成审计跟踪</li>
+                    <li><strong>第三方验证:</strong> 支持外部方的独立验证</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Types Reference -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">事件类型参考</h2>
+            <p>VCP规范v1.0定义了固定的事件类型代码以确保实现间的一致性:</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>代码</th>
+                            <th>类型</th>
+                            <th>说明</th>
+                            <th>类别</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge">1</span></td>
+                            <td><code>SIG</code></td>
+                            <td>信号/决策生成</td>
+                            <td>交易</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">2</span></td>
+                            <td><code>ORD</code></td>
+                            <td>订单发送</td>
+                            <td>交易</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">3</span></td>
+                            <td><code>ACK</code></td>
+                            <td>订单确认</td>
+                            <td>交易</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">4</span></td>
+                            <td><code>EXE</code></td>
+                            <td>完全执行</td>
+                            <td>交易</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">5</span></td>
+                            <td><code>PRT</code></td>
+                            <td>部分成交</td>
+                            <td>交易</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">6</span></td>
+                            <td><code>REJ</code></td>
+                            <td>订单拒绝</td>
+                            <td>交易</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">7</span></td>
+                            <td><code>CXL</code></td>
+                            <td>订单取消</td>
+                            <td>交易</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">20</span></td>
+                            <td><code>ALG</code></td>
+                            <td>算法更新</td>
+                            <td>治理</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">21</span></td>
+                            <td><code>RSK</code></td>
+                            <td>风险参数更改</td>
+                            <td>风险</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">98</span></td>
+                            <td><code>HBT</code></td>
+                            <td>心跳</td>
+                            <td>系统</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">99</span></td>
+                            <td><code>ERR</code></td>
+                            <td>错误</td>
+                            <td>系统</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Merkle Proof Verification Guide -->
+    <section class="section" style="background-color: #f9fafb;">
+        <div class="container">
+            <h2 class="section-title">Merkle证明验证指南</h2>
+            <p>VCP Explorer API遵循RFC 6962证书透明度标准进行Merkle树证明。这使任何人都能独立验证事件真实性而无需信任API。</p>
+
+            <h3 class="section-subtitle">验证步骤</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>1. 获取事件</h3>
+                    <p>使用<code>GET /v1/events/:id</code>检索完整事件详情。从安全部分提取<code>event_hash</code>。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>2. 获取证明</h3>
+                    <p>使用<code>GET /v1/events/:id/proof</code>获取Merkle证明。包含审计路径和根哈希。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>3. 计算根</h3>
+                    <p>在二叉Merkle树结构中使用SHA-256组合event_hash和audit_path。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>4. 验证根</h3>
+                    <p>比较计算的根与返回的merkle_root。如果匹配,事件已验证。</p>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <strong>重要性:</strong> 此验证过程确保事件在记录后无法被篡改。区块链锚定提供额外的不可变性层,因为Merkle根永久记录在以太坊主网上。
+            </div>
+        </div>
+    </section>
+
+    <!-- HTTP Status Codes -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">HTTP状态码</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>状态</th>
+                            <th>含义</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge success">200</span></td>
+                            <td>OK</td>
+                            <td>请求成功</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">400</span></td>
+                            <td>Bad Request</td>
+                            <td>无效的请求参数或格式错误的JSON</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">401</span></td>
+                            <td>Unauthorized</td>
+                            <td>无效或缺少API密钥</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">404</span></td>
+                            <td>Not Found</td>
+                            <td>未找到事件ID</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">429</span></td>
+                            <td>Too Many Requests</td>
+                            <td>超过速率限制</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">500</span></td>
+                            <td>Server Error</td>
+                            <td>内部服务器错误</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Resources -->
+    <section class="section" style="background-color: #f9fafb;">
+        <div class="container">
+            <h2 class="section-title">相关资源</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-file-alt"></i> VCP规范v1.0</h3>
+                    <p>VeritasChain Protocol的完整技术规范。</p>
+                    <a href="https://github.com/veritaschain/vcp-spec" target="_blank" style="color: #1e40af; font-weight: 600;">
+                        查看规范 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fab fa-github"></i> VCP Explorer API GitHub</h3>
+                    <p>Explorer API的源代码和实现参考。</p>
+                    <a href="https://github.com/veritaschain/vcp-explorer-api" target="_blank" style="color: #1e40af; font-weight: 600;">
+                        查看仓库 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-check-circle"></i> 一致性包v1.0</h3>
+                    <p>VCP实现的测试工具和验证套件。</p>
+                    <a href="https://github.com/veritaschain/vcp-conformance-guide" target="_blank" style="color: #1e40af; font-weight: 600;">
+                        查看一致性指南 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-certificate"></i> VeritasChain认证(VC-Certified)</h3>
+                    <p>申请VC-Certified认证以证明您系统的透明度和VCP合规性。</p>
+                    <a href="https://veritaschain.org/zh/certification" target="_blank" style="color: #1e40af; font-weight: 600;">
+                        了解认证 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-home"></i> VSO主页</h3>
+                    <p>VeritasChain Standards Organization主网站。</p>
+                    <a href="https://veritaschain.org/zh" target="_blank" style="color: #1e40af; font-weight: 600;">
+                        访问VSO <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p><strong>VCP Explorer API v1.1</strong> | Built by <strong>VeritasChain Standards Organization (VSO)</strong></p>
+            <p style="margin-top: 0.5rem; opacity: 0.9;">VCP规范v1.0 | 生产就绪 | "验证,不信任"</p>
+            <div class="footer-links">
+                <a href="https://github.com/veritaschain" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://veritaschain.org/zh" target="_blank"><i class="fas fa-home"></i> VSO主页</a>
+                <a href="https://explorer.veritaschain.org" target="_blank"><i class="fas fa-search"></i> VCP Explorer</a>
+                <a href="https://veritaschain.org/zh/contact" target="_blank"><i class="fas fa-envelope"></i> 联系我们</a>
+            </div>
+            <p style="margin-top: 1.5rem; font-size: 0.875rem; opacity: 0.8;">© 2025 VeritasChain Standards Organization. Apache 2.0 License.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script src="/assets/js/explorer-api.js"></script>
+</body>
+</html>

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>導入事例 - VeritasChain Protocol (VCP)</title>
+    <meta name="description" content="VeritasChain Protocol (VCP) の実際の導入事例。金融プラットフォーム、プロップファーム、ブローカー、取引所における暗号学的監査可能性の実装方法。">
+    <meta name="keywords" content="VCP, VeritasChain, 導入事例, プロップファーム, ブローカー, 取引所, DeFi, アルゴリズム取引, 監査">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="導入事例 - VeritasChain Protocol (VCP)">
+    <meta property="og:description" content="VCPの実際の導入事例。金融プラットフォームにおける暗号学的監査可能性の実装方法。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/use-cases/ja/">
+    <meta property="og:image" content="https://veritaschain.org/VeritasChain-banner.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="導入事例 - VeritasChain Protocol (VCP)">
+    <meta name="twitter:description" content="VCPの実際の導入事例。金融プラットフォームにおける暗号学的監査可能性の実装方法。">
+    <meta name="twitter:image" content="https://veritaschain.org/VeritasChain-banner.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/use-cases/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/use-cases/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/use-cases/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/use-cases/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/img/logo.png" type="image/png">
+    <link rel="shortcut icon" href="../../assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="../../assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="../../assets/css/main.css" rel="stylesheet">
+    
+    <style>
+        /* Use Cases specific styles */
+        .hero-use-cases {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            min-height: 60vh;
+            padding-top: 120px;
+        }
+        
+        .use-case-section {
+            padding: 4rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .use-case-section:last-child {
+            border-bottom: none;
+        }
+        
+        .challenge-list, .solution-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .challenge-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: #fca5a5;
+        }
+        
+        .solution-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: #86efac;
+        }
+        
+        .challenge-list li i, .solution-list li i {
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+        
+        .use-case-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .use-case-summary {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: #93c5fd;
+            margin-top: 1.5rem;
+        }
+        
+        .case-study-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        .before-after-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .before-card, .after-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+        
+        .before-card {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .after-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .architecture-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .architecture-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-4px);
+        }
+        
+        .architecture-item i {
+            font-size: 2rem;
+            color: #3b82f6;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="https://veritaschain.org/ja/" class="nav-logo">
+                <span class="logo-icon">🔱</span>
+                <span class="logo-text">VeritasChain</span>
+            </a>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="nav-menu">
+                <div class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        VCP <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="https://veritaschain.org/vcp/specification/" class="dropdown-item" target="_blank" rel="noopener">仕様書</a>
+                        <a href="https://veritaschain.org/explorer/ja/" class="dropdown-item" target="_blank" rel="noopener">エクスプローラー</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        ソリューション <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="https://veritaschain.org/solutions/exchanges/ja/" class="dropdown-item" target="_blank" rel="noopener">取引所・ブローカー向け</a>
+                        <a href="https://veritaschain.org/propfirms/ja/" class="dropdown-item" target="_blank" rel="noopener">プロップファーム向け</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        認証 <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="https://veritaschain.org/certified/ja/#modules" class="dropdown-item" target="_blank" rel="noopener">VC-Certified</a>
+                        <a href="https://veritaschain.org/certified/faq/ja" class="dropdown-item" target="_blank" rel="noopener">FAQ（範囲・制限）</a>
+                        <a href="https://veritaschain.org/ja/certified/apply" class="dropdown-item" target="_blank" rel="noopener">認証申請</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        標準化 <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="https://github.com/VeritasChain/vcp-spec" class="dropdown-item" target="_blank" rel="noopener">VCPプロトコル</a>
+                        <a href="https://veritaschain.org/vcp/developers/ja/" class="dropdown-item" target="_blank" rel="noopener">開発者 / 統合</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        開発者 <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="https://veritaschain.org/developers/" class="dropdown-item" target="_blank" rel="noopener">概要</a>
+                        <a href="https://veritaschain.github.io/vcp-explorer-api/" class="dropdown-item" target="_blank" rel="noopener">Explorer API</a>
+                        <a href="https://raw.githubusercontent.com/veritaschain/vcp-explorer-api/main/openapi.yaml" class="dropdown-item" target="_blank" rel="noopener">OpenAPI Spec</a>
+                        <a href="https://github.com/veritaschain/vcp-explorer-api" class="dropdown-item" target="_blank" rel="noopener">GitHub</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        会社情報 <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="https://veritaschain.org/vso" class="dropdown-item" target="_blank" rel="noopener">VSO</a>
+                        <a href="https://veritaschain.org/ja/company/" class="dropdown-item" target="_blank" rel="noopener">会社概要</a>
+                        <a href="https://veritaschain.org/partners/" class="dropdown-item" target="_blank" rel="noopener">エコシステムパートナー</a>
+                        <a href="https://veritaschain.org/legal/" class="dropdown-item" target="_blank" rel="noopener">法的情報</a>
+                    </div>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        サポート <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="https://veritaschain.org/support/ja/" class="dropdown-item" target="_blank" rel="noopener">サポート</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <a href="../zh/" class="lang-link">🇨🇳 中文</a>
+        <span class="lang-separator">|</span>
+        <a href="./" class="lang-link active">🇯🇵 日本語</a>
+        <span class="lang-separator">|</span>
+        <a href="../" class="lang-link">🇬🇧 English</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero hero-use-cases">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                VeritasChain Protocol (VCP)<br>導入事例
+            </h1>
+            <p class="hero-subtitle">
+                金融プラットフォーム、プロップファーム、ブローカー、取引所における暗号学的監査可能性の実装方法
+            </p>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto mt-6">
+                VCPは、透明性、完全性、規制対応可能な監査証跡を確保するため、
+                アルゴリズム取引環境全体で既に探索・採用が進んでいます。
+            </p>
+        </div>
+    </section>
+
+    <!-- Why Use Cases Matter -->
+    <section class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">VCP導入が即座に価値を生む理由</h2>
+            <p class="text-center text-gray-400 max-w-4xl mx-auto text-lg leading-relaxed">
+                規制義務が完全に発効する前でも、金融機関は既に暗号学的に検証可能な監査証跡を求めています。
+                以下は、VCPが現在の実際のエコシステムでどのように適用されているかの具体例です。
+            </p>
+        </div>
+    </section>
+
+    <!-- Use Case #1: Prop Firms -->
+    <section class="section section-dark use-case-section">
+        <div class="container">
+            <div class="max-w-4xl mx-auto">
+                <div class="use-case-number">1</div>
+                <h2 class="text-3xl font-bold text-white mb-4">紛争防止と信頼回復</h2>
+                <p class="text-xl text-blue-400 mb-6">プロップファーム（自己勘定取引会社）</p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-red-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle"></i> 課題
+                        </h3>
+                        <ul class="challenge-list">
+                            <li><i class="fas fa-times-circle"></i> <span>不透明な内部ログ</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>ペイアウト拒否・約定価格の疑義</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>トレーダーと運営側の「信頼崩壊」</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-green-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-check-circle"></i> VCP導入後
+                        </h3>
+                        <ul class="solution-list">
+                            <li><i class="fas fa-check-circle"></i> <span>全ての取引イベント（SIG → ORD → ACK → EXE）が暗号学的に検証可能</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>"不正の疑い" がなくなり、紛争時間が70–90%減少</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>新規ユーザーの信頼が急伸し、ブランド価値回復</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="use-case-summary">
+                    "透明性で顧客獲得コストが劇的に下がる"
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Case #2: Retail / CFD / FX Brokers -->
+    <section class="section section-dark use-case-section">
+        <div class="container">
+            <div class="max-w-4xl mx-auto">
+                <div class="use-case-number">2</div>
+                <h2 class="text-3xl font-bold text-white mb-4">最良執行の確保とコンプライアンス対応の監査証跡</h2>
+                <p class="text-xl text-blue-400 mb-6">リテール / CFD / FX ブローカー</p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-red-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle"></i> 課題
+                        </h3>
+                        <ul class="challenge-list">
+                            <li><i class="fas fa-times-circle"></i> <span>最良執行の証明が困難</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>数百万件の注文ログの完全性を維持できない</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>RTS 6 / RTS 25 対応コストが高い</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-green-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-check-circle"></i> VCP導入後
+                        </h3>
+                        <ul class="solution-list">
+                            <li><i class="fas fa-check-circle"></i> <span>全てのイベントをtamper-evident hash chainsで記録</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>MiFID II準拠のミリ秒精度のタイムスタンプ</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>規制当局向けのエビデンス提出が1日→数分へ短縮</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="use-case-summary">
+                    "規制対応コストを削減しながら、透明性を最大化"
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Case #3: Exchanges & Dark Pools -->
+    <section class="section section-dark use-case-section">
+        <div class="container">
+            <div class="max-w-4xl mx-auto">
+                <div class="use-case-number">3</div>
+                <h2 class="text-3xl font-bold text-white mb-4">透明なマッチングと注文の完全性</h2>
+                <p class="text-xl text-blue-400 mb-6">中央集権型取引所・ダークプール</p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-red-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle"></i> 課題
+                        </h3>
+                        <ul class="challenge-list">
+                            <li><i class="fas fa-times-circle"></i> <span>マッチングエンジン内部のブラックボックス問題</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>価格優位性（price priority）の証明が必要</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>マーケット操作に対する国際的な監視強化</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-green-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-check-circle"></i> VCP導入後
+                        </h3>
+                        <ul class="solution-list">
+                            <li><i class="fas fa-check-circle"></i> <span>マッチング処理前後の状態遷移をMerkle proofsで証明</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>外部監査人が部分的なログだけで全体の完全性を検証可能</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>国際的な信頼水準向上 & 新規上場審査で有利に</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="use-case-summary">
+                    "マッチングエンジンの透明性、その一歩先へ"
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Case #4: DeFi Protocols -->
+    <section class="section section-dark use-case-section">
+        <div class="container">
+            <div class="max-w-4xl mx-auto">
+                <div class="use-case-number">4</div>
+                <h2 class="text-3xl font-bold text-white mb-4">オンチェーン＋オフチェーンロジックの軽量証明</h2>
+                <p class="text-xl text-blue-400 mb-6">DeFiプロトコル / L2ブリッジ</p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-red-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle"></i> 課題
+                        </h3>
+                        <ul class="challenge-list">
+                            <li><i class="fas fa-times-circle"></i> <span>オフチェーンのオペレーションを証明できない</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>ブリッジの内部ロジックが不透明</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>資金紛失時に「何が起きたか」を追跡できない</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-green-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-check-circle"></i> VCP導入後
+                        </h3>
+                        <ul class="solution-list">
+                            <li><i class="fas fa-check-circle"></i> <span>Merkle-root anchoringにより、オフチェーンイベントをオンチェーン監査へ</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>スマコン・L2・オラクルとの連携が容易</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>セキュリティ監査の質が上がる</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="use-case-summary">
+                    "オフチェーンの透明性を、オンチェーンへ繋ぐ"
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Case #5: Institutional Algo-Trading -->
+    <section class="section section-dark use-case-section">
+        <div class="container">
+            <div class="max-w-4xl mx-auto">
+                <div class="use-case-number">5</div>
+                <h2 class="text-3xl font-bold text-white mb-4">機関投資家向けデスクの完全なライフサイクル説明責任</h2>
+                <p class="text-xl text-blue-400 mb-6">機関投資家向けアルゴトレーディングシステム</p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-red-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle"></i> 課題
+                        </h3>
+                        <ul class="challenge-list">
+                            <li><i class="fas fa-times-circle"></i> <span>アルゴ執行の意思決定過程がブラックボックス化</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>監査時に"説明不能"な部分が増えている</span></li>
+                            <li><i class="fas fa-times-circle"></i> <span>取引戦略の透明性に対する規制圧力</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-green-400 mb-4 flex items-center gap-2">
+                            <i class="fas fa-check-circle"></i> VCP導入後
+                        </h3>
+                        <ul class="solution-list">
+                            <li><i class="fas fa-check-circle"></i> <span>Intent → Parameters → Order → Executionが一本の暗号証跡で結合</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>モデルガバナンス（AIガバナンス）強化</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span>外部監査人の検証が容易に</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="use-case-summary">
+                    "AIトレーディングに、説明可能性を"
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Study -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="section-title">ケーススタディ — 匿名 Early Adopter #1</h2>
+                <p class="text-center text-gray-400 mb-8">
+                    VCPの技術導入メリットが一目で理解できる、典型的なモデルケースです。
+                </p>
+                
+                <div class="case-study-card">
+                    <div class="before-after-grid">
+                        <div class="before-card">
+                            <h3 class="text-xl font-bold text-red-400 mb-4 flex items-center gap-2">
+                                <i class="fas fa-times-circle"></i> 導入前
+                            </h3>
+                            <ul class="space-y-3 text-gray-300">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-minus text-red-400 mt-1"></i>
+                                    <span>取引ログの整合性が証明できず、ユーザーからのクレームが多発</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-minus text-red-400 mt-1"></i>
+                                    <span>社内監査に数日かかる</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-minus text-red-400 mt-1"></i>
+                                    <span>外部監査人に内部アクセス権を渡す必要があった</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="after-card">
+                            <h3 class="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+                                <i class="fas fa-check-circle"></i> 導入後
+                            </h3>
+                            <ul class="space-y-3 text-gray-300">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-400 mt-1"></i>
+                                    <span>全イベントをVCPエンコード → 暗号証跡として即検証可能</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-400 mt-1"></i>
+                                    <span>監査工数：2日 → 20分</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-400 mt-1"></i>
+                                    <span>紛争件数：大幅減</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-400 mt-1"></i>
+                                    <span>コンプラチームのコスト削減</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-400 mt-1"></i>
+                                    <span>VC-Certified Silver Tierを取得予定</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Implementation Examples -->
+    <section class="section section-light">
+        <div class="container">
+            <h2 class="section-title" style="color: var(--color-text-dark);">技術実装例</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+                VCPは、様々な取引アーキテクチャに複数のパターンで統合できます。
+            </p>
+            
+            <div class="architecture-grid max-w-4xl mx-auto">
+                <div class="architecture-item" style="background: white; border: 2px solid #e2e8f0;">
+                    <i class="fas fa-server"></i>
+                    <h4 class="font-semibold text-gray-800">MT4/MT5 サイドカー</h4>
+                    <p class="text-sm text-gray-600 mt-2">非侵入型の並列ログアーキテクチャ</p>
+                </div>
+                <div class="architecture-item" style="background: white; border: 2px solid #e2e8f0;">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h4 class="font-semibold text-gray-800">FIX Gateway Shadow-logging</h4>
+                    <p class="text-sm text-gray-600 mt-2">監査用に全FIXメッセージをキャプチャ</p>
+                </div>
+                <div class="architecture-item" style="background: white; border: 2px solid #e2e8f0;">
+                    <i class="fas fa-cubes"></i>
+                    <h4 class="font-semibold text-gray-800">マイクロサービス統合</h4>
+                    <p class="text-sm text-gray-600 mt-2">VCP-Encoder → Merkle Batch → Anchor</p>
+                </div>
+                <div class="architecture-item" style="background: white; border: 2px solid #e2e8f0;">
+                    <i class="fas fa-chart-line"></i>
+                    <h4 class="font-semibold text-gray-800">CEXマッチングエンジン</h4>
+                    <p class="text-sm text-gray-600 mt-2">注文マッチングとの直接統合</p>
+                </div>
+                <div class="architecture-item" style="background: white; border: 2px solid #e2e8f0;">
+                    <i class="fas fa-link"></i>
+                    <h4 class="font-semibold text-gray-800">DeFiノード統合</h4>
+                    <p class="text-sm text-gray-600 mt-2">オフチェーンイベントの証明</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section section-certified">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">VCPを導入しませんか？</h2>
+            <p class="text-xl text-white/90 max-w-3xl mx-auto mb-8">
+                プロップファーム、ブローカー、取引所、DeFiプロトコルのいずれを運営していても、
+                VCPはシステムに必要な暗号学的に検証可能な監査レイヤーを提供します。
+            </p>
+            
+            <div class="cta-buttons">
+                <a href="https://veritaschain.org/ja/certified/apply" class="btn btn-certified" target="_blank" rel="noopener">
+                    <i class="fas fa-certificate"></i> VC-Certified を取得
+                </a>
+                <a href="https://veritaschain.org/vcp/specification/" class="btn btn-secondary" target="_blank" rel="noopener">
+                    <i class="fas fa-book"></i> VCP仕様書をダウンロード
+                </a>
+                <a href="mailto:info@veritaschain.org" class="btn btn-secondary">
+                    <i class="fas fa-envelope"></i> 技術チームに連絡
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 VeritasChain Standards Organization (VSO). All rights reserved.</p>
+        <p class="footer-independence">
+            VSOは独立した標準化団体です。VCPは技術仕様であり、金融商品ではありません。
+        </p>
+        <p class="footer-disclaimer">
+            VC-Certifiedは技術的準拠のみを認証し、金融的安全性やシステムの信頼性を保証するものではありません。
+        </p>
+        <p class="footer-revision">
+            ページ改訂: 2025-11-29 | VCP v1.0
+        </p>
+    </footer>
+
+    <!-- Navigation JavaScript -->
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Dropdown functionality
+        const dropdowns = document.querySelectorAll('.dropdown');
+        
+        dropdowns.forEach(dropdown => {
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Close other dropdowns on mobile
+                if (window.innerWidth <= 1024) {
+                    dropdowns.forEach(other => {
+                        if (other !== dropdown) {
+                            other.classList.remove('active');
+                        }
+                    });
+                }
+                
+                dropdown.classList.toggle('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-menu') && !e.target.closest('.nav-toggle')) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                dropdowns.forEach(dropdown => dropdown.classList.remove('active'));
+            }
+        });
+        
+        // Fade in animation on scroll
+        const fadeInElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        fadeInElements.forEach(el => fadeInObserver.observe(el));
+    </script>
+</body>
+</html>

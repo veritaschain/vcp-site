@@ -20,6 +20,10 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 - ✅ **VC-Certified Program:** [certified/index.html](certified/index.html) ⭐ NEW
   - 🇬🇧 English certification program page
   - Compliance tiers, target audience, module coverage
+- 🏦 **Prop Firms Landing:** [propfirms/index.html](propfirms/index.html) ⭐ NEW
+  - 🇬🇧 English: [propfirms/index.html](propfirms/index.html)
+  - 🇯🇵 Japanese: [propfirms/ja/index.html](propfirms/ja/index.html)
+  - Trust recovery solution for proprietary trading firms
 
 ### Available Languages (VCP Landing)
 
@@ -42,6 +46,14 @@ vcp-site/
 │   ├── index.html          # 🇬🇧 Certification program page
 │   └── static/
 │       └── style.css       # Custom styles
+├── propfirms/              # ⭐ Prop Firms Landing (NEW)
+│   ├── index.html          # 🇬🇧 English version
+│   ├── ja/
+│   │   └── index.html      # 🇯🇵 Japanese version
+│   ├── css/
+│   │   └── styles.css      # Custom styles
+│   └── js/
+│       └── main.js         # Custom JavaScript
 ├── vso/                    # VSO Pages
 │   ├── index.html          # VSO landing page
 │   ├── policies/           # VSO Independence Statement
