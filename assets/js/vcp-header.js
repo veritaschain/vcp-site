@@ -52,10 +52,12 @@ class VCPHeader extends HTMLElement {
         this.translations = {
             en: {
                 vcp: 'VCP',
+                whatIsVcp: 'What is VCP?',
                 specification: 'Specification',
                 explorer: 'Explorer',
                 launchExplorer: '🚀 Launch Explorer',
                 solutions: 'Solutions',
+                useCases: 'Use Cases',
                 forExchanges: 'For Exchanges & Brokers',
                 forPropFirms: 'For Prop Firms',
                 certification: 'Certification',
@@ -75,14 +77,17 @@ class VCPHeader extends HTMLElement {
                 partners: 'Ecosystem Partners',
                 pressKit: 'Press Kit',
                 legal: 'Legal',
+                mediaPress: 'Media & Press',
                 support: 'Support'
             },
             ja: {
                 vcp: 'VCP',
+                whatIsVcp: 'VCPとは',
                 specification: '仕様書',
                 explorer: 'エクスプローラー',
                 launchExplorer: '🚀 エクスプローラーを起動',
                 solutions: 'ソリューション',
+                useCases: 'ユースケース',
                 forExchanges: '取引所・ブローカー向け',
                 forPropFirms: 'プロップファーム向け',
                 certification: '認証',
@@ -102,14 +107,17 @@ class VCPHeader extends HTMLElement {
                 partners: 'エコシステムパートナー',
                 pressKit: 'プレスキット',
                 legal: '法務情報',
+                mediaPress: 'メディア',
                 support: 'サポート'
             },
             zh: {
                 vcp: 'VCP',
+                whatIsVcp: '什么是VCP',
                 specification: '技术规范',
                 explorer: '浏览器',
                 launchExplorer: '🚀 启动浏览器',
                 solutions: '解决方案',
+                useCases: '用例',
                 forExchanges: '交易所和经纪商',
                 forPropFirms: '自营交易公司',
                 certification: '认证',
@@ -129,6 +137,7 @@ class VCPHeader extends HTMLElement {
                 partners: '生态系统合作伙伴',
                 pressKit: '媒体资料',
                 legal: '法律信息',
+                mediaPress: '媒体与新闻',
                 support: '支持'
             }
         };
@@ -181,6 +190,7 @@ class VCPHeader extends HTMLElement {
                             ${t.vcp} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
+                            <a href="/what-is-vcp/" class="dropdown-item">${t.whatIsVcp}</a>
                             <a href="/vcp/specification/" class="dropdown-item">${t.specification}</a>
                             <a href="/explorer/" class="dropdown-item">${t.explorer}</a>
                             <a href="/explorer/app/" class="dropdown-item dropdown-item-highlight">${t.launchExplorer}</a>
@@ -192,6 +202,7 @@ class VCPHeader extends HTMLElement {
                             ${t.solutions} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
+                            <a href="/use-cases/" class="dropdown-item">${t.useCases}</a>
                             <a href="/solutions/exchanges/" class="dropdown-item">${t.forExchanges}</a>
                             <a href="/propfirms/" class="dropdown-item">${t.forPropFirms}</a>
                         </div>
@@ -240,6 +251,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/partners/" class="dropdown-item">${t.partners}</a>
                             <a href="/press/" class="dropdown-item">${t.pressKit}</a>
                             <a href="/legal/" class="dropdown-item">${t.legal}</a>
+                            <a href="/media/" class="dropdown-item">${t.mediaPress}</a>
                         </div>
                     </div>
 
