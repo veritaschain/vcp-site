@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate HTML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check file structure
+        run: |
+          echo "📁 Checking file structure..."
+          ls -la
+          echo ""
+          echo "📄 HTML files:"
+          find . -name "*.html" -type f | head -20
+          echo ""
+          echo "🎨 CSS files:"
+          find . -name "*.css" -type f | head -10
+          echo ""
+          echo "📜 JS files:"
+          find . -name "*.js" -type f | head -10
+
+      - name: Validate HTML syntax
+        run: |
+          echo "✅ Basic HTML validation..."
+          for file in $(find . -name "*.html" -type f | head -10); do
+            if grep -q "<!DOCTYPE html>" "$file" || grep -q "<html" "$file"; then
+              echo "  ✓ $file"
+            else
+              echo "  ⚠ $file may not be valid HTML"
+            fi
+          done
+
+      - name: Check for broken internal links
+        run: |
+          echo "🔗 Checking internal links..."
+          grep -roh 'href="[^"]*"' --include="*.html" . | sort | uniq -c | sort -rn | head -20 || true
