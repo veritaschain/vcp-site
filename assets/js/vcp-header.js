@@ -52,18 +52,22 @@ class VCPHeader extends HTMLElement {
         this.translations = {
             en: {
                 vcp: 'VCP',
+                whatIsVcp: 'What is VCP?',
                 specification: 'Specification',
                 explorer: 'Explorer',
                 launchExplorer: '🚀 Launch Explorer',
                 solutions: 'Solutions',
+                useCases: 'Use Cases',
                 forExchanges: 'For Exchanges & Brokers',
                 forPropFirms: 'For Prop Firms',
+                vcpSec: 'VCP & SEC',
                 certification: 'Certification',
                 vcCertified: 'VC-Certified',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
                 vcpProtocol: 'VCP Protocol',
+                standardizationRoadmap: 'Standardization Roadmap',
                 developersIntegration: 'Developers / Integration',
                 developers: 'Developers',
                 about: 'About',
@@ -75,22 +79,27 @@ class VCPHeader extends HTMLElement {
                 partners: 'Ecosystem Partners',
                 pressKit: 'Press Kit',
                 legal: 'Legal',
+                mediaPress: 'Media & Press',
                 support: 'Support'
             },
             ja: {
                 vcp: 'VCP',
+                whatIsVcp: 'VCPとは',
                 specification: '仕様書',
                 explorer: 'エクスプローラー',
                 launchExplorer: '🚀 エクスプローラーを起動',
                 solutions: 'ソリューション',
+                useCases: 'ユースケース',
                 forExchanges: '取引所・ブローカー向け',
                 forPropFirms: 'プロップファーム向け',
+                vcpSec: 'VCP & SEC',
                 certification: '認証',
                 vcCertified: 'VC-Certified',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
                 standards: '標準規格',
                 vcpProtocol: 'VCPプロトコル',
+                standardizationRoadmap: '標準化ロードマップ',
                 developersIntegration: '開発者 / 統合',
                 developers: '開発者',
                 about: '概要',
@@ -102,22 +111,27 @@ class VCPHeader extends HTMLElement {
                 partners: 'エコシステムパートナー',
                 pressKit: 'プレスキット',
                 legal: '法務情報',
+                mediaPress: 'メディア',
                 support: 'サポート'
             },
             zh: {
                 vcp: 'VCP',
+                whatIsVcp: '什么是VCP',
                 specification: '技术规范',
                 explorer: '浏览器',
                 launchExplorer: '🚀 启动浏览器',
                 solutions: '解决方案',
+                useCases: '用例',
                 forExchanges: '交易所和经纪商',
                 forPropFirms: '自营交易公司',
+                vcpSec: 'VCP & SEC',
                 certification: '认证',
                 vcCertified: 'VC-Certified',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
                 standards: '标准',
                 vcpProtocol: 'VCP协议',
+                standardizationRoadmap: '标准化路线图',
                 developersIntegration: '开发者 / 集成',
                 developers: '开发者',
                 about: '关于',
@@ -129,6 +143,7 @@ class VCPHeader extends HTMLElement {
                 partners: '生态系统合作伙伴',
                 pressKit: '媒体资料',
                 legal: '法律信息',
+                mediaPress: '媒体与新闻',
                 support: '支持'
             }
         };
@@ -181,6 +196,7 @@ class VCPHeader extends HTMLElement {
                             ${t.vcp} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
+                            <a href="/what-is-vcp/" class="dropdown-item">${t.whatIsVcp}</a>
                             <a href="/vcp/specification/" class="dropdown-item">${t.specification}</a>
                             <a href="/explorer/" class="dropdown-item">${t.explorer}</a>
                             <a href="/explorer/app/" class="dropdown-item dropdown-item-highlight">${t.launchExplorer}</a>
@@ -192,8 +208,10 @@ class VCPHeader extends HTMLElement {
                             ${t.solutions} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
+                            <a href="/use-cases/" class="dropdown-item">${t.useCases}</a>
                             <a href="/solutions/exchanges/" class="dropdown-item">${t.forExchanges}</a>
                             <a href="/propfirms/" class="dropdown-item">${t.forPropFirms}</a>
+                            <a href="/sec/" class="dropdown-item">${t.vcpSec}</a>
                         </div>
                     </div>
 
@@ -214,6 +232,7 @@ class VCPHeader extends HTMLElement {
                         </button>
                         <div class="dropdown-menu">
                             <a href="https://github.com/VeritasChain/vcp-spec" class="dropdown-item" target="_blank" rel="noopener">${t.vcpProtocol}</a>
+                            <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
                             <a href="/vcp/developers/" class="dropdown-item">${t.developersIntegration}</a>
                         </div>
                     </div>
@@ -240,6 +259,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/partners/" class="dropdown-item">${t.partners}</a>
                             <a href="/press/" class="dropdown-item">${t.pressKit}</a>
                             <a href="/legal/" class="dropdown-item">${t.legal}</a>
+                            <a href="/media/" class="dropdown-item">${t.mediaPress}</a>
                         </div>
                     </div>
 
