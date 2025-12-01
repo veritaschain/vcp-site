@@ -79,6 +79,9 @@ class VCPHeader extends HTMLElement {
                 partners: 'Ecosystem Partners',
                 pressKit: 'Press Kit',
                 legal: 'Legal',
+                privacy: 'Privacy Policy',
+                terms: 'Terms of Use',
+                impressum: 'Impressum',
                 mediaPress: 'Media & Press',
                 support: 'Support'
             },
@@ -111,6 +114,9 @@ class VCPHeader extends HTMLElement {
                 partners: 'エコシステムパートナー',
                 pressKit: 'プレスキット',
                 legal: '法務情報',
+                privacy: '個人情報保護方針',
+                terms: '利用規約',
+                impressum: 'インプリント',
                 mediaPress: 'メディア',
                 support: 'サポート'
             },
@@ -143,6 +149,9 @@ class VCPHeader extends HTMLElement {
                 partners: '生态系统合作伙伴',
                 pressKit: '媒体资料',
                 legal: '法律信息',
+                privacy: '隐私政策',
+                terms: '服务条款',
+                impressum: '出版信息',
                 mediaPress: '媒体与新闻',
                 support: '支持'
             }
@@ -259,6 +268,9 @@ class VCPHeader extends HTMLElement {
                             <a href="/partners/" class="dropdown-item">${t.partners}</a>
                             <a href="/press/" class="dropdown-item">${t.pressKit}</a>
                             <a href="/legal/" class="dropdown-item">${t.legal}</a>
+                            <a href="/privacy/" class="dropdown-item">${t.privacy}</a>
+                            <a href="/terms/" class="dropdown-item">${t.terms}</a>
+                            <a href="/impressum/" class="dropdown-item">${t.impressum}</a>
                             <a href="/media/" class="dropdown-item">${t.mediaPress}</a>
                         </div>
                     </div>
