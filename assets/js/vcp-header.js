@@ -60,12 +60,14 @@ class VCPHeader extends HTMLElement {
                 useCases: 'Use Cases',
                 forExchanges: 'For Exchanges & Brokers',
                 forPropFirms: 'For Prop Firms',
+                vcpSec: 'VCP & SEC',
                 certification: 'Certification',
                 vcCertified: 'VC-Certified',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
                 vcpProtocol: 'VCP Protocol',
+                standardizationRoadmap: 'Standardization Roadmap',
                 developersIntegration: 'Developers / Integration',
                 developers: 'Developers',
                 about: 'About',
@@ -90,12 +92,14 @@ class VCPHeader extends HTMLElement {
                 useCases: 'ユースケース',
                 forExchanges: '取引所・ブローカー向け',
                 forPropFirms: 'プロップファーム向け',
+                vcpSec: 'VCP & SEC',
                 certification: '認証',
                 vcCertified: 'VC-Certified',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
                 standards: '標準規格',
                 vcpProtocol: 'VCPプロトコル',
+                standardizationRoadmap: '標準化ロードマップ',
                 developersIntegration: '開発者 / 統合',
                 developers: '開発者',
                 about: '概要',
@@ -120,12 +124,14 @@ class VCPHeader extends HTMLElement {
                 useCases: '用例',
                 forExchanges: '交易所和经纪商',
                 forPropFirms: '自营交易公司',
+                vcpSec: 'VCP & SEC',
                 certification: '认证',
                 vcCertified: 'VC-Certified',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
                 standards: '标准',
                 vcpProtocol: 'VCP协议',
+                standardizationRoadmap: '标准化路线图',
                 developersIntegration: '开发者 / 集成',
                 developers: '开发者',
                 about: '关于',
@@ -205,6 +211,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/use-cases/" class="dropdown-item">${t.useCases}</a>
                             <a href="/solutions/exchanges/" class="dropdown-item">${t.forExchanges}</a>
                             <a href="/propfirms/" class="dropdown-item">${t.forPropFirms}</a>
+                            <a href="/sec/" class="dropdown-item">${t.vcpSec}</a>
                         </div>
                     </div>
 
@@ -225,6 +232,7 @@ class VCPHeader extends HTMLElement {
                         </button>
                         <div class="dropdown-menu">
                             <a href="https://github.com/VeritasChain/vcp-spec" class="dropdown-item" target="_blank" rel="noopener">${t.vcpProtocol}</a>
+                            <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
                             <a href="/vcp/developers/" class="dropdown-item">${t.developersIntegration}</a>
                         </div>
                     </div>

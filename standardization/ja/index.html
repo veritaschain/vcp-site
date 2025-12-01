@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standardization Roadmap: Path to IETF Internet-Draft & RFC - VeritasChain Protocol</title>
+    <meta name="description" content="VCPのIETF RFC標準化への道筋。既存RFCとの技術的整合性、RFC互換設計、将来の標準化ロードマップについて解説します。">
+    <meta name="keywords" content="VCP, IETF, RFC, Internet-Draft, 標準化, VeritasChain Protocol, アルゴリズム取引, 暗号監査">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Standardization Roadmap: Path to IETF Internet-Draft & RFC - VeritasChain Protocol">
+    <meta property="og:description" content="VCPのIETF RFC標準化への道筋。RFC互換設計と将来の標準化ロードマップ。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/standardization/ja/">
+    <meta property="og:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="Standardization Roadmap: Path to IETF Internet-Draft & RFC - VeritasChain Protocol">
+    <meta name="twitter:description" content="VCPのIETF RFC標準化への道筋。RFC互換設計と将来の標準化ロードマップ。">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/standardization/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/standardization/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/standardization/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/standardization/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    
+    <style>
+        /* Standardization Page Custom Styles */
+        .hero-std {
+            background: linear-gradient(135deg, #0f172a 0%, #1a365d 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-std::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.15) 0%, transparent 50%);
+            animation: pulseGlow 10s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+        
+        .status-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .roadmap-step {
+            position: relative;
+            padding-left: 3rem;
+        }
+        
+        .roadmap-step::before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 2.5rem;
+            bottom: -2rem;
+            width: 2px;
+            background: linear-gradient(to bottom, #3b82f6, #10b981);
+        }
+        
+        .roadmap-step:last-child::before {
+            display: none;
+        }
+        
+        .step-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .step-current {
+            background: linear-gradient(135deg, #059669, #10b981);
+            border: 2px solid #34d399;
+            animation: pulse 2s infinite;
+        }
+        
+        .step-future {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            border: 2px solid #60a5fa;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+        }
+        
+        .rfc-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+        }
+        
+        .rfc-card {
+            transition: all 0.3s ease;
+        }
+        
+        .rfc-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .status-not-submitted {
+            background: rgba(100, 116, 139, 0.2);
+            color: #94a3b8;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        
+        .status-under-consideration {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-900">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+    
+    <!-- Hero Section -->
+    <section class="hero-std min-h-[60vh] flex items-center justify-center px-4 py-20" style="padding-top: 100px;">
+        <div class="relative z-10 max-w-5xl mx-auto text-center">
+            <!-- Icon -->
+            <div class="mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-green-500 mb-6 shadow-2xl">
+                    <i class="fas fa-balance-scale text-3xl text-white"></i>
+                </div>
+            </div>
+            
+            <!-- Title -->
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                標準化ロードマップ
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="text-xl md:text-2xl text-blue-200 mb-8 max-w-3xl mx-auto leading-relaxed">
+                VCP v1.0 — IETF RFC への道筋
+            </p>
+            
+            <!-- Status Box -->
+            <div class="inline-block bg-slate-800/80 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
+                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">現在のIETFステータス</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="status-indicator status-not-submitted">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Internet-Draft: <strong>未提出</strong></span>
+                    </div>
+                    <div class="status-indicator status-not-submitted">
+                        <i class="fas fa-users"></i>
+                        <span>Working Group: <strong>未形成</strong></span>
+                    </div>
+                    <div class="status-indicator status-under-consideration">
+                        <i class="fas fa-road"></i>
+                        <span>目標: <strong>十分な実績蓄積後に提出を検討</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Current Status (Honest Statement) -->
+    <section class="py-20 px-4 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="inline-block bg-amber-500/20 text-amber-400 px-4 py-1 rounded-full text-sm font-semibold mb-4">
+                    セクション 1
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    現在地の正直なステータス
+                </h2>
+            </div>
+            
+            <div class="status-card rounded-2xl p-8">
+                <div class="prose prose-lg prose-invert max-w-none">
+                    <p class="text-slate-300 text-lg leading-relaxed mb-6">
+                        <strong class="text-white">VeritasChain Protocol (VCP) v1.0 は、IETF RFC を強く意識して設計されています</strong>が、現時点では Internet-Draft の提出や、特定の IETF ワーキンググループでの標準化プロセスは開始していません。
+                    </p>
+                    <p class="text-slate-300 text-lg leading-relaxed">
+                        本ページでは、VCP がどのような<strong class="text-blue-400">技術的前提</strong>に立っており、将来的にどのような<strong class="text-green-400">標準化経路</strong>を想定しているかを説明します。
+                    </p>
+                </div>
+                
+                <div class="mt-8 p-6 bg-slate-900/50 rounded-xl border-l-4 border-blue-500">
+                    <h4 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fas fa-info-circle text-blue-400"></i>
+                        なぜこれが重要か
+                    </h4>
+                    <p class="text-slate-300">
+                        標準化ステータスについて透明性を保つことは、VCPのコア哲学と一致しています：<em>マーケティング上の主張ではなく、暗号学的な真実</em>。私たちは、時期尚早な発表ではなく、技術的なメリットと運用実績によって信頼性を獲得することを信じています。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Technical Alignment with Existing RFCs -->
+    <section class="py-20 px-4 bg-slate-800">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="inline-block bg-green-500/20 text-green-400 px-4 py-1 rounded-full text-sm font-semibold mb-4">
+                    セクション 2
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    既存 RFC との技術的整合性
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    VCP v1.0 は以下の IETF RFC と互換性のある形で設計されています。これにより、将来的な Internet-Draft への変換や、他の RFC ベースシステムとの相互運用性を確保しています。
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- RFC 8785 -->
+                <div class="rfc-card bg-slate-700/50 rounded-xl p-6 border border-slate-600 hover:border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                            <i class="fas fa-code text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="rfc-badge bg-blue-500/20 text-blue-300 border border-blue-500/30">RFC 8785</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">JSON Canonicalization Scheme (JCS)</h3>
+                    <p class="text-slate-400 text-sm">
+                        決定論的なJSONシリアライゼーションにより、すべての実装で暗号ハッシュ用の同一バイトシーケンスを保証。
+                    </p>
+                </div>
+                
+                <!-- RFC 6962 -->
+                <div class="rfc-card bg-slate-700/50 rounded-xl p-6 border border-slate-600 hover:border-green-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center">
+                            <i class="fas fa-tree text-green-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="rfc-badge bg-green-500/20 text-green-300 border border-green-500/30">RFC 6962</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Certificate Transparency</h3>
+                    <p class="text-slate-400 text-sm">
+                        CTパターンに準拠したMerkle Tree監査設計により、効率的な包含証明と改ざん検出を実現。
+                    </p>
+                </div>
+                
+                <!-- UUIDv7 -->
+                <div class="rfc-card bg-slate-700/50 rounded-xl p-6 border border-slate-600 hover:border-purple-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                            <i class="fas fa-fingerprint text-purple-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="rfc-badge bg-purple-500/20 text-purple-300 border border-purple-500/30">draft-ietf-uuidrev</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">UUIDv7</h3>
+                    <p class="text-slate-400 text-sm">
+                        タイムスタンプ埋め込み、ソート可能、グローバルにユニークな識別子をイベントIDとして使用。
+                    </p>
+                </div>
+                
+                <!-- RFC 8032 -->
+                <div class="rfc-card bg-slate-700/50 rounded-xl p-6 border border-slate-600 hover:border-red-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center">
+                            <i class="fas fa-key text-red-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="rfc-badge bg-red-500/20 text-red-300 border border-red-500/30">RFC 8032</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Ed25519 署名</h3>
+                    <p class="text-slate-400 text-sm">
+                        エドワーズ曲線デジタル署名により、高セキュリティ、優れたパフォーマンス、コンパクトな署名を実現。将来のPQCサポートも想定。
+                    </p>
+                </div>
+                
+                <!-- RFC 3339 -->
+                <div class="rfc-card bg-slate-700/50 rounded-xl p-6 border border-slate-600 hover:border-amber-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                            <i class="fas fa-clock text-amber-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="rfc-badge bg-amber-500/20 text-amber-300 border border-amber-500/30">RFC 3339</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">タイムスタンプ</h3>
+                    <p class="text-slate-400 text-sm">
+                        ISO 8601互換の日時フォーマットにより、システム間で一貫したタイムスタンプ表現を実現。
+                    </p>
+                </div>
+                
+                <!-- FIPS 180-4 -->
+                <div class="rfc-card bg-slate-700/50 rounded-xl p-6 border border-slate-600 hover:border-cyan-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                            <i class="fas fa-hashtag text-cyan-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="rfc-badge bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">FIPS 180-4</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">SHA-256</h3>
+                    <p class="text-slate-400 text-sm">
+                        NIST承認のセキュアハッシュアルゴリズムをすべてのハッシュチェーンとMerkle Tree操作に使用。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-12 p-6 bg-slate-900/50 rounded-xl border border-green-500/30">
+                <p class="text-slate-300 text-center">
+                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                    この整合性により、<strong class="text-white">将来の Internet-Draft への変換</strong>と<strong class="text-white">他の RFC ベースシステムとの相互運用性</strong>を確保しています。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Roadmap to IETF RFC -->
+    <section class="py-20 px-4 bg-gradient-to-b from-slate-800 to-slate-900">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="inline-block bg-purple-500/20 text-purple-400 px-4 py-1 rounded-full text-sm font-semibold mb-4">
+                    セクション 3
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    IETF RFC までの想定ロードマップ
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    IETF RFC 化は、<strong class="text-white">短期的な目標ではなく中長期の選択肢</strong>として位置づけています。まずは VCP v1.x を実運用で成熟させた上で、次のステップを検討します。
+                </p>
+            </div>
+            
+            <div class="space-y-8">
+                <!-- Step 1 -->
+                <div class="roadmap-step">
+                    <div class="step-icon step-current text-white">1</div>
+                    <div class="bg-slate-700/50 rounded-xl p-6 border border-green-500/30">
+                        <div class="flex flex-wrap items-center gap-3 mb-3">
+                            <h3 class="text-xl font-bold text-white">実装と運用実績の蓄積</h3>
+                            <span class="rfc-badge bg-green-500/20 text-green-400 border border-green-500/30">現在のフェーズ</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            実世界での実装からデプロイメント経験を積み、フィードバックを収集しています。
+                        </p>
+                        <ul class="space-y-2 text-slate-400 text-sm">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-400"></i>
+                                Early Adopter Program からのフィードバック収集
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-400"></i>
+                                VC-Certified Silver / Gold の運用実績
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-400"></i>
+                                VCP Explorer / API の本番稼働実績
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="roadmap-step">
+                    <div class="step-icon step-future text-white">2</div>
+                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+                        <div class="flex flex-wrap items-center gap-3 mb-3">
+                            <h3 class="text-xl font-bold text-white">コミュニティ・ドラフト版の公開</h3>
+                            <span class="rfc-badge bg-blue-500/20 text-blue-300 border border-blue-500/30">予定</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            vcp-spec をベースに、IETF Internet-Draft テンプレートに沿った v0.x 草案を GitHub で公開し、コミュニティレビューを受けます。
+                        </p>
+                        <div class="text-sm text-slate-400">
+                            <i class="fas fa-github mr-2"></i>
+                            予想フォーマット: <code class="bg-slate-800 px-2 py-1 rounded">draft-vso-vcp-00.txt</code>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="roadmap-step">
+                    <div class="step-icon step-future text-white">3</div>
+                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+                        <div class="flex flex-wrap items-center gap-3 mb-3">
+                            <h3 class="text-xl font-bold text-white">関連 IETF コミュニティとの対話</h3>
+                            <span class="rfc-badge bg-blue-500/20 text-blue-300 border border-blue-500/30">予定</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            関連する IETF ワーキンググループとの対話、および潜在的な BoF (Birds of a Feather) セッションへの参加。
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-4 mt-4">
+                            <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-600">
+                                <h4 class="font-bold text-blue-400 mb-2">潜在的な WG</h4>
+                                <p class="text-sm text-slate-400">OPSAWG, SEC Area, RTG Area, ART Area</p>
+                            </div>
+                            <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-600">
+                                <h4 class="font-bold text-purple-400 mb-2">代替経路</h4>
+                                <p class="text-sm text-slate-400">適切な WG がなければ BoF セッション → 新 WG 形成</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="roadmap-step">
+                    <div class="step-icon step-future text-white">4</div>
+                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+                        <div class="flex flex-wrap items-center gap-3 mb-3">
+                            <h3 class="text-xl font-bold text-white">Internet-Draft 提出検討</h3>
+                            <span class="rfc-badge bg-slate-500/20 text-slate-300 border border-slate-500/30">将来</span>
+                        </div>
+                        <p class="text-slate-300">
+                            十分な採用実績とフィードバックが集まり次第、<a href="https://datatracker.ietf.org/" target="_blank" rel="noopener" class="text-blue-400 hover:underline">datatracker.ietf.org</a> への正式な Internet-Draft 提出を検討します。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="roadmap-step">
+                    <div class="step-icon step-future text-white">5</div>
+                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+                        <div class="flex flex-wrap items-center gap-3 mb-3">
+                            <h3 class="text-xl font-bold text-white">WG 採用 & RFC 化プロセス</h3>
+                            <span class="rfc-badge bg-slate-500/20 text-slate-300 border border-slate-500/30">目標</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            WG 採用が決まった場合：WG 内での改訂、running code 実績の継続、IETF Last Call → IESG レビュー → RFC 化。
+                        </p>
+                        <div class="text-sm text-slate-400 p-4 bg-slate-800/50 rounded-lg">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            IETF は「<strong>ラフコンセンサスと動くコード</strong>」の原則で運営 — デプロイメント実績が不可欠です。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: How Stakeholders Can Participate -->
+    <section class="py-20 px-4 bg-slate-900">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="inline-block bg-blue-500/20 text-blue-400 px-4 py-1 rounded-full text-sm font-semibold mb-4">
+                    セクション 4
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    関係者の関わり方
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    VCP の標準化プロセスは、実装者と利用者からのフィードバックに強く依存します。
+                </p>
+            </div>
+            
+            <div class="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl p-8 border border-blue-500/30">
+                <div class="prose prose-lg prose-invert max-w-none">
+                    <p class="text-slate-300 text-lg leading-relaxed mb-6">
+                        <strong class="text-blue-400">Early Adopter Program</strong> や <strong class="text-green-400">VC-Certified</strong> の参加企業は、将来の Internet-Draft / RFC の内容に対して<strong class="text-white">実質的な影響力</strong>を持つことになります。
+                    </p>
+                    <p class="text-slate-300 text-lg leading-relaxed">
+                        標準に「<em>従う</em>」だけでなく、「<em class="text-white">設計に参加する</em>」立場になれることが、VCP エコシステムの大きな特徴です。
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-600 text-center">
+                        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blue-500/20 flex items-center justify-center">
+                            <i class="fas fa-users text-blue-400"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-2">実装者</h4>
+                        <p class="text-sm text-slate-400">実装フィードバックが仕様改善に直接反映されます</p>
+                    </div>
+                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-600 text-center">
+                        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <i class="fas fa-certificate text-green-400"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-2">VC-Certified 企業</h4>
+                        <p class="text-sm text-slate-400">認定取得企業は標準化議論での発言権を獲得</p>
+                    </div>
+                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-600 text-center">
+                        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-purple-500/20 flex items-center justify-center">
+                            <i class="fas fa-balance-scale text-purple-400"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-2">規制当局</h4>
+                        <p class="text-sm text-slate-400">規制の観点からのインプットで初日からコンプライアンス整合を確保</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Status Summary -->
+    <section class="py-16 px-4 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Summary Card -->
+                <div class="bg-slate-800/80 backdrop-blur-sm rounded-2xl p-8 border border-slate-700">
+                    <h3 class="text-xl font-bold text-white mb-6 text-center">
+                        <i class="fas fa-clipboard-check text-blue-400 mr-2"></i>
+                        まとめ：現在の IETF ステータス
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700">
+                                    <td class="py-3 font-semibold text-slate-400">Internet-Draft</td>
+                                    <td class="py-3"><span class="text-amber-400 font-mono">未提出</span></td>
+                                </tr>
+                                <tr class="border-b border-slate-700">
+                                    <td class="py-3 font-semibold text-slate-400">Working Group</td>
+                                    <td class="py-3"><span class="text-amber-400 font-mono">未形成</span></td>
+                                </tr>
+                                <tr class="border-b border-slate-700">
+                                    <td class="py-3 font-semibold text-slate-400">RFC 互換性</td>
+                                    <td class="py-3"><span class="text-green-400 font-mono">整合性を意識して設計</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 font-semibold text-slate-400">目標</td>
+                                    <td class="py-3"><span class="text-blue-400 font-mono">十分な実績蓄積後に提出を検討</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Potential IANA Registries Card -->
+                <div class="bg-gradient-to-br from-purple-900/40 to-blue-900/40 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/30">
+                    <h3 class="text-xl font-bold text-white mb-6 text-center">
+                        <i class="fas fa-database text-purple-400 mr-2"></i>
+                        想定される IANA レジストリ
+                    </h3>
+                    <p class="text-slate-400 text-sm mb-6 text-center">
+                        VCP が標準化された場合、以下のレジストリを申請予定：
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                            <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-list-alt text-amber-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">VCP Event Type Registry</h4>
+                                <p class="text-xs text-slate-400">OrderSubmitted, OrderFilled, OrderCanceled 等</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                            <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-hashtag text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">VCP Hash Algorithm Registry</h4>
+                                <p class="text-xs text-slate-400">SHA-256, SHA-384, SHA-512, SHA3-256 等</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                            <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-key text-red-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">VCP Signature Algorithm Registry</h4>
+                                <p class="text-xs text-slate-400">Ed25519, ECDSA-P256, RSA-2048, Dilithium2, Falcon-512</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-4 text-center italic">
+                        レジストリの詳細は I-D プロセス中に確定予定。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 bg-slate-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                今すぐ参加する
+            </h2>
+            <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
+                将来の標準に影響を与える最善の方法は、今 VCP を実装・デプロイすることです。検証可能なアルゴリズム取引インフラを構築する組織のエコシステムに参加しましょう。
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/vcp/specification/" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg shadow-blue-500/25">
+                    <i class="fas fa-book"></i>
+                    仕様書を読む
+                </a>
+                <a href="/certified/apply/" class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg shadow-green-500/25">
+                    <i class="fas fa-certificate"></i>
+                    VC-Certified 申請
+                </a>
+                <a href="https://github.com/VeritasChain/vcp-spec" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 border border-slate-600">
+                    <i class="fab fa-github"></i>
+                    GitHub で見る
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-12 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="font-bold text-white mb-4">VCPプロトコル</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="/what-is-vcp/ja/" class="hover:text-blue-400 transition-colors">VCPとは？</a></li>
+                        <li><a href="/vcp/specification/" class="hover:text-blue-400 transition-colors">仕様書</a></li>
+                        <li><a href="/vcp/developers/" class="hover:text-blue-400 transition-colors">開発者向け</a></li>
+                        <li><a href="/standardization/ja/" class="hover:text-blue-400 transition-colors text-blue-400">標準化</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">認証</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="/certified/" class="hover:text-blue-400 transition-colors">VC-Certified</a></li>
+                        <li><a href="/certified/apply/" class="hover:text-blue-400 transition-colors">申請する</a></li>
+                        <li><a href="/certified/faq/" class="hover:text-blue-400 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">組織</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="/vso/" class="hover:text-blue-400 transition-colors">VSOについて</a></li>
+                        <li><a href="/vso/policies/" class="hover:text-blue-400 transition-colors">ポリシー</a></li>
+                        <li><a href="/partners/" class="hover:text-blue-400 transition-colors">パートナー</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">リソース</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="https://github.com/VeritasChain/vcp-spec" target="_blank" rel="noopener" class="hover:text-blue-400 transition-colors">GitHub</a></li>
+                        <li><a href="/support/" class="hover:text-blue-400 transition-colors">サポート</a></li>
+                        <li><a href="/press/" class="hover:text-blue-400 transition-colors">プレス</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 text-center text-sm text-slate-500">
+                <p>&copy; 2025 VeritasChain Standards Organization (VSO). All rights reserved.</p>
+                <p class="mt-2">VCP 仕様書は <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" class="text-blue-400 hover:underline">CC BY 4.0</a> ライセンスで提供されています。</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
