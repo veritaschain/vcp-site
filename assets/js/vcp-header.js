@@ -300,78 +300,39 @@ class VCPHeader extends HTMLElement {
 
     detectLanguage() {
         const path = window.location.pathname;
-        // Support both URL patterns:
-        // 1. Suffix pattern: /path/to/page/ja or /path/to/page/zh
-        // 2. Prefix pattern: /ja/path/to/page or /zh/path/to/page
-        
-        // Check suffix pattern first (newer style)
+        // Language code is at the end of the path: /path/to/page/ja or /path/to/page/zh
         if (path.endsWith('/ja') || path.endsWith('/ja/')) {
             return 'ja';
         } else if (path.endsWith('/zh') || path.endsWith('/zh/')) {
             return 'zh';
         }
-        
-        // Check prefix pattern (legacy style)
-        if (path.startsWith('/ja/') || path === '/ja') {
-            return 'ja';
-        } else if (path.startsWith('/zh/') || path === '/zh') {
-            return 'zh';
-        }
-        
         return 'en';
     }
 
     generateLangUrls() {
         const path = window.location.pathname;
 
-        // Detect which URL pattern is being used
-        const isPrefixPattern = path.startsWith('/ja/') || path.startsWith('/zh/') || path === '/ja' || path === '/zh';
-        
-        if (isPrefixPattern) {
-            // Prefix pattern: /ja/company/ or /zh/company/
-            // Remove language prefix to get the base path
-            let basePath = path;
-            if (path.startsWith('/ja/')) {
-                basePath = path.replace(/^\/ja\//, '/');
-            } else if (path.startsWith('/zh/')) {
-                basePath = path.replace(/^\/zh\//, '/');
-            } else if (path === '/ja' || path === '/zh') {
-                basePath = '/';
-            }
-            
-            // Ensure basePath ends with /
-            if (!basePath.endsWith('/')) {
-                basePath = basePath + '/';
-            }
-            
-            // Generate URLs with prefix pattern
-            return {
-                en: basePath,
-                ja: '/ja' + basePath.slice(0, -1),  // Remove trailing slash for cleaner URL
-                zh: '/zh' + basePath.slice(0, -1)
-            };
-        } else {
-            // Suffix pattern: /company/ja/ or /company/zh/
-            // Remove existing language suffix to get the base path
-            let basePath = path;
-            if (path.endsWith('/ja') || path.endsWith('/ja/')) {
-                basePath = path.replace(/\/ja\/?$/, '/');
-            } else if (path.endsWith('/zh') || path.endsWith('/zh/')) {
-                basePath = path.replace(/\/zh\/?$/, '/');
-            }
-
-            // Ensure basePath ends with /
-            if (!basePath.endsWith('/')) {
-                basePath = basePath + '/';
-            }
-
-            // Generate URLs with suffix pattern
-            return {
-                en: basePath,
-                ja: basePath + 'ja',
-                zh: basePath + 'zh'
-            };
+        // Remove existing language suffix to get the base path
+        // Pattern: /path/to/page/ja or /path/to/page/zh
+        let basePath = path;
+        if (path.endsWith('/ja') || path.endsWith('/ja/')) {
+            basePath = path.replace(/\/ja\/?$/, '/');
+        } else if (path.endsWith('/zh') || path.endsWith('/zh/')) {
+            basePath = path.replace(/\/zh\/?$/, '/');
         }
+
+        // Ensure basePath ends with /
+        if (!basePath.endsWith('/')) {
+            basePath = basePath + '/';
+        }
+
+        // Generate URLs for each language
+        // English is the base path, ja/zh are suffixes
+        return {
+            en: basePath,
+            ja: basePath + 'ja',
+            zh: basePath + 'zh'
+        };
     }
 
     generateLangSwitcherLinks(availableLangs, langUrls, currentLang) {
