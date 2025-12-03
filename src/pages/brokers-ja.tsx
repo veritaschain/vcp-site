@@ -6,12 +6,12 @@ export const brokersPageJa = () => html`
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ブローカー向けVCP - Best Executionを暗号学的に証明 | VeritasChain</title>
-    <meta name="description" content="Best Executionを暗号学的に証明できる唯一の方法。MiFID II RTS 25/28を設計段階でクリア。サーバー侵入不要のSidecar方式で迅速導入。">
+    <title>機関投資家向けVCP - 規制対応グレードの執行検証 | VeritasChain</title>
+    <meta name="description" content="Best Executionを規制対応グレードのエビデンスで検証。MiFID II RTS 25/28およびEU AI Act第12条に準拠した監査証跡を機関投資家向けデューデリジェンスに。">
     
     <!-- OGP Meta Tags -->
-    <meta property="og:title" content="ブローカー向けVCP - Best Executionを暗号学的に証明">
-    <meta property="og:description" content="世界唯一のアルゴリズム取引監査プロトコル。Best Executionを数学的に証明。MiFID IIに設計段階で準拠。">
+    <meta property="og:title" content="機関投資家向けVCP - 規制対応グレードの執行検証">
+    <meta property="og:description" content="世界唯一のアルゴリズム取引監査プロトコル。Best Executionを規制対応グレードのエビデンスで検証。機関投資家向けデューデリジェンスに対応。">
     <meta property="og:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
     <meta property="og:url" content="https://veritaschain.org/brokers/ja">
     <meta property="og:type" content="website">
@@ -167,14 +167,13 @@ export const brokersPageJa = () => html`
                     
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6 leading-tight">
                         Best Executionを、
-                        <span class="block text-emerald-400">数学的に証明せよ。</span>
+                        <span class="block text-emerald-400">規制対応グレードで検証。</span>
                     </h1>
                     
                     <p class="text-xl text-slate-300 mb-8 leading-relaxed">
-                        従来のログ保存は、もはや証拠ではありません。<br>
-                        VCPは、御社の取引システムの横で<span class="highlight-text text-white font-semibold">「サイドカー」</span>として稼働し、<br>
-                        MiFID II RTS 25/28 に準拠した<br>
-                        <span class="highlight-text text-white font-semibold">「改ざん不能な監査証跡」</span>を自動生成します。
+                        VCPは御社の執行システムの横で<span class="highlight-text text-white font-semibold">サイドカー</span>として稼働し、<br>
+                        <span class="highlight-text text-white font-semibold">MiFID II RTS 25 / EU AI Act 第12条</span>に準拠した<br>
+                        <span class="highlight-text text-white font-semibold">機関投資家向けデューデリジェンス</span>対応の監査証跡を生成します。
                     </p>
                     
                     <div class="flex flex-wrap gap-4">
@@ -298,18 +297,18 @@ export const brokersPageJa = () => html`
                     </div>
                 </div>
                 
-                <!-- Card 3: Non-Intrusive Sidecar -->
+                <!-- Card 3: Non-Intrusive Sidecar & Trusted Data Layer -->
                 <div class="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-purple-500">
                     <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-plug text-3xl text-purple-600"></i>
+                        <i class="fas fa-layer-group text-3xl text-purple-600"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Non-Intrusive Sidecar</h3>
-                    <p class="text-sm text-purple-600 font-semibold mb-4">サーバー側に侵入しない Sidecar 方式だから導入が速い</p>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Non-Intrusive Sidecar & Trusted Data Layer</h3>
+                    <p class="text-sm text-purple-600 font-semibold mb-4">ゼロフリクション導入と監査プラットフォーム互換性</p>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        既存のマッチングエンジンやMT4/cTraderサーバーのコアロジックを書き換える必要はありません。
+                        既存のマッチングエンジンやFIXゲートウェイの改修は不要。VCPはサイドカーとしてAPI経由でログを受け取り、非同期で署名・保存処理を行います。
                     </p>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        VCPは「サイドカー（並走型）」としてAPI経由でログを受け取り、非同期で署名・保存処理を行います。
+                        CompliAI™ や Omnia™ などの監査プラットフォームと互換性があり、暗号学的に検証可能な入力データを提供します。
                     </p>
                     <div class="bg-purple-50 p-4 rounded-lg">
                         <p class="text-sm text-purple-800 font-medium">
@@ -400,48 +399,48 @@ export const brokersPageJa = () => html`
         <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
-                    導入シナリオ
+                    機関投資家向けユースケース
                 </h2>
-                <p class="text-slate-600">VCPの具体的な活用方法</p>
+                <p class="text-slate-600">大手ブローカー・ECNがVCPを活用する方法</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-6">
-                <!-- Case 1 -->
+                <!-- Case 1: Institutional Due Diligence -->
                 <div class="bg-white rounded-xl p-6 use-case-card">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-medal text-xl text-emerald-600"></i>
+                            <i class="fas fa-building text-xl text-emerald-600"></i>
                         </div>
-                        <h4 class="font-bold text-slate-900">マーケティング差別化</h4>
+                        <h4 class="font-bold text-slate-900">機関投資家デューデリジェンス</h4>
                     </div>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        「全取引監査済み」をブランド化し、他社との圧倒的な差別化を図る。
+                        機関投資家のオンボーディング、リクイディティプロバイダー審査、アルゴ取引ガバナンス監査に検証可能なエビデンスを提供。
                     </p>
                 </div>
                 
-                <!-- Case 2 -->
+                <!-- Case 2: Regulatory Compliance Automation -->
                 <div class="bg-white rounded-xl p-6 use-case-card">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-headset text-xl text-blue-600"></i>
+                            <i class="fas fa-robot text-xl text-blue-600"></i>
                         </div>
-                        <h4 class="font-bold text-slate-900">紛争解決</h4>
+                        <h4 class="font-bold text-slate-900">規制コンプライアンス自動化</h4>
                     </div>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        顧客からのクレームに対し、署名付きログを提示して即時解決（サポートコスト削減）。
+                        MiFID II RTS 25 / EU AI Act 第12条の記録保持義務を、暗号学的に保護されたログで自動的に充足。
                     </p>
                 </div>
                 
-                <!-- Case 3 -->
+                <!-- Case 3: Execution Forensics -->
                 <div class="bg-white rounded-xl p-6 use-case-card">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-file-export text-xl text-purple-600"></i>
+                            <i class="fas fa-search-dollar text-xl text-purple-600"></i>
                         </div>
-                        <h4 class="font-bold text-slate-900">規制レポーティング</h4>
+                        <h4 class="font-bold text-slate-900">執行フォレンジクス</h4>
                     </div>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        監査法人や当局への提出レポートを、VCPエクスプローラーからワンクリックで出力。
+                        規制当局・監査法人に、シグナル→注文→約定チェーンの数学的に証明可能な再構築を提供。
                     </p>
                 </div>
             </div>
@@ -461,8 +460,8 @@ export const brokersPageJa = () => html`
             </h2>
             
             <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-                VSOでは現在、世界初の「VCP認定ブローカー」となる先行パートナー（Early Adopter）を募集しています。
-                VCPの実装は、特定の通貨ペア・限定されたサーバー構成でのPoCから開始可能です。
+                VSOでは現在、機関投資家向けマーケットインフラへの世界初のMiFID準拠VCP実装に向けた先行パートナーを募集しています。
+                VCPの実装は、特定のアセットクラス・限定されたサーバー構成でのPoCから開始可能です。
             </p>
             
             <div class="bg-white/10 rounded-xl p-8 mb-8 backdrop-blur-sm">
@@ -528,6 +527,9 @@ export const brokersPageJa = () => html`
                     </a>
                 </div>
             </div>
+            <p class="text-slate-400 text-sm text-center mt-6 max-w-3xl mx-auto">
+                VSOは、機関投資家向けブローカー、ECN、監査法人と連携し、アルゴリズム時代における暗号学的に検証可能な取引標準を確立しています。
+            </p>
             <div class="text-center text-slate-500 text-sm mt-8 pt-8 border-t border-slate-800">
                 <p>© 2025 VeritasChain Standards Organization (VSO). All rights reserved.</p>
                 <p class="mt-2 italic">"Verify, Don't Trust"</p>
