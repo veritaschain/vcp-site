@@ -1,0 +1,536 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>经纪商VCP解决方案 - 密码学证明最佳执行 | VeritasChain</title>
+    <meta name="description" content="唯一能够以密码学方式证明最佳执行的方法。设计阶段即符合MiFID II RTS 25/28。无侵入式Sidecar架构实现快速部署。">
+    
+    <!-- OGP Meta Tags -->
+    <meta property="og:title" content="经纪商VCP解决方案 - 密码学证明最佳执行">
+    <meta property="og:description" content="全球唯一的算法交易审计协议。以数学方式证明最佳执行。设计阶段即符合MiFID II。">
+    <meta property="og:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
+    <meta property="og:url" content="https://veritaschain.org/brokers/zh">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        
+        .font-serif {
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .gradient-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+        
+        .verified-glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 10px #10b981, 0 0 20px #10b981, 0 0 30px #10b981; }
+            to { box-shadow: 0 0 15px #10b981, 0 0 30px #10b981, 0 0 45px #10b981; }
+        }
+        
+        .chain-animation {
+            animation: chain 3s ease-in-out infinite;
+        }
+        
+        @keyframes chain {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        
+        .highlight-text {
+            background: linear-gradient(180deg, transparent 60%, rgba(16, 185, 129, 0.3) 60%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .architecture-line {
+            stroke-dasharray: 5, 5;
+            animation: dash 20s linear infinite;
+        }
+        
+        @keyframes dash {
+            to { stroke-dashoffset: -100; }
+        }
+
+        .lang-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .lang-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            min-width: 120px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .lang-dropdown:hover .lang-dropdown-content {
+            display: block;
+        }
+
+        .lang-dropdown-content a {
+            color: #374151;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.875rem;
+        }
+
+        .lang-dropdown-content a:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .use-case-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .use-case-card:hover {
+            border-left-color: #10b981;
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+        <div class="lang-dropdown">
+            <button class="bg-white hover:bg-gray-50 px-4 py-2 rounded-lg shadow-md text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                <i class="fas fa-language"></i>
+                中文
+                <i class="fas fa-chevron-down text-xs"></i>
+            </button>
+            <div class="lang-dropdown-content">
+                <a href="/brokers/"><i class="fas fa-globe mr-2"></i>English</a>
+                <a href="/brokers/ja/"><i class="fas fa-globe mr-2"></i>日本語</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="gradient-hero min-h-screen flex items-center relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <defs>
+                    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="100" height="100" fill="url(#grid)" class="text-emerald-500"/>
+            </svg>
+        </div>
+        
+        <div class="max-w-6xl mx-auto px-6 py-20 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div>
+                    <div class="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                        <i class="fas fa-shield-alt"></i>
+                        经纪商VCP标准
+                    </div>
+                    
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6 leading-tight">
+                        用数学证明
+                        <span class="block text-emerald-400">最佳执行。</span>
+                    </h1>
+                    
+                    <p class="text-xl text-slate-300 mb-8 leading-relaxed">
+                        传统日志存储已不再是有效证据。<br>
+                        VCP作为<span class="highlight-text text-white font-semibold">"边车"</span>与您的交易系统并行运行，<br>
+                        自动生成符合MiFID II RTS 25/28的<br>
+                        <span class="highlight-text text-white font-semibold">"防篡改审计轨迹"</span>。
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/30">
+                            <i class="fas fa-file-alt"></i>
+                            查看技术规范 (VCP v1.0)
+                        </a>
+                        <a href="mailto:partners@veritaschain.org?subject=VCP%20PoC%E5%92%A8%E8%AF%A2%20-%20%E7%BB%8F%E7%BA%AA%E5%95%86" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2">
+                            <i class="fas fa-rocket"></i>
+                            申请限量PoC
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Right Visual -->
+                <div class="hidden lg:flex justify-center items-center">
+                    <div class="relative">
+                        <!-- Chain Visual -->
+                        <div class="flex items-center gap-4 chain-animation">
+                            <div class="w-20 h-20 bg-slate-700 rounded-lg flex items-center justify-center border border-slate-600">
+                                <i class="fas fa-database text-2xl text-slate-400"></i>
+                            </div>
+                            <div class="text-emerald-400 text-2xl">→</div>
+                            <div class="w-20 h-20 bg-slate-700 rounded-lg flex items-center justify-center border border-slate-600">
+                                <i class="fas fa-link text-2xl text-emerald-400"></i>
+                            </div>
+                            <div class="text-emerald-400 text-2xl">→</div>
+                            <div class="w-20 h-20 bg-emerald-500 rounded-lg flex items-center justify-center verified-glow">
+                                <i class="fas fa-check text-2xl text-white"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Verified Badge -->
+                        <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-emerald-500/20 text-emerald-400 px-6 py-2 rounded-full text-sm font-bold border border-emerald-500/50">
+                            <i class="fas fa-shield-alt mr-2"></i>已验证
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Gap Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
+                    如何<span class="text-red-600">证明</span>"公平执行"？
+                </h2>
+                <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+                    交易者心存疑虑。监管机构正在加强监督。<br>
+                    然而，CSV和数据库日志可以被任何拥有管理员权限的人修改。
+                </p>
+            </div>
+            
+            <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-amber-500 p-8 rounded-r-lg">
+                <div class="flex items-start gap-4">
+                    <i class="fas fa-exclamation-triangle text-amber-600 text-3xl mt-1"></i>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">核心问题</h3>
+                        <p class="text-slate-700 leading-relaxed">
+                            是时候将"透明度"从营销口号提升为
+                            <span class="font-bold text-slate-900">"密码学可验证性"</span>了。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3 Core Values Section -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
+                    只有VCP能传递的三条信息
+                </h2>
+                <p class="text-slate-600">全球没有其他人能说出这三点。</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1: Cryptographic Best Execution -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-emerald-500">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-fingerprint text-3xl text-emerald-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">密码学最佳执行</h3>
+                    <p class="text-sm text-emerald-600 font-semibold mb-4">唯一能以密码学方式证明最佳执行的方法</p>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        VCP将从下单到成交的所有事件通过哈希链串联，并使用Ed25519数字签名封存。
+                    </p>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        这在数学上证明了滑点和拒单"并非人为操纵"。
+                    </p>
+                    <div class="bg-emerald-50 p-4 rounded-lg">
+                        <p class="text-sm text-emerald-800 font-medium">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            消除"各执一词"的争论。与交易者建立绝对信任。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Card 2: Compliance by Design -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-blue-500">
+                    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-balance-scale text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">设计即合规</h3>
+                    <p class="text-sm text-blue-600 font-semibold mb-4">设计阶段即满足MiFID RTS 25/28的日志结构</p>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        VCP的数据模型原生支持MiFID II（RTS 25/27/28）和欧盟AI法案的要求。
+                    </p>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        PTP时间同步状态和算法ID自动记录——无需事后数据处理。
+                    </p>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="text-sm text-blue-800 font-medium">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            大幅降低审计成本，最小化监管风险。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Card 3: Non-Intrusive Sidecar -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-purple-500">
+                    <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-plug text-3xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">无侵入式边车</h3>
+                    <p class="text-sm text-purple-600 font-semibold mb-4">无需接入服务器——边车架构实现快速部署</p>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        无需修改现有撮合引擎或MT4/cTrader服务器的核心逻辑。
+                    </p>
+                    <p class="text-slate-600 leading-relaxed mb-4">
+                        VCP作为"边车（并行运行）"通过API接收日志，异步处理签名和存储。
+                    </p>
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <p class="text-sm text-purple-800 font-medium">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            对现有系统性能零影响。最快2周内完成实施和PoC启动。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
+                    零摩擦架构
+                </h2>
+                <p class="text-slate-600">
+                    "我们不会在您的核心系统中添加任何代码。只需将日志流式传输到VCP即可。"
+                </p>
+            </div>
+            
+            <!-- Architecture Diagram -->
+            <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12 shadow-2xl">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                    <!-- Broker's Engine -->
+                    <div class="flex-1">
+                        <div class="bg-slate-700/50 border border-slate-600 rounded-xl p-6 text-center">
+                            <div class="w-16 h-16 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-server text-2xl text-slate-300"></i>
+                            </div>
+                            <h4 class="text-white font-bold mb-2">经纪商引擎</h4>
+                            <p class="text-slate-400 text-sm">现有交易服务器<br/>MT4/MT5/cTrader</p>
+                        </div>
+                        <div class="text-center mt-4">
+                            <span class="text-emerald-400 text-sm font-semibold">
+                                <i class="fas fa-arrow-right mr-1"></i> API钩子（非阻塞日志输出）
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Arrow -->
+                    <div class="hidden md:block">
+                        <svg width="60" height="40" viewBox="0 0 60 40">
+                            <line x1="0" y1="20" x2="50" y2="20" stroke="#10b981" stroke-width="2" class="architecture-line"/>
+                            <polygon points="50,15 60,20 50,25" fill="#10b981"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- VCP Sidecar -->
+                    <div class="flex-1">
+                        <div class="bg-emerald-500/20 border-2 border-emerald-500 rounded-xl p-6 text-center">
+                            <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-shield-alt text-2xl text-white"></i>
+                            </div>
+                            <h4 class="text-white font-bold mb-2">VCP边车</h4>
+                            <p class="text-emerald-300 text-sm">哈希 → 签名<br/>→ Merkle树构建</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Arrow -->
+                    <div class="hidden md:block">
+                        <svg width="60" height="40" viewBox="0 0 60 40">
+                            <line x1="0" y1="20" x2="50" y2="20" stroke="#10b981" stroke-width="2" class="architecture-line"/>
+                            <polygon points="50,15 60,20 50,25" fill="#10b981"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Immutable Storage -->
+                    <div class="flex-1">
+                        <div class="bg-slate-700/50 border border-slate-600 rounded-xl p-6 text-center">
+                            <div class="w-16 h-16 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-cube text-2xl text-slate-300"></i>
+                            </div>
+                            <h4 class="text-white font-bold mb-2">不可变存储</h4>
+                            <p class="text-slate-400 text-sm">审计日志<br/>区块链锚定</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
+                    应用场景
+                </h2>
+                <p class="text-slate-600">VCP的具体应用方式</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Case 1 -->
+                <div class="bg-white rounded-xl p-6 use-case-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-xl text-emerald-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900">营销差异化</h4>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        将"全部交易已审计"打造为品牌特色，与竞争对手形成压倒性差异化。
+                    </p>
+                </div>
+                
+                <!-- Case 2 -->
+                <div class="bg-white rounded-xl p-6 use-case-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-headset text-xl text-blue-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900">争议解决</h4>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        针对客户投诉，出示签名日志即可立即解决（降低客服成本）。
+                    </p>
+                </div>
+                
+                <!-- Case 3 -->
+                <div class="bg-white rounded-xl p-6 use-case-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-file-export text-xl text-purple-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900">监管报告</h4>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        从VCP资源管理器一键生成审计机构和监管机构的提交报告。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PoC Offer Section -->
+    <section class="py-20 bg-gradient-to-r from-slate-900 to-slate-800">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                <i class="fas fa-star"></i>
+                早期采用者计划
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
+                成为透明度先锋
+            </h2>
+            
+            <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+                VSO目前正在招募先驱合作伙伴（早期采用者）成为全球首批"VCP认证经纪商"。
+                VCP实施可以从特定货币对和有限服务器配置的PoC开始。
+            </p>
+            
+            <div class="bg-white/10 rounded-xl p-8 mb-8 backdrop-blur-sm">
+                <h3 class="text-xl font-bold text-white mb-6">早期采用者权益</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="w-14 h-14 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-users text-xl text-white"></i>
+                        </div>
+                        <p class="text-white font-semibold mb-1">全程工程支持</p>
+                        <p class="text-slate-400 text-sm">VSO技术团队提供实施支持</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-14 h-14 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-newspaper text-xl text-white"></i>
+                        </div>
+                        <p class="text-white font-semibold mb-1">联合新闻发布</p>
+                        <p class="text-slate-400 text-sm">"全球首家"联合发布权</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-14 h-14 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-tag text-xl text-white"></i>
+                        </div>
+                        <p class="text-white font-semibold mb-1">许可费减免</p>
+                        <p class="text-slate-400 text-sm">PoC期间免费</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="mailto:partners@veritaschain.org?subject=VCP%20PoC%E5%92%A8%E8%AF%A2%20-%20%E7%BB%8F%E7%BA%AA%E5%95%86" class="bg-emerald-500 hover:bg-emerald-600 text-white px-10 py-4 rounded-lg font-bold text-lg transition-all shadow-lg hover:shadow-emerald-500/30">
+                    <i class="fas fa-envelope mr-2"></i>
+                    咨询PoC
+                </a>
+                <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-10 py-4 rounded-lg font-bold text-lg transition-all">
+                    <i class="fas fa-download mr-2"></i>
+                    下载白皮书
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Footer -->
+    <section class="py-12 bg-slate-900 border-t border-slate-800">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="flex items-center gap-4">
+                    <i class="fas fa-shield-alt text-3xl text-emerald-400"></i>
+                    <div>
+                        <h4 class="text-white font-bold">VeritasChain Standards Organization</h4>
+                        <p class="text-slate-400 text-sm">在算法时代编码信任</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-6 text-sm">
+                    <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="text-slate-400 hover:text-white transition-colors">
+                        <i class="fab fa-github mr-2"></i>协议规范
+                    </a>
+                    <a href="https://veritaschain.org/docs" class="text-slate-400 hover:text-white transition-colors">
+                        <i class="fas fa-book mr-2"></i>文档
+                    </a>
+                    <a href="mailto:info@veritaschain.org" class="text-slate-400 hover:text-white transition-colors">
+                        <i class="fas fa-envelope mr-2"></i>联系我们
+                    </a>
+                </div>
+            </div>
+            <div class="text-center text-slate-500 text-sm mt-8 pt-8 border-t border-slate-800">
+                <p>© 2025 VeritasChain Standards Organization (VSO). 保留所有权利。</p>
+                <p class="mt-2 italic">"验证，而非信任"</p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

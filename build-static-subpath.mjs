@@ -6,7 +6,7 @@ import { execSync } from 'child_process';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log('🏗️  Building static site for veritaschain.org/certified/faq/...\n');
+console.log('🏗️  Building static site for veritaschain.org...\n');
 
 // Step 1: Build the Vite project first
 console.log('1️⃣  Building Vite project...');
@@ -22,6 +22,18 @@ if (fs.existsSync(faqDir)) {
   fs.rmSync(faqDir, { recursive: true });
 }
 fs.mkdirSync(faqDir, { recursive: true });
+
+// Create directory structure for brokers/
+const brokersDir = path.join(__dirname, 'docs', 'brokers');
+const brokersJaDir = path.join(brokersDir, 'ja');
+const brokersZhDir = path.join(brokersDir, 'zh');
+
+if (fs.existsSync(brokersDir)) {
+  fs.rmSync(brokersDir, { recursive: true });
+}
+fs.mkdirSync(brokersDir, { recursive: true });
+fs.mkdirSync(brokersJaDir, { recursive: true });
+fs.mkdirSync(brokersZhDir, { recursive: true });
 
 // Import the built worker and create mock environment
 const workerModule = await import('./dist/_worker.js');
@@ -82,6 +94,53 @@ try {
   console.error('   ✗ Failed to generate zh.html:', error.message);
 }
 
+console.log('\n3️⃣  Generating Brokers Landing Pages...');
+
+// Update HTML to fix asset paths for brokers subpath deployment
+function fixBrokersAssetPaths(html, lang) {
+  // Fix language switcher links for brokers pages
+  html = html.replace(/href="\/brokers\/ja"/g, 'href="/brokers/ja/"');
+  html = html.replace(/href="\/brokers\/zh"/g, 'href="/brokers/zh/"');
+  html = html.replace(/href="\/brokers"/g, 'href="/brokers/"');
+  return html;
+}
+
+// Generate English Brokers LP (index.html)
+try {
+  const req = new Request('http://localhost/brokers', { method: 'GET' });
+  const response = await app.fetch(req, env, executionCtx);
+  let html = await response.text();
+  html = fixBrokersAssetPaths(html, 'en');
+  fs.writeFileSync(path.join(brokersDir, 'index.html'), html, 'utf-8');
+  console.log('   ✓ Generated: brokers/index.html (English Brokers LP)');
+} catch (error) {
+  console.error('   ✗ Failed to generate brokers/index.html:', error.message);
+}
+
+// Generate Japanese Brokers LP
+try {
+  const req = new Request('http://localhost/brokers/ja', { method: 'GET' });
+  const response = await app.fetch(req, env, executionCtx);
+  let html = await response.text();
+  html = fixBrokersAssetPaths(html, 'ja');
+  fs.writeFileSync(path.join(brokersJaDir, 'index.html'), html, 'utf-8');
+  console.log('   ✓ Generated: brokers/ja/index.html (Japanese Brokers LP)');
+} catch (error) {
+  console.error('   ✗ Failed to generate brokers/ja/index.html:', error.message);
+}
+
+// Generate Chinese Brokers LP
+try {
+  const req = new Request('http://localhost/brokers/zh', { method: 'GET' });
+  const response = await app.fetch(req, env, executionCtx);
+  let html = await response.text();
+  html = fixBrokersAssetPaths(html, 'zh');
+  fs.writeFileSync(path.join(brokersZhDir, 'index.html'), html, 'utf-8');
+  console.log('   ✓ Generated: brokers/zh/index.html (Chinese Brokers LP)');
+} catch (error) {
+  console.error('   ✗ Failed to generate brokers/zh/index.html:', error.message);
+}
+
 // Create .nojekyll at root to disable Jekyll processing
 fs.writeFileSync(path.join(__dirname, 'docs', '.nojekyll'), '', 'utf-8');
 console.log('   ✓ Created: docs/.nojekyll');
@@ -108,11 +167,13 @@ fs.writeFileSync(path.join(__dirname, 'docs', '404.html'), html404, 'utf-8');
 console.log('   ✓ Generated: docs/404.html');
 
 // Create README for docs folder
-const docsReadme = `# VeritasChain Certified FAQ - Static Site
+const docsReadme = `# VeritasChain Static Site
 
 This directory contains the generated static HTML files for GitHub Pages.
 
-**Deployment URL:** https://veritaschain.org/certified/faq/
+## Deployment URLs
+- **FAQ:** https://veritaschain.org/certified/faq/
+- **Brokers LP:** https://veritaschain.org/brokers/
 
 ## Structure
 \`\`\`
@@ -122,6 +183,12 @@ docs/
 │       ├── index.html    # English FAQ (default)
 │       ├── ja.html       # Japanese FAQ
 │       └── zh.html       # Chinese FAQ
+├── brokers/
+│   ├── index.html        # English Brokers LP (default)
+│   ├── ja/
+│   │   └── index.html    # Japanese Brokers LP
+│   └── zh/
+│       └── index.html    # Chinese Brokers LP
 ├── .nojekyll             # Disables Jekyll processing
 └── 404.html              # Not found page
 \`\`\`
@@ -154,10 +221,16 @@ fs.writeFileSync(path.join(__dirname, 'docs', 'index.html'), rootIndex, 'utf-8')
 console.log('   ✓ Generated: docs/index.html (redirect)');
 
 console.log('\n✨ Static site generation complete!');
-console.log(`📂 Output directory: ${faqDir}`);
-console.log('\n🌐 Deployment URL: https://veritaschain.org/certified/faq/');
+console.log(`📂 Output directories:`);
+console.log(`   - ${faqDir}`);
+console.log(`   - ${brokersDir}`);
+console.log('\n🌐 Deployment URLs:');
+console.log('   - https://veritaschain.org/certified/faq/');
+console.log('   - https://veritaschain.org/brokers/');
+console.log('   - https://veritaschain.org/brokers/ja/');
+console.log('   - https://veritaschain.org/brokers/zh/');
 console.log('\n📝 Next steps:');
 console.log('   1. git add docs/');
-console.log('   2. git commit -m "Deploy FAQ to /certified/faq/"');
-console.log('   3. git push origin main');
-console.log('   4. Verify deployment at https://veritaschain.org/certified/faq/');
+console.log('   2. git commit -m "Deploy FAQ and Brokers LP"');
+console.log('   3. git push origin genspark');
+console.log('   4. Verify deployment at https://veritaschain.org/');
