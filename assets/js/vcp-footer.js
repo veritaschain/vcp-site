@@ -68,7 +68,7 @@ class VCPFooter extends HTMLElement {
                 disclaimer1: 'VSO不认可或证明任何财务绩效声明。',
                 disclaimer2: '所有规范均按"原样"提供，不提供任何形式的保证。',
                 organization: 'VeritasChain Standards Organization',
-                address: '惠比寿办公室 — 日本东京都�的谷区惠比寿西2-4-8 邮编150-0021',
+                address: '惠比寿办公室 — 日本东京都涩谷区惠比寿西2-4-8 邮编150-0021',
                 revision: 'VCP规范 v1.0 — 2025年1月20日发布 | 下次更新: v1.1 (2026年第二季度)'
             }
         };
