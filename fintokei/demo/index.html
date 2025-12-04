@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fintokei x VeritasChain — VCP Explorer Demo</title>
+    
+    <!-- React CDN (no build step required) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           FINTOKEI VCP EXPLORER DEMO - STYLES
+           Color Scheme:
+           - Fintokei Blue: #1E90FF
+           - VeritasChain Gold: #D4A017
+           - Background: #0D1117
+           ============================================ */
+        
+        :root {
+            --fintokei-blue: #1E90FF;
+            --fintokei-blue-dark: #1a7ae0;
+            --veritaschain-gold: #D4A017;
+            --veritaschain-gold-light: #E8B930;
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-card: #1C2128;
+            --bg-hover: #252D38;
+            --border-color: #30363D;
+            --text-primary: #E6EDF3;
+            --text-secondary: #8B949E;
+            --text-muted: #6E7681;
+            --success-green: #3FB950;
+            --warning-orange: #D29922;
+            --error-red: #F85149;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-fintokei {
+            color: var(--fintokei-blue);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .logo-x {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        
+        .logo-veritaschain {
+            color: var(--veritaschain-gold);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .demo-badge {
+            background: var(--veritaschain-gold);
+            color: var(--bg-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .header-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-green);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Disclaimer Banner */
+        .disclaimer-banner {
+            background: linear-gradient(90deg, rgba(212, 160, 23, 0.1) 0%, rgba(30, 144, 255, 0.1) 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.625rem 2rem;
+            text-align: center;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+        
+        .disclaimer-banner strong {
+            color: var(--veritaschain-gold);
+        }
+        
+        .disclaimer-icon {
+            margin-right: 0.5rem;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Trace Info Card */
+        .trace-info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .trace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .trace-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        
+        .trace-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--fintokei-blue);
+            word-break: break-all;
+        }
+        
+        .trace-stats {
+            display: flex;
+            gap: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Timeline Styles */
+        .timeline-container {
+            position: relative;
+        }
+        
+        .timeline-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(
+                to bottom,
+                var(--fintokei-blue) 0%,
+                var(--veritaschain-gold) 50%,
+                var(--success-green) 100%
+            );
+        }
+        
+        .event-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .event-card:hover {
+            background: var(--bg-hover);
+            border-color: var(--fintokei-blue);
+            transform: translateX(4px);
+        }
+        
+        .event-card.selected {
+            border-color: var(--veritaschain-gold);
+            box-shadow: 0 0 0 1px var(--veritaschain-gold);
+        }
+        
+        .event-card::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 1.25rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 2px solid var(--fintokei-blue);
+        }
+        
+        .event-card.verified::before {
+            background: var(--success-green);
+            border-color: var(--success-green);
+        }
+        
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .event-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .event-type-badge.SIG { background: rgba(30, 144, 255, 0.2); color: var(--fintokei-blue); }
+        .event-type-badge.ORD { background: rgba(212, 160, 23, 0.2); color: var(--veritaschain-gold); }
+        .event-type-badge.ACK { background: rgba(139, 148, 158, 0.2); color: var(--text-secondary); }
+        .event-type-badge.EXE { background: rgba(63, 185, 80, 0.2); color: var(--success-green); }
+        .event-type-badge.CXL { background: rgba(248, 81, 73, 0.2); color: var(--error-red); }
+        .event-type-badge.PNL { background: rgba(163, 113, 247, 0.2); color: #A371F7; }
+        
+        .verification-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--success-green);
+        }
+        
+        .event-timestamp {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .event-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+        
+        .detail-label {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.625rem;
+            letter-spacing: 0.05em;
+        }
+        
+        .detail-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+        
+        .detail-value.hash {
+            color: var(--veritaschain-gold);
+        }
+        
+        /* Detail Panel */
+        .detail-panel {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        
+        .detail-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .detail-card-header {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .detail-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .detail-card-body {
+            padding: 1.5rem;
+        }
+        
+        .json-container {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+        
+        .json-pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .json-key { color: var(--fintokei-blue); }
+        .json-string { color: var(--success-green); }
+        .json-number { color: var(--veritaschain-gold); }
+        
+        /* Validation Status */
+        .validation-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .validation-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .validation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .validation-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .validation-status {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .validation-status.ok { color: var(--success-green); }
+        .validation-status.pending { color: var(--warning-orange); }
+        
+        /* Merkle Tree Visualization */
+        .merkle-container {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .merkle-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+        
+        .merkle-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .merkle-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .merkle-node {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.375rem 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.625rem;
+            color: var(--text-muted);
+        }
+        
+        .merkle-node.root {
+            border-color: var(--veritaschain-gold);
+            color: var(--veritaschain-gold);
+        }
+        
+        .merkle-node.highlighted {
+            border-color: var(--fintokei-blue);
+            color: var(--fintokei-blue);
+            background: rgba(30, 144, 255, 0.1);
+        }
+        
+        .merkle-connector {
+            width: 1px;
+            height: 12px;
+            background: var(--border-color);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        .footer a {
+            color: var(--fintokei-blue);
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Utility Classes */
+        .text-gold { color: var(--veritaschain-gold); }
+        .text-blue { color: var(--fintokei-blue); }
+        .text-green { color: var(--success-green); }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        // ============================================
+        // FINTOKEI VCP EXPLORER DEMO - REACT APP
+        // ============================================
+        // This is a UI concept demo with mock data.
+        // No real cryptography or backend calls.
+        // Customize broker name/colors for other clients.
+        // ============================================
+        
+        const { useState, useEffect } = React;
+        
+        // ============================================
+        // CONFIGURATION - Easy to customize for other brokers
+        // ============================================
+        const CONFIG = {
+            // Change these values to customize for different brokers
+            brokerName: "Fintokei",
+            brokerColor: "#1E90FF",        // Fintokei Blue
+            protocolName: "VeritasChain",
+            protocolColor: "#D4A017",      // VeritasChain Gold
+            
+            // Demo metadata
+            demoVersion: "1.0.0",
+            specVersion: "VCP v1.0"
+        };
+        
+        // ============================================
+        // MOCK DATA - Sample audit trail events
+        // ============================================
+        // In production, this would come from the VCP API
+        const MOCK_TRACE = {
+            traceId: "019726a4-8b2c-7def-9012-3456789abcde",
+            accountId: "FTK-PRO-28471",
+            symbol: "USDJPY",
+            strategy: "TrendFollower_v3",
+            startTime: "2025-01-15T09:30:00.000Z",
+            events: [
+                {
+                    eventId: "019726a4-8b2c-7001-0001-000000000001",
+                    timestamp: "2025-01-15T09:30:00.123Z",
+                    eventType: "SIG",
+                    eventTypeFull: "Signal Generated",
+                    description: "Buy signal detected on 15M timeframe",
+                    payload: {
+                        signalType: "ENTRY_LONG",
+                        symbol: "USDJPY",
+                        timeframe: "M15",
+                        indicators: {
+                            rsi: 32.5,
+                            macdHist: 0.0012,
+                            atr: 0.45
+                        },
+                        confidence: 0.87
+                    },
+                    hash: "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
+                    prevHash: "0000000000000000000000000000000000000000000000000000000000000000",
+                    signature: "sig_ed25519_abc123def456...",
+                    verified: true
+                },
+                {
+                    eventId: "019726a4-8b2c-7001-0002-000000000002",
+                    timestamp: "2025-01-15T09:30:00.456Z",
+                    eventType: "ORD",
+                    eventTypeFull: "Order Sent",
+                    description: "Market order submitted to broker",
+                    payload: {
+                        orderId: "ORD-FTK-2025011509300001",
+                        orderType: "MARKET",
+                        side: "BUY",
+                        symbol: "USDJPY",
+                        quantity: 1.00,
+                        accountId: "FTK-PRO-28471"
+                    },
+                    hash: "b2c3d4e5f67890123456789012345678901abcdef234567890abcdef1234567",
+                    prevHash: "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
+                    signature: "sig_ed25519_def456ghi789...",
+                    verified: true
+                },
+                {
+                    eventId: "019726a4-8b2c-7001-0003-000000000003",
+                    timestamp: "2025-01-15T09:30:00.789Z",
+                    eventType: "ACK",
+                    eventTypeFull: "Order Acknowledged",
+                    description: "Order received by execution venue",
+                    payload: {
+                        orderId: "ORD-FTK-2025011509300001",
+                        venueOrderId: "VENUE-789456123",
+                        status: "ACKNOWLEDGED",
+                        receiveTime: "2025-01-15T09:30:00.788Z",
+                        venue: "FintokeiPrime"
+                    },
+                    hash: "c3d4e5f678901234567890123456789012abcdef3456789012bcdef12345678",
+                    prevHash: "b2c3d4e5f67890123456789012345678901abcdef234567890abcdef1234567",
+                    signature: "sig_ed25519_ghi789jkl012...",
+                    verified: true
+                },
+                {
+                    eventId: "019726a4-8b2c-7001-0004-000000000004",
+                    timestamp: "2025-01-15T09:30:01.234Z",
+                    eventType: "EXE",
+                    eventTypeFull: "Order Executed",
+                    description: "Order fully filled at market price",
+                    payload: {
+                        orderId: "ORD-FTK-2025011509300001",
+                        executionId: "EXEC-FTK-001234",
+                        status: "FILLED",
+                        filledQty: 1.00,
+                        avgPrice: 157.234,
+                        commission: 0.70,
+                        executionTime: "2025-01-15T09:30:01.233Z"
+                    },
+                    hash: "d4e5f6789012345678901234567890123abcdef45678901234cdef123456789",
+                    prevHash: "c3d4e5f678901234567890123456789012abcdef3456789012bcdef12345678",
+                    signature: "sig_ed25519_jkl012mno345...",
+                    verified: true
+                },
+                {
+                    eventId: "019726a4-8b2c-7001-0005-000000000005",
+                    timestamp: "2025-01-15T10:45:00.567Z",
+                    eventType: "SIG",
+                    eventTypeFull: "Exit Signal",
+                    description: "Take profit target reached",
+                    payload: {
+                        signalType: "EXIT_LONG",
+                        symbol: "USDJPY",
+                        reason: "TP_HIT",
+                        currentPrice: 157.534,
+                        entryPrice: 157.234,
+                        unrealizedPnL: 30.00
+                    },
+                    hash: "e5f67890123456789012345678901234abcdef567890123456def1234567890",
+                    prevHash: "d4e5f6789012345678901234567890123abcdef45678901234cdef123456789",
+                    signature: "sig_ed25519_mno345pqr678...",
+                    verified: true
+                },
+                {
+                    eventId: "019726a4-8b2c-7001-0006-000000000006",
+                    timestamp: "2025-01-15T10:45:00.890Z",
+                    eventType: "EXE",
+                    eventTypeFull: "Close Executed",
+                    description: "Position closed at take profit",
+                    payload: {
+                        orderId: "ORD-FTK-2025011510450001",
+                        executionId: "EXEC-FTK-001235",
+                        status: "FILLED",
+                        side: "SELL",
+                        filledQty: 1.00,
+                        avgPrice: 157.534,
+                        commission: 0.70
+                    },
+                    hash: "f6789012345678901234567890123456bcdef6789012345678ef12345678901",
+                    prevHash: "e5f67890123456789012345678901234abcdef567890123456def1234567890",
+                    signature: "sig_ed25519_pqr678stu901...",
+                    verified: true
+                },
+                {
+                    eventId: "019726a4-8b2c-7001-0007-000000000007",
+                    timestamp: "2025-01-15T10:45:01.123Z",
+                    eventType: "PNL",
+                    eventTypeFull: "P&L Recorded",
+                    description: "Trade profit/loss finalized",
+                    payload: {
+                        tradeId: "TRD-FTK-2025011509300001",
+                        symbol: "USDJPY",
+                        side: "LONG",
+                        entryPrice: 157.234,
+                        exitPrice: 157.534,
+                        quantity: 1.00,
+                        grossPnL: 30.00,
+                        commission: 1.40,
+                        netPnL: 28.60,
+                        currency: "USD"
+                    },
+                    hash: "789012345678901234567890123456789cdef78901234567890f123456789012",
+                    prevHash: "f6789012345678901234567890123456bcdef6789012345678ef12345678901",
+                    signature: "sig_ed25519_stu901vwx234...",
+                    verified: true
+                }
+            ]
+        };
+        
+        // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
+        
+        // Format timestamp for display
+        const formatTimestamp = (iso) => {
+            const date = new Date(iso);
+            return date.toISOString().replace('T', ' ').replace('Z', ' UTC');
+        };
+        
+        // Truncate hash for display
+        const truncateHash = (hash, length = 8) => {
+            if (!hash) return '';
+            return `${hash.substring(0, length)}...${hash.substring(hash.length - length)}`;
+        };
+        
+        // Get event type icon
+        const getEventIcon = (type) => {
+            const icons = {
+                'SIG': '📡',
+                'ORD': '📝',
+                'ACK': '✓',
+                'EXE': '⚡',
+                'CXL': '✕',
+                'PNL': '💰'
+            };
+            return icons[type] || '•';
+        };
+        
+        // ============================================
+        // COMPONENTS
+        // ============================================
+        
+        // Disclaimer Banner Component
+        const DisclaimerBanner = () => (
+            <div className="disclaimer-banner">
+                <span className="disclaimer-icon">ℹ️</span>
+                <strong>Illustrative Demo:</strong> This demo uses fully synthetic mock data for illustration purposes only. 
+                No real trading data or internal information is displayed.
+            </div>
+        );
+        
+        // Header Component
+        const Header = () => (
+            <header className="header">
+                <div className="header-content">
+                    <div className="header-title">
+                        <div className="logo-container">
+                            <span className="logo-fintokei">{CONFIG.brokerName}</span>
+                            <span className="logo-x">×</span>
+                            <span className="logo-veritaschain">{CONFIG.protocolName}</span>
+                        </div>
+                        <div className="header-subtitle">
+                            <span>VCP Explorer Demo</span>
+                            <span className="demo-badge">Mock Data</span>
+                        </div>
+                    </div>
+                    <div className="header-meta">
+                        <div className="status-indicator">
+                            <span className="status-dot"></span>
+                            <span>Chain Integrity: OK</span>
+                        </div>
+                        <span>{CONFIG.specVersion}</span>
+                    </div>
+                </div>
+            </header>
+        );
+        
+        // Trace Info Card Component
+        const TraceInfoCard = ({ trace }) => (
+            <div className="trace-info-card">
+                <div className="trace-header">
+                    <div>
+                        <div className="trace-label">Trace ID (Order Lifecycle)</div>
+                        <div className="trace-id">{trace.traceId}</div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                        <div className="trace-label">Account</div>
+                        <div style={{ color: 'var(--fintokei-blue)', fontWeight: 500 }}>
+                            {trace.accountId}
+                        </div>
+                    </div>
+                </div>
+                <div className="trace-stats">
+                    <div className="stat-item">
+                        <div className="stat-value">{trace.events.length}</div>
+                        <div className="stat-label">Events</div>
+                    </div>
+                    <div className="stat-item">
+                        <div className="stat-value text-gold">{trace.symbol}</div>
+                        <div className="stat-label">Symbol</div>
+                    </div>
+                    <div className="stat-item">
+                        <div className="stat-value text-green">
+                            {trace.events.filter(e => e.verified).length}/{trace.events.length}
+                        </div>
+                        <div className="stat-label">Verified</div>
+                    </div>
+                    <div className="stat-item">
+                        <div className="stat-value">{trace.strategy}</div>
+                        <div className="stat-label">Strategy</div>
+                    </div>
+                </div>
+            </div>
+        );
+        
+        // Event Card Component
+        const EventCard = ({ event, isSelected, onClick }) => (
+            <div 
+                className={`event-card verified ${isSelected ? 'selected' : ''}`}
+                onClick={onClick}
+            >
+                <div className="event-header">
+                    <span className={`event-type-badge ${event.eventType}`}>
+                        {getEventIcon(event.eventType)} {event.eventType}
+                    </span>
+                    <span className="verification-badge">
+                        ✓ Verified
+                    </span>
+                </div>
+                <div className="event-timestamp">
+                    {formatTimestamp(event.timestamp)}
+                </div>
+                <div style={{ 
+                    fontSize: '0.875rem', 
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.75rem'
+                }}>
+                    {event.description}
+                </div>
+                <div className="event-details">
+                    <div className="detail-item">
+                        <span className="detail-label">Event ID</span>
+                        <span className="detail-value">{truncateHash(event.eventId, 6)}</span>
+                    </div>
+                    <div className="detail-item">
+                        <span className="detail-label">Hash</span>
+                        <span className="detail-value hash">{truncateHash(event.hash)}</span>
+                    </div>
+                </div>
+            </div>
+        );
+        
+        // Timeline Component
+        const Timeline = ({ events, selectedEvent, onSelectEvent }) => (
+            <div className="timeline-container">
+                <div className="timeline-title">
+                    📊 Event Timeline ({events.length} events)
+                </div>
+                <div className="timeline">
+                    {events.map((event, index) => (
+                        <EventCard 
+                            key={event.eventId}
+                            event={event}
+                            isSelected={selectedEvent?.eventId === event.eventId}
+                            onClick={() => onSelectEvent(event)}
+                        />
+                    ))}
+                </div>
+            </div>
+        );
+        
+        // JSON Syntax Highlighter (simple version)
+        const SyntaxHighlightedJSON = ({ data }) => {
+            const formatJSON = (obj, indent = 0) => {
+                const spaces = '  '.repeat(indent);
+                const entries = Object.entries(obj);
+                
+                return entries.map(([key, value], index) => {
+                    const comma = index < entries.length - 1 ? ',' : '';
+                    
+                    if (typeof value === 'object' && value !== null) {
+                        return (
+                            <React.Fragment key={key}>
+                                {spaces}<span className="json-key">"{key}"</span>: {'{'}
+                                {'\n'}
+                                {formatJSON(value, indent + 1)}
+                                {spaces}{'}'}{comma}{'\n'}
+                            </React.Fragment>
+                        );
+                    } else if (typeof value === 'string') {
+                        return (
+                            <React.Fragment key={key}>
+                                {spaces}<span className="json-key">"{key}"</span>: <span className="json-string">"{value}"</span>{comma}{'\n'}
+                            </React.Fragment>
+                        );
+                    } else {
+                        return (
+                            <React.Fragment key={key}>
+                                {spaces}<span className="json-key">"{key}"</span>: <span className="json-number">{String(value)}</span>{comma}{'\n'}
+                            </React.Fragment>
+                        );
+                    }
+                });
+            };
+            
+            return (
+                <pre className="json-pre">
+                    {'{\n'}
+                    {formatJSON(data, 1)}
+                    {'}'}
+                </pre>
+            );
+        };
+        
+        // Merkle Tree Visualization
+        const MerkleTreeViz = ({ eventHash }) => (
+            <div className="merkle-container">
+                <div className="merkle-title">Merkle Proof Visualization</div>
+                <div className="merkle-tree">
+                    <div className="merkle-row">
+                        <div className="merkle-node root">Root: {truncateHash(eventHash, 4)}</div>
+                    </div>
+                    <div className="merkle-connector"></div>
+                    <div className="merkle-row">
+                        <div className="merkle-node">H(L): a1b2...</div>
+                        <div className="merkle-node highlighted">H(R): {truncateHash(eventHash, 4)}</div>
+                    </div>
+                    <div className="merkle-connector"></div>
+                    <div className="merkle-row">
+                        <div className="merkle-node">E1</div>
+                        <div className="merkle-node">E2</div>
+                        <div className="merkle-node highlighted">E3 ←</div>
+                        <div className="merkle-node">E4</div>
+                    </div>
+                </div>
+                <div style={{ 
+                    marginTop: '1rem', 
+                    fontSize: '0.75rem', 
+                    color: 'var(--text-muted)' 
+                }}>
+                    Proof path highlighted • Anchored to blockchain
+                </div>
+            </div>
+        );
+        
+        // Detail Panel Component
+        const DetailPanel = ({ event }) => {
+            if (!event) {
+                return (
+                    <div className="detail-panel">
+                        <div className="detail-card">
+                            <div className="detail-card-body">
+                                <div className="empty-state">
+                                    <div className="empty-icon">👆</div>
+                                    <div>Click an event to view details</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+            
+            return (
+                <div className="detail-panel">
+                    <div className="detail-card">
+                        <div className="detail-card-header">
+                            <div className="detail-card-title">
+                                <span className={`event-type-badge ${event.eventType}`}>
+                                    {getEventIcon(event.eventType)} {event.eventType}
+                                </span>
+                                <span>{event.eventTypeFull}</span>
+                            </div>
+                        </div>
+                        <div className="detail-card-body">
+                            {/* Validation Status */}
+                            <div className="validation-section">
+                                <div className="validation-title">
+                                    🔐 Cryptographic Validation
+                                </div>
+                                <div className="validation-item">
+                                    <span className="validation-label">Hash Chain</span>
+                                    <span className="validation-status ok">✓ Valid</span>
+                                </div>
+                                <div className="validation-item">
+                                    <span className="validation-label">Ed25519 Signature</span>
+                                    <span className="validation-status ok">✓ Verified</span>
+                                </div>
+                                <div className="validation-item">
+                                    <span className="validation-label">UUIDv7 Sequence</span>
+                                    <span className="validation-status ok">✓ Ordered</span>
+                                </div>
+                                <div className="validation-item">
+                                    <span className="validation-label">Timestamp (PTP)</span>
+                                    <span className="validation-status ok">✓ Synced</span>
+                                </div>
+                            </div>
+                            
+                            {/* Canonical JSON */}
+                            <div className="validation-section">
+                                <div className="validation-title">
+                                    📄 Event Payload (Canonical JSON)
+                                </div>
+                                <div className="json-container">
+                                    <SyntaxHighlightedJSON data={event.payload} />
+                                </div>
+                            </div>
+                            
+                            {/* Hash Info */}
+                            <div className="validation-section">
+                                <div className="validation-title">
+                                    🔗 Hash Chain
+                                </div>
+                                <div style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>
+                                    <div style={{ color: 'var(--text-muted)', marginBottom: '0.25rem' }}>
+                                        Current Hash (SHA-256)
+                                    </div>
+                                    <div style={{ 
+                                        fontFamily: 'JetBrains Mono', 
+                                        color: 'var(--veritaschain-gold)',
+                                        wordBreak: 'break-all'
+                                    }}>
+                                        {event.hash}
+                                    </div>
+                                </div>
+                                <div style={{ fontSize: '0.75rem' }}>
+                                    <div style={{ color: 'var(--text-muted)', marginBottom: '0.25rem' }}>
+                                        Previous Hash
+                                    </div>
+                                    <div style={{ 
+                                        fontFamily: 'JetBrains Mono', 
+                                        color: 'var(--text-secondary)',
+                                        wordBreak: 'break-all'
+                                    }}>
+                                        {event.prevHash}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Merkle Proof */}
+                            <MerkleTreeViz eventHash={event.hash} />
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
+        // Footer Component
+        const Footer = () => (
+            <footer className="footer">
+                <div style={{ 
+                    background: 'rgba(212, 160, 23, 0.1)', 
+                    padding: '0.75rem 1rem', 
+                    borderRadius: '6px',
+                    marginBottom: '1rem',
+                    fontSize: '0.75rem',
+                    color: 'var(--text-muted)'
+                }}>
+                    ⚠️ All data shown is <strong style={{ color: 'var(--veritaschain-gold)' }}>100% synthetic</strong> and 
+                    generated for demonstration purposes. No connection to actual trading systems or accounts.
+                </div>
+                <div>
+                    <strong style={{ color: 'var(--veritaschain-gold)' }}>
+                        {CONFIG.protocolName} Protocol
+                    </strong>
+                    {' '}&mdash; Encoding Trust in the Algorithmic Age
+                </div>
+                <div style={{ marginTop: '0.5rem' }}>
+                    <a href="https://veritaschain.org" target="_blank" rel="noopener">
+                        veritaschain.org
+                    </a>
+                    {' | '}
+                    <a href="https://github.com/veritaschain" target="_blank" rel="noopener">
+                        GitHub
+                    </a>
+                    {' | '}
+                    Demo for <span style={{ color: 'var(--fintokei-blue)' }}>{CONFIG.brokerName}</span>
+                </div>
+            </footer>
+        );
+        
+        // ============================================
+        // MAIN APP COMPONENT
+        // ============================================
+        const App = () => {
+            const [selectedEvent, setSelectedEvent] = useState(null);
+            const [trace] = useState(MOCK_TRACE);
+            
+            // Auto-select first event on load
+            useEffect(() => {
+                if (trace.events.length > 0) {
+                    setSelectedEvent(trace.events[0]);
+                }
+            }, [trace]);
+            
+            return (
+                <div className="app">
+                    <Header />
+                    <DisclaimerBanner />
+                    <main className="main-container">
+                        <div>
+                            <TraceInfoCard trace={trace} />
+                            <Timeline 
+                                events={trace.events}
+                                selectedEvent={selectedEvent}
+                                onSelectEvent={setSelectedEvent}
+                            />
+                        </div>
+                        <DetailPanel event={selectedEvent} />
+                    </main>
+                    <Footer />
+                </div>
+            );
+        };
+        
+        // ============================================
+        // RENDER APP
+        // ============================================
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
