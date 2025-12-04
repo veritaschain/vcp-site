@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>VCP for Fintokei | Complete Solution Demo</title>
+    <meta name="description" content="VeritasChain Protocol (VCP) - Complete Solution Demo for Fintokei featuring Dispute Resolution Center, Consistency Scorecard, and Career Passport."/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        fintokei: { primary: '#1a1f2e', accent: '#00d4aa', gold: '#ffd700' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .gradient-text {
+            background: linear-gradient(135deg, #00d4aa 0%, #6366f1 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-gradient { background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%); }
+        .glow-green { box-shadow: 0 0 40px rgba(0, 212, 170, 0.3); }
+        .glow-amber { box-shadow: 0 0 40px rgba(245, 158, 11, 0.3); }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .float { animation: float 3s ease-in-out infinite; }
+        .timeline-line { background: linear-gradient(to bottom, #00d4aa, #6366f1, #06b6d4); }
+        
+        /* Gauge animation */
+        @keyframes gauge-fill { from { stroke-dashoffset: 283; } }
+        .gauge-ring { animation: gauge-fill 1.5s ease-out forwards; }
+        
+        /* Architecture diagram */
+        .arch-arrow { stroke-dasharray: 8 4; animation: dash 1s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: -12; } }
+    </style>
+</head>
+<body class="font-sans antialiased bg-slate-900 text-white">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-lg border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold">
+                        <span class="gradient-text">VeritasChain</span>
+                        <span class="text-slate-400 font-normal ml-2 hidden sm:inline">for Fintokei</span>
+                    </span>
+                </div>
+                <div class="hidden lg:flex items-center space-x-6">
+                    <a href="#dispute" class="text-slate-300 hover:text-white transition text-sm">Dispute Center</a>
+                    <a href="#scorecard" class="text-slate-300 hover:text-white transition text-sm">Scorecard</a>
+                    <a href="#architecture" class="text-slate-300 hover:text-white transition text-sm">Architecture</a>
+                    <a href="#passport" class="text-slate-300 hover:text-white transition text-sm">Career Passport</a>
+                    <div class="flex items-center gap-2">
+                        <div class="px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 text-xs font-medium flex items-center gap-1">
+                            <i class="fas fa-mobile-alt"></i>
+                            Mobile Ready
+                        </div>
+                        <div class="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900 text-sm font-bold">
+                            <i class="fas fa-shield-alt mr-2"></i>Fintokei Mode
+                        </div>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center gap-3">
+                    <div class="px-2 py-1 rounded bg-indigo-500/20 text-indigo-400 text-xs flex items-center gap-1">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span class="hidden sm:inline">Mobile Ready</span>
+                    </div>
+                    <button onclick="toggleMobileMenu()" id="mobileMenuBtn" class="text-slate-400 hover:text-white p-2">
+                        <i class="fas fa-bars text-xl" id="menuIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-slate-800 border-t border-slate-700">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#dispute" onclick="closeMobileMenu()" class="block py-3 px-4 rounded-lg bg-slate-700/50 text-white hover:bg-slate-700 transition">
+                    <i class="fas fa-gavel mr-3 text-emerald-400"></i>Dispute Resolution Center
+                </a>
+                <a href="#scorecard" onclick="closeMobileMenu()" class="block py-3 px-4 rounded-lg bg-slate-700/50 text-white hover:bg-slate-700 transition">
+                    <i class="fas fa-chart-line mr-3 text-indigo-400"></i>Consistency Scorecard
+                </a>
+                <a href="#architecture" onclick="closeMobileMenu()" class="block py-3 px-4 rounded-lg bg-slate-700/50 text-white hover:bg-slate-700 transition">
+                    <i class="fas fa-sitemap mr-3 text-cyan-400"></i>Sidecar Architecture
+                </a>
+                <a href="#passport" onclick="closeMobileMenu()" class="block py-3 px-4 rounded-lg bg-slate-700/50 text-white hover:bg-slate-700 transition">
+                    <i class="fas fa-passport mr-3 text-amber-400"></i>Career Passport
+                </a>
+                <div class="pt-3 border-t border-slate-700">
+                    <div class="flex items-center justify-center gap-2 py-2">
+                        <div class="px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900 text-sm font-bold">
+                            <i class="fas fa-shield-alt mr-2"></i>Fintokei Compliance Mode
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm mb-6">
+                <i class="fas fa-flask mr-2"></i>
+                Complete Solution Demo — 100% Synthetic Data
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-bold mb-4">
+                VCP Product Vision for <span class="gradient-text">Fintokei</span>
+            </h1>
+            <p class="text-xl text-slate-400 max-w-3xl mx-auto mb-4">
+                Four integrated modules that transform Fintokei's operations
+            </p>
+            <p class="text-lg text-emerald-400 font-medium">
+                Fintokei can become Asia's first prop firm with verifiable execution integrity.
+            </p>
+        </div>
+    </section>
+
+    <!-- ========== 提言1: Dispute Resolution Center ========== -->
+    <section id="dispute" class="py-16 bg-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Proposal 1</span>
+                <h2 class="text-3xl font-bold mt-2 mb-2">Dispute Resolution Center</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    Transform the Explorer into a support team dashboard that resolves trader disputes with mathematical proof.
+                </p>
+            </div>
+
+            <!-- Scenario Banner -->
+            <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mb-8 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle text-amber-400 text-xl"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-amber-400">Scenario: News Event Slippage Complaint</div>
+                    <div class="text-sm text-slate-300">Trader claims stop-loss slipped >5 pips during news release, causing unfair loss.</div>
+                </div>
+            </div>
+
+            <!-- 3-Column Dashboard -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
+                
+                <!-- Left Panel: Trader Claim -->
+                <div class="lg:col-span-3 order-1">
+                    <div class="card-gradient rounded-xl border border-red-500/30 h-full">
+                        <div class="p-3 sm:p-4 border-b border-slate-700 bg-red-500/10">
+                            <div class="flex items-center gap-2 text-red-400 font-bold">
+                                <i class="fas fa-user-times"></i>
+                                Trader Claim
+                            </div>
+                        </div>
+                        <div class="p-3 sm:p-4 space-y-3 sm:space-y-4">
+                            <div class="grid grid-cols-2 lg:grid-cols-1 gap-3">
+                                <div class="bg-slate-800 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400 mb-1">Ticket ID</div>
+                                    <div class="font-mono text-amber-400">#FTK-12345</div>
+                                </div>
+                                <div class="bg-slate-800 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400 mb-1">Account</div>
+                                    <div class="font-mono text-sm">FTK-PRO-847291</div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-800 rounded-lg p-3">
+                                <div class="text-xs text-slate-400 mb-1">Claim</div>
+                                <div class="text-sm text-red-300">
+                                    "Slippage exceeded 5 pips at 14:30:00 during NFP release. Stop loss was manipulated."
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 lg:grid-cols-1 gap-3">
+                                <div class="bg-slate-800 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400 mb-1">Requested</div>
+                                    <div class="text-sm">Compensation: $450</div>
+                                </div>
+                                <div class="bg-slate-800 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400 mb-1">Status</div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-amber-400 pulse-dot"></span>
+                                        <span class="text-amber-400 text-sm">Under Investigation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Center Panel: VCP Verification -->
+                <div class="lg:col-span-6 order-2">
+                    <div class="card-gradient rounded-xl border border-slate-700 h-full">
+                        <div class="p-3 sm:p-4 border-b border-slate-700 bg-indigo-500/10">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2 text-indigo-400 font-bold">
+                                    <i class="fas fa-search"></i>
+                                    VCP Verification Analysis
+                                </div>
+                                <span class="text-xs text-slate-400 font-mono">0.8s</span>
+                            </div>
+                        </div>
+                        <div class="p-3 sm:p-4 space-y-4">
+                            
+                            <!-- Timeline Comparison -->
+                            <div class="bg-slate-800 rounded-lg p-3 sm:p-4">
+                                <div class="text-sm font-bold text-indigo-400 mb-3">
+                                    <i class="fas fa-clock mr-2"></i>Nanosecond Timeline
+                                </div>
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex items-start sm:items-center gap-3 sm:gap-4">
+                                        <div class="w-3 h-3 rounded-full bg-amber-500 flex-shrink-0 mt-1 sm:mt-0"></div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+                                                <span class="text-slate-400 text-xs sm:text-sm">NFP News Release</span>
+                                                <span class="font-mono text-amber-400 text-xs">14:30:00.000</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start sm:items-center gap-3 sm:gap-4">
+                                        <div class="w-3 h-3 rounded-full bg-cyan-500 flex-shrink-0 mt-1 sm:mt-0"></div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+                                                <span class="text-slate-400 text-xs sm:text-sm">Order Received (VCP)</span>
+                                                <span class="font-mono text-cyan-400 text-xs">14:30:00.127</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start sm:items-center gap-3 sm:gap-4">
+                                        <div class="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0 mt-1 sm:mt-0"></div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+                                                <span class="text-slate-400 text-xs sm:text-sm">Execution Completed</span>
+                                                <span class="font-mono text-emerald-400 text-xs">14:30:00.189</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 pt-3 border-t border-slate-700 text-xs text-slate-400">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Order arrived <strong class="text-white">127ms after</strong> news. Market had moved.
+                                </div>
+                            </div>
+
+                            <!-- Latency Analysis Graph -->
+                            <div class="bg-slate-800 rounded-lg p-3 sm:p-4">
+                                <div class="text-sm font-bold text-cyan-400 mb-3">
+                                    <i class="fas fa-chart-area mr-2"></i>Latency Breakdown
+                                </div>
+                                <div class="bg-slate-900 rounded-lg p-4">
+                                    <div class="flex items-end justify-around gap-4" style="height: 120px;">
+                                        <div class="flex flex-col items-center justify-end h-full">
+                                            <div class="w-12 sm:w-16 bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-lg" style="height: 24px;"></div>
+                                            <span class="text-xs text-slate-400 mt-2">Server</span>
+                                            <span class="text-sm font-mono text-emerald-400 font-bold">12ms</span>
+                                        </div>
+                                        <div class="flex flex-col items-center justify-end h-full">
+                                            <div class="w-12 sm:w-16 bg-gradient-to-t from-amber-600 to-amber-400 rounded-t-lg" style="height: 72px;"></div>
+                                            <span class="text-xs text-slate-400 mt-2">Network</span>
+                                            <span class="text-sm font-mono text-amber-400 font-bold">67ms</span>
+                                        </div>
+                                        <div class="flex flex-col items-center justify-end h-full">
+                                            <div class="w-12 sm:w-16 bg-gradient-to-t from-red-600 to-red-400 rounded-t-lg" style="height: 58px;"></div>
+                                            <span class="text-xs text-slate-400 mt-2">Market</span>
+                                            <span class="text-sm font-mono text-red-400 font-bold">48ms</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 text-xs text-slate-400">
+                                    <i class="fas fa-check-circle text-emerald-400 mr-1"></i>
+                                    Delay: <strong class="text-amber-400">network</strong> + <strong class="text-red-400">market gap</strong>, not server
+                                </div>
+                            </div>
+
+                            <!-- Slippage Verification -->
+                            <div class="bg-slate-800 rounded-lg p-3 sm:p-4">
+                                <div class="text-sm font-bold text-emerald-400 mb-3">
+                                    <i class="fas fa-exchange-alt mr-2"></i>Slippage Check
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 sm:gap-3 text-center">
+                                    <div class="bg-slate-900 rounded-lg p-2 sm:p-3">
+                                        <div class="text-xs text-slate-400">Request</div>
+                                        <div class="font-mono text-sm sm:text-lg">149.850</div>
+                                    </div>
+                                    <div class="bg-slate-900 rounded-lg p-2 sm:p-3">
+                                        <div class="text-xs text-slate-400">Executed</div>
+                                        <div class="font-mono text-sm sm:text-lg">149.823</div>
+                                    </div>
+                                    <div class="bg-slate-900 rounded-lg p-2 sm:p-3">
+                                        <div class="text-xs text-slate-400">Slip</div>
+                                        <div class="font-mono text-sm sm:text-lg text-amber-400">2.7</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 text-xs text-emerald-400">
+                                    <i class="fas fa-check mr-1"></i>
+                                    2.7 pips is <strong>normal</strong> for NFP. Claim of >5 pips <strong>not supported</strong>.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Verdict -->
+                <div class="lg:col-span-3 order-3">
+                    <div class="card-gradient rounded-xl border border-emerald-500 glow-green h-full">
+                        <div class="p-3 sm:p-4 border-b border-slate-700 bg-emerald-500/10">
+                            <div class="flex items-center gap-2 text-emerald-400 font-bold">
+                                <i class="fas fa-gavel"></i>
+                                Verdict
+                            </div>
+                        </div>
+                        <div class="p-3 sm:p-4 text-center">
+                            <!-- Big Checkmark -->
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                <i class="fas fa-check text-emerald-400 text-4xl sm:text-5xl"></i>
+                            </div>
+                            <div class="text-xl sm:text-2xl font-bold text-emerald-400 mb-2">VALIDATED</div>
+                            <div class="text-sm text-slate-400 mb-4 sm:mb-6">No manipulation evidence</div>
+                            
+                            <!-- Summary -->
+                            <div class="space-y-2 text-sm text-left mb-4 sm:mb-6">
+                                <div class="flex justify-between py-2 border-b border-slate-700">
+                                    <span class="text-slate-400">Hash Chain</span>
+                                    <span class="text-emerald-400">✓</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-slate-700">
+                                    <span class="text-slate-400">Timestamps</span>
+                                    <span class="text-emerald-400">✓</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-slate-700">
+                                    <span class="text-slate-400">Price Source</span>
+                                    <span class="text-emerald-400">✓</span>
+                                </div>
+                                <div class="flex justify-between py-2">
+                                    <span class="text-slate-400">Slippage</span>
+                                    <span class="text-emerald-400">✓</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Generate PDF Button -->
+                            <button onclick="openProofModal()" class="w-full py-3 sm:py-4 px-4 sm:px-6 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 rounded-xl font-bold text-slate-900 transition transform hover:scale-[1.02] flex items-center justify-center gap-2">
+                                <i class="fas fa-file-pdf text-lg"></i>
+                                <span class="text-sm sm:text-base">Generate Proof PDF</span>
+                            </button>
+                            
+                            <div class="mt-3 sm:mt-4 text-xs text-slate-500">
+                                Hash-chain certified
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Message -->
+            <div class="mt-8 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/30 rounded-xl p-6">
+                <div class="text-center mb-4">
+                    <p class="text-lg text-slate-300">
+                        <i class="fas fa-magic text-emerald-400 mr-2"></i>
+                        With VCP, <span class="line-through text-slate-500">2 hours of investigation and email exchanges</span>
+                        become <span class="text-emerald-400 font-bold">one click</span>.
+                    </p>
+                    <p class="text-emerald-400 font-medium mt-2">
+                        And the result is mathematically irrefutable.
+                    </p>
+                </div>
+                <!-- ① Shareable Dispute Report highlight -->
+                <div class="mt-4 pt-4 border-t border-emerald-500/20 text-center">
+                    <div class="inline-flex items-center gap-3 px-6 py-3 bg-slate-800/50 rounded-xl border border-emerald-500/30">
+                        <i class="fas fa-file-pdf text-amber-400 text-xl"></i>
+                        <div class="text-left">
+                            <div class="text-sm font-bold text-white">Shareable Dispute Report (PDF)</div>
+                            <div class="text-xs text-slate-400">Reduces <span class="text-red-400 line-through">3-day dispute chains</span> to <span class="text-emerald-400 font-bold">a single click</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 提言2: Consistency Scorecard ========== -->
+    <section id="scorecard" class="py-16 bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-indigo-400 font-semibold text-sm uppercase tracking-wider">Proposal 2</span>
+                <h2 class="text-3xl font-bold mt-2 mb-2">Consistency Scorecard</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto mb-3">
+                    VCP-GOV module analyzes trader behavior patterns to visualize "trader health scores" instead of raw JSON.
+                </p>
+                <!-- ② Objective evaluation note -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/10 border border-indigo-500/30 rounded-full">
+                    <i class="fas fa-balance-scale text-indigo-400"></i>
+                    <span class="text-sm text-indigo-300">Uses trader's <strong class="text-white">real behavioral log</strong> — not subjective evaluation</span>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                
+                <!-- Risk Consistency Gauge -->
+                <div class="card-gradient rounded-xl border border-slate-700 p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+                            <i class="fas fa-chart-line text-indigo-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Risk Consistency Gauge</h3>
+                            <p class="text-xs text-slate-400">Lot size variance analysis</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Gauge Visual -->
+                    <div class="relative flex justify-center mb-6">
+                        <svg width="160" height="100" viewBox="0 0 160 100">
+                            <!-- Background arc -->
+                            <path d="M 20 90 A 60 60 0 0 1 140 90" fill="none" stroke="#334155" stroke-width="12" stroke-linecap="round"/>
+                            <!-- Filled arc (85%) -->
+                            <path d="M 20 90 A 60 60 0 0 1 140 90" fill="none" stroke="url(#gaugeGradient)" stroke-width="12" stroke-linecap="round" stroke-dasharray="188" stroke-dashoffset="28" class="gauge-ring"/>
+                            <!-- Gradient definition -->
+                            <defs>
+                                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#10b981"/>
+                                    <stop offset="100%" stop-color="#06b6d4"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="absolute bottom-0 text-center">
+                            <div class="text-3xl font-bold text-emerald-400">85%</div>
+                            <div class="text-xs text-slate-400">Consistent</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Comparison Chart -->
+                    <div class="bg-slate-800 rounded-lg p-4">
+                        <div class="text-xs text-slate-400 mb-2">Lot Size Pattern</div>
+                        <div class="flex items-end justify-around h-16 gap-1">
+                            <!-- Consistent trader pattern (smooth) -->
+                            <div class="w-2 bg-emerald-500/60 rounded-t" style="height: 60%"></div>
+                            <div class="w-2 bg-emerald-500/60 rounded-t" style="height: 65%"></div>
+                            <div class="w-2 bg-emerald-500/60 rounded-t" style="height: 58%"></div>
+                            <div class="w-2 bg-emerald-500/60 rounded-t" style="height: 62%"></div>
+                            <div class="w-2 bg-emerald-500/60 rounded-t" style="height: 60%"></div>
+                            <div class="w-2 bg-emerald-500/60 rounded-t" style="height: 63%"></div>
+                            <div class="w-2 bg-emerald-500/60 rounded-t" style="height: 59%"></div>
+                            <div class="w-2 bg-emerald-500/60 rounded-t" style="height: 61%"></div>
+                        </div>
+                        <div class="text-xs text-emerald-400 mt-2 text-center">
+                            <i class="fas fa-check mr-1"></i>Smooth pattern = Professional trader
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rule Breach Snapshot -->
+                <div class="card-gradient rounded-xl border border-slate-700 p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                            <i class="fas fa-camera text-amber-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Rule Breach Snapshot</h3>
+                            <p class="text-xs text-slate-400">VCP-RISK evidence capture</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Snapshot Display -->
+                    <div class="bg-slate-800 rounded-lg p-4 border-2 border-amber-500/30 mb-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 font-bold">SNAPSHOT</span>
+                            <span class="text-xs font-mono text-slate-400">2025-01-15 09:42:31</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Daily Loss Cap</span>
+                                <span class="text-red-400 font-mono">-1.02%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Threshold</span>
+                                <span class="text-amber-400 font-mono">-1.00%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Breach Amount</span>
+                                <span class="text-red-400 font-mono">-0.02%</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-slate-700">
+                            <div class="text-xs text-slate-400">Hash Proof</div>
+                            <div class="font-mono text-xs text-cyan-400 truncate">a3f8c91d4e7f...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs text-amber-400 bg-amber-500/10 rounded-lg p-3">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Immutable "evidence photo" captured at exact moment of breach. Cannot be disputed.
+                    </div>
+                </div>
+
+                <!-- Sustainability Rating -->
+                <div class="card-gradient rounded-xl border border-slate-700 p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                            <i class="fas fa-seedling text-emerald-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Sustainability Rating</h3>
+                            <p class="text-xs text-slate-400">VCP predictive score</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Big Score -->
+                    <div class="text-center mb-6">
+                        <div class="text-6xl font-bold text-emerald-400">85%</div>
+                        <div class="text-slate-400 text-sm mt-1">Professional viability probability</div>
+                    </div>
+                    
+                    <!-- Breakdown -->
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-slate-400">Risk Management</span>
+                                <span class="text-emerald-400">92%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-slate-400">Consistency</span>
+                                <span class="text-emerald-400">85%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-slate-400">Drawdown Control</span>
+                                <span class="text-amber-400">78%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-amber-500 h-2 rounded-full" style="width: 78%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Message -->
+            <div class="mt-8 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/30 rounded-xl p-6 text-center">
+                <p class="text-lg text-slate-300">
+                    <i class="fas fa-lightbulb text-indigo-400 mr-2"></i>
+                    Instead of simply disqualifying traders, VCP data enables you to provide
+                    <span class="text-indigo-400 font-bold">objective feedback</span> on why their trading is unsustainable.
+                </p>
+                <p class="text-slate-400 text-sm mt-3">
+                    <i class="fas fa-shield-alt text-emerald-400 mr-1"></i>
+                    Every score is derived from <strong class="text-white">cryptographically verified behavioral data</strong> — eliminating "subjective evaluation" disputes.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 提言3: Silver Tier Sidecar Architecture ========== -->
+    <section id="architecture" class="py-16 bg-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-cyan-400 font-semibold text-sm uppercase tracking-wider">Proposal 3</span>
+                <h2 class="text-3xl font-bold mt-2 mb-2">Silver Tier: Non-Intrusive Sidecar</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto mb-3">
+                    VCP operates as a "shadow" alongside your trading infrastructure — zero performance impact.
+                </p>
+                <!-- ③ Deployment time note -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full">
+                    <i class="fas fa-clock text-cyan-400"></i>
+                    <span class="text-sm text-cyan-300">Deployment time: <strong class="text-white">~15 minutes</strong> (Docker or Windows service)</span>
+                </div>
+            </div>
+
+            <!-- Architecture Diagram -->
+            <div class="card-gradient rounded-2xl border border-slate-700 p-4 sm:p-8 mb-8">
+                <!-- Desktop layout -->
+                <div class="hidden lg:grid lg:grid-cols-5 gap-6 items-center">
+                    
+                    <!-- MT4/5 Server -->
+                    <div class="text-center">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-xl bg-slate-800 border-2 border-slate-600 flex items-center justify-center">
+                            <i class="fas fa-server text-4xl text-slate-400"></i>
+                        </div>
+                        <div class="font-bold">MT4/MT5</div>
+                        <div class="text-xs text-slate-400">Trading Platform</div>
+                        <div class="mt-2 px-2 py-1 rounded bg-slate-700 text-xs text-slate-300">
+                            No changes required
+                        </div>
+                    </div>
+
+                    <!-- Arrow 1 -->
+                    <div class="flex flex-col items-center">
+                        <svg width="100" height="40" viewBox="0 0 100 40">
+                            <path d="M 0 20 L 80 20" stroke="#00d4aa" stroke-width="2" fill="none" class="arch-arrow"/>
+                            <polygon points="85,20 75,15 75,25" fill="#00d4aa"/>
+                        </svg>
+                        <div class="text-xs text-emerald-400 mt-1">Async Log Stream</div>
+                    </div>
+
+                    <!-- VCP Sidecar -->
+                    <div class="text-center">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-xl bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center float">
+                            <i class="fas fa-link text-4xl text-emerald-400"></i>
+                        </div>
+                        <div class="font-bold text-emerald-400">VCP Sidecar</div>
+                        <div class="text-xs text-slate-400">Non-Intrusive Logger</div>
+                        <div class="mt-2 px-2 py-1 rounded bg-emerald-500/20 text-xs text-emerald-400">
+                            Sign & Anchor
+                        </div>
+                    </div>
+
+                    <!-- Arrow 2 -->
+                    <div class="flex flex-col items-center">
+                        <svg width="100" height="40" viewBox="0 0 100 40">
+                            <path d="M 0 20 L 80 20" stroke="#06b6d4" stroke-width="2" fill="none" class="arch-arrow"/>
+                            <polygon points="85,20 75,15 75,25" fill="#06b6d4"/>
+                        </svg>
+                        <div class="text-xs text-cyan-400 mt-1">Merkle Root Only</div>
+                    </div>
+
+                    <!-- VCP Explorer -->
+                    <div class="text-center">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-xl bg-cyan-500/20 border-2 border-cyan-500 flex items-center justify-center">
+                            <i class="fas fa-eye text-4xl text-cyan-400"></i>
+                        </div>
+                        <div class="font-bold text-cyan-400">VCP Explorer</div>
+                        <div class="text-xs text-slate-400">Verification UI</div>
+                        <div class="mt-2 px-2 py-1 rounded bg-cyan-500/20 text-xs text-cyan-400">
+                            Visual Audit
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile layout (vertical flow) -->
+                <div class="lg:hidden space-y-4">
+                    <!-- MT4/5 Server -->
+                    <div class="flex items-center gap-4 bg-slate-800 rounded-xl p-4">
+                        <div class="w-16 h-16 rounded-xl bg-slate-700 border-2 border-slate-600 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-server text-2xl text-slate-400"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold">MT4/MT5</div>
+                            <div class="text-xs text-slate-400">Trading Platform</div>
+                            <div class="mt-1 inline-block px-2 py-0.5 rounded bg-slate-700 text-xs text-slate-300">
+                                No changes required
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Arrow down -->
+                    <div class="flex justify-center">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-arrow-down text-emerald-400 text-xl"></i>
+                            <span class="text-xs text-emerald-400 mt-1">Async Log Stream</span>
+                        </div>
+                    </div>
+                    
+                    <!-- VCP Sidecar -->
+                    <div class="flex items-center gap-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4">
+                        <div class="w-16 h-16 rounded-xl bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center flex-shrink-0 float">
+                            <i class="fas fa-link text-2xl text-emerald-400"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-emerald-400">VCP Sidecar</div>
+                            <div class="text-xs text-slate-400">Non-Intrusive Logger</div>
+                            <div class="mt-1 inline-block px-2 py-0.5 rounded bg-emerald-500/20 text-xs text-emerald-400">
+                                Sign & Anchor
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Arrow down -->
+                    <div class="flex justify-center">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-arrow-down text-cyan-400 text-xl"></i>
+                            <span class="text-xs text-cyan-400 mt-1">Merkle Root Only</span>
+                        </div>
+                    </div>
+                    
+                    <!-- VCP Explorer -->
+                    <div class="flex items-center gap-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-4">
+                        <div class="w-16 h-16 rounded-xl bg-cyan-500/20 border-2 border-cyan-500 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-eye text-2xl text-cyan-400"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-cyan-400">VCP Explorer</div>
+                            <div class="text-xs text-slate-400">Verification UI</div>
+                            <div class="mt-1 inline-block px-2 py-0.5 rounded bg-cyan-500/20 text-xs text-cyan-400">
+                                Visual Audit
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Points -->
+                <div class="grid md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-slate-700">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-bolt text-emerald-400"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm">Zero Latency Impact</div>
+                            <div class="text-xs text-slate-400">Async processing off the critical path</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-puzzle-piece text-emerald-400"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm">Non-Invasive</div>
+                            <div class="text-xs text-slate-400">No core engine modifications</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-lock text-emerald-400"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm">Data Stays Local</div>
+                            <div class="text-xs text-slate-400">Only hash anchors leave your network</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Message -->
+            <div class="bg-gradient-to-r from-cyan-500/10 to-emerald-500/10 border border-cyan-500/30 rounded-xl p-6 text-center">
+                <p class="text-lg text-slate-300">
+                    <i class="fas fa-user-ninja text-cyan-400 mr-2"></i>
+                    "You don't need to change your existing infrastructure.
+                    <span class="text-cyan-400 font-bold">VCP works as a shadow</span>, providing audit without affecting performance."
+                </p>
+                <p class="text-slate-400 text-sm mt-3">
+                    <i class="fas fa-rocket text-emerald-400 mr-1"></i>
+                    <strong class="text-white">15-minute setup</strong> • Zero latency impact • No core engine modifications • Data stays on-premise
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 提言4: Career Passport ========== -->
+    <section id="passport" class="py-16 bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-amber-400 font-semibold text-sm uppercase tracking-wider">Proposal 4</span>
+                <h2 class="text-3xl font-bold mt-2 mb-2">Career Passport: Institutional-Grade Track Record</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto mb-3">
+                    Package a trader's VCP-verified track record for institutional due diligence — the bridge from retail to professional.
+                </p>
+                <!-- ④ External connections note -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/30 rounded-full">
+                    <i class="fas fa-external-link-alt text-amber-400"></i>
+                    <span class="text-sm text-amber-300">Exportable to <strong class="text-white">Purple Trading</strong>, auditors, and investor due-diligence</span>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                
+                <!-- Passport Preview -->
+                <div class="card-gradient rounded-2xl border-2 border-amber-500 glow-amber p-6 relative overflow-hidden">
+                    <!-- Decorative stripe -->
+                    <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500"></div>
+                    
+                    <div class="text-center mb-6 pt-4">
+                        <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold mb-3">
+                            <i class="fas fa-award"></i>
+                            VCP-VERIFIED TRACK RECORD
+                        </div>
+                        <h3 class="text-2xl font-bold">Institutional-Grade Career Passport</h3>
+                        <p class="text-slate-400 text-sm">Exportable to Purple Trading, auditors, and investors</p>
+                    </div>
+
+                    <!-- Trader Info -->
+                    <div class="bg-slate-800 rounded-xl p-4 mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-full bg-amber-500/20 flex items-center justify-center">
+                                <i class="fas fa-user text-3xl text-amber-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg">TRADER-847291</div>
+                                <div class="text-sm text-slate-400">Fintokei Pro Trader Graduate</div>
+                                <div class="text-xs text-emerald-400 mt-1">
+                                    <i class="fas fa-check-circle mr-1"></i>Identity Verified
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="bg-slate-800 rounded-lg p-3 text-center">
+                            <div class="text-2xl font-bold text-emerald-400">6</div>
+                            <div class="text-xs text-slate-400">Months Verified</div>
+                        </div>
+                        <div class="bg-slate-800 rounded-lg p-3 text-center">
+                            <div class="text-2xl font-bold text-amber-400">847</div>
+                            <div class="text-xs text-slate-400">Trades Logged</div>
+                        </div>
+                        <div class="bg-slate-800 rounded-lg p-3 text-center">
+                            <div class="text-2xl font-bold text-cyan-400">+18.4%</div>
+                            <div class="text-xs text-slate-400">Net Return</div>
+                        </div>
+                        <div class="bg-slate-800 rounded-lg p-3 text-center">
+                            <div class="text-2xl font-bold text-indigo-400">1.82</div>
+                            <div class="text-xs text-slate-400">Sharpe Ratio</div>
+                        </div>
+                    </div>
+
+                    <!-- Verification Badge -->
+                    <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4 text-center">
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <i class="fas fa-shield-alt text-emerald-400 text-xl"></i>
+                            <span class="font-bold text-emerald-400">CRYPTOGRAPHICALLY VERIFIED</span>
+                        </div>
+                        <div class="text-xs text-slate-400">
+                            All 847 trades are hash-chain linked and tamper-proof
+                        </div>
+                    </div>
+
+                    <!-- Passport Footer -->
+                    <div class="mt-4 pt-4 border-t border-slate-700 flex items-center justify-between text-xs text-slate-500">
+                        <span>VCP-PASSPORT-2025-847291</span>
+                        <span>Issued: 2025-01-15</span>
+                    </div>
+                </div>
+
+                <!-- Export Options -->
+                <div class="space-y-6">
+                    <!-- Export Button -->
+                    <div class="card-gradient rounded-xl border border-slate-700 p-6">
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+                            <i class="fas fa-file-export text-amber-400"></i>
+                            Institutional-Grade Export
+                        </h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center gap-3 text-sm">
+                                <i class="fas fa-check text-emerald-400"></i>
+                                <span>6 months of VCP-TRADE execution history</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm">
+                                <i class="fas fa-check text-emerald-400"></i>
+                                <span>VCP-RISK parameter snapshots at each trade</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm">
+                                <i class="fas fa-check text-emerald-400"></i>
+                                <span>Consistency scorecard and sustainability rating</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm">
+                                <i class="fas fa-check text-emerald-400"></i>
+                                <span>Merkle proof for each logged event</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm">
+                                <i class="fas fa-check text-emerald-400"></i>
+                                <span>Purple Trading compliance-ready format</span>
+                            </div>
+                        </div>
+
+                        <button class="w-full py-4 px-6 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 rounded-xl font-bold text-slate-900 transition transform hover:scale-[1.02] flex items-center justify-center gap-3">
+                            <i class="fas fa-user-check text-xl"></i>
+                            <div class="text-left">
+                                <div class="text-base">Verify for Investor</div>
+                                <div class="text-xs font-normal opacity-80">Export due diligence package</div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Value Proposition -->
+                    <div class="card-gradient rounded-xl border border-slate-700 p-6">
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+                            <i class="fas fa-rocket text-indigo-400"></i>
+                            From Retail to Professional
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
+                                    <span class="text-slate-400 font-bold">1</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium">Fintokei Challenge</div>
+                                    <div class="text-sm text-slate-400">Prove skills, build VCP track record</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                                    <span class="text-indigo-400 font-bold">2</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium">Career Passport</div>
+                                    <div class="text-sm text-slate-400">Export verified credentials</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                                    <span class="text-emerald-400 font-bold">3</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium">Professional Capital</div>
+                                    <div class="text-sm text-slate-400">Attract institutional investors</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Message -->
+            <div class="mt-8 bg-gradient-to-r from-amber-500/10 to-emerald-500/10 border border-amber-500/30 rounded-xl p-6 text-center">
+                <p class="text-lg text-slate-300">
+                    <i class="fas fa-passport text-amber-400 mr-2"></i>
+                    VCP issues Fintokei graduates a <span class="text-amber-400 font-bold">"Passport of Trust"</span> —
+                    dramatically reducing the cost of transitioning from retail to professional.
+                </p>
+                <p class="text-slate-400 text-sm mt-3">
+                    <i class="fas fa-handshake text-emerald-400 mr-1"></i>
+                    Instant export to <strong class="text-white">Purple Trading</strong>, institutional auditors, and investor due-diligence processes — <strong class="text-amber-400">graduation = value creation</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== Mobile Responsive Appeal ========== -->
+    <section class="py-12 bg-slate-800/30">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-indigo-500/10 border border-indigo-500/30 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+                <!-- Decorative mobile icons -->
+                <div class="absolute top-4 right-4 opacity-20 hidden sm:block">
+                    <i class="fas fa-mobile-alt text-6xl text-indigo-400"></i>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-4 sm:gap-6">
+                    <!-- Icon -->
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-mobile-alt text-3xl sm:text-4xl text-indigo-400"></i>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="text-center md:text-left flex-1">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 sm:gap-3 mb-3">
+                            <h3 class="text-lg sm:text-xl font-bold">Fully Responsive Design</h3>
+                            <span class="px-2 sm:px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold">
+                                📱 MOBILE READY
+                            </span>
+                        </div>
+                        <!-- ⑥ Updated messaging -->
+                        <p class="text-slate-300 mb-3 text-sm sm:text-base leading-relaxed">
+                            VCP provides all audit and verification features with responsive design, 
+                            fully operable on smartphones and tablets. Support staff and risk management teams 
+                            can instantly review audit trails without returning to the office, 
+                            <strong class="text-white">dramatically accelerating initial dispute response</strong>.
+                        </p>
+                        <p class="text-indigo-400 font-medium text-sm sm:text-base">
+                            <i class="fas fa-bolt mr-2"></i>
+                            VCP delivers <strong>"transparency that works anywhere"</strong> — reducing operational burden and elevating decision speed.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Feature highlights -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6 pt-6 border-t border-indigo-500/20">
+                    <div class="text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-emerald-500/20 flex items-center justify-center mb-2">
+                            <i class="fas fa-search text-emerald-400"></i>
+                        </div>
+                        <div class="text-xs text-slate-400">Dispute Review</div>
+                        <div class="text-xs text-emerald-400 font-medium">On Mobile ✓</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-amber-500/20 flex items-center justify-center mb-2">
+                            <i class="fas fa-file-pdf text-amber-400"></i>
+                        </div>
+                        <div class="text-xs text-slate-400">PDF Generation</div>
+                        <div class="text-xs text-emerald-400 font-medium">On Mobile ✓</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-cyan-500/20 flex items-center justify-center mb-2">
+                            <i class="fas fa-chart-line text-cyan-400"></i>
+                        </div>
+                        <div class="text-xs text-slate-400">Scorecard View</div>
+                        <div class="text-xs text-emerald-400 font-medium">On Mobile ✓</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-purple-500/20 flex items-center justify-center mb-2">
+                            <i class="fas fa-share-alt text-purple-400"></i>
+                        </div>
+                        <div class="text-xs text-slate-400">Share & Export</div>
+                        <div class="text-xs text-emerald-400 font-medium">On Mobile ✓</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="card-gradient rounded-3xl p-12 border border-emerald-500/30 glow-green">
+                <h2 class="text-3xl font-bold mb-4">Ready to Lead the Transparency Revolution?</h2>
+                <p class="text-xl text-slate-300 mb-6">
+                    These four modules position Fintokei as Asia's first cryptographically verifiable prop firm.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                    <a href="mailto:kamimura@veritaschain.org?subject=Fintokei%20VCP%20Integration%20Inquiry" 
+                       class="inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-semibold text-lg transition transform hover:scale-105">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        Request Technical Briefing
+                    </a>
+                    <a href="https://veritaschain.org" target="_blank"
+                       class="inline-flex items-center justify-center px-8 py-4 border border-slate-600 hover:border-emerald-500 rounded-xl font-semibold text-lg transition">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        VCP Documentation
+                    </a>
+                </div>
+                
+                <div class="border-t border-slate-700 pt-6 mt-6">
+                    <div class="grid sm:grid-cols-2 gap-6 text-left max-w-md mx-auto">
+                        <div>
+                            <p class="text-sm text-slate-400 mb-1">Contact</p>
+                            <p class="font-medium">Tokachi Kamimura</p>
+                            <p class="text-slate-400 text-sm">Executive Director, VSO</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-400 mb-1">Email</p>
+                            <a href="mailto:kamimura@veritaschain.org" class="font-medium text-emerald-400 hover:text-emerald-300">
+                                kamimura@veritaschain.org
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-slate-900 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- How VCP Helps -->
+            <div class="text-center mb-6 py-4 px-6 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/30 rounded-xl">
+                <p class="text-emerald-400 font-medium">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    VCP helps Fintokei: Stabilize trader trust, reduce disputes, strengthen regulatory readiness, and create pathways to professional trading.
+                </p>
+                <!-- ⑤ Support workload reduction -->
+                <p class="text-slate-300 text-sm mt-2">
+                    <i class="fas fa-headset text-cyan-400 mr-2"></i>
+                    …and <strong class="text-cyan-400">cut support workload by automating 80%</strong> of dispute investigations.
+                </p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between text-sm text-slate-400">
+                <div class="flex items-center gap-2 mb-4 md:mb-0">
+                    <span class="gradient-text font-bold">VeritasChain</span>
+                    <span>Standards Organization</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="https://veritaschain.org" target="_blank" class="hover:text-white"><i class="fas fa-globe"></i></a>
+                    <a href="https://github.com/veritaschain" target="_blank" class="hover:text-white"><i class="fab fa-github"></i></a>
+                    <span class="text-slate-600">|</span>
+                    <span>Confidential — For Fintokei Internal Use Only</span>
+                </div>
+            </div>
+            <div class="text-center mt-4 text-slate-500 text-xs">
+                &copy; 2025 VeritasChain Standards Organization. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Proof PDF Modal -->
+    <div id="proofModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4" style="background: rgba(0,0,0,0.9);">
+        <div class="bg-slate-800 border border-emerald-500/50 rounded-2xl max-w-2xl w-full max-h-[95vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-4 sm:p-6 border-b border-slate-700">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                        <i class="fas fa-file-pdf text-emerald-400 text-sm sm:text-base"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base sm:text-lg">VCP Investigation Report</h3>
+                        <p class="text-xs sm:text-sm text-slate-400">Ticket #FTK-12345</p>
+                    </div>
+                </div>
+                <button onclick="closeProofModal()" class="text-slate-400 hover:text-white text-2xl p-2">&times;</button>
+            </div>
+            
+            <div class="p-4 sm:p-6">
+                <div id="generatingState" class="text-center py-6 sm:py-8">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full border-4 border-slate-600 border-t-emerald-500 animate-spin"></div>
+                    <p id="statusText" class="text-slate-300 mb-4 text-sm sm:text-base">Initializing...</p>
+                    <div class="max-w-md mx-auto">
+                        <div class="bg-slate-700 rounded-full h-2 sm:h-3 overflow-hidden">
+                            <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <p id="progressText" class="text-xs sm:text-sm text-emerald-400 mt-2 font-mono">0%</p>
+                    </div>
+                </div>
+                
+                <div id="completedState" class="hidden">
+                    <div class="bg-slate-900 border-2 border-emerald-500 rounded-xl p-4 sm:p-6 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-cyan-500 to-emerald-500"></div>
+                        
+                        <div class="text-center mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-slate-700">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold mb-2 sm:mb-3">
+                                <i class="fas fa-shield-alt"></i>
+                                VERIFIED
+                            </div>
+                            <h4 class="text-lg sm:text-xl font-bold">Dispute Investigation Report</h4>
+                            <p class="text-slate-400 text-xs sm:text-sm">Fintokei × VCP v1.0</p>
+                        </div>
+                        
+                        <div class="space-y-3 sm:space-y-4 text-sm">
+                            <div class="grid grid-cols-2 gap-2 sm:gap-3">
+                                <div class="bg-slate-800 rounded-lg p-2 sm:p-3">
+                                    <span class="text-slate-400 text-xs">Ticket</span>
+                                    <div class="font-mono text-amber-400 text-xs sm:text-sm">#FTK-12345</div>
+                                </div>
+                                <div class="bg-slate-800 rounded-lg p-2 sm:p-3">
+                                    <span class="text-slate-400 text-xs">Resolution</span>
+                                    <div class="font-mono text-emerald-400 text-xs sm:text-sm">VALIDATED</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-800 rounded-lg p-3 sm:p-4">
+                                <h5 class="text-emerald-400 font-bold text-xs uppercase tracking-wide mb-2 sm:mb-3">
+                                    <i class="fas fa-search mr-2"></i>Summary
+                                </h5>
+                                <div class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                                    <div class="flex justify-between"><span class="text-slate-400">Claim</span><span>>5 pips</span></div>
+                                    <div class="flex justify-between"><span class="text-slate-400">Actual</span><span class="text-emerald-400">2.7 pips</span></div>
+                                    <div class="flex justify-between"><span class="text-slate-400">Cause</span><span>Network + Market</span></div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-800 rounded-lg p-3 sm:p-4">
+                                <h5 class="text-emerald-400 font-bold text-xs uppercase tracking-wide mb-2 sm:mb-3">
+                                    <i class="fas fa-check-double mr-2"></i>Verification
+                                </h5>
+                                <div class="grid grid-cols-2 gap-1 sm:gap-2 text-xs sm:text-sm">
+                                    <div class="flex justify-between"><span class="text-slate-400">Hash</span><span class="text-emerald-400">✓</span></div>
+                                    <div class="flex justify-between"><span class="text-slate-400">Time</span><span class="text-emerald-400">✓</span></div>
+                                    <div class="flex justify-between"><span class="text-slate-400">Price</span><span class="text-emerald-400">✓</span></div>
+                                    <div class="flex justify-between"><span class="text-slate-400">Slip</span><span class="text-emerald-400">✓</span></div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 sm:p-4 text-center">
+                                <div class="flex items-center justify-center gap-2 mb-1 sm:mb-2">
+                                    <i class="fas fa-check-circle text-emerald-400 text-lg sm:text-xl"></i>
+                                    <span class="font-bold text-sm sm:text-lg text-emerald-400">CLAIM REJECTED</span>
+                                </div>
+                                <p class="text-slate-300 text-xs sm:text-sm">
+                                    Execution was fair. No manipulation.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons - Stack on mobile -->
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 sm:mt-6">
+                        <button onclick="closeProofModal()" class="py-3 px-4 sm:px-6 border border-slate-600 hover:border-slate-500 rounded-xl font-medium transition order-3 sm:order-1 sm:flex-1">
+                            Close
+                        </button>
+                        <button class="py-3 px-4 sm:px-6 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold transition flex items-center justify-center gap-2 order-1 sm:order-2 sm:flex-1">
+                            <i class="fas fa-download"></i>
+                            Download PDF
+                        </button>
+                        <button class="py-3 px-4 sm:px-6 bg-cyan-600 hover:bg-cyan-700 rounded-xl font-bold transition flex items-center justify-center gap-2 order-2 sm:order-3 sm:flex-1">
+                            <i class="fas fa-envelope"></i>
+                            Send to Trader
+                        </button>
+                    </div>
+                    
+                    <div class="mt-4 sm:mt-6 text-center py-3 sm:py-4 bg-amber-500/10 border border-amber-500/30 rounded-xl">
+                        <p class="text-amber-400 font-medium text-xs sm:text-sm">
+                            <i class="fas fa-magic mr-2"></i>
+                            <span class="line-through text-slate-500">2 hours</span>
+                            <span class="mx-2">→</span>
+                            <span class="text-emerald-400 font-bold">2 seconds</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        }
+        
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            menu.classList.add('hidden');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+        
+        function openProofModal() {
+            document.getElementById('proofModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            startGeneration();
+        }
+        
+        function closeProofModal() {
+            document.getElementById('proofModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            document.getElementById('generatingState').classList.remove('hidden');
+            document.getElementById('completedState').classList.add('hidden');
+        }
+        
+        function startGeneration() {
+            const generatingState = document.getElementById('generatingState');
+            const completedState = document.getElementById('completedState');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const statusText = document.getElementById('statusText');
+            
+            generatingState.classList.remove('hidden');
+            completedState.classList.add('hidden');
+            
+            const steps = [
+                { progress: 20, text: 'Collecting execution events...' },
+                { progress: 40, text: 'Analyzing timeline data...' },
+                { progress: 60, text: 'Verifying hash chain...' },
+                { progress: 80, text: 'Comparing with external oracle...' },
+                { progress: 95, text: 'Generating report...' },
+                { progress: 100, text: 'Complete!' }
+            ];
+            
+            let stepIndex = 0;
+            const interval = setInterval(() => {
+                if (stepIndex < steps.length) {
+                    progressBar.style.width = steps[stepIndex].progress + '%';
+                    progressText.textContent = steps[stepIndex].progress + '%';
+                    statusText.textContent = steps[stepIndex].text;
+                    stepIndex++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        generatingState.classList.add('hidden');
+                        completedState.classList.remove('hidden');
+                    }, 500);
+                }
+            }, 400);
+        }
+    </script>
+</body>
+</html>
