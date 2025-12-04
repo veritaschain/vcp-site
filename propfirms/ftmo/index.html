@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTMO × VeritasChain — Proof of Fair Execution</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ftmo-gold: #FFD700;
+            --ftmo-gold-dark: #E6C200;
+            --veritaschain-gold: #D4A017;
+            --accent-purple: #6366F1;
+            --bg-primary: #0F0F1A;
+            --bg-secondary: #1A1A2E;
+            --bg-card: #242438;
+            --bg-hover: #2D2D45;
+            --border-color: #3D3D5C;
+            --text-primary: #F5F5F7;
+            --text-secondary: #A0A0B8;
+            --text-muted: #6B6B80;
+            --success-green: #22C55E;
+            --warning-orange: #F59E0B;
+            --error-red: #EF4444;
+            --info-blue: #3B82F6;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+        
+        .header { background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary)); border-bottom: 1px solid var(--border-color); padding: 1.5rem 2rem; position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo-ftmo { color: var(--ftmo-gold); font-weight: 700; font-size: 1.75rem; }
+        .logo-x { color: var(--text-muted); font-size: 1rem; margin: 0 0.5rem; }
+        .logo-veritaschain { color: var(--veritaschain-gold); font-weight: 600; font-size: 1.25rem; }
+        .header-tagline { color: var(--text-secondary); font-size: 1rem; margin-top: 0.25rem; }
+        .header-tagline strong { color: var(--ftmo-gold); }
+        
+        .advantage-banner { background: linear-gradient(90deg, var(--ftmo-gold), #FFA500); padding: 0.5rem 2rem; display: flex; justify-content: center; align-items: center; gap: 2rem; font-size: 0.75rem; font-weight: 600; color: var(--bg-primary); text-transform: uppercase; flex-wrap: wrap; }
+        .disclaimer-banner { background: linear-gradient(90deg, rgba(255,215,0,0.08), rgba(212,160,23,0.08)); border-bottom: 1px solid var(--border-color); padding: 0.625rem 2rem; text-align: center; font-size: 0.8125rem; color: var(--text-secondary); }
+        .disclaimer-banner strong { color: var(--ftmo-gold); }
+        
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        
+        .value-prop-section { margin-bottom: 2rem; }
+        .value-prop-header { text-align: center; margin-bottom: 1.5rem; }
+        .value-prop-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .value-prop-subtitle { color: var(--text-secondary); }
+        .value-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        @media (max-width: 1024px) { .value-cards { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .value-cards { grid-template-columns: 1fr; } .advantage-banner { gap: 0.5rem; font-size: 0.65rem; } }
+        .value-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; text-align: center; transition: all 0.2s; }
+        .value-card:hover { border-color: var(--ftmo-gold); transform: translateY(-2px); }
+        .value-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .value-title { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.375rem; }
+        .value-desc { font-size: 0.75rem; color: var(--text-muted); }
+        
+        .content-grid { display: grid; grid-template-columns: 1fr 480px; gap: 2rem; }
+        @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; } }
+        
+        .trace-info-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .trace-header { display: flex; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
+        .trace-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.25rem; }
+        .trace-id { font-family: 'JetBrains Mono', monospace; font-size: 0.9375rem; color: var(--ftmo-gold); word-break: break-all; }
+        .trace-stats { display: flex; gap: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color); flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 1.375rem; font-weight: 600; }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); }
+        
+        .timeline { position: relative; padding-left: 2rem; }
+        .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--ftmo-gold), var(--accent-purple), var(--success-green)); }
+        .event-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s; position: relative; }
+        .event-card:hover { background: var(--bg-hover); border-color: var(--ftmo-gold); transform: translateX(4px); }
+        .event-card.selected { border-color: var(--ftmo-gold); box-shadow: 0 0 0 1px var(--ftmo-gold); }
+        .event-card::before { content: ''; position: absolute; left: -25px; top: 1.25rem; width: 12px; height: 12px; border-radius: 50%; background: var(--success-green); border: 2px solid var(--success-green); }
+        
+        .event-type-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.8125rem; font-weight: 600; }
+        .event-type-badge.SIG { background: rgba(255,215,0,0.15); color: var(--ftmo-gold); }
+        .event-type-badge.ORD { background: rgba(99,102,241,0.15); color: var(--accent-purple); }
+        .event-type-badge.ACK { background: rgba(59,130,246,0.15); color: var(--info-blue); }
+        .event-type-badge.EXE { background: rgba(34,197,94,0.15); color: var(--success-green); }
+        .event-type-badge.CLO { background: rgba(168,85,247,0.15); color: #A855F7; }
+        .event-type-badge.PAY { background: rgba(34,197,94,0.2); color: var(--success-green); }
+        .verification-badge { font-size: 0.75rem; color: var(--success-green); }
+        
+        .detail-panel { position: sticky; top: 100px; height: fit-content; }
+        .detail-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; max-height: 85vh; overflow-y: auto; }
+        .detail-card-header { background: var(--bg-secondary); padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .detail-card-body { padding: 1.25rem; }
+        
+        .validation-section { margin-bottom: 1.25rem; }
+        .validation-title { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+        .validation-item { display: flex; justify-content: space-between; align-items: center; padding: 0.625rem 0.75rem; background: var(--bg-secondary); border-radius: 6px; margin-bottom: 0.375rem; font-size: 0.8125rem; }
+        .validation-label { color: var(--text-secondary); display: flex; align-items: center; }
+        .validation-status { font-weight: 500; }
+        .validation-status.ok { color: var(--success-green); }
+        
+        /* Certificate Generation Box */
+        .certificate-box {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(34,197,94,0.1));
+            border: 2px solid var(--ftmo-gold);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            text-align: center;
+        }
+        .certificate-box-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ftmo-gold);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .certificate-box-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        .certificate-preview {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        .certificate-preview-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .certificate-preview-item:last-child { border-bottom: none; }
+        .certificate-preview-label { color: var(--text-muted); }
+        .certificate-preview-value { color: var(--success-green); font-weight: 500; }
+        .generate-btn {
+            background: linear-gradient(135deg, var(--ftmo-gold), #FFA500);
+            color: var(--bg-primary);
+            font-weight: 700;
+            font-size: 0.9375rem;
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255,215,0,0.4);
+        }
+        .generate-btn-time {
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--ftmo-gold);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-header {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--ftmo-gold);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            line-height: 1;
+        }
+        .modal-close:hover { color: var(--text-primary); }
+        .modal-body { padding: 1.5rem; }
+        
+        /* Certificate Document */
+        .certificate-doc {
+            background: linear-gradient(135deg, #1a1a2e, #242438);
+            border: 2px solid var(--ftmo-gold);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .certificate-doc::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--ftmo-gold), var(--veritaschain-gold), var(--success-green));
+        }
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .certificate-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--ftmo-gold), #FFA500);
+            color: var(--bg-primary);
+            font-size: 0.625rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+        .certificate-main-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        .certificate-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        .certificate-section {
+            margin-bottom: 1.25rem;
+        }
+        .certificate-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--ftmo-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .certificate-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        .certificate-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+        }
+        .certificate-row-label { color: var(--text-muted); }
+        .certificate-row-value { color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+        .certificate-row-value.pass { color: var(--success-green); }
+        .certificate-row-value.warn { color: var(--warning-orange); }
+        .certificate-hash-box {
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--veritaschain-gold);
+            word-break: break-all;
+            text-align: center;
+        }
+        .certificate-footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .certificate-stamp {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .certificate-stamp-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--ftmo-gold), var(--success-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .certificate-stamp-text {
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+        }
+        .certificate-stamp-text strong {
+            display: block;
+            color: var(--success-green);
+            font-size: 0.75rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .modal-btn-primary {
+            background: var(--ftmo-gold);
+            color: var(--bg-primary);
+            border: none;
+        }
+        .modal-btn-primary:hover { background: var(--ftmo-gold-dark); }
+        .modal-btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .modal-btn-secondary:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+        
+        /* Generation Animation */
+        .generating {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem;
+        }
+        .generating-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--ftmo-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .generating-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        .generating-time {
+            color: var(--ftmo-gold);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+        
+        .cta-section { background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary)); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; text-align: center; margin-top: 2rem; }
+        .cta-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .cta-title span { color: var(--ftmo-gold); }
+        .cta-subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .b2b-benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; text-align: left; }
+        @media (max-width: 768px) { .b2b-benefits-grid { grid-template-columns: 1fr; } }
+        .b2b-benefit-card { background: var(--bg-secondary); border-radius: 8px; padding: 1rem; }
+        .cta-button { display: inline-block; background: var(--ftmo-gold); color: var(--bg-primary); font-weight: 600; padding: 0.875rem 2rem; border-radius: 8px; text-decoration: none; transition: all 0.2s; }
+        .cta-button:hover { background: var(--ftmo-gold-dark); transform: translateY(-2px); }
+        
+        .footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border-color); margin-top: 2rem; color: var(--text-muted); font-size: 0.875rem; }
+        .footer a { color: var(--ftmo-gold); text-decoration: none; }
+        
+        .coming-soon { background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(99,102,241,0.1)); border: 1px dashed var(--ftmo-gold); border-radius: 8px; padding: 1rem; margin-top: 1rem; box-shadow: 0 0 20px rgba(255,215,0,0.15); animation: softGlow 3s ease-in-out infinite; }
+        @keyframes softGlow { 0%,100% { box-shadow: 0 0 20px rgba(255,215,0,0.15); } 50% { box-shadow: 0 0 30px rgba(255,215,0,0.25); } }
+        .coming-soon-badge { display: inline-block; background: var(--ftmo-gold); color: var(--bg-primary); font-size: 0.625rem; font-weight: 700; padding: 0.125rem 0.5rem; border-radius: 3px; text-transform: uppercase; margin-bottom: 0.5rem; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const CONFIG = { brokerName: "FTMO", protocolName: "VeritasChain" };
+
+const VALUE_PROPS = [
+    { icon: "🔐", title: "Mathematically Provable Fairness", desc: "Cryptographic proof that every execution is untampered" },
+    { icon: "🏆", title: "Industry-First Audit Standard", desc: "Lead the prop industry in transparent execution" },
+    { icon: "👥", title: "Trust for 1M+ Traders", desc: "Reinforce confidence with verifiable execution logs" },
+    { icon: "🔌", title: "Non-Intrusive Integration", desc: "Independent layer — no changes to existing infrastructure" }
+];
+
+const MOCK_TRACE = {
+    traceId: "019726b8-4c3a-7abc-def0-123456789ftmo",
+    accountId: "FTMO-PRO-847291",
+    symbol: "EURUSD",
+    strategy: "SwingMaster_Pro",
+    challenge: "FTMO Challenge",
+    accountSize: "$100,000",
+    events: [
+        { eventId: "019726b8-0001", timestamp: "2025-01-15T14:30:00.089Z", eventType: "SIG", eventTypeFull: "Strategy Signal Detected", description: "Algorithm identified entry opportunity on EUR/USD", hash: "f1a2b3c4d5e6f789a0b1c2d3e4f56789", verified: true, latencyMs: null },
+        { eventId: "019726b8-0002", timestamp: "2025-01-15T14:30:00.156Z", eventType: "ORD", eventTypeFull: "Order Routed via FTMO", description: "Buy order submitted through FTMO execution layer", hash: "a2b3c4d5e6f78901b2c3d4e5f6789012", verified: true, latencyMs: 67 },
+        { eventId: "019726b8-0003", timestamp: "2025-01-15T14:30:00.198Z", eventType: "ACK", eventTypeFull: "Venue Acknowledgement", description: "Liquidity provider confirmed order receipt", hash: "b3c4d5e6f7890123c3d4e5f678901234", verified: true, latencyMs: 42 },
+        { eventId: "019726b8-0004", timestamp: "2025-01-15T14:30:00.234Z", eventType: "EXE", eventTypeFull: "Order Executed", description: "Full fill at market price with zero slippage", hash: "c4d5e6f789012345d4e5f67890123456", verified: true, latencyMs: 36 },
+        { eventId: "019726b8-0005", timestamp: "2025-01-15T16:45:32.891Z", eventType: "CLO", eventTypeFull: "Position Closed", description: "Take profit triggered at target level", hash: "e6f6789012345678f6789012345678ab", verified: true, latencyMs: 28 },
+        { eventId: "019726b8-0006", timestamp: "2025-01-15T16:45:33.456Z", eventType: "PAY", eventTypeFull: "Payout Scheduled", description: "Profit credited to trader account (80% split)", hash: "7890123456789012a1b2c3d4e5f67890", verified: true, latencyMs: null }
+    ],
+    executionMetrics: { avgLatency: "38ms", zeroSlippage: "100%", fillRate: "100%", spread: "0.8 pips" }
+};
+
+const formatTimestamp = (iso) => new Date(iso).toISOString().replace('T', ' ').replace('Z', ' UTC');
+const truncateHash = (hash, len = 12) => hash ? hash.substring(0, len) + '...' : '';
+const getEventIcon = (type) => ({ 'SIG': '📡', 'ORD': '📤', 'ACK': '✓', 'EXE': '⚡', 'CLO': '🎯', 'PAY': '💰' }[type] || '•');
+
+// Header
+const Header = () => (
+    <header className="header">
+        <div className="header-content">
+            <div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span className="logo-ftmo">{CONFIG.brokerName}</span>
+                    <span className="logo-x">×</span>
+                    <span className="logo-veritaschain">{CONFIG.protocolName}</span>
+                </div>
+                <div className="header-tagline"><strong>Proof of Fair Execution</strong> — Setting the industry standard</div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--success-green)' }}></span>
+                    Integrity: Verified
+                </span>
+                <span style={{ background: 'var(--ftmo-gold)', color: 'var(--bg-primary)', padding: '0.25rem 0.625rem', borderRadius: 4, fontSize: '0.75rem', fontWeight: 600 }}>CONCEPT DEMO</span>
+            </div>
+        </div>
+    </header>
+);
+
+const AdvantageBanner = () => (
+    <div className="advantage-banner">
+        <span>🏆 Industry-first cryptographic audit</span>
+        <span>📜 3-Second Audit Certificates</span>
+        <span>⚡ Dispute resolution in seconds, not days</span>
+    </div>
+);
+
+const DisclaimerBanner = () => (
+    <div className="disclaimer-banner">
+        ℹ️ <strong>Illustrative Demo:</strong> 100% synthetic mock data for demonstration purposes only.
+    </div>
+);
+
+const ValueProposition = () => (
+    <div className="value-prop-section">
+        <div className="value-prop-header">
+            <div className="value-prop-title">How FTMO Can Lead the Industry in Cryptographic Transparency</div>
+            <div className="value-prop-subtitle">VeritasChain Protocol provides mathematically verifiable execution integrity</div>
+            <div style={{ marginTop: '0.5rem', fontSize: '0.8125rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>Aligned with EU AI Act Article 12 and MiFID II RTS 25</div>
+        </div>
+        <div className="value-cards">
+            {VALUE_PROPS.map((prop, i) => (
+                <div className="value-card" key={i}>
+                    <div className="value-icon">{prop.icon}</div>
+                    <div className="value-title">{prop.title}</div>
+                    <div className="value-desc">{prop.desc}</div>
+                </div>
+            ))}
+        </div>
+    </div>
+);
+
+const TraceInfoCard = ({ trace }) => (
+    <div className="trace-info-card">
+        <div className="trace-header">
+            <div>
+                <div className="trace-label">Execution Trace ID</div>
+                <div className="trace-id">{trace.traceId}</div>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+                <div className="trace-label">Account</div>
+                <div style={{ color: 'var(--ftmo-gold)', fontWeight: 500 }}>{trace.accountId}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{trace.challenge} • {trace.accountSize}</div>
+            </div>
+        </div>
+        <div className="trace-stats">
+            <div className="stat-item"><div className="stat-value">{trace.events.length}</div><div className="stat-label">Events</div></div>
+            <div className="stat-item"><div className="stat-value" style={{ color: 'var(--ftmo-gold)' }}>{trace.symbol}</div><div className="stat-label">Symbol</div></div>
+            <div className="stat-item"><div className="stat-value" style={{ color: 'var(--success-green)' }}>{trace.executionMetrics.avgLatency}</div><div className="stat-label">Avg Latency</div></div>
+            <div className="stat-item"><div className="stat-value" style={{ color: 'var(--success-green)' }}>{trace.executionMetrics.zeroSlippage}</div><div className="stat-label">Zero Slippage</div></div>
+        </div>
+    </div>
+);
+
+const EventCard = ({ event, isSelected, onClick }) => (
+    <div className={`event-card ${isSelected ? 'selected' : ''}`} onClick={onClick}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+            <span className={`event-type-badge ${event.eventType}`}>{getEventIcon(event.eventType)} {event.eventType}</span>
+            <span className="verification-badge">✓ Verified</span>
+        </div>
+        <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+            {formatTimestamp(event.timestamp)}
+            {event.latencyMs && <span style={{ marginLeft: '0.75rem', color: 'var(--success-green)' }}>+{event.latencyMs}ms</span>}
+        </div>
+        <div style={{ fontSize: '0.875rem', marginBottom: '0.5rem' }}>{event.description}</div>
+        <div style={{ fontSize: '0.75rem' }}>
+            <span style={{ color: 'var(--text-muted)' }}>Hash: </span>
+            <span style={{ fontFamily: 'JetBrains Mono', color: 'var(--veritaschain-gold)' }}>{truncateHash(event.hash)}</span>
+        </div>
+        {event.eventType === 'EXE' && (
+            <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: 'linear-gradient(90deg, rgba(34,197,94,0.1), rgba(255,215,0,0.1))', borderRadius: 6, display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Execution Quality Score</span>
+                <span style={{ fontFamily: 'JetBrains Mono', fontWeight: 600, color: 'var(--ftmo-gold)' }}>0.98 / 1.00 ⭐</span>
+            </div>
+        )}
+    </div>
+);
+
+const Timeline = ({ events, selectedEvent, onSelectEvent }) => (
+    <div>
+        <div style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem' }}>📊 Execution Lifecycle ({events.length} verified events)</div>
+        <div className="timeline">
+            {events.map((event) => <EventCard key={event.eventId} event={event} isSelected={selectedEvent?.eventId === event.eventId} onClick={() => onSelectEvent(event)} />)}
+        </div>
+    </div>
+);
+
+// ===== CERTIFICATE MODAL =====
+const CertificateModal = ({ isOpen, onClose, trace, event }) => {
+    const [isGenerating, setIsGenerating] = useState(true);
+    const [countdown, setCountdown] = useState(3);
+    
+    useEffect(() => {
+        if (isOpen) {
+            setIsGenerating(true);
+            setCountdown(3);
+            const timer = setInterval(() => {
+                setCountdown(c => {
+                    if (c <= 1) {
+                        clearInterval(timer);
+                        setIsGenerating(false);
+                        return 0;
+                    }
+                    return c - 1;
+                });
+            }, 1000);
+            return () => clearInterval(timer);
+        }
+    }, [isOpen]);
+    
+    if (!isOpen) return null;
+    
+    const certId = `VCP-CERT-${Date.now().toString(36).toUpperCase()}`;
+    const certTimestamp = new Date().toISOString();
+    
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <div className="modal-header">
+                    <div className="modal-title">📜 VCP Audit Certificate</div>
+                    <button className="modal-close" onClick={onClose}>×</button>
+                </div>
+                <div className="modal-body">
+                    {isGenerating ? (
+                        <div className="generating">
+                            <div className="generating-spinner"></div>
+                            <div className="generating-text">Generating cryptographic proof...</div>
+                            <div className="generating-time">{countdown}s</div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="certificate-doc">
+                                <div className="certificate-header">
+                                    <div className="certificate-badge">✓ CRYPTOGRAPHICALLY VERIFIED</div>
+                                    <div className="certificate-main-title">Execution Audit Certificate</div>
+                                    <div className="certificate-subtitle">FTMO × VeritasChain Protocol v1.0</div>
+                                </div>
+                                
+                                <div className="certificate-section">
+                                    <div className="certificate-section-title">📋 Certificate Information</div>
+                                    <div className="certificate-grid">
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Certificate ID</span>
+                                            <span className="certificate-row-value">{certId}</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Generated</span>
+                                            <span className="certificate-row-value">{certTimestamp.split('T')[0]}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="certificate-section">
+                                    <div className="certificate-section-title">🔍 Execution Details</div>
+                                    <div className="certificate-grid">
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Trace ID</span>
+                                            <span className="certificate-row-value" style={{ fontSize: '0.6875rem' }}>{trace.traceId.substring(0, 18)}...</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Account</span>
+                                            <span className="certificate-row-value">{trace.accountId}</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Symbol</span>
+                                            <span className="certificate-row-value">{trace.symbol}</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Events</span>
+                                            <span className="certificate-row-value">{trace.events.length} verified</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="certificate-section">
+                                    <div className="certificate-section-title">✅ Verification Results</div>
+                                    <div className="certificate-grid">
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Hash Chain</span>
+                                            <span className="certificate-row-value pass">✓ VALID</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Signature</span>
+                                            <span className="certificate-row-value pass">✓ VERIFIED</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Price Integrity</span>
+                                            <span className="certificate-row-value pass">✓ MATCHED</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Latency</span>
+                                            <span className="certificate-row-value pass">✓ NORMAL</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Slippage</span>
+                                            <span className="certificate-row-value pass">0.0 pips</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Consistency</span>
+                                            <span className="certificate-row-value pass">0.94 PASS</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">Gambling Check</span>
+                                            <span className="certificate-row-value pass">✓ CLEAR</span>
+                                        </div>
+                                        <div className="certificate-row">
+                                            <span className="certificate-row-label">News Rule</span>
+                                            <span className="certificate-row-value pass">✓ CLEAR</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="certificate-section">
+                                    <div className="certificate-section-title">🔗 Merkle Root (Proof Anchor)</div>
+                                    <div className="certificate-hash-box">
+                                        fa2b8c91d4e7f3a6b9c2d5e8f1a4b7c0d3e6f9a2b5c8d1e4f7a0b3c6d9e2f5a8
+                                    </div>
+                                </div>
+                                
+                                <div className="certificate-footer">
+                                    <div className="certificate-stamp">
+                                        <div className="certificate-stamp-icon">✓</div>
+                                        <div className="certificate-stamp-text">
+                                            <strong>FAIR EXECUTION CERTIFIED</strong>
+                                            VeritasChain Protocol v1.0
+                                        </div>
+                                    </div>
+                                    <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', textAlign: 'right' }}>
+                                        This certificate is cryptographically<br/>
+                                        verifiable and tamper-proof
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="modal-actions">
+                                <button className="modal-btn modal-btn-secondary" onClick={onClose}>
+                                    Close
+                                </button>
+                                <button className="modal-btn modal-btn-primary">
+                                    📄 Download PDF
+                                </button>
+                                <button className="modal-btn modal-btn-primary" style={{ background: 'var(--info-blue)' }}>
+                                    🔗 Share Link
+                                </button>
+                            </div>
+                            
+                            <div style={{ marginTop: '1rem', padding: '0.75rem', background: 'rgba(34,197,94,0.1)', borderRadius: 8, fontSize: '0.75rem', color: 'var(--success-green)', textAlign: 'center' }}>
+                                ⏱️ Certificate generated in <strong>3 seconds</strong> — replacing days of email disputes
+                            </div>
+                        </>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// Detail Panel
+const DetailPanel = ({ event, trace, onGenerateCertificate }) => {
+    if (!event) {
+        return (
+            <div className="detail-panel">
+                <div className="detail-card">
+                    <div className="detail-card-body" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                        👆 Click an event to view cryptographic details
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    
+    return (
+        <div className="detail-panel">
+            <div className="detail-card">
+                <div className="detail-card-header">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        <span className={`event-type-badge ${event.eventType}`}>{getEventIcon(event.eventType)} {event.eventType}</span>
+                        <span>{event.eventTypeFull}</span>
+                    </div>
+                </div>
+                <div className="detail-card-body">
+                    
+                    {/* ===== CERTIFICATE GENERATION BOX ===== */}
+                    <div className="certificate-box">
+                        <div className="certificate-box-title">
+                            📜 Audit Certificate (Instant Proof)
+                        </div>
+                        <div className="certificate-box-subtitle">
+                            Generate cryptographic evidence for dispute resolution — <strong style={{ color: 'var(--ftmo-gold)' }}>3 seconds</strong>
+                        </div>
+                        <div className="certificate-preview">
+                            <div className="certificate-preview-item">
+                                <span className="certificate-preview-label">Integrity</span>
+                                <span className="certificate-preview-value">✓ Verified</span>
+                            </div>
+                            <div className="certificate-preview-item">
+                                <span className="certificate-preview-label">Execution Price</span>
+                                <span className="certificate-preview-value">✓ Within tolerance</span>
+                            </div>
+                            <div className="certificate-preview-item">
+                                <span className="certificate-preview-label">Latency</span>
+                                <span className="certificate-preview-value">✓ Expected envelope</span>
+                            </div>
+                            <div className="certificate-preview-item">
+                                <span className="certificate-preview-label">Slippage</span>
+                                <span className="certificate-preview-value">0.0 pips (fair)</span>
+                            </div>
+                            <div className="certificate-preview-item">
+                                <span className="certificate-preview-label">Policy Compliance</span>
+                                <span className="certificate-preview-value">✓ All rules passed</span>
+                            </div>
+                        </div>
+                        <button className="generate-btn" onClick={onGenerateCertificate}>
+                            <span>⚡ Generate Certificate</span>
+                            <span className="generate-btn-time">(3 sec)</span>
+                        </button>
+                        <div style={{ marginTop: '0.75rem', fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
+                            Replaces 1-3 days of email disputes with instant proof
+                        </div>
+                    </div>
+                    
+                    {/* Latency Breakdown */}
+                    <div className="validation-section">
+                        <div className="validation-title">⚡ Execution Latency Breakdown</div>
+                        <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', marginBottom: '0.625rem', padding: '0.5rem', background: 'var(--bg-secondary)', borderRadius: 4, borderLeft: '2px solid var(--ftmo-gold)' }}>
+                            💡 FTMO simulates ~200ms processing delay for real market conditions. This is <strong style={{ color: 'var(--success-green)' }}>normal</strong>.
+                        </div>
+                        {[
+                            { label: 'Network Latency', value: '23ms', desc: 'Your connection', normal: false },
+                            { label: 'Processing (Simulated)', value: '~200ms', desc: 'Real market simulation', normal: true },
+                            { label: 'Slippage / Market Gap', value: '0.0 pips', desc: 'Price movement', normal: true }
+                        ].map((m, i) => (
+                            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0.75rem', background: m.normal ? 'rgba(34,197,94,0.1)' : 'var(--bg-secondary)', borderRadius: 6, marginBottom: '0.375rem', borderLeft: m.normal ? '3px solid var(--success-green)' : 'none' }}>
+                                <div>
+                                    <div style={{ fontSize: '0.8125rem' }}>{m.label} {m.normal && <span style={{ marginLeft: '0.5rem', fontSize: '0.625rem', background: 'var(--success-green)', color: 'var(--bg-primary)', padding: '0.0625rem 0.375rem', borderRadius: 3, fontWeight: 600 }}>NORMAL</span>}</div>
+                                    <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)' }}>{m.desc}</div>
+                                </div>
+                                <span style={{ fontFamily: 'JetBrains Mono', fontWeight: 600, color: m.normal ? 'var(--success-green)' : 'var(--text-secondary)' }}>{m.value}</span>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    {/* Cryptographic Validation */}
+                    <div className="validation-section">
+                        <div className="validation-title">🔐 Cryptographic Validation <span style={{ fontSize: '0.6875rem', fontWeight: 400, color: 'var(--ftmo-gold)', background: 'rgba(255,215,0,0.15)', padding: '0.125rem 0.5rem', borderRadius: 3 }}>FTMO-ProofChain™</span></div>
+                        {[['🔗', 'Hash Chain Integrity', '✓ Valid'], ['✍️', 'Ed25519 Signature', '✓ Verified'], ['⏱️', 'Timestamp (PTP Sync)', '✓ Synchronized']].map(([icon, label, status], i) => (
+                            <div key={i} className="validation-item">
+                                <span className="validation-label"><span style={{ marginRight: '0.375rem' }}>{icon}</span>{label}</span>
+                                <span className="validation-status ok">{status}</span>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    {/* Policy Compliance Check */}
+                    <div className="validation-section">
+                        <div className="validation-title">🧭 Policy Compliance Check <span style={{ fontSize: '0.625rem', fontWeight: 500, color: 'var(--success-green)', background: 'rgba(34,197,94,0.15)', padding: '0.125rem 0.5rem', borderRadius: 3 }}>AUTO-VERIFIED</span></div>
+                        <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', marginBottom: '0.625rem', fontStyle: 'italic' }}>Objective rule enforcement — no manual judgment</div>
+                        {[['📊', 'Consistency Score', '0.94 — PASS'], ['⚖️', 'Leverage Pattern', 'Normal — PASS'], ['📰', 'News Window (±2min)', 'Clear — PASS'], ['🎲', 'Risk Behavior', '0.12 (Low)']].map(([icon, label, status], i) => (
+                            <div key={i} className="validation-item">
+                                <span className="validation-label"><span style={{ marginRight: '0.375rem' }}>{icon}</span>{label}</span>
+                                <span className="validation-status ok">{status}</span>
+                            </div>
+                        ))}
+                        <div style={{ marginTop: '0.5rem', padding: '0.5rem', background: 'rgba(34,197,94,0.1)', borderRadius: 4, fontSize: '0.6875rem', color: 'var(--success-green)', textAlign: 'center' }}>✓ No gambling behavior — Payout eligible</div>
+                    </div>
+                    
+                    {/* Pricing Integrity Proof */}
+                    <div className="validation-section">
+                        <div className="validation-title">💱 Pricing Integrity Proof <span style={{ fontSize: '0.625rem', fontWeight: 500, color: 'var(--info-blue)', background: 'rgba(59,130,246,0.15)', padding: '0.125rem 0.5rem', borderRadius: 3 }}>NFA Rule 2-36</span></div>
+                        <div style={{ background: 'var(--bg-secondary)', borderRadius: 6, padding: '0.75rem' }}>
+                            {[['Displayed Price', '1.08452'], ['LP Executed Price', '1.08453'], ['Difference', '0.1 pip', 'var(--success-green)']].map(([label, value, color], i) => (
+                                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.375rem' }}>
+                                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{label}</span>
+                                    <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.8125rem', color: color || 'var(--text-primary)' }}>{value}</span>
+                                </div>
+                            ))}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '0.375rem', borderTop: '1px solid var(--border-color)' }}>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Integrity</span>
+                                <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--success-green)' }}>✓ VERIFIED</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* EU AI Act Compliance */}
+                    <div className="validation-section">
+                        <div className="validation-title">⚖️ EU AI Act Compliance <span style={{ fontSize: '0.625rem', fontWeight: 500, color: 'var(--accent-purple)', background: 'rgba(99,102,241,0.15)', padding: '0.125rem 0.5rem', borderRadius: 3 }}>Art. 12 & 13</span></div>
+                        {[['🤖', 'Model Version', 'v2.1.0'], ['🔍', 'Decision Trace', 'SHAP + Rule-based'], ['📝', 'Logging', '✓ VERIFIED'], ['👤', 'Human Oversight', 'ENABLED']].map(([icon, label, value], i) => (
+                            <div key={i} className="validation-item">
+                                <span className="validation-label"><span style={{ marginRight: '0.375rem' }}>{icon}</span>{label}</span>
+                                <span style={{ fontSize: '0.8125rem', color: value.includes('✓') || value === 'ENABLED' ? 'var(--success-green)' : 'var(--text-secondary)' }}>{value}</span>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    {/* Coming Soon */}
+                    <div className="coming-soon">
+                        <div className="coming-soon-badge">Trader Growth Features — Coming Soon</div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'left' }}>
+                            <div>📊 <strong style={{ color: 'var(--ftmo-gold)' }}>Execution Analytics</strong> — Slippage impact analysis</div>
+                            <div>🎯 <strong>Strategy Feedback</strong> — "News entries = 3x slippage"</div>
+                            <div>📄 <strong>Batch Audit Reports</strong> — Monthly PDF summaries</div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// CTA Section
+const CTASection = () => (
+    <div className="cta-section">
+        <div className="cta-title">Transform <span>FTMO's</span> Trust into Structural Trust</div>
+        <div className="cta-subtitle">VCP transforms trust from <strong style={{ color: 'var(--text-primary)' }}>reputation</strong> into <strong style={{ color: 'var(--ftmo-gold)' }}>mathematical proof</strong>.</div>
+        
+        <div style={{ background: 'var(--bg-secondary)', borderRadius: 8, padding: '1rem', margin: '1.5rem 0', textAlign: 'left' }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', textAlign: 'center' }}>One protocol. Three critical challenges solved.</div>
+            {[
+                ['🧭', 'Payment Disputes', '3-second proof certificates vs 3-day email chains'],
+                ['💱', 'OANDA Regulatory Risk', 'Price integrity proof prevents NFA violations'],
+                ['⚖️', 'EU AI Act (Art. 12/13)', 'Trader evaluation AI becomes auditable']
+            ].map(([icon, title, desc], i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                    <span style={{ fontSize: '1.25rem' }}>{icon}</span>
+                    <div>
+                        <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{title}</div>
+                        <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>{desc}</div>
+                    </div>
+                </div>
+            ))}
+        </div>
+        
+        <div className="b2b-benefits-grid">
+            {[
+                ['📋', 'Regulatory Reports', 'One-click MiFID II / RTS 25 reports', 'var(--ftmo-gold)'],
+                ['💰', 'Support Cost ↓', 'Self-service transparency = fewer tickets', 'var(--success-green)'],
+                ['🏛️', 'Group Governance', 'Unified audit: FTMO + OANDA', 'var(--accent-purple)']
+            ].map(([icon, title, desc, color], i) => (
+                <div key={i} className="b2b-benefit-card" style={{ borderLeft: `3px solid ${color}` }}>
+                    <div style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>{icon}</div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.25rem' }}>{title}</div>
+                    <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>{desc}</div>
+                </div>
+            ))}
+        </div>
+        
+        <a href="mailto:kamimura@veritaschain.org?subject=FTMO%20VCP%20Integration%20Inquiry" className="cta-button">Request Technical Briefing</a>
+    </div>
+);
+
+// Footer
+const Footer = () => (
+    <footer className="footer">
+        <div style={{ background: 'rgba(255,215,0,0.1)', padding: '0.75rem 1rem', borderRadius: 6, marginBottom: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>⚠️ All data shown is <strong style={{ color: 'var(--ftmo-gold)' }}>100% synthetic</strong> — for demonstration purposes only.</div>
+        <div style={{ background: 'linear-gradient(90deg, rgba(255,215,0,0.05), rgba(99,102,241,0.05))', border: '1px solid var(--border-color)', borderRadius: 8, padding: '1rem 1.25rem', marginBottom: '1rem', fontSize: '0.9375rem', fontStyle: 'italic', color: 'var(--text-secondary)' }}>"FTMO could become the <strong style={{ color: 'var(--ftmo-gold)' }}>first global prop firm</strong> to provide mathematically verifiable execution evidence — setting the transparency standard for the entire industry."</div>
+        <div><strong style={{ color: 'var(--veritaschain-gold)' }}>{CONFIG.protocolName} Protocol</strong> — Encoding Trust in the Algorithmic Age</div>
+        <div style={{ marginTop: '0.5rem' }}><a href="https://veritaschain.org" target="_blank">veritaschain.org</a> | <a href="https://github.com/veritaschain" target="_blank">GitHub</a> | Concept demo for <span style={{ color: 'var(--ftmo-gold)' }}>{CONFIG.brokerName}</span></div>
+    </footer>
+);
+
+// Main App
+const App = () => {
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [trace] = useState(MOCK_TRACE);
+    const [showCertModal, setShowCertModal] = useState(false);
+    
+    useEffect(() => {
+        if (trace.events.length > 0) setSelectedEvent(trace.events[0]);
+    }, [trace]);
+    
+    return (
+        <div>
+            <Header />
+            <AdvantageBanner />
+            <DisclaimerBanner />
+            <main className="main-container">
+                <ValueProposition />
+                <TraceInfoCard trace={trace} />
+                <div className="content-grid">
+                    <Timeline events={trace.events} selectedEvent={selectedEvent} onSelectEvent={setSelectedEvent} />
+                    <DetailPanel event={selectedEvent} trace={trace} onGenerateCertificate={() => setShowCertModal(true)} />
+                </div>
+                <CTASection />
+            </main>
+            <Footer />
+            <CertificateModal isOpen={showCertModal} onClose={() => setShowCertModal(false)} trace={trace} event={selectedEvent} />
+        </div>
+    );
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>
