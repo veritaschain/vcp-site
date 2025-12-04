@@ -59,6 +59,7 @@ class VCPHeader extends HTMLElement {
                 solutions: 'Solutions',
                 useCases: 'Use Cases',
                 forExchanges: 'For Exchanges & Brokers',
+                forBrokers: 'For Brokers',
                 forPropFirms: 'For Prop Firms',
                 vcpSec: 'VCP & SEC',
                 certification: 'Certification',
@@ -94,6 +95,7 @@ class VCPHeader extends HTMLElement {
                 solutions: 'ソリューション',
                 useCases: 'ユースケース',
                 forExchanges: '取引所・ブローカー向け',
+                forBrokers: 'ブローカー向け',
                 forPropFirms: 'プロップファーム向け',
                 vcpSec: 'VCP & SEC',
                 certification: '認証',
@@ -129,6 +131,7 @@ class VCPHeader extends HTMLElement {
                 solutions: '解决方案',
                 useCases: '用例',
                 forExchanges: '交易所和经纪商',
+                forBrokers: '经纪商',
                 forPropFirms: '自营交易公司',
                 vcpSec: 'VCP & SEC',
                 certification: '认证',
@@ -219,6 +222,7 @@ class VCPHeader extends HTMLElement {
                         <div class="dropdown-menu">
                             <a href="/use-cases/" class="dropdown-item">${t.useCases}</a>
                             <a href="/solutions/exchanges/" class="dropdown-item">${t.forExchanges}</a>
+                            <a href="/docs/brokers/" class="dropdown-item">${t.forBrokers}</a>
                             <a href="/propfirms/" class="dropdown-item">${t.forPropFirms}</a>
                             <a href="/sec/" class="dropdown-item">${t.vcpSec}</a>
                         </div>
