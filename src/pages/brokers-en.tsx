@@ -169,6 +169,10 @@ export const brokersPageEn = () => html`
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- VCP Common Header/Footer Components -->
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap');
         
@@ -224,47 +228,6 @@ export const brokersPageEn = () => html`
             to { stroke-dashoffset: -100; }
         }
 
-        .lang-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .lang-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .lang-dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background-color: white;
-            min-width: 120px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border-radius: 0.5rem;
-            overflow: hidden;
-            margin-top: 4px;
-        }
-
-        .lang-dropdown:hover .lang-dropdown-content {
-            display: block;
-        }
-
-        .lang-dropdown-content a {
-            color: #374151;
-            padding: 10px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 0.875rem;
-        }
-
-        .lang-dropdown-content a:hover {
-            background-color: #f3f4f6;
-        }
-        
         .use-case-card {
             transition: all 0.3s ease;
             border-left: 4px solid transparent;
@@ -277,20 +240,8 @@ export const brokersPageEn = () => html`
     </style>
 </head>
 <body class="bg-slate-50">
-    <!-- Language Switcher -->
-    <div class="lang-switcher">
-        <div class="lang-dropdown">
-            <button class="bg-white hover:bg-gray-50 px-4 py-2 rounded-lg shadow-md text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
-                <i class="fas fa-language"></i>
-                English
-                <i class="fas fa-chevron-down text-xs"></i>
-            </button>
-            <div class="lang-dropdown-content">
-                <a href="/brokers/ja"><i class="fas fa-globe mr-2"></i>日本語</a>
-                <a href="/brokers/zh"><i class="fas fa-globe mr-2"></i>中文</a>
-            </div>
-        </div>
-    </div>
+    <!-- VCP Common Header -->
+    <vcp-header lang="en" show-lang-switcher="true"></vcp-header>
 
     <!-- Hero Section -->
     <section class="gradient-hero min-h-screen flex items-center relative overflow-hidden">
@@ -658,41 +609,8 @@ export const brokersPageEn = () => html`
         </div>
     </section>
 
-    <!-- Trust Footer -->
-    <section class="py-12 bg-slate-900 border-t border-slate-800">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="flex items-center gap-4">
-                    <i class="fas fa-shield-alt text-3xl text-emerald-400"></i>
-                    <div>
-                        <h4 class="text-white font-bold">VeritasChain Standards Organization</h4>
-                        <p class="text-slate-400 text-sm">Encoding Trust in the Algorithmic Age</p>
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-6 text-sm">
-                    <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="text-slate-400 hover:text-white transition-colors">
-                        <i class="fab fa-github mr-2"></i>Protocol Specs
-                    </a>
-                    <a href="https://veritaschain.org/docs" class="text-slate-400 hover:text-white transition-colors">
-                        <i class="fas fa-book mr-2"></i>Documentation
-                    </a>
-                    <a href="mailto:info@veritaschain.org" class="text-slate-400 hover:text-white transition-colors">
-                        <i class="fas fa-envelope mr-2"></i>Contact
-                    </a>
-                </div>
-            </div>
-            <p class="text-slate-400 text-sm text-center mt-6 max-w-3xl mx-auto">
-                VSO works with institutional brokers, ECNs, and audit firms to establish cryptographically-verifiable trading standards for the Algorithmic Age.
-            </p>
-            <p class="text-emerald-400/80 text-xs text-center mt-3 font-medium">
-                VSO collaborates with LMAX-class venues & Big Four-affiliated audit firms.
-            </p>
-            <div class="text-center text-slate-500 text-sm mt-8 pt-8 border-t border-slate-800">
-                <p>© 2025 VeritasChain Standards Organization (VSO). All rights reserved.</p>
-                <p class="mt-2 italic">"Verify, Don't Trust"</p>
-            </div>
-        </div>
-    </section>
+    <!-- VCP Common Footer -->
+    <vcp-footer lang="en"></vcp-footer>
 </body>
 </html>
 `
