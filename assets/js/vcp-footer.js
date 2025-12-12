@@ -109,7 +109,7 @@ class VCPFooter extends HTMLElement {
                 <p class="vcp-footer-independence">${t.independence}</p>
                 <p class="vcp-footer-disclaimer">${t.disclaimer1}</p>
                 <p class="vcp-footer-disclaimer">${t.disclaimer2}</p>
-                <p class="vcp-footer-address">${t.organization}<br>${t.address}</p>
+                <p class="vcp-footer-address"><span class="vcp-footer-org">${t.organization}</span><span class="vcp-footer-addr">${t.address}</span></p>
                 <p class="vcp-footer-revision">${t.revision}</p>
             </div>
         </footer>
