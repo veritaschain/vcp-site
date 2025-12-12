@@ -62,10 +62,6 @@ class VCPHeader extends HTMLElement {
                 forBrokers: 'For Brokers',
                 forPropFirms: 'For Prop Firms',
                 vcpSec: 'VCP & SEC',
-                certification: 'Certification',
-                vcCertified: 'VC-Certified',
-                faq: 'FAQ (Scope / Limitations)',
-                applyCertification: 'Apply for Certification',
                 standards: 'Standards',
                 vcpProtocol: 'VCP Protocol',
                 standardizationRoadmap: 'Standardization Roadmap',
@@ -98,10 +94,6 @@ class VCPHeader extends HTMLElement {
                 forBrokers: 'ブローカー向け',
                 forPropFirms: 'プロップファーム向け',
                 vcpSec: 'VCP & SEC',
-                certification: '認証',
-                vcCertified: 'VC-Certified',
-                faq: 'FAQ（範囲と制限）',
-                applyCertification: '認証を申請',
                 standards: '標準規格',
                 vcpProtocol: 'VCPプロトコル',
                 standardizationRoadmap: '標準化ロードマップ',
@@ -134,10 +126,6 @@ class VCPHeader extends HTMLElement {
                 forBrokers: '经纪商',
                 forPropFirms: '自营交易公司',
                 vcpSec: 'VCP & SEC',
-                certification: '认证',
-                vcCertified: 'VC-Certified',
-                faq: '常见问题（范围/限制）',
-                applyCertification: '申请认证',
                 standards: '标准',
                 vcpProtocol: 'VCP协议',
                 standardizationRoadmap: '标准化路线图',
@@ -225,17 +213,6 @@ class VCPHeader extends HTMLElement {
                             <a href="/docs/brokers/" class="dropdown-item">${t.forBrokers}</a>
                             <a href="/propfirms/" class="dropdown-item">${t.forPropFirms}</a>
                             <a href="/sec/" class="dropdown-item">${t.vcpSec}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
-                            ${t.certification} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/certified/" class="dropdown-item">${t.vcCertified}</a>
-                            <a href="/certified/faq/" class="dropdown-item">${t.faq}</a>
-                            <a href="/certified/apply" class="dropdown-item">${t.applyCertification}</a>
                         </div>
                     </div>
 
