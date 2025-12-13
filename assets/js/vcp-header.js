@@ -230,17 +230,6 @@ class VCPHeader extends HTMLElement {
 
                     <div class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle">
-                            ${t.certification} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/certified/" class="dropdown-item">${t.vcCertified}</a>
-                            <a href="/certified/faq/" class="dropdown-item">${t.faq}</a>
-                            <a href="/certified/apply" class="dropdown-item">${t.applyCertification}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
                             ${t.standards} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
