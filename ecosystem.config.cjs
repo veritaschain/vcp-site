@@ -1,12 +1,11 @@
 module.exports = {
   apps: [
     {
-      name: 'webapp',
+      name: 'vcp-preview',
       script: 'npx',
-      args: 'wrangler pages dev dist --ip 0.0.0.0 --port 3000',
+      args: 'http-server . -p 3000 -c-1 --cors',
       env: {
-        NODE_ENV: 'development',
-        PORT: 3000
+        NODE_ENV: 'development'
       },
       watch: false,
       instances: 1,
