@@ -67,6 +67,7 @@ class VCPHeader extends HTMLElement {
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
+                benchmarks: 'Auditability Benchmark',
                 vcpProtocol: 'VCP Protocol',
                 standardizationRoadmap: 'Standardization Roadmap',
                 developersIntegration: 'Developers / Integration',
@@ -103,6 +104,7 @@ class VCPHeader extends HTMLElement {
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
                 standards: '標準規格',
+                benchmarks: '監査可能性ベンチマーク',
                 vcpProtocol: 'VCPプロトコル',
                 standardizationRoadmap: '標準化ロードマップ',
                 developersIntegration: '開発者 / 統合',
@@ -139,6 +141,7 @@ class VCPHeader extends HTMLElement {
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
                 standards: '标准',
+                benchmarks: '可审计性基准',
                 vcpProtocol: 'VCP协议',
                 standardizationRoadmap: '标准化路线图',
                 developersIntegration: '开发者 / 集成',
@@ -233,6 +236,7 @@ class VCPHeader extends HTMLElement {
                             ${t.standards} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
+                            <a href="/benchmark/" class="dropdown-item">${t.benchmarks}</a>
                             <a href="https://github.com/VeritasChain/vcp-spec" class="dropdown-item" target="_blank" rel="noopener">${t.vcpProtocol}</a>
                             <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
                             <a href="/vcp/developers/" class="dropdown-item">${t.developersIntegration}</a>
