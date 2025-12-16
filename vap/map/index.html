@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAP - Medical AI Protocol | Verifiable Decision Trail Standard for Healthcare AI</title>
+    <meta name="description" content="MAP (Medical AI Protocol) is a VAP profile for healthcare AI. A technical standard for cryptographically recording and verifying AI diagnostic support systems and medical device AI decisions.">
+    <meta name="keywords" content="MAP, Medical AI Protocol, VAP, healthcare AI, medical device AI, SaMD, FDA, PMDA, EMA, AI diagnosis, clinical trial, cryptographic audit">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="MAP - Medical AI Protocol | Verifiable Decision Trail Standard for Healthcare AI">
+    <meta property="og:description" content="MAP (Medical AI Protocol) is a VAP profile for healthcare AI. A technical standard for cryptographically recording and verifying AI diagnostic support systems.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/map/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="MAP - Medical AI Protocol | Verifiable Decision Trail Standard for Healthcare AI">
+    <meta name="twitter:description" content="MAP is a VAP profile for healthcare AI. Cryptographically record and verify AI diagnostic decisions.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/map/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/map/ja" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/map/zh" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/map/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medical: {
+                            50: '#ebf8ff',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            400: '#4299e1',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    <link rel="canonical" href="https://veritaschain.org/vap/map/" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "MAP - Medical AI Protocol",
+        "description": "MAP (Medical AI Protocol) is a VAP profile for cryptographically recording and verifying healthcare AI decisions.",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization (VSO)",
+            "url": "https://veritaschain.org/vso"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://veritaschain.org/vap/map/"
+        }
+    }
+    </script>
+
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+        }
+        .medical-gradient {
+            background: linear-gradient(135deg, #ebf8ff 0%, #dbeafe 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            padding: 1.5rem;
+            font-size: 0.75rem;
+            line-height: 1.5;
+        }
+        .flow-arrow {
+            color: #4299e1;
+        }
+        .status-badge {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .diagram-box {
+            border: 1px solid #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .table-header {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <vcp-header theme="dark" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div style="padding-top: 70px;">
+        <div class="bg-amber-50 border-b border-amber-200">
+            <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-center gap-3">
+                <span class="status-badge inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-amber-100 text-amber-800 border border-amber-300">
+                    <i class="fas fa-flask mr-2"></i>
+                    Status: PLANNED
+                </span>
+                <span class="text-amber-800 text-sm">
+                    This profile is currently under development. Contributions and feedback are welcome.
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto text-center">
+            <!-- Profile Badge -->
+            <div class="inline-flex items-center gap-2 bg-blue-900/50 border border-blue-400/30 px-4 py-2 rounded-full mb-6">
+                <i class="fas fa-heartbeat text-blue-400"></i>
+                <span class="text-blue-200 text-sm font-semibold">VAP Profile: Healthcare AI</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+                MAP
+                <span class="block text-2xl md:text-3xl text-blue-300 mt-2">Medical AI Protocol</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-blue-100 font-medium mb-6">
+                "From Black Box to Glass Box"<br class="hidden sm:inline"/>
+                <span class="text-blue-200">— Making AI diagnostic rationale verifiable.</span>
+            </p>
+            
+            <!-- Catchphrase -->
+            <div class="max-w-3xl mx-auto bg-slate-800/60 border border-blue-500/30 rounded-xl p-6 mb-8">
+                <p class="text-lg md:text-xl text-white font-medium leading-relaxed">
+                    <span class="text-blue-400">"</span>The AI said 'cancer.' Why?<br/>
+                    Cryptographically prove that rationale.<span class="text-blue-400">"</span>
+                </p>
+            </div>
+            
+            <!-- Meta Info -->
+            <div class="flex flex-wrap justify-center gap-4 text-sm text-blue-200 mb-8">
+                <div class="flex items-center gap-2 bg-slate-800/50 px-4 py-2 rounded-lg">
+                    <i class="fas fa-id-card"></i>
+                    <span>Profile ID: <strong class="text-white">MAP</strong></span>
+                </div>
+                <div class="flex items-center gap-2 bg-slate-800/50 px-4 py-2 rounded-lg">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Parent: <strong class="text-white">VAP</strong></span>
+                </div>
+                <div class="flex items-center gap-2 bg-slate-800/50 px-4 py-2 rounded-lg">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Risk: <strong class="text-red-300">Life-Critical</strong></span>
+                </div>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/vap/" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition inline-flex items-center gap-2">
+                    <i class="fas fa-book"></i>
+                    View VAP Framework
+                </a>
+                <a href="https://github.com/veritaschain" target="_blank" rel="noopener" class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-semibold transition inline-flex items-center gap-2">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition inline-flex items-center gap-2">
+                    <i class="fas fa-users"></i>
+                    Join MAP Development
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                <p class="text-xl leading-relaxed">
+                    AI image diagnostics can now detect lesions with accuracy equal to or greater than radiologists.
+                    However, the rationale behind an AI's "positive" determination often remains a black box.
+                </p>
+                <p class="text-xl leading-relaxed">
+                    When a patient files a lawsuit, "because the AI said so" won't hold up.
+                    When regulators request an audit, "we have no logs" is unacceptable.
+                </p>
+                <p class="text-xl leading-relaxed font-medium text-gray-900">
+                    MAP cryptographically records every AI decision,
+                    proving <strong>"when, what data was reviewed, which model, and why that diagnosis was reached"</strong>
+                    in a tamper-proof format.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why MAP Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-question-circle text-blue-600 mr-3"></i>
+                Why MAP is Needed
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                Current state and challenges of healthcare AI
+            </p>
+
+            <!-- Challenges Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white rounded-xl p-6 shadow-lg border-t-4 border-red-500">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-user-slash text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Lack of Accountability</h3>
+                    <p class="text-gray-600">
+                        "The AI decided" is not a defense in medical malpractice lawsuits. Recording the decision rationale is essential.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg border-t-4 border-amber-500">
+                    <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-sync-alt text-amber-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Model Drift</h3>
+                    <p class="text-gray-600">
+                        Performance changes with retraining. Unable to track which model version made the diagnosis.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg border-t-4 border-purple-500">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-gavel text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Complex Regulatory Compliance</h3>
+                    <p class="text-gray-600">
+                        FDA PCCP, EU AI Act, MDR require continuous performance monitoring. No technical standard exists.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Case Studies -->
+            <h3 class="text-2xl font-bold text-gray-900 text-center mb-8">
+                <i class="fas fa-exclamation-triangle text-amber-500 mr-2"></i>
+                Real-World Challenge Examples (Anonymized)
+            </h3>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Case 1 -->
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-sm font-bold">1</span>
+                        AI Diagnostic Oversight Lawsuit
+                    </h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                            <i class="fas fa-user text-gray-400"></i>
+                            <span>Patient</span>
+                            <i class="fas fa-arrow-right text-gray-300"></i>
+                            <span class="text-red-600">AI diagnosis: "No abnormality"</span>
+                            <i class="fas fa-arrow-right text-gray-300"></i>
+                            <span>Cancer discovered 6 months later</span>
+                            <i class="fas fa-arrow-right text-gray-300"></i>
+                            <span class="text-red-600 font-semibold">Lawsuit</span>
+                        </div>
+                        <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                            <p class="font-semibold text-amber-800 mb-2">Questions Raised:</p>
+                            <ul class="text-amber-700 space-y-1">
+                                <li>• "Did the AI actually review the image?"</li>
+                                <li>• "What was the model version?"</li>
+                                <li>• "What was the confidence score at decision time?"</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <p class="text-red-700"><strong>Result:</strong> Insufficient evidence, settled out of court</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                        Clinical Trial Data Fraud
+                    </h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                            <span>Third-party testing agency</span>
+                            <i class="fas fa-arrow-right text-gray-300"></i>
+                            <span class="text-red-600">Data falsification</span>
+                            <i class="fas fa-arrow-right text-gray-300"></i>
+                            <span>FDA Warning Letter</span>
+                            <i class="fas fa-arrow-right text-gray-300"></i>
+                            <span class="text-red-600 font-semibold">Approval revoked</span>
+                        </div>
+                        <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                            <p class="font-semibold text-amber-800 mb-2">Issues Identified:</p>
+                            <ul class="text-amber-700 space-y-1">
+                                <li>• "Unable to prove when data was modified"</li>
+                                <li>• "Audit trail manipulable by administrator"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scope Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-bullseye text-blue-600 mr-3"></i>
+                MAP Scope
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                Target systems and recording events
+            </p>
+
+            <!-- Target Systems -->
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">Target Systems</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="text-2xl">🩺</span>
+                        <h4 class="font-bold text-gray-900">AI Diagnostic Support</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Image diagnostic AI, ECG analysis AI</p>
+                    <span class="inline-block px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded">Required</span>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="text-2xl">🔬</span>
+                        <h4 class="font-bold text-gray-900">Pathology AI</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Digital pathology, cytology AI</p>
+                    <span class="inline-block px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded">Required</span>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="text-2xl">💊</span>
+                        <h4 class="font-bold text-gray-900">Medication Recommendation AI</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Drug interaction check, dosage optimization</p>
+                    <span class="inline-block px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded">Required</span>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="text-2xl">🏥</span>
+                        <h4 class="font-bold text-gray-900">Triage AI</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Emergency priority determination, ICU alerts</p>
+                    <span class="inline-block px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded">Required</span>
+                </div>
+
+                <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="text-2xl">🤖</span>
+                        <h4 class="font-bold text-gray-900">Surgical Support Robots</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Decision support components</p>
+                    <span class="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">Recommended</span>
+                </div>
+
+                <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="text-2xl">📊</span>
+                        <h4 class="font-bold text-gray-900">Clinical Trial AI</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Patient screening, endpoint evaluation</p>
+                    <span class="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">Recommended</span>
+                </div>
+            </div>
+
+            <!-- Causal Chain -->
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">Recording Events (Causal Chain)</h3>
+            <div class="bg-slate-900 rounded-xl p-6 overflow-x-auto">
+                <div class="flex items-center justify-between min-w-[800px] text-center">
+                    <div class="flex-1">
+                        <div class="bg-blue-600 text-white rounded-lg p-4 mb-3">
+                            <i class="fas fa-file-medical text-2xl mb-2"></i>
+                            <p class="font-semibold text-sm">Patient Data Input</p>
+                        </div>
+                        <div class="text-xs text-gray-400 space-y-1">
+                            <p>Image/Test values</p>
+                            <p>Patient history</p>
+                            <p>Consent info</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-blue-400 text-2xl mx-2"></i>
+                    <div class="flex-1">
+                        <div class="bg-blue-600 text-white rounded-lg p-4 mb-3">
+                            <i class="fas fa-brain text-2xl mb-2"></i>
+                            <p class="font-semibold text-sm">AI Analysis</p>
+                        </div>
+                        <div class="text-xs text-gray-400 space-y-1">
+                            <p>Feature extraction</p>
+                            <p>Model inference</p>
+                            <p>Explainability factors</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-blue-400 text-2xl mx-2"></i>
+                    <div class="flex-1">
+                        <div class="bg-blue-600 text-white rounded-lg p-4 mb-3">
+                            <i class="fas fa-clipboard-check text-2xl mb-2"></i>
+                            <p class="font-semibold text-sm">Diagnosis Generated</p>
+                        </div>
+                        <div class="text-xs text-gray-400 space-y-1">
+                            <p>Classification result</p>
+                            <p>Confidence score</p>
+                            <p>Differential diagnosis</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-blue-400 text-2xl mx-2"></i>
+                    <div class="flex-1">
+                        <div class="bg-blue-600 text-white rounded-lg p-4 mb-3">
+                            <i class="fas fa-notes-medical text-2xl mb-2"></i>
+                            <p class="font-semibold text-sm">Treatment Plan</p>
+                        </div>
+                        <div class="text-xs text-gray-400 space-y-1">
+                            <p>Recommended treatment</p>
+                            <p>Risk assessment</p>
+                            <p>Alternative options</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-blue-400 text-2xl mx-2"></i>
+                    <div class="flex-1">
+                        <div class="bg-green-600 text-white rounded-lg p-4 mb-3">
+                            <i class="fas fa-heart text-2xl mb-2"></i>
+                            <p class="font-semibold text-sm">Patient Outcome</p>
+                        </div>
+                        <div class="text-xs text-gray-400 space-y-1">
+                            <p>Actual result</p>
+                            <p>Follow-up</p>
+                            <p>Prognosis data</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-project-diagram text-blue-600 mr-3"></i>
+                MAP Architecture
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                Data flow and event structure
+            </p>
+
+            <!-- Data Flow Diagram -->
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">Data Flow</h3>
+            <div class="bg-white rounded-xl p-8 shadow-lg mb-12">
+                <div class="bg-slate-100 rounded-xl p-6 border-2 border-slate-300 mb-6">
+                    <h4 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
+                        <i class="fas fa-hospital text-blue-600"></i>
+                        Clinical System
+                    </h4>
+                    <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
+                        <div class="bg-white rounded-lg p-4 shadow text-center">
+                            <i class="fas fa-user-injured text-3xl text-blue-500 mb-2"></i>
+                            <p class="text-sm font-semibold">Patient Data</p>
+                        </div>
+                        <i class="fas fa-arrow-right text-slate-400 text-xl"></i>
+                        <div class="bg-white rounded-lg p-4 shadow text-center">
+                            <i class="fas fa-microchip text-3xl text-purple-500 mb-2"></i>
+                            <p class="text-sm font-semibold">AI Model (SaMD)</p>
+                        </div>
+                        <i class="fas fa-arrow-right text-slate-400 text-xl"></i>
+                        <div class="bg-white rounded-lg p-4 shadow text-center">
+                            <i class="fas fa-stethoscope text-3xl text-green-500 mb-2"></i>
+                            <p class="text-sm font-semibold">Clinical Decision</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-4 text-center">
+                            <i class="fas fa-save text-2xl text-blue-600 mb-2"></i>
+                            <p class="text-sm font-semibold text-blue-800">MAP Logger (Sidecar)</p>
+                            <p class="text-xs text-blue-600">← Records all decision events</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mb-6">
+                    <i class="fas fa-arrow-down text-3xl text-blue-500"></i>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4 mb-6">
+                    <div class="bg-indigo-100 border-2 border-indigo-400 rounded-lg p-4 text-center">
+                        <i class="fas fa-link text-xl text-indigo-600 mb-1"></i>
+                        <p class="text-sm font-semibold text-indigo-800">Hash Chain</p>
+                        <p class="text-xs text-indigo-600">Cryptographically linked</p>
+                    </div>
+                    <div class="bg-indigo-100 border-2 border-indigo-400 rounded-lg p-4 text-center">
+                        <i class="fas fa-signature text-xl text-indigo-600 mb-1"></i>
+                        <p class="text-sm font-semibold text-indigo-800">Digital Signature</p>
+                        <p class="text-xs text-indigo-600">Ed25519 signed</p>
+                    </div>
+                    <div class="bg-indigo-100 border-2 border-indigo-400 rounded-lg p-4 text-center">
+                        <i class="fas fa-fingerprint text-xl text-indigo-600 mb-1"></i>
+                        <p class="text-sm font-semibold text-indigo-800">Model Hash</p>
+                        <p class="text-xs text-indigo-600">Version identification</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mb-6">
+                    <i class="fas fa-arrow-down text-3xl text-blue-500"></i>
+                </div>
+
+                <div class="flex justify-center">
+                    <div class="bg-green-100 border-2 border-green-400 rounded-lg p-4 text-center">
+                        <i class="fas fa-database text-2xl text-green-600 mb-2"></i>
+                        <p class="text-sm font-semibold text-green-800">Audit Storage</p>
+                        <p class="text-xs text-green-600">HIPAA/GDPR compliant, encrypted storage</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Structure -->
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">MAP Event Structure (Conceptual)</h3>
+            <div class="code-block shadow-lg">
+                <pre class="text-green-400 overflow-x-auto"><code>{
+  "event_id": "019234ab-7c8d-7def-8123-456789abcdef",
+  "timestamp_ns": 1734567890123456789,
+  "event_type": "DIAGNOSIS_GENERATED",
+  "facility_id": "HOSPITAL_XXXXX",
+  "provenance": {
+    "actor": {
+      "type": "AI_MODEL",
+      "identifier": "chest_xray_classifier_v2.1.3",
+      "model_hash": "sha256:abc123...",
+      "training_date": "2024-06-15",
+      "fda_clearance": "K123456"
+    },
+    "input": {
+      "patient_id_hash": "sha256:patient_anonymized...",
+      "image_study_uid": "1.2.840.113619.2.55...",
+      "input_hash": "sha256:def456...",
+      "acquisition_timestamp": 1734567800000000000
+    },
+    "context": {
+      "clinical_indication": "CHEST_PAIN_EVALUATION",
+      "referring_physician_id": "NPI_XXXXXXXXXX",
+      "prior_studies_reviewed": 3,
+      "patient_age_range": "60-69",
+      "active_protocol": "EMERGENCY_TRIAGE"
+    },
+    "action": {
+      "diagnosis": "PNEUMONIA_SUSPECTED",
+      "confidence": 0.87,
+      "explainability": {
+        "method": "GRADCAM",
+        "attention_regions": ["RIGHT_LOWER_LOBE"],
+        "contributing_factors": [
+          {"factor": "consolidation_pattern", "weight": 0.45},
+          {"factor": "air_bronchograms", "weight": 0.32}
+        ]
+      },
+      "differential_diagnoses": [
+        {"diagnosis": "ATELECTASIS", "confidence": 0.08},
+        {"diagnosis": "LUNG_CANCER", "confidence": 0.03}
+      ],
+      "recommended_action": "CONFIRM_WITH_CT"
+    }
+  },
+  "prev_hash": "sha256:789xyz...",
+  "signature": "ed25519:..."
+}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regulatory Compliance Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-balance-scale text-blue-600 mr-3"></i>
+                Regulatory Compliance Mapping
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                Correspondence with international regulations
+            </p>
+
+            <!-- International Regulations Table -->
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">International Regulatory Correspondence</h3>
+            <div class="overflow-x-auto mb-12">
+                <table class="w-full bg-white rounded-xl shadow-lg overflow-hidden">
+                    <thead class="table-header text-white">
+                        <tr>
+                            <th class="px-6 py-4 text-left">Regulation</th>
+                            <th class="px-6 py-4 text-left">Jurisdiction</th>
+                            <th class="px-6 py-4 text-left">Requirements</th>
+                            <th class="px-6 py-4 text-center">MAP Support</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold">EU AI Act Annex III</td>
+                            <td class="px-6 py-4">EU</td>
+                            <td class="px-6 py-4 text-sm">Medical device AI classified as high-risk, logging mandatory</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 font-bold">✅ Full</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold">FDA AI/ML SaMD Guidance</td>
+                            <td class="px-6 py-4">USA</td>
+                            <td class="px-6 py-4 text-sm">Continuous learning AI performance monitoring</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 font-bold">✅ Full</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold">FDA PCCP</td>
+                            <td class="px-6 py-4">USA</td>
+                            <td class="px-6 py-4 text-sm">Predetermined Change Control Plan, model change tracking</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 font-bold">✅ Full</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold">MDR 2017/745</td>
+                            <td class="px-6 py-4">EU</td>
+                            <td class="px-6 py-4 text-sm">Medical device traceability</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 font-bold">✅ Complementary</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold">21 CFR Part 11</td>
+                            <td class="px-6 py-4">USA</td>
+                            <td class="px-6 py-4 text-sm">Electronic records/signatures, audit trail</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 font-bold">✅ Full</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold">HIPAA</td>
+                            <td class="px-6 py-4">USA</td>
+                            <td class="px-6 py-4 text-sm">PHI protection, access logs</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 font-bold">✅ Crypto-Shredding</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold">GDPR</td>
+                            <td class="px-6 py-4">EU</td>
+                            <td class="px-6 py-4 text-sm">Right to be forgotten, data minimization</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 font-bold">✅ Crypto-Shredding</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold">PMDA SaMD Guidance</td>
+                            <td class="px-6 py-4">Japan</td>
+                            <td class="px-6 py-4 text-sm">Continuous monitoring of AI medical devices</td>
+                            <td class="px-6 py-4 text-center"><span class="text-blue-600 font-bold">✅ Planned</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 21 CFR Part 11 Mapping -->
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">FDA 21 CFR Part 11 Detailed Mapping</h3>
+            <div class="grid md:grid-cols-2 gap-4 mb-12">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 class="font-bold text-gray-900 mb-2">Audit Trail</h4>
+                    <p class="text-sm text-gray-600">✅ All events recorded in hash chain</p>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 class="font-bold text-gray-900 mb-2">Electronic Signature Linkage</h4>
+                    <p class="text-sm text-gray-600">✅ Operator identified with Ed25519 signature</p>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 class="font-bold text-gray-900 mb-2">Record Integrity Assurance</h4>
+                    <p class="text-sm text-gray-600">✅ Tamper detection via cryptographic hash</p>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 class="font-bold text-gray-900 mb-2">Timestamp Accuracy</h4>
+                    <p class="text-sm text-gray-600">✅ UUID v7 + NTP/PTP synchronization</p>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 md:col-span-2">
+                    <h4 class="font-bold text-gray-900 mb-2">System Admin Operation Restrictions</h4>
+                    <p class="text-sm text-gray-600">✅ External anchoring prevents deletion even by administrators</p>
+                </div>
+            </div>
+
+            <!-- ALCOA+ Principles -->
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">ALCOA+ Principles Correspondence</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full bg-white rounded-xl shadow-lg overflow-hidden">
+                    <thead class="table-header text-white">
+                        <tr>
+                            <th class="px-6 py-4 text-left">ALCOA+ Principle</th>
+                            <th class="px-6 py-4 text-left">Description</th>
+                            <th class="px-6 py-4 text-left">MAP Implementation</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 text-sm">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold"><strong>A</strong>ttributable</td>
+                            <td class="px-6 py-4">Who recorded it</td>
+                            <td class="px-6 py-4">✅ actor.identifier + signature</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold"><strong>L</strong>egible</td>
+                            <td class="px-6 py-4">Readable</td>
+                            <td class="px-6 py-4">✅ Standard JSON format</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold"><strong>C</strong>oncurrent</td>
+                            <td class="px-6 py-4">Recorded at time of action</td>
+                            <td class="px-6 py-4">✅ Real-time log generation</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold"><strong>O</strong>riginal</td>
+                            <td class="px-6 py-4">Originality</td>
+                            <td class="px-6 py-4">✅ Proven via hash chain</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold"><strong>A</strong>ccurate</td>
+                            <td class="px-6 py-4">Accuracy</td>
+                            <td class="px-6 py-4">✅ Verified with input data hash</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold"><strong>C</strong>omplete</td>
+                            <td class="px-6 py-4">Completeness</td>
+                            <td class="px-6 py-4">✅ Event gaps detected via chain breakage</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold"><strong>C</strong>onsistent</td>
+                            <td class="px-6 py-4">Consistency</td>
+                            <td class="px-6 py-4">✅ Linked via trace_id</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold"><strong>E</strong>nduring</td>
+                            <td class="px-6 py-4">Durability</td>
+                            <td class="px-6 py-4">✅ Cryptographically guaranteed</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-semibold"><strong>A</strong>vailable</td>
+                            <td class="px-6 py-4">Availability</td>
+                            <td class="px-6 py-4">✅ Accessible via standard API</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Crypto-Shredding Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-shield-alt text-blue-600 mr-3"></i>
+                Privacy Protection: Crypto-Shredding
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                Balancing immutable audit trails with the right to be forgotten
+            </p>
+
+            <!-- Dilemma -->
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-bold text-red-800 mb-4 flex items-center gap-2">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Traditional Dilemma
+                </h3>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+                    <div class="bg-white rounded-lg p-4 shadow">
+                        <p class="font-semibold text-gray-800">"Immutable Audit Trail"</p>
+                        <p class="text-sm text-gray-600">Cannot delete</p>
+                    </div>
+                    <i class="fas fa-arrows-alt-h text-3xl text-red-400"></i>
+                    <div class="bg-white rounded-lg p-4 shadow">
+                        <p class="font-semibold text-gray-800">"GDPR Right to Erasure"</p>
+                        <p class="text-sm text-gray-600">Must delete</p>
+                    </div>
+                </div>
+                <p class="text-center text-red-700 mt-4 font-semibold">
+                    <i class="fas fa-times-circle mr-2"></i>Appears irreconcilable
+                </p>
+            </div>
+
+            <!-- Solution -->
+            <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                <h3 class="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
+                    <i class="fas fa-check-circle"></i>
+                    MAP Solution: Crypto-Shredding
+                </h3>
+                <div class="bg-white rounded-xl p-6 mb-6">
+                    <div class="flex flex-col lg:flex-row items-center justify-center gap-4">
+                        <div class="text-center">
+                            <div class="bg-blue-100 rounded-lg p-4 mb-2">
+                                <i class="fas fa-user-injured text-3xl text-blue-600"></i>
+                            </div>
+                            <p class="text-sm font-semibold">Patient Data</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-arrow-right text-2xl text-gray-400 hidden lg:block"></i>
+                            <i class="fas fa-arrow-down text-2xl text-gray-400 lg:hidden"></i>
+                            <p class="text-xs text-gray-500">Encryption</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-purple-100 rounded-lg p-4 mb-2">
+                                <i class="fas fa-lock text-3xl text-purple-600"></i>
+                            </div>
+                            <p class="text-sm font-semibold">Encrypted Data</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-arrow-right text-2xl text-gray-400 hidden lg:block"></i>
+                            <i class="fas fa-arrow-down text-2xl text-gray-400 lg:hidden"></i>
+                            <p class="text-xs text-gray-500">Record</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-indigo-100 rounded-lg p-4 mb-2">
+                                <i class="fas fa-link text-3xl text-indigo-600"></i>
+                            </div>
+                            <p class="text-sm font-semibold">MAP</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <p class="text-sm text-gray-600 mb-3">
+                            <i class="fas fa-key text-amber-500 mr-2"></i>
+                            <strong>Encryption Key</strong> → Securely stored in <strong>Key Management System</strong>
+                        </p>
+                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                            <p class="font-semibold text-amber-800 mb-2">On Deletion Request:</p>
+                            <p class="text-amber-700">
+                                Destroy encryption key → Data becomes unreadable → <strong>Effectively deleted</strong><br/>
+                                Hash chain maintained → <strong>Audit trail integrity preserved</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-clipboard-list text-blue-600 mr-3"></i>
+                Use Cases
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                Specific application scenarios
+            </p>
+
+            <!-- Use Case 1 -->
+            <div class="bg-gray-50 rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm">1</span>
+                    Medical Malpractice Lawsuit Scenario
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b-2 border-gray-300">
+                                <th class="px-4 py-3 text-left bg-gray-100">Phase</th>
+                                <th class="px-4 py-3 text-left bg-red-50">Without MAP</th>
+                                <th class="px-4 py-3 text-left bg-green-50">With MAP</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="border-b">
+                                <td class="px-4 py-3 font-semibold">At Diagnosis</td>
+                                <td class="px-4 py-3">AI determines "No abnormality"</td>
+                                <td class="px-4 py-3">Same + Decision rationale recorded</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="px-4 py-3 font-semibold">Lawsuit Filed</td>
+                                <td class="px-4 py-3">"AI missed it" claim</td>
+                                <td class="px-4 py-3">Same</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="px-4 py-3 font-semibold">Discovery</td>
+                                <td class="px-4 py-3 text-red-600">Logs potentially tampered</td>
+                                <td class="px-4 py-3 text-green-600">Cryptographically verifiable evidence</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="px-4 py-3 font-semibold">Root Cause</td>
+                                <td class="px-4 py-3 text-red-600">"Model problem or data problem unknown"</td>
+                                <td class="px-4 py-3 text-green-600">"Accuracy issue under specific conditions in model v2.1.3" identified</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 font-semibold">Liability</td>
+                                <td class="px-4 py-3 text-red-600">Settlement with ambiguous liability</td>
+                                <td class="px-4 py-3 text-green-600">Clear causation-based judgment</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Use Case 2 -->
+            <div class="bg-gray-50 rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm">2</span>
+                    FDA PCCP Audit Scenario
+                </h3>
+                <div class="flex flex-col items-center gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-blue-100 rounded-lg p-4 text-center">
+                            <i class="fas fa-user-tie text-2xl text-blue-600 mb-2"></i>
+                            <p class="text-sm font-semibold">FDA Auditor</p>
+                        </div>
+                        <i class="fas fa-arrow-right text-2xl text-gray-400"></i>
+                        <div class="bg-amber-100 rounded-lg p-4 text-center">
+                            <p class="text-sm font-semibold">PCCP Compliance Verification Request</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-down text-2xl text-gray-400"></i>
+                    <div class="bg-green-100 border-2 border-green-400 rounded-xl p-6 max-w-md w-full">
+                        <h4 class="font-bold text-green-800 mb-3">Instant Response via MAP Evidence</h4>
+                        <ul class="space-y-2 text-sm text-green-700">
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-600"></i> Model version history ✓</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-600"></i> Training data hash for each version ✓</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-600"></i> Immutable performance verification records ✓</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-600"></i> Signed change approval records ✓</li>
+                        </ul>
+                    </div>
+                    <i class="fas fa-arrow-down text-2xl text-gray-400"></i>
+                    <div class="bg-blue-100 rounded-lg p-4 text-center">
+                        <i class="fas fa-clipboard-check text-2xl text-blue-600 mb-2"></i>
+                        <p class="text-sm font-semibold">Audit Complete - Compliance Confirmed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Use Case 3 -->
+            <div class="bg-gray-50 rounded-xl p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm">3</span>
+                    Clinical Trial Data Integrity
+                </h3>
+                <div class="flex flex-col items-center gap-4">
+                    <div class="flex flex-wrap items-center justify-center gap-4">
+                        <div class="bg-purple-100 rounded-lg p-4 text-center">
+                            <p class="text-sm font-semibold">CRO (Contract Research Organization)</p>
+                        </div>
+                        <i class="fas fa-arrow-right text-xl text-gray-400"></i>
+                        <div class="bg-blue-100 rounded-lg p-4 text-center">
+                            <p class="text-sm font-semibold">EDC System</p>
+                        </div>
+                        <i class="fas fa-arrow-right text-xl text-gray-400"></i>
+                        <div class="bg-green-100 rounded-lg p-4 text-center">
+                            <p class="text-sm font-semibold">MAP Anchoring</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-down text-2xl text-gray-400"></i>
+                    <div class="bg-indigo-100 border border-indigo-300 rounded-lg p-4 text-center">
+                        <i class="fas fa-cube text-xl text-indigo-600 mb-2"></i>
+                        <p class="text-sm font-semibold">Hash recorded to external blockchain</p>
+                    </div>
+                    <i class="fas fa-arrow-down text-2xl text-gray-400"></i>
+                    <div class="bg-green-50 border-2 border-green-400 rounded-lg p-4 text-center max-w-md">
+                        <p class="font-semibold text-green-800">Prove "Even system admin cannot tamper"</p>
+                        <p class="text-sm text-green-600 mt-2">Significantly reduced FDA Warning Letter risk</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MLOps Integration Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-cogs text-blue-600 mr-3"></i>
+                MLOps Integration
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                Recording the entire model lifecycle
+            </p>
+
+            <!-- Lifecycle Diagram -->
+            <div class="bg-white rounded-xl p-8 shadow-lg mb-12">
+                <h3 class="text-xl font-bold text-gray-900 mb-6 text-center">Model Lifecycle Recording</h3>
+                <div class="flex flex-wrap justify-center items-center gap-4 mb-8">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-code text-2xl text-blue-600"></i>
+                        </div>
+                        <p class="text-sm font-semibold">Development</p>
+                        <p class="text-xs text-gray-500">MAP Record</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-vial text-2xl text-purple-600"></i>
+                        </div>
+                        <p class="text-sm font-semibold">Validation</p>
+                        <p class="text-xs text-gray-500">MAP Record</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-check-circle text-2xl text-green-600"></i>
+                        </div>
+                        <p class="text-sm font-semibold">Approval</p>
+                        <p class="text-xs text-gray-500">MAP Record</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-rocket text-2xl text-amber-600"></i>
+                        </div>
+                        <p class="text-sm font-semibold">Deploy</p>
+                        <p class="text-xs text-gray-500">MAP Record</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-chart-line text-2xl text-indigo-600"></i>
+                        </div>
+                        <p class="text-sm font-semibold">Operation</p>
+                        <p class="text-xs text-gray-500">MAP Record</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-redo text-2xl text-red-600"></i>
+                        </div>
+                        <p class="text-sm font-semibold">Retrain</p>
+                        <p class="text-xs text-gray-500">MAP Record</p>
+                    </div>
+                </div>
+
+                <!-- Recording Items -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h4 class="font-bold text-gray-900 mb-4">Recording Details:</h4>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-database text-blue-500 mt-1"></i>
+                            <span>Training dataset hash</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-sliders-h text-blue-500 mt-1"></i>
+                            <span>Hyperparameters</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-chart-bar text-blue-500 mt-1"></i>
+                            <span>Validation results (sensitivity/specificity)</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-signature text-blue-500 mt-1"></i>
+                            <span>Approver's electronic signature</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-server text-blue-500 mt-1"></i>
+                            <span>Deployment environment info</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-file-alt text-blue-500 mt-1"></i>
+                            <span>Inference logs</span>
+                        </div>
+                        <div class="flex items-start gap-2 md:col-span-2">
+                            <i class="fas fa-exchange-alt text-blue-500 mt-1"></i>
+                            <span>Retraining trigger and differential information</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GMLP Mapping -->
+            <h3 class="text-xl font-bold text-gray-900 mb-6">GMLP (Good Machine Learning Practice) Correspondence</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full bg-white rounded-xl shadow-lg overflow-hidden">
+                    <thead class="table-header text-white">
+                        <tr>
+                            <th class="px-6 py-4 text-left">GMLP Principle</th>
+                            <th class="px-6 py-4 text-left">MAP Implementation</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Training/Test data independence</td>
+                            <td class="px-6 py-4">Dataset hash enables post-verification</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Dataset representativeness</td>
+                            <td class="px-6 py-4">Demographic metadata recorded</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Model transparency</td>
+                            <td class="px-6 py-4">Explainability factors (SHAP/LIME/GradCAM) recorded</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Continuous performance monitoring</td>
+                            <td class="px-6 py-4">Operational inference results continuously recorded</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specs Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-microchip text-blue-600 mr-3"></i>
+                Technical Specifications Summary
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                MAP technical requirements
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clock text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Timestamp Precision</h3>
+                            <p class="text-sm text-gray-600">Millisecond (NTP synchronized)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-calendar-alt text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Event Recording Frequency</h3>
+                            <p class="text-sm text-gray-600">Per diagnostic event</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-hashtag text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Hash Algorithm</h3>
+                            <p class="text-sm text-gray-600">SHA-256</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-key text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Signature Algorithm</h3>
+                            <p class="text-sm text-gray-600">Ed25519 (Future: Dilithium)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">PHI Protection</h3>
+                            <p class="text-sm text-gray-600">AES-256-GCM encryption + Crypto-Shredding</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-file-code text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Storage Format</h3>
+                            <p class="text-sm text-gray-600">FHIR R4 compatible JSON</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-archive text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Retention Period</h3>
+                            <p class="text-sm text-gray-600">Configurable per regulatory requirements (typically 10-30 years)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-road text-blue-600 mr-3"></i>
+                Roadmap
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                MAP development schedule
+            </p>
+
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-blue-200"></div>
+
+                <!-- Timeline Items -->
+                <div class="space-y-8">
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <div class="md:w-1/2 md:text-right md:pr-8">
+                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full mb-2">2026 Q1</span>
+                            <h3 class="text-lg font-bold text-gray-900">MAP Draft Specification v0.1 Release</h3>
+                        </div>
+                        <div class="hidden md:flex w-8 h-8 bg-blue-600 rounded-full items-center justify-center z-10">
+                            <i class="fas fa-file-alt text-white text-sm"></i>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8"></div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <div class="md:w-1/2 md:text-right md:pr-8 md:order-1"></div>
+                        <div class="hidden md:flex w-8 h-8 bg-blue-600 rounded-full items-center justify-center z-10 md:order-2">
+                            <i class="fas fa-flask text-white text-sm"></i>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8 md:order-3">
+                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full mb-2">2026 Q2</span>
+                            <h3 class="text-lg font-bold text-gray-900">Technical Validation with Medical Device Manufacturers & Hospitals</h3>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <div class="md:w-1/2 md:text-right md:pr-8">
+                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full mb-2">2026 Q3</span>
+                            <h3 class="text-lg font-bold text-gray-900">Information Provision to FDA/PMDA/EMA</h3>
+                        </div>
+                        <div class="hidden md:flex w-8 h-8 bg-blue-600 rounded-full items-center justify-center z-10">
+                            <i class="fas fa-building text-white text-sm"></i>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8"></div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <div class="md:w-1/2 md:text-right md:pr-8 md:order-1"></div>
+                        <div class="hidden md:flex w-8 h-8 bg-green-600 rounded-full items-center justify-center z-10 md:order-2">
+                            <i class="fas fa-rocket text-white text-sm"></i>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8 md:order-3">
+                            <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full mb-2">2026 Q4</span>
+                            <h3 class="text-lg font-bold text-gray-900">MAP v1.0 Official Release</h3>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <div class="md:w-1/2 md:text-right md:pr-8">
+                            <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-sm font-semibold rounded-full mb-2">2027</span>
+                            <h3 class="text-lg font-bold text-gray-900">IHE (Integrating the Healthcare Enterprise) Collaboration</h3>
+                        </div>
+                        <div class="hidden md:flex w-8 h-8 bg-purple-600 rounded-full items-center justify-center z-10">
+                            <i class="fas fa-handshake text-white text-sm"></i>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8"></div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <div class="md:w-1/2 md:text-right md:pr-8 md:order-1"></div>
+                        <div class="hidden md:flex w-8 h-8 bg-indigo-600 rounded-full items-center justify-center z-10 md:order-2">
+                            <i class="fas fa-globe text-white text-sm"></i>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8 md:order-3">
+                            <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-sm font-semibold rounded-full mb-2">2027+</span>
+                            <h3 class="text-lg font-bold text-gray-900">Standardization as HL7 FHIR Extension</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VAP/VSO Relationship Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
+                <i class="fas fa-sitemap text-blue-600 mr-3"></i>
+                Relationship with VAP/VSO
+            </h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                Framework hierarchy
+            </p>
+
+            <div class="bg-slate-900 rounded-xl p-8 text-center">
+                <!-- VAP -->
+                <div class="bg-gradient-to-r from-blue-700 to-blue-600 text-white rounded-xl p-6 mb-6 max-w-2xl mx-auto">
+                    <h3 class="text-xl font-bold mb-2">VAP (Verifiable AI Provenance)</h3>
+                    <p class="text-blue-200 text-sm">Cross-domain parent framework for all domains</p>
+                </div>
+
+                <div class="flex justify-center mb-6">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-arrow-down text-blue-400 text-2xl mb-2"></i>
+                        <span class="text-blue-300 text-xs">defines & maintains</span>
+                    </div>
+                </div>
+
+                <!-- VSO -->
+                <div class="bg-gradient-to-r from-slate-700 to-slate-600 text-white rounded-xl p-6 mb-6 max-w-xl mx-auto">
+                    <h3 class="text-lg font-bold mb-2">VSO (VeritasChain Standards Organization)</h3>
+                    <p class="text-slate-300 text-sm">Standards body that develops and maintains VAP</p>
+                </div>
+
+                <div class="flex justify-center mb-6">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-arrow-down text-blue-400 text-2xl mb-2"></i>
+                        <span class="text-blue-300 text-xs">publishes profiles</span>
+                    </div>
+                </div>
+
+                <!-- Profiles -->
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="bg-green-600 text-white rounded-lg p-4 min-w-[120px]">
+                        <h4 class="font-bold">VCP</h4>
+                        <p class="text-xs text-green-200">Finance</p>
+                        <span class="inline-block mt-2 px-2 py-0.5 bg-green-800 text-green-200 text-xs rounded">v1.0 Released</span>
+                    </div>
+                    <div class="bg-slate-600 text-white rounded-lg p-4 min-w-[120px]">
+                        <h4 class="font-bold">DVP</h4>
+                        <p class="text-xs text-slate-300">Automotive</p>
+                        <span class="inline-block mt-2 px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded">Planned</span>
+                    </div>
+                    <div class="bg-blue-500 text-white rounded-lg p-4 min-w-[120px] ring-2 ring-blue-300">
+                        <h4 class="font-bold">MAP</h4>
+                        <p class="text-xs text-blue-200">Medical</p>
+                        <span class="inline-block mt-2 px-2 py-0.5 bg-blue-700 text-blue-200 text-xs rounded">Planned</span>
+                    </div>
+                    <div class="bg-slate-600 text-white rounded-lg p-4 min-w-[120px]">
+                        <h4 class="font-bold">EIP</h4>
+                        <p class="text-xs text-slate-300">Energy</p>
+                        <span class="inline-block mt-2 px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded">Planned</span>
+                    </div>
+                    <div class="bg-slate-600 text-white rounded-lg p-4 min-w-[120px]">
+                        <h4 class="font-bold">PAP</h4>
+                        <p class="text-xs text-slate-300">Public</p>
+                        <span class="inline-block mt-2 px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded">Planned</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-900 to-slate-900">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                Get Involved in MAP Development
+            </h2>
+            <p class="text-blue-200 text-lg mb-8">
+                We welcome participation from medical device manufacturers, hospitals, and regulatory authorities.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="/vap/" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition inline-flex items-center gap-2 shadow-lg">
+                    <i class="fas fa-book"></i>
+                    View VAP Framework
+                </a>
+                <a href="https://github.com/veritaschain" target="_blank" rel="noopener" class="px-8 py-4 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-semibold transition inline-flex items-center gap-2 shadow-lg">
+                    <i class="fab fa-github"></i>
+                    Review Spec on GitHub
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition inline-flex items-center gap-2 shadow-lg">
+                    <i class="fas fa-users"></i>
+                    Join MAP Development
+                </a>
+            </div>
+
+            <!-- Quotes -->
+            <div class="space-y-6">
+                <blockquote class="bg-slate-800/50 border-l-4 border-blue-400 p-6 rounded-r-xl text-left">
+                    <p class="text-xl text-white italic mb-4">
+                        "When AI says 'cancer,' what patients want to know isn't the probability. It's the rationale."
+                    </p>
+                    <footer class="text-blue-300">— VeritasChain Standards Organization</footer>
+                </blockquote>
+
+                <blockquote class="bg-slate-800/50 border-l-4 border-green-400 p-6 rounded-r-xl text-left">
+                    <p class="text-xl text-white italic">
+                        "In medicine, trust is not given. It is proven."
+                    </p>
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <vcp-footer></vcp-footer>
+
+    <!-- License -->
+    <div class="bg-gray-100 border-t border-gray-200 py-4 text-center text-sm text-gray-600">
+        <p>
+            <i class="fab fa-creative-commons mr-1"></i>
+            This content is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" class="text-blue-600 hover:underline">CC BY 4.0 International</a>
+        </p>
+        <p class="mt-2">
+            © 2024-2025 VeritasChain Standards Organization (VSO). All rights reserved.
+        </p>
+    </div>
+</body>
+</html>
