@@ -298,7 +298,7 @@ class VCPHeader extends HTMLElement {
                             <a href="https://github.com/VeritasChain/vcp-spec" class="dropdown-item" target="_blank" rel="noopener">${t.vcpProtocol}</a>
                             <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
                             <a href="/vcp/developers/" class="dropdown-item">${t.developersIntegration}</a>
-                            <a href="/benchmark/" class="dropdown-item dropdown-item-highlight">${t.launchScorecard}</a>
+                            <a href="/benchmark/app/" class="dropdown-item dropdown-item-highlight">${t.launchScorecard}</a>
                         </div>
                     </div>
 
