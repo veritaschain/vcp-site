@@ -68,6 +68,12 @@ class VCPHeader extends HTMLElement {
                 certifiedApply: 'Apply',
                 certifiedFaq: 'FAQ',
                 certifiedCabs: 'CABs',
+                vap: 'VAP',
+                vapOverview: 'Overview',
+                vapDvp: 'DVP',
+                vapMap: 'MAP',
+                vapEip: 'EIP',
+                vapPap: 'PAP',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
@@ -109,6 +115,12 @@ class VCPHeader extends HTMLElement {
                 certifiedApply: '申請',
                 certifiedFaq: 'FAQ',
                 certifiedCabs: 'CABs',
+                vap: 'VAP',
+                vapOverview: '概要',
+                vapDvp: 'DVP',
+                vapMap: 'MAP',
+                vapEip: 'EIP',
+                vapPap: 'PAP',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
                 standards: '標準規格',
@@ -150,6 +162,12 @@ class VCPHeader extends HTMLElement {
                 certifiedApply: '申请',
                 certifiedFaq: '常见问题',
                 certifiedCabs: 'CABs',
+                vap: 'VAP',
+                vapOverview: '概述',
+                vapDvp: 'DVP',
+                vapMap: 'MAP',
+                vapEip: 'EIP',
+                vapPap: 'PAP',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
                 standards: '标准',
@@ -239,6 +257,19 @@ class VCPHeader extends HTMLElement {
                             <a href="/certified/apply/" class="dropdown-item">${t.certifiedApply}</a>
                             <a href="/certified/faq/" class="dropdown-item">${t.certifiedFaq}</a>
                             <a href="/certified/cab/" class="dropdown-item">${t.certifiedCabs}</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle">
+                            ${t.vap} <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/vap/" class="dropdown-item">${t.vapOverview}</a>
+                            <a href="/vap/dvp/" class="dropdown-item">${t.vapDvp}</a>
+                            <a href="/vap/map/" class="dropdown-item">${t.vapMap}</a>
+                            <a href="/vap/eip/" class="dropdown-item">${t.vapEip}</a>
+                            <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
                         </div>
                     </div>
 
