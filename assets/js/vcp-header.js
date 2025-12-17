@@ -64,6 +64,10 @@ class VCPHeader extends HTMLElement {
                 vcpSec: 'VCP & SEC',
                 certification: 'Certification',
                 vcCertified: 'VC-Certified',
+                certifiedOverview: 'Overview',
+                certifiedApply: 'Apply',
+                certifiedFaq: 'FAQ',
+                certifiedCabs: 'CABs',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
@@ -101,6 +105,10 @@ class VCPHeader extends HTMLElement {
                 vcpSec: 'VCP & SEC',
                 certification: '認証',
                 vcCertified: 'VC-Certified',
+                certifiedOverview: '概要',
+                certifiedApply: '申請',
+                certifiedFaq: 'FAQ',
+                certifiedCabs: 'CABs',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
                 standards: '標準規格',
@@ -138,6 +146,10 @@ class VCPHeader extends HTMLElement {
                 vcpSec: 'VCP & SEC',
                 certification: '认证',
                 vcCertified: 'VC-Certified',
+                certifiedOverview: '概述',
+                certifiedApply: '申请',
+                certifiedFaq: '常见问题',
+                certifiedCabs: 'CABs',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
                 standards: '标准',
@@ -215,6 +227,18 @@ class VCPHeader extends HTMLElement {
                             <a href="/vcp/specification/" class="dropdown-item">${t.specification}</a>
                             <a href="/explorer/" class="dropdown-item">${t.explorer}</a>
                             <a href="/explorer/app/" class="dropdown-item dropdown-item-highlight">${t.launchExplorer}</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle">
+                            ${t.vcCertified} <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/certified/" class="dropdown-item">${t.certifiedOverview}</a>
+                            <a href="/certified/apply/" class="dropdown-item">${t.certifiedApply}</a>
+                            <a href="/certified/faq/" class="dropdown-item">${t.certifiedFaq}</a>
+                            <a href="/certified/cab/" class="dropdown-item">${t.certifiedCabs}</a>
                         </div>
                     </div>
 
