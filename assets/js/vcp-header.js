@@ -78,6 +78,7 @@ class VCPHeader extends HTMLElement {
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
                 benchmarks: 'Auditability Benchmark',
+                launchScorecard: '🚀 Launch Scorecard Explorer',
                 vcpProtocol: 'VCP Protocol',
                 standardizationRoadmap: 'Standardization Roadmap',
                 developersIntegration: 'Developers / Integration',
@@ -125,6 +126,7 @@ class VCPHeader extends HTMLElement {
                 applyCertification: '認証を申請',
                 standards: '標準規格',
                 benchmarks: '監査可能性ベンチマーク',
+                launchScorecard: '🚀 スコアカードエクスプローラーを起動',
                 vcpProtocol: 'VCPプロトコル',
                 standardizationRoadmap: '標準化ロードマップ',
                 developersIntegration: '開発者 / 統合',
@@ -172,6 +174,7 @@ class VCPHeader extends HTMLElement {
                 applyCertification: '申请认证',
                 standards: '标准',
                 benchmarks: '可审计性基准',
+                launchScorecard: '🚀 启动评分卡浏览器',
                 vcpProtocol: 'VCP协议',
                 standardizationRoadmap: '标准化路线图',
                 developersIntegration: '开发者 / 集成',
@@ -295,6 +298,7 @@ class VCPHeader extends HTMLElement {
                             <a href="https://github.com/VeritasChain/vcp-spec" class="dropdown-item" target="_blank" rel="noopener">${t.vcpProtocol}</a>
                             <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
                             <a href="/vcp/developers/" class="dropdown-item">${t.developersIntegration}</a>
+                            <a href="/benchmark/" class="dropdown-item dropdown-item-highlight">${t.launchScorecard}</a>
                         </div>
                     </div>
 
