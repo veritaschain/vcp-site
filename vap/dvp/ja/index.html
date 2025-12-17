@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVP - Driving Vehicle Protocol | 自動運転のためのAIフライトレコーダー</title>
+    <meta name="description" content="DVP（Driving Vehicle Protocol）は、VAP（Verifiable AI Provenance Framework）の自動運転・モビリティ向けプロファイルです。自動運転車両のAI判断を暗号学的に記録・検証するための技術標準を提供します。">
+    <meta name="keywords" content="DVP, Driving Vehicle Protocol, 自動運転, ADAS, AIフライトレコーダー, UNECE R157, EU AI Act, ISO 26262, SOTIF">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="DVP - Driving Vehicle Protocol | 自動運転のためのAIフライトレコーダー">
+    <meta property="og:description" content="すべての判断を、暗号学的に記録する。DVPは自動運転車両のAI判断を暗号学的に記録・検証するVAPプロファイルです。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/dvp/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="DVP - Driving Vehicle Protocol | 自動運転のためのAIフライトレコーダー">
+    <meta name="twitter:description" content="すべての判断を、暗号学的に記録する。DVPは自動運転車両のAI判断を暗号学的に記録・検証するVAPプロファイルです。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/dvp/ja/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/dvp/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/dvp/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/dvp/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/dvp/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dvp-orange': '#f6ad55',
+                        'dvp-amber': '#ed8936',
+                        'dvp-blue': '#2b6cb0',
+                        'dvp-dark': '#1a202c',
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #1a202c 100%);
+        }
+        .dvp-gradient {
+            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+        }
+        .architecture-diagram {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
+            border: 1px solid rgba(251, 191, 36, 0.5);
+        }
+        .flow-arrow {
+            animation: flowPulse 2s ease-in-out infinite;
+        }
+        @keyframes flowPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #f6ad55, #ed8936);
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #f6ad55;
+            border: 2px solid #1a202c;
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "DVP - Driving Vehicle Protocol",
+        "description": "DVPはVAPの自動運転向けプロファイルであり、自動運転車両のAI判断を暗号学的に記録・検証するための技術標準です。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2024-12-16",
+        "url": "https://veritaschain.org/vap/dvp/ja/"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div class="bg-gradient-to-r from-amber-900/50 to-orange-900/50 border-b border-amber-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-center gap-3 flex-wrap">
+                <i class="fas fa-flask text-amber-400"></i>
+                <span class="text-amber-200 font-medium">DVP ステータス: <span class="text-amber-400 font-bold">策定中（PLANNED）</span></span>
+                <span class="text-amber-200/70 text-sm">— このプロファイルは現在策定中です。仕様への貢献・フィードバックを歓迎します。</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%23f6ad55%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%23f6ad55%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22%23f6ad55%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Profile Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-car text-amber-400"></i>
+                    <span class="text-amber-300 text-sm font-semibold tracking-wide">VAP プロファイル: 自動運転モビリティ</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-4">
+                <span class="text-white">DVP</span>
+                <span class="text-amber-400"> - Driving Vehicle Protocol</span>
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-center text-gray-300 mb-6">
+                自動運転のためのAIフライトレコーダー
+            </p>
+            
+            <!-- Tagline -->
+            <div class="text-center mb-8">
+                <p class="text-xl text-amber-400 font-semibold italic">
+                    "Every Decision, Cryptographically Recorded"
+                </p>
+                <p class="text-lg text-gray-400 mt-2">
+                    — すべての判断を、暗号学的に記録する
+                </p>
+            </div>
+            
+            <!-- Hero Quote -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    <span class="text-amber-400 font-bold text-2xl">「</span>
+                    事故の後に『なぜ』を問うのではなく、事故の前に『証拠』を残す
+                    <span class="text-amber-400 font-bold text-2xl">」</span>
+                </p>
+                <div class="mt-6 text-gray-400 text-sm leading-relaxed">
+                    <p>2018年、Uber自動運転車の死亡事故。2016年、Tesla Autopilotの死亡事故。</p>
+                    <p>調査官たちは同じ問いに直面した。</p>
+                    <p class="text-amber-300 font-medium mt-2">「AIは何を見て、何を判断し、なぜその行動を選んだのか？」</p>
+                    <p class="mt-4">従来のEDR（Event Data Recorder）は車両の物理状態を記録する。</p>
+                    <p>しかし、AI判断の内部プロセスは記録されない。</p>
+                    <p class="text-white font-semibold mt-2">DVPはこのギャップを埋める ― AI判断の完全な因果連鎖を、改ざん不可能な形で記録する。</p>
+                </div>
+            </div>
+            
+            <!-- Hero CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#architecture" class="inline-flex items-center bg-amber-500 hover:bg-amber-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-microchip mr-2"></i>
+                    アーキテクチャを見る
+                </a>
+                <a href="#regulations" class="inline-flex items-center bg-gray-700 hover:bg-gray-600 text-white font-bold px-8 py-4 rounded-lg transition-all border border-gray-600">
+                    <i class="fas fa-gavel mr-2"></i>
+                    規制対応マッピング
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-amber-400 font-bold px-8 py-4 rounded-lg transition-all border border-amber-400/50">
+                    <i class="fas fa-handshake mr-2"></i>
+                    策定に参加する
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why DVP Section -->
+    <section id="why-dvp" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">なぜDVPが必要なのか</h2>
+                <p class="text-gray-400 text-lg">現在の自動運転システムにおける構造的課題</p>
+            </div>
+            
+            <!-- Challenge Cards -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <!-- Challenge 1 -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-red-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-brain text-3xl text-red-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">AI判断のブラックボックス</h3>
+                    <p class="text-gray-400">
+                        LiDAR・カメラ・レーダーからの入力がどう処理され、なぜ「直進」「停止」「回避」の判断に至ったか、現在のEDRでは記録されない。
+                    </p>
+                </div>
+                
+                <!-- Challenge 2 -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-yellow-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-question-circle text-3xl text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">責任の曖昧さ</h3>
+                    <p class="text-gray-400">
+                        Level 3以上では運転責任がシステムに移行。事故時に「人間の過失」か「システムの欠陥」かを立証できない。
+                    </p>
+                </div>
+                
+                <!-- Challenge 3 -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-blue-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-balance-scale text-3xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">規制要件の強化</h3>
+                    <p class="text-gray-400">
+                        UNECE WP.29 R157、EU AI Act Annex IIIが自動運転AIの記録・説明責任を要求。対応技術標準が存在しない。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Accident Investigation Timeline -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-2xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-search text-amber-400 mr-2"></i>
+                    実際の事故事例（匿名化）
+                </h3>
+                
+                <div class="flex flex-wrap justify-center items-center gap-4 mb-8">
+                    <div class="bg-red-900/30 border border-red-500/50 rounded-lg px-4 py-3 text-center">
+                        <i class="fas fa-car-crash text-red-400 text-xl mb-1"></i>
+                        <p class="text-red-300 text-sm font-medium">事故発生</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-600 flow-arrow"></i>
+                    <div class="bg-blue-900/30 border border-blue-500/50 rounded-lg px-4 py-3 text-center">
+                        <i class="fas fa-clipboard-list text-blue-400 text-xl mb-1"></i>
+                        <p class="text-blue-300 text-sm font-medium">調査開始</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-600 flow-arrow"></i>
+                    <div class="bg-purple-900/30 border border-purple-500/50 rounded-lg px-4 py-3 text-center">
+                        <i class="fas fa-database text-purple-400 text-xl mb-1"></i>
+                        <p class="text-purple-300 text-sm font-medium">ログ取得</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-600 flow-arrow"></i>
+                    <div class="bg-yellow-900/30 border border-yellow-500/50 rounded-lg px-4 py-3 text-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-400 text-xl mb-1"></i>
+                        <p class="text-yellow-300 text-sm font-medium">課題発覚</p>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-gray-800 rounded-lg p-4 border-l-4 border-red-500">
+                        <p class="text-red-300 font-medium">「AIが歩行者を認識していたか不明」</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 border-l-4 border-yellow-500">
+                        <p class="text-yellow-300 font-medium">「ブレーキ判断のトリガーが特定不能」</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 border-l-4 border-blue-500">
+                        <p class="text-blue-300 font-medium">「タイムスタンプの整合性が検証不能」</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scope Section -->
+    <section id="scope" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">DVPの適用範囲</h2>
+                <p class="text-gray-400 text-lg">対象システムと記録要件</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Target Systems -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-2xl font-bold text-white mb-6">
+                        <i class="fas fa-car text-amber-400 mr-2"></i>
+                        対象システム
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl">🚗</div>
+                            <div class="flex-1">
+                                <p class="text-white font-semibold">自動運転車両</p>
+                                <p class="text-gray-400 text-sm">SAE Level 3-5</p>
+                            </div>
+                            <span class="bg-red-900/50 text-red-300 px-3 py-1 rounded-full text-sm font-medium">必須</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl">🛡️</div>
+                            <div class="flex-1">
+                                <p class="text-white font-semibold">ADAS（先進運転支援）</p>
+                                <p class="text-gray-400 text-sm">Level 2+</p>
+                            </div>
+                            <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm font-medium">推奨</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl">🚆</div>
+                            <div class="flex-1">
+                                <p class="text-white font-semibold">鉄道運行管理AI</p>
+                                <p class="text-gray-400 text-sm">自動運転対応</p>
+                            </div>
+                            <span class="bg-red-900/50 text-red-300 px-3 py-1 rounded-full text-sm font-medium">必須</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl">🚁</div>
+                            <div class="flex-1">
+                                <p class="text-white font-semibold">ドローン自律制御</p>
+                                <p class="text-gray-400 text-sm">自律飛行</p>
+                            </div>
+                            <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm font-medium">推奨</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl">🚌</div>
+                            <div class="flex-1">
+                                <p class="text-white font-semibold">自動運転バス・シャトル</p>
+                                <p class="text-gray-400 text-sm">Level 4</p>
+                            </div>
+                            <span class="bg-red-900/50 text-red-300 px-3 py-1 rounded-full text-sm font-medium">必須</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recording Events -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-2xl font-bold text-white mb-6">
+                        <i class="fas fa-stream text-amber-400 mr-2"></i>
+                        記録対象イベント
+                    </h3>
+                    
+                    <div class="architecture-diagram text-center">
+<span class="text-blue-400">[センサー入力]</span> → <span class="text-green-400">[認識処理]</span> → <span class="text-yellow-400">[判断生成]</span> → <span class="text-red-400">[制御出力]</span>
+       ↓                ↓                ↓                ↓
+<span class="text-blue-300">LiDAR点群</span>        <span class="text-green-300">物体検出</span>        <span class="text-yellow-300">経路計画</span>      <span class="text-red-300">ステアリング</span>
+<span class="text-blue-300">カメラ画像</span>       <span class="text-green-300">分類結果</span>        <span class="text-yellow-300">速度決定</span>      <span class="text-red-300">アクセル</span>
+<span class="text-blue-300">レーダー</span>         <span class="text-green-300">追跡ID</span>          <span class="text-yellow-300">優先順位</span>      <span class="text-red-300">ブレーキ</span>
+<span class="text-blue-300">GPS/IMU</span>         <span class="text-green-300">予測軌道</span>        <span class="text-yellow-300">リスク評価</span>    <span class="text-red-300">シグナル</span>
+                    </div>
+                    
+                    <div class="mt-6 grid grid-cols-2 gap-4">
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <p class="text-blue-400 font-semibold mb-2">センサー層</p>
+                            <ul class="text-gray-400 text-sm space-y-1">
+                                <li>• 生センサーデータのハッシュ</li>
+                                <li>• フレーム同期</li>
+                                <li>• キャリブレーション状態</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <p class="text-green-400 font-semibold mb-2">認識層</p>
+                            <ul class="text-gray-400 text-sm space-y-1">
+                                <li>• 検出結果</li>
+                                <li>• 信頼度スコア</li>
+                                <li>• オブジェクト追跡ID</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <p class="text-yellow-400 font-semibold mb-2">計画層</p>
+                            <ul class="text-gray-400 text-sm space-y-1">
+                                <li>• 経路候補</li>
+                                <li>• 判断根拠</li>
+                                <li>• リスクスコア</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <p class="text-red-400 font-semibold mb-2">制御層</p>
+                            <ul class="text-gray-400 text-sm space-y-1">
+                                <li>• コマンド出力</li>
+                                <li>• アクチュエータ応答</li>
+                                <li>• 安全介入</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">DVPアーキテクチャ</h2>
+                <p class="text-gray-400 text-lg">データフローとシステム統合</p>
+            </div>
+            
+            <!-- Architecture Diagram -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-project-diagram text-amber-400 mr-2"></i>
+                    システムデータフロー
+                </h3>
+                
+                <div class="architecture-diagram mx-auto max-w-4xl">
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         <span class="text-amber-400 font-bold">車両システム</span>                                  │
+│                                                                         │
+│   ┌──────────────┐    ┌──────────────┐    ┌──────────────┐             │
+│   │  <span class="text-blue-400">センサー</span>    │───▶│  <span class="text-green-400">AIスタック</span>  │───▶│ <span class="text-red-400">アクチュエータ</span> │             │
+│   │              │    │              │    │              │             │
+│   │ LiDAR/カメラ │    │ 認識処理     │    │ ステアリング │             │
+│   │ レーダー/GPS │    │ 経路計画     │    │ スロットル   │             │
+│   └──────────────┘    └──────┬───────┘    │ ブレーキ     │             │
+│                              │            └──────────────┘             │
+│                              │                                          │
+│                     ┌────────▼────────┐                                │
+│                     │  <span class="text-amber-400 font-bold">DVP Logger</span>    │ ← 全判断イベントを傍受          │
+│                     │   (Sidecar)    │                                │
+│                     └────────┬────────┘                                │
+│                              │                                          │
+└──────────────────────────────┼──────────────────────────────────────────┘
+                               │
+                    ┌──────────▼──────────┐
+                    │   <span class="text-purple-400">ハッシュチェーン</span>   │ ← 暗号学的に連鎖
+                    │  + <span class="text-cyan-400">デジタル署名</span>     │ ← 署名検証
+                    │  + <span class="text-green-400">Merkle Root</span>      │ ← 定期アンカリング
+                    └──────────┬──────────┘
+                               │
+                    ┌──────────▼──────────┐
+                    │  <span class="text-orange-400">セキュアストレージ</span>  │ ← 耐衝撃・耐火設計
+                    │   (EDR統合)         │
+                    └─────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Event Structure -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6">
+                    <i class="fas fa-code text-amber-400 mr-2"></i>
+                    DVPイベント構造（概念）
+                </h3>
+                
+                <div class="code-block">
+                    <pre>{
+  <span class="text-blue-400">"event_id"</span>: <span class="text-green-400">"019234ab-7c8d-7def-8123-456789abcdef"</span>,
+  <span class="text-blue-400">"timestamp_ns"</span>: <span class="text-yellow-400">1734567890123456789</span>,
+  <span class="text-blue-400">"event_type"</span>: <span class="text-green-400">"PERCEPTION_DECISION"</span>,
+  <span class="text-blue-400">"vehicle_id"</span>: <span class="text-green-400">"VIN_XXXXXXXXXXXX"</span>,
+  <span class="text-blue-400">"provenance"</span>: {
+    <span class="text-blue-400">"actor"</span>: {
+      <span class="text-blue-400">"type"</span>: <span class="text-green-400">"AI_MODEL"</span>,
+      <span class="text-blue-400">"identifier"</span>: <span class="text-green-400">"perception_v3.2.1"</span>,
+      <span class="text-blue-400">"model_hash"</span>: <span class="text-green-400">"sha256:abc123..."</span>
+    },
+    <span class="text-blue-400">"input"</span>: {
+      <span class="text-blue-400">"lidar_frame_id"</span>: <span class="text-green-400">"frame_12345"</span>,
+      <span class="text-blue-400">"camera_frame_ids"</span>: [<span class="text-green-400">"cam_front_12345"</span>, <span class="text-green-400">"cam_left_12345"</span>],
+      <span class="text-blue-400">"input_hash"</span>: <span class="text-green-400">"sha256:def456..."</span>
+    },
+    <span class="text-blue-400">"context"</span>: {
+      <span class="text-blue-400">"speed_kmh"</span>: <span class="text-yellow-400">45.2</span>,
+      <span class="text-blue-400">"weather"</span>: <span class="text-green-400">"RAIN_LIGHT"</span>,
+      <span class="text-blue-400">"visibility_m"</span>: <span class="text-yellow-400">120</span>,
+      <span class="text-blue-400">"active_mode"</span>: <span class="text-green-400">"AUTONOMOUS_L4"</span>
+    },
+    <span class="text-blue-400">"action"</span>: {
+      <span class="text-blue-400">"decision"</span>: <span class="text-green-400">"EMERGENCY_BRAKE"</span>,
+      <span class="text-blue-400">"confidence"</span>: <span class="text-yellow-400">0.94</span>,
+      <span class="text-blue-400">"trigger"</span>: <span class="text-green-400">"PEDESTRIAN_DETECTED"</span>,
+      <span class="text-blue-400">"predicted_collision_ms"</span>: <span class="text-yellow-400">1200</span>
+    }
+  },
+  <span class="text-blue-400">"prev_hash"</span>: <span class="text-green-400">"sha256:789xyz..."</span>,
+  <span class="text-blue-400">"signature"</span>: <span class="text-green-400">"ed25519:..."</span>
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regulatory Compliance Section -->
+    <section id="regulations" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">規制対応マッピング</h2>
+                <p class="text-gray-400 text-lg">国際規制との対応表</p>
+            </div>
+            
+            <!-- Regulations Table -->
+            <div class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 mb-12">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-900">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-sm font-bold text-amber-400">規制</th>
+                                <th class="px-6 py-4 text-left text-sm font-bold text-amber-400">管轄</th>
+                                <th class="px-6 py-4 text-left text-sm font-bold text-amber-400">要件</th>
+                                <th class="px-6 py-4 text-center text-sm font-bold text-amber-400">DVP対応</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-semibold text-white">UNECE WP.29 R157</td>
+                                <td class="px-6 py-4 text-gray-400">国連（グローバル）</td>
+                                <td class="px-6 py-4 text-gray-400">ALKS（自動車線維持システム）のデータ記録義務</td>
+                                <td class="px-6 py-4 text-center"><span class="text-green-400 font-bold">✅ 完全対応</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-semibold text-white">EU AI Act Annex III</td>
+                                <td class="px-6 py-4 text-gray-400">EU</td>
+                                <td class="px-6 py-4 text-gray-400">交通安全AIは高リスク分類、ログ記録義務</td>
+                                <td class="px-6 py-4 text-center"><span class="text-green-400 font-bold">✅ 完全対応</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-semibold text-white">ISO 26262</td>
+                                <td class="px-6 py-4 text-gray-400">国際</td>
+                                <td class="px-6 py-4 text-gray-400">機能安全、トレーサビリティ要件</td>
+                                <td class="px-6 py-4 text-center"><span class="text-green-400 font-bold">✅ 補完</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-semibold text-white">ISO/PAS 21448 (SOTIF)</td>
+                                <td class="px-6 py-4 text-gray-400">国際</td>
+                                <td class="px-6 py-4 text-gray-400">意図した機能の安全性</td>
+                                <td class="px-6 py-4 text-center"><span class="text-green-400 font-bold">✅ 証跡で補強</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-semibold text-white">NHTSA AV Policy</td>
+                                <td class="px-6 py-4 text-gray-400">米国</td>
+                                <td class="px-6 py-4 text-gray-400">自動運転車両のデータ記録ガイダンス</td>
+                                <td class="px-6 py-4 text-center"><span class="text-green-400 font-bold">✅ 準拠設計</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-semibold text-white">日本 道路運送車両法改正</td>
+                                <td class="px-6 py-4 text-gray-400">日本</td>
+                                <td class="px-6 py-4 text-gray-400">Level 3以上のデータ記録義務</td>
+                                <td class="px-6 py-4 text-center"><span class="text-green-400 font-bold">✅ 対応予定</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- R157 Mapping -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6">
+                    <i class="fas fa-list-check text-amber-400 mr-2"></i>
+                    UNECE R157 DSSAD要件マッピング
+                </h3>
+                <p class="text-gray-400 mb-6">R157が要求するDSSAD（Data Storage System for Automated Driving）との対応</p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-400 mt-1">✅</span>
+                            <div>
+                                <p class="text-white font-medium">事故前5秒間のデータ保持</p>
+                                <p class="text-gray-400 text-sm">全イベントをハッシュチェーンで保持</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-400 mt-1">✅</span>
+                            <div>
+                                <p class="text-white font-medium">タイムスタンプの正確性</p>
+                                <p class="text-gray-400 text-sm">UUID v7 + PTP同期</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-400 mt-1">✅</span>
+                            <div>
+                                <p class="text-white font-medium">データの完全性保証</p>
+                                <p class="text-gray-400 text-sm">暗号学的ハッシュチェーン</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-400 mt-1">✅</span>
+                            <div>
+                                <p class="text-white font-medium">当局への提供義務</p>
+                                <p class="text-gray-400 text-sm">標準フォーマットでエクスポート可能</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDR Integration Section -->
+    <section id="edr-integration" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">物理的EDRとの統合</h2>
+                <p class="text-gray-400 text-lg">既存EDRとDVPの役割分担</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <!-- Existing EDR -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-hdd text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">既存EDR</h3>
+                            <p class="text-gray-400 text-sm">Event Data Recorder</p>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-blue-400"></i>
+                            速度、加速度、ブレーキ操作
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-blue-400"></i>
+                            シートベルト状態、エアバッグ展開
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-blue-400"></i>
+                            ステアリング角度、スロットル位置
+                        </li>
+                    </ul>
+                    
+                    <div class="bg-blue-900/30 rounded-lg p-4 border border-blue-500/30">
+                        <p class="text-blue-300 font-medium">→ <span class="text-white">「車両が何をしたか」</span>を記録</p>
+                    </div>
+                </div>
+                
+                <!-- DVP Layer -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-amber-500/30">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-brain text-amber-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">DVP Layer</h3>
+                            <p class="text-amber-400 text-sm">AI判断記録</p>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-amber-400"></i>
+                            センサー入力のハッシュ
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-amber-400"></i>
+                            AI認識結果（物体検出、分類）
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-amber-400"></i>
+                            判断ロジック（経路計画、リスク評価）
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-amber-400"></i>
+                            制御指令の根拠
+                        </li>
+                    </ul>
+                    
+                    <div class="bg-amber-900/30 rounded-lg p-4 border border-amber-500/30">
+                        <p class="text-amber-300 font-medium">→ <span class="text-white">「AIがなぜそう判断したか」</span>を記録</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Integration Result -->
+            <div class="bg-gradient-to-r from-blue-900/30 to-amber-900/30 rounded-xl p-8 border border-gray-700 text-center">
+                <div class="flex items-center justify-center gap-4 mb-4 flex-wrap">
+                    <div class="bg-blue-500/20 rounded-full px-4 py-2">
+                        <span class="text-blue-300 font-medium">物理データ</span>
+                    </div>
+                    <i class="fas fa-plus text-gray-500"></i>
+                    <div class="bg-amber-500/20 rounded-full px-4 py-2">
+                        <span class="text-amber-300 font-medium">AI判断</span>
+                    </div>
+                    <i class="fas fa-equals text-gray-500"></i>
+                    <div class="bg-green-500/20 rounded-full px-4 py-2">
+                        <span class="text-green-300 font-medium">完全な記録</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">統合フライトレコーダー</h3>
+                <p class="text-gray-400">物理状態 + AI判断</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">ユースケース</h2>
+                <p class="text-gray-400 text-lg">DVPが事故調査と責任判定をどのように変えるか</p>
+            </div>
+            
+            <!-- Accident Investigation Scenario -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-car-crash text-red-400 mr-2"></i>
+                    シナリオ：自動運転車両と歩行者の接触事故
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="px-4 py-3 text-left text-amber-400 font-semibold">フェーズ</th>
+                                <th class="px-4 py-3 text-left text-gray-400 font-semibold">従来のEDRのみ</th>
+                                <th class="px-4 py-3 text-left text-green-400 font-semibold">DVP統合時</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">事故発生</td>
+                                <td class="px-4 py-4 text-gray-400">衝突時の速度・減速度を記録</td>
+                                <td class="px-4 py-4 text-gray-300">同左 + AIの認識・判断履歴</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">調査開始</td>
+                                <td class="px-4 py-4 text-gray-400">「ブレーキは作動した」</td>
+                                <td class="px-4 py-4 text-gray-300">「歩行者を2.3秒前に検出、信頼度0.67で自転車と誤分類」</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">原因特定</td>
+                                <td class="px-4 py-4 text-gray-400">「システムか人間か不明」</td>
+                                <td class="px-4 py-4 text-gray-300">「認識モデルv3.2の低照度時の分類精度問題」</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">改善策</td>
+                                <td class="px-4 py-4 text-gray-400">推測ベース</td>
+                                <td class="px-4 py-4 text-gray-300">具体的なモデル改善ポイントを特定</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">訴訟対応</td>
+                                <td class="px-4 py-4 text-red-400">証拠不十分</td>
+                                <td class="px-4 py-4 text-green-400">暗号学的に検証可能な証跡</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Insurance/Liability Scenario -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-file-contract text-blue-400 mr-2"></i>
+                    保険・責任分担シナリオ
+                </h3>
+                
+                <div class="flex flex-wrap justify-center items-start gap-4">
+                    <!-- Flow -->
+                    <div class="flex flex-col items-center gap-4">
+                        <div class="bg-red-900/30 border border-red-500/50 rounded-lg px-6 py-4 text-center">
+                            <i class="fas fa-car-crash text-red-400 text-2xl mb-2"></i>
+                            <p class="text-red-300 font-medium">事故発生</p>
+                        </div>
+                        <i class="fas fa-arrow-down text-gray-600"></i>
+                        <div class="bg-purple-900/30 border border-purple-500/50 rounded-lg px-6 py-4 text-center">
+                            <i class="fas fa-database text-purple-400 text-2xl mb-2"></i>
+                            <p class="text-purple-300 font-medium">DVPログ取得</p>
+                        </div>
+                        <i class="fas fa-arrow-down text-gray-600"></i>
+                        <div class="bg-blue-900/30 border border-blue-500/50 rounded-lg px-6 py-4">
+                            <p class="text-blue-300 font-bold mb-3 text-center">暗号学的検証</p>
+                            <ul class="text-blue-200 text-sm space-y-1">
+                                <li>• ハッシュチェーン整合性 ✓</li>
+                                <li>• タイムスタンプ検証 ✓</li>
+                                <li>• 署名検証 ✓</li>
+                            </ul>
+                        </div>
+                        <i class="fas fa-arrow-down text-gray-600"></i>
+                        <div class="bg-green-900/30 border border-green-500/50 rounded-lg px-6 py-4 text-center">
+                            <i class="fas fa-gavel text-green-400 text-2xl mb-2"></i>
+                            <p class="text-green-300 font-medium">責任の明確化</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Liability Branches -->
+                    <div class="bg-gray-900 rounded-xl p-6 border border-gray-700 ml-8">
+                        <h4 class="text-white font-bold mb-4">判断責任の明確化</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 text-gray-300">
+                                <i class="fas fa-arrow-right text-amber-400"></i>
+                                <span><span class="text-red-400">AIシステムの判断ミス</span> → OEM/開発者責任</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-gray-300">
+                                <i class="fas fa-arrow-right text-amber-400"></i>
+                                <span><span class="text-yellow-400">人間のオーバーライド</span> → ドライバー責任</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-gray-300">
+                                <i class="fas fa-arrow-right text-amber-400"></i>
+                                <span><span class="text-blue-400">センサー故障</span> → 部品メーカー責任</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specs Section -->
+    <section id="specs" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">技術仕様サマリー</h2>
+                <p class="text-gray-400 text-lg">DVPコア技術要件</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">タイムスタンプ精度</div>
+                    <div class="text-2xl font-bold text-white">ナノ秒</div>
+                    <div class="text-gray-400 text-sm mt-1">IEEE 1588 PTP同期</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">イベント記録頻度</div>
+                    <div class="text-2xl font-bold text-white">最大1,000/秒</div>
+                    <div class="text-gray-400 text-sm mt-1">最大イベントスループット</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">ハッシュアルゴリズム</div>
+                    <div class="text-2xl font-bold text-white">SHA-256</div>
+                    <div class="text-gray-400 text-sm mt-1">将来SHA-3対応</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">署名アルゴリズム</div>
+                    <div class="text-2xl font-bold text-white">Ed25519</div>
+                    <div class="text-gray-400 text-sm mt-1">将来Dilithium（PQC）対応</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">ストレージ要件</div>
+                    <div class="text-2xl font-bold text-white">約10MB/時間</div>
+                    <div class="text-gray-400 text-sm mt-1">圧縮後</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">耐衝撃・耐火要件</div>
+                    <div class="text-2xl font-bold text-white">EDR規格準拠</div>
+                    <div class="text-gray-400 text-sm mt-1">既存EDR規格と同等</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">ロードマップ</h2>
+                <p class="text-gray-400 text-lg">DVP開発・標準化タイムライン</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-8">
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full text-sm font-medium">2025 Q4</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">DVP Draft Specification v0.1 公開</h4>
+                            <p class="text-gray-400">パブリックレビューとフィードバック収集のための初期ドラフト仕様</p>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-medium">2026 Q1</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">OEM・Tier1との技術検証開始</h4>
+                            <p class="text-gray-400">自動車業界パートナーとのPoC（概念実証）テスト開始</p>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium">2026 Q2</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">UNECE WP.29 GRVA への提案</h4>
+                            <p class="text-gray-400">国連UNECE作業部会29 GRVA（自動運転）への提出</p>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm font-medium">2026 Q3</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">DVP v1.0 正式リリース</h4>
+                            <p class="text-gray-400">リファレンス実装を伴う安定版仕様のリリース</p>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-gray-500/20 text-gray-300 px-3 py-1 rounded-full text-sm font-medium">2027</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">ISO/SAE連携、国際標準化活動</h4>
+                            <p class="text-gray-400">ISOおよびSAEとの国際標準化活動</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VAP/VSO Relationship Section -->
+    <section id="vap-relationship" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">VAP/VSOとの関係</h2>
+                <p class="text-gray-400 text-lg">フレームワーク階層におけるDVPの位置づけ</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌────────────────────────────────────────────────────────────────────────────┐
+│                                                                            │
+│   <span class="text-cyan-400 font-bold">VAP (Verifiable AI Provenance)</span>                                           │
+│   <span class="text-gray-400">全ドメイン共通の上位フレームワーク</span>                                        │
+│                                                                            │
+└────────────────────────────────────┬───────────────────────────────────────┘
+                                     │
+                                     │ defines & maintains
+                                     │
+┌────────────────────────────────────▼───────────────────────────────────────┐
+│                                                                            │
+│   <span class="text-purple-400 font-bold">VSO (VeritasChain Standards Organization)</span>                                │
+│   <span class="text-gray-400">VAPを策定・維持する標準化団体</span>                                            │
+│                                                                            │
+└────────────────────────────────────┬───────────────────────────────────────┘
+                                     │
+                                     │ publishes profiles
+                                     │
+          ┌──────────┬───────────────┼───────────────┬──────────┐
+          │          │               │               │          │
+          ▼          ▼               ▼               ▼          ▼
+     ┌─────────┐ ┌─────────┐   ┌─────────┐   ┌─────────┐ ┌─────────┐
+     │  <span class="text-green-400 font-bold">VCP</span>    │ │  <span class="text-amber-400 font-bold">DVP</span>    │   │  <span class="text-blue-400 font-bold">MAP</span>    │   │  <span class="text-red-400 font-bold">EIP</span>    │ │  <span class="text-purple-400 font-bold">PAP</span>    │
+     │  金融   │ │ 自動車  │   │  医療   │   │ エネルギー│ │  公共   │
+     │ Profile │ │ Profile │   │ Profile │   │ Profile │ │ Profile │
+     └────┬────┘ └────┬─────┘   └─────────┘   └─────────┘ └─────────┘
+          │          │
+          ▼          ▼
+       <span class="text-green-300">v1.0</span>       <span class="text-amber-300">策定中</span>
+     <span class="text-green-300">Released</span>
+
+                <span class="text-gray-500">ドメイン固有の「具体プロトコル実装」</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="py-20 bg-gradient-to-br from-amber-900/30 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-white mb-4">参加する</h2>
+                <p class="text-gray-400 text-lg">DVPの開発に参加し、自動運転車両の安全の未来を形作りましょう</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <a href="/vap/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-layer-group text-3xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">VAP Framework を見る</h3>
+                    <p class="text-gray-400 text-sm">DVPが拡張する上位フレームワークを理解する</p>
+                </a>
+                
+                <a href="/vcp/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-green-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-green-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-file-code text-3xl text-green-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">VCP仕様書（金融版）を参照</h3>
+                    <p class="text-gray-400 text-sm">リリース済みのVCP v1.0をリファレンスとして確認</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-8 border border-amber-500/50 hover:border-amber-400 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-amber-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-handshake text-3xl text-amber-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">DVP策定に参加する</h3>
+                    <p class="text-gray-400 text-sm">OEM・Tier1・規制当局の方向け</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Quote -->
+    <section class="py-16 bg-gray-900 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <blockquote class="text-xl text-gray-300 italic mb-6">
+                「飛行機には物理的なブラックボックスがある。自動運転車には、AIのブラックボックスも必要だ。」
+            </blockquote>
+            <p class="text-gray-500">— VeritasChain Standards Organization</p>
+            
+            <blockquote class="text-lg text-gray-400 italic mt-8">
+                "The question is not whether autonomous vehicles will have accidents.<br>
+                The question is whether we can prove what happened when they do."
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- License Footer -->
+    <section class="py-8 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+                <i class="fab fa-creative-commons mr-1"></i>
+                このコンテンツは 
+                <a href="https://creativecommons.org/licenses/by/4.0/" class="text-amber-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                    CC BY 4.0 International
+                </a>
+                ライセンスの下で提供されています
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer lang="ja"></vcp-footer>
+</body>
+</html>
