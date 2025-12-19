@@ -64,9 +64,22 @@ class VCPHeader extends HTMLElement {
                 vcpSec: 'VCP & SEC',
                 certification: 'Certification',
                 vcCertified: 'VC-Certified',
+                certifiedOverview: 'Overview',
+                certifiedApply: 'Apply',
+                certifiedFaq: 'FAQ',
+                certifiedCabs: 'CABs',
+                vap: 'VAP',
+                vapOverview: 'Overview',
+                vapDvp: 'DVP',
+                vapMap: 'MAP',
+                vapEip: 'EIP',
+                vapPap: 'PAP',
+                vapIap: 'IAP',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
+                benchmarks: 'Auditability Benchmark',
+                launchScorecard: '🚀 Launch Scorecard Explorer',
                 vcpProtocol: 'VCP Protocol',
                 standardizationRoadmap: 'Standardization Roadmap',
                 developersIntegration: 'Developers / Integration',
@@ -100,9 +113,22 @@ class VCPHeader extends HTMLElement {
                 vcpSec: 'VCP & SEC',
                 certification: '認証',
                 vcCertified: 'VC-Certified',
+                certifiedOverview: '概要',
+                certifiedApply: '申請',
+                certifiedFaq: 'FAQ',
+                certifiedCabs: 'CABs',
+                vap: 'VAP',
+                vapOverview: '概要',
+                vapDvp: 'DVP',
+                vapMap: 'MAP',
+                vapEip: 'EIP',
+                vapPap: 'PAP',
+                vapIap: 'IAP',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
                 standards: '標準規格',
+                benchmarks: '監査可能性ベンチマーク',
+                launchScorecard: '🚀 スコアカードエクスプローラーを起動',
                 vcpProtocol: 'VCPプロトコル',
                 standardizationRoadmap: '標準化ロードマップ',
                 developersIntegration: '開発者 / 統合',
@@ -136,9 +162,22 @@ class VCPHeader extends HTMLElement {
                 vcpSec: 'VCP & SEC',
                 certification: '认证',
                 vcCertified: 'VC-Certified',
+                certifiedOverview: '概述',
+                certifiedApply: '申请',
+                certifiedFaq: '常见问题',
+                certifiedCabs: 'CABs',
+                vap: 'VAP',
+                vapOverview: '概述',
+                vapDvp: 'DVP',
+                vapMap: 'MAP',
+                vapEip: 'EIP',
+                vapPap: 'PAP',
+                vapIap: 'IAP',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
                 standards: '标准',
+                benchmarks: '可审计性基准',
+                launchScorecard: '🚀 启动评分卡浏览器',
                 vcpProtocol: 'VCP协议',
                 standardizationRoadmap: '标准化路线图',
                 developersIntegration: '开发者 / 集成',
@@ -217,6 +256,32 @@ class VCPHeader extends HTMLElement {
 
                     <div class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle">
+                            ${t.vcCertified} <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/certified/" class="dropdown-item">${t.certifiedOverview}</a>
+                            <a href="/certified/apply/" class="dropdown-item">${t.certifiedApply}</a>
+                            <a href="/certified/faq/" class="dropdown-item">${t.certifiedFaq}</a>
+                            <a href="/certified/cab/" class="dropdown-item">${t.certifiedCabs}</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle">
+                            ${t.vap} <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/vap/" class="dropdown-item">${t.vapOverview}</a>
+                            <a href="/vap/dvp/" class="dropdown-item">${t.vapDvp}</a>
+                            <a href="/vap/map/" class="dropdown-item">${t.vapMap}</a>
+                            <a href="/vap/eip/" class="dropdown-item">${t.vapEip}</a>
+                            <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
+                            <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle">
                             ${t.solutions} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
@@ -230,23 +295,14 @@ class VCPHeader extends HTMLElement {
 
                     <div class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle">
-                            ${t.certification} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/certified/" class="dropdown-item">${t.vcCertified}</a>
-                            <a href="/certified/faq/" class="dropdown-item">${t.faq}</a>
-                            <a href="/certified/apply" class="dropdown-item">${t.applyCertification}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
                             ${t.standards} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
+                            <a href="/benchmark/" class="dropdown-item">${t.benchmarks}</a>
                             <a href="https://github.com/VeritasChain/vcp-spec" class="dropdown-item" target="_blank" rel="noopener">${t.vcpProtocol}</a>
                             <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
                             <a href="/vcp/developers/" class="dropdown-item">${t.developersIntegration}</a>
+                            <a href="/benchmark/app/" class="dropdown-item dropdown-item-highlight">${t.launchScorecard}</a>
                         </div>
                     </div>
 

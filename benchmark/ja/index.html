@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI意思決定監査可能性ベンチマーク v1.0 - VeritasChain Protocol</title>
+    <meta name="description" content="AI意思決定監査可能性ベンチマーク v1.0 - アルゴリズム取引の透明性を測る共通基準。VCP (VeritasChain Protocol) に準拠。">
+    <meta name="keywords" content="AI監査, アルゴリズム取引, 監査可能性, VCP, VeritasChain, EU AI Act, MiFID II, 透明性, コンプライアンス">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="AI意思決定監査可能性ベンチマーク v1.0">
+    <meta property="og:description" content="アルゴリズム取引の透明性を測る共通基準。10基準、最大20点、約3時間でPoC。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/benchmark/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="AI意思決定監査可能性ベンチマーク v1.0">
+    <meta name="twitter:description" content="アルゴリズム取引の透明性を測る共通基準。10基準、約3時間でPoC。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/benchmark/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/benchmark/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/benchmark/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/benchmark/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    <link rel="canonical" href="https://veritaschain.org/benchmark/ja/" />
+
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', sans-serif; }
+        .hero-benchmark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-benchmark::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2310b981' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        .criterion-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        .criterion-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
+        }
+        .score-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        .download-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        .download-card:hover {
+            border-color: rgba(59, 130, 246, 0.6);
+        }
+        .poc-step {
+            position: relative;
+        }
+        .poc-step::before {
+            content: '';
+            position: absolute;
+            left: 1.25rem;
+            top: 3rem;
+            bottom: -1rem;
+            width: 2px;
+            background: linear-gradient(to bottom, #3b82f6, transparent);
+        }
+        .poc-step:last-child::before {
+            display: none;
+        }
+        .regulation-badge {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-900">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Hero Section -->
+    <section class="hero-benchmark pt-24 pb-20 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <!-- Document Badge -->
+            <div class="inline-flex items-center gap-2 bg-blue-900/50 border border-blue-500/30 px-4 py-2 rounded-full mb-6">
+                <i class="fas fa-file-alt text-blue-400"></i>
+                <span class="text-blue-300 text-sm font-medium">VSO-SCORE-001 | Version 1.0 | 2025年12月</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                AI意思決定監査可能性ベンチマーク
+                <span class="block text-3xl md:text-4xl text-blue-400 mt-2">v1.0</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 mb-4">
+                <span class="text-emerald-400 font-semibold">VeritasChain Protocol (VCP)</span> に準拠
+            </p>
+            <p class="text-xl md:text-2xl text-slate-200 font-medium mb-4 max-w-3xl mx-auto">
+                アルゴリズム取引の透明性を、共通スコアで測る
+            </p>
+            <p class="text-base text-slate-400 mb-8 max-w-2xl mx-auto">
+                ベンダー中立・標準準拠の監査可能性評価ベンチマーク<br class="hidden sm:inline"/>
+                — VCP実装の有無にかかわらず利用可能
+            </p>
+
+            <!-- Key Benefits -->
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 mb-10 text-left max-w-4xl mx-auto">
+                <div class="flex items-start gap-3 bg-slate-800/50 rounded-lg px-4 py-3 w-full md:w-auto">
+                    <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                    <span class="text-slate-200">第三者が独立に検証できるかを点数化</span>
+                </div>
+                <div class="flex items-start gap-3 bg-slate-800/50 rounded-lg px-4 py-3 w-full md:w-auto">
+                    <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                    <span class="text-slate-200">改ざん検知、順序固定、判断由来まで網羅（10基準）</span>
+                </div>
+                <div class="flex items-start gap-3 bg-slate-800/50 rounded-lg px-4 py-3 w-full md:w-auto">
+                    <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                    <span class="text-slate-200">監査提出に使える Evidence Pack テンプレ付き</span>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://github.com/veritaschain/vcp-spec/raw/main/benchmark/AI_Decision_Auditability_Benchmark_Scorecard_v1_0.pdf" class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-emerald-600/20" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-download"></i>
+                    Scorecardをダウンロード
+                </a>
+                <a href="#poc" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-blue-600/20">
+                    <i class="fas fa-play-circle"></i>
+                    PoC手順を見る（約3時間）
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Now Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-exclamation-triangle text-amber-400 mr-3"></i>
+                いま起きている問題
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">アルゴリズム取引の監査可能性における現状の課題</p>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-red-800/30">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-eye-slash text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">ブラックボックス化した意思決定</h3>
+                    <p class="text-slate-400">AI駆動の取引決定は不透明。規制当局が「なぜ？」と問うても、監査可能な答えがない。</p>
+                </div>
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-amber-800/30">
+                    <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-unlink text-amber-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">ログはあるが...</h3>
+                    <p class="text-slate-400">ログは記録されているが、真正性と順序が証明できない。タイムスタンプは争点になりうる。</p>
+                </div>
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-orange-800/30">
+                    <div class="w-12 h-12 bg-orange-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-file-exclamation text-orange-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">監査で最後に詰まるのがEvidenceの品質</h3>
+                    <p class="text-slate-400">監査は最終段階で躓く：証拠の品質。手作業での収集は数日かかり、フォーマットは不統一。</p>
+                </div>
+            </div>
+
+            <!-- Reference Implementation Card -->
+            <div class="mt-12 bg-gradient-to-br from-purple-900/40 to-slate-900/80 rounded-2xl p-8 border border-purple-500/30 shadow-xl">
+                <div class="flex flex-col lg:flex-row items-start gap-8">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 bg-purple-600/30 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-laptop-code text-purple-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="inline-block bg-purple-600/20 border border-purple-500/30 text-purple-300 text-xs font-semibold px-2 py-1 rounded-full mb-1">Reference Implementation</span>
+                                <h3 class="text-2xl font-bold text-white">Auditability Benchmark — Reference Implementation</h3>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-lg mb-4">
+                            AI Decision Auditability Benchmarkを実行し、規制対応用エビデンスをエクスポートするための、ローカル専用・監査セーフなリファレンス実装です。
+                        </p>
+                        <div class="bg-slate-800/60 rounded-xl p-5 mb-5 border border-slate-700/50">
+                            <p class="text-slate-300 mb-3">
+                                <strong class="text-white">VAP Scorecard Explorer</strong> は、AI Decision Auditability Benchmark（10基準 / 20点満点）のリファレンス実装です。
+                            </p>
+                            <p class="text-slate-400 mb-4">監査・保証チームが以下を実行可能：</p>
+                            <ul class="space-y-2 text-slate-300">
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                                    <span>一貫性のある再現可能な評価を実施</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                                    <span>スコアリング根拠とエビデンスノートを記録</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                                    <span>Audit Evidence Pack（ZIP / PDF）をエクスポート</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="flex items-start gap-3 p-4 bg-slate-900/70 rounded-lg border border-slate-700/50">
+                            <i class="fas fa-shield-alt text-emerald-400 text-lg mt-0.5"></i>
+                            <div>
+                                <p class="text-emerald-400 font-semibold text-sm mb-1">プライバシー＆セキュリティ</p>
+                                <p class="text-slate-400 text-sm">すべての処理はローカルで実行。ネットワーク通信なし。外部APIなし。アナリティクスなし。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 flex flex-col items-center lg:items-end gap-4 w-full lg:w-auto lg:max-w-sm">
+                        <!-- UI Preview Image -->
+                        <a href="/benchmark/app/" class="block w-full rounded-xl overflow-hidden border border-purple-500/30 shadow-lg hover:shadow-purple-500/20 transition-all hover:scale-[1.02]">
+                            <img src="/assets/VAP%20Score%20Card.jpg" alt="VAP Scorecard Explorer - UIプレビュー" class="w-full h-auto" loading="lazy">
+                        </a>
+                        <a href="/benchmark/app/" class="inline-flex items-center justify-center gap-3 bg-purple-600 hover:bg-purple-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-purple-600/30 w-full">
+                            <i class="fas fa-external-link-alt"></i>
+                            Scorecard Explorerを開く
+                            <span class="text-purple-200 text-sm">（ローカル専用）</span>
+                        </a>
+                        <p class="text-slate-500 text-sm text-center lg:text-right">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            ベンチマーク仕様とスコアリング基準は
+                            <a href="https://github.com/veritaschain/vcp-spec/tree/main/benchmark" class="text-blue-400 hover:text-blue-300 underline" target="_blank" rel="noopener noreferrer">正式リファレンス</a>としてオープン公開されています。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What It Is Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-info-circle text-blue-400 mr-3"></i>
+                これは何か
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">実装提案ではなく、監査可能性の診断スコア</p>
+
+            <div class="bg-gradient-to-r from-blue-900/30 to-emerald-900/30 rounded-2xl p-8 border border-blue-500/20 max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-1">
+                        <div class="inline-flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 px-3 py-1 rounded-full mb-4">
+                            <i class="fas fa-bullseye text-blue-400"></i>
+                            <span class="text-blue-300 text-sm font-medium">目的</span>
+                        </div>
+                        <p class="text-xl text-white font-medium mb-4">
+                            これは技術導入の提案<strong class="text-emerald-400">ではありません</strong>。
+                        </p>
+                        <p class="text-slate-300 mb-4">
+                            このベンチマークは、業界標準の指標を使って組織が自らの<strong class="text-white">監査可能性を診断</strong>することを可能にします。結果は外部監査や規制対応の<strong class="text-emerald-400">Evidence Quality</strong>に直結します。
+                        </p>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-emerald-400"></i>
+                                社内チーム向けの自己評価ツール
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-emerald-400"></i>
+                                第三者評価フレームワーク
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-emerald-400"></i>
+                                ベンダー中立、技術非依存
+                            </li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                            <p class="text-slate-400 text-sm">
+                                <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                                <strong class="text-white">注意：</strong>このベンチマークは認証や推奨を提供するものではありません。独立したエビデンスベースの評価フレームワークです。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 bg-slate-800 rounded-xl p-6 border border-slate-700">
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-emerald-400 mb-2">20</div>
+                            <div class="text-slate-400 text-sm mb-4">最大ポイント</div>
+                            <div class="space-y-2 text-left">
+                                <div class="flex items-center justify-between gap-4 text-sm">
+                                    <span class="text-slate-400">評価基準</span>
+                                    <span class="text-white font-semibold">10項目</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-4 text-sm">
+                                    <span class="text-slate-400">各基準の点数</span>
+                                    <span class="text-white font-semibold">0 / 1 / 2</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-4 text-sm">
+                                    <span class="text-slate-400">PoC所要時間</span>
+                                    <span class="text-white font-semibold">約3時間</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10 Criteria Section -->
+    <section id="criteria" class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/30">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-list-check text-emerald-400 mr-3"></i>
+                10の評価基準
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">監査関連性の順序で配列。証拠中心の基準が先、技術実装の詳細は後。</p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Criterion 1 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#1</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Third-Party Verifiability</h3>
+                    <p class="text-blue-300 text-sm mb-3">第三者検証可能性</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"外部の第三者が独立して監査証跡を検証できるか？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">外部検証不可能</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">ベンダー支援で部分的に検証可能</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">標準ツールで完全に独立検証可能</span></div>
+                    </div>
+                </div>
+
+                <!-- Criterion 2 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#2</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Tamper Evidence</h3>
+                    <p class="text-blue-300 text-sm mb-3">改ざん検知</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"不正な変更を検知できるか？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">改ざん検知なし、無断変更可能</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">基本的なチェックサムはあるが不完全</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">暗号学的整合性（ハッシュチェーン、Merkleツリー）</span></div>
+                    </div>
+                </div>
+
+                <!-- Criterion 3 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#3</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Sequence Fixation</h3>
+                    <p class="text-blue-300 text-sm mb-3">順序の固定</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"Decision → Order → Execution の順序は不変か？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">イベントの順序変更可能</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">タイムスタンプはあるが暗号的紐付けなし</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">暗号的リンクによる単調増加シーケンス</span></div>
+                    </div>
+                </div>
+
+                <!-- Criterion 4 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#4</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Decision Provenance</h3>
+                    <p class="text-blue-300 text-sm mb-3">判断由来</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"入力、条件、根拠を追跡できるか？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">結果のみ記録</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">一部の入力は記録されるが不完全</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">完全な由来：データ、パラメータ、モデル状態、ロジック</span></div>
+                    </div>
+                </div>
+
+                <!-- Criterion 5 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#5</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Responsibility Boundaries</h3>
+                    <p class="text-blue-300 text-sm mb-3">責任境界</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"誰が承認、変更、オーバーライドしたか？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">帰属なし、汎用アカウント</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">ユーザー名記録あるが署名なし</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">全承認/オーバーライドにデジタル署名</span></div>
+                    </div>
+                </div>
+
+                <!-- Criterion 6 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#6</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Audit Submission Readiness</h3>
+                    <p class="text-blue-300 text-sm mb-3">監査提出性</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"規制レビュー用にエビデンスをエクスポートできるか？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">手作業での収集が必要、数日かかる</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">部分的なエクスポート、別途抽出が必要</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">ワンクリックエクスポート、5分未満で完了</span></div>
+                    </div>
+                </div>
+
+                <!-- Criterion 7 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#7</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Retention & Durability</h3>
+                    <p class="text-blue-300 text-sm mb-3">保持期間・耐久運用</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"必要な期間（例：7年）記録を保持しているか？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">ポリシーなし、データ消失の可能性</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">ポリシーはあるが執行が不完全</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">冗長性と整合性チェック付きの強制保持</span></div>
+                    </div>
+                </div>
+
+                <!-- Criterion 8 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#8</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Timestamp Reliability</h3>
+                    <p class="text-blue-300 text-sm mb-3">時刻の信頼性</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"タイムスタンプは信頼できるソースと同期しているか？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">ローカルシステムクロックのみ</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">NTP同期あるがドリフト監視なし</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">PTPまたはRFC 3161、文書化された精度</span></div>
+                    </div>
+                </div>
+
+                <!-- Criterion 9 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#9</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Cryptographic Strength</h3>
+                    <p class="text-blue-300 text-sm mb-3">暗号強度</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"アルゴリズムは現在のセキュリティ基準を満たすか？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">非推奨アルゴリズム（MD5、SHA-1）</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">適切だが鍵管理なし</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">強力（Ed25519、SHA-256+）鍵ライフサイクル管理付き</span></div>
+                    </div>
+                </div>
+
+                <!-- Criterion 10 -->
+                <div class="criterion-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="score-badge text-white text-sm font-bold px-3 py-1 rounded-full">#10</span>
+                        <span class="text-emerald-400 font-mono text-sm">0 / 1 / 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Cryptographic Agility</h3>
+                    <p class="text-blue-300 text-sm mb-3">暗号移行性（PQC準備）</p>
+                    <p class="text-slate-400 text-sm mb-4 italic">"システムは新しいアルゴリズムに移行できるか？"</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2"><span class="text-red-400 font-bold w-4">0</span><span class="text-slate-400">ハードコード、移行で検証が壊れる</span></div>
+                        <div class="flex gap-2"><span class="text-amber-400 font-bold w-4">1</span><span class="text-slate-400">アルゴリズム識別子あるがテスト未実施</span></div>
+                        <div class="flex gap-2"><span class="text-emerald-400 font-bold w-4">2</span><span class="text-slate-400">検証済みのPQC移行パス文書化</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PoC Section -->
+    <section id="poc" class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-stopwatch text-blue-400 mr-3"></i>
+                3時間でできるPoC評価
+            </h2>
+            <p class="text-slate-400 text-center mb-4 max-w-2xl mx-auto">全10基準の最小限テスト手順</p>
+            <div class="text-center mb-12">
+                <span class="inline-flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 px-4 py-2 rounded-full text-blue-300">
+                    <i class="fas fa-clock"></i>
+                    総所要時間：約3時間
+                </span>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Step 1 -->
+                <div class="poc-step flex gap-6">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                    <div class="flex-1 bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-white">エクスポート＆検証</h3>
+                            <span class="text-blue-400 text-sm">30分</span>
+                        </div>
+                        <p class="text-slate-300 mb-3">サンプルログを10〜100件エクスポート。システムに不慣れな人に渡す。</p>
+                        <p class="text-slate-400 text-sm"><strong class="text-white">ルール：</strong>電話なし、ベンダーサポートなし、社内ツールなし。</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="poc-step flex gap-6">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                    <div class="flex-1 bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-white">改ざんテスト</h3>
+                            <span class="text-blue-400 text-sm">20分</span>
+                        </div>
+                        <p class="text-slate-300 mb-3">1件の過去レコードの1フィールドを変更。整合性チェックを実行。</p>
+                        <p class="text-slate-400 text-sm"><strong class="text-white">合格：</strong>アラート付き自動検知、変更箇所特定。</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="poc-step flex gap-6">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                    <div class="flex-1 bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-white">順序チェック</h3>
+                            <span class="text-blue-400 text-sm">15分</span>
+                        </div>
+                        <p class="text-slate-300 mb-3">Decision → Order → Execution のチェーンを見つける。暗号的紐付けを確認。</p>
+                        <p class="text-slate-400 text-sm"><strong class="text-white">テスト：</strong>バックデートしたイベントを挿入してみる。可能ならスコア0。</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="poc-step flex gap-6">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">4</div>
+                    <div class="flex-1 bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-white">由来＆帰属</h3>
+                            <span class="text-blue-400 text-sm">35分</span>
+                        </div>
+                        <p class="text-slate-300 mb-3">先週のランダムな判断を選ぶ。再構築：入力、パラメータ、ロジック、承認者。</p>
+                        <p class="text-slate-400 text-sm"><strong class="text-white">目標：</strong>10分未満で完全なコンテキスト取得 = スコア2。</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="poc-step flex gap-6">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">5</div>
+                    <div class="flex-1 bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-white">監査エクスポート</h3>
+                            <span class="text-blue-400 text-sm">30分</span>
+                        </div>
+                        <p class="text-slate-300 mb-3">シミュレーション：「規制当局がアカウントX、日付Yの全活動を要求」</p>
+                        <p class="text-slate-400 text-sm"><strong class="text-white">目標：</strong>ワンクリックエクスポート、5分未満で完全なパッケージ = スコア2。</p>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="flex gap-6">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">6</div>
+                    <div class="flex-1 bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-white">技術レビュー</h3>
+                            <span class="text-blue-400 text-sm">50分</span>
+                        </div>
+                        <p class="text-slate-300 mb-3">保持ポリシー、時刻ソース、暗号アルゴリズム、移行計画をレビュー。</p>
+                        <p class="text-slate-400 text-sm"><strong class="text-white">対象：</strong>基準#7-10（保持、タイムスタンプ、暗号強度、移行性）</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-10">
+                <a href="https://github.com/veritaschain/vcp-spec/raw/main/benchmark/AI_Decision_Auditability_Benchmark_PoC_Guide_v1_0.pdf" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-xl transition-all" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-download"></i>
+                    完全版PoCガイドをダウンロード (VSO-SCORE-002)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Evidence Pack Section -->
+    <section id="evidence" class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/30">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-folder-open text-amber-400 mr-3"></i>
+                Evidence Pack テンプレート
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">監査・規制レビュー用の第三者提出テンプレート</p>
+
+            <div class="bg-gradient-to-r from-amber-900/20 to-slate-900/50 rounded-2xl p-8 border border-amber-500/20">
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="bg-red-600/80 text-white text-xs font-bold px-3 py-1 rounded">CONFIDENTIAL</span>
+                    <span class="text-slate-400 text-sm">第三者提出用テンプレート | Version 1.0</span>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-4">テンプレート内容</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-3 text-slate-300">
+                                <i class="fas fa-chart-pie text-amber-400 mt-1"></i>
+                                <span><strong class="text-white">総合スコア：</strong>/20点、評価レベル付き</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-slate-300">
+                                <i class="fas fa-list-ol text-amber-400 mt-1"></i>
+                                <span><strong class="text-white">スコア内訳：</strong>全10基準の個別スコア</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-slate-300">
+                                <i class="fas fa-file-code text-amber-400 mt-1"></i>
+                                <span><strong class="text-white">Evidence Index：</strong>ファイル名 + SHA-256ハッシュ</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-slate-300">
+                                <i class="fas fa-signature text-amber-400 mt-1"></i>
+                                <span><strong class="text-white">署名（Attestation）：</strong>評価者の署名と日付</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-xl p-6">
+                        <h4 class="text-sm font-semibold text-slate-400 mb-4">Evidence Index サンプル</h4>
+                        <div class="font-mono text-xs space-y-2 text-slate-300">
+                            <div class="flex justify-between gap-2">
+                                <span class="text-blue-400">#1</span>
+                                <span class="truncate">audit_log_2025-01.json</span>
+                            </div>
+                            <div class="text-slate-500 truncate pl-6">SHA-256: a7f3c9d2...</div>
+                            <div class="flex justify-between gap-2">
+                                <span class="text-blue-400">#2</span>
+                                <span class="truncate">tamper_test_results.pdf</span>
+                            </div>
+                            <div class="text-slate-500 truncate pl-6">SHA-256: b8e4d1f5...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <a href="https://github.com/veritaschain/vcp-spec/raw/main/benchmark/AI_Decision_Auditability_Benchmark_Evidence_Pack_v1_0.pdf" class="inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-xl transition-all" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-download"></i>
+                        Evidence Pack テンプレートをダウンロード
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EU AI Act Section -->
+    <section id="regulation" class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-balance-scale text-purple-400 mr-3"></i>
+                EU AI Act 規制マッピング
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">高リスクAIシステム向けEU AI Act (2024/1689) との対応関係</p>
+
+            <div class="bg-gradient-to-r from-purple-900/20 to-slate-900/50 rounded-2xl p-8 border border-purple-500/20 mb-8">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-slate-700">
+                                <th class="pb-4 text-slate-400 font-semibold">EU AI Act 条項</th>
+                                <th class="pb-4 text-slate-400 font-semibold">要件</th>
+                                <th class="pb-4 text-slate-400 font-semibold">ベンチマーク対応</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-800">
+                                <td class="py-4 font-mono text-purple-400">Article 12</td>
+                                <td class="py-4">記録保持 / ロギング</td>
+                                <td class="py-4">
+                                    <span class="regulation-badge text-emerald-400 px-2 py-1 rounded text-sm">✓ 直接対応</span>
+                                    <span class="text-slate-500 text-sm ml-2">基準 1-7</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-slate-800">
+                                <td class="py-4 font-mono text-purple-400">Article 13</td>
+                                <td class="py-4">透明性</td>
+                                <td class="py-4">
+                                    <span class="bg-amber-900/30 border border-amber-500/30 text-amber-400 px-2 py-1 rounded text-sm">◐ 部分対応</span>
+                                    <span class="text-slate-500 text-sm ml-2">基準 4, 5</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-slate-800">
+                                <td class="py-4 font-mono text-purple-400">Article 14</td>
+                                <td class="py-4">人間による監視</td>
+                                <td class="py-4">
+                                    <span class="bg-amber-900/30 border border-amber-500/30 text-amber-400 px-2 py-1 rounded text-sm">◐ 部分対応</span>
+                                    <span class="text-slate-500 text-sm ml-2">基準 5</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 font-mono text-purple-400">Article 17</td>
+                                <td class="py-4">品質管理</td>
+                                <td class="py-4">
+                                    <span class="regulation-badge text-emerald-400 px-2 py-1 rounded text-sm">✓ サポート</span>
+                                    <span class="text-slate-500 text-sm ml-2">基準 6, 7</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 p-4 bg-slate-800/50 rounded-lg">
+                    <p class="text-slate-300 text-sm">
+                        <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                        <strong class="text-white">MiFID II / RTS 25 との相乗効果：</strong>基準#8（時刻の信頼性）はRTS 25のクロック同期要件（HFTで±100μs、その他で±1ms）にも対応。
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="https://github.com/veritaschain/vcp-spec/raw/main/benchmark/AI_Decision_Auditability_Benchmark_EU_AI_Act_Annex_v1_0.pdf" class="inline-flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-semibold px-8 py-4 rounded-xl transition-all" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-download"></i>
+                    EU AI Act Annex をダウンロード (VSO-SCORE-004)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/30">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-users text-cyan-400 mr-3"></i>
+                誰向けか
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">標準化された監査可能性測定から恩恵を受ける業界関係者</p>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-cyan-800/30">
+                    <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-search-dollar text-cyan-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">監査 / アシュアランス</h3>
+                    <p class="text-slate-400 mb-4">監査の基準線を揃える。システムを客観的に比較。</p>
+                    <ul class="text-sm text-slate-300 space-y-2">
+                        <li><i class="fas fa-check text-emerald-400 mr-2"></i>標準化された評価基準</li>
+                        <li><i class="fas fa-check text-emerald-400 mr-2"></i>提出用Evidence Pack</li>
+                        <li><i class="fas fa-check text-emerald-400 mr-2"></i>組織間比較</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-cyan-800/30">
+                    <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-microchip text-cyan-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">RegTech ベンダー</h3>
+                    <p class="text-slate-400 mb-4">自社製品の監査可能性を定量で示す。</p>
+                    <ul class="text-sm text-slate-300 space-y-2">
+                        <li><i class="fas fa-check text-emerald-400 mr-2"></i>具体的スコアでマーケティング</li>
+                        <li><i class="fas fa-check text-emerald-400 mr-2"></i>製品差別化</li>
+                        <li><i class="fas fa-check text-emerald-400 mr-2"></i>規制対応の証明</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-cyan-800/30">
+                    <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-cyan-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">ブローカー / 取引所</h3>
+                    <p class="text-slate-400 mb-4">透明性を商品にする。監査提出も速くなる。</p>
+                    <ul class="text-sm text-slate-300 space-y-2">
+                        <li><i class="fas fa-check text-emerald-400 mr-2"></i>顧客信頼の差別化要因</li>
+                        <li><i class="fas fa-check text-emerald-400 mr-2"></i>規制対応の迅速化</li>
+                        <li><i class="fas fa-check text-emerald-400 mr-2"></i>監査コスト削減</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Score Interpretation Section -->
+    <section id="interpretation" class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-chart-bar text-emerald-400 mr-3"></i>
+                スコア解釈
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">評価結果の解釈ガイド</p>
+
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+                    <div class="flex-shrink-0 w-20 text-center">
+                        <div class="text-2xl font-bold text-emerald-400">16-20</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-emerald-400 mb-1">Strong（強い監査可能性）</h3>
+                        <p class="text-slate-300">外部監査・規制レビューにReady。ベストプラクティスの維持を継続。</p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check-circle text-emerald-400 text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+                    <div class="flex-shrink-0 w-20 text-center">
+                        <div class="text-2xl font-bold text-blue-400">11-15</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-blue-400 mb-1">Moderate（中程度の監査可能性）</h3>
+                        <p class="text-slate-300">0点項目から潰す。クイックウィンを優先。</p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-tasks text-blue-400 text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+                    <div class="flex-shrink-0 w-20 text-center">
+                        <div class="text-2xl font-bold text-amber-400">6-10</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-amber-400 mb-1">Limited（限定的な監査可能性）</h3>
+                        <p class="text-slate-300">大幅な改善が必要。証拠中心の基準#1-6を優先。</p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle text-amber-400 text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+                    <div class="flex-shrink-0 w-20 text-center">
+                        <div class="text-2xl font-bold text-red-400">0-5</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-red-400 mb-1">Inadequate（不十分）</h3>
+                        <p class="text-slate-300">根本的なギャップあり。設計からやり直しを検討。</p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-times-circle text-red-400 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Downloads Section -->
+    <section id="downloads" class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/30">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-download text-blue-400 mr-3"></i>
+                ダウンロード＆リソース
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">全てのベンチマーク文書とリソース</p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="https://github.com/veritaschain/vcp-spec/raw/main/benchmark/AI_Decision_Auditability_Benchmark_Scorecard_v1_0.pdf" class="download-card rounded-xl p-6 hover:bg-slate-800/80 transition-all group" target="_blank" rel="noopener noreferrer">
+                    <div class="w-12 h-12 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-800/50 transition-all">
+                        <i class="fas fa-file-pdf text-emerald-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Scorecard</h3>
+                    <p class="text-slate-400 text-sm mb-3">VSO-SCORE-001</p>
+                    <p class="text-slate-500 text-xs">10基準、スコアリングルーブリック、自己評価シート</p>
+                </a>
+
+                <a href="https://github.com/veritaschain/vcp-spec/raw/main/benchmark/AI_Decision_Auditability_Benchmark_PoC_Guide_v1_0.pdf" class="download-card rounded-xl p-6 hover:bg-slate-800/80 transition-all group" target="_blank" rel="noopener noreferrer">
+                    <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-800/50 transition-all">
+                        <i class="fas fa-file-pdf text-blue-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">PoC ガイド</h3>
+                    <p class="text-slate-400 text-sm mb-3">VSO-SCORE-002</p>
+                    <p class="text-slate-500 text-xs">ステップバイステップのテスト手順（約3時間）</p>
+                </a>
+
+                <a href="https://github.com/veritaschain/vcp-spec/raw/main/benchmark/AI_Decision_Auditability_Benchmark_Evidence_Pack_v1_0.pdf" class="download-card rounded-xl p-6 hover:bg-slate-800/80 transition-all group" target="_blank" rel="noopener noreferrer">
+                    <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-amber-800/50 transition-all">
+                        <i class="fas fa-file-pdf text-amber-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Evidence Pack</h3>
+                    <p class="text-slate-400 text-sm mb-3">提出用テンプレート</p>
+                    <p class="text-slate-500 text-xs">署名付き第三者提出テンプレート</p>
+                </a>
+
+                <a href="https://github.com/veritaschain/vcp-spec/raw/main/benchmark/AI_Decision_Auditability_Benchmark_EU_AI_Act_Annex_v1_0.pdf" class="download-card rounded-xl p-6 hover:bg-slate-800/80 transition-all group" target="_blank" rel="noopener noreferrer">
+                    <div class="w-12 h-12 bg-purple-900/50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-800/50 transition-all">
+                        <i class="fas fa-file-pdf text-purple-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">EU AI Act Annex</h3>
+                    <p class="text-slate-400 text-sm mb-3">VSO-SCORE-004</p>
+                    <p class="text-slate-500 text-xs">Article 12, 13, 14, 17 への規制マッピング</p>
+                </a>
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="https://github.com/veritaschain/vcp-spec/tree/main/benchmark" class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                    GitHub で全ファイルを見る
+                    <i class="fas fa-external-link-alt text-sm"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-question-circle text-slate-400 mr-3"></i>
+                FAQ
+            </h2>
+            <p class="text-slate-400 text-center mb-12">ベンチマークに関するよくある質問</p>
+
+            <div class="space-y-4">
+                <details class="bg-slate-800/50 rounded-xl border border-slate-700 group">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer">
+                        <span class="text-white font-semibold">これはVCPを導入しないと使えない？</span>
+                        <i class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-300">
+                        <p><strong class="text-white">いいえ。</strong>このベンチマークは技術選択に関係なく使える監査可能性の測定ツールです。ただし、20点に近いスコアを達成するには通常、暗号学的整合性メカニズムが必要です—VCPはその選択肢の一つです。</p>
+                    </div>
+                </details>
+
+                <details class="bg-slate-800/50 rounded-xl border border-slate-700 group">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer">
+                        <span class="text-white font-semibold">監査法人がクライアント評価に使ってもいい？</span>
+                        <i class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-300">
+                        <p><strong class="text-white">はい。</strong>ベンチマークはCC BY 4.0でライセンスされています。監査法人は帰属表示付きでクライアント業務に使用できます。Evidence Packは標準化された提出フォーマットを提供します。</p>
+                    </div>
+                </details>
+
+                <details class="bg-slate-800/50 rounded-xl border border-slate-700 group">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer">
+                        <span class="text-white font-semibold">機密データは外に出る？</span>
+                        <i class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-300">
+                        <p><strong class="text-white">必ずしもそうではありません。</strong>ベンチマークは社内の自己評価用に設計されています。第三者提出の場合、Evidence PackはSHA-256ハッシュを使用して実際のコンテンツを公開せずにファイルの整合性を証明します。何を共有するかはあなたがコントロールします。</p>
+                    </div>
+                </details>
+
+                <details class="bg-slate-800/50 rounded-xl border border-slate-700 group">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer">
+                        <span class="text-white font-semibold">何を提出すればいい？</span>
+                        <i class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-300">
+                        <p><strong class="text-white">Evidence Packテンプレート</strong>を使用：総合スコア、10基準の内訳、Evidence Index（ファイル名 + SHA-256ハッシュ）、評価者の署名。ハッシュベースのIndexは完全なデータ開示を必要とせずにエビデンスの真正性を証明します。</p>
+                    </div>
+                </details>
+
+                <details class="bg-slate-800/50 rounded-xl border border-slate-700 group">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer">
+                        <span class="text-white font-semibold">何点ならOK？</span>
+                        <i class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-300">
+                        <p><strong class="text-emerald-400">16-20点</strong>は強い監査可能性を示し、外部監査の準備完了。<strong class="text-blue-400">11-15</strong>は中程度—まず0点項目を対処。10点未満は規制対応前に大幅な改善が必要です。</p>
+                    </div>
+                </details>
+
+                <details class="bg-slate-800/50 rounded-xl border border-slate-700 group">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer">
+                        <span class="text-white font-semibold">認証は受けられる？</span>
+                        <i class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-300">
+                        <p>このベンチマークは<strong class="text-white">自己評価と第三者評価</strong>用です。正式な認証については、VCPコンプライアンスを基盤とする<a href="/certified/ja/" class="text-blue-400 hover:text-blue-300">VC-Certifiedプログラム</a>をご覧ください。</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Standards Body Notice -->
+    <section class="py-8 px-4 sm:px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">
+                <strong class="text-slate-400">VeritasChain Standards Organization (VSO)</strong> により発行<br class="sm:hidden"/>
+                VCP標準エコシステムの一部として公開
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <vcp-footer></vcp-footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

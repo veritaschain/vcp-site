@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVP - Driving Vehicle Protocol | AI Flight Recorder for Autonomous Driving</title>
+    <meta name="description" content="DVP (Driving Vehicle Protocol) is a VAP profile for autonomous vehicles. A technical standard for cryptographically recording and verifying AI decisions in autonomous driving systems.">
+    <meta name="keywords" content="DVP, Driving Vehicle Protocol, autonomous driving, ADAS, AI flight recorder, UNECE R157, EU AI Act, ISO 26262, SOTIF">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="DVP - Driving Vehicle Protocol | AI Flight Recorder for Autonomous Driving">
+    <meta property="og:description" content="Every Decision, Cryptographically Recorded. DVP is the VAP profile for cryptographically recording AI decisions in autonomous vehicles.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/dvp/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="DVP - Driving Vehicle Protocol | AI Flight Recorder for Autonomous Driving">
+    <meta name="twitter:description" content="Every Decision, Cryptographically Recorded. DVP is the VAP profile for autonomous driving AI decisions.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/dvp/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/dvp/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/dvp/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/dvp/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/dvp/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dvp-orange': '#f6ad55',
+                        'dvp-amber': '#ed8936',
+                        'dvp-blue': '#2b6cb0',
+                        'dvp-dark': '#1a202c',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #1a202c 100%);
+        }
+        .dvp-gradient {
+            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            line-height: 1.6;
+        }
+        @media (min-width: 640px) {
+            .code-block pre {
+                font-size: 0.75rem;
+            }
+        }
+        .architecture-diagram {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: #94a3b8;
+            white-space: pre;
+            overflow-x: auto;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .architecture-diagram {
+                font-size: 0.7rem;
+                padding: 1.5rem;
+            }
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
+            border: 1px solid rgba(251, 191, 36, 0.5);
+        }
+        .flow-arrow {
+            animation: flowPulse 2s ease-in-out infinite;
+        }
+        @keyframes flowPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #f6ad55, #ed8936);
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #f6ad55;
+            border: 2px solid #1a202c;
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "DVP - Driving Vehicle Protocol",
+        "description": "DVP is a VAP profile for autonomous vehicles, providing a technical standard for cryptographically recording and verifying AI decisions in autonomous driving systems.",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2024-12-16",
+        "url": "https://veritaschain.org/vap/dvp/"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div class="bg-gradient-to-r from-amber-900/50 to-orange-900/50 border-b border-amber-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-center gap-3">
+                <i class="fas fa-flask text-amber-400"></i>
+                <span class="text-amber-200 font-medium">DVP Status: <span class="text-amber-400 font-bold">PLANNED</span></span>
+                <span class="text-amber-200/70 text-sm">— This profile is currently under development. Contributions and feedback welcome.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%23f6ad55%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%23f6ad55%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22%23f6ad55%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Profile Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-car text-amber-400"></i>
+                    <span class="text-amber-300 text-sm font-semibold tracking-wide">VAP PROFILE: AUTONOMOUS MOBILITY</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-4">
+                <span class="text-white">DVP</span>
+                <span class="text-amber-400"> - Driving Vehicle Protocol</span>
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-center text-gray-300 mb-6">
+                AI Flight Recorder for Autonomous Driving
+            </p>
+            
+            <!-- Tagline -->
+            <div class="text-center mb-8">
+                <p class="text-xl text-amber-400 font-semibold italic">
+                    "Every Decision, Cryptographically Recorded"
+                </p>
+                <p class="text-lg text-gray-400 mt-2">
+                    — Record every decision with cryptographic proof
+                </p>
+            </div>
+            
+            <!-- Hero Quote -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    <span class="text-amber-400 font-bold text-2xl">"</span>
+                    Not asking "why" after the accident — leaving "evidence" before the accident.
+                    <span class="text-amber-400 font-bold text-2xl">"</span>
+                </p>
+                <div class="mt-6 text-gray-400 text-sm leading-relaxed">
+                    <p>2018, Uber autonomous vehicle fatality. 2016, Tesla Autopilot fatality.</p>
+                    <p>Investigators faced the same question:</p>
+                    <p class="text-amber-300 font-medium mt-2">"What did the AI see, what did it decide, and why did it choose that action?"</p>
+                    <p class="mt-4">Traditional EDRs (Event Data Recorders) capture vehicle physical state.</p>
+                    <p>But the AI's internal decision process goes unrecorded.</p>
+                    <p class="text-white font-semibold mt-2">DVP fills this gap — recording the complete causal chain of AI decisions in a tamper-proof format.</p>
+                </div>
+            </div>
+            
+            <!-- Hero CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#architecture" class="inline-flex items-center bg-amber-500 hover:bg-amber-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-microchip mr-2"></i>
+                    View Architecture
+                </a>
+                <a href="#regulations" class="inline-flex items-center bg-gray-700 hover:bg-gray-600 text-white font-bold px-8 py-4 rounded-lg transition-all border border-gray-600">
+                    <i class="fas fa-gavel mr-2"></i>
+                    Regulatory Compliance
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-amber-400 font-bold px-8 py-4 rounded-lg transition-all border border-amber-400/50">
+                    <i class="fas fa-handshake mr-2"></i>
+                    Join Development
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why DVP Section -->
+    <section id="why-dvp" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Why DVP is Needed</h2>
+                <p class="text-gray-400 text-lg">Structural challenges in current autonomous driving systems</p>
+            </div>
+            
+            <!-- Challenge Cards -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <!-- Challenge 1 -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-red-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-brain text-3xl text-red-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">AI Decision Black Box</h3>
+                    <p class="text-gray-400">
+                        How inputs from LiDAR, camera, and radar are processed, and why decisions like "go straight," "stop," or "avoid" are made — current EDRs don't record this.
+                    </p>
+                </div>
+                
+                <!-- Challenge 2 -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-yellow-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-question-circle text-3xl text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Ambiguous Liability</h3>
+                    <p class="text-gray-400">
+                        At Level 3 and above, driving responsibility shifts to the system. In an accident, it's impossible to prove whether it was "human error" or "system defect."
+                    </p>
+                </div>
+                
+                <!-- Challenge 3 -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-blue-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-balance-scale text-3xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Regulatory Requirements</h3>
+                    <p class="text-gray-400">
+                        UNECE WP.29 R157, EU AI Act Annex III require autonomous driving AI recording and accountability. No corresponding technical standard exists.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Accident Investigation Timeline -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl sm:text-2xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-search text-amber-400 mr-2"></i>
+                    Real Accident Investigation Scenario (Anonymized)
+                </h3>
+                
+                <div class="flex flex-wrap justify-center items-center gap-4 mb-8">
+                    <div class="bg-red-900/30 border border-red-500/50 rounded-lg px-4 py-3 text-center">
+                        <i class="fas fa-car-crash text-red-400 text-xl mb-1"></i>
+                        <p class="text-red-300 text-sm font-medium">Accident Occurs</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-600 flow-arrow"></i>
+                    <div class="bg-blue-900/30 border border-blue-500/50 rounded-lg px-4 py-3 text-center">
+                        <i class="fas fa-clipboard-list text-blue-400 text-xl mb-1"></i>
+                        <p class="text-blue-300 text-sm font-medium">Investigation Starts</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-600 flow-arrow"></i>
+                    <div class="bg-purple-900/30 border border-purple-500/50 rounded-lg px-4 py-3 text-center">
+                        <i class="fas fa-database text-purple-400 text-xl mb-1"></i>
+                        <p class="text-purple-300 text-sm font-medium">Log Retrieval</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-600 flow-arrow"></i>
+                    <div class="bg-yellow-900/30 border border-yellow-500/50 rounded-lg px-4 py-3 text-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-400 text-xl mb-1"></i>
+                        <p class="text-yellow-300 text-sm font-medium">Issues Found</p>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-gray-800 rounded-lg p-4 border-l-4 border-red-500">
+                        <p class="text-red-300 font-medium">"Unknown if AI recognized the pedestrian"</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 border-l-4 border-yellow-500">
+                        <p class="text-yellow-300 font-medium">"Cannot identify brake decision trigger"</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 border-l-4 border-blue-500">
+                        <p class="text-blue-300 font-medium">"Timestamp integrity unverifiable"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scope Section -->
+    <section id="scope" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">DVP Application Scope</h2>
+                <p class="text-gray-400 text-lg">Target systems and recording requirements</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Target Systems -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl sm:text-2xl font-bold text-white mb-6">
+                        <i class="fas fa-car text-amber-400 mr-2"></i>
+                        Target Systems
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl flex-shrink-0">🚗</div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-semibold break-words">Autonomous Vehicles</p>
+                                <p class="text-gray-400 text-sm">SAE Level 3-5</p>
+                            </div>
+                            <span class="bg-red-900/50 text-red-300 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap flex-shrink-0">Required</span>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl flex-shrink-0">🛡️</div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-semibold break-words">ADAS (Advanced Driver Assistance)</p>
+                                <p class="text-gray-400 text-sm">Level 2+</p>
+                            </div>
+                            <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap flex-shrink-0">Recommended</span>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl flex-shrink-0">🚆</div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-semibold break-words">Railway Operations AI</p>
+                                <p class="text-gray-400 text-sm">Autonomous Operations</p>
+                            </div>
+                            <span class="bg-red-900/50 text-red-300 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap flex-shrink-0">Required</span>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl flex-shrink-0">🚁</div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-semibold break-words">Drone Autonomous Control</p>
+                                <p class="text-gray-400 text-sm">Autonomous Flight</p>
+                            </div>
+                            <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap flex-shrink-0">Recommended</span>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 bg-gray-900 rounded-lg p-4">
+                            <div class="text-3xl flex-shrink-0">🚌</div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-semibold break-words">Autonomous Bus/Shuttle</p>
+                                <p class="text-gray-400 text-sm">Level 4</p>
+                            </div>
+                            <span class="bg-red-900/50 text-red-300 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap flex-shrink-0">Required</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recording Events -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl sm:text-2xl font-bold text-white mb-6">
+                        <i class="fas fa-stream text-amber-400 mr-2"></i>
+                        Recording Target Events
+                    </h3>
+                    
+                    <div class="architecture-diagram overflow-x-auto">
+<span class="text-blue-400">[Sensor Input]</span> → <span class="text-green-400">[Recognition]</span> → <span class="text-yellow-400">[Decision]</span> → <span class="text-red-400">[Control Output]</span>
+      ↓                  ↓                 ↓                  ↓
+<span class="text-blue-300">LiDAR point cloud</span>    <span class="text-green-300">Object detection</span>   <span class="text-yellow-300">Path planning</span>    <span class="text-red-300">Steering</span>
+<span class="text-blue-300">Camera images</span>       <span class="text-green-300">Classification</span>     <span class="text-yellow-300">Speed decision</span>   <span class="text-red-300">Accelerator</span>
+<span class="text-blue-300">Radar data</span>          <span class="text-green-300">Tracking ID</span>        <span class="text-yellow-300">Priority</span>         <span class="text-red-300">Brake</span>
+<span class="text-blue-300">GPS/IMU</span>             <span class="text-green-300">Trajectory pred</span>    <span class="text-yellow-300">Risk assessment</span>  <span class="text-red-300">Signal</span>
+                    </div>
+                    
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <p class="text-blue-400 font-semibold mb-2">Sensor Layer</p>
+                            <ul class="text-gray-400 text-sm space-y-1">
+                                <li>• Raw sensor data hashes</li>
+                                <li>• Frame synchronization</li>
+                                <li>• Calibration status</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <p class="text-green-400 font-semibold mb-2">Perception Layer</p>
+                            <ul class="text-gray-400 text-sm space-y-1">
+                                <li>• Detection results</li>
+                                <li>• Confidence scores</li>
+                                <li>• Object tracking IDs</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <p class="text-yellow-400 font-semibold mb-2">Planning Layer</p>
+                            <ul class="text-gray-400 text-sm space-y-1">
+                                <li>• Path candidates</li>
+                                <li>• Decision rationale</li>
+                                <li>• Risk scores</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <p class="text-red-400 font-semibold mb-2">Control Layer</p>
+                            <ul class="text-gray-400 text-sm space-y-1">
+                                <li>• Command outputs</li>
+                                <li>• Actuator responses</li>
+                                <li>• Safety interventions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">DVP Architecture</h2>
+                <p class="text-gray-400 text-lg">Data flow and system integration</p>
+            </div>
+            
+            <!-- Architecture Diagram -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-project-diagram text-amber-400 mr-2"></i>
+                    System Data Flow
+                </h3>
+                
+                <div class="architecture-diagram mx-auto max-w-4xl overflow-x-auto">
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         <span class="text-amber-400 font-bold">Vehicle System</span>                                 │
+│                                                                         │
+│   ┌──────────────┐    ┌──────────────┐    ┌──────────────┐             │
+│   │   <span class="text-blue-400">Sensors</span>    │───▶│   <span class="text-green-400">AI Stack</span>   │───▶│  <span class="text-red-400">Actuators</span>   │             │
+│   │              │    │              │    │              │             │
+│   │ LiDAR/Cam/   │    │ Perception   │    │ Steering     │             │
+│   │ Radar/GPS    │    │ Planning     │    │ Throttle     │             │
+│   └──────────────┘    └──────┬───────┘    │ Brake        │             │
+│                              │            └──────────────┘             │
+│                              │                                          │
+│                     ┌────────▼────────┐                                │
+│                     │   <span class="text-amber-400 font-bold">DVP Logger</span>    │ ← Intercept all decision events   │
+│                     │    (Sidecar)    │                                │
+│                     └────────┬────────┘                                │
+│                              │                                          │
+└──────────────────────────────┼──────────────────────────────────────────┘
+                               │
+                    ┌──────────▼──────────┐
+                    │    <span class="text-purple-400">Hash Chain</span>       │ ← Cryptographically linked
+                    │  + <span class="text-cyan-400">Signature</span>        │ ← Digital signatures
+                    │  + <span class="text-green-400">Merkle Root</span>      │ ← Periodic anchoring
+                    └──────────┬──────────┘
+                               │
+                    ┌──────────▼──────────┐
+                    │   <span class="text-orange-400">Secure Storage</span>    │ ← Crash/fire resistant
+                    │   (EDR Integrated)  │
+                    └─────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Event Structure -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6">
+                    <i class="fas fa-code text-amber-400 mr-2"></i>
+                    DVP Event Structure (Conceptual)
+                </h3>
+                
+                <div class="code-block">
+                    <pre>{
+  <span class="text-blue-400">"event_id"</span>: <span class="text-green-400">"019234ab-7c8d-7def-8123-456789abcdef"</span>,
+  <span class="text-blue-400">"timestamp_ns"</span>: <span class="text-yellow-400">1734567890123456789</span>,
+  <span class="text-blue-400">"event_type"</span>: <span class="text-green-400">"PERCEPTION_DECISION"</span>,
+  <span class="text-blue-400">"vehicle_id"</span>: <span class="text-green-400">"VIN_XXXXXXXXXXXX"</span>,
+  <span class="text-blue-400">"provenance"</span>: {
+    <span class="text-blue-400">"actor"</span>: {
+      <span class="text-blue-400">"type"</span>: <span class="text-green-400">"AI_MODEL"</span>,
+      <span class="text-blue-400">"identifier"</span>: <span class="text-green-400">"perception_v3.2.1"</span>,
+      <span class="text-blue-400">"model_hash"</span>: <span class="text-green-400">"sha256:abc123..."</span>
+    },
+    <span class="text-blue-400">"input"</span>: {
+      <span class="text-blue-400">"lidar_frame_id"</span>: <span class="text-green-400">"frame_12345"</span>,
+      <span class="text-blue-400">"camera_frame_ids"</span>: [<span class="text-green-400">"cam_front_12345"</span>, <span class="text-green-400">"cam_left_12345"</span>],
+      <span class="text-blue-400">"input_hash"</span>: <span class="text-green-400">"sha256:def456..."</span>
+    },
+    <span class="text-blue-400">"context"</span>: {
+      <span class="text-blue-400">"speed_kmh"</span>: <span class="text-yellow-400">45.2</span>,
+      <span class="text-blue-400">"weather"</span>: <span class="text-green-400">"RAIN_LIGHT"</span>,
+      <span class="text-blue-400">"visibility_m"</span>: <span class="text-yellow-400">120</span>,
+      <span class="text-blue-400">"active_mode"</span>: <span class="text-green-400">"AUTONOMOUS_L4"</span>
+    },
+    <span class="text-blue-400">"action"</span>: {
+      <span class="text-blue-400">"decision"</span>: <span class="text-green-400">"EMERGENCY_BRAKE"</span>,
+      <span class="text-blue-400">"confidence"</span>: <span class="text-yellow-400">0.94</span>,
+      <span class="text-blue-400">"trigger"</span>: <span class="text-green-400">"PEDESTRIAN_DETECTED"</span>,
+      <span class="text-blue-400">"predicted_collision_ms"</span>: <span class="text-yellow-400">1200</span>
+    }
+  },
+  <span class="text-blue-400">"prev_hash"</span>: <span class="text-green-400">"sha256:789xyz..."</span>,
+  <span class="text-blue-400">"signature"</span>: <span class="text-green-400">"ed25519:..."</span>
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regulatory Compliance Section -->
+    <section id="regulations" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Regulatory Compliance Mapping</h2>
+                <p class="text-gray-400 text-lg">International regulatory alignment</p>
+            </div>
+            
+            <!-- Regulations Table -->
+            <div class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 mb-12">
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[600px]">
+                        <thead class="bg-gray-900">
+                            <tr>
+                                <th class="px-4 sm:px-6 py-4 text-left text-xs sm:text-sm font-bold text-amber-400">Regulation</th>
+                                <th class="px-4 sm:px-6 py-4 text-left text-xs sm:text-sm font-bold text-amber-400">Jurisdiction</th>
+                                <th class="px-4 sm:px-6 py-4 text-left text-xs sm:text-sm font-bold text-amber-400">Requirements</th>
+                                <th class="px-4 sm:px-6 py-4 text-center text-xs sm:text-sm font-bold text-amber-400">DVP Support</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-white text-sm">UNECE WP.29 R157</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">UN (Global)</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">ALKS data recording obligations</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-center"><span class="text-green-400 font-bold text-xs sm:text-sm">✅ Full Support</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-white text-sm">EU AI Act Annex III</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">EU</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">Transportation AI high-risk classification, logging requirements</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-center"><span class="text-green-400 font-bold text-xs sm:text-sm">✅ Full Support</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-white text-sm">ISO 26262</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">International</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">Functional safety, traceability requirements</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-center"><span class="text-green-400 font-bold text-xs sm:text-sm">✅ Complementary</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-white text-sm">ISO/PAS 21448 (SOTIF)</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">International</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">Safety of the Intended Functionality</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-center"><span class="text-green-400 font-bold text-xs sm:text-sm">✅ Evidence Support</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-white text-sm">NHTSA AV Policy</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">USA</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">Autonomous vehicle data recording guidance</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-center"><span class="text-green-400 font-bold text-xs sm:text-sm">✅ Compliant Design</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-white text-sm">Japan Road Vehicle Act Revision</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">Japan</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-gray-400 text-sm">Level 3+ data recording requirements</td>
+                                <td class="px-4 sm:px-6 py-3 sm:py-4 text-center"><span class="text-green-400 font-bold text-xs sm:text-sm">✅ Planned Support</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- R157 Mapping -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6">
+                    <i class="fas fa-list-check text-amber-400 mr-2"></i>
+                    UNECE R157 DSSAD Requirements Mapping
+                </h3>
+                <p class="text-gray-400 mb-6">Alignment with Data Storage System for Automated Driving (DSSAD) requirements</p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-400 mt-1">✅</span>
+                            <div>
+                                <p class="text-white font-medium">5-second pre-accident data retention</p>
+                                <p class="text-gray-400 text-sm">All events preserved in hash chain</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-400 mt-1">✅</span>
+                            <div>
+                                <p class="text-white font-medium">Timestamp accuracy</p>
+                                <p class="text-gray-400 text-sm">UUID v7 + PTP synchronization</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-400 mt-1">✅</span>
+                            <div>
+                                <p class="text-white font-medium">Data integrity guarantee</p>
+                                <p class="text-gray-400 text-sm">Cryptographic hash chain</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-400 mt-1">✅</span>
+                            <div>
+                                <p class="text-white font-medium">Authority access requirements</p>
+                                <p class="text-gray-400 text-sm">Standard format export capability</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDR Integration Section -->
+    <section id="edr-integration" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Physical EDR Integration</h2>
+                <p class="text-gray-400 text-lg">Role separation between existing EDR and DVP</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <!-- Existing EDR -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-hdd text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Existing EDR</h3>
+                            <p class="text-gray-400 text-sm">Event Data Recorder</p>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-blue-400"></i>
+                            Speed, acceleration, brake operation
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-blue-400"></i>
+                            Seatbelt status, airbag deployment
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-blue-400"></i>
+                            Steering angle, throttle position
+                        </li>
+                    </ul>
+                    
+                    <div class="bg-blue-900/30 rounded-lg p-4 border border-blue-500/30">
+                        <p class="text-blue-300 font-medium">→ Records <span class="text-white">"what the vehicle did"</span></p>
+                    </div>
+                </div>
+                
+                <!-- DVP Layer -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-amber-500/30">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-brain text-amber-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">DVP Layer</h3>
+                            <p class="text-amber-400 text-sm">AI Decision Recording</p>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-amber-400"></i>
+                            Sensor input hashes
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-amber-400"></i>
+                            AI recognition results (object detection, classification)
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-amber-400"></i>
+                            Decision logic (path planning, risk assessment)
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-amber-400"></i>
+                            Control command rationale
+                        </li>
+                    </ul>
+                    
+                    <div class="bg-amber-900/30 rounded-lg p-4 border border-amber-500/30">
+                        <p class="text-amber-300 font-medium">→ Records <span class="text-white">"why the AI decided that"</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Integration Result -->
+            <div class="bg-gradient-to-r from-blue-900/30 to-amber-900/30 rounded-xl p-8 border border-gray-700 text-center">
+                <div class="flex items-center justify-center gap-4 mb-4">
+                    <div class="bg-blue-500/20 rounded-full px-4 py-2">
+                        <span class="text-blue-300 font-medium">Physical Data</span>
+                    </div>
+                    <i class="fas fa-plus text-gray-500"></i>
+                    <div class="bg-amber-500/20 rounded-full px-4 py-2">
+                        <span class="text-amber-300 font-medium">AI Decisions</span>
+                    </div>
+                    <i class="fas fa-equals text-gray-500"></i>
+                    <div class="bg-green-500/20 rounded-full px-4 py-2">
+                        <span class="text-green-300 font-medium">Complete Record</span>
+                    </div>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">Integrated Flight Recorder</h3>
+                <p class="text-gray-400">Physical State + AI Decisions</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Use Cases</h2>
+                <p class="text-gray-400 text-lg">How DVP transforms accident investigation and liability determination</p>
+            </div>
+            
+            <!-- Accident Investigation Scenario -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-xl sm:text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-car-crash text-red-400 mr-2"></i>
+                    Scenario: Autonomous Vehicle and Pedestrian Contact Accident
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="px-4 py-3 text-left text-amber-400 font-semibold">Phase</th>
+                                <th class="px-4 py-3 text-left text-gray-400 font-semibold">EDR Only</th>
+                                <th class="px-4 py-3 text-left text-green-400 font-semibold">With DVP Integration</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Accident Occurs</td>
+                                <td class="px-4 py-4 text-gray-400">Records collision speed and deceleration</td>
+                                <td class="px-4 py-4 text-gray-300">Same + AI recognition/decision history</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Investigation Starts</td>
+                                <td class="px-4 py-4 text-gray-400">"Brake was activated"</td>
+                                <td class="px-4 py-4 text-gray-300">"Pedestrian detected 2.3 seconds prior, misclassified as bicycle with 0.67 confidence"</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Cause Identification</td>
+                                <td class="px-4 py-4 text-gray-400">"Unknown if system or human error"</td>
+                                <td class="px-4 py-4 text-gray-300">"Recognition model v3.2 low-light classification accuracy issue"</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Improvement Measures</td>
+                                <td class="px-4 py-4 text-gray-400">Speculation-based</td>
+                                <td class="px-4 py-4 text-gray-300">Specific model improvement points identified</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Litigation Response</td>
+                                <td class="px-4 py-4 text-red-400">Insufficient evidence</td>
+                                <td class="px-4 py-4 text-green-400">Cryptographically verifiable evidence trail</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Insurance/Liability Scenario -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl sm:text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-file-contract text-blue-400 mr-2"></i>
+                    Insurance & Liability Determination Scenario
+                </h3>
+                
+                <div class="flex flex-wrap justify-center items-start gap-4">
+                    <!-- Flow -->
+                    <div class="flex flex-col items-center gap-4">
+                        <div class="bg-red-900/30 border border-red-500/50 rounded-lg px-6 py-4 text-center">
+                            <i class="fas fa-car-crash text-red-400 text-2xl mb-2"></i>
+                            <p class="text-red-300 font-medium">Accident Occurs</p>
+                        </div>
+                        <i class="fas fa-arrow-down text-gray-600"></i>
+                        <div class="bg-purple-900/30 border border-purple-500/50 rounded-lg px-6 py-4 text-center">
+                            <i class="fas fa-database text-purple-400 text-2xl mb-2"></i>
+                            <p class="text-purple-300 font-medium">DVP Log Retrieval</p>
+                        </div>
+                        <i class="fas fa-arrow-down text-gray-600"></i>
+                        <div class="bg-blue-900/30 border border-blue-500/50 rounded-lg px-6 py-4">
+                            <p class="text-blue-300 font-bold mb-3 text-center">Cryptographic Verification</p>
+                            <ul class="text-blue-200 text-sm space-y-1">
+                                <li>• Hash chain integrity ✓</li>
+                                <li>• Timestamp verification ✓</li>
+                                <li>• Signature verification ✓</li>
+                            </ul>
+                        </div>
+                        <i class="fas fa-arrow-down text-gray-600"></i>
+                        <div class="bg-green-900/30 border border-green-500/50 rounded-lg px-6 py-4 text-center">
+                            <i class="fas fa-gavel text-green-400 text-2xl mb-2"></i>
+                            <p class="text-green-300 font-medium">Liability Clarification</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Liability Branches -->
+                    <div class="bg-gray-900 rounded-xl p-6 border border-gray-700 ml-8">
+                        <h4 class="text-white font-bold mb-4">Liability Determination</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 text-gray-300">
+                                <i class="fas fa-arrow-right text-amber-400"></i>
+                                <span><span class="text-red-400">AI system decision error</span> → OEM/Developer liability</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-gray-300">
+                                <i class="fas fa-arrow-right text-amber-400"></i>
+                                <span><span class="text-yellow-400">Human override</span> → Driver liability</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-gray-300">
+                                <i class="fas fa-arrow-right text-amber-400"></i>
+                                <span><span class="text-blue-400">Sensor failure</span> → Component manufacturer liability</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specs Section -->
+    <section id="specs" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Technical Specifications Summary</h2>
+                <p class="text-gray-400 text-lg">DVP core technical requirements</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">Timestamp Accuracy</div>
+                    <div class="text-xl sm:text-2xl font-bold text-white">Nanoseconds</div>
+                    <div class="text-gray-400 text-sm mt-1">IEEE 1588 PTP synchronized</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">Event Recording Frequency</div>
+                    <div class="text-xl sm:text-2xl font-bold text-white">Up to 1,000/sec</div>
+                    <div class="text-gray-400 text-sm mt-1">Maximum event throughput</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">Hash Algorithm</div>
+                    <div class="text-xl sm:text-2xl font-bold text-white">SHA-256</div>
+                    <div class="text-gray-400 text-sm mt-1">Future SHA-3 support</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">Signature Algorithm</div>
+                    <div class="text-xl sm:text-2xl font-bold text-white">Ed25519</div>
+                    <div class="text-gray-400 text-sm mt-1">Future Dilithium (PQC) support</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">Storage Requirements</div>
+                    <div class="text-xl sm:text-2xl font-bold text-white">~10MB/hour</div>
+                    <div class="text-gray-400 text-sm mt-1">After compression</div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                    <div class="text-amber-400 text-sm font-semibold mb-2">Physical Requirements</div>
+                    <div class="text-xl sm:text-2xl font-bold text-white">EDR Compliant</div>
+                    <div class="text-gray-400 text-sm mt-1">Crash/fire resistant</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Roadmap</h2>
+                <p class="text-gray-400 text-lg">DVP development and standardization timeline</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-8">
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full text-sm font-medium">2025 Q4</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">DVP Draft Specification v0.1 Release</h4>
+                            <p class="text-gray-400">Initial draft specification for public review and feedback</p>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-medium">2026 Q1</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">OEM & Tier 1 Technical Validation</h4>
+                            <p class="text-gray-400">Begin proof-of-concept testing with automotive industry partners</p>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium">2026 Q2</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">UNECE WP.29 GRVA Proposal</h4>
+                            <p class="text-gray-400">Submit to UNECE Working Party 29 GRVA (Autonomous Driving)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm font-medium">2026 Q3</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">DVP v1.0 Official Release</h4>
+                            <p class="text-gray-400">Stable specification release with reference implementations</p>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-8 timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="bg-gray-500/20 text-gray-300 px-3 py-1 rounded-full text-sm font-medium">2027</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">ISO/SAE Collaboration</h4>
+                            <p class="text-gray-400">International standardization activities with ISO and SAE</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VAP/VSO Relationship Section -->
+    <section id="vap-relationship" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Relationship with VAP/VSO</h2>
+                <p class="text-gray-400 text-lg">DVP's position in the framework hierarchy</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌────────────────────────────────────────────────────────────────────────────┐
+│                                                                            │
+│   <span class="text-cyan-400 font-bold">VAP (Verifiable AI Provenance)</span>                                           │
+│   <span class="text-gray-400">Cross-domain upper framework for all domains</span>                                │
+│                                                                            │
+└────────────────────────────────────┬───────────────────────────────────────┘
+                                     │
+                                     │ defines & maintains
+                                     │
+┌────────────────────────────────────▼───────────────────────────────────────┐
+│                                                                            │
+│   <span class="text-purple-400 font-bold">VSO (VeritasChain Standards Organization)</span>                                │
+│   <span class="text-gray-400">Standards body that develops and maintains VAP</span>                              │
+│                                                                            │
+└────────────────────────────────────┬───────────────────────────────────────┘
+                                     │
+                                     │ publishes profiles
+                                     │
+          ┌──────────┬───────────────┼───────────────┬──────────┐
+          │          │               │               │          │
+          ▼          ▼               ▼               ▼          ▼
+     ┌─────────┐ ┌─────────┐   ┌─────────┐   ┌─────────┐ ┌─────────┐
+     │  <span class="text-green-400 font-bold">VCP</span>    │ │  <span class="text-amber-400 font-bold">DVP</span>    │   │  <span class="text-blue-400 font-bold">MAP</span>    │   │  <span class="text-red-400 font-bold">EIP</span>    │ │  <span class="text-purple-400 font-bold">PAP</span>    │
+     │ Finance │ │Automotive│   │ Medical │   │ Energy  │ │ Public  │
+     │ Profile │ │ Profile  │   │ Profile │   │ Profile │ │ Profile │
+     └────┬────┘ └────┬─────┘   └─────────┘   └─────────┘ └─────────┘
+          │          │
+          ▼          ▼
+     <span class="text-green-300">v1.0</span>        <span class="text-amber-300">Planned</span>
+    <span class="text-green-300">Released</span>
+
+                <span class="text-gray-500">Domain-specific "concrete protocol implementations"</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="py-20 bg-gradient-to-br from-amber-900/30 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Get Involved</h2>
+                <p class="text-gray-400 text-lg">Join the development of DVP and shape the future of autonomous vehicle safety</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <a href="/vap/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-layer-group text-3xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">View VAP Framework</h3>
+                    <p class="text-gray-400 text-sm">Understand the upper framework that DVP extends</p>
+                </a>
+                
+                <a href="/vcp/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-green-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-green-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-file-code text-3xl text-green-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">VCP Specification (Financial)</h3>
+                    <p class="text-gray-400 text-sm">See the released VCP v1.0 as reference implementation</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-8 border border-amber-500/50 hover:border-amber-400 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-amber-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-handshake text-3xl text-amber-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Participate in DVP Development</h3>
+                    <p class="text-gray-400 text-sm">For OEM, Tier 1, and regulatory authority representatives</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Quote -->
+    <section class="py-16 bg-gray-900 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <blockquote class="text-xl text-gray-300 italic mb-6">
+                "Aircraft have physical black boxes. Autonomous vehicles need AI black boxes too."
+            </blockquote>
+            <p class="text-gray-500">— VeritasChain Standards Organization</p>
+            
+            <blockquote class="text-lg text-gray-400 italic mt-8">
+                "The question is not whether autonomous vehicles will have accidents.<br>
+                The question is whether we can prove what happened when they do."
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- License Footer -->
+    <section class="py-8 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+                <i class="fab fa-creative-commons mr-1"></i>
+                This work is licensed under 
+                <a href="https://creativecommons.org/licenses/by/4.0/" class="text-amber-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                    CC BY 4.0 International
+                </a>
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer lang="en"></vcp-footer>
+</body>
+</html>

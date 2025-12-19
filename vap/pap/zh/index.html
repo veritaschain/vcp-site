@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAP - 公共行政协议 | 实现政府AI的民主问责</title>
+    <meta name="description" content="PAP（Public Administration Protocol）是VAP框架的公共行政配置文件，用于对影响公民基本权利的AI决策进行加密验证。">
+    <meta name="keywords" content="PAP, Public Administration Protocol, VAP, 政府AI, 算法问责, 公民权利, 福利AI, 司法AI, EU AI Act">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="PAP - 公共行政协议 | 实现政府AI的民主问责">
+    <meta property="og:description" content="PAP能够对影响公民基本权利的AI决策（福利、信用、移民、司法）进行加密验证。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/pap/zh">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="PAP - 公共行政协议">
+    <meta name="twitter:description" content="对影响公民基本权利的政府AI决策进行加密验证。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/pap/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/pap/ja" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/pap/zh" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/pap/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pap-primary': '#667eea',
+                        'pap-secondary': '#764ba2',
+                        'pap-dark': '#1a365d',
+                        'pap-accent': '#9f7aea'
+                    },
+                    fontFamily: {
+                        'sans': ['Noto Sans SC', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    <link rel="canonical" href="https://veritaschain.org/vap/pap/zh" />
+
+    <style>
+        .gradient-pap {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #1a365d 100%);
+        }
+        .gradient-pap-light {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+        .text-gradient-pap {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .border-pap {
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+        .card-pap {
+            background: rgba(26, 54, 93, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        .status-banner {
+            background: linear-gradient(90deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+        }
+        .json-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .json-block code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            line-height: 1.5;
+        }
+        .flowchart-box {
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        .architecture-diagram {
+            background: linear-gradient(180deg, rgba(26, 54, 93, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        /* Mobile responsive fixes */
+        @media (max-width: 640px) {
+            .gradient-pap {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            h1 {
+                font-size: 1.5rem !important;
+                line-height: 1.2 !important;
+                word-break: break-word;
+            }
+            h2 {
+                font-size: 1.25rem !important;
+            }
+            h3 {
+                font-size: 1.125rem !important;
+            }
+            .text-lg {
+                font-size: 0.95rem;
+            }
+            .text-xl {
+                font-size: 1rem;
+            }
+            .text-2xl {
+                font-size: 1.25rem !important;
+            }
+            /* Prevent horizontal overflow */
+            body {
+                overflow-x: hidden;
+            }
+            section {
+                overflow-x: hidden;
+            }
+            /* Table responsiveness */
+            table {
+                font-size: 0.75rem;
+            }
+            th, td {
+                padding: 0.5rem 0.25rem !important;
+            }
+            /* JSON block mobile */
+            .json-block pre {
+                font-size: 0.65rem !important;
+            }
+            /* Architecture diagram mobile */
+            .architecture-diagram pre {
+                font-size: 0.5rem !important;
+            }
+        }
+    </style>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "name": "PAP - Public Administration Protocol",
+        "headline": "实现政府AI的民主问责",
+        "description": "PAP（Public Administration Protocol）是VAP框架的公共行政配置文件，用于对公共行政、福利、司法和公民权利领域的AI决策进行加密验证。",
+        "url": "https://veritaschain.org/vap/pap/zh",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization (VSO)",
+            "url": "https://veritaschain.org/vso"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "inLanguage": "zh-CN",
+        "license": "https://creativecommons.org/licenses/by/4.0/"
+    }
+    </script>
+</head>
+<body class="bg-slate-900">
+    <vcp-header theme="dark" lang="zh" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div class="status-banner py-3 px-4 text-center" style="margin-top: 70px;">
+        <div class="max-w-4xl mx-auto flex items-center justify-center gap-3 flex-wrap">
+            <span class="text-amber-400 font-bold">⚠️ PAP 状态：规划中（PLANNED）</span>
+            <span class="text-amber-200/80 text-sm">此配置文件目前正在制定中。欢迎贡献和反馈。</span>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="gradient-pap py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto text-center">
+            <!-- Profile Badge -->
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full mb-6">
+                <span class="text-purple-200 text-sm font-semibold">VAP 配置文件</span>
+                <span class="w-1.5 h-1.5 bg-purple-300 rounded-full"></span>
+                <span class="text-white font-bold">PAP</span>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                PAP - 公共行政协议
+            </h1>
+            <p class="text-xl md:text-2xl text-purple-100 mb-4 font-medium">
+                实现政府AI的民主问责
+            </p>
+            <p class="text-lg text-purple-200/90 mb-8 italic">
+                "No Decision Without Justification" — 没有解释的决定是民主的敌人
+            </p>
+
+            <!-- Key Message -->
+            <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-10 border border-white/20">
+                <div class="text-left space-y-4 text-purple-100">
+                    <p class="text-lg">您的贷款申请被拒绝了。<span class="text-white font-semibold">为什么？</span></p>
+                    <p class="text-lg">您的福利补贴被终止了。<span class="text-white font-semibold">为什么？</span></p>
+                    <p class="text-lg">您的假释申请未获批准。<span class="text-white font-semibold">为什么？</span></p>
+                    <p class="text-xl mt-6 text-white font-bold">"因为AI这样判断"——这不是民主制度能够接受的答案。</p>
+                </div>
+            </div>
+
+            <p class="text-purple-100 max-w-3xl mx-auto mb-8 leading-relaxed">
+                每位公民都有权知道影响自己的决定的理由。<br>
+                每项决定都必须保障申诉和司法审查的机会。<br><br>
+                <strong class="text-white">PAP以加密方式记录公共AI的所有决策</strong>——
+                记录何时、使用了什么数据、依据什么规则、为何得出该结论——
+                以防篡改的形式进行证明。
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/vap/" class="px-6 py-3 bg-white text-pap-dark font-semibold rounded-lg hover:bg-purple-100 transition flex items-center gap-2">
+                    <i class="fas fa-layer-group"></i> 查看VAP框架
+                </a>
+                <a href="https://github.com/veritaschain" target="_blank" rel="noopener" class="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition border border-white/30 flex items-center gap-2">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition flex items-center gap-2">
+                    <i class="fas fa-envelope"></i> 参与PAP制定
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Info Cards -->
+    <section class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card-pap rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-3">🏛️</div>
+                    <div class="text-purple-300 text-sm font-medium mb-1">配置文件ID</div>
+                    <div class="text-white font-bold text-lg">PAP</div>
+                </div>
+                <div class="card-pap rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-3">📋</div>
+                    <div class="text-purple-300 text-sm font-medium mb-1">状态</div>
+                    <div class="text-amber-400 font-bold text-lg">规划中（Planned）</div>
+                </div>
+                <div class="card-pap rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-3">🔗</div>
+                    <div class="text-purple-300 text-sm font-medium mb-1">上层框架</div>
+                    <div class="text-white font-bold text-lg">VAP</div>
+                </div>
+                <div class="card-pap rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-3">⚖️</div>
+                    <div class="text-purple-300 text-sm font-medium mb-1">风险类别</div>
+                    <div class="text-white font-bold text-lg">民主完整性 / 公民权利</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why PAP Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-question-circle text-pap-primary mr-3"></i>为什么需要PAP
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                公共AI的现状和挑战，以及PAP的解决方案
+            </p>
+
+            <!-- Challenges -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="card-pap rounded-xl p-8">
+                    <div class="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-eye-slash text-red-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">缺乏问责</h3>
+                    <p class="text-slate-300">AI判定"不合格"却无法解释原因。公民甚至无法获得申诉的线索。</p>
+                </div>
+                <div class="card-pap rounded-xl p-8">
+                    <div class="w-14 h-14 bg-orange-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-balance-scale-right text-orange-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">算法偏见固化</h3>
+                    <p class="text-slate-300">使用历史歧视性数据训练的AI系统化地重复产生不公正的判定。</p>
+                </div>
+                <div class="card-pap rounded-xl p-8">
+                    <div class="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-users-slash text-purple-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">民主控制丧失</h3>
+                    <p class="text-slate-300">未经选举的算法做出影响公民基本权利的决定，缺乏民主监督。</p>
+                </div>
+            </div>
+
+            <!-- Problem Scenarios -->
+            <h3 class="text-2xl font-bold text-white mb-8 text-center">实际问题案例（匿名化/一般化）</h3>
+            
+            <div class="space-y-8">
+                <!-- Scenario 1 -->
+                <div class="card-pap rounded-xl p-8">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-hand-holding-usd text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-2">案例1：福利补贴判定AI的黑箱</h4>
+                            <p class="text-slate-400 text-sm">补贴资格判定</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-6 font-mono text-sm">
+                        <div class="text-slate-300 space-y-2">
+                            <p><span class="text-blue-400">[申请人]</span> → <span class="text-yellow-400">[AI判定："不合格"]</span> → <span class="text-green-400">[申诉]</span> → <span class="text-purple-400">[请求公开判定依据]</span></p>
+                            <p class="text-center my-4">↓</p>
+                            <p class="text-red-400">"AI的判断理由属于商业机密"</p>
+                            <p class="text-red-400">"评分模型的详细信息无法公开"</p>
+                            <p class="text-center my-4">↓</p>
+                            <p class="text-slate-400 italic">公民失去了争辩的手段</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 2 -->
+                <div class="card-pap rounded-xl p-8">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-gavel text-red-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-2">案例2：再犯风险评估AI的种族偏见</h4>
+                            <p class="text-slate-400 text-sm">刑事司法风险评估</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-6 font-mono text-sm">
+                        <div class="text-slate-300 space-y-2">
+                            <p><span class="text-blue-400">[被告]</span> → <span class="text-yellow-400">[AI风险评估："高风险"]</span> → <span class="text-red-400">[保释被拒/重判]</span></p>
+                            <p class="text-center my-4">↓</p>
+                            <p class="text-slate-400">事后分析发现：</p>
+                            <p class="text-orange-400">"邮编"和"逮捕记录"是主要因素</p>
+                            <p class="text-orange-400">→ 实际上成为种族和经济状况的代理变量</p>
+                            <p class="text-center my-4">↓</p>
+                            <p class="text-slate-400 italic">然而在判定时没有验证这一点的方法</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 3 -->
+                <div class="card-pap rounded-xl p-8">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-passport text-green-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-2">案例3：移民管理AI的任意决定</h4>
+                            <p class="text-slate-400 text-sm">签证申请审查</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-6 font-mono text-sm">
+                        <div class="text-slate-300 space-y-2">
+                            <p><span class="text-blue-400">[签证申请人]</span> → <span class="text-yellow-400">[AI审查："拒绝"]</span> → <span class="text-slate-400">[理由："综合判断"]</span></p>
+                            <p class="text-center my-4">↓</p>
+                            <p class="text-red-400">"哪些因素有问题"不明确</p>
+                            <p class="text-red-400">"应该改进的地方"没有指出</p>
+                            <p class="text-red-400">"重新申请是否会得到相同结果"无法预测</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scope Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/30">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-crosshairs text-pap-primary mr-3"></i>PAP适用范围
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                目标系统和记录事件
+            </p>
+
+            <!-- Target Systems -->
+            <h3 class="text-2xl font-bold text-white mb-6">目标系统</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                <div class="card-pap rounded-lg p-5 flex items-center gap-4">
+                    <span class="text-2xl">💳</span>
+                    <div>
+                        <div class="text-white font-semibold">信用评分</div>
+                        <div class="text-slate-400 text-sm">贷款审查、信用卡审查</div>
+                        <div class="text-green-400 text-xs mt-1 font-medium">必须</div>
+                    </div>
+                </div>
+                <div class="card-pap rounded-lg p-5 flex items-center gap-4">
+                    <span class="text-2xl">🏛️</span>
+                    <div>
+                        <div class="text-white font-semibold">福利补贴判定</div>
+                        <div class="text-slate-400 text-sm">社会保障、失业补贴、残疾补贴</div>
+                        <div class="text-green-400 text-xs mt-1 font-medium">必须</div>
+                    </div>
+                </div>
+                <div class="card-pap rounded-lg p-5 flex items-center gap-4">
+                    <span class="text-2xl">🛂</span>
+                    <div>
+                        <div class="text-white font-semibold">入境管理</div>
+                        <div class="text-slate-400 text-sm">签证审查、难民认定、入境检查</div>
+                        <div class="text-green-400 text-xs mt-1 font-medium">必须</div>
+                    </div>
+                </div>
+                <div class="card-pap rounded-lg p-5 flex items-center gap-4">
+                    <span class="text-2xl">⚖️</span>
+                    <div>
+                        <div class="text-white font-semibold">司法AI</div>
+                        <div class="text-slate-400 text-sm">再犯风险评估、量刑辅助、保释判断</div>
+                        <div class="text-green-400 text-xs mt-1 font-medium">必须</div>
+                    </div>
+                </div>
+                <div class="card-pap rounded-lg p-5 flex items-center gap-4">
+                    <span class="text-2xl">👔</span>
+                    <div>
+                        <div class="text-white font-semibold">招聘·人事评价</div>
+                        <div class="text-slate-400 text-sm">简历筛选AI、晋升评价、解雇风险评估</div>
+                        <div class="text-green-400 text-xs mt-1 font-medium">必须</div>
+                    </div>
+                </div>
+                <div class="card-pap rounded-lg p-5 flex items-center gap-4">
+                    <span class="text-2xl">🏫</span>
+                    <div>
+                        <div class="text-white font-semibold">教育·入学选拔</div>
+                        <div class="text-slate-400 text-sm">入学审查、奖学金选拔、学力评价</div>
+                        <div class="text-blue-400 text-xs mt-1 font-medium">推荐</div>
+                    </div>
+                </div>
+                <div class="card-pap rounded-lg p-5 flex items-center gap-4">
+                    <span class="text-2xl">🏥</span>
+                    <div>
+                        <div class="text-white font-semibold">医疗资源分配</div>
+                        <div class="text-slate-400 text-sm">器官移植优先级、分诊辅助</div>
+                        <div class="text-blue-400 text-xs mt-1 font-medium">推荐</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Recording Flow -->
+            <h3 class="text-2xl font-bold text-white mb-6">记录事件（因果链）</h3>
+            <div class="architecture-diagram rounded-xl p-4 sm:p-8 overflow-x-auto">
+                <div class="hidden sm:block min-w-[800px]">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flowchart-box rounded-lg p-4 text-center flex-1">
+                            <div class="text-purple-400 font-semibold mb-2">申请接收</div>
+                            <div class="text-slate-400 text-xs">申请ID<br>时间戳<br>申请人属性</div>
+                        </div>
+                        <i class="fas fa-arrow-right text-purple-400"></i>
+                        <div class="flowchart-box rounded-lg p-4 text-center flex-1">
+                            <div class="text-purple-400 font-semibold mb-2">数据收集</div>
+                            <div class="text-slate-400 text-xs">输入数据<br>数据来源<br>缺失值处理</div>
+                        </div>
+                        <i class="fas fa-arrow-right text-purple-400"></i>
+                        <div class="flowchart-box rounded-lg p-4 text-center flex-1">
+                            <div class="text-purple-400 font-semibold mb-2">AI评估</div>
+                            <div class="text-slate-400 text-xs">评分<br>贡献因素<br>模型版本</div>
+                        </div>
+                        <i class="fas fa-arrow-right text-purple-400"></i>
+                        <div class="flowchart-box rounded-lg p-4 text-center flex-1">
+                            <div class="text-purple-400 font-semibold mb-2">决定生成</div>
+                            <div class="text-slate-400 text-xs">决定结果<br>原因代码<br>阈值应用</div>
+                        </div>
+                        <i class="fas fa-arrow-right text-purple-400"></i>
+                        <div class="flowchart-box rounded-lg p-4 text-center flex-1">
+                            <div class="text-purple-400 font-semibold mb-2">通知</div>
+                            <div class="text-slate-400 text-xs">通知内容<br>公开范围<br>接收确认</div>
+                        </div>
+                        <i class="fas fa-arrow-right text-purple-400"></i>
+                        <div class="flowchart-box rounded-lg p-4 text-center flex-1">
+                            <div class="text-purple-400 font-semibold mb-2">申诉</div>
+                            <div class="text-slate-400 text-xs">审查结果<br>重新判定依据<br>变更历史</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mobile-friendly vertical flowchart -->
+                <div class="sm:hidden space-y-3">
+                    <div class="flowchart-box rounded-lg p-3 text-center">
+                        <div class="text-purple-400 font-semibold text-sm">1. 申请接收</div>
+                    </div>
+                    <div class="text-center text-purple-400"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flowchart-box rounded-lg p-3 text-center">
+                        <div class="text-purple-400 font-semibold text-sm">2. 数据收集</div>
+                    </div>
+                    <div class="text-center text-purple-400"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flowchart-box rounded-lg p-3 text-center">
+                        <div class="text-purple-400 font-semibold text-sm">3. AI评估</div>
+                    </div>
+                    <div class="text-center text-purple-400"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flowchart-box rounded-lg p-3 text-center">
+                        <div class="text-purple-400 font-semibold text-sm">4. 决定生成</div>
+                    </div>
+                    <div class="text-center text-purple-400"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flowchart-box rounded-lg p-3 text-center">
+                        <div class="text-purple-400 font-semibold text-sm">5. 通知</div>
+                    </div>
+                    <div class="text-center text-purple-400"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flowchart-box rounded-lg p-3 text-center">
+                        <div class="text-purple-400 font-semibold text-sm">6. 申诉</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-project-diagram text-pap-primary mr-3"></i>PAP架构
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                数据流和系统结构
+            </p>
+
+            <!-- Architecture Diagram -->
+            <div class="architecture-diagram rounded-xl p-8 mb-12">
+                <pre class="text-slate-300 text-xs md:text-sm leading-relaxed overflow-x-auto"><code>┌─────────────────────────────────────────────────────────────┐
+│                  Public Administration System                │
+│  ┌──────────┐   ┌──────────┐   ┌──────────┐                │
+│  │ Citizen  │──▶│ AI/ML    │──▶│ Decision │                │
+│  │ Data     │   │ Scoring  │   │ Output   │                │
+│  └──────────┘   └────┬─────┘   └──────────┘                │
+│                      │                                       │
+│              ┌───────▼───────┐                              │
+│              │  PAP Logger   │ ← 记录所有决策事件            │
+│              │  (Sidecar)    │                              │
+│              └───────┬───────┘                              │
+│                      │                                       │
+└──────────────────────┼───────────────────────────────────────┘
+                       │
+               ┌───────▼───────┐
+               │  Hash Chain   │ ← 加密链接
+               │  + Signature  │ ← 数字签名
+               │  + Factor Log │ ← 决策因素完整记录
+               └───────┬───────┘
+                       │
+               ┌───────▼───────┐
+               │ Audit Archive │ ← 长期存储
+               │ (GDPR合规)    │ ← 访问控制
+               └───────┬───────┘
+                       │
+               ┌───────▼───────┐
+               │Citizen Portal │ ← 自我信息披露
+               │(问责)         │ ← 申诉支持
+               └───────────────┘</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regulatory Compliance Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/30">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-balance-scale text-pap-primary mr-3"></i>法规合规映射
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                与国际法规的对应关系
+            </p>
+
+            <!-- International Regulations Table -->
+            <div class="overflow-x-auto mb-12">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b border-slate-700">
+                            <th class="py-4 px-4 text-purple-300 font-semibold">法规</th>
+                            <th class="py-4 px-4 text-purple-300 font-semibold">管辖区</th>
+                            <th class="py-4 px-4 text-purple-300 font-semibold">要求</th>
+                            <th class="py-4 px-4 text-purple-300 font-semibold">PAP支持</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">EU AI Act Article 6(2)</td>
+                            <td class="py-4 px-4">欧盟</td>
+                            <td class="py-4 px-4">影响基本权利的AI被分类为高风险</td>
+                            <td class="py-4 px-4"><span class="text-green-400 font-semibold">✅ 完全支持</span></td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">EU AI Act Article 13</td>
+                            <td class="py-4 px-4">欧盟</td>
+                            <td class="py-4 px-4">透明度和可解释性要求</td>
+                            <td class="py-4 px-4"><span class="text-green-400 font-semibold">✅ 完全支持</span></td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">EU AI Act Article 14</td>
+                            <td class="py-4 px-4">欧盟</td>
+                            <td class="py-4 px-4">人类监督义务</td>
+                            <td class="py-4 px-4"><span class="text-green-400 font-semibold">✅ 完全支持</span></td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">GDPR Article 22</td>
+                            <td class="py-4 px-4">欧盟</td>
+                            <td class="py-4 px-4">对自动决策的异议权</td>
+                            <td class="py-4 px-4"><span class="text-green-400 font-semibold">✅ 完全支持</span></td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">GDPR Article 15</td>
+                            <td class="py-4 px-4">欧盟</td>
+                            <td class="py-4 px-4">访问权（自我信息披露）</td>
+                            <td class="py-4 px-4"><span class="text-green-400 font-semibold">✅ 完全支持</span></td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">US Executive Order 14110</td>
+                            <td class="py-4 px-4">美国</td>
+                            <td class="py-4 px-4">AI安全性和公平性要求</td>
+                            <td class="py-4 px-4"><span class="text-green-400 font-semibold">✅ 一致</span></td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">NYC Local Law 144</td>
+                            <td class="py-4 px-4">纽约市</td>
+                            <td class="py-4 px-4">招聘AI的审计义务</td>
+                            <td class="py-4 px-4"><span class="text-green-400 font-semibold">✅ 完全支持</span></td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">Illinois BIPA</td>
+                            <td class="py-4 px-4">伊利诺伊州</td>
+                            <td class="py-4 px-4">生物识别信息使用限制</td>
+                            <td class="py-4 px-4"><span class="text-green-400 font-semibold">✅ 支持</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-medium">行政程序法</td>
+                            <td class="py-4 px-4">日本</td>
+                            <td class="py-4 px-4">提供处分理由的义务</td>
+                            <td class="py-4 px-4"><span class="text-blue-400 font-semibold">✅ 计划中</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Citizen Accountability Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-user-shield text-pap-primary mr-3"></i>公民问责
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                透明度门户和多层解释模型
+            </p>
+
+            <!-- Citizen Portal Features -->
+            <div class="architecture-diagram rounded-xl p-8 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <span class="text-2xl">🏛️</span> 公民透明度门户
+                </h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-800/50 rounded-lg p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">🔍</span>
+                            <span class="text-white font-semibold">自我信息披露</span>
+                        </div>
+                        <ul class="text-slate-300 text-sm space-y-2">
+                            <li>• 关于我使用了什么数据</li>
+                            <li>• 从哪些数据源获取</li>
+                            <li>• 数据的新鲜度（截至什么时间点的信息）</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">📊</span>
+                            <span class="text-white font-semibold">决策理由解释</span>
+                        </div>
+                        <ul class="text-slate-300 text-sm space-y-2">
+                            <li>• 为什么做出这个判定（主要因素）</li>
+                            <li>• 哪些因素是正面/负面影响</li>
+                            <li>• 与阈值的比较</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">🔄</span>
+                            <span class="text-white font-semibold">反事实模拟</span>
+                        </div>
+                        <ul class="text-slate-300 text-sm space-y-2">
+                            <li>• "如果收入多X元，结果会改变吗？"</li>
+                            <li>• "改变什么条件会获得批准？"</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">⚖️</span>
+                            <span class="text-white font-semibold">申诉支持</span>
+                        </div>
+                        <ul class="text-slate-300 text-sm space-y-2">
+                            <li>• 申诉期限和程序</li>
+                            <li>• 所需文件</li>
+                            <li>• 类似过去案例的统计</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-layered Explanation Model -->
+            <h3 class="text-2xl font-bold text-white mb-6">多层解释模型</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b border-slate-700">
+                            <th class="py-4 px-4 text-purple-300 font-semibold">层级</th>
+                            <th class="py-4 px-4 text-purple-300 font-semibold">目标受众</th>
+                            <th class="py-4 px-4 text-purple-300 font-semibold">解释详细程度</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">公民级</td>
+                            <td class="py-4 px-4">一般申请人</td>
+                            <td class="py-4 px-4">通俗易懂的摘要（simplified_explanation）</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">代理人级</td>
+                            <td class="py-4 px-4">律师、援助者</td>
+                            <td class="py-4 px-4">判断因素和贡献度的详细信息</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-4 px-4 font-medium">审计员级</td>
+                            <td class="py-4 px-4">监管机构、审计公司</td>
+                            <td class="py-4 px-4">模型规格、训练数据、偏见审计结果</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-medium">技术人员级</td>
+                            <td class="py-4 px-4">AI开发人员、研究人员</td>
+                            <td class="py-4 px-4">完整日志、模型哈希、复现步骤</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/30">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-road text-pap-primary mr-3"></i>路线图
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                PAP制定时间表
+            </p>
+
+            <div class="space-y-6">
+                <div class="flex items-start gap-6">
+                    <div class="w-24 text-right text-purple-400 font-bold flex-shrink-0">2026 Q2</div>
+                    <div class="flex-1 card-pap rounded-lg p-4">
+                        <div class="text-white font-semibold">PAP草案规范v0.1发布</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-6">
+                    <div class="w-24 text-right text-purple-400 font-bold flex-shrink-0">2026 Q3</div>
+                    <div class="flex-1 card-pap rounded-lg p-4">
+                        <div class="text-white font-semibold">与政府机构和地方政府的技术验证</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-6">
+                    <div class="w-24 text-right text-purple-400 font-bold flex-shrink-0">2026 Q4</div>
+                    <div class="flex-1 card-pap rounded-lg p-4">
+                        <div class="text-white font-semibold">向EU AI Office和各国数据保护机构进行信息简报</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-6">
+                    <div class="w-24 text-right text-purple-400 font-bold flex-shrink-0">2027 Q1</div>
+                    <div class="flex-1 card-pap rounded-lg p-4">
+                        <div class="text-white font-semibold">PAP v1.0正式发布</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-6">
+                    <div class="w-24 text-right text-purple-400 font-bold flex-shrink-0">2027 Q2</div>
+                    <div class="flex-1 card-pap rounded-lg p-4">
+                        <div class="text-white font-semibold">NYC Local Law 144、EU AI Act合规指南发布</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-6">
+                    <div class="w-24 text-right text-purple-400 font-bold flex-shrink-0">2027+</div>
+                    <div class="flex-1 card-pap rounded-lg p-4">
+                        <div class="text-white font-semibold">与OECD、联合国等国际组织合作</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VAP/VSO Relationship Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-sitemap text-pap-primary mr-3"></i>与VAP/VSO的关系
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                框架层次结构和配置文件定位
+            </p>
+
+            <!-- Hierarchy Diagram -->
+            <div class="architecture-diagram rounded-xl p-8 mb-12">
+                <pre class="text-slate-300 text-xs md:text-sm leading-relaxed overflow-x-auto text-center"><code>┌────────────────────────────────────────┐
+│  VAP (Verifiable AI Provenance)        │
+│  跨领域上层框架                        │
+└──────────────────┬─────────────────────┘
+                   │
+┌──────────────────▼─────────────────────┐
+│  VSO (VeritasChain Standards Org)      │
+│  标准化组织                            │
+└──────────────────┬─────────────────────┘
+                   │
+     ┌──────┬──────┼──────┬──────┐
+     ▼      ▼      ▼      ▼      ▼
+  [VCP]   [DVP]  [MAP]  [EIP]  [PAP]
+  金融    汽车   医疗   能源    公共
+    ↓                            ↓
+  v1.0                         规划中
+Released</code></pre>
+            </div>
+
+            <!-- Profile Comparison -->
+            <h3 class="text-2xl font-bold text-white mb-6">与其他VAP配置文件的区别</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700">
+                            <th class="py-4 px-3 text-purple-300 font-semibold">特性</th>
+                            <th class="py-4 px-3 text-purple-300 font-semibold">VCP（金融）</th>
+                            <th class="py-4 px-3 text-purple-300 font-semibold">MAP（医疗）</th>
+                            <th class="py-4 px-3 text-purple-300 font-semibold">DVP（汽车）</th>
+                            <th class="py-4 px-3 text-purple-300 font-semibold">EIP（能源）</th>
+                            <th class="py-4 px-3 text-purple-300 font-semibold bg-purple-500/10">PAP（公共）</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-3 px-3 font-medium">影响速度</td>
+                            <td class="py-3 px-3">毫秒</td>
+                            <td class="py-3 px-3">分钟~小时</td>
+                            <td class="py-3 px-3">秒</td>
+                            <td class="py-3 px-3">分钟~天</td>
+                            <td class="py-3 px-3 bg-purple-500/10 font-semibold">月~年</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-3 px-3 font-medium">可逆性</td>
+                            <td class="py-3 px-3">部分</td>
+                            <td class="py-3 px-3">不可逆</td>
+                            <td class="py-3 px-3">不可逆</td>
+                            <td class="py-3 px-3">恢复缓慢</td>
+                            <td class="py-3 px-3 bg-purple-500/10 font-semibold">困难</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-3 px-3 font-medium">主要受害者</td>
+                            <td class="py-3 px-3">投资者</td>
+                            <td class="py-3 px-3">患者</td>
+                            <td class="py-3 px-3">乘员/行人</td>
+                            <td class="py-3 px-3">全体市民</td>
+                            <td class="py-3 px-3 bg-purple-500/10 font-semibold">个人权利</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="py-3 px-3 font-medium">监管重点</td>
+                            <td class="py-3 px-3">市场完整性</td>
+                            <td class="py-3 px-3">患者安全</td>
+                            <td class="py-3 px-3">物理安全</td>
+                            <td class="py-3 px-3">持续性</td>
+                            <td class="py-3 px-3 bg-purple-500/10 font-semibold">民主</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-3 font-medium">申诉权</td>
+                            <td class="py-3 px-3">有限</td>
+                            <td class="py-3 px-3">有限</td>
+                            <td class="py-3 px-3">有限</td>
+                            <td class="py-3 px-3">有限</td>
+                            <td class="py-3 px-3 bg-purple-500/10 font-semibold text-green-400">必须</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 gradient-pap">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">参与我们</h2>
+            <p class="text-purple-100 mb-10 text-lg">
+                PAP目前正在制定中。欢迎政府机构、地方政府、人权组织和AI伦理研究人员参与。
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/vap/" class="px-8 py-4 bg-white text-pap-dark font-semibold rounded-lg hover:bg-purple-100 transition flex items-center gap-2">
+                    <i class="fas fa-layer-group"></i> 查看VAP框架
+                </a>
+                <a href="https://github.com/veritaschain" target="_blank" rel="noopener" class="px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition border border-white/30 flex items-center gap-2">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="px-8 py-4 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition flex items-center gap-2">
+                    <i class="fas fa-envelope"></i> 参与PAP制定
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Quote -->
+    <section class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <blockquote class="text-xl md:text-2xl text-slate-300 italic mb-6">
+                "没有解释的权力是民主的敌人。AI也不例外。"
+            </blockquote>
+            <p class="text-slate-500">— VeritasChain Standards Organization</p>
+            <blockquote class="text-lg text-slate-400 italic mt-8">
+                "The right to an explanation is the foundation of due process in the algorithmic age."
+            </blockquote>
+            <p class="text-slate-500 mt-4">
+                "获得解释的权利是算法时代正当程序的基础。"
+            </p>
+        </div>
+    </section>
+
+    <!-- License -->
+    <section class="py-8 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">
+                <i class="fab fa-creative-commons mr-1"></i>
+                <i class="fab fa-creative-commons-by mr-2"></i>
+                本规范采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" class="text-purple-400 hover:text-purple-300">CC BY 4.0 International</a> 许可
+            </p>
+            <p class="text-slate-600 text-xs mt-2">
+                提供方: VeritasChain Standards Organization (VSO) | <a href="https://veritaschain.org" class="text-purple-400 hover:text-purple-300">https://veritaschain.org</a>
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer></vcp-footer>
+</body>
+</html>
