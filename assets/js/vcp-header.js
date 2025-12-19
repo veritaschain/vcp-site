@@ -344,15 +344,15 @@ class VCPHeader extends HTMLElement {
                         </div>
                     </div>
                 </div>
-
-                ${showLangSwitcher ? `
-                <!-- Language Switcher - Inside nav-container -->
-                <div class="language-switcher ${themeClass}">
-                    ${this.generateLangSwitcherLinks(availableLangs, langUrls, lang)}
-                </div>
-                ` : ''}
             </div>
         </nav>
+
+        ${showLangSwitcher ? `
+        <!-- Language Switcher - Below header, right aligned -->
+        <div class="language-switcher ${themeClass}">
+            ${this.generateLangSwitcherLinks(availableLangs, langUrls, lang)}
+        </div>
+        ` : ''}
         `;
 
         this.initializeNavigation();
