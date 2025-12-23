@@ -88,6 +88,8 @@ class VCPHeader extends HTMLElement {
                 explorerApi: 'Explorer API',
                 openApiSpec: 'OpenAPI Spec',
                 github: 'GitHub (vcp-explorer-api)',
+                overview: 'Overview',
+                distributedOrganization: 'Distributed Organization',
                 vso: 'VSO',
                 company: 'Company',
                 partners: 'Ecosystem Partners',
@@ -137,6 +139,8 @@ class VCPHeader extends HTMLElement {
                 explorerApi: 'Explorer API',
                 openApiSpec: 'OpenAPI仕様',
                 github: 'GitHub (vcp-explorer-api)',
+                overview: '概要',
+                distributedOrganization: '分散型組織',
                 vso: 'VSO',
                 company: '会社情報',
                 partners: 'エコシステムパートナー',
@@ -186,6 +190,8 @@ class VCPHeader extends HTMLElement {
                 explorerApi: 'Explorer API',
                 openApiSpec: 'OpenAPI规范',
                 github: 'GitHub (vcp-explorer-api)',
+                overview: '概述',
+                distributedOrganization: '分布式组织',
                 vso: 'VSO',
                 company: '公司信息',
                 partners: '生态系统合作伙伴',
@@ -323,6 +329,8 @@ class VCPHeader extends HTMLElement {
                             ${t.about} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
+                            <a href="/overview/" class="dropdown-item">${t.overview}</a>
+                            <a href="/distributed-organization/" class="dropdown-item">${t.distributedOrganization}</a>
                             <a href="/vso" class="dropdown-item">${t.vso}</a>
                             <a href="/company/" class="dropdown-item">${t.company}</a>
                             <a href="/partners/" class="dropdown-item">${t.partners}</a>
