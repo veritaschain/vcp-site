@@ -17,10 +17,15 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 - 📜 **VSO Independence Statement:** [vso/policies/](vso/policies/)
   - 🇬🇧 English: [vso/policies/index.html](vso/policies/index.html)
   - 🇯🇵 Japanese: [vso/policies/ja/index.html](vso/policies/ja/index.html)
-- ✅ **VC-Certified Program:** [certified/index.html](certified/index.html) ⭐ NEW
+- 🌐 **VSO as Distributed Standards Organization:** [distributed-organization/](distributed-organization/) ⭐ NEW
+  - 🇬🇧 English: [distributed-organization/index.html](distributed-organization/index.html)
+  - 🇯🇵 Japanese: [distributed-organization/ja/index.html](distributed-organization/ja/index.html)
+  - 🇨🇳 Chinese: [distributed-organization/zh/index.html](distributed-organization/zh/index.html)
+  - Official organizational policy declaration on distributed operations
+- ✅ **VC-Certified Program:** [certified/index.html](certified/index.html)
   - 🇬🇧 English certification program page
   - Compliance tiers, target audience, module coverage
-- 🏦 **Prop Firms Landing:** [propfirms/index.html](propfirms/index.html) ⭐ NEW
+- 🏦 **Prop Firms Landing:** [propfirms/index.html](propfirms/index.html)
   - 🇬🇧 English: [propfirms/index.html](propfirms/index.html)
   - 🇯🇵 Japanese: [propfirms/ja/index.html](propfirms/ja/index.html)
   - Trust recovery solution for proprietary trading firms
