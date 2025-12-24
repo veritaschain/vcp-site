@@ -89,6 +89,7 @@ class VCPHeader extends HTMLElement {
                 openApiSpec: 'OpenAPI Spec',
                 github: 'GitHub (vcp-explorer-api)',
                 overview: 'Overview',
+                aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: 'Distributed Organization',
                 vso: 'VSO',
                 company: 'Company',
@@ -140,6 +141,7 @@ class VCPHeader extends HTMLElement {
                 openApiSpec: 'OpenAPI仕様',
                 github: 'GitHub (vcp-explorer-api)',
                 overview: '概要',
+                aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: '分散型組織',
                 vso: 'VSO',
                 company: '会社情報',
@@ -191,6 +193,7 @@ class VCPHeader extends HTMLElement {
                 openApiSpec: 'OpenAPI规范',
                 github: 'GitHub (vcp-explorer-api)',
                 overview: '概述',
+                aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: '分布式组织',
                 vso: 'VSO',
                 company: '公司信息',
@@ -330,6 +333,7 @@ class VCPHeader extends HTMLElement {
                         </button>
                         <div class="dropdown-menu">
                             <a href="/overview/" class="dropdown-item">${t.overview}</a>
+                            <a href="/about/" class="dropdown-item">${t.aboutVso}</a>
                             <a href="/distributed-organization/" class="dropdown-item">${t.distributedOrganization}</a>
                             <a href="/vso" class="dropdown-item">${t.vso}</a>
                             <a href="/company/" class="dropdown-item">${t.company}</a>
