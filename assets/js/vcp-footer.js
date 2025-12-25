@@ -44,7 +44,7 @@ class VCPFooter extends HTMLElement {
 
         // Social media links
         this.socialLinks = [
-            { name: 'X', url: 'https://x.com/Veritas_chain', icon: 'fa-brands fa-x-twitter' },
+            { name: 'X', url: 'https://x.com/Veritas_chain', icon: 'fa-brands fa-square-x-twitter' },
             { name: 'LinkedIn', url: 'https://www.linkedin.com/company/110199945', icon: 'fa-brands fa-linkedin' },
             { name: 'Facebook', url: 'https://www.facebook.com/veritaschain', icon: 'fa-brands fa-facebook' },
             { name: 'Medium', url: 'https://medium.com/@veritaschain', icon: 'fa-brands fa-medium' },
