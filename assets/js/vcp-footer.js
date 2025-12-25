@@ -42,6 +42,15 @@ class VCPFooter extends HTMLElement {
     constructor() {
         super();
 
+        // Social media links
+        this.socialLinks = [
+            { name: 'X', url: 'https://x.com/Veritas_chain', icon: 'fa-brands fa-x-twitter' },
+            { name: 'LinkedIn', url: 'https://www.linkedin.com/company/110199945', icon: 'fa-brands fa-linkedin' },
+            { name: 'Facebook', url: 'https://www.facebook.com/veritaschain', icon: 'fa-brands fa-facebook' },
+            { name: 'Medium', url: 'https://medium.com/@veritaschain', icon: 'fa-brands fa-medium' },
+            { name: 'DEV.to', url: 'https://dev.to/veritaschain', icon: 'fa-brands fa-dev' }
+        ];
+
         // Translation data for all supported languages
         this.translations = {
             en: {
@@ -102,9 +111,19 @@ class VCPFooter extends HTMLElement {
         const lang = this.getAttribute('lang') || this.detectLanguage();
         const t = this.translations[lang] || this.translations.en;
 
+        // Generate social links HTML
+        const socialLinksHTML = this.socialLinks.map(link => 
+            `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="vcp-footer-social-link" aria-label="${link.name}">
+                <i class="${link.icon}"></i>
+            </a>`
+        ).join('');
+
         this.innerHTML = `
         <footer class="vcp-footer ${themeClass}">
             <div class="vcp-footer-container">
+                <div class="vcp-footer-social">
+                    ${socialLinksHTML}
+                </div>
                 <p class="vcp-footer-copyright">${t.copyright}</p>
                 <p class="vcp-footer-independence">${t.independence}</p>
                 <p class="vcp-footer-disclaimer">${t.disclaimer1}</p>
