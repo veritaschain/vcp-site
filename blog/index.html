@@ -375,7 +375,7 @@
                     <i class="fas fa-star" style="color: #fbbf24;"></i> Featured Post
                 </h2>
                 
-                <a href="/blog/posts/2025-12-27-ablenet-partnership/" class="featured-post" style="display: grid; grid-template-columns: 1fr 1fr; position: relative; text-decoration: none;">
+                <a href="/blog/posts/2025-12-27-ablenet-partnership/" class="featured-post" data-category="announcement" style="display: grid; grid-template-columns: 1fr 1fr; position: relative; text-decoration: none;">
                     <div class="featured-badge">
                         <i class="fas fa-fire"></i> Featured
                     </div>
@@ -415,7 +415,7 @@
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem;">
                     
                     <!-- Article: EU AI Act -->
-                    <a href="/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/" class="blog-card" style="text-decoration: none;">
+                    <a href="/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/" class="blog-card" data-category="technical" style="text-decoration: none;">
                         <div class="blog-card-image" style="display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-robot" style="font-size: 3rem; color: #8b5cf6; opacity: 0.6;"></i>
                         </div>
@@ -433,7 +433,7 @@
                     </a>
                     
                     <!-- Article: SEC Rule 17a-4 -->
-                    <a href="/blog/posts/2025-12-25-sec-rule-17a4/" class="blog-card" style="text-decoration: none;">
+                    <a href="/blog/posts/2025-12-25-sec-rule-17a4/" class="blog-card" data-category="regulation" style="text-decoration: none;">
                         <div class="blog-card-image" style="display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-balance-scale" style="font-size: 3rem; color: #f59e0b; opacity: 0.6;"></i>
                         </div>
@@ -451,7 +451,7 @@
                     </a>
                     
                     <!-- Article: MiFID II/III -->
-                    <a href="/blog/posts/2025-12-25-mifid-vcp/" class="blog-card" style="text-decoration: none;">
+                    <a href="/blog/posts/2025-12-25-mifid-vcp/" class="blog-card" data-category="regulation" style="text-decoration: none;">
                         <div class="blog-card-image" style="display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-chart-line" style="font-size: 3rem; color: #f59e0b; opacity: 0.6;"></i>
                         </div>
@@ -469,7 +469,7 @@
                     </a>
                     
                     <!-- Article: ABLENET Partnership -->
-                    <a href="/blog/posts/2025-12-27-ablenet-partnership/" class="blog-card" style="text-decoration: none;">
+                    <a href="/blog/posts/2025-12-27-ablenet-partnership/" class="blog-card" data-category="announcement" style="text-decoration: none;">
                         <div class="blog-card-image" style="display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-handshake" style="font-size: 3rem; color: #10b981; opacity: 0.6;"></i>
                         </div>
@@ -487,7 +487,7 @@
                     </a>
                     
                     <!-- Article: VCP v1.1 Announcement -->
-                    <a href="/blog/posts/2025-12-26-vcp-v1-1-announcement/" class="blog-card" style="text-decoration: none;">
+                    <a href="/blog/posts/2025-12-26-vcp-v1-1-announcement/" class="blog-card" data-category="announcement" style="text-decoration: none;">
                         <div class="blog-card-image" style="display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-code-branch" style="font-size: 3rem; color: #10b981; opacity: 0.6;"></i>
                         </div>
@@ -505,7 +505,7 @@
                     </a>
                     
                     <!-- Article: Technical Criticisms -->
-                    <a href="/blog/posts/2024-12-08-technical-criticisms/" class="blog-card" style="text-decoration: none;">
+                    <a href="/blog/posts/2024-12-08-technical-criticisms/" class="blog-card" data-category="technical" style="text-decoration: none;">
                         <div class="blog-card-image" style="display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-shield-alt" style="font-size: 3rem; color: #3b82f6; opacity: 0.6;"></i>
                         </div>
@@ -585,9 +585,32 @@
         // Category Filter Functionality
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
+                // Update active button
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-                // Future: Filter posts by category
+                
+                // Get selected category
+                const category = this.dataset.category;
+                
+                // Filter blog cards
+                document.querySelectorAll('.blog-card').forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Also filter featured post if needed
+                const featuredPost = document.querySelector('.featured-post');
+                if (featuredPost) {
+                    const featuredCategory = featuredPost.dataset.category;
+                    if (category === 'all' || featuredCategory === category) {
+                        featuredPost.closest('section').style.display = '';
+                    } else {
+                        featuredPost.closest('section').style.display = 'none';
+                    }
+                }
             });
         });
     </script>
