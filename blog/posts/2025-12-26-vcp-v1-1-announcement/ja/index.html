@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP v1.1：三層アーキテクチャによる外部検証可能性の強化 - VeritasChain Blog</title>
+    <meta name="description" content="VCP v1.1を発表：暗号学的完全性のための三層アーキテクチャ、全ティアで必須となるExternal Anchoring、マルチテナント展開向けのPolicy Identification。">
+    <meta name="keywords" content="VCP, VeritasChain Protocol, v1.1, 三層アーキテクチャ, External Anchoring, Merkle Tree, ハッシュチェーン, 監査証跡, 暗号学, アルゴリズム取引">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP v1.1：三層アーキテクチャによる外部検証可能性の強化">
+    <meta property="og:description" content="VCP v1.1を発表：全ティアで必須となるExternal AnchoringとPolicy Identification。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain Blog">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="article:published_time" content="2025-12-26T00:00:00Z">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Announcements">
+    <meta property="article:tag" content="VCP">
+    <meta property="article:tag" content="v1.1">
+    <meta property="article:tag" content="specification">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP v1.1：三層アーキテクチャによる外部検証可能性の強化">
+    <meta name="twitter:description" content="VCP v1.1を発表：全ティアで必須となるExternal AnchoringとPolicy Identification。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/ja/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+        }
+
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(16, 185, 129, 0.15) 0%, transparent 50%);
+        }
+        
+        .article-content {
+            background: #0f172a;
+            padding: 4rem 2rem;
+        }
+        
+        .prose {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .prose h2 {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .prose h3 {
+            color: #e2e8f0;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .prose p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .prose a {
+            color: #60a5fa;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        
+        .prose a:hover {
+            color: #93c5fd;
+        }
+        
+        .prose strong {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+        
+        .prose em {
+            font-style: italic;
+            color: #94a3b8;
+        }
+        
+        .prose blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: #94a3b8;
+            font-style: italic;
+            background: rgba(59, 130, 246, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .prose code {
+            background: rgba(30, 41, 59, 0.8);
+            color: #34d399;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+        
+        .prose pre {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .prose pre code {
+            background: transparent;
+            padding: 0;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .prose ul, .prose ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+        
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .prose th {
+            background: rgba(30, 41, 59, 0.8);
+            color: #f1f5f9;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .prose td {
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+        
+        .prose tr:nth-child(even) {
+            background: rgba(30, 41, 59, 0.3);
+        }
+        
+        .prose hr {
+            border: none;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+            margin: 3rem 0;
+        }
+        
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+        
+        .toc {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .toc h4 {
+            color: #f1f5f9;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        
+        .toc a:hover {
+            color: #60a5fa;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+        
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.8);
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+        
+        .share-btn:hover {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            margin-bottom: 2rem;
+        }
+        
+        .back-link:hover {
+            color: #60a5fa;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box h4 {
+            color: #60a5fa;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .version-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .version-box h4 {
+            color: #34d399;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .layer-diagram {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: #e2e8f0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box h4 {
+            color: #fbbf24;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+    </style>
+    
+    <!-- Structured Data - Article -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "VCP v1.1：三層アーキテクチャによる外部検証可能性の強化",
+        "description": "VCP v1.1を発表：暗号学的完全性のための三層アーキテクチャ、全ティアで必須となるExternal Anchoring、マルチテナント展開向けのPolicy Identification。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2025-12-26",
+        "dateModified": "2025-12-26",
+        "mainEntityOfPage": "https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/ja/",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "articleSection": "Announcements",
+        "keywords": ["VCP", "v1.1", "仕様", "External Anchoring", "Merkle Tree", "暗号監査"],
+        "inLanguage": "ja"
+    }
+    </script>
+</head>
+<body>
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Article Hero -->
+    <section class="article-hero">
+        <div style="position: relative; z-index: 1; max-width: 800px; margin: 0 auto;">
+            <a href="/blog/ja/" class="back-link">
+                <i class="fas fa-arrow-left"></i> ブログ一覧へ戻る
+            </a>
+            
+            <span class="category-badge">
+                <i class="fas fa-bullhorn"></i> アナウンス
+            </span>
+            
+            <h1 style="color: #f8fafc; font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin: 1rem 0 1.5rem;">
+                VCP v1.1：三層アーキテクチャによる外部検証可能性の強化
+            </h1>
+            
+            <p style="color: #94a3b8; font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem;">
+                全ティアで必須となるExternal Anchoring、明確な三層アーキテクチャ、マルチテナント展開向けのPolicy Identificationを含むVCP v1.1を発表。
+            </p>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-calendar"></i> 2025年12月26日
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-clock"></i> 12分で読めます
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-building"></i> VeritasChain Standards Organization
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="article-content">
+        <div class="prose">
+            
+            <!-- Version Badge -->
+            <div class="version-box">
+                <h4><i class="fas fa-code-branch"></i> VCP仕様 v1.1 ドラフト版リリース</h4>
+                <p style="color: #94a3b8; margin: 0;">v1.0とプロトコル互換 • 2026年Q1に正式版リリース予定</p>
+            </div>
+            
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h4><i class="fas fa-list" style="margin-right: 0.5rem; color: #60a5fa;"></i> 目次</h4>
+                <ul>
+                    <li><a href="#executive-summary">エグゼクティブサマリー</a></li>
+                    <li><a href="#why-v11">なぜv1.1なのか？アップデートの背景</a></li>
+                    <li><a href="#three-layer">三層アーキテクチャ</a></li>
+                    <li><a href="#prevhash">PrevHash：REQUIREDからOPTIONALへ</a></li>
+                    <li><a href="#policy-id">Policy Identification</a></li>
+                    <li><a href="#external-anchoring">External Anchoring：全ティアで必須に</a></li>
+                    <li><a href="#testing">テストと認証のアップデート</a></li>
+                    <li><a href="#migration">移行ガイド</a></li>
+                    <li><a href="#pqc">将来を見据えて：ポスト量子暗号</a></li>
+                    <li><a href="#conclusion">結論</a></li>
+                </ul>
+            </div>
+            
+            <h2 id="executive-summary">エグゼクティブサマリー</h2>
+            
+            <p>本日、<strong>VeritasChain Protocol（VCP）仕様 v1.1</strong>のドラフト版リリースを発表いたします。このアップデートでは、暗号学的完全性のための明確な三層アーキテクチャを導入し、External Anchoringを全ティアで必須とし、マルチテナント展開向けのPolicy Identificationを追加しています。</p>
+            
+            <div class="highlight-box">
+                <h4><i class="fas fa-clipboard-list"></i> 主要な変更点</h4>
+                <table style="margin: 0;">
+                    <thead>
+                        <tr>
+                            <th>変更内容</th>
+                            <th>影響</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>三層アーキテクチャ</td>
+                            <td>完全性メカニズムの明確な分離</td>
+                        </tr>
+                        <tr>
+                            <td>External Anchor → 全ティアでREQUIRED</td>
+                            <td>Silverティアでも日次アンカリングが必須に</td>
+                        </tr>
+                        <tr>
+                            <td>PrevHash → OPTIONAL</td>
+                            <td>検証可能性を損なわずに実装を簡素化</td>
+                        </tr>
+                        <tr>
+                            <td>Policy Identification → REQUIRED</td>
+                            <td>マルチティア・マルチポリシー展開が可能に</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p>VCP v1.1はv1.0と<strong>プロトコル互換</strong>です。既存の実装は引き続き動作しますが、v1.1 VC-Certified認証を取得するには一部アップデートが必要になる場合があります。</p>
+            
+            <hr>
+            
+            <h2 id="why-v11">なぜv1.1なのか？アップデートの背景</h2>
+            
+            <p>2025年11月にVCP v1.0をリリースした際、私たちの主な目標はアルゴリズム取引監査証跡の堅固な基盤を確立することでした。仕様は好評を博し、初期導入者はSilver、Gold、Platinumの各ティアでVCPを正常に実装しました。</p>
+            
+            <p>しかし、IETF SCITT Working Groupの参加者、規制コンサルタント、実装チームを含むコミュニティとの対話を通じて、構造的な課題が浮かび上がってきました。</p>
+            
+            <h3>v1.0における論理的不整合</h3>
+            
+            <p>v1.0では、仕様に以下のように記載されていました：</p>
+            
+            <ul>
+                <li><strong>Merkle Tree構築</strong>：全ティアでREQUIRED</li>
+                <li><strong>External Anchor</strong>：SilverティアではOPTIONAL</li>
+            </ul>
+            
+            <p>これはVCPの核心原則である<strong>「信じるな、検証せよ」</strong>にギャップを生み出していました。</p>
+            
+            <p>問題はこうです：Merkle Treeはそのルートの信頼性に依存します。Merkle Rootが一度も外部にアンカリングされなければ、ログ生成者が事後的にツリー全体を再構築することが理論上可能です。External Anchoringなしでは、「改ざん不可能性」の保証は生成者への信頼に依存していました—これはまさにVCPが排除しようとしていたものです。</p>
+            
+            <h3>解決策：必須のExternal Anchoring</h3>
+            
+            <p>v1.1では、External Anchoringを<strong>全ティアでREQUIRED</strong>とすることでこの問題を解決しました。各ティアに適切な頻度と、Silverティア実装向けの軽量オプションを用意しています。</p>
+            
+            <p>これは負担を増やすことではありません。最もシンプルなVCP展開であっても、規制当局や監査人が本当に必要としているもの—<strong>外部から検証可能な完全性の証明</strong>—を提供することを確実にするためです。</p>
+            
+            <hr>
+            
+            <h2 id="three-layer">三層アーキテクチャ</h2>
+            
+            <p>v1.1における最も重要な変更の一つは、完全性とセキュリティのための明確な<strong>三層アーキテクチャ</strong>の導入です。この構造は、異なる暗号メカニズムがどのように連携し、各層の保証がどこから生まれるかを明確にします。</p>
+            
+            <div class="layer-diagram">┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│  層3: 外部検証可能性                                                  │
+│  ─────────────────────                                              │
+│  目的: 生成者を信頼せずに第三者が検証可能                              │
+│                                                                     │
+│  コンポーネント:                                                      │
+│  ├─ デジタル署名 (Ed25519/Dilithium): REQUIRED                       │
+│  ├─ タイムスタンプ (ISO + int64デュアルフォーマット): REQUIRED          │
+│  └─ External Anchor (ブロックチェーン/TSA): REQUIRED                  │
+│                                                                     │
+│  頻度: ティア依存 (10分 / 1時間 / 24時間)                             │
+│                                                                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  層2: コレクション完全性    ← 外部検証可能性の核心                      │
+│  ────────────────────────                                           │
+│  目的: イベントバッチの完全性を証明                                    │
+│                                                                     │
+│  コンポーネント:                                                      │
+│  ├─ Merkle Tree (RFC 6962): REQUIRED                                │
+│  ├─ Merkle Root: REQUIRED                                           │
+│  └─ 監査パス (検証用): REQUIRED                                       │
+│                                                                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  層1: イベント完全性                                                  │
+│  ────────────────                                                   │
+│  目的: 個々のイベントの完全性                                          │
+│                                                                     │
+│  コンポーネント:                                                      │
+│  ├─ EventHash (正規化イベントのSHA-256): REQUIRED                    │
+│  └─ PrevHash (前イベントへのリンク): OPTIONAL                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘</div>
+            
+            <h3>この構造が重要な理由</h3>
+            
+            <p><strong>層1（イベント完全性）</strong>は、各イベントが完全で未改変であることを保証します。EventHashはイベント内容のフィンガープリントを提供します。</p>
+            
+            <p><strong>層2（コレクション完全性）</strong>は、イベントのバッチが完全であること—事後にイベントが追加、削除、または並べ替えられていないこと—を証明します。Merkle Tree構造により、バッチ内の任意のイベントの包含を効率的に検証できます。</p>
+            
+            <p><strong>層3（外部検証可能性）</strong>は、VCPがその核心的価値を提供する場所です。Merkle Rootを外部の不変ターゲット（ブロックチェーン、RFC 3161 TSA、または認証済みデータベース）にアンカリングすることで、<strong>ログ生成者が事後に修正できない証拠</strong>を作成します。</p>
+            
+            <p>これが「信じるな、検証せよ」を可能にするものです。第三者は、あなたを信頼することなく、監査証跡の完全性を独立して検証できます。</p>
+            
+            <hr>
+            
+            <h2 id="prevhash">PrevHash：REQUIREDからOPTIONALへ</h2>
+            
+            <p>よく寄せられる質問があります：<strong>「なぜハッシュチェーンをオプションにするのか？セキュリティが弱くなるのでは？」</strong></p>
+            
+            <p>短い答え：いいえ。その理由を説明します。</p>
+            
+            <h3>ハッシュチェーンが提供するもの</h3>
+            
+            <p>v1.0では、PrevHash（前イベントのハッシュへのリンク）はREQUIREDでした。これによりハッシュチェーンが作られ、いずれかのイベントが変更されると、それ以降のすべてのハッシュが無効になり、リアルタイムの改ざん検知を提供します。</p>
+            
+            <p>ハッシュチェーンは以下に有用です：</p>
+            <ul>
+                <li>イベントの損失や破損をリアルタイムで検出</li>
+                <li>コンプライアンスチームにとって馴染みのある監査証跡構造</li>
+                <li>多層防御の追加レイヤー</li>
+            </ul>
+            
+            <h3>ハッシュチェーンが提供しないもの</h3>
+            
+            <p>しかし、ハッシュチェーンには制限があります：<strong>すべてのデータを制御する者は誰でも再構築できます</strong>。</p>
+            
+            <p>悪意のあるログ生成者がイベントを変更し、それ以降のすべてのハッシュを更新したいと思えば、Merkle Rootをまだ外部にアンカリングしていない限り、それは可能です。</p>
+            
+            <p>そのため、重要な完全性メカニズムはハッシュチェーンではなく、External Anchoringです。</p>
+            
+            <h3>v1.1のアプローチ</h3>
+            
+            <p>v1.1では、PrevHashを<strong>OPTIONAL</strong>としました。その理由は：</p>
+            
+            <ol>
+                <li><strong>Merkle Tree + External Anchor</strong>が外部検証可能性の本質的な保証を提供する</li>
+                <li><strong>ハッシュチェーンは補完するが、External Anchoringを代替しない</strong></li>
+                <li><strong>Silverティアの実装を簡素化</strong>することで導入障壁を下げる</li>
+            </ol>
+            
+            <div class="warning-box">
+                <h4><i class="fas fa-exclamation-triangle"></i> 規制対応ユースケースへの推奨</h4>
+                <p style="margin: 0;">規制対応ユースケース（MiFID II RTS 25、SEC CAT Rule 613）を対象とする実装では、ハッシュチェーンの有効化を<strong>推奨</strong>します。GoldおよびPlatinumティアの実装では、PrevHashをベストプラクティスと見なすべきです。</p>
+            </div>
+            
+            <hr>
+            
+            <h2 id="policy-id">Policy Identification：マルチテナント展開のサポート</h2>
+            
+            <p>v1.1では、<strong>Policy Identification</strong>をREQUIREDフィールドとして導入します。この一見小さな追加が、エンタープライズ展開に大きな影響を与えます。</p>
+            
+            <h3>問題</h3>
+            
+            <p>実際の展開では、組織はしばしば以下を必要とします：</p>
+            
+            <ul>
+                <li>異なるティアで複数のVCP実装を運用（開発環境 vs 本番環境）</li>
+                <li>異なるビジネスユニットに対して別々のポリシーを運用</li>
+                <li>検証者が適切な検証ルールを適用できるようにする</li>
+            </ul>
+            
+            <p>明示的なポリシー宣言がなければ、検証者は特定のイベントストリームにどのルールが適用されるか推測しなければなりません。</p>
+            
+            <h3>解決策</h3>
+            
+            <p>すべてのVCPイベントが、適合ティアと登録ポリシーを明示的に宣言するようになりました：</p>
+            
+            <pre><code>{
+  "PolicyIdentification": {
+    "Version": "1.1",
+    "PolicyID": "org.veritaschain.prod:hft-system-001",
+    "ConformanceTier": "PLATINUM",
+    "RegistrationPolicy": {
+      "Issuer": "VeritasChain Inc.",
+      "PolicyURI": "https://veritaschain.org/policies/prod-hft",
+      "EffectiveDate": 1735084800000
+    },
+    "VerificationDepth": {
+      "HashChainValidation": true,
+      "MerkleProofRequired": true,
+      "ExternalAnchorRequired": true
+    }
+  }
+}</code></pre>
+            
+            <h3>PolicyID命名規則</h3>
+            
+            <p>中央レジストリを必要とせずにグローバルな一意性を確保するため、<strong>発行者ドメイン + ローカルID</strong>形式を推奨します：</p>
+            
+            <pre><code>PolicyID = &lt;逆ドメイン&gt;:&lt;ローカル識別子&gt;
+
+例:
+  org.veritaschain.prod:hft-system-001
+  com.acme.trading:gold-algo-v2
+  jp.co.broker:silver-mt5-bridge</code></pre>
+            
+            <hr>
+            
+            <h2 id="external-anchoring">External Anchoring：全ティアで必須に</h2>
+            
+            <p>v1.1における最も影響の大きな変更は、External Anchoringを<strong>全ティアでREQUIRED</strong>とすることです。</p>
+            
+            <h3>ティア別要件</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>ティア</th>
+                        <th>頻度</th>
+                        <th>アンカーターゲット</th>
+                        <th>証明タイプ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Platinum</strong></td>
+                        <td>10分ごと</td>
+                        <td>ブロックチェーンまたはRFC 3161 TSA</td>
+                        <td>完全なMerkle証明</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gold</strong></td>
+                        <td>1時間ごと</td>
+                        <td>RFC 3161 TSAまたは認証済みデータベース</td>
+                        <td>Merkle Root + 監査パス</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Silver</strong></td>
+                        <td>24時間ごと</td>
+                        <td>公開タイムスタンプサービスまたは認証済みデータベース</td>
+                        <td>Merkle Rootのみ</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Silverティア：軽量オプション</h3>
+            
+            <p>Silverティアは開発、テスト、非規制取引シナリオに対応することを認識しています。ブロックチェーンアンカリングを要求するのは過剰です。</p>
+            
+            <p>そのため、Silverには軽量アンカリングメカニズムを明示的に許可しています：</p>
+            
+            <ul>
+                <li><strong>OpenTimestamps</strong>：無料、Bitcoinを利用したタイムスタンプ</li>
+                <li><strong>FreeTSA</strong>：無料のRFC 3161準拠サービス</li>
+                <li><strong>OriginStamp</strong>：無料ティアを持つ商用サービス</li>
+            </ul>
+            
+            <h3>認証済みデータベース：何が該当するか？</h3>
+            
+            <p>GoldおよびSilverティアでは、「認証済みデータベース」が許容されるアンカーターゲットです。しかし、何をもってデータベースが「認証済み」となるのでしょうか？</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>基準</th>
+                        <th>要件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>第三者監査</strong></td>
+                        <td>独立機関による年次監査</td>
+                    </tr>
+                    <tr>
+                        <td><strong>改ざん検知</strong></td>
+                        <td>暗号学的完全性チェック</td>
+                    </tr>
+                    <tr>
+                        <td><strong>アクセス制御</strong></td>
+                        <td>SOC 2 Type IIまたは同等</td>
+                    </tr>
+                    <tr>
+                        <td><strong>保持ポリシー</strong></td>
+                        <td>7年以上</td>
+                    </tr>
+                    <tr>
+                        <td><strong>可用性SLA</strong></td>
+                        <td>99.9%以上のアップタイム</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <hr>
+            
+            <h2 id="testing">テストと認証のアップデート</h2>
+            
+            <h3>新しい重要テスト</h3>
+            
+            <p>v1.1では、認証取得のために実装がパスしなければならない新しい重要テストを導入します：</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>テストID</th>
+                        <th>説明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>MKL-001</strong></td>
+                        <td>Merkle Tree構築</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MKL-002</strong></td>
+                        <td>Merkle証明検証</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ANC-001</strong></td>
+                        <td>External Anchorの存在</td>
+                    </tr>
+                    <tr>
+                        <td><strong>POL-001</strong></td>
+                        <td>Policy Identification</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>認証ガバナンスについて</h3>
+            
+            <p>VC-Certified認証は、VSOから直接ではなく、<strong>VSOが認定した適合性評価機関（CAB）</strong>によって発行されます。VSOはスキームオーナーとして機能し、標準の開発とCABの認定を担当します。</p>
+            
+            <p>この構造は、PCI-DSS、ISOなどの成熟した認証スキームで確立されたモデルに従い、標準策定と認証の独立性を確保します。</p>
+            
+            <hr>
+            
+            <h2 id="migration">移行ガイド</h2>
+            
+            <h3>既存のv1.0実装向け</h3>
+            
+            <p>VCP v1.1はv1.0と<strong>プロトコル互換</strong>です。既存の実装は引き続き動作します。ただし、v1.1 VC-Certifiedステータスを取得するには、以下の追加が必要な場合があります：</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>あなたのティア</th>
+                        <th>必要な変更</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Silver</strong></td>
+                        <td>External Anchoring（日次）を追加、Policy Identificationを追加</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gold</strong></td>
+                        <td>Policy Identificationを追加、アンカリングが要件を満たすか確認</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Platinum</strong></td>
+                        <td>Policy Identificationを追加、アンカリングが要件を満たすか確認</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>猶予期間</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>要件</th>
+                        <th>猶予期間</th>
+                        <th>最終期限</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>External Anchor（Silver）</td>
+                        <td>6か月</td>
+                        <td>2026年6月25日</td>
+                    </tr>
+                    <tr>
+                        <td>Policy Identification</td>
+                        <td>3か月</td>
+                        <td>2026年3月25日</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>最終期限後、v1.0のみの実装は新規認証でVC-Certifiedステータスを取得できなくなります。</p>
+            
+            <hr>
+            
+            <h2 id="pqc">将来を見据えて：ポスト量子暗号</h2>
+            
+            <p>v1.1の規範的要件ではありませんが、<strong>付録E：ポスト量子暗号移行ガイダンス</strong>を追加し、量子時代への準備を支援しています。</p>
+            
+            <h3>推奨アプローチ：デュアル署名</h3>
+            
+            <p>PQC移行期間中、実装はデュアル署名を使用できます：</p>
+            
+            <pre><code>{
+  "Security": {
+    "Signature": "base64(Ed25519_signature)",
+    "SignAlgo": "ED25519",
+    "PQCSignature": "base64(Dilithium2_signature)",
+    "PQCSignAlgo": "DILITHIUM2"
+  }
+}</code></pre>
+            
+            <h3>移行タイムライン（参考）</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>フェーズ</th>
+                        <th>期間</th>
+                        <th>アクション</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>準備</strong></td>
+                        <td>2025-2026</td>
+                        <td>デュアル署名機能を実装</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ハイブリッド</strong></td>
+                        <td>2027-2029</td>
+                        <td>本番環境でデュアル署名を展開</td>
+                    </tr>
+                    <tr>
+                        <td><strong>移行</strong></td>
+                        <td>2030年以降</td>
+                        <td>古典的署名のみを段階的に廃止</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <hr>
+            
+            <h2 id="conclusion">結論：信じるな、検証せよ</h2>
+            
+            <p>VCP v1.1は、<strong>「信じるな、検証せよ」</strong>の原則への私たちのコミットメントを強化します。</p>
+            
+            <p>External Anchoringを全ティアで必須とすることで、開発者のMT5バックテスト環境から高頻度取引会社の本番システムまで、あらゆるVCP展開が同じ基本的保証を提供することを確実にします：</p>
+            
+            <div class="highlight-box" style="text-align: center; border-color: rgba(59, 130, 246, 0.5);">
+                <p style="font-size: 1.25rem; color: #f1f5f9; font-weight: 700; margin: 0;"><strong>第三者は、あなたを信頼することなく、監査証跡の完全性を検証できる。</strong></p>
+            </div>
+            
+            <p style="text-align: center; margin-top: 2rem;">これがアルゴリズム取引に必要なものです。これが規制当局が求めているものです。<br><strong>そしてこれが、VCP v1.1が提供するものです。</strong></p>
+            
+            <hr>
+            
+            <h3>リソース</h3>
+            
+            <ul>
+                <li><a href="https://github.com/veritaschain/vcp-spec" target="_blank">VCP v1.1仕様（ドラフト版）- GitHub</a></li>
+                <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">IETFインターネットドラフト：draft-kamimura-scitt-vcp</a></li>
+                <li><a href="https://veritaschain.org/certification/" target="_blank">VC-Certifiedプログラム</a></li>
+                <li><a href="https://docs.veritaschain.org" target="_blank">開発者ドキュメント</a></li>
+            </ul>
+            
+            <hr>
+            
+            <h3>参加方法</h3>
+            
+            <p>v1.1ドラフト仕様へのフィードバックを歓迎します。参加方法は以下の通りです：</p>
+            
+            <ul>
+                <li><strong>GitHub Issues</strong>：技術的フィードバックとバグ報告</li>
+                <li><strong>メール</strong>：<a href="mailto:standards@veritaschain.org">standards@veritaschain.org</a> 正式なコメント向け</li>
+                <li><strong>IETF SCITT WG</strong>：アルゴリズム透明性標準に関する議論に参加</li>
+            </ul>
+            
+            <p>v1.1仕様は<strong>ドラフトステータス</strong>です。コミュニティからのフィードバックを取り入れた後、2026年Q1に正式版をリリースする予定です。</p>
+            
+            <hr>
+            
+            <p style="text-align: center; font-style: italic; color: #94a3b8;">「事故が起きる前に学ぶことができる文明を。」</p>
+            
+            <hr>
+            
+            <p><em>この記事は、VeritasChain Standards Organization（VSO）が技術教育目的で提供しています。</em></p>
+            
+            <p><em>お問い合わせ：<a href="mailto:info@veritaschain.org">info@veritaschain.org</a></em></p>
+            
+            <!-- Share Buttons -->
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(59, 130, 246, 0.2);">
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">この記事をシェア：</p>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/ja/&text=VCP%20v1.1%EF%BC%9A%E4%B8%89%E5%B1%A4%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E3%81%AB%E3%82%88%E3%82%8B%E5%A4%96%E9%83%A8%E6%A4%9C%E8%A8%BC%E5%8F%AF%E8%83%BD%E6%80%A7%E3%81%AE%E5%BC%B7%E5%8C%96" target="_blank" class="share-btn" title="Twitterでシェア">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/ja/" target="_blank" class="share-btn" title="LinkedInでシェア">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/veritaschain" target="_blank" class="share-btn" title="GitHubで見る">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </article>
+
+    <!-- Related Posts / CTA -->
+    <section style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 4rem 2rem; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="color: #f1f5f9; font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">
+                VCPリソースを探索
+            </h2>
+            <p style="color: #94a3b8; font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                VCPと規制要件への対応方法についてさらに詳しく学びましょう。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <a href="https://github.com/VeritasChain/vcp-spec" class="btn btn-primary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fas fa-book"></i> 仕様を読む
+                </a>
+                <a href="https://veritaschain.org/explorer/app/" class="btn btn-secondary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fas fa-search"></i> Explorerを試す
+                </a>
+                <a href="/blog/ja/" class="btn btn-secondary" style="padding: 1rem 2rem;">
+                    <i class="fas fa-arrow-left"></i> ブログ一覧へ
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="ja"></vcp-footer>
+</body>
+</html>

@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP v1.1: Strengthening External Verifiability with Three-Layer Architecture - VeritasChain Blog</title>
+    <meta name="description" content="Announcing VCP v1.1 with three-layer architecture for cryptographic integrity, mandatory External Anchoring for all tiers, and Policy Identification for multi-tenant deployments.">
+    <meta name="keywords" content="VCP, VeritasChain Protocol, v1.1, three-layer architecture, external anchoring, Merkle tree, hash chain, audit trail, cryptography, algorithmic trading">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP v1.1: Strengthening External Verifiability with Three-Layer Architecture">
+    <meta property="og:description" content="Announcing VCP v1.1 with mandatory External Anchoring for all tiers and Policy Identification for multi-tenant deployments.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain Blog">
+    <meta property="article:published_time" content="2025-12-26T00:00:00Z">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Announcements">
+    <meta property="article:tag" content="VCP">
+    <meta property="article:tag" content="v1.1">
+    <meta property="article:tag" content="specification">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP v1.1: Three-Layer Architecture for External Verifiability">
+    <meta name="twitter:description" content="Announcing VCP v1.1 with mandatory External Anchoring and Policy Identification.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        /* Article Page Styles */
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(16, 185, 129, 0.15) 0%, transparent 50%);
+        }
+        
+        .article-content {
+            background: #0f172a;
+            padding: 4rem 2rem;
+        }
+        
+        .prose {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .prose h2 {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .prose h3 {
+            color: #e2e8f0;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .prose p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .prose a {
+            color: #60a5fa;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        
+        .prose a:hover {
+            color: #93c5fd;
+        }
+        
+        .prose strong {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+        
+        .prose em {
+            font-style: italic;
+            color: #94a3b8;
+        }
+        
+        .prose blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: #94a3b8;
+            font-style: italic;
+            background: rgba(59, 130, 246, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .prose code {
+            background: rgba(30, 41, 59, 0.8);
+            color: #34d399;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+        
+        .prose pre {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .prose pre code {
+            background: transparent;
+            padding: 0;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .prose ul, .prose ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+        
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .prose th {
+            background: rgba(30, 41, 59, 0.8);
+            color: #f1f5f9;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .prose td {
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+        
+        .prose tr:nth-child(even) {
+            background: rgba(30, 41, 59, 0.3);
+        }
+        
+        .prose hr {
+            border: none;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+            margin: 3rem 0;
+        }
+        
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+        
+        .toc {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .toc h4 {
+            color: #f1f5f9;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        
+        .toc a:hover {
+            color: #60a5fa;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+        
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.8);
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+        
+        .share-btn:hover {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            margin-bottom: 2rem;
+        }
+        
+        .back-link:hover {
+            color: #60a5fa;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box h4 {
+            color: #60a5fa;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .version-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .version-box h4 {
+            color: #34d399;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .layer-diagram {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: #e2e8f0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box h4 {
+            color: #fbbf24;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+    </style>
+    
+    <!-- Structured Data - Article -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "VCP v1.1: Strengthening External Verifiability with Three-Layer Architecture",
+        "description": "Announcing VCP v1.1 with three-layer architecture for cryptographic integrity, mandatory External Anchoring for all tiers, and Policy Identification for multi-tenant deployments.",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2025-12-26",
+        "dateModified": "2025-12-26",
+        "mainEntityOfPage": "https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "articleSection": "Announcements",
+        "keywords": ["VCP", "v1.1", "specification", "external anchoring", "Merkle tree", "cryptographic audit"]
+    }
+    </script>
+</head>
+<body>
+    <vcp-header theme="dark" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Article Hero -->
+    <section class="article-hero">
+        <div style="position: relative; z-index: 1; max-width: 800px; margin: 0 auto;">
+            <a href="/blog/" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Blog
+            </a>
+            
+            <span class="category-badge">
+                <i class="fas fa-bullhorn"></i> Announcements
+            </span>
+            
+            <h1 style="color: #f8fafc; font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin: 1rem 0 1.5rem;">
+                VCP v1.1: Strengthening External Verifiability with Three-Layer Architecture
+            </h1>
+            
+            <p style="color: #94a3b8; font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem;">
+                Announcing VCP v1.1 with mandatory External Anchoring for all tiers, clear three-layer architecture, and Policy Identification for multi-tenant deployments.
+            </p>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-calendar"></i> December 26, 2025
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-clock"></i> 12 min read
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-building"></i> VeritasChain Standards Organization
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="article-content">
+        <div class="prose">
+            
+            <!-- Version Badge -->
+            <div class="version-box">
+                <h4><i class="fas fa-code-branch"></i> VCP Specification v1.1 Draft Released</h4>
+                <p style="color: #94a3b8; margin: 0;">Protocol-compatible with v1.0 • Finalization planned Q1 2026</p>
+            </div>
+            
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h4><i class="fas fa-list" style="margin-right: 0.5rem; color: #60a5fa;"></i> Table of Contents</h4>
+                <ul>
+                    <li><a href="#executive-summary">Executive Summary</a></li>
+                    <li><a href="#why-v11">Why v1.1? The Story Behind the Update</a></li>
+                    <li><a href="#three-layer">The Three-Layer Architecture</a></li>
+                    <li><a href="#prevhash">PrevHash: From REQUIRED to OPTIONAL</a></li>
+                    <li><a href="#policy-id">Policy Identification</a></li>
+                    <li><a href="#external-anchoring">External Anchoring: Now Required for All Tiers</a></li>
+                    <li><a href="#testing">Testing and Certification Updates</a></li>
+                    <li><a href="#migration">Migration Guide</a></li>
+                    <li><a href="#pqc">Looking Ahead: Post-Quantum Cryptography</a></li>
+                    <li><a href="#conclusion">Conclusion</a></li>
+                </ul>
+            </div>
+            
+            <h2 id="executive-summary">Executive Summary</h2>
+            
+            <p>Today, we are pleased to announce the draft release of <strong>VeritasChain Protocol (VCP) Specification v1.1</strong>. This update introduces a clear three-layer architecture for cryptographic integrity, makes External Anchoring mandatory for all tiers, and adds Policy Identification for multi-tenant deployments.</p>
+            
+            <div class="highlight-box">
+                <h4><i class="fas fa-clipboard-list"></i> Key Changes at a Glance</h4>
+                <table style="margin: 0;">
+                    <thead>
+                        <tr>
+                            <th>Change</th>
+                            <th>Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Three-Layer Architecture</td>
+                            <td>Clearer separation of integrity mechanisms</td>
+                        </tr>
+                        <tr>
+                            <td>External Anchor → REQUIRED for all tiers</td>
+                            <td>Silver tier now requires daily anchoring</td>
+                        </tr>
+                        <tr>
+                            <td>PrevHash → OPTIONAL</td>
+                            <td>Simplifies implementation without sacrificing verifiability</td>
+                        </tr>
+                        <tr>
+                            <td>Policy Identification → REQUIRED</td>
+                            <td>Enables multi-tier, multi-policy deployments</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p>VCP v1.1 is <strong>protocol-compatible</strong> with v1.0. Existing implementations will continue to work, though some may need updates to achieve v1.1 VC-Certified status.</p>
+            
+            <hr>
+            
+            <h2 id="why-v11">Why v1.1? The Story Behind the Update</h2>
+            
+            <p>When we released VCP v1.0 in November 2025, our primary goal was to establish a robust foundation for algorithmic trading audit trails. The specification was well-received, with early adopters successfully implementing VCP across Silver, Gold, and Platinum tiers.</p>
+            
+            <p>However, as we engaged with the community—including feedback from IETF SCITT Working Group participants, regulatory consultants, and implementation teams—a structural issue emerged.</p>
+            
+            <h3>The Logical Inconsistency in v1.0</h3>
+            
+            <p>In v1.0, the specification stated:</p>
+            
+            <ul>
+                <li><strong>Merkle Tree construction</strong>: REQUIRED for all tiers</li>
+                <li><strong>External Anchor</strong>: OPTIONAL for Silver tier</li>
+            </ul>
+            
+            <p>This created a gap in VCP's core principle of <strong>"Verify, Don't Trust."</strong></p>
+            
+            <p>Here's the problem: A Merkle Tree is only as trustworthy as its root. If the Merkle Root is never externally anchored, the log producer could theoretically reconstruct the entire tree after the fact. Without external anchoring, the "immutability" guarantee relied on trusting the producer—exactly what VCP was designed to eliminate.</p>
+            
+            <h3>The Solution: Mandatory External Anchoring</h3>
+            
+            <p>v1.1 resolves this by making External Anchoring <strong>REQUIRED for all tiers</strong>, with tier-appropriate frequencies and lightweight options for Silver tier implementations.</p>
+            
+            <p>This isn't about adding burden—it's about ensuring that even the simplest VCP deployment provides what regulators and auditors actually need: <strong>externally verifiable proof of integrity</strong>.</p>
+            
+            <hr>
+            
+            <h2 id="three-layer">The Three-Layer Architecture</h2>
+            
+            <p>One of the most significant changes in v1.1 is the introduction of a clear <strong>three-layer architecture</strong> for integrity and security. This structure clarifies how different cryptographic mechanisms work together and where each layer's guarantees originate.</p>
+            
+            <div class="layer-diagram">┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│  LAYER 3: External Verifiability                                    │
+│  ─────────────────────────────────                                  │
+│  Purpose: Third-party verification without trusting the producer    │
+│                                                                     │
+│  Components:                                                        │
+│  ├─ Digital Signature (Ed25519/Dilithium): REQUIRED                │
+│  ├─ Timestamp (dual format ISO+int64): REQUIRED                    │
+│  └─ External Anchor (Blockchain/TSA): REQUIRED                     │
+│                                                                     │
+│  Frequency: Tier-dependent (10min / 1hr / 24hr)                    │
+│                                                                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  LAYER 2: Collection Integrity    ← Core for external verifiability│
+│  ────────────────────────────────                                   │
+│  Purpose: Prove completeness of event batches                       │
+│                                                                     │
+│  Components:                                                        │
+│  ├─ Merkle Tree (RFC 6962): REQUIRED                               │
+│  ├─ Merkle Root: REQUIRED                                          │
+│  └─ Audit Path (for verification): REQUIRED                        │
+│                                                                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  LAYER 1: Event Integrity                                           │
+│  ────────────────────────                                           │
+│  Purpose: Individual event completeness                             │
+│                                                                     │
+│  Components:                                                        │
+│  ├─ EventHash (SHA-256 of canonical event): REQUIRED               │
+│  └─ PrevHash (link to previous event): OPTIONAL                    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘</div>
+            
+            <h3>Why This Structure Matters</h3>
+            
+            <p><strong>Layer 1 (Event Integrity)</strong> ensures each individual event is complete and unmodified. The EventHash provides a fingerprint of the event's contents.</p>
+            
+            <p><strong>Layer 2 (Collection Integrity)</strong> proves that a batch of events is complete—no events were added, removed, or reordered after the fact. The Merkle Tree structure enables efficient verification of any single event's inclusion in the batch.</p>
+            
+            <p><strong>Layer 3 (External Verifiability)</strong> is where VCP delivers its core value proposition. By anchoring the Merkle Root to an external, immutable target (blockchain, RFC 3161 TSA, or attested database), we create proof that <strong>cannot be retroactively modified by the log producer</strong>.</p>
+            
+            <p>This is what makes "Verify, Don't Trust" possible. A third party can independently verify the integrity of your audit trail without trusting you.</p>
+            
+            <hr>
+            
+            <h2 id="prevhash">PrevHash: From REQUIRED to OPTIONAL</h2>
+            
+            <p>One question we've received frequently: <strong>"Why make hash chains optional? Doesn't that weaken security?"</strong></p>
+            
+            <p>The short answer: No. Here's why.</p>
+            
+            <h3>What Hash Chains Provide</h3>
+            
+            <p>In v1.0, PrevHash (the link to the previous event's hash) was REQUIRED. This creates a hash chain—if any event is modified, all subsequent hashes become invalid, providing real-time tamper detection.</p>
+            
+            <p>Hash chains are valuable for:</p>
+            <ul>
+                <li>Detecting event loss or corruption in real-time</li>
+                <li>Familiar audit trail structure for compliance teams</li>
+                <li>Additional layer of defense-in-depth</li>
+            </ul>
+            
+            <h3>What Hash Chains Don't Provide</h3>
+            
+            <p>However, hash chains have a limitation: <strong>they can be reconstructed by anyone who controls all the data</strong>.</p>
+            
+            <p>If a malicious log producer wants to modify an event and update all subsequent hashes, they can do so—as long as they haven't externally anchored the Merkle Root yet.</p>
+            
+            <p>This is why External Anchoring is the critical integrity mechanism, not hash chaining.</p>
+            
+            <h3>The v1.1 Approach</h3>
+            
+            <p>In v1.1, we've made PrevHash <strong>OPTIONAL</strong> because:</p>
+            
+            <ol>
+                <li><strong>Merkle Tree + External Anchor</strong> provides the essential guarantee of external verifiability</li>
+                <li><strong>Hash chains complement but don't replace</strong> external anchoring</li>
+                <li><strong>Simplifying Silver tier</strong> implementations reduces adoption barriers</li>
+            </ol>
+            
+            <div class="warning-box">
+                <h4><i class="fas fa-exclamation-triangle"></i> Recommendation for Regulatory Use Cases</h4>
+                <p style="margin: 0;">For implementations targeting regulatory use cases (MiFID II RTS 25, SEC CAT Rule 613), we <strong>RECOMMEND</strong> enabling hash chains. Gold and Platinum tier implementations should consider PrevHash a best practice.</p>
+            </div>
+            
+            <hr>
+            
+            <h2 id="policy-id">Policy Identification: Supporting Multi-Tenant Deployments</h2>
+            
+            <p>v1.1 introduces <strong>Policy Identification</strong> as a REQUIRED field. This seemingly small addition has significant implications for enterprise deployments.</p>
+            
+            <h3>The Problem</h3>
+            
+            <p>In real-world deployments, organizations often need to:</p>
+            
+            <ul>
+                <li>Run multiple VCP implementations at different tiers (development vs. production)</li>
+                <li>Operate distinct policies for different business units</li>
+                <li>Enable verifiers to apply appropriate validation rules</li>
+            </ul>
+            
+            <p>Without explicit policy declaration, verifiers must guess which rules apply to a given event stream.</p>
+            
+            <h3>The Solution</h3>
+            
+            <p>Every VCP event now explicitly declares its conformance tier and registration policy:</p>
+            
+            <pre><code>{
+  "PolicyIdentification": {
+    "Version": "1.1",
+    "PolicyID": "org.veritaschain.prod:hft-system-001",
+    "ConformanceTier": "PLATINUM",
+    "RegistrationPolicy": {
+      "Issuer": "VeritasChain Inc.",
+      "PolicyURI": "https://veritaschain.org/policies/prod-hft",
+      "EffectiveDate": 1735084800000
+    },
+    "VerificationDepth": {
+      "HashChainValidation": true,
+      "MerkleProofRequired": true,
+      "ExternalAnchorRequired": true
+    }
+  }
+}</code></pre>
+            
+            <h3>PolicyID Naming Convention</h3>
+            
+            <p>To ensure global uniqueness without requiring a central registry, we recommend the <strong>Issuer Domain + Local ID</strong> format:</p>
+            
+            <pre><code>PolicyID = &lt;reverse_domain&gt;:&lt;local_identifier&gt;
+
+Examples:
+  org.veritaschain.prod:hft-system-001
+  com.acme.trading:gold-algo-v2
+  jp.co.broker:silver-mt5-bridge</code></pre>
+            
+            <hr>
+            
+            <h2 id="external-anchoring">External Anchoring: Now Required for All Tiers</h2>
+            
+            <p>The most impactful change in v1.1 is making External Anchoring <strong>REQUIRED for all tiers</strong>.</p>
+            
+            <h3>Tier-Specific Requirements</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Frequency</th>
+                        <th>Anchor Target</th>
+                        <th>Proof Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Platinum</strong></td>
+                        <td>Every 10 minutes</td>
+                        <td>Blockchain or RFC 3161 TSA</td>
+                        <td>Full Merkle proof</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gold</strong></td>
+                        <td>Every 1 hour</td>
+                        <td>RFC 3161 TSA or attested database</td>
+                        <td>Merkle root + audit path</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Silver</strong></td>
+                        <td>Every 24 hours</td>
+                        <td>Public timestamping service or attested database</td>
+                        <td>Merkle root only</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Silver Tier: Lightweight Options</h3>
+            
+            <p>We recognize that Silver tier serves development, testing, and non-regulated trading scenarios. Requiring blockchain anchoring would be overkill.</p>
+            
+            <p>That's why we've explicitly permitted lightweight anchoring mechanisms for Silver:</p>
+            
+            <ul>
+                <li><strong>OpenTimestamps</strong>: Free, Bitcoin-backed timestamping</li>
+                <li><strong>FreeTSA</strong>: Free RFC 3161 compliant service</li>
+                <li><strong>OriginStamp</strong>: Commercial service with free tier</li>
+            </ul>
+            
+            <h3>Attested Database: What Qualifies?</h3>
+            
+            <p>For Gold and Silver tiers, "Attested Database" is an acceptable anchor target. But what makes a database "attested"?</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criterion</th>
+                        <th>Requirement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Third-Party Audit</strong></td>
+                        <td>Annual audit by independent party</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tamper Detection</strong></td>
+                        <td>Cryptographic integrity checks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Access Controls</strong></td>
+                        <td>SOC 2 Type II or equivalent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Retention Policy</strong></td>
+                        <td>≥ 7 years</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Availability SLA</strong></td>
+                        <td>≥ 99.9% uptime</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <hr>
+            
+            <h2 id="testing">Testing and Certification Updates</h2>
+            
+            <h3>New Critical Tests</h3>
+            
+            <p>v1.1 introduces new critical tests that implementations must pass for certification:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test ID</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>MKL-001</strong></td>
+                        <td>Merkle tree construction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MKL-002</strong></td>
+                        <td>Merkle proof verification</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ANC-001</strong></td>
+                        <td>External anchor presence</td>
+                    </tr>
+                    <tr>
+                        <td><strong>POL-001</strong></td>
+                        <td>Policy Identification</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Certification Governance Reminder</h3>
+            
+            <p>VC-Certified certification is issued by <strong>VSO-accredited Conformity Assessment Bodies (CABs)</strong>, not by VSO directly. VSO functions as the Scheme Owner, responsible for standard development and CAB accreditation.</p>
+            
+            <p>This structure ensures independence between standard-setting and certification, following the model established by PCI-DSS, ISO, and other mature certification schemes.</p>
+            
+            <hr>
+            
+            <h2 id="migration">Migration Guide</h2>
+            
+            <h3>For Existing v1.0 Implementations</h3>
+            
+            <p>VCP v1.1 is <strong>protocol-compatible</strong> with v1.0. Your existing implementation will continue to work. However, to achieve v1.1 VC-Certified status, you may need to add:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Your Tier</th>
+                        <th>Required Changes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Silver</strong></td>
+                        <td>Add External Anchoring (daily), Add Policy Identification</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gold</strong></td>
+                        <td>Add Policy Identification, Verify anchoring meets requirements</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Platinum</strong></td>
+                        <td>Add Policy Identification, Verify anchoring meets requirements</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Grace Period</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Requirement</th>
+                        <th>Grace Period</th>
+                        <th>Hard Deadline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>External Anchor (Silver)</td>
+                        <td>6 months</td>
+                        <td>June 25, 2026</td>
+                    </tr>
+                    <tr>
+                        <td>Policy Identification</td>
+                        <td>3 months</td>
+                        <td>March 25, 2026</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>After the hard deadline, v1.0-only implementations will not receive VC-Certified status for new certifications.</p>
+            
+            <hr>
+            
+            <h2 id="pqc">Looking Ahead: Post-Quantum Cryptography</h2>
+            
+            <p>While not a normative requirement in v1.1, we've added <strong>Appendix E: Post-Quantum Cryptography Migration Guidance</strong> to help implementations prepare for the quantum era.</p>
+            
+            <h3>Recommended Approach: Dual Signatures</h3>
+            
+            <p>During the PQC transition period, implementations can use dual signatures:</p>
+            
+            <pre><code>{
+  "Security": {
+    "Signature": "base64(Ed25519_signature)",
+    "SignAlgo": "ED25519",
+    "PQCSignature": "base64(Dilithium2_signature)",
+    "PQCSignAlgo": "DILITHIUM2"
+  }
+}</code></pre>
+            
+            <h3>Migration Timeline (Advisory)</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Timeline</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Preparation</strong></td>
+                        <td>2025-2026</td>
+                        <td>Implement dual-signature capability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hybrid</strong></td>
+                        <td>2027-2029</td>
+                        <td>Deploy dual signatures in production</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transition</strong></td>
+                        <td>2030+</td>
+                        <td>Phase out classical-only signatures</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <hr>
+            
+            <h2 id="conclusion">Conclusion: Verify, Don't Trust</h2>
+            
+            <p>VCP v1.1 strengthens our commitment to the principle of <strong>"Verify, Don't Trust."</strong></p>
+            
+            <p>By making External Anchoring mandatory for all tiers, we ensure that every VCP deployment—from a developer's MT5 backtesting environment to a high-frequency trading firm's production systems—provides the same fundamental guarantee:</p>
+            
+            <div class="highlight-box" style="text-align: center; border-color: rgba(59, 130, 246, 0.5);">
+                <p style="font-size: 1.25rem; color: #f1f5f9; font-weight: 700; margin: 0;"><strong>A third party can verify the integrity of your audit trail without trusting you.</strong></p>
+            </div>
+            
+            <p style="text-align: center; margin-top: 2rem;">This is what algorithmic trading needs. This is what regulators are asking for.<br><strong>And this is what VCP v1.1 delivers.</strong></p>
+            
+            <hr>
+            
+            <h3>Resources</h3>
+            
+            <ul>
+                <li><a href="https://github.com/veritaschain/vcp-spec" target="_blank">VCP v1.1 Specification (Draft) - GitHub</a></li>
+                <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">IETF Internet-Draft: draft-kamimura-scitt-vcp</a></li>
+                <li><a href="https://veritaschain.org/certification/" target="_blank">VC-Certified Program</a></li>
+                <li><a href="https://docs.veritaschain.org" target="_blank">Developer Documentation</a></li>
+            </ul>
+            
+            <hr>
+            
+            <h3>Get Involved</h3>
+            
+            <p>We welcome feedback on the v1.1 draft specification. Here's how to participate:</p>
+            
+            <ul>
+                <li><strong>GitHub Issues</strong>: Technical feedback and bug reports</li>
+                <li><strong>Email</strong>: <a href="mailto:standards@veritaschain.org">standards@veritaschain.org</a> for formal comments</li>
+                <li><strong>IETF SCITT WG</strong>: Join the discussion on algorithmic transparency standards</li>
+            </ul>
+            
+            <p>The v1.1 specification is in <strong>draft status</strong>. We plan to finalize and release the production version in Q1 2026 after incorporating community feedback.</p>
+            
+            <hr>
+            
+            <p style="text-align: center; font-style: italic; color: #94a3b8;">"A civilization that can learn before accidents occur."</p>
+            
+            <hr>
+            
+            <p><em>This article is provided by the VeritasChain Standards Organization (VSO) for technical educational purposes.</em></p>
+            
+            <p><em>Contact: <a href="mailto:info@veritaschain.org">info@veritaschain.org</a></em></p>
+            
+            <!-- Share Buttons -->
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(59, 130, 246, 0.2);">
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">Share this article:</p>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/&text=VCP%20v1.1%3A%20Strengthening%20External%20Verifiability%20with%20Three-Layer%20Architecture" target="_blank" class="share-btn" title="Share on Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2025-12-26-vcp-v1-1-announcement/" target="_blank" class="share-btn" title="Share on LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/veritaschain" target="_blank" class="share-btn" title="View on GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </article>
+
+    <!-- Related Posts / CTA -->
+    <section style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 4rem 2rem; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="color: #f1f5f9; font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">
+                Explore VCP Resources
+            </h2>
+            <p style="color: #94a3b8; font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                Learn more about VCP and how it addresses regulatory requirements.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <a href="https://github.com/VeritasChain/vcp-spec" class="btn btn-primary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fas fa-book"></i> Read the Spec
+                </a>
+                <a href="https://veritaschain.org/explorer/app/" class="btn btn-secondary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fas fa-search"></i> Try Explorer
+                </a>
+                <a href="/blog/" class="btn btn-secondary" style="padding: 1rem 2rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Blog
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="en"></vcp-footer>
+</body>
+</html>
