@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP Sidecar Guide现已包含生产就绪的实现代码 - VeritasChain Blog</title>
+    <meta name="description" content="vcp-sidecar-guide仓库重大更新。发布符合VCP v1.0规范的生产就绪MQL5和Python实现，用于审计追踪。">
+    <meta name="keywords" content="VCP, VeritasChain Protocol, sidecar, MQL5, Python, 实现, 审计追踪, 算法交易, 开源">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP Sidecar Guide现已包含生产就绪的实现代码">
+    <meta property="og:description" content="发布符合VCP v1.0规范的生产就绪MQL5和Python实现。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2025-12-27-vcp-sidecar-guide-update/zh/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain Blog">
+    <meta property="article:published_time" content="2025-12-27T00:00:00Z">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="发布">
+    <meta property="article:tag" content="VCP">
+    <meta property="article:tag" content="开源">
+    <meta property="article:tag" content="MQL5">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP Sidecar Guide：生产就绪代码发布">
+    <meta name="twitter:description" content="符合VCP v1.0规范的MQL5和Python审计追踪实现。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2025-12-27-vcp-sidecar-guide-update/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2025-12-27-vcp-sidecar-guide-update/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2025-12-27-vcp-sidecar-guide-update/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2025-12-27-vcp-sidecar-guide-update/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2025-12-27-vcp-sidecar-guide-update/zh/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Noto Sans SC', 'Inter', sans-serif; }
+        
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+        }
+        
+        .article-content {
+            background: #0f172a;
+            padding: 4rem 2rem;
+        }
+        
+        .prose {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .prose h2 {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .prose h3 {
+            color: #e2e8f0;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .prose p { margin-bottom: 1.5rem; }
+        
+        .prose a {
+            color: #34d399;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        
+        .prose a:hover { color: #6ee7b7; }
+        
+        .prose strong {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+        
+        .prose code {
+            background: rgba(30, 41, 59, 0.8);
+            color: #34d399;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+        
+        .prose pre {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .prose pre code {
+            background: transparent;
+            padding: 0;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .prose ul, .prose ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+        
+        .prose li { margin-bottom: 0.5rem; }
+        
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .prose th {
+            background: rgba(30, 41, 59, 0.8);
+            color: #f1f5f9;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .prose td {
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+        
+        .prose tr:nth-child(even) { background: rgba(30, 41, 59, 0.3); }
+        
+        .prose hr {
+            border: none;
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+            margin: 3rem 0;
+        }
+        
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+        
+        .toc {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .toc h4 {
+            color: #f1f5f9;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .toc ul { list-style: none; padding: 0; margin: 0; }
+        .toc li { margin-bottom: 0.5rem; }
+        
+        .toc a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        
+        .toc a:hover { color: #34d399; }
+        
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+        
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.8);
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+        
+        .share-btn:hover {
+            background: #10b981;
+            color: white;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            margin-bottom: 2rem;
+        }
+        
+        .back-link:hover { color: #34d399; }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box h4 {
+            color: #34d399;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-item {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+
+        .feature-item h5 {
+            color: #34d399;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+    </style>
+    
+    <!-- Structured Data - Article -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "VCP Sidecar Guide现已包含生产就绪的实现代码",
+        "description": "vcp-sidecar-guide仓库重大更新。发布符合VCP v1.0规范的生产就绪MQL5和Python实现。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2025-12-27",
+        "dateModified": "2025-12-27",
+        "mainEntityOfPage": "https://veritaschain.org/blog/posts/2025-12-27-vcp-sidecar-guide-update/zh/",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "articleSection": "发布",
+        "keywords": ["VCP", "sidecar", "MQL5", "Python", "开源", "审计追踪"],
+        "inLanguage": "zh-CN"
+    }
+    </script>
+</head>
+<body>
+    <vcp-header theme="dark" lang="zh" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Article Hero -->
+    <section class="article-hero">
+        <div style="position: relative; z-index: 1; max-width: 800px; margin: 0 auto;">
+            <a href="/blog/zh/" class="back-link">
+                <i class="fas fa-arrow-left"></i> 返回博客
+            </a>
+            
+            <span class="category-badge">
+                <i class="fas fa-rocket"></i> 发布
+            </span>
+            
+            <h1 style="color: #f8fafc; font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin: 1rem 0 1.5rem;">
+                VCP Sidecar Guide现已包含生产就绪的实现代码
+            </h1>
+            
+            <p style="color: #94a3b8; font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem;">
+                发布符合VCP v1.0规范的生产就绪MQL5和Python实现，用于审计追踪。
+            </p>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-calendar"></i> 2025年12月27日
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-clock"></i> 阅读时间8分钟
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-building"></i> VeritasChain Standards Organization
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="article-content">
+        <div class="prose">
+            
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h4><i class="fas fa-list" style="margin-right: 0.5rem; color: #34d399;"></i> 目录</h4>
+                <ul>
+                    <li><a href="#whats-new">新功能</a></li>
+                    <li><a href="#compliance">VCP v1.0规范合规</a></li>
+                    <li><a href="#quick-start">快速开始</a></li>
+                    <li><a href="#key-features">主要功能</a></li>
+                    <li><a href="#who-should-use">适用对象</a></li>
+                    <li><a href="#sample-output">输出示例</a></li>
+                    <li><a href="#getting-started">开始使用</a></li>
+                    <li><a href="#whats-next">后续计划</a></li>
+                    <li><a href="#resources">资源</a></li>
+                </ul>
+            </div>
+            
+            <p>我们很高兴宣布<a href="https://github.com/veritaschain/vcp-sidecar-guide" target="_blank"><strong>vcp-sidecar-guide</strong></a>仓库的重大更新。本次发布包含MQL5和Python的<strong>生产就绪实现代码</strong>，使开发者能够立即将符合VCP v1.0规范的审计追踪集成到其交易系统中。</p>
+            
+            <hr>
+            
+            <h2 id="whats-new">新功能</h2>
+            
+            <h3>生产就绪的源代码</h3>
+            
+            <p>仓库现包含完整功能的实现：</p>
+            
+<pre><code>src/
+├── mql5/
+│   ├── vcp_mql_bridge_v1_0.mqh    # 约850行
+│   └── README.md
+└── python/
+    ├── vcp_sidecar_adapter_v1_0.py # 约700行
+    ├── requirements.txt
+    └── README.md</code></pre>
+            
+            <h3>可运行示例</h3>
+            
+            <p>展示实际用法的完整可运行示例：</p>
+            
+<pre><code>examples/
+├── mql5/
+│   └── ExampleEA.mq5              # 包含MA交叉策略的完整EA
+└── python/
+    └── example_usage.py           # 7个综合示例</code></pre>
+            
+            <hr>
+            
+            <h2 id="compliance">VCP v1.0规范合规</h2>
+            
+            <p>两种实现均<strong>完全符合</strong>VCP v1.0：</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>功能</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>UUID v7（RFC 9562）</td>
+                        <td><span style="color: #34d399;">✅</span></td>
+                    </tr>
+                    <tr>
+                        <td>双时间戳格式（纳秒字符串 + ISO 8601）</td>
+                        <td><span style="color: #34d399;">✅</span></td>
+                    </tr>
+                    <tr>
+                        <td>3层事件结构（header/payload/security）</td>
+                        <td><span style="color: #34d399;">✅</span></td>
+                    </tr>
+                    <tr>
+                        <td>SHA-256哈希链</td>
+                        <td><span style="color: #34d399;">✅</span></td>
+                    </tr>
+                    <tr>
+                        <td>全部事件类型代码（SIG、ORD、ACK、EXE等）</td>
+                        <td><span style="color: #34d399;">✅</span></td>
+                    </tr>
+                    <tr>
+                        <td>数值字符串表示</td>
+                        <td><span style="color: #34d399;">✅</span></td>
+                    </tr>
+                    <tr>
+                        <td>GDPR合规的账户假名化</td>
+                        <td><span style="color: #34d399;">✅</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>这些实现已准备好进行<strong>VC-Certified（Silver）</strong>合规性测试。</p>
+            
+            <hr>
+            
+            <h2 id="quick-start">快速开始</h2>
+            
+            <h3>Python</h3>
+            
+<pre><code class="language-python">from vcp_sidecar_adapter_v1_0 import VCPEventFactory, VCPEventSerializer, Tier
+
+factory = VCPEventFactory(venue_id="MY_VENUE", tier=Tier.SILVER)
+
+signal = factory.create_signal_event(
+    symbol="XAUUSD",
+    account_id="12345",
+    algo_id="MY_ALGO",
+    algo_version="1.0.0",
+    confidence="0.85"
+)
+
+print(VCPEventSerializer.to_json(signal, indent=2))</code></pre>
+            
+            <h3>MQL5</h3>
+            
+<pre><code class="language-mql5">#include &lt;VCP/vcp_mql_bridge_v1_0.mqh&gt;
+
+int OnInit()
+{
+    VCP_CONFIG config;
+    config.api_key = InpVCPApiKey;
+    config.endpoint = "https://api.veritaschain.org";
+    config.venue_id = "MY_VENUE";
+    config.tier = VCP_TIER_SILVER;
+    config.async_mode = true;
+    
+    VCP_Initialize(config);
+    return INIT_SUCCEEDED;
+}</code></pre>
+            
+            <hr>
+            
+            <h2 id="key-features">主要功能</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h5><i class="fas fa-code" style="margin-right: 0.5rem;"></i> MQL5桥接</h5>
+                    <p>CVCPLogger类、10K缓冲异步队列、批处理、自动哈希链</p>
+                </div>
+                <div class="feature-item">
+                    <h5><i class="fab fa-python" style="margin-right: 0.5rem;"></i> Python适配器</h5>
+                    <p>VCPEventFactory、JSON/JSONL序列化、VCC客户端、Manager API轮询</p>
+                </div>
+                <div class="feature-item">
+                    <h5><i class="fas fa-link" style="margin-right: 0.5rem;"></i> 哈希链</h5>
+                    <p>用于防篡改审计追踪的自动SHA-256哈希链</p>
+                </div>
+                <div class="feature-item">
+                    <h5><i class="fas fa-project-diagram" style="margin-right: 0.5rem;"></i> TraceID</h5>
+                    <p>通过EventCorrelator验证的订单生命周期关联</p>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <h2 id="who-should-use">适用对象</h2>
+            
+            <ul>
+                <li><strong>自营交易公司</strong>：为透明度实施VCP</li>
+                <li><strong>MT4/MT5白标运营商</strong>：需要审计追踪</li>
+                <li><strong>EA开发者</strong>：添加加密日志</li>
+                <li><strong>合规团队</strong>：准备VC-Certified审计</li>
+                <li><strong>RegTech开发者</strong>：基于VCP基础设施构建</li>
+            </ul>
+            
+            <hr>
+            
+            <h2 id="sample-output">输出示例</h2>
+            
+            <p>这些实现生成的事件输出符合VCP v1.0的JSON：</p>
+            
+<pre><code class="language-json">{
+  "header": {
+    "event_id": "019b591b-ea7e-7507-a1cc-bb555e81345f",
+    "trace_id": "019b591b-ea7e-7f6f-b130-ede86931b9d4",
+    "timestamp_int": "1766726560382246912",
+    "timestamp_iso": "2025-12-26T05:22:40.382Z",
+    "event_type": "SIG",
+    "event_type_code": 1,
+    "timestamp_precision": "MILLISECOND",
+    "clock_sync_status": "BEST_EFFORT",
+    "hash_algo": "SHA256",
+    "venue_id": "MY_PROP_FIRM",
+    "symbol": "XAUUSD",
+    "account_id": "acc_ca1ee1d09effaa36"
+  },
+  "payload": {
+    "vcp_gov": {
+      "algo_id": "ALGO_001",
+      "algo_version": "2.1.0",
+      "confidence": "0.85"
+    }
+  },
+  "security": {
+    "event_hash": "1caae2edff5207de8dbc05ac88a7353c...",
+    "prev_hash": "0000000000000000000000000000000000..."
+  }
+}</code></pre>
+            
+            <hr>
+            
+            <h2 id="getting-started">开始使用</h2>
+            
+            <div class="highlight-box">
+                <h4>1. 克隆仓库</h4>
+                <pre style="margin: 0;"><code>git clone https://github.com/veritaschain/vcp-sidecar-guide.git</code></pre>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>2. 查阅集成指南</h4>
+                <ul style="margin: 0;">
+                    <li><a href="https://github.com/veritaschain/vcp-sidecar-guide/blob/main/VCP_SIDECAR_INTEGRATION_GUIDE_EN.md" target="_blank">英文指南</a></li>
+                    <li><a href="https://github.com/veritaschain/vcp-sidecar-guide/blob/main/VCP_SIDECAR_INTEGRATION_GUIDE_JA.md" target="_blank">日文指南</a></li>
+                </ul>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>3. 运行示例</h4>
+                <pre style="margin: 0;"><code>cd vcp-sidecar-guide
+pip install -r src/python/requirements.txt
+python examples/python/example_usage.py</code></pre>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>4. 集成到您的系统</h4>
+                <p style="margin: 0;">使用<code>src/</code>目录中的源代码</p>
+            </div>
+            
+            <hr>
+            
+            <h2 id="whats-next">后续计划</h2>
+            
+            <p>我们正在持续扩展VCP工具：</p>
+            
+            <ul>
+                <li><strong>TypeScript SDK</strong> — 2026年第一季度发布</li>
+                <li><strong>C++实现</strong> — 用于HFT环境</li>
+                <li><strong>合规性测试套件</strong> — 自动化VC-Certified验证</li>
+            </ul>
+            
+            <hr>
+            
+            <h2 id="resources">资源</h2>
+            
+            <ul>
+                <li><strong>仓库：</strong> <a href="https://github.com/veritaschain/vcp-sidecar-guide" target="_blank">github.com/veritaschain/vcp-sidecar-guide</a></li>
+                <li><strong>VCP规范：</strong> <a href="https://github.com/veritaschain/vcp-spec" target="_blank">github.com/veritaschain/vcp-spec</a></li>
+                <li><strong>合规性测试：</strong> <a href="https://github.com/veritaschain/vcp-conformance-guide" target="_blank">github.com/veritaschain/vcp-conformance-guide</a></li>
+                <li><strong>早期采用者计划：</strong> <a href="mailto:standards@veritaschain.org">standards@veritaschain.org</a></li>
+            </ul>
+            
+            <hr>
+            
+            <p><em>VeritasChain Standards Organization（VSO）为AI驱动和算法市场开发开放的加密审计标准。VSO认证仅确认技术合规性，不代表财务、商业或监管认可。</em></p>
+            
+            <p style="text-align: center; font-size: 1.25rem; font-weight: 700; color: #34d399; margin-top: 2rem;"><strong>"验证，而非信任"</strong></p>
+            
+            <!-- Share Buttons -->
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(16, 185, 129, 0.2);">
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">分享本文：</p>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2025-12-27-vcp-sidecar-guide-update/zh/&text=VCP%20Sidecar%20Guide%E7%8E%B0%E5%B7%B2%E5%8C%85%E5%90%AB%E7%94%9F%E4%BA%A7%E5%B0%B1%E7%BB%AA%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81" target="_blank" class="share-btn" title="分享到Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2025-12-27-vcp-sidecar-guide-update/zh/" target="_blank" class="share-btn" title="分享到LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/veritaschain/vcp-sidecar-guide" target="_blank" class="share-btn" title="在GitHub上查看">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </article>
+
+    <!-- Related Posts / CTA -->
+    <section style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 4rem 2rem; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="color: #f1f5f9; font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">
+                开始使用VCP构建
+            </h2>
+            <p style="color: #94a3b8; font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                克隆仓库，立即将VCP审计追踪集成到您的交易系统中。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <a href="https://github.com/veritaschain/vcp-sidecar-guide" class="btn btn-primary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fab fa-github"></i> 查看仓库
+                </a>
+                <a href="/blog/zh/" class="btn btn-secondary" style="padding: 1rem 2rem;">
+                    <i class="fas fa-arrow-left"></i> 返回博客
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="zh"></vcp-footer>
+</body>
+</html>
