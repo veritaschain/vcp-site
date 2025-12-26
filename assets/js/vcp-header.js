@@ -100,6 +100,7 @@ class VCPHeader extends HTMLElement {
                 terms: 'Terms of Use',
                 impressum: 'Impressum',
                 mediaPress: 'Media & Press',
+                blog: 'Blog',
                 support: 'Support'
             },
             ja: {
@@ -152,6 +153,7 @@ class VCPHeader extends HTMLElement {
                 terms: '利用規約',
                 impressum: 'インプリント',
                 mediaPress: 'メディア',
+                blog: 'ブログ',
                 support: 'サポート'
             },
             zh: {
@@ -204,6 +206,7 @@ class VCPHeader extends HTMLElement {
                 terms: '服务条款',
                 impressum: '出版信息',
                 mediaPress: '媒体与新闻',
+                blog: '博客',
                 support: '支持'
             }
         };
@@ -344,6 +347,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/terms/" class="dropdown-item">${t.terms}</a>
                             <a href="/impressum/" class="dropdown-item">${t.impressum}</a>
                             <a href="/media/" class="dropdown-item">${t.mediaPress}</a>
+                            <a href="/blog/" class="dropdown-item">${t.blog}</a>
                         </div>
                     </div>
 
