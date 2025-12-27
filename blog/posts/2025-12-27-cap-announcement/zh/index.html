@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAP发布：AI内容创作的加密溯源标准 - VeritasChain Blog</title>
+    <meta name="description" content="VSO发布CAP（Content AI Profile）Basic Specification v0.1——面向游戏、影视、动画、音乐、出版等行业AI内容创作的加密溯源标准。">
+    <meta name="keywords" content="CAP, VAP, AI治理, 内容行业, 溯源, 标准, 游戏, 电影, 动画, 音乐">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="CAP发布：AI内容创作的加密溯源标准">
+    <meta property="og:description" content="VSO发布CAP（Content AI Profile）v0.1——为创意产业负责任的AI构建证据基础设施。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2025-12-27-cap-announcement/zh/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain Blog">
+    <meta property="article:published_time" content="2025-12-27T00:00:00Z">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Announcements">
+    <meta property="article:tag" content="CAP">
+    <meta property="article:tag" content="VAP">
+    <meta property="article:tag" content="AI治理">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CAP发布：AI内容的加密溯源">
+    <meta name="twitter:description" content="为创意产业负责任的AI构建证据基础设施。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2025-12-27-cap-announcement/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2025-12-27-cap-announcement/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2025-12-27-cap-announcement/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2025-12-27-cap-announcement/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2025-12-27-cap-announcement/zh/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Noto Sans SC', 'Inter', sans-serif; }
+        
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+        }
+        
+        .article-content {
+            background: #0f172a;
+            padding: 4rem 2rem;
+        }
+        
+        .prose {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+        
+        .prose h2 {
+            color: #f1f5f9;
+            font-size: 1.65rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .prose h3 {
+            color: #e2e8f0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .prose h4 {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .prose p { margin-bottom: 1.5rem; }
+        
+        .prose a {
+            color: #a78bfa;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        
+        .prose a:hover { color: #c4b5fd; }
+        
+        .prose strong {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+        
+        .prose code {
+            background: rgba(30, 41, 59, 0.8);
+            color: #a78bfa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+        
+        .prose pre {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .prose pre code {
+            background: transparent;
+            padding: 0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .prose ul, .prose ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+        
+        .prose li { margin-bottom: 0.75rem; }
+        
+        .prose hr {
+            border: none;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            margin: 3rem 0;
+        }
+        
+        .prose blockquote {
+            border-left: 4px solid #8b5cf6;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #94a3b8;
+        }
+        
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .prose th, .prose td {
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        
+        .prose th {
+            background: rgba(139, 92, 246, 0.1);
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+        
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+        }
+        
+        .toc {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .toc h4 {
+            color: #f1f5f9;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .toc ul { list-style: none; padding: 0; margin: 0; }
+        .toc li { margin-bottom: 0.5rem; }
+        
+        .toc a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        
+        .toc a:hover { color: #a78bfa; }
+        
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+        
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.8);
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+        
+        .share-btn:hover {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            margin-bottom: 2rem;
+        }
+        
+        .back-link:hover { color: #a78bfa; }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box h4 {
+            color: #a78bfa;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            margin-top: 0;
+        }
+
+        .event-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .event-card h4 {
+            color: #a78bfa;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        .event-card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .architecture-diagram {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: #94a3b8;
+        }
+    </style>
+    
+    <!-- Structured Data - Article -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "CAP发布：AI内容创作的加密溯源标准",
+        "description": "VSO发布CAP（Content AI Profile）v0.1——为创意产业负责任的AI构建证据基础设施。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2025-12-27",
+        "dateModified": "2025-12-27",
+        "mainEntityOfPage": "https://veritaschain.org/blog/posts/2025-12-27-cap-announcement/zh/",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "articleSection": "Announcements",
+        "keywords": ["CAP", "VAP", "AI治理", "内容行业", "溯源", "标准"],
+        "inLanguage": "zh-CN"
+    }
+    </script>
+</head>
+<body>
+    <vcp-header theme="dark" lang="zh" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Article Hero -->
+    <section class="article-hero">
+        <div style="position: relative; z-index: 1; max-width: 800px; margin: 0 auto;">
+            <a href="/blog/zh/" class="back-link">
+                <i class="fas fa-arrow-left"></i> 返回博客
+            </a>
+            
+            <span class="category-badge">
+                <i class="fas fa-bullhorn"></i> 公告
+            </span>
+            
+            <h1 style="color: #f8fafc; font-size: 2.3rem; font-weight: 800; line-height: 1.3; margin: 1rem 0 1.5rem;">
+                CAP发布：AI内容创作的加密溯源标准
+            </h1>
+            
+            <p style="color: #94a3b8; font-size: 1.15rem; line-height: 1.7; margin-bottom: 2rem;">
+                为创意产业负责任的AI构建证据基础设施
+            </p>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-calendar"></i> 2025年12月27日
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-clock"></i> 阅读时间 20分钟
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-building"></i> VeritasChain Standards Organization
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="article-content">
+        <div class="prose">
+            
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h4><i class="fas fa-list" style="margin-right: 0.5rem; color: #a78bfa;"></i> 目录</h4>
+                <ul>
+                    <li><a href="#executive-summary">执行摘要</a></li>
+                    <li><a href="#challenge">挑战：缺乏问责的AI内容创作</a></li>
+                    <li><a href="#introducing-cap">CAP（Content AI Profile）介绍</a></li>
+                    <li><a href="#technical-architecture">技术架构</a></li>
+                    <li><a href="#negative-proof">否定证明的力量</a></li>
+                    <li><a href="#compliance">合规理念</a></li>
+                    <li><a href="#industry-applications">行业应用</a></li>
+                    <li><a href="#getting-started">开始使用</a></li>
+                </ul>
+            </div>
+
+            <h2 id="executive-summary">执行摘要</h2>
+            
+            <p>今天，VeritasChain Standards Organization（VSO）高兴地宣布发布<strong>CAP（Content AI Profile）Basic Specification v0.1</strong>——这是VAP（Verifiable AI Provenance）框架内的特定领域应用配置文件，旨在解决游戏、电影、动画、音乐、出版及相关行业中AI辅助内容创作的独特挑战。</p>
+            
+            <p>CAP提供了一种标准化方法，用于在AI内容工作流程中记录可加密验证的审计追踪，使组织能够证明对新兴法规的合规性、防御知识产权索赔，并通过透明度建立利益相关者信任。</p>
+            
+            <div class="highlight-box">
+                <h4><i class="fas fa-link" style="margin-right: 0.5rem;"></i> 资源</h4>
+                <p style="margin: 0;">
+                    <strong>规范</strong>：<a href="https://github.com/veritaschain/vso-docs/blob/main/CAP_Basic_Specification_v0_1.md" target="_blank">CAP Basic Specification v0.1</a><br>
+                    <strong>主页</strong>：<a href="/vap/cap/zh/">veritaschain.org/vap/cap</a>
+                </p>
+            </div>
+            
+            <hr>
+            
+            <h2 id="challenge">挑战：缺乏问责的AI内容创作</h2>
+            
+            <p>人工智能与创意工作流程的整合正以前所未有的速度加速。生成式AI工具现在几乎在每个内容垂直领域协助角色设计、背景艺术创作、音乐作曲、语音合成和叙事开发。</p>
+            
+            <p>这种转变带来了非凡的生产力提升——但也带来了前所未有的风险。</p>
+            
+            <h3>问责差距</h3>
+            
+            <p>当游戏工作室发布一款采用AI辅助角色设计的游戏时，他们面临一个根本问题：<strong>如何证明他们在AI管道中使用或未使用什么？</strong></p>
+            
+            <blockquote>
+                一家大型发行商收到了一封警告函，声称其最新发布的角色侵犯了一位独立艺术家的作品。警告函指控该角色是使用在该艺术家作品集上未经授权训练的AI生成的。
+            </blockquote>
+            
+            <p>在这种情况下，工作室需要证明：</p>
+            
+            <ol>
+                <li>进入其AI管道的训练数据</li>
+                <li>训练或微调了哪些模型，以及针对什么数据</li>
+                <li>特定输出是如何生成的</li>
+                <li>从创建到发布的监管链</li>
+            </ol>
+            
+            <p>没有系统的溯源记录，这种证明本质上是不可能的。这就是<strong>"恶魔的证明"问题</strong>：没有全面的、防篡改的记录，证明否定是极其困难的。</p>
+            
+            <h3>监管势头</h3>
+            
+            <p>问责差距不仅仅是法律风险——它越来越成为监管要求。</p>
+            
+            <ul>
+                <li><strong>欧盟AI法案（第12条）</strong>要求高风险AI系统必须维护能够监控操作和追溯结果的日志记录功能</li>
+                <li><strong>MiFID II RTS 25</strong>在金融服务领域已经要求算法系统维护全面的审计追踪</li>
+                <li><strong>日本著作权法第30条之4</strong>在某些条件下为AI训练提供豁免，但这些豁免的范围正在积极讨论中</li>
+                <li><strong>数字服务法（DSA）</strong>和<strong>GDPR</strong>围绕内容溯源和透明度创建了额外义务</li>
+            </ul>
+            
+            <h3>行业特定威胁</h3>
+            
+            <p>通过与利益相关者的广泛协商，VSO确定了五个主要威胁类别：</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>威胁ID</th>
+                        <th>类别</th>
+                        <th>描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TH-1</td>
+                        <td>IP稀释</td>
+                        <td>通过AI生成未经授权复制独特IP元素</td>
+                    </tr>
+                    <tr>
+                        <td>TH-2</td>
+                        <td>逆向流动</td>
+                        <td>与合作伙伴共享的资产被用于未经授权的AI训练</td>
+                    </tr>
+                    <tr>
+                        <td>TH-3</td>
+                        <td>机密泄露</td>
+                        <td>发布前内容通过AI管道漏洞暴露</td>
+                    </tr>
+                    <tr>
+                        <td>TH-4</td>
+                        <td>深度伪造/肖像权滥用</td>
+                        <td>未经授权合成表演者肖像或声音</td>
+                    </tr>
+                    <tr>
+                        <td>TH-5</td>
+                        <td>品牌/风格模仿</td>
+                        <td>系统性复制独特品牌美学</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <hr>
+            
+            <h2 id="introducing-cap">CAP（Content AI Profile）介绍</h2>
+            
+            <p>CAP是VAP（Verifiable AI Provenance）框架内的领域配置文件，为内容创作工作流程提供专门规范。</p>
+            
+            <h3>设计理念</h3>
+            
+            <p>CAP建立在一个基本原则之上：</p>
+            
+            <blockquote style="text-align: center; font-size: 1.2rem; border-left: none; padding: 1.5rem; background: rgba(139, 92, 246, 0.1); border-radius: 0.5rem;">
+                <strong>「留下证据，不要阻止AI」</strong>
+            </blockquote>
+            
+            <p>CAP不是内容审核系统。它不阻止AI使用、评估输出质量或做出侵权判定。相反，它提供证据基础设施，使组织能够：</p>
+            
+            <ul>
+                <li><strong>证明</strong>：展示AI工作流程中发生了什么</li>
+                <li><strong>验证</strong>：确认溯源记录的完整性</li>
+                <li><strong>防御</strong>：用加密证明对抗索赔</li>
+                <li><strong>合规</strong>：通过系统文档满足监管要求</li>
+            </ul>
+            
+            <h3>在VAP框架中的位置</h3>
+            
+            <div class="architecture-diagram">┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│                 VAP - Verifiable AI Provenance                  │
+│                      Framework (父级)                            │
+│                                                                 │
+│  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐   │
+│  │    VCP    │  │    CAP    │  │    DVP    │  │    MAP    │   │
+│  │   金融    │  │   内容    │  │   汽车    │  │   医疗    │   │
+│  │           │  │           │  │           │  │           │   │
+│  │  算法     │  │  游戏     │  │  自动驾驶 │  │  诊断     │   │
+│  │  交易     │  │  电影     │  │  车辆     │  │  治疗     │   │
+│  │  审计     │  │  音乐     │  │  ADAS     │  │  决策     │   │
+│  └───────────┘  └───────────┘  └───────────┘  └───────────┘   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘</div>
+            
+            <p>所有VAP配置文件共享通用加密基础设施：</p>
+            <ul>
+                <li><strong>哈希链</strong>架构实现防篡改事件链接</li>
+                <li><strong>默克尔树</strong>结构实现高效验证</li>
+                <li><strong>Ed25519</strong>数字签名确保真实性</li>
+                <li><strong>SHA-256</strong>哈希确保完整性</li>
+                <li><strong>UUID v7</strong>实现时间可排序的事件标识</li>
+            </ul>
+            
+            <hr>
+            
+            <h2 id="technical-architecture">技术架构</h2>
+            
+            <h3>四个核心事件</h3>
+            
+            <p>CAP定义了四种基本事件类型，捕获AI内容工作流程的完整生命周期：</p>
+            
+            <div class="event-card">
+                <h4><i class="fas fa-download" style="margin-right: 0.5rem; color: #10b981;"></i> INGEST — 资产摄入</h4>
+                <p>记录任何资产进入AI管道时的信息（训练数据、参考材料、风格指南、微调数据集）。每个摄入的资产都会收到加密哈希，创建进入系统内容的永久记录。</p>
+            </div>
+            
+            <div class="event-card">
+                <h4><i class="fas fa-cogs" style="margin-right: 0.5rem; color: #f59e0b;"></i> TRAIN — 模型训练</h4>
+                <p>捕获AI模型训练或微调时的信息。创建将特定训练输入与生成的模型工件链接的永久记录。</p>
+            </div>
+            
+            <div class="event-card">
+                <h4><i class="fas fa-magic" style="margin-right: 0.5rem; color: #8b5cf6;"></i> GEN — 内容生成</h4>
+                <p>记录每个生成操作，将输出与生成它们的模型和上下文链接。</p>
+            </div>
+            
+            <div class="event-card">
+                <h4><i class="fas fa-upload" style="margin-right: 0.5rem; color: #3b82f6;"></i> EXPORT — 外部分发</h4>
+                <p>跟踪资产离开受控环境的时间，包含用于解决"逆向流动"威胁的明确PermittedUse文档。</p>
+            </div>
+            
+            <h3>哈希链完整性</h3>
+            
+            <p>所有CAP事件通过哈希链结构链接。每个事件包含前一个事件的哈希，创建一个只追加的日志，任何修改都可被检测。</p>
+            
+            <div class="architecture-diagram">┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   Event 1    │     │   Event 2    │     │   Event 3    │
+│              │     │              │     │              │
+│ PrevHash: 0  │────▶│ PrevHash: H1 │────▶│ PrevHash: H2 │
+│ Hash: H1     │     │ Hash: H2     │     │ Hash: H3     │
+└──────────────┘     └──────────────┘     └──────────────┘</div>
+            
+            <hr>
+            
+            <h2 id="negative-proof">否定证明的力量</h2>
+            
+            <p>也许CAP最重要的功能是实现<strong>否定证明</strong>——证明某事<em>没有</em>发生的能力。</p>
+            
+            <p>传统审计系统擅长证明肯定："用户X在时间Z执行了操作Y。"但当面对未经授权的AI训练指控时，组织需要证明否定："我们<em>没有</em>在争议资产上进行训练。"</p>
+            
+            <h3>否定证明如何工作</h3>
+            
+            <ol>
+                <li><strong>全面的INGEST日志</strong>：进入管道的每个资产都与其加密哈希一起记录</li>
+                <li><strong>链完整性</strong>：哈希链结构确保没有记录可以在不被检测的情况下插入、修改或删除</li>
+                <li><strong>时间覆盖</strong>：时间戳确定审计追踪覆盖的期间</li>
+                <li><strong>哈希比较</strong>：争议资产的哈希可以与所有记录的哈希进行比较</li>
+            </ol>
+            
+            <p>如果争议资产的哈希未出现在链中，且链的完整性已验证，这构成<strong>非摄入的加密证明</strong>。</p>
+            
+            <h3>限制和诚实的注意事项</h3>
+            
+            <ul>
+                <li>它证明<em>完全相同</em>文件的非摄入——修改版本会有不同的哈希</li>
+                <li>它需要从一开始就进行全面日志记录——追溯证明是不可能的</li>
+                <li>它依赖于链完整性——覆盖范围的差距会削弱证明</li>
+                <li>它不处理语义相似性——只处理加密身份</li>
+            </ul>
+            
+            <hr>
+            
+            <h2 id="compliance">合规理念：证据优于禁止</h2>
+            
+            <p>CAP采用<strong>"遵守或解释"</strong>方法，而不是规定性合规模式。</p>
+            
+            <h3>CAP明确不做的事情</h3>
+            
+            <ol>
+                <li><strong>CAP不禁止AI使用</strong>——它记录，不限制</li>
+                <li><strong>CAP不检测侵权</strong>——法律判定需要人类判断</li>
+                <li><strong>CAP不将相似性等同于非法性</strong>——高相似性可能是独立创作的结果</li>
+                <li><strong>CAP不要求披露模型内部</strong>——只记录输入和输出</li>
+                <li><strong>CAP不启用实时内容阻止</strong>——它是审计系统，不是过滤器</li>
+                <li><strong>CAP不评估输出质量</strong>——美学判断超出范围</li>
+            </ol>
+            
+            <hr>
+            
+            <h2 id="industry-applications">行业应用</h2>
+            
+            <h3>游戏</h3>
+            <p>所有训练资产的全面INGEST日志记录、RightsBasis跟踪、用于发布前内容保护的ConfidentialityLevel、用于与合作伙伴共享资产的EXPORT控制。</p>
+            
+            <h3>电影和动画</h3>
+            <p>符合SAG-AFTRA要求的ConsentBasis跟踪、多司法管辖区合规文档、用于尽职调查验证的清晰审计追踪。</p>
+            
+            <h3>音乐</h3>
+            <p>支持撤销的详细同意跟踪、人类和AI贡献的明确区分、用于版税和署名分配的审计追踪。</p>
+            
+            <h3>出版</h3>
+            <p>微调语言模型的TRAIN事件日志记录、人类编辑干预的清晰文档、用于抄袭调查的证据。</p>
+            
+            <hr>
+            
+            <h2 id="getting-started">开始使用</h2>
+            
+            <h3>实施级别</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>级别</th>
+                        <th>名称</th>
+                        <th>典型用例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>L1</td>
+                        <td>Basic</td>
+                        <td>小型工作室、独立开发者</td>
+                    </tr>
+                    <tr>
+                        <td>L2</td>
+                        <td>Standard</td>
+                        <td>中型组织</td>
+                    </tr>
+                    <tr>
+                        <td>L3</td>
+                        <td>Enterprise</td>
+                        <td>大型企业、受监管实体</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>资源</h3>
+            
+            <ul>
+                <li><strong>规范</strong>：<a href="https://github.com/veritaschain/vso-docs/blob/main/CAP_Basic_Specification_v0_1.md" target="_blank">CAP Basic Specification v0.1</a></li>
+                <li><strong>主页</strong>：<a href="/vap/cap/zh/">veritaschain.org/vap/cap</a></li>
+                <li><strong>GitHub</strong>：<a href="https://github.com/veritaschain" target="_blank">github.com/veritaschain</a></li>
+                <li><strong>IETF草案</strong>：<a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">draft-kamimura-scitt-vcp</a></li>
+            </ul>
+            
+            <h3>联系方式</h3>
+            
+            <ul>
+                <li><strong>企业</strong>：enterprise@veritaschain.org</li>
+                <li><strong>技术</strong>：technical@veritaschain.org</li>
+                <li><strong>开发者</strong>：developers@veritaschain.org</li>
+            </ul>
+            
+            <hr>
+            
+            <h2>结论</h2>
+            
+            <p>创意产业正处于拐点。AI正在以带来巨大机遇和重大风险的方式改变内容创作。成功的组织将是那些在维护保护创作者、权利持有者和公众的问责基础设施的同时，拥抱AI能力的组织。</p>
+            
+            <p>CAP提供了这种基础设施。它不是创新的障碍，而是负责任创新的推动者。通过以加密完整性记录AI管道中发生的事情，CAP使组织能够：</p>
+            
+            <ul>
+                <li><strong>防御</strong>：保护自己免受不实索赔</li>
+                <li><strong>证明</strong>：展示对新兴法规的合规性</li>
+                <li><strong>建立</strong>：通过透明度建立利益相关者信任</li>
+                <li><strong>准备</strong>：为AI溯源不再可选的未来做准备</li>
+            </ul>
+            
+            <p>我们邀请全球内容组织评估CAP在其工作流程中的应用。规范是开放的，工具是可访问的，准备的时间就是现在。</p>
+            
+            <hr>
+            
+            <p><em>VeritasChain Standards Organization（VSO）是一个致力于为AI系统问责开发开放规范的标准组织。我们的使命是通过在危机出现之前建立AI系统的透明度基础设施，构建"一个能够在事故发生之前学习的文明"。</em></p>
+            
+            <p style="text-align: center; font-size: 1.25rem; font-weight: 700; color: #a78bfa; margin-top: 2rem;"><strong>"验证，而非信任"</strong></p>
+            
+            <!-- Share Buttons -->
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(139, 92, 246, 0.2);">
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">分享本文：</p>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2025-12-27-cap-announcement/zh/&text=CAP%E5%8F%91%E5%B8%83%EF%BC%9AAI%E5%86%85%E5%AE%B9%E5%88%9B%E4%BD%9C%E7%9A%84%E5%8A%A0%E5%AF%86%E6%BA%AF%E6%BA%90%E6%A0%87%E5%87%86" target="_blank" class="share-btn" title="在Twitter上分享">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2025-12-27-cap-announcement/zh/" target="_blank" class="share-btn" title="在LinkedIn上分享">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/veritaschain" target="_blank" class="share-btn" title="在GitHub上查看">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </article>
+
+    <!-- Related Posts / CTA -->
+    <section style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 4rem 2rem; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="color: #f1f5f9; font-size: 1.65rem; font-weight: 700; margin-bottom: 1rem;">
+                探索CAP规范
+            </h2>
+            <p style="color: #94a3b8; font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                CAP为游戏、电影、动画、音乐和出版行业的AI内容创作提供加密溯源。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <a href="/vap/cap/zh/" class="btn btn-primary" style="padding: 1rem 2rem;">
+                    <i class="fas fa-book"></i> CAP主页
+                </a>
+                <a href="https://github.com/veritaschain/vso-docs/blob/main/CAP_Basic_Specification_v0_1.md" class="btn btn-secondary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fab fa-github"></i> 查看规范
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="zh"></vcp-footer>
+</body>
+</html>
