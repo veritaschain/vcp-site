@@ -500,7 +500,7 @@
 
     <!-- News / Announcements Section -->
     <section class="section section-news" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 3rem 0;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+        <div class="container" id="news-container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
                 <span style="background: linear-gradient(135deg, #f59e0b, #ef4444); padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: white;"><i class="fas fa-bullhorn" style="margin-right: 0.25rem;"></i> 新闻</span>
                 <h2 style="font-size: 1.5rem; font-weight: 700; color: white; margin: 0;">最新公告</h2>
@@ -820,7 +820,59 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Show More / Show Less Button -->
+            <div id="news-toggle-container" style="text-align: center; margin-top: 1.5rem; display: none;">
+                <button id="news-toggle-btn" onclick="toggleNews()" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2)); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; padding: 0.75rem 2rem; border-radius: 9999px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;">
+                    <i class="fas fa-chevron-down" style="margin-right: 0.5rem;"></i>
+                    <span>查看更多</span>
+                </button>
+            </div>
         </div>
+        <script>
+        (function() {
+            const container = document.getElementById('news-container');
+            const toggleContainer = document.getElementById('news-toggle-container');
+            const toggleBtn = document.getElementById('news-toggle-btn');
+            const newsItems = container.querySelectorAll(':scope > div[style*="margin-bottom: 1rem"]');
+            const isMobile = window.innerWidth <= 768;
+            const limit = isMobile ? 5 : 10;
+            let expanded = false;
+            
+            if (newsItems.length > limit) {
+                toggleContainer.style.display = 'block';
+                newsItems.forEach((item, i) => {
+                    if (i >= limit) item.style.display = 'none';
+                });
+            }
+            
+            window.toggleNews = function() {
+                expanded = !expanded;
+                newsItems.forEach((item, i) => {
+                    if (i >= limit) item.style.display = expanded ? 'block' : 'none';
+                });
+                toggleBtn.innerHTML = expanded 
+                    ? '<i class="fas fa-chevron-up" style="margin-right: 0.5rem;"></i><span>收起</span>'
+                    : '<i class="fas fa-chevron-down" style="margin-right: 0.5rem;"></i><span>查看更多</span>';
+            };
+            
+            window.addEventListener('resize', function() {
+                const newIsMobile = window.innerWidth <= 768;
+                const newLimit = newIsMobile ? 5 : 10;
+                if (newsItems.length > newLimit) {
+                    toggleContainer.style.display = 'block';
+                    if (!expanded) {
+                        newsItems.forEach((item, i) => {
+                            item.style.display = i >= newLimit ? 'none' : 'block';
+                        });
+                    }
+                } else {
+                    toggleContainer.style.display = 'none';
+                    newsItems.forEach(item => item.style.display = 'block');
+                }
+            });
+        })();
+        </script>
     </section>
 
 
