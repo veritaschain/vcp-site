@@ -76,6 +76,7 @@ class VCPHeader extends HTMLElement {
                 vapPap: 'PAP',
                 vapIap: 'IAP',
                 vapCap: 'CAP',
+                vapAt: 'VAP-AT',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
@@ -83,6 +84,7 @@ class VCPHeader extends HTMLElement {
                 launchScorecard: '🚀 Launch Scorecard Explorer',
                 vcpProtocol: 'VCP Protocol',
                 standardizationRoadmap: 'Standardization Roadmap',
+                tamperEvidenceDemo: 'Tamper-Evidence Demo',
                 developersIntegration: 'Developers / Integration',
                 developers: 'Developers',
                 about: 'About',
@@ -130,6 +132,7 @@ class VCPHeader extends HTMLElement {
                 vapPap: 'PAP',
                 vapIap: 'IAP',
                 vapCap: 'CAP',
+                vapAt: 'VAP-AT',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
                 standards: '標準規格',
@@ -137,6 +140,7 @@ class VCPHeader extends HTMLElement {
                 launchScorecard: '🚀 スコアカードエクスプローラーを起動',
                 vcpProtocol: 'VCPプロトコル',
                 standardizationRoadmap: '標準化ロードマップ',
+                tamperEvidenceDemo: '改ざん検知デモ',
                 developersIntegration: '開発者 / 統合',
                 developers: '開発者',
                 about: '概要',
@@ -184,6 +188,7 @@ class VCPHeader extends HTMLElement {
                 vapPap: 'PAP',
                 vapIap: 'IAP',
                 vapCap: 'CAP',
+                vapAt: 'VAP-AT',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
                 standards: '标准',
@@ -191,6 +196,7 @@ class VCPHeader extends HTMLElement {
                 launchScorecard: '🚀 启动评分卡浏览器',
                 vcpProtocol: 'VCP协议',
                 standardizationRoadmap: '标准化路线图',
+                tamperEvidenceDemo: '防篡改演示',
                 developersIntegration: '开发者 / 集成',
                 developers: '开发者',
                 about: '关于',
@@ -293,6 +299,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
                             <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
                             <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
+                            <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
                         </div>
                     </div>
 
@@ -319,6 +326,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
                             <a href="/vcp/developers/" class="dropdown-item">${t.developersIntegration}</a>
                             <a href="/benchmark/app/" class="dropdown-item dropdown-item-highlight">${t.launchScorecard}</a>
+                            <a href="/regtech/" class="dropdown-item">${t.tamperEvidenceDemo}</a>
                         </div>
                     </div>
 
