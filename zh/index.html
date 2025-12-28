@@ -501,9 +501,16 @@
     <!-- News / Announcements Section -->
     <section class="section section-news" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 3rem 0;">
         <div class="container" id="news-container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
                 <span style="background: linear-gradient(135deg, #f59e0b, #ef4444); padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: white;"><i class="fas fa-bullhorn" style="margin-right: 0.25rem;"></i> 新闻</span>
                 <h2 style="font-size: 1.5rem; font-weight: 700; color: white; margin: 0;">最新公告</h2>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div id="news-filter-container" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <button class="news-filter-btn active" data-filter="all" style="background: rgba(251, 191, 36, 0.2); border: 1px solid #fbbf24; color: #fbbf24; padding: 0.4rem 1rem; border-radius: 9999px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">全部</button>
+                <button class="news-filter-btn" data-filter="公告" style="background: transparent; border: 1px solid rgba(110, 231, 183, 0.4); color: #6ee7b7; padding: 0.4rem 1rem; border-radius: 9999px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">公告</button>
+                <button class="news-filter-btn" data-filter="新闻稿" style="background: transparent; border: 1px solid rgba(252, 211, 77, 0.4); color: #fcd34d; padding: 0.4rem 1rem; border-radius: 9999px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">新闻稿</button>
             </div>
             
             <!-- News Item 1: CAP v0.1 Publication - Dec 27 -->
@@ -878,43 +885,77 @@
             const container = document.getElementById('news-container');
             const toggleContainer = document.getElementById('news-toggle-container');
             const toggleBtn = document.getElementById('news-toggle-btn');
+            const filterBtns = document.querySelectorAll('.news-filter-btn');
             const newsItems = container.querySelectorAll(':scope > div[style*="margin-bottom: 1rem"]');
-            const isMobile = window.innerWidth <= 768;
-            const limit = isMobile ? 5 : 10;
+            let currentFilter = 'all';
             let expanded = false;
             
-            if (newsItems.length > limit) {
-                toggleContainer.style.display = 'block';
-                newsItems.forEach((item, i) => {
-                    if (i >= limit) item.style.display = 'none';
-                });
+            function getLimit() {
+                return window.innerWidth <= 768 ? 5 : 10;
             }
+            
+            function getCategory(item) {
+                const badge = item.querySelector('span[style*="border-radius: 9999px"][style*="font-weight: 600"]');
+                return badge ? badge.textContent.trim() : '';
+            }
+            
+            function applyFilter() {
+                const limit = getLimit();
+                let visibleCount = 0;
+                let totalMatching = 0;
+                
+                newsItems.forEach((item) => {
+                    const category = getCategory(item);
+                    const matchesFilter = currentFilter === 'all' || category === currentFilter;
+                    
+                    if (matchesFilter) {
+                        totalMatching++;
+                        if (expanded || visibleCount < limit) {
+                            item.style.display = 'block';
+                            visibleCount++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (totalMatching > limit) {
+                    toggleContainer.style.display = 'block';
+                    toggleBtn.innerHTML = expanded 
+                        ? '<i class="fas fa-chevron-up" style="margin-right: 0.5rem;"></i><span>收起</span>'
+                        : '<i class="fas fa-chevron-down" style="margin-right: 0.5rem;"></i><span>查看更多</span>';
+                } else {
+                    toggleContainer.style.display = 'none';
+                }
+            }
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active');
+                        b.style.background = 'transparent';
+                    });
+                    this.classList.add('active');
+                    this.style.background = this.dataset.filter === 'all' 
+                        ? 'rgba(251, 191, 36, 0.2)' 
+                        : this.dataset.filter === '公告'
+                            ? 'rgba(110, 231, 183, 0.2)'
+                            : 'rgba(252, 211, 77, 0.2)';
+                    currentFilter = this.dataset.filter;
+                    expanded = false;
+                    applyFilter();
+                });
+            });
             
             window.toggleNews = function() {
                 expanded = !expanded;
-                newsItems.forEach((item, i) => {
-                    if (i >= limit) item.style.display = expanded ? 'block' : 'none';
-                });
-                toggleBtn.innerHTML = expanded 
-                    ? '<i class="fas fa-chevron-up" style="margin-right: 0.5rem;"></i><span>收起</span>'
-                    : '<i class="fas fa-chevron-down" style="margin-right: 0.5rem;"></i><span>查看更多</span>';
+                applyFilter();
             };
             
-            window.addEventListener('resize', function() {
-                const newIsMobile = window.innerWidth <= 768;
-                const newLimit = newIsMobile ? 5 : 10;
-                if (newsItems.length > newLimit) {
-                    toggleContainer.style.display = 'block';
-                    if (!expanded) {
-                        newsItems.forEach((item, i) => {
-                            item.style.display = i >= newLimit ? 'none' : 'block';
-                        });
-                    }
-                } else {
-                    toggleContainer.style.display = 'none';
-                    newsItems.forEach(item => item.style.display = 'block');
-                }
-            });
+            window.addEventListener('resize', applyFilter);
+            applyFilter();
         })();
         </script>
     </section>
