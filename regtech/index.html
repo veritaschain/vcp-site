@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP Tamper-Evidence Validation Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🔐 VCP Tamper-Evidence Validation Demo</h1>
+        <p class="disclaimer">This demo shows tamper-evidence via hash-chain verification. It is an illustrative reference implementation, not a product.</p>
+    </header>
+
+    <div class="controls">
+        <button id="btnGenerate" class="btn btn-primary">Generate Events</button>
+        
+        <div class="tamper-controls">
+            <select id="tamperType">
+                <option value="modify">Modify payload (change price)</option>
+                <option value="delete">Delete event (omission)</option>
+                <option value="swap">Swap event order</option>
+            </select>
+            <button id="btnTamper" class="btn btn-warning" disabled>Apply Tampering</button>
+        </div>
+        
+        <button id="btnVerify" class="btn btn-success" disabled>Verify Chain</button>
+        <button id="btnReset" class="btn btn-secondary" disabled>Reset</button>
+    </div>
+
+    <main class="columns">
+        <section class="column">
+            <div class="column-header">
+                <h2>📋 Original Log</h2>
+                <div class="column-actions">
+                    <button class="btn-small" onclick="copyLog('original')">Copy</button>
+                    <button class="btn-small" onclick="downloadLog('original')">Download</button>
+                </div>
+            </div>
+            <div class="log-container" id="originalLog">
+                <p class="placeholder">Click "Generate Events" to create sample log</p>
+            </div>
+        </section>
+
+        <section class="column">
+            <div class="column-header">
+                <h2>⚠️ Tampered Log</h2>
+                <div class="column-actions">
+                    <button class="btn-small" onclick="copyLog('tampered')">Copy</button>
+                    <button class="btn-small" onclick="downloadLog('tampered')">Download</button>
+                </div>
+            </div>
+            <div class="log-container" id="tamperedLog">
+                <p class="placeholder">Apply tampering to see modified log</p>
+            </div>
+        </section>
+
+        <section class="column">
+            <div class="column-header">
+                <h2>🔍 Verification Result</h2>
+            </div>
+            <div class="result-container" id="verifyResult">
+                <p class="placeholder">Click "Verify Chain" to check integrity</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>VeritasChain Protocol Demo | <a href="https://veritaschain.org" target="_blank">veritaschain.org</a></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
