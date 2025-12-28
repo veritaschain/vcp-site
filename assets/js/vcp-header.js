@@ -83,6 +83,7 @@ class VCPHeader extends HTMLElement {
                 launchScorecard: '🚀 Launch Scorecard Explorer',
                 vcpProtocol: 'VCP Protocol',
                 standardizationRoadmap: 'Standardization Roadmap',
+                tamperEvidenceDemo: 'Tamper-Evidence Demo',
                 developersIntegration: 'Developers / Integration',
                 developers: 'Developers',
                 about: 'About',
@@ -137,6 +138,7 @@ class VCPHeader extends HTMLElement {
                 launchScorecard: '🚀 スコアカードエクスプローラーを起動',
                 vcpProtocol: 'VCPプロトコル',
                 standardizationRoadmap: '標準化ロードマップ',
+                tamperEvidenceDemo: '改ざん検知デモ',
                 developersIntegration: '開発者 / 統合',
                 developers: '開発者',
                 about: '概要',
@@ -191,6 +193,7 @@ class VCPHeader extends HTMLElement {
                 launchScorecard: '🚀 启动评分卡浏览器',
                 vcpProtocol: 'VCP协议',
                 standardizationRoadmap: '标准化路线图',
+                tamperEvidenceDemo: '防篡改演示',
                 developersIntegration: '开发者 / 集成',
                 developers: '开发者',
                 about: '关于',
@@ -319,6 +322,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
                             <a href="/vcp/developers/" class="dropdown-item">${t.developersIntegration}</a>
                             <a href="/benchmark/app/" class="dropdown-item dropdown-item-highlight">${t.launchScorecard}</a>
+                            <a href="/regtech/" class="dropdown-item">${t.tamperEvidenceDemo}</a>
                         </div>
                     </div>
 
