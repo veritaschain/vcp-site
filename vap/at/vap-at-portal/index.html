@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>VAP-AT Level 1 | Self-Assessment Tool</title>
+    <meta name="description" content="VAP-AT Level 1 Self-Assessment Tool for AI system auditability, verifiability, and regulatory readiness.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">◈</span>
+                <span class="logo-text">VAP-AT</span>
+                <span class="logo-badge">Level 1</span>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+                <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            
+            <nav class="nav" id="mainNav">
+                <a href="#home" class="nav-link active" data-page="home">Home</a>
+                <a href="#assessment" class="nav-link" data-page="assessment">Self-Assessment</a>
+                <a href="#registry" class="nav-link" data-page="registry">Registry</a>
+                <a href="#docs" class="nav-link" data-page="docs">Documentation</a>
+            </nav>
+            <div class="header-actions">
+                <!-- Language Selector -->
+                <div class="lang-selector">
+                    <button class="lang-btn" onclick="toggleLangMenu()" id="langBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        <span id="currentLangName">EN</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="lang-menu" id="langMenu">
+                        <button class="lang-option" data-lang="en">🇺🇸 English</button>
+                        <button class="lang-option" data-lang="ja">🇯🇵 日本語</button>
+                        <button class="lang-option" data-lang="zh">🇨🇳 中文</button>
+                        <button class="lang-option" data-lang="es">🇪🇸 Español</button>
+                    </div>
+                </div>
+                <a href="https://github.com/veritaschain" target="_blank" class="btn btn-ghost">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Verifiable AI Provenance<br>
+                        <span class="gradient-text">Assessment Test</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Measure your AI system's <strong>Auditability</strong>, <strong>Verifiability</strong>, 
+                        and <strong>Regulatory Readiness</strong> with a standardized, score-based framework.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="navigateTo('assessment')">
+                            Start Self-Assessment
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                        <button class="btn btn-secondary btn-lg" onclick="navigateTo('docs')">
+                            Read Documentation
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="score-preview">
+                        <div class="score-ring">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="url(#gradient)" stroke-width="8" 
+                                        stroke-dasharray="226" stroke-dashoffset="56" stroke-linecap="round"
+                                        transform="rotate(-90 50 50)"/>
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#3b82f6"/>
+                                        <stop offset="100%" stop-color="#8b5cf6"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="score-value">
+                                <span class="score-number">17</span>
+                                <span class="score-max">/20</span>
+                            </div>
+                        </div>
+                        <div class="score-label">Strong</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Score-Based Assessment</h3>
+                    <p>10 criteria × 0-2 points = 20-point scale with continuous improvement tracking</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Regulatory Alignment</h3>
+                    <p>Mapped to EU AI Act, MiFID II, SEC 17a-4, GDPR, and DORA requirements</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Evidence Pack</h3>
+                    <p>Generate downloadable assessment reports and structured evidence packages</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Threshold Designations</h3>
+                    <p>Optional interpretive labels for procurement and regulatory reporting</p>
+                </div>
+            </div>
+
+            <!-- Philosophy -->
+            <div class="philosophy">
+                <blockquote>
+                    <span class="quote-mark">"</span>
+                    Verify, Don't Trust
+                    <span class="quote-mark">"</span>
+                </blockquote>
+                <p>Evaluating that audit trails for AI systems exist in a mathematically verifiable form.</p>
+            </div>
+        </section>
+
+        <!-- Assessment Page -->
+        <section id="assessment" class="page">
+            <!-- Mobile Floating Score -->
+            <div class="mobile-score-bar" id="mobileScoreBar">
+                <div class="mobile-score-info">
+                    <span class="mobile-score-value"><span id="mobileScore">0</span>/20</span>
+                    <span class="mobile-score-grade" id="mobileGrade">Inadequate</span>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="scrollToScorePanel()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    Export
+                </button>
+            </div>
+            
+            <div class="assessment-container">
+                <!-- Left: Form -->
+                <div class="assessment-form">
+                    <div class="form-header">
+                        <h2>Self-Assessment</h2>
+                        <p>Evaluate your AI system across 10 auditability criteria</p>
+                    </div>
+
+                    <!-- System Info -->
+                    <div class="form-section">
+                        <h3>System Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="orgName">Organization Name</label>
+                                <input type="text" id="orgName" placeholder="Your organization">
+                            </div>
+                            <div class="form-group">
+                                <label for="systemName">AI System Name</label>
+                                <input type="text" id="systemName" placeholder="System being assessed">
+                            </div>
+                            <div class="form-group">
+                                <label for="assessorName">Assessor Name</label>
+                                <input type="text" id="assessorName" placeholder="Your name">
+                            </div>
+                            <div class="form-group">
+                                <label for="assessorEmail">Assessor Email</label>
+                                <input type="email" id="assessorEmail" placeholder="your@email.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Criteria -->
+                    <div class="form-section">
+                        <h3>Assessment Criteria</h3>
+                        <div id="criteriaList" class="criteria-list">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="form-section">
+                        <h3>Additional Notes</h3>
+                        <textarea id="assessmentNotes" rows="4" placeholder="Any additional observations or context..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Right: Score Panel -->
+                <div class="score-panel">
+                    <div class="score-panel-sticky">
+                        <div class="score-display">
+                            <div class="score-ring-large">
+                                <svg viewBox="0 0 120 120" id="scoreRing">
+                                    <circle cx="60" cy="60" r="54" fill="none" stroke="#e5e7eb" stroke-width="10"/>
+                                    <circle cx="60" cy="60" r="54" fill="none" stroke="#3b82f6" stroke-width="10" 
+                                            stroke-dasharray="339" stroke-dashoffset="339" stroke-linecap="round"
+                                            transform="rotate(-90 60 60)" id="scoreProgress"/>
+                                </svg>
+                                <div class="score-value-large">
+                                    <span id="totalScore">0</span>
+                                    <span class="score-max">/20</span>
+                                </div>
+                            </div>
+                            <div class="grade-display">
+                                <span id="gradeLabel" class="grade-badge grade-inadequate">Inadequate</span>
+                            </div>
+                        </div>
+
+                        <!-- Progress -->
+                        <div class="criteria-progress">
+                            <div class="progress-header">
+                                <span>Progress</span>
+                                <span id="progressCount">0/10 criteria</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Threshold Designations -->
+                        <div class="designations" id="designations">
+                            <h4>Threshold Designations</h4>
+                            <div class="designation-list" id="designationList">
+                                <div class="designation-item inactive">
+                                    <span class="designation-check">○</span>
+                                    <span>EU AI Act Art.12/19 aligned (16+)</span>
+                                </div>
+                                <div class="designation-item inactive">
+                                    <span class="designation-check">○</span>
+                                    <span>MiFID II RTS 25 aligned (14+)</span>
+                                </div>
+                                <div class="designation-item inactive">
+                                    <span class="designation-check">○</span>
+                                    <span>Baseline Auditability (11+)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="score-actions">
+                            <button class="btn btn-primary btn-block" onclick="generateReport()">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                Score Report (PDF)
+                            </button>
+                            <button class="btn btn-secondary btn-block" onclick="downloadEvidence()">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Evidence Pack v1.0 (JSON)
+                            </button>
+                            <button class="btn btn-ghost btn-block" onclick="resetAssessment()">
+                                Reset Assessment
+                            </button>
+                        </div>
+
+                        <!-- Disclaimer -->
+                        <div class="disclaimer">
+                            <p><strong>⚠️ Disclaimer:</strong> This is VAP-AT Level 1 (Self-Assessment Tool). Results are preliminary and not independently verified. Threshold Designations are interpretive labels, not legal compliance guarantees. This result is an assessment score and does not constitute regulatory approval or conformity determination.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registry Page -->
+        <section id="registry" class="page">
+            <div class="registry-container">
+                <div class="registry-header">
+                    <h2>Public Registry</h2>
+                    <p>Assessed entities with VAP-AT evaluations</p>
+                </div>
+
+                <div class="registry-filters">
+                    <div class="search-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        <input type="text" placeholder="Search organizations..." id="registrySearch">
+                    </div>
+                    <div class="filter-chips">
+                        <button class="chip active" data-filter="all">All</button>
+                        <button class="chip" data-filter="strong">Strong</button>
+                        <button class="chip" data-filter="moderate">Moderate</button>
+                        <button class="chip" data-filter="limited">Limited</button>
+                    </div>
+                </div>
+
+                <div class="registry-table-container">
+                    <table class="registry-table">
+                        <thead>
+                            <tr>
+                                <th>Organization</th>
+                                <th>System</th>
+                                <th>Grade</th>
+                                <th>Level</th>
+                                <th>CAB</th>
+                                <th>Valid Until</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registryBody">
+                            <!-- Sample data -->
+                            <tr>
+                                <td><strong>Acme AI Corp</strong></td>
+                                <td>CreditScore AI v2.1</td>
+                                <td><span class="grade-badge grade-strong">Strong</span></td>
+                                <td>Verified</td>
+                                <td>TrustAudit GmbH</td>
+                                <td>2026-03-15</td>
+                                <td><span class="status-badge status-active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>FinTech Solutions</strong></td>
+                                <td>RiskEngine Pro</td>
+                                <td><span class="grade-badge grade-moderate">Moderate</span></td>
+                                <td>Verified</td>
+                                <td>SecureCert Ltd</td>
+                                <td>2025-11-30</td>
+                                <td><span class="status-badge status-active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>HealthAI Inc</strong></td>
+                                <td>DiagAssist ML</td>
+                                <td><span class="grade-badge grade-strong">Strong</span></td>
+                                <td>Continuous</td>
+                                <td>MedAudit SA</td>
+                                <td>2026-06-01</td>
+                                <td><span class="status-badge status-active">Active</span></td>
+                            </tr>
+                            <tr class="empty-state">
+                                <td colspan="7">
+                                    <div class="empty-message">
+                                        <p>🚀 Registry launching Q3 2026</p>
+                                        <p class="text-muted">Be among the first assessed organizations</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="registry-note">
+                    <p>📋 <strong>Note:</strong> Public Registry displays assessment-conducted status and grade only. Detailed scores (0-20) and Evidence Packs are available to NDA viewers and regulators respectively.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation Page -->
+        <section id="docs" class="page">
+            <div class="docs-container">
+                <div class="docs-sidebar">
+                    <h3>Documentation</h3>
+                    <nav class="docs-nav">
+                        <a href="#" class="docs-link active" data-doc="overview">Overview</a>
+                        <a href="#" class="docs-link" data-doc="scoring">Scoring Criteria</a>
+                        <a href="#" class="docs-link" data-doc="levels">Assessment Levels</a>
+                        <a href="#" class="docs-link" data-doc="designations">Threshold Designations</a>
+                        <a href="#" class="docs-link" data-doc="governance">Governance</a>
+                        <a href="#" class="docs-link" data-doc="faq">FAQ</a>
+                    </nav>
+                    <div class="docs-download">
+                        <a href="docs/VAP-AT_Program_Charter_v0.6a.md" class="btn btn-secondary btn-block" download>
+                            Download Charter (MD)
+                        </a>
+                    </div>
+                </div>
+                <div class="docs-content" id="docsContent">
+                    <!-- Overview (default) -->
+                    <article id="doc-overview" class="doc-article active">
+                        <h1>VAP-AT Overview</h1>
+                        <p class="lead">VAP-AT (Verifiable AI Provenance – Assessment Test) is a measurement-based scoring framework that evaluates AI systems for Auditability, Verifiability, and Regulatory Readiness.</p>
+                        
+                        <h2>Core Design Principle</h2>
+                        <div class="callout">
+                            <p>VAP-AT is fundamentally a <strong>score-based</strong> assessment framework. Threshold Designations are <strong>optional interpretive labels</strong> provided to accommodate practical needs such as procurement requirements and regulatory reporting.</p>
+                        </div>
+
+                        <h2>What VAP-AT Measures</h2>
+                        <table>
+                            <thead>
+                                <tr><th>Property</th><th>Definition</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Auditability</strong></td><td>Can third parties independently verify audit trails?</td></tr>
+                                <tr><td><strong>Verifiability</strong></td><td>Are records complete with proper observability?</td></tr>
+                                <tr><td><strong>Regulatory Readiness</strong></td><td>Is evidence packaged for audit submission?</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h2>What VAP-AT Does NOT Do</h2>
+                        <ul>
+                            <li>❌ Evaluate AI model accuracy or performance</li>
+                            <li>❌ Assess business logic validity</li>
+                            <li>❌ Conduct security vulnerability testing</li>
+                            <li>❌ Guarantee AI decision correctness or legality</li>
+                        </ul>
+
+                        <div class="callout callout-warning">
+                            <h4>Critical Distinction</h4>
+                            <p>VAP-AT does not assess the correctness or legality of AI decisions, only the verifiability and auditability of the decision process.</p>
+                        </div>
+                    </article>
+
+                    <article id="doc-scoring" class="doc-article">
+                        <h1>Scoring Criteria</h1>
+                        <p class="lead">VAP-AT uses 10 criteria, each scored 0-2 points, for a maximum of 20 points.</p>
+
+                        <h2>Score Meanings</h2>
+                        <table>
+                            <thead><tr><th>Score</th><th>Meaning</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="score-dot score-0">0</span></td><td>Not implemented or fundamentally inadequate</td></tr>
+                                <tr><td><span class="score-dot score-1">1</span></td><td>Partially implemented with gaps</td></tr>
+                                <tr><td><span class="score-dot score-2">2</span></td><td>Fully implemented, required outcomes achieved</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h2>Grade Thresholds</h2>
+                        <table>
+                            <thead><tr><th>Score Range</th><th>Grade</th><th>Interpretation</th></tr></thead>
+                            <tbody>
+                                <tr><td>16-20</td><td><span class="grade-badge grade-strong">Strong</span></td><td>Demonstrates robust auditability</td></tr>
+                                <tr><td>11-15</td><td><span class="grade-badge grade-moderate">Moderate</span></td><td>Auditable but room for improvement</td></tr>
+                                <tr><td>6-10</td><td><span class="grade-badge grade-limited">Limited</span></td><td>Significant auditability deficiencies</td></tr>
+                                <tr><td>0-5</td><td><span class="grade-badge grade-inadequate">Inadequate</span></td><td>Fundamentally insufficient</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h2>The 10 Criteria</h2>
+                        <ol>
+                            <li><strong>Third-Party Verifiability</strong> – Can external parties verify audit trails?</li>
+                            <li><strong>Tamper Evidence</strong> – Can unauthorized modifications be detected?</li>
+                            <li><strong>Sequence Fixation</strong> – Is chronological order immutably recorded?</li>
+                            <li><strong>Decision Provenance</strong> – Can decision inputs/rationale be traced?</li>
+                            <li><strong>Responsibility Boundaries</strong> – Are approvers/overriders clear?</li>
+                            <li><strong>Documentation Completeness</strong> – Is documentation complete and current?</li>
+                            <li><strong>Retention & Availability</strong> – Is evidence retained for required periods?</li>
+                            <li><strong>Time Synchronization</strong> – Is system time synchronized?</li>
+                            <li><strong>Failure & Recovery Logging</strong> – Are failures logged?</li>
+                            <li><strong>Right to Erasure Compatibility</strong> – Can GDPR erasure be supported?</li>
+                        </ol>
+                    </article>
+
+                    <article id="doc-levels" class="doc-article">
+                        <h1>Assessment Levels</h1>
+                        <p class="lead">VAP-AT offers three assessment levels with increasing rigor and cost.</p>
+
+                        <div class="level-cards">
+                            <div class="level-card">
+                                <div class="level-header level-1">
+                                    <h3>Level 1: Self-Assessment Tool</h3>
+                                    <span class="price">Free – $5K</span>
+                                </div>
+                                <ul>
+                                    <li>Self-assessment using this tool</li>
+                                    <li>Target: Low-risk AI</li>
+                                    <li>Preliminary status</li>
+                                    <li>Evidence Pack v1.0 output</li>
+                                </ul>
+                            </div>
+                            <div class="level-card">
+                                <div class="level-header level-2">
+                                    <h3>Level 2: Verified</h3>
+                                    <span class="price">$15K – $150K</span>
+                                </div>
+                                <ul>
+                                    <li>VSO-accredited CAB assessment</li>
+                                    <li>Target: Medium-risk AI</li>
+                                    <li>CAB-signed Score Report</li>
+                                    <li>1-year validity</li>
+                                </ul>
+                            </div>
+                            <div class="level-card">
+                                <div class="level-header level-3">
+                                    <h3>Level 3: Continuous</h3>
+                                    <span class="price">$100K+</span>
+                                </div>
+                                <ul>
+                                    <li>Ongoing monitoring</li>
+                                    <li>Target: High-risk AI</li>
+                                    <li>Automated verification</li>
+                                    <li>Real-time status updates</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article id="doc-designations" class="doc-article">
+                        <h1>Threshold Designations</h1>
+                        <p class="lead">Optional interpretive labels for procurement and regulatory reporting convenience.</p>
+
+                        <table>
+                            <thead><tr><th>Min Score</th><th>Designation</th></tr></thead>
+                            <tbody>
+                                <tr><td>16+</td><td>VAP-AT Auditability Threshold – EU AI Act Art.12/19 aligned</td></tr>
+                                <tr><td>14+</td><td>VAP-AT Auditability Threshold – MiFID II RTS 25 aligned</td></tr>
+                                <tr><td>11+</td><td>VAP-AT Baseline Auditability Threshold</td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="callout callout-danger">
+                            <h4>⚠️ Critical Disclaimer</h4>
+                            <p>Threshold Designations are <strong>interpretive labels within the VAP-AT scheme</strong> and are <strong>NOT guarantees of legal compliance</strong>.</p>
+                            <ul>
+                                <li>"EU AI Act Art.12/19 aligned" indicates a VAP-AT score aligned with auditability levels sought by those articles</li>
+                                <li>Legal compliance determination is the assessed entity's responsibility</li>
+                                <li>Final interpretation depends on regulatory authorities</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article id="doc-governance" class="doc-article">
+                        <h1>Governance Structure</h1>
+                        <p class="lead">VAP-AT employs a 4-layer separation model to ensure independence and credibility.</p>
+
+                        <h2>4-Layer Structure</h2>
+                        <div class="governance-layers">
+                            <div class="gov-layer">
+                                <div class="layer-num">0</div>
+                                <div class="layer-content">
+                                    <h4>National Accreditation Bodies</h4>
+                                    <p>UKAS, DAkkS, ANAB, JAB – ISO accreditation of CABs (Phase 2+)</p>
+                                </div>
+                            </div>
+                            <div class="gov-layer">
+                                <div class="layer-num">1</div>
+                                <div class="layer-content">
+                                    <h4>Standard-Setting (VSO)</h4>
+                                    <p>Maintains criteria, accredits CABs, does NOT perform assessments</p>
+                                </div>
+                            </div>
+                            <div class="gov-layer">
+                                <div class="layer-num">2</div>
+                                <div class="layer-content">
+                                    <h4>Advisory Board</h4>
+                                    <p>Technical advisory, regulatory monitoring, conflict oversight</p>
+                                </div>
+                            </div>
+                            <div class="gov-layer">
+                                <div class="layer-num">3</div>
+                                <div class="layer-content">
+                                    <h4>Assessment Execution (CABs)</h4>
+                                    <p>Independent CABs conduct assessments and issue reports</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>Key Principle</h2>
+                        <div class="callout">
+                            <p><strong>VSO does not perform assessments.</strong> This separation prevents "Pay-to-Pass" conflicts and maintains scheme credibility.</p>
+                        </div>
+                    </article>
+
+                    <article id="doc-faq" class="doc-article">
+                        <h1>Frequently Asked Questions</h1>
+                        
+                        <div class="faq-list">
+                            <details class="faq-item">
+                                <summary>What is the difference between VAP-AT and ISO 27001?</summary>
+                                <p>ISO 27001 certifies organizational information security management systems (ISMS). VAP-AT specifically evaluates AI system auditability and verifiability – whether audit trails are cryptographically sound and regulatory-ready. They are complementary, not competing.</p>
+                            </details>
+                            <details class="faq-item">
+                                <summary>Is VAP-AT Level 1 (Self) legally valid?</summary>
+                                <p>Level 1 produces a "Preliminary" status suitable for internal gap analysis and improvement planning. For regulatory submissions or procurement requirements, Level 2 (Verified) with CAB assessment is typically required.</p>
+                            </details>
+                            <details class="faq-item">
+                                <summary>How long does a Level 2 assessment take?</summary>
+                                <p>Typically 4-8 weeks depending on system complexity. Type I (point-in-time) is faster; Type II (period audit) requires 6-12 months of operational evidence.</p>
+                            </details>
+                            <details class="faq-item">
+                                <summary>What if my score decreases after initial assessment?</summary>
+                                <p>For Level 3 (Continuous), scores are monitored. If thresholds are breached, you receive 24-hour notification and 30 days to remediate before status changes to "Suspended."</p>
+                            </details>
+                            <details class="faq-item">
+                                <summary>Can I use VAP-AT for EU AI Act compliance?</summary>
+                                <p>VAP-AT helps demonstrate auditability aligned with Art.12/19 requirements. However, Threshold Designations are interpretive labels, not legal compliance certifications. Consult legal counsel for compliance determinations.</p>
+                            </details>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="logo-icon">◈</span>
+                <span>VAP-AT</span>
+                <span class="text-muted">by VeritasChain Standards Organization</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://veritaschain.org" target="_blank">veritaschain.org</a>
+                <a href="mailto:info@veritaschain.org">Contact</a>
+                <a href="https://github.com/veritaschain" target="_blank">GitHub</a>
+            </div>
+            <div class="footer-legal">
+                <p>© 2025 VeritasChain Standards Organization. Licensed under CC BY 4.0.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/i18n.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

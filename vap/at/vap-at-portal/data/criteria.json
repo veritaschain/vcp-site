@@ -1,0 +1,202 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2025-12-28",
+  "maxScore": 20,
+  "criteria": [
+    {
+      "id": 1,
+      "name": "Third-Party Verifiability",
+      "shortName": "Verifiability",
+      "keyQuestion": "Can external parties independently verify audit trails?",
+      "description": "Evaluates whether audit trails can be cryptographically verified by third parties without requiring access to internal systems.",
+      "regulatoryMapping": ["EU AI Act Art.12/19", "MiFID II"],
+      "scoringGuide": {
+        "0": "No external verification capability. Audit trails are internal-only or non-existent.",
+        "1": "Partial verification possible. Some logs exportable but no cryptographic proof.",
+        "2": "Full third-party verification. Cryptographic proofs (hash chains, signatures) enable independent verification."
+      },
+      "evidenceExamples": [
+        "Merkle tree root hashes published to immutable ledger",
+        "Ed25519 signed audit logs with public key distribution",
+        "Third-party verification API or export format"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Tamper Evidence",
+      "shortName": "Tamper Evidence",
+      "keyQuestion": "Can unauthorized modifications be detected?",
+      "description": "Evaluates whether the system can detect if audit records have been altered, deleted, or reordered after creation.",
+      "regulatoryMapping": ["SEC 17a-4"],
+      "scoringGuide": {
+        "0": "No tamper detection. Logs can be modified without detection.",
+        "1": "Basic tamper detection. Checksums or timestamps present but not cryptographically linked.",
+        "2": "Strong tamper evidence. Hash chains, Merkle trees, or blockchain anchoring detect any modification."
+      },
+      "evidenceExamples": [
+        "Hash chain linking sequential records",
+        "Periodic blockchain anchoring of Merkle roots",
+        "Write-once storage with cryptographic verification"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Sequence Fixation",
+      "shortName": "Sequence",
+      "keyQuestion": "Is chronological order immutably recorded?",
+      "description": "Evaluates whether the temporal ordering of events is preserved and cannot be retroactively altered.",
+      "regulatoryMapping": ["MiFID II RTS 25"],
+      "scoringGuide": {
+        "0": "No sequence guarantee. Events may be reordered or backdated.",
+        "1": "Timestamps present but not cryptographically fixed. Order depends on system clock integrity.",
+        "2": "Immutable sequence. UUIDv7 or similar provides cryptographically fixed ordering."
+      },
+      "evidenceExamples": [
+        "UUIDv7 identifiers with embedded timestamps",
+        "Monotonic sequence numbers with hash chain",
+        "Trusted timestamping service integration"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Decision Provenance",
+      "shortName": "Provenance",
+      "keyQuestion": "Can decision inputs and rationale be traced?",
+      "description": "Evaluates whether the inputs, parameters, and reasoning behind AI decisions are recorded and traceable.",
+      "regulatoryMapping": ["EU AI Act Art.12"],
+      "scoringGuide": {
+        "0": "No decision tracking. Outputs recorded but inputs/rationale unknown.",
+        "1": "Partial provenance. Some inputs logged but incomplete chain from input to output.",
+        "2": "Full provenance. Complete audit trail from inputs through processing to outputs with rationale."
+      },
+      "evidenceExamples": [
+        "Input data snapshots with decision output linking",
+        "Model version and parameter logging per decision",
+        "Explainability metadata (feature importance, confidence scores)"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Responsibility Boundaries",
+      "shortName": "Responsibility",
+      "keyQuestion": "Are approvers and overriders for each action clear?",
+      "description": "Evaluates whether human oversight actions, approvals, and overrides are clearly attributed and logged.",
+      "regulatoryMapping": ["EU AI Act Art.14"],
+      "scoringGuide": {
+        "0": "No attribution. Actions occur without recorded human accountability.",
+        "1": "Partial attribution. Some actions attributed but gaps in override/approval logging.",
+        "2": "Full attribution. Every action has clear owner; all overrides logged with justification."
+      },
+      "evidenceExamples": [
+        "User ID and role attached to all override actions",
+        "Approval workflow logs with timestamps",
+        "Escalation and exception handling audit trail"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Documentation Completeness",
+      "shortName": "Documentation",
+      "keyQuestion": "Is technical documentation complete and current?",
+      "description": "Evaluates whether system documentation meets regulatory requirements and is maintained up-to-date.",
+      "regulatoryMapping": ["EU AI Act Annex IV"],
+      "scoringGuide": {
+        "0": "No documentation or severely outdated (>12 months).",
+        "1": "Partial documentation. Key documents exist but gaps or outdated sections.",
+        "2": "Complete documentation. All required documents current and version-controlled."
+      },
+      "evidenceExamples": [
+        "System architecture documentation",
+        "Data flow diagrams with privacy annotations",
+        "Risk assessment and mitigation documentation",
+        "Version-controlled document repository"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Retention & Availability",
+      "shortName": "Retention",
+      "keyQuestion": "Is evidence retained and retrievable for required periods?",
+      "description": "Evaluates whether audit data is retained for regulatory periods and can be retrieved when needed.",
+      "regulatoryMapping": ["EU AI Act Art.19", "GDPR", "MiFID II"],
+      "scoringGuide": {
+        "0": "No retention policy or <3 months retention.",
+        "1": "Partial compliance. Retention exists but retrieval untested or incomplete.",
+        "2": "Full compliance. 6+ month retention with verified retrieval capability."
+      },
+      "evidenceExamples": [
+        "Documented retention policy aligned to regulations",
+        "Automated retention enforcement",
+        "Tested retrieval procedures with SLA"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Time Synchronization",
+      "shortName": "Time Sync",
+      "keyQuestion": "Is system time synchronized with trusted sources?",
+      "description": "Evaluates whether system clocks are synchronized to authoritative time sources with appropriate precision.",
+      "regulatoryMapping": ["MiFID II RTS 25"],
+      "scoringGuide": {
+        "0": "No time synchronization. System clock may drift significantly.",
+        "1": "Basic NTP synchronization. Millisecond-level accuracy.",
+        "2": "High-precision synchronization. PTP or equivalent with microsecond accuracy and drift monitoring."
+      },
+      "evidenceExamples": [
+        "NTP/PTP configuration documentation",
+        "Time drift monitoring and alerting",
+        "Synchronization audit logs"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Failure & Recovery Logging",
+      "shortName": "Failure Logging",
+      "keyQuestion": "Are system failures and recoveries logged?",
+      "description": "Evaluates whether system failures, errors, and recovery actions are comprehensively logged.",
+      "regulatoryMapping": ["DORA"],
+      "scoringGuide": {
+        "0": "No failure logging. Outages and errors not systematically recorded.",
+        "1": "Basic error logging. Major failures logged but recovery actions incomplete.",
+        "2": "Comprehensive logging. All failures, root causes, and recovery actions logged with timestamps."
+      },
+      "evidenceExamples": [
+        "Error and exception logging framework",
+        "Incident response audit trail",
+        "Recovery action documentation",
+        "Post-incident review records"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Right to Erasure Compatibility",
+      "shortName": "Erasure",
+      "keyQuestion": "Can GDPR erasure rights be supported while maintaining auditability?",
+      "description": "Evaluates whether the system can honor data deletion requests while preserving audit trail integrity.",
+      "regulatoryMapping": ["GDPR Art.17"],
+      "scoringGuide": {
+        "0": "No erasure capability, or erasure destroys audit integrity.",
+        "1": "Basic erasure. Data can be deleted but audit trail gaps result.",
+        "2": "Crypto-shredding or equivalent. Personal data erasable while audit integrity maintained."
+      },
+      "evidenceExamples": [
+        "Crypto-shredding implementation",
+        "Key management for selective decryption",
+        "Erasure request handling procedures",
+        "Audit trail continuity after erasure"
+      ]
+    }
+  ],
+  "gradeThresholds": [
+    { "min": 16, "max": 20, "grade": "Strong", "color": "#22c55e", "description": "Demonstrates robust auditability" },
+    { "min": 11, "max": 15, "grade": "Moderate", "color": "#eab308", "description": "Auditable but room for improvement" },
+    { "min": 6, "max": 10, "grade": "Limited", "color": "#f97316", "description": "Significant auditability deficiencies" },
+    { "min": 0, "max": 5, "grade": "Inadequate", "color": "#ef4444", "description": "Fundamentally insufficient auditability" }
+  ],
+  "thresholdDesignations": [
+    { "minScore": 16, "label": "VAP-AT Auditability Threshold – EU AI Act Art.12/19 aligned", "shortLabel": "EU AI Act Art.12/19 aligned" },
+    { "minScore": 14, "label": "VAP-AT Auditability Threshold – MiFID II RTS 25 aligned", "shortLabel": "MiFID II RTS 25 aligned" },
+    { "minScore": 11, "label": "VAP-AT Baseline Auditability Threshold", "shortLabel": "Baseline Auditability" }
+  ],
+  "disclaimer": "Threshold Designations are interpretive labels within the VAP-AT scheme and are NOT guarantees of legal compliance. Legal compliance determination is the assessed entity's responsibility and ultimately depends on regulatory interpretation."
+}
