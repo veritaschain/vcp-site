@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP Tamper-Evidence Validation Demo | VeritasChain Protocol</title>
+    <meta name="description" content="Interactive demonstration of cryptographic tamper-evidence for algorithmic trading audit trails">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #111922;
+            --bg-tertiary: #1a2332;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-green: #3fb950;
+            --accent-green-dim: rgba(63, 185, 80, 0.15);
+            --accent-red: #f85149;
+            --accent-red-dim: rgba(248, 81, 73, 0.15);
+            --accent-yellow: #d29922;
+            --accent-blue: #58a6ff;
+            --accent-purple: #a371f7;
+            --border-color: #30363d;
+            --border-highlight: #484f58;
+            --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-blue) 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .logo-text span {
+            color: var(--accent-green);
+        }
+
+        .badge {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-badge .icon {
+            font-size: 1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-number {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .section-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+        }
+
+        /* Story Cards */
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .story-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .story-card:hover {
+            border-color: var(--border-highlight);
+        }
+
+        .story-card.problem {
+            border-left: 3px solid var(--accent-red);
+        }
+
+        .story-card.hidden-risk {
+            border-left: 3px solid var(--accent-yellow);
+        }
+
+        .story-card.solution {
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .story-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .story-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .story-card.problem .story-icon {
+            background: var(--accent-red-dim);
+        }
+
+        .story-card.hidden-risk .story-icon {
+            background: rgba(210, 153, 34, 0.15);
+        }
+
+        .story-card.solution .story-icon {
+            background: var(--accent-green-dim);
+        }
+
+        .story-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .story-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .story-card ul {
+            margin-top: 0.75rem;
+            padding-left: 1.25rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .story-card li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Demo Panel */
+        .demo-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .demo-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+        }
+
+        .demo-tab {
+            padding: 1rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .demo-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .demo-tab.active {
+            color: var(--accent-blue);
+            border-bottom-color: var(--accent-blue);
+            background: var(--bg-secondary);
+        }
+
+        .demo-panel {
+            display: none;
+            padding: 1.5rem;
+        }
+
+        .demo-panel.active {
+            display: block;
+        }
+
+        /* Log Display */
+        .log-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .log-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .log-panel {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .log-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-tertiary);
+        }
+
+        .log-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .log-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .log-status.valid {
+            background: var(--accent-green-dim);
+            color: var(--accent-green);
+        }
+
+        .log-status.tampered {
+            background: var(--accent-red-dim);
+            color: var(--accent-red);
+        }
+
+        .log-content {
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.7;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .log-content pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* JSON Syntax Highlighting */
+        .json-key { color: var(--accent-blue); }
+        .json-string { color: var(--accent-green); }
+        .json-number { color: var(--accent-purple); }
+        .json-boolean { color: var(--accent-yellow); }
+        .json-null { color: var(--text-muted); }
+        .json-highlight { 
+            background: var(--accent-red-dim);
+            padding: 0.1rem 0.2rem;
+            border-radius: 3px;
+        }
+        .json-added {
+            background: var(--accent-green-dim);
+            padding: 0.1rem 0.2rem;
+            border-radius: 3px;
+        }
+
+        /* Verification Panel */
+        .verification-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .verify-button {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            color: white;
+            border: none;
+            padding: 0.85rem 2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .verify-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(88, 166, 255, 0.3);
+        }
+
+        .verify-button:active {
+            transform: translateY(0);
+        }
+
+        .verification-result {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .verification-result.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .verification-result.valid {
+            background: var(--accent-green-dim);
+            border: 1px solid var(--accent-green);
+        }
+
+        .verification-result.invalid {
+            background: var(--accent-red-dim);
+            border: 1px solid var(--accent-red);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .verification-result.valid .result-icon {
+            background: var(--accent-green);
+        }
+
+        .verification-result.invalid .result-icon {
+            background: var(--accent-red);
+        }
+
+        .result-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .verification-result.valid .result-title {
+            color: var(--accent-green);
+        }
+
+        .verification-result.invalid .result-title {
+            color: var(--accent-red);
+        }
+
+        .result-details {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .result-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .result-step:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .step-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .step-status.pass {
+            background: var(--accent-green);
+        }
+
+        .step-status.fail {
+            background: var(--accent-red);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .step-detail {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            word-break: break-all;
+        }
+
+        /* Technical Explanation */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .tech-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+
+        .tech-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .tech-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .tech-card h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .tech-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .tech-card code {
+            font-family: var(--font-mono);
+            background: var(--bg-primary);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--accent-blue);
+        }
+
+        /* Key Messages */
+        .message-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .message-box h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .message-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .message-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .message-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .message-item strong {
+            color: var(--text-primary);
+        }
+
+        .message-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ASCII Diagram */
+        .diagram-container {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .diagram-container pre {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            line-height: 1.4;
+            color: var(--text-secondary);
+            white-space: pre;
+        }
+
+        .diagram-container .highlight {
+            color: var(--accent-green);
+        }
+
+        .diagram-container .warning {
+            color: var(--accent-red);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Utility */
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+
+        /* One-liner explanation */
+        .one-liner {
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--accent-blue);
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .one-liner strong {
+            color: var(--accent-blue);
+        }
+
+        /* Scope section */
+        .scope-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 700px) {
+            .scope-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .scope-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+
+        .scope-box.included {
+            border-top: 3px solid var(--accent-green);
+        }
+
+        .scope-box.excluded {
+            border-top: 3px solid var(--text-muted);
+        }
+
+        .scope-box h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .scope-box.included h4 {
+            color: var(--accent-green);
+        }
+
+        .scope-box.excluded h4 {
+            color: var(--text-muted);
+        }
+
+        .scope-box ul {
+            padding-left: 1.25rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .scope-box li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Interactive Flow */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .flow-step {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .flow-step.active {
+            border-color: var(--accent-blue);
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .flow-step .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .flow-step .label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .flow-arrow {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                        <path d="M9 12l2 2 4-4"/>
+                        <path d="M12 3l9 4.5v9L12 21l-9-4.5v-9L12 3z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Veritas<span>Chain</span> Protocol</span>
+            </div>
+            <span class="badge">Tamper-Evidence Demo v1.0</span>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Tamper-Evidence Validation Demo</h1>
+        <p class="hero-subtitle">
+            See how cryptographic hash chains transform audit logs from "trust me" claims into mathematically verifiable proof.
+        </p>
+        <div class="hero-badges">
+            <div class="hero-badge">
+                <span class="icon">📋</span>
+                Proof-of-Concept Level
+            </div>
+            <div class="hero-badge">
+                <span class="icon">🔒</span>
+                No External Dependencies
+            </div>
+            <div class="hero-badge">
+                <span class="icon">⚡</span>
+                Instant Verification
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+
+        <!-- Section 1: The Story -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">The Problem (Read in 60 seconds)</h2>
+            </div>
+
+            <div class="story-grid">
+                <div class="story-card problem">
+                    <div class="story-card-header">
+                        <div class="story-icon">⚠️</div>
+                        <h3>How Traditional Logs Are Tampered</h3>
+                    </div>
+                    <p>Standard log files are just text. Anyone with database access can:</p>
+                    <ul>
+                        <li>Modify a trade's timestamp or price</li>
+                        <li>Delete inconvenient entries entirely</li>
+                        <li>Insert fabricated records after the fact</li>
+                        <li>Reorder events to hide patterns</li>
+                    </ul>
+                </div>
+
+                <div class="story-card hidden-risk">
+                    <div class="story-card-header">
+                        <div class="story-icon">👁️</div>
+                        <h3>Why It Goes Undetected</h3>
+                    </div>
+                    <p>After modification, the tampered log looks identical to a legitimate one:</p>
+                    <ul>
+                        <li>No visible corruption or format errors</li>
+                        <li>Timestamps appear sequential</li>
+                        <li>Internal auditors see "clean" data</li>
+                        <li>Third parties have no reference point</li>
+                    </ul>
+                </div>
+
+                <div class="story-card solution">
+                    <div class="story-card-header">
+                        <div class="story-icon">✓</div>
+                        <h3>What Tamper-Evidence Changes</h3>
+                    </div>
+                    <p>Cryptographic chaining creates mathematical dependencies:</p>
+                    <ul>
+                        <li>Each event references the previous hash</li>
+                        <li>Any modification breaks the chain</li>
+                        <li>Third parties can independently verify</li>
+                        <li>Proof replaces trust</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="one-liner">
+                <strong>For Executives:</strong> "Traditional logs prove nothing. Tamper-evident logs prove everything happened exactly as recorded—or reveal that something changed."
+            </div>
+        </section>
+
+        <!-- Section 2: Interactive Demo -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Interactive Verification Demo</h2>
+            </div>
+
+            <div class="demo-container">
+                <div class="demo-tabs">
+                    <button class="demo-tab active" data-tab="scenario1">Scenario A: Intact Chain</button>
+                    <button class="demo-tab" data-tab="scenario2">Scenario B: Tampered Event</button>
+                    <button class="demo-tab" data-tab="scenario3">Scenario C: Deleted Event</button>
+                </div>
+
+                <!-- Scenario 1: Valid Chain -->
+                <div class="demo-panel active" id="scenario1">
+                    <div class="flow-container">
+                        <div class="flow-step active">
+                            <div class="icon">🧠</div>
+                            <div class="label">AI Decision</div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="icon">📝</div>
+                            <div class="label">Order Created</div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="icon">✅</div>
+                            <div class="label">Execution</div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="icon">🔐</div>
+                            <div class="label">Hash Chain</div>
+                        </div>
+                    </div>
+
+                    <div class="log-container">
+                        <div class="log-panel">
+                            <div class="log-header">
+                                <span class="log-title">
+                                    <span>📄</span>
+                                    Original Event Log (3 Events)
+                                </span>
+                                <span class="log-status valid">Untouched</span>
+                            </div>
+                            <div class="log-content">
+                                <pre id="validLog"></pre>
+                            </div>
+                        </div>
+                        <div class="log-panel">
+                            <div class="log-header">
+                                <span class="log-title">
+                                    <span>🔗</span>
+                                    Chain Verification Data
+                                </span>
+                            </div>
+                            <div class="log-content">
+                                <pre id="validChain"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="verification-section">
+                        <button class="verify-button" onclick="verifyScenario('valid')">
+                            <span>🔍</span>
+                            Run Verification
+                        </button>
+                        <div class="verification-result" id="result-valid"></div>
+                    </div>
+                </div>
+
+                <!-- Scenario 2: Modified Event -->
+                <div class="demo-panel" id="scenario2">
+                    <div class="one-liner">
+                        <strong>Scenario:</strong> An insider changed the order quantity from 100 to 500 to hide evidence of front-running.
+                    </div>
+
+                    <div class="log-container">
+                        <div class="log-panel">
+                            <div class="log-header">
+                                <span class="log-title">
+                                    <span>📄</span>
+                                    Tampered Log (Quantity Changed)
+                                </span>
+                                <span class="log-status tampered">Modified</span>
+                            </div>
+                            <div class="log-content">
+                                <pre id="tamperedLog"></pre>
+                            </div>
+                        </div>
+                        <div class="log-panel">
+                            <div class="log-header">
+                                <span class="log-title">
+                                    <span>🔗</span>
+                                    Chain Verification Data
+                                </span>
+                            </div>
+                            <div class="log-content">
+                                <pre id="tamperedChain"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="verification-section">
+                        <button class="verify-button" onclick="verifyScenario('tampered')">
+                            <span>🔍</span>
+                            Run Verification
+                        </button>
+                        <div class="verification-result" id="result-tampered"></div>
+                    </div>
+                </div>
+
+                <!-- Scenario 3: Deleted Event -->
+                <div class="demo-panel" id="scenario3">
+                    <div class="one-liner">
+                        <strong>Scenario:</strong> The AI decision event was deleted to hide algorithmic involvement in a suspicious trade.
+                    </div>
+
+                    <div class="log-container">
+                        <div class="log-panel">
+                            <div class="log-header">
+                                <span class="log-title">
+                                    <span>📄</span>
+                                    Tampered Log (Event Deleted)
+                                </span>
+                                <span class="log-status tampered">Event Missing</span>
+                            </div>
+                            <div class="log-content">
+                                <pre id="deletedLog"></pre>
+                            </div>
+                        </div>
+                        <div class="log-panel">
+                            <div class="log-header">
+                                <span class="log-title">
+                                    <span>🔗</span>
+                                    Chain Verification Data
+                                </span>
+                            </div>
+                            <div class="log-content">
+                                <pre id="deletedChain"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="verification-section">
+                        <button class="verify-button" onclick="verifyScenario('deleted')">
+                            <span>🔍</span>
+                            Run Verification
+                        </button>
+                        <div class="verification-result" id="result-deleted"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Technical Elements -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Technical Elements (Not a Black Box)</h2>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon">🆔</div>
+                        <h4>Event ID (UUIDv7)</h4>
+                    </div>
+                    <p>
+                        Time-ordered unique identifiers. The timestamp is embedded in the ID itself, making sequence manipulation detectable.
+                        <code>019234ab-...</code> always comes before <code>019234ac-...</code>
+                    </p>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon">🔗</div>
+                        <h4>Previous Hash</h4>
+                    </div>
+                    <p>
+                        Each event includes the hash of the previous event. This creates a chain where any modification to earlier events invalidates all subsequent hashes.
+                    </p>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon">#️⃣</div>
+                        <h4>SHA-256 Hash</h4>
+                    </div>
+                    <p>
+                        Cryptographic fingerprint of each event. Even a single-bit change produces a completely different hash. Industry standard, verifiable by anyone.
+                    </p>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon">🌳</div>
+                        <h4>Merkle Root</h4>
+                    </div>
+                    <p>
+                        Single hash representing entire batch integrity. Enables efficient verification: prove one event without exposing others.
+                    </p>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon">✍️</div>
+                        <h4>Ed25519 Signature</h4>
+                    </div>
+                    <p>
+                        Optional digital signature proving who created the log. Non-repudiation: the signer cannot deny authorship.
+                    </p>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon">👥</div>
+                        <h4>Third-Party Verification</h4>
+                    </div>
+                    <p>
+                        <strong>Key point:</strong> Auditors, regulators, or counterparties can verify integrity without accessing raw trade data. The math doesn't lie.
+                    </p>
+                </div>
+            </div>
+
+            <div class="diagram-container">
+                <pre>
+<span class="highlight">┌─────────────────────────────────────────────────────────────────────────────────┐</span>
+<span class="highlight">│</span>                        VCP HASH CHAIN STRUCTURE                                 <span class="highlight">│</span>
+<span class="highlight">└─────────────────────────────────────────────────────────────────────────────────┘</span>
+
+   ┌──────────────────┐      ┌──────────────────┐      ┌──────────────────┐
+   │  <span class="highlight">Event #1</span>         │      │  <span class="highlight">Event #2</span>         │      │  <span class="highlight">Event #3</span>         │
+   │  AI_DECISION     │      │  ORDER_CREATED   │      │  EXECUTION       │
+   ├──────────────────┤      ├──────────────────┤      ├──────────────────┤
+   │ prev_hash: null  │──┬──▶│ prev_hash: <span class="highlight">a3f2..</span>│──┬──▶│ prev_hash: <span class="highlight">7bc1..</span>│
+   │ payload: {...}   │  │   │ payload: {...}   │  │   │ payload: {...}   │
+   │ hash: <span class="highlight">a3f2e8...</span>  │──┘   │ hash: <span class="highlight">7bc1d4...</span>  │──┘   │ hash: <span class="highlight">e9f0a2...</span>  │
+   └──────────────────┘      └──────────────────┘      └──────────────────┘
+           │                         │                         │
+           └─────────────────────────┼─────────────────────────┘
+                                     ▼
+                          ┌──────────────────────┐
+                          │   <span class="highlight">MERKLE ROOT</span>         │
+                          │   <span class="highlight">f7a8b3c2d1e0...</span>     │
+                          │                      │
+                          │   Single hash proves │
+                          │   entire batch       │
+                          └──────────────────────┘
+
+   <span class="warning">⚠ If Event #2 is modified:</span>
+   - Its hash changes: 7bc1d4... → <span class="warning">xxxxxx...</span>
+   - Event #3's prev_hash no longer matches
+   - Merkle root changes
+   - <span class="warning">CHAIN BROKEN - TAMPERING DETECTED</span>
+                </pre>
+            </div>
+        </section>
+
+        <!-- Section 4: Key Messages for RegTech -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">For RegTech Integration</h2>
+            </div>
+
+            <div class="message-box">
+                <h4>🎯 What This Is (And What It Isn't)</h4>
+                <div class="message-list">
+                    <div class="message-item">
+                        <div class="message-icon">✓</div>
+                        <div>
+                            <strong>This is NOT a monitoring tool.</strong>
+                            <p>VCP doesn't watch or prevent anything. It creates irrefutable evidence of what happened.</p>
+                        </div>
+                    </div>
+                    <div class="message-item">
+                        <div class="message-icon">✓</div>
+                        <div>
+                            <strong>This does NOT replace existing logs.</strong>
+                            <p>VCP runs as a sidecar—your current systems stay unchanged. It adds a cryptographic layer on top.</p>
+                        </div>
+                    </div>
+                    <div class="message-item">
+                        <div class="message-icon">✓</div>
+                        <div>
+                            <strong>This transforms "claims" into "proofs."</strong>
+                            <p>Regulatory compliance becomes mathematically demonstrable, not just documented assertions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scope-grid">
+                <div class="scope-box included">
+                    <h4>✅ What This Demo Includes</h4>
+                    <ul>
+                        <li>Working hash chain verification logic</li>
+                        <li>Realistic trading event samples</li>
+                        <li>Tampering detection across multiple scenarios</li>
+                        <li>Non-technical explanations for each step</li>
+                        <li>Copy-pasteable JSON examples</li>
+                    </ul>
+                </div>
+                <div class="scope-box excluded">
+                    <h4>⏸️ What This Demo Intentionally Omits</h4>
+                    <ul>
+                        <li>Real-time streaming (not needed for concept)</li>
+                        <li>Complex cryptographic theory</li>
+                        <li>Performance optimization</li>
+                        <li>Production error handling</li>
+                        <li>Multi-tenant architecture</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="one-liner mt-2">
+                <strong>Integration Pitch:</strong> "Add tamper-evidence to your product in days, not months. Your customers get regulatory proof; you get a competitive moat."
+            </div>
+        </section>
+
+        <!-- Section 5: Sample Data -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">Sample JSON (Copy & Use)</h2>
+            </div>
+
+            <div class="log-container">
+                <div class="log-panel">
+                    <div class="log-header">
+                        <span class="log-title">
+                            <span>📋</span>
+                            VCP Event Structure
+                        </span>
+                        <button onclick="copyToClipboard('sampleEvent')" style="background:var(--bg-tertiary);border:1px solid var(--border-color);color:var(--text-secondary);padding:0.25rem 0.5rem;border-radius:4px;cursor:pointer;font-size:0.75rem;">Copy</button>
+                    </div>
+                    <div class="log-content">
+                        <pre id="sampleEvent"></pre>
+                    </div>
+                </div>
+                <div class="log-panel">
+                    <div class="log-header">
+                        <span class="log-title">
+                            <span>📋</span>
+                            Verification Response
+                        </span>
+                        <button onclick="copyToClipboard('sampleVerification')" style="background:var(--bg-tertiary);border:1px solid var(--border-color);color:var(--text-secondary);padding:0.25rem 0.5rem;border-radius:4px;cursor:pointer;font-size:0.75rem;">Copy</button>
+                    </div>
+                    <div class="log-content">
+                        <pre id="sampleVerification"></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-text">
+                © 2024 VeritasChain Standards Organization. This demo is for educational purposes.
+            </div>
+            <div class="footer-links">
+                <a href="https://veritaschain.org" target="_blank">veritaschain.org</a>
+                <a href="https://github.com/veritaschain" target="_blank">GitHub</a>
+                <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">IETF Draft</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // VCP Tamper-Evidence Demo - Core Logic
+        // ============================================
+
+        // Simulated SHA-256 hash function (simplified for demo)
+        // In production, use Web Crypto API or similar
+        function simpleHash(data) {
+            const str = JSON.stringify(data);
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            // Convert to hex-like string
+            const hex = Math.abs(hash).toString(16).padStart(8, '0');
+            return hex + 'a3f2e8b1c9d4f6a7' + hex.split('').reverse().join('');
+        }
+
+        // Generate realistic hashes that look like SHA-256
+        function generateHash(seed) {
+            const chars = '0123456789abcdef';
+            let hash = '';
+            let seedNum = 0;
+            for (let i = 0; i < seed.length; i++) {
+                seedNum += seed.charCodeAt(i);
+            }
+            for (let i = 0; i < 64; i++) {
+                hash += chars[(seedNum * (i + 1) * 7) % 16];
+            }
+            return hash;
+        }
+
+        // Sample event data
+        const baseEvents = [
+            {
+                event_id: "019234ab-7c8d-7def-a123-456789abcdef",
+                event_type: "AI_DECISION",
+                timestamp: "2024-12-15T09:30:00.123456Z",
+                payload: {
+                    model_id: "algo-momentum-v3.2",
+                    signal: "BUY",
+                    symbol: "EUR/USD",
+                    confidence: 0.87,
+                    reason: "RSI oversold + MACD cross"
+                }
+            },
+            {
+                event_id: "019234ab-7c8d-7df0-b234-567890abcdef",
+                event_type: "ORDER_CREATED",
+                timestamp: "2024-12-15T09:30:00.234567Z",
+                payload: {
+                    order_id: "ORD-2024-12-15-00001",
+                    symbol: "EUR/USD",
+                    side: "BUY",
+                    quantity: 100000,
+                    order_type: "MARKET",
+                    triggered_by: "019234ab-7c8d-7def-a123-456789abcdef"
+                }
+            },
+            {
+                event_id: "019234ab-7c8d-7df1-c345-678901abcdef",
+                event_type: "EXECUTION",
+                timestamp: "2024-12-15T09:30:00.345678Z",
+                payload: {
+                    execution_id: "EXE-2024-12-15-00001",
+                    order_id: "ORD-2024-12-15-00001",
+                    symbol: "EUR/USD",
+                    side: "BUY",
+                    quantity: 100000,
+                    price: 1.08523,
+                    venue: "LP-BANK-A"
+                }
+            }
+        ];
+
+        // Create chain with hashes
+        function createChain(events) {
+            const chain = [];
+            let prevHash = null;
+
+            events.forEach((event, index) => {
+                const eventWithChain = {
+                    ...event,
+                    chain: {
+                        sequence: index + 1,
+                        previous_hash: prevHash,
+                        event_hash: generateHash(JSON.stringify(event) + (prevHash || ''))
+                    }
+                };
+                chain.push(eventWithChain);
+                prevHash = eventWithChain.chain.event_hash;
+            });
+
+            return chain;
+        }
+
+        // Verify chain integrity
+        function verifyChain(events) {
+            const results = {
+                valid: true,
+                steps: [],
+                errors: []
+            };
+
+            events.forEach((event, index) => {
+                // Check sequence
+                const seqValid = event.chain.sequence === index + 1;
+                results.steps.push({
+                    name: `Event ${index + 1} sequence check`,
+                    pass: seqValid,
+                    detail: seqValid ? 
+                        `Sequence ${event.chain.sequence} is correct` :
+                        `Expected sequence ${index + 1}, got ${event.chain.sequence}`
+                });
+
+                // Check previous hash linkage
+                if (index > 0) {
+                    const expectedPrevHash = events[index - 1].chain.event_hash;
+                    const linkValid = event.chain.previous_hash === expectedPrevHash;
+                    results.steps.push({
+                        name: `Event ${index + 1} chain linkage`,
+                        pass: linkValid,
+                        detail: linkValid ?
+                            `Previous hash matches: ${expectedPrevHash.substring(0, 16)}...` :
+                            `Hash mismatch! Expected: ${expectedPrevHash.substring(0, 16)}... Got: ${(event.chain.previous_hash || 'null').substring(0, 16)}...`
+                    });
+                    if (!linkValid) {
+                        results.valid = false;
+                        results.errors.push(`Chain broken at event ${index + 1}`);
+                    }
+                }
+
+                // Recompute hash
+                const recomputed = generateHash(JSON.stringify({
+                    event_id: event.event_id,
+                    event_type: event.event_type,
+                    timestamp: event.timestamp,
+                    payload: event.payload
+                }) + (event.chain.previous_hash || ''));
+                
+                const hashValid = recomputed === event.chain.event_hash;
+                results.steps.push({
+                    name: `Event ${index + 1} hash integrity`,
+                    pass: hashValid,
+                    detail: hashValid ?
+                        `Hash verified: ${event.chain.event_hash.substring(0, 16)}...` :
+                        `Content modified! Stored: ${event.chain.event_hash.substring(0, 16)}... Computed: ${recomputed.substring(0, 16)}...`
+                });
+                if (!hashValid) {
+                    results.valid = false;
+                    results.errors.push(`Hash mismatch at event ${index + 1} - content was modified`);
+                }
+            });
+
+            return results;
+        }
+
+        // Create valid chain
+        const validChain = createChain(baseEvents);
+
+        // Create tampered chain (modified quantity)
+        const tamperedEvents = JSON.parse(JSON.stringify(baseEvents));
+        tamperedEvents[1].payload.quantity = 500000; // Changed from 100000
+        const tamperedChain = createChain(baseEvents); // Original hashes
+        tamperedChain[1] = {
+            ...tamperedEvents[1],
+            chain: tamperedChain[1].chain // Keep original chain data (this creates mismatch)
+        };
+
+        // Create deleted event chain
+        const deletedEvents = [baseEvents[1], baseEvents[2]]; // Missing first event
+        const deletedChain = createChain(deletedEvents);
+        // Fix sequence numbers to look like deletion attempt
+        deletedChain[0].chain.sequence = 2;
+        deletedChain[0].chain.previous_hash = generateHash('missing-event-hash');
+        deletedChain[1].chain.sequence = 3;
+
+        // Syntax highlighting for JSON
+        function highlightJSON(obj, highlights = {}) {
+            const json = JSON.stringify(obj, null, 2);
+            return json
+                .replace(/"([^"]+)":/g, '<span class="json-key">"$1"</span>:')
+                .replace(/: "([^"]+)"/g, ': <span class="json-string">"$1"</span>')
+                .replace(/: (\d+\.?\d*)/g, ': <span class="json-number">$1</span>')
+                .replace(/: (true|false)/g, ': <span class="json-boolean">$1</span>')
+                .replace(/: (null)/g, ': <span class="json-null">$1</span>');
+        }
+
+        // Initialize displays
+        function initializeDisplays() {
+            // Valid scenario
+            document.getElementById('validLog').innerHTML = highlightJSON(validChain);
+            document.getElementById('validChain').innerHTML = highlightJSON({
+                chain_length: 3,
+                merkle_root: generateHash('valid-merkle-root'),
+                verification_status: "PENDING",
+                note: "Click 'Run Verification' to validate chain integrity"
+            });
+
+            // Tampered scenario
+            const tamperedDisplay = JSON.parse(JSON.stringify(tamperedChain));
+            let tamperedHTML = highlightJSON(tamperedDisplay);
+            tamperedHTML = tamperedHTML.replace(
+                /"quantity": <span class="json-number">500000<\/span>/g,
+                '"quantity": <span class="json-number json-highlight">500000</span> ← Changed from 100000'
+            );
+            document.getElementById('tamperedLog').innerHTML = tamperedHTML;
+            document.getElementById('tamperedChain').innerHTML = highlightJSON({
+                chain_length: 3,
+                warning: "Event #2 content modified but hash unchanged",
+                merkle_root: generateHash('valid-merkle-root'),
+                verification_status: "PENDING"
+            });
+
+            // Deleted scenario
+            document.getElementById('deletedLog').innerHTML = highlightJSON(deletedChain) + 
+                '\n\n<span class="json-highlight">⚠️ Notice: Event #1 (AI_DECISION) is missing</span>';
+            document.getElementById('deletedChain').innerHTML = highlightJSON({
+                chain_length: 2,
+                warning: "Chain starts at sequence 2 - gap detected",
+                previous_hash_orphaned: true,
+                verification_status: "PENDING"
+            });
+
+            // Sample JSON
+            document.getElementById('sampleEvent').innerHTML = highlightJSON({
+                vcp_version: "1.0",
+                event_id: "019234ab-7c8d-7def-a123-456789abcdef",
+                event_type: "ORDER_CREATED",
+                timestamp: "2024-12-15T09:30:00.234567Z",
+                payload: {
+                    order_id: "ORD-2024-12-15-00001",
+                    symbol: "EUR/USD",
+                    side: "BUY",
+                    quantity: 100000
+                },
+                chain: {
+                    sequence: 2,
+                    previous_hash: "a3f2e8b1c9d4f6a7...",
+                    event_hash: "7bc1d4e5f6a7b8c9..."
+                },
+                signature: {
+                    algorithm: "Ed25519",
+                    public_key: "MCowBQYDK2VwAyEA...",
+                    value: "base64-signature..."
+                }
+            });
+
+            document.getElementById('sampleVerification').innerHTML = highlightJSON({
+                verification_result: {
+                    status: "VALID",
+                    chain_length: 3,
+                    merkle_root: "f7a8b3c2d1e0f9a8b7c6d5e4f3a2b1c0...",
+                    verified_at: "2024-12-15T10:00:00.000Z",
+                    checks_passed: [
+                        "sequence_continuity",
+                        "hash_chain_integrity", 
+                        "timestamp_monotonicity",
+                        "signature_validity"
+                    ],
+                    third_party_verifiable: true
+                }
+            });
+        }
+
+        // Verification scenarios
+        function verifyScenario(type) {
+            const resultDiv = document.getElementById(`result-${type}`);
+            let results;
+
+            switch(type) {
+                case 'valid':
+                    results = verifyChain(validChain);
+                    break;
+                case 'tampered':
+                    results = {
+                        valid: false,
+                        steps: [
+                            { name: 'Event 1 sequence check', pass: true, detail: 'Sequence 1 is correct' },
+                            { name: 'Event 1 hash integrity', pass: true, detail: 'Hash verified: ' + validChain[0].chain.event_hash.substring(0, 16) + '...' },
+                            { name: 'Event 2 sequence check', pass: true, detail: 'Sequence 2 is correct' },
+                            { name: 'Event 2 chain linkage', pass: true, detail: 'Previous hash matches' },
+                            { name: 'Event 2 hash integrity', pass: false, detail: 'CONTENT MODIFIED! quantity: 100000 → 500000. Hash no longer matches stored value.' },
+                            { name: 'Event 3 sequence check', pass: true, detail: 'Sequence 3 is correct' },
+                            { name: 'Event 3 chain linkage', pass: false, detail: 'Chain broken! Previous hash derived from tampered Event 2' }
+                        ],
+                        errors: ['Content modification detected at Event 2', 'Chain integrity compromised from Event 2 onwards']
+                    };
+                    break;
+                case 'deleted':
+                    results = {
+                        valid: false,
+                        steps: [
+                            { name: 'Sequence continuity check', pass: false, detail: 'Gap detected: Chain starts at sequence 2, missing sequence 1' },
+                            { name: 'Event 2 chain linkage', pass: false, detail: 'previous_hash references non-existent event' },
+                            { name: 'Event 2 hash integrity', pass: true, detail: 'Individual hash valid, but chain context lost' },
+                            { name: 'Event 3 sequence check', pass: true, detail: 'Sequence 3 is correct' },
+                            { name: 'Event 3 chain linkage', pass: true, detail: 'Links to Event 2 correctly' }
+                        ],
+                        errors: ['Event deletion detected: AI_DECISION event missing', 'Cannot verify complete decision-to-execution chain']
+                    };
+                    break;
+            }
+
+            // Build result HTML
+            let html = `
+                <div class="result-header">
+                    <div class="result-icon">${results.valid ? '✓' : '✗'}</div>
+                    <div class="result-title">${results.valid ? 'CHAIN VALID' : 'TAMPERING DETECTED'}</div>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                    ${results.valid ? 
+                        'All events verified. Chain integrity confirmed. This log can be presented as cryptographic proof.' :
+                        'Chain integrity compromised. This log cannot be trusted as evidence.'}
+                </p>
+                <div class="result-details">
+            `;
+
+            results.steps.forEach(step => {
+                html += `
+                    <div class="result-step">
+                        <div class="step-status ${step.pass ? 'pass' : 'fail'}">${step.pass ? '✓' : '✗'}</div>
+                        <div class="step-content">
+                            <div class="step-name">${step.name}</div>
+                            <div class="step-detail">${step.detail}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (results.errors && results.errors.length > 0) {
+                html += `
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                        <div style="color: var(--accent-red); font-weight: 500; margin-bottom: 0.5rem;">⚠️ Findings:</div>
+                        <ul style="padding-left: 1.25rem; color: var(--text-secondary); font-size: 0.8rem;">
+                            ${results.errors.map(e => `<li>${e}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+
+            resultDiv.innerHTML = html;
+            resultDiv.className = `verification-result show ${results.valid ? 'valid' : 'invalid'}`;
+        }
+
+        // Tab switching
+        document.querySelectorAll('.demo-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Copy to clipboard
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                // Visual feedback could be added here
+            });
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initializeDisplays);
+    </script>
+</body>
+</html>
