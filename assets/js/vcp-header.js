@@ -75,6 +75,7 @@ class VCPHeader extends HTMLElement {
                 vapEip: 'EIP',
                 vapPap: 'PAP',
                 vapIap: 'IAP',
+                vapCap: 'CAP',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
@@ -128,6 +129,7 @@ class VCPHeader extends HTMLElement {
                 vapEip: 'EIP',
                 vapPap: 'PAP',
                 vapIap: 'IAP',
+                vapCap: 'CAP',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
                 standards: '標準規格',
@@ -181,6 +183,7 @@ class VCPHeader extends HTMLElement {
                 vapEip: 'EIP',
                 vapPap: 'PAP',
                 vapIap: 'IAP',
+                vapCap: 'CAP',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
                 standards: '标准',
@@ -289,6 +292,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/vap/eip/" class="dropdown-item">${t.vapEip}</a>
                             <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
                             <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
+                            <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
                         </div>
                     </div>
 
