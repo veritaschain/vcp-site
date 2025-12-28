@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP 改ざん検知検証デモ | VeritasChain Standards Organization</title>
+    <meta name="description" content="暗号学的ハッシュチェーンがアルゴリズム取引システムの改ざん検知可能な監査証跡をどのように提供するかを示すインタラクティブなブラウザベースのデモ。">
+    <meta name="keywords" content="VeritasChain, VCP, 改ざん検知, ハッシュチェーン, 暗号学的監査, アルゴリズム取引, RegTech, コンプライアンス">
+    <meta name="author" content="VeritasChain Standards Organization">
+    <meta name="robots" content="index, follow">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP 改ざん検知検証デモ | VeritasChain Standards Organization">
+    <meta property="og:description" content="暗号学的ハッシュチェーンがアルゴリズム取引の改ざん検知可能な監査証跡をどのように提供するかを示すインタラクティブなデモ。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/regtech/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain Standards Organization">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP 改ざん検知検証デモ | VeritasChain Standards Organization">
+    <meta name="twitter:description" content="暗号学的ハッシュチェーンによる改ざん検知可能な監査証跡のインタラクティブデモ。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/regtech/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/regtech/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/regtech/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/regtech/">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://veritaschain.org/regtech/ja/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "VCP 改ざん検知検証デモ",
+        "description": "暗号学的ハッシュチェーンがアルゴリズム取引システムの改ざん検知可能な監査証跡をどのように提供するかを示すインタラクティブなブラウザベースのデモ。",
+        "url": "https://veritaschain.org/regtech/ja/",
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "url": "https://veritaschain.org"
+        },
+        "inLanguage": "ja"
+    }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .hero-regtech {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-regtech::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+        }
+        
+        .section-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .section-card:hover {
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-box {
+            border-left: 4px solid #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .success-box {
+            border-left: 4px solid #22c55e;
+            background: #f0fdf4;
+        }
+        
+        .warning-box {
+            border-left: 4px solid #f59e0b;
+            background: #fffbeb;
+        }
+        
+        .neutral-box {
+            border-left: 4px solid #6b7280;
+            background: #f9fafb;
+        }
+        
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #22c55e, #3b82f6);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-right: 0.75rem;
+        }
+        
+        .attribute-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .attribute-table th {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .attribute-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .attribute-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .event-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .badge-sig { background: #dbeafe; color: #1e40af; }
+        .badge-ord { background: #dcfce7; color: #166534; }
+        .badge-ack { background: #fef3c7; color: #92400e; }
+        .badge-exe { background: #fce7f3; color: #9d174d; }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+        }
+        
+        .demo-cta {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            transition: all 0.3s ease;
+        }
+        
+        .demo-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px -10px rgba(34, 197, 94, 0.5);
+        }
+        
+        .link-card {
+            display: block;
+            padding: 1rem 1.5rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            color: #1e293b;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .link-card:hover {
+            background: #f1f5f9;
+            border-color: #3b82f6;
+        }
+        
+        .tampering-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            background: #ffffff;
+        }
+        
+        .tampering-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tampering-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .tampering-modify .tampering-icon { background: #fef3c7; color: #d97706; }
+        .tampering-delete .tampering-icon { background: #fee2e2; color: #dc2626; }
+        .tampering-reorder .tampering-icon { background: #dbeafe; color: #2563eb; }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <vcp-header theme="blue" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Hero Section -->
+    <section class="hero-regtech py-16 md:py-24">
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-green-400 text-sm font-medium">インタラクティブデモ公開中</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                VCP 改ざん検知<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">検証デモ</span>
+            </h1>
+            <div class="max-w-3xl mx-auto">
+                <p class="text-lg md:text-xl text-slate-300 mb-6">
+                    暗号学的ハッシュチェーンがアルゴリズム取引システムの改ざん検知可能な監査証跡をどのように提供するかを示す、インタラクティブなブラウザベースのリファレンス実装。
+                </p>
+                <a href="/regtech/demo/" class="demo-cta inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg text-lg">
+                    <i class="fas fa-play-circle"></i>
+                    デモを起動
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Core Value Proposition -->
+        <section class="mb-12">
+            <div class="success-box p-6 rounded-r-lg">
+                <p class="text-lg font-semibold text-slate-800 mb-2">核心的な価値提案</p>
+                <p class="text-slate-700 text-lg italic">
+                    「規制当局およびサードパーティ監査人は、ログ作成者を信頼することなく、独立してログの改ざんを検出できます。」
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 1: Executive Summary -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">1</span>
+                    エグゼクティブサマリー
+                </h2>
+                
+                <div class="space-y-4 text-slate-600 leading-relaxed">
+                    <p>
+                        VCP改ざん検知検証デモは、コンプライアンスを主張ベース（「信頼してください」）から証明ベース（「検証してください、信頼ではなく」）へと変革することを実証します：
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>従来のログがどのように検出されずに改ざんされ得るか</li>
+                        <li>暗号学的ハッシュチェーンがイベント間に数学的依存関係をどのように作成するか</li>
+                        <li>いかなる変更もチェーンを破壊し、即座に検出可能になるか</li>
+                        <li>サードパーティが生の取引データにアクセスすることなく整合性を検証できるか</li>
+                    </ul>
+                </div>
+                
+                <div class="overflow-x-auto mt-6">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">属性</th>
+                                <th class="rounded-tr-lg">値</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">タイプ</td>
+                                <td class="text-slate-600">概念実証 / 教育デモ</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">ランタイム</td>
+                                <td class="text-slate-600">クライアントサイドのみ（ブラウザ）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">外部依存関係</td>
+                                <td class="text-slate-600">なし</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">ビルド要件</td>
+                                <td class="text-slate-600">なし（バニラHTML/CSS/JS）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">暗号API</td>
+                                <td class="text-slate-600">Web Crypto API（ネイティブブラウザ）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">ターゲットデプロイメント</td>
+                                <td class="text-slate-600">GitHub Pages / 静的ホスティング</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Purpose and Objectives -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">2</span>
+                    目的と目標
+                </h2>
+                
+                <div class="space-y-4 text-slate-600 leading-relaxed">
+                    <p>
+                        RegTech企業、監査法人、コンプライアンス担当者に、改ざん検知技術の即座に理解可能なデモンストレーションを提供します：
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>5分以内に評価可能</li>
+                        <li>技術的なセットアップなしで社内共有可能</li>
+                        <li>製品統合の議論の参考として使用可能</li>
+                        <li>非技術的なステークホルダー（経営層、コンプライアンス責任者）へのプレゼンテーションに使用可能</li>
+                    </ul>
+                </div>
+                
+                <div class="overflow-x-auto mt-6">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">目標</th>
+                                <th class="rounded-tr-lg">成功基準</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">即時理解</td>
+                                <td class="text-slate-600">ユーザーが60秒以内に価値を理解</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">ゼロフリクション</td>
+                                <td class="text-slate-600">インストール不要、アカウント不要、設定不要</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">技術的信頼性</td>
+                                <td class="text-slate-600">実際の暗号操作（SHA-256）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">ビジネス関連性</td>
+                                <td class="text-slate-600">監査対応の用語と出力</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">共有可能性</td>
+                                <td class="text-slate-600">社内配布用のエビデンスパックをダウンロード可能</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Target Audience -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">3</span>
+                    対象ユーザー
+                </h2>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">主要対象</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th>役割</th>
+                                <th>ニーズ</th>
+                                <th class="rounded-tr-lg">デモの価値</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">RegTechプロダクトマネージャー</td>
+                                <td class="text-slate-600">統合の実現可能性を評価</td>
+                                <td class="text-slate-600">動作する検証ロジックを確認</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">コンプライアンス担当者</td>
+                                <td class="text-slate-600">技術的能力を理解</td>
+                                <td class="text-slate-600">非技術的な説明 + 証明</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">監査責任者（Big 4）</td>
+                                <td class="text-slate-600">方法論の妥当性を評価</td>
+                                <td class="text-slate-600">暗号学的検証ステップ</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">CTO / VP Engineering</td>
+                                <td class="text-slate-600">技術的デューデリジェンス</td>
+                                <td class="text-slate-600">ソースコード検査</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">副次対象</h3>
+                <div class="overflow-x-auto">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th>役割</th>
+                                <th>ニーズ</th>
+                                <th class="rounded-tr-lg">デモの価値</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">規制当局（技術スタッフ）</td>
+                                <td class="text-slate-600">検証メカニズムを理解</td>
+                                <td class="text-slate-600">独立した検証能力</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">機関投資家（バイサイド）</td>
+                                <td class="text-slate-600">ブローカーの透明性を評価</td>
+                                <td class="text-slate-600">改ざん防止ログの証拠</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">開発者</td>
+                                <td class="text-slate-600">実装リファレンス</td>
+                                <td class="text-slate-600">コピー＆ペースト可能なパターン</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Event Data Model -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">4</span>
+                    イベントデータモデル
+                </h2>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">イベントスキーマ</h3>
+                <div class="code-block mb-6">
+<pre>{
+  "event_id": "string (UUIDv7形式)",
+  "trace_id": "string",
+  "timestamp_ms": "number (エポックからのミリ秒)",
+  "event_type": "string (SIG|ORD|ACK|EXE)",
+  "payload": "object",
+  "prev_hash": "string (64桁16進数 or 'GENESIS')",
+  "event_hash": "string (64桁16進数)"
+}</pre>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">イベントタイプ</h3>
+                <div class="overflow-x-auto">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th>タイプ</th>
+                                <th>名称</th>
+                                <th class="rounded-tr-lg">説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="event-type-badge badge-sig">SIG</span></td>
+                                <td class="font-medium text-slate-700">シグナル</td>
+                                <td class="text-slate-600">AI/アルゴリズムの判断ポイント</td>
+                            </tr>
+                            <tr>
+                                <td><span class="event-type-badge badge-ord">ORD</span></td>
+                                <td class="font-medium text-slate-700">オーダー</td>
+                                <td class="text-slate-600">注文作成</td>
+                            </tr>
+                            <tr>
+                                <td><span class="event-type-badge badge-ack">ACK</span></td>
+                                <td class="font-medium text-slate-700">確認応答</td>
+                                <td class="text-slate-600">取引所の受理</td>
+                            </tr>
+                            <tr>
+                                <td><span class="event-type-badge badge-exe">EXE</span></td>
+                                <td class="font-medium text-slate-700">約定</td>
+                                <td class="text-slate-600">取引の約定</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Cryptographic Implementation -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">5</span>
+                    暗号学的実装
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-slate-500 mb-1">アルゴリズム</p>
+                        <p class="font-semibold text-slate-800">SHA-256</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-slate-500 mb-1">出力</p>
+                        <p class="font-semibold text-slate-800">64桁16進数</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-slate-500 mb-1">実装</p>
+                        <p class="font-semibold text-slate-800">Web Crypto API</p>
+                    </div>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">ハッシュ計算</h3>
+                <p class="text-slate-600 mb-4"><code class="bg-slate-100 px-2 py-1 rounded text-sm">event_hash</code> は以下のように計算されます：</p>
+                <div class="code-block mb-6">
+<pre>event_hash = SHA-256(prev_hash + canonical_json(event_core))</pre>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">正規化JSON</h3>
+                <p class="text-slate-600 mb-4">決定論的なハッシュ計算を保証するため、JSONは以下のように正規化されます：</p>
+                <ul class="list-disc list-inside space-y-2 ml-4 text-slate-600 mb-4">
+                    <li><strong>キーのソート：</strong> すべてのネストレベルでアルファベット順</li>
+                    <li><strong>安定したstringify：</strong> 一貫した数値/文字列表現</li>
+                    <li><strong>空白なし：</strong> コンパクトフォーマット</li>
+                </ul>
+                
+                <div class="info-box p-4 rounded-r-lg">
+                    <p class="text-sm text-slate-700">
+                        <strong>重要なポイント：</strong> いずれかのイベントが変更されると、そのevent_hashが変更され、次のイベントのprev_hashが一致しなくなり、チェーンが破壊され、改ざんが検出されます。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Tampering Scenarios -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">6</span>
+                    改ざんシナリオ
+                </h2>
+                
+                <p class="text-slate-600 mb-6">デモでは、一般的な監査ログ攻撃を表す3つの改ざんシナリオを実装しています：</p>
+                
+                <div class="grid md:grid-cols-1 gap-6">
+                    <!-- Payload Modification -->
+                    <div class="tampering-card tampering-modify">
+                        <div class="tampering-card-header">
+                            <div class="tampering-icon">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">ペイロード変更（事後編集）</h3>
+                                <p class="text-sm text-slate-500">監査用語：ペイロード変更</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-3">内部者がフロントランニングの証拠を隠すために、事後的に約定価格を変更します。</p>
+                        <div class="bg-slate-50 p-3 rounded text-sm">
+                            <p><strong>対象：</strong> 最初のEXEイベント（イベント#3）</p>
+                            <p><strong>変更フィールド：</strong> payload.price</p>
+                            <p><strong>元の値：</strong> "1.08523" &rarr; <strong>改ざん後：</strong> "1.09999"</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Deletion -->
+                    <div class="tampering-card tampering-delete">
+                        <div class="tampering-card-header">
+                            <div class="tampering-icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">イベント削除（省略）</h3>
+                                <p class="text-sm text-slate-500">監査用語：省略、証拠隠滅</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-3">内部者が注文確認の証拠を隠すためにイベントを削除します。</p>
+                        <div class="bg-slate-50 p-3 rounded text-sm">
+                            <p><strong>対象：</strong> 最初のACKイベント（イベント#2）</p>
+                            <p><strong>効果：</strong> イベントがチェーンから削除</p>
+                            <p><strong>検出：</strong> prev_hashが存在しないハッシュを参照</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Reordering -->
+                    <div class="tampering-card tampering-reorder">
+                        <div class="tampering-card-header">
+                            <div class="tampering-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">イベント順序変更（シーケンス改ざん）</h3>
+                                <p class="text-sm text-slate-500">監査用語：時系列操作</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-3">内部者が約定タイムラインを偽るためにイベントの順序を入れ替えます。</p>
+                        <div class="bg-slate-50 p-3 rounded text-sm">
+                            <p><strong>対象：</strong> イベント#2と#3</p>
+                            <p><strong>効果：</strong> ACKとEXEイベントが入れ替え</p>
+                            <p><strong>検出：</strong> 入れ替えポイントでprev_hashリンケージが破壊</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Evidence Pack -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">7</span>
+                    エビデンスパック形式
+                </h2>
+                
+                <p class="text-slate-600 mb-4">エビデンスパックは完全な監査ドキュメントを含むZIPファイルです：</p>
+                
+                <div class="code-block mb-6">
+<pre>vcp-evidence-pack-{timestamp}.zip
+├── original.jsonl           # 元のイベントチェーン
+├── tampered.jsonl           # 改ざんされたイベントチェーン  
+├── verification_report.json # 詳細な検証結果
+└── README.txt               # 検証手順</pre>
+                </div>
+                
+                <div class="info-box p-4 rounded-r-lg">
+                    <p class="text-sm text-slate-700">
+                        <strong>注：</strong> エビデンスパックには、監査人や規制当局による独立した検証に必要なすべての資料が含まれています。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Use Cases -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">8</span>
+                    ユースケース
+                </h2>
+                
+                <div class="space-y-6">
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">RegTech見込み客への営業デモ</h3>
+                        <p class="text-slate-600 text-sm mb-2">シナリオ：VCP統合を評価するプロダクトマネージャー</p>
+                        <p class="text-slate-700 italic">「この機能を数ヶ月ではなく、数日で製品に追加できます。」</p>
+                    </div>
+                    
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">コンプライアンス担当者教育</h3>
+                        <p class="text-slate-600 text-sm mb-2">シナリオ：非技術的なコンプライアンスチームへの改ざん検知の説明</p>
+                        <p class="text-slate-700 italic">「コンプライアンスは主張ではなく、証明になります。」</p>
+                    </div>
+                    
+                    <div class="border-l-4 border-purple-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">監査法人の技術評価</h3>
+                        <p class="text-slate-600 text-sm mb-2">シナリオ：Big 4監査チームによる方法論の評価</p>
+                        <p class="text-slate-700 italic">「標準的な暗号技術、監査可能な実装。」</p>
+                    </div>
+                    
+                    <div class="border-l-4 border-amber-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">規制当局への技術説明</h3>
+                        <p class="text-slate-600 text-sm mb-2">シナリオ：規制当局の技術スタッフへのプレゼンテーション</p>
+                        <p class="text-slate-700 italic">「データ開示なしで独立した検証が可能。」</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Limitations -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">9</span>
+                    制限事項と範囲
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            このデモでできること
+                        </h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                概念実証
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                教育ツール
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                リファレンス実装
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                検証ロジックの証明
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                共有可能なアーティファクト
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fas fa-times-circle text-red-500"></i>
+                            このデモでできないこと
+                        </h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                本番システム
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                リアルタイム対応
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                完全なVCP実装
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                セキュアな鍵管理
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                パフォーマンス最適化
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: Related Standards -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">10</span>
+                    関連規格
+                </h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">規格</th>
+                                <th class="rounded-tr-lg">関連性</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">RFC 8785 (JCS)</td>
+                                <td class="text-slate-600">JSON正規化スキーム</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">NIST FIPS 180-4</td>
+                                <td class="text-slate-600">SHA-256仕様</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">RFC 4122 / RFC 9562</td>
+                                <td class="text-slate-600">UUID仕様</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">MiFID II RTS 25</td>
+                                <td class="text-slate-600">規制コンテキスト</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">EU AI Act Article 12</td>
+                                <td class="text-slate-600">AIログ記録要件</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="mb-12">
+            <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-8 text-center">
+                <h2 class="text-2xl font-bold text-white mb-4">改ざん検知を体験する準備はできましたか？</h2>
+                <p class="text-slate-300 mb-6">インタラクティブデモを試して、暗号学的検証の動作を確認してください。</p>
+                <a href="/regtech/demo/" class="demo-cta inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg text-lg">
+                    <i class="fas fa-play-circle"></i>
+                    デモを起動
+                </a>
+            </div>
+        </section>
+
+        <!-- Resources -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6">リソース</h2>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <a href="/vcp/specification/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-file-alt text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">VCP v1.0 仕様書</p>
+                                <p class="text-sm text-slate-500">技術仕様ドキュメント</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/explorer/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-search text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">VCP Explorer</p>
+                                <p class="text-sm text-slate-500">イベント検証ツール</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/docs/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-book text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">ドキュメント</p>
+                                <p class="text-sm text-slate-500">技術ガイドとリファレンス</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/overview/ja/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-info-circle text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">VSO概要</p>
+                                <p class="text-sm text-slate-500">VeritasChain Standards Organizationについて</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="text-center">
+            <p class="text-slate-600 mb-2">デモやVCP統合についてのご質問は？</p>
+            <p class="text-slate-700">
+                <a href="mailto:technical@veritaschain.org" class="text-blue-600 hover:text-blue-800">technical@veritaschain.org</a>
+            </p>
+        </section>
+
+    </main>
+
+    <vcp-footer lang="ja"></vcp-footer>
+</body>
+</html>

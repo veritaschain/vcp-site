@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP Tamper-Evidence Validation Demo | VeritasChain Standards Organization</title>
+    <meta name="description" content="Interactive browser-based demo demonstrating how cryptographic hash chains provide tamper-evident audit trails for algorithmic trading systems.">
+    <meta name="keywords" content="VeritasChain, VCP, tamper-evidence, hash chain, cryptographic audit, algorithmic trading, RegTech, compliance">
+    <meta name="author" content="VeritasChain Standards Organization">
+    <meta name="robots" content="index, follow">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP Tamper-Evidence Validation Demo | VeritasChain Standards Organization">
+    <meta property="og:description" content="Interactive demo demonstrating cryptographic hash chains for tamper-evident audit trails in algorithmic trading.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/regtech/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain Standards Organization">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP Tamper-Evidence Validation Demo | VeritasChain Standards Organization">
+    <meta name="twitter:description" content="Interactive demo demonstrating cryptographic hash chains for tamper-evident audit trails.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/regtech/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/regtech/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/regtech/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/regtech/">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://veritaschain.org/regtech/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "VCP Tamper-Evidence Validation Demo",
+        "description": "Interactive browser-based demo demonstrating how cryptographic hash chains provide tamper-evident audit trails for algorithmic trading systems.",
+        "url": "https://veritaschain.org/regtech/",
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "url": "https://veritaschain.org"
+        },
+        "inLanguage": "en"
+    }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .hero-regtech {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-regtech::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+        }
+        
+        .section-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .section-card:hover {
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-box {
+            border-left: 4px solid #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .success-box {
+            border-left: 4px solid #22c55e;
+            background: #f0fdf4;
+        }
+        
+        .warning-box {
+            border-left: 4px solid #f59e0b;
+            background: #fffbeb;
+        }
+        
+        .neutral-box {
+            border-left: 4px solid #6b7280;
+            background: #f9fafb;
+        }
+        
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #22c55e, #3b82f6);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-right: 0.75rem;
+        }
+        
+        .attribute-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .attribute-table th {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .attribute-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .attribute-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .event-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .badge-sig { background: #dbeafe; color: #1e40af; }
+        .badge-ord { background: #dcfce7; color: #166534; }
+        .badge-ack { background: #fef3c7; color: #92400e; }
+        .badge-exe { background: #fce7f3; color: #9d174d; }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+        }
+        
+        .demo-cta {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            transition: all 0.3s ease;
+        }
+        
+        .demo-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px -10px rgba(34, 197, 94, 0.5);
+        }
+        
+        .link-card {
+            display: block;
+            padding: 1rem 1.5rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            color: #1e293b;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .link-card:hover {
+            background: #f1f5f9;
+            border-color: #3b82f6;
+        }
+        
+        .tampering-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            background: #ffffff;
+        }
+        
+        .tampering-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tampering-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .tampering-modify .tampering-icon { background: #fef3c7; color: #d97706; }
+        .tampering-delete .tampering-icon { background: #fee2e2; color: #dc2626; }
+        .tampering-reorder .tampering-icon { background: #dbeafe; color: #2563eb; }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <vcp-header theme="blue" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Hero Section -->
+    <section class="hero-regtech py-16 md:py-24">
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-green-400 text-sm font-medium">Interactive Demo Available</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                VCP Tamper-Evidence<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">Validation Demo</span>
+            </h1>
+            <div class="max-w-3xl mx-auto">
+                <p class="text-lg md:text-xl text-slate-300 mb-6">
+                    An interactive, browser-based reference implementation demonstrating how cryptographic hash chains provide tamper-evident audit trails for algorithmic trading systems.
+                </p>
+                <a href="/regtech/demo/" class="demo-cta inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg text-lg">
+                    <i class="fas fa-play-circle"></i>
+                    Launch Demo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Core Value Proposition -->
+        <section class="mb-12">
+            <div class="success-box p-6 rounded-r-lg">
+                <p class="text-lg font-semibold text-slate-800 mb-2">Core Value Proposition</p>
+                <p class="text-slate-700 text-lg italic">
+                    "Regulators and third-party auditors can independently detect log tampering without trusting the log producer."
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 1: Executive Summary -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">1</span>
+                    Executive Summary
+                </h2>
+                
+                <div class="space-y-4 text-slate-600 leading-relaxed">
+                    <p>
+                        The VCP Tamper-Evidence Validation Demo transforms compliance from assertion-based ("trust me") to proof-based ("verify, don't trust") by demonstrating:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>How traditional logs can be tampered with undetectably</li>
+                        <li>How cryptographic hash chains create mathematical dependencies between events</li>
+                        <li>How any modification breaks the chain and becomes immediately detectable</li>
+                        <li>How third parties can verify integrity without accessing raw trade data</li>
+                    </ul>
+                </div>
+                
+                <div class="overflow-x-auto mt-6">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">Attribute</th>
+                                <th class="rounded-tr-lg">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">Type</td>
+                                <td class="text-slate-600">Proof-of-Concept / Educational Demo</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Runtime</td>
+                                <td class="text-slate-600">Client-side only (browser)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">External Dependencies</td>
+                                <td class="text-slate-600">None</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Build Requirements</td>
+                                <td class="text-slate-600">None (vanilla HTML/CSS/JS)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Cryptographic API</td>
+                                <td class="text-slate-600">Web Crypto API (native browser)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Target Deployment</td>
+                                <td class="text-slate-600">GitHub Pages / Static hosting</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Purpose and Objectives -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">2</span>
+                    Purpose and Objectives
+                </h2>
+                
+                <div class="space-y-4 text-slate-600 leading-relaxed">
+                    <p>
+                        To provide RegTech companies, audit firms, and compliance officers with an immediately understandable demonstration of tamper-evidence technology that can be:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>Evaluated in under 5 minutes</li>
+                        <li>Shared internally without technical setup</li>
+                        <li>Used as a reference for product integration discussions</li>
+                        <li>Presented to non-technical stakeholders (C-suite, compliance heads)</li>
+                    </ul>
+                </div>
+                
+                <div class="overflow-x-auto mt-6">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">Objective</th>
+                                <th class="rounded-tr-lg">Success Criteria</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">Immediate comprehension</td>
+                                <td class="text-slate-600">User understands value within 60 seconds</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Zero friction</td>
+                                <td class="text-slate-600">No installation, no accounts, no configuration</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Technical credibility</td>
+                                <td class="text-slate-600">Real cryptographic operations (SHA-256)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Business relevance</td>
+                                <td class="text-slate-600">Audit-ready terminology and outputs</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Shareability</td>
+                                <td class="text-slate-600">Evidence Pack downloadable for internal distribution</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Target Audience -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">3</span>
+                    Target Audience
+                </h2>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Primary Audience</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Needs</th>
+                                <th class="rounded-tr-lg">Demo Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">RegTech Product Manager</td>
+                                <td class="text-slate-600">Evaluate integration feasibility</td>
+                                <td class="text-slate-600">See working verification logic</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Compliance Officer</td>
+                                <td class="text-slate-600">Understand technical capabilities</td>
+                                <td class="text-slate-600">Non-technical explanation + proof</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Head of Audit (Big 4)</td>
+                                <td class="text-slate-600">Assess methodology validity</td>
+                                <td class="text-slate-600">Cryptographic verification steps</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">CTO / VP Engineering</td>
+                                <td class="text-slate-600">Technical due diligence</td>
+                                <td class="text-slate-600">Source code inspection</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Secondary Audience</h3>
+                <div class="overflow-x-auto">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Needs</th>
+                                <th class="rounded-tr-lg">Demo Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">Regulator (technical staff)</td>
+                                <td class="text-slate-600">Understand verification mechanism</td>
+                                <td class="text-slate-600">Independent verification capability</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Institutional Client (Buy-side)</td>
+                                <td class="text-slate-600">Evaluate broker transparency</td>
+                                <td class="text-slate-600">Evidence of tamper-proof logging</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">Developer</td>
+                                <td class="text-slate-600">Implementation reference</td>
+                                <td class="text-slate-600">Copy-pasteable patterns</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Event Data Model -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">4</span>
+                    Event Data Model
+                </h2>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Event Schema</h3>
+                <div class="code-block mb-6">
+<pre>{
+  "event_id": "string (UUIDv7-like)",
+  "trace_id": "string",
+  "timestamp_ms": "number (milliseconds since epoch)",
+  "event_type": "string (SIG|ORD|ACK|EXE)",
+  "payload": "object",
+  "prev_hash": "string (64 hex chars or 'GENESIS')",
+  "event_hash": "string (64 hex chars)"
+}</pre>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Event Types</h3>
+                <div class="overflow-x-auto">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th class="rounded-tr-lg">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="event-type-badge badge-sig">SIG</span></td>
+                                <td class="font-medium text-slate-700">Signal</td>
+                                <td class="text-slate-600">AI/algorithm decision point</td>
+                            </tr>
+                            <tr>
+                                <td><span class="event-type-badge badge-ord">ORD</span></td>
+                                <td class="font-medium text-slate-700">Order</td>
+                                <td class="text-slate-600">Order creation</td>
+                            </tr>
+                            <tr>
+                                <td><span class="event-type-badge badge-ack">ACK</span></td>
+                                <td class="font-medium text-slate-700">Acknowledgment</td>
+                                <td class="text-slate-600">Venue acceptance</td>
+                            </tr>
+                            <tr>
+                                <td><span class="event-type-badge badge-exe">EXE</span></td>
+                                <td class="font-medium text-slate-700">Execution</td>
+                                <td class="text-slate-600">Trade execution (fill)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Cryptographic Implementation -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">5</span>
+                    Cryptographic Implementation
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-slate-500 mb-1">Algorithm</p>
+                        <p class="font-semibold text-slate-800">SHA-256</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-slate-500 mb-1">Output</p>
+                        <p class="font-semibold text-slate-800">64 hex characters</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-slate-500 mb-1">Implementation</p>
+                        <p class="font-semibold text-slate-800">Web Crypto API</p>
+                    </div>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Hash Computation</h3>
+                <p class="text-slate-600 mb-4">The <code class="bg-slate-100 px-2 py-1 rounded text-sm">event_hash</code> is computed as:</p>
+                <div class="code-block mb-6">
+<pre>event_hash = SHA-256(prev_hash + canonical_json(event_core))</pre>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Canonical JSON</h3>
+                <p class="text-slate-600 mb-4">To ensure deterministic hash computation, JSON is canonicalized with:</p>
+                <ul class="list-disc list-inside space-y-2 ml-4 text-slate-600 mb-4">
+                    <li><strong>Sorted keys:</strong> Alphabetical ordering at all nesting levels</li>
+                    <li><strong>Stable stringify:</strong> Consistent number/string representation</li>
+                    <li><strong>No whitespace:</strong> Compact format</li>
+                </ul>
+                
+                <div class="info-box p-4 rounded-r-lg">
+                    <p class="text-sm text-slate-700">
+                        <strong>Key Insight:</strong> If ANY event is modified, its event_hash changes, the next event's prev_hash no longer matches, the chain is broken, and tampering is DETECTED.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Tampering Scenarios -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">6</span>
+                    Tampering Scenarios
+                </h2>
+                
+                <p class="text-slate-600 mb-6">The demo implements three tampering scenarios representing common audit log attacks:</p>
+                
+                <div class="grid md:grid-cols-1 gap-6">
+                    <!-- Payload Modification -->
+                    <div class="tampering-card tampering-modify">
+                        <div class="tampering-card-header">
+                            <div class="tampering-icon">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">Payload Modification (Post-hoc Edit)</h3>
+                                <p class="text-sm text-slate-500">Audit Term: payload modification</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-3">Insider modifies execution price after the fact to hide front-running evidence.</p>
+                        <div class="bg-slate-50 p-3 rounded text-sm">
+                            <p><strong>Target:</strong> First EXE event (Event #3)</p>
+                            <p><strong>Modified Field:</strong> payload.price</p>
+                            <p><strong>Original:</strong> "1.08523" &rarr; <strong>Tampered:</strong> "1.09999"</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Deletion -->
+                    <div class="tampering-card tampering-delete">
+                        <div class="tampering-card-header">
+                            <div class="tampering-icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">Event Deletion (Omission)</h3>
+                                <p class="text-sm text-slate-500">Audit Term: omission, evidence destruction</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-3">Insider deletes an event to hide evidence of order acknowledgment.</p>
+                        <div class="bg-slate-50 p-3 rounded text-sm">
+                            <p><strong>Target:</strong> First ACK event (Event #2)</p>
+                            <p><strong>Effect:</strong> Event removed from chain</p>
+                            <p><strong>Detection:</strong> prev_hash references non-existent hash</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Reordering -->
+                    <div class="tampering-card tampering-reorder">
+                        <div class="tampering-card-header">
+                            <div class="tampering-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">Event Reordering (Sequence Tampering)</h3>
+                                <p class="text-sm text-slate-500">Audit Term: chronology manipulation</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-3">Insider swaps event order to misrepresent execution timeline.</p>
+                        <div class="bg-slate-50 p-3 rounded text-sm">
+                            <p><strong>Target:</strong> Events #2 and #3</p>
+                            <p><strong>Effect:</strong> ACK and EXE events swapped</p>
+                            <p><strong>Detection:</strong> prev_hash linkage broken at swap point</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Evidence Pack -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">7</span>
+                    Evidence Pack Format
+                </h2>
+                
+                <p class="text-slate-600 mb-4">The Evidence Pack is a ZIP file containing complete audit documentation:</p>
+                
+                <div class="code-block mb-6">
+<pre>vcp-evidence-pack-{timestamp}.zip
+├── original.jsonl           # Original event chain
+├── tampered.jsonl           # Tampered event chain  
+├── verification_report.json # Detailed verification results
+└── README.txt               # Verification instructions</pre>
+                </div>
+                
+                <div class="info-box p-4 rounded-r-lg">
+                    <p class="text-sm text-slate-700">
+                        <strong>Note:</strong> The Evidence Pack includes all necessary materials for independent verification by auditors and regulators.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Use Cases -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">8</span>
+                    Use Cases
+                </h2>
+                
+                <div class="space-y-6">
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">Sales Demo for RegTech Prospects</h3>
+                        <p class="text-slate-600 text-sm mb-2">Scenario: Product manager evaluating VCP integration</p>
+                        <p class="text-slate-700 italic">"Add this capability to your product in days, not months."</p>
+                    </div>
+                    
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">Compliance Officer Education</h3>
+                        <p class="text-slate-600 text-sm mb-2">Scenario: Explaining tamper-evidence to non-technical compliance team</p>
+                        <p class="text-slate-700 italic">"Compliance becomes proof, not assertion."</p>
+                    </div>
+                    
+                    <div class="border-l-4 border-purple-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">Audit Firm Technical Evaluation</h3>
+                        <p class="text-slate-600 text-sm mb-2">Scenario: Big 4 audit team assessing methodology</p>
+                        <p class="text-slate-700 italic">"Standard cryptography, auditable implementation."</p>
+                    </div>
+                    
+                    <div class="border-l-4 border-amber-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">Regulator Technical Briefing</h3>
+                        <p class="text-slate-600 text-sm mb-2">Scenario: Presenting to regulatory technical staff</p>
+                        <p class="text-slate-700 italic">"Independent verification without data disclosure."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Limitations -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">9</span>
+                    Limitations and Scope
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            What This Demo IS
+                        </h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                Conceptual demonstration
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                Educational tool
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                Reference implementation
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                Proof of verification logic
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                Shareable artifact
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fas fa-times-circle text-red-500"></i>
+                            What This Demo is NOT
+                        </h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                Production system
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                Real-time capable
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                Full VCP implementation
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                Secure key management
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                Performance optimized
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: Related Standards -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">10</span>
+                    Related Standards
+                </h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">Standard</th>
+                                <th class="rounded-tr-lg">Relevance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">RFC 8785 (JCS)</td>
+                                <td class="text-slate-600">JSON Canonicalization Scheme</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">NIST FIPS 180-4</td>
+                                <td class="text-slate-600">SHA-256 specification</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">RFC 4122 / RFC 9562</td>
+                                <td class="text-slate-600">UUID specification</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">MiFID II RTS 25</td>
+                                <td class="text-slate-600">Regulatory context</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">EU AI Act Article 12</td>
+                                <td class="text-slate-600">AI logging requirements</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="mb-12">
+            <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-8 text-center">
+                <h2 class="text-2xl font-bold text-white mb-4">Ready to Experience Tamper-Evidence?</h2>
+                <p class="text-slate-300 mb-6">Try the interactive demo and see cryptographic verification in action.</p>
+                <a href="/regtech/demo/" class="demo-cta inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg text-lg">
+                    <i class="fas fa-play-circle"></i>
+                    Launch Demo
+                </a>
+            </div>
+        </section>
+
+        <!-- Resources -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6">Resources</h2>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <a href="/vcp/specification/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-file-alt text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">VCP v1.0 Specification</p>
+                                <p class="text-sm text-slate-500">Technical specification document</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/explorer/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-search text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">VCP Explorer</p>
+                                <p class="text-sm text-slate-500">Event verification tool</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/docs/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-book text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">Documentation</p>
+                                <p class="text-sm text-slate-500">Technical guides and references</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/overview/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-info-circle text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">VSO Overview</p>
+                                <p class="text-sm text-slate-500">About VeritasChain Standards Organization</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="text-center">
+            <p class="text-slate-600 mb-2">Questions about the demo or VCP integration?</p>
+            <p class="text-slate-700">
+                <a href="mailto:technical@veritaschain.org" class="text-blue-600 hover:text-blue-800">technical@veritaschain.org</a>
+            </p>
+        </section>
+
+    </main>
+
+    <vcp-footer lang="en"></vcp-footer>
+</body>
+</html>

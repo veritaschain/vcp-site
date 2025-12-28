@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP 防篡改验证演示 | VeritasChain Standards Organization</title>
+    <meta name="description" content="交互式浏览器演示，展示加密哈希链如何为算法交易系统提供防篡改审计追踪。">
+    <meta name="keywords" content="VeritasChain, VCP, 防篡改, 哈希链, 加密审计, 算法交易, 监管科技, 合规">
+    <meta name="author" content="VeritasChain Standards Organization">
+    <meta name="robots" content="index, follow">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP 防篡改验证演示 | VeritasChain Standards Organization">
+    <meta property="og:description" content="交互式演示，展示加密哈希链如何为算法交易提供防篡改审计追踪。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/regtech/zh/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain Standards Organization">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP 防篡改验证演示 | VeritasChain Standards Organization">
+    <meta name="twitter:description" content="加密哈希链防篡改审计追踪的交互式演示。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/regtech/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/regtech/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/regtech/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/regtech/">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://veritaschain.org/regtech/zh/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "VCP 防篡改验证演示",
+        "description": "交互式浏览器演示，展示加密哈希链如何为算法交易系统提供防篡改审计追踪。",
+        "url": "https://veritaschain.org/regtech/zh/",
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "url": "https://veritaschain.org"
+        },
+        "inLanguage": "zh-CN"
+    }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .hero-regtech {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-regtech::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+        }
+        
+        .section-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .section-card:hover {
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-box {
+            border-left: 4px solid #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .success-box {
+            border-left: 4px solid #22c55e;
+            background: #f0fdf4;
+        }
+        
+        .warning-box {
+            border-left: 4px solid #f59e0b;
+            background: #fffbeb;
+        }
+        
+        .neutral-box {
+            border-left: 4px solid #6b7280;
+            background: #f9fafb;
+        }
+        
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #22c55e, #3b82f6);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-right: 0.75rem;
+        }
+        
+        .attribute-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .attribute-table th {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .attribute-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .attribute-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .event-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .badge-sig { background: #dbeafe; color: #1e40af; }
+        .badge-ord { background: #dcfce7; color: #166534; }
+        .badge-ack { background: #fef3c7; color: #92400e; }
+        .badge-exe { background: #fce7f3; color: #9d174d; }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+        }
+        
+        .demo-cta {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            transition: all 0.3s ease;
+        }
+        
+        .demo-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px -10px rgba(34, 197, 94, 0.5);
+        }
+        
+        .link-card {
+            display: block;
+            padding: 1rem 1.5rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            color: #1e293b;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .link-card:hover {
+            background: #f1f5f9;
+            border-color: #3b82f6;
+        }
+        
+        .tampering-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            background: #ffffff;
+        }
+        
+        .tampering-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tampering-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .tampering-modify .tampering-icon { background: #fef3c7; color: #d97706; }
+        .tampering-delete .tampering-icon { background: #fee2e2; color: #dc2626; }
+        .tampering-reorder .tampering-icon { background: #dbeafe; color: #2563eb; }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <vcp-header theme="blue" lang="zh" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Hero Section -->
+    <section class="hero-regtech py-16 md:py-24">
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-green-400 text-sm font-medium">交互式演示已上线</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                VCP 防篡改<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">验证演示</span>
+            </h1>
+            <div class="max-w-3xl mx-auto">
+                <p class="text-lg md:text-xl text-slate-300 mb-6">
+                    交互式浏览器参考实现，展示加密哈希链如何为算法交易系统提供防篡改审计追踪。
+                </p>
+                <a href="/regtech/demo/" class="demo-cta inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg text-lg">
+                    <i class="fas fa-play-circle"></i>
+                    启动演示
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Core Value Proposition -->
+        <section class="mb-12">
+            <div class="success-box p-6 rounded-r-lg">
+                <p class="text-lg font-semibold text-slate-800 mb-2">核心价值主张</p>
+                <p class="text-slate-700 text-lg italic">
+                    "监管机构和第三方审计师可以独立检测日志篡改，无需信任日志生产者。"
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 1: Executive Summary -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">1</span>
+                    执行摘要
+                </h2>
+                
+                <div class="space-y-4 text-slate-600 leading-relaxed">
+                    <p>
+                        VCP防篡改验证演示将合规从基于声明（"请相信我"）转变为基于证明（"验证，而非信任"），通过展示：
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>传统日志如何在不被检测的情况下被篡改</li>
+                        <li>加密哈希链如何在事件之间创建数学依赖关系</li>
+                        <li>任何修改如何破坏链条并立即可被检测</li>
+                        <li>第三方如何在不访问原始交易数据的情况下验证完整性</li>
+                    </ul>
+                </div>
+                
+                <div class="overflow-x-auto mt-6">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">属性</th>
+                                <th class="rounded-tr-lg">值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">类型</td>
+                                <td class="text-slate-600">概念验证 / 教育演示</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">运行时</td>
+                                <td class="text-slate-600">仅客户端（浏览器）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">外部依赖</td>
+                                <td class="text-slate-600">无</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">构建要求</td>
+                                <td class="text-slate-600">无（原生HTML/CSS/JS）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">加密API</td>
+                                <td class="text-slate-600">Web Crypto API（浏览器原生）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">目标部署</td>
+                                <td class="text-slate-600">GitHub Pages / 静态托管</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Purpose and Objectives -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">2</span>
+                    目的与目标
+                </h2>
+                
+                <div class="space-y-4 text-slate-600 leading-relaxed">
+                    <p>
+                        为监管科技公司、审计公司和合规官员提供一个可立即理解的防篡改技术演示：
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>可在5分钟内评估</li>
+                        <li>无需技术设置即可在内部共享</li>
+                        <li>可作为产品集成讨论的参考</li>
+                        <li>可向非技术利益相关者（高管、合规负责人）展示</li>
+                    </ul>
+                </div>
+                
+                <div class="overflow-x-auto mt-6">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">目标</th>
+                                <th class="rounded-tr-lg">成功标准</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">即时理解</td>
+                                <td class="text-slate-600">用户在60秒内理解价值</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">零摩擦</td>
+                                <td class="text-slate-600">无需安装、无需账户、无需配置</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">技术可信度</td>
+                                <td class="text-slate-600">真实的加密操作（SHA-256）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">业务相关性</td>
+                                <td class="text-slate-600">审计就绪的术语和输出</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">可共享性</td>
+                                <td class="text-slate-600">可下载的证据包供内部分发</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Target Audience -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">3</span>
+                    目标受众
+                </h2>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">主要受众</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th>角色</th>
+                                <th>需求</th>
+                                <th class="rounded-tr-lg">演示价值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">监管科技产品经理</td>
+                                <td class="text-slate-600">评估集成可行性</td>
+                                <td class="text-slate-600">查看工作中的验证逻辑</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">合规官</td>
+                                <td class="text-slate-600">了解技术能力</td>
+                                <td class="text-slate-600">非技术性解释 + 证明</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">审计主管（四大）</td>
+                                <td class="text-slate-600">评估方法论有效性</td>
+                                <td class="text-slate-600">加密验证步骤</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">CTO / 工程VP</td>
+                                <td class="text-slate-600">技术尽职调查</td>
+                                <td class="text-slate-600">源代码检查</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">次要受众</h3>
+                <div class="overflow-x-auto">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th>角色</th>
+                                <th>需求</th>
+                                <th class="rounded-tr-lg">演示价值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">监管机构（技术人员）</td>
+                                <td class="text-slate-600">了解验证机制</td>
+                                <td class="text-slate-600">独立验证能力</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">机构客户（买方）</td>
+                                <td class="text-slate-600">评估经纪商透明度</td>
+                                <td class="text-slate-600">防篡改日志的证据</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">开发者</td>
+                                <td class="text-slate-600">实现参考</td>
+                                <td class="text-slate-600">可复制粘贴的模式</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Event Data Model -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">4</span>
+                    事件数据模型
+                </h2>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">事件模式</h3>
+                <div class="code-block mb-6">
+<pre>{
+  "event_id": "string (UUIDv7格式)",
+  "trace_id": "string",
+  "timestamp_ms": "number (自纪元以来的毫秒数)",
+  "event_type": "string (SIG|ORD|ACK|EXE)",
+  "payload": "object",
+  "prev_hash": "string (64位十六进制 或 'GENESIS')",
+  "event_hash": "string (64位十六进制)"
+}</pre>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">事件类型</h3>
+                <div class="overflow-x-auto">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>名称</th>
+                                <th class="rounded-tr-lg">描述</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="event-type-badge badge-sig">SIG</span></td>
+                                <td class="font-medium text-slate-700">信号</td>
+                                <td class="text-slate-600">AI/算法决策点</td>
+                            </tr>
+                            <tr>
+                                <td><span class="event-type-badge badge-ord">ORD</span></td>
+                                <td class="font-medium text-slate-700">订单</td>
+                                <td class="text-slate-600">订单创建</td>
+                            </tr>
+                            <tr>
+                                <td><span class="event-type-badge badge-ack">ACK</span></td>
+                                <td class="font-medium text-slate-700">确认</td>
+                                <td class="text-slate-600">交易所接受</td>
+                            </tr>
+                            <tr>
+                                <td><span class="event-type-badge badge-exe">EXE</span></td>
+                                <td class="font-medium text-slate-700">执行</td>
+                                <td class="text-slate-600">交易成交</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Cryptographic Implementation -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">5</span>
+                    加密实现
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-slate-500 mb-1">算法</p>
+                        <p class="font-semibold text-slate-800">SHA-256</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-slate-500 mb-1">输出</p>
+                        <p class="font-semibold text-slate-800">64位十六进制字符</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-slate-500 mb-1">实现</p>
+                        <p class="font-semibold text-slate-800">Web Crypto API</p>
+                    </div>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">哈希计算</h3>
+                <p class="text-slate-600 mb-4"><code class="bg-slate-100 px-2 py-1 rounded text-sm">event_hash</code> 计算方式如下：</p>
+                <div class="code-block mb-6">
+<pre>event_hash = SHA-256(prev_hash + canonical_json(event_core))</pre>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">规范化JSON</h3>
+                <p class="text-slate-600 mb-4">为确保确定性哈希计算，JSON按以下方式规范化：</p>
+                <ul class="list-disc list-inside space-y-2 ml-4 text-slate-600 mb-4">
+                    <li><strong>键排序：</strong> 所有嵌套级别按字母顺序排列</li>
+                    <li><strong>稳定stringify：</strong> 一致的数字/字符串表示</li>
+                    <li><strong>无空格：</strong> 紧凑格式</li>
+                </ul>
+                
+                <div class="info-box p-4 rounded-r-lg">
+                    <p class="text-sm text-slate-700">
+                        <strong>关键洞察：</strong> 如果任何事件被修改，其event_hash将改变，下一个事件的prev_hash将不再匹配，链条被破坏，篡改被检测到。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Tampering Scenarios -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">6</span>
+                    篡改场景
+                </h2>
+                
+                <p class="text-slate-600 mb-6">演示实现了三种代表常见审计日志攻击的篡改场景：</p>
+                
+                <div class="grid md:grid-cols-1 gap-6">
+                    <!-- Payload Modification -->
+                    <div class="tampering-card tampering-modify">
+                        <div class="tampering-card-header">
+                            <div class="tampering-icon">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">负载修改（事后编辑）</h3>
+                                <p class="text-sm text-slate-500">审计术语：负载修改</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-3">内部人员在事后修改执行价格以隐藏抢跑证据。</p>
+                        <div class="bg-slate-50 p-3 rounded text-sm">
+                            <p><strong>目标：</strong> 第一个EXE事件（事件#3）</p>
+                            <p><strong>修改字段：</strong> payload.price</p>
+                            <p><strong>原值：</strong> "1.08523" &rarr; <strong>篡改后：</strong> "1.09999"</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Deletion -->
+                    <div class="tampering-card tampering-delete">
+                        <div class="tampering-card-header">
+                            <div class="tampering-icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">事件删除（遗漏）</h3>
+                                <p class="text-sm text-slate-500">审计术语：遗漏，证据销毁</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-3">内部人员删除事件以隐藏订单确认证据。</p>
+                        <div class="bg-slate-50 p-3 rounded text-sm">
+                            <p><strong>目标：</strong> 第一个ACK事件（事件#2）</p>
+                            <p><strong>效果：</strong> 事件从链中移除</p>
+                            <p><strong>检测：</strong> prev_hash引用不存在的哈希</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Reordering -->
+                    <div class="tampering-card tampering-reorder">
+                        <div class="tampering-card-header">
+                            <div class="tampering-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">事件重排序（序列篡改）</h3>
+                                <p class="text-sm text-slate-500">审计术语：时间线操纵</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 mb-3">内部人员交换事件顺序以误导执行时间线。</p>
+                        <div class="bg-slate-50 p-3 rounded text-sm">
+                            <p><strong>目标：</strong> 事件#2和#3</p>
+                            <p><strong>效果：</strong> ACK和EXE事件交换</p>
+                            <p><strong>检测：</strong> 交换点处的prev_hash链接断裂</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Evidence Pack -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">7</span>
+                    证据包格式
+                </h2>
+                
+                <p class="text-slate-600 mb-4">证据包是包含完整审计文档的ZIP文件：</p>
+                
+                <div class="code-block mb-6">
+<pre>vcp-evidence-pack-{timestamp}.zip
+├── original.jsonl           # 原始事件链
+├── tampered.jsonl           # 篡改后的事件链  
+├── verification_report.json # 详细验证结果
+└── README.txt               # 验证说明</pre>
+                </div>
+                
+                <div class="info-box p-4 rounded-r-lg">
+                    <p class="text-sm text-slate-700">
+                        <strong>注意：</strong> 证据包包含审计师和监管机构进行独立验证所需的所有材料。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Use Cases -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">8</span>
+                    使用案例
+                </h2>
+                
+                <div class="space-y-6">
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">监管科技潜在客户销售演示</h3>
+                        <p class="text-slate-600 text-sm mb-2">场景：评估VCP集成的产品经理</p>
+                        <p class="text-slate-700 italic">"将此功能添加到您的产品中只需几天，而不是几个月。"</p>
+                    </div>
+                    
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">合规官员教育</h3>
+                        <p class="text-slate-600 text-sm mb-2">场景：向非技术合规团队解释防篡改技术</p>
+                        <p class="text-slate-700 italic">"合规变成证明，而不是声明。"</p>
+                    </div>
+                    
+                    <div class="border-l-4 border-purple-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">审计公司技术评估</h3>
+                        <p class="text-slate-600 text-sm mb-2">场景：四大审计团队评估方法论</p>
+                        <p class="text-slate-700 italic">"标准加密技术，可审计的实现。"</p>
+                    </div>
+                    
+                    <div class="border-l-4 border-amber-500 pl-4">
+                        <h3 class="font-semibold text-slate-800 mb-2">监管机构技术简报</h3>
+                        <p class="text-slate-600 text-sm mb-2">场景：向监管机构技术人员展示</p>
+                        <p class="text-slate-700 italic">"无需数据披露即可独立验证。"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Limitations -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">9</span>
+                    限制与范围
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            此演示能做什么
+                        </h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                概念演示
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                教育工具
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                参考实现
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                验证逻辑证明
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-500 text-sm"></i>
+                                可共享的工件
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fas fa-times-circle text-red-500"></i>
+                            此演示不能做什么
+                        </h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                生产系统
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                实时能力
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                完整VCP实现
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                安全密钥管理
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fas fa-times text-red-500 text-sm"></i>
+                                性能优化
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: Related Standards -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="flex items-center text-2xl font-bold text-slate-800 mb-6">
+                    <span class="section-number">10</span>
+                    相关标准
+                </h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="attribute-table">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">标准</th>
+                                <th class="rounded-tr-lg">相关性</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium text-slate-700">RFC 8785 (JCS)</td>
+                                <td class="text-slate-600">JSON规范化方案</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">NIST FIPS 180-4</td>
+                                <td class="text-slate-600">SHA-256规范</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">RFC 4122 / RFC 9562</td>
+                                <td class="text-slate-600">UUID规范</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">MiFID II RTS 25</td>
+                                <td class="text-slate-600">监管背景</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium text-slate-700">EU AI Act Article 12</td>
+                                <td class="text-slate-600">AI日志记录要求</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="mb-12">
+            <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-8 text-center">
+                <h2 class="text-2xl font-bold text-white mb-4">准备好体验防篡改技术了吗？</h2>
+                <p class="text-slate-300 mb-6">尝试交互式演示，亲眼见证加密验证的工作原理。</p>
+                <a href="/regtech/demo/" class="demo-cta inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg text-lg">
+                    <i class="fas fa-play-circle"></i>
+                    启动演示
+                </a>
+            </div>
+        </section>
+
+        <!-- Resources -->
+        <section class="mb-12">
+            <div class="section-card p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6">资源</h2>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <a href="/vcp/specification/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-file-alt text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">VCP v1.0 规范</p>
+                                <p class="text-sm text-slate-500">技术规范文档</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/explorer/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-search text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">VCP Explorer</p>
+                                <p class="text-sm text-slate-500">事件验证工具</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/docs/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-book text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">文档</p>
+                                <p class="text-sm text-slate-500">技术指南和参考</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/overview/zh/" class="link-card">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-info-circle text-blue-600"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800">VSO概述</p>
+                                <p class="text-sm text-slate-500">关于VeritasChain Standards Organization</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="text-center">
+            <p class="text-slate-600 mb-2">对演示或VCP集成有疑问？</p>
+            <p class="text-slate-700">
+                <a href="mailto:technical@veritaschain.org" class="text-blue-600 hover:text-blue-800">technical@veritaschain.org</a>
+            </p>
+        </section>
+
+    </main>
+
+    <vcp-footer lang="zh"></vcp-footer>
+</body>
+</html>
