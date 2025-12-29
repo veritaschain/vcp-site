@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAP-GAM - 游戏应用模块 | 加密学RNG公正性证明</title>
+    <meta name="description" content="VAP-GAM（游戏应用模块）是VAP框架的领域特定配置文件，通过VRF、Commit-Reveal和零知识证明来加密证明在线游戏中RNG的公正性。">
+    <meta name="keywords" content="VAP-GAM, 游戏, RNG公正性, VRF, Commit-Reveal, 零知识证明, 在线麻将, 抽卡, 可证明公正, VeritasChain">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VAP-GAM - 游戏应用模块 | 加密学RNG公正性">
+    <meta property="og:description" content="通过VRF、Commit-Reveal和零知识证明实现在线游戏RNG公正性的加密证明。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/gam/zh/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VAP-GAM - 游戏应用模块">
+    <meta name="twitter:description" content="在线游戏RNG公正性的加密证明。从"请相信我们"到"请验证"。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/gam/zh/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/gam/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/gam/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/gam/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/gam/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "VAP-GAM - 游戏应用模块",
+        "description": "VAP-GAM是VAP框架的领域特定配置文件，通过VRF、Commit-Reveal和零知识证明来加密证明在线游戏中RNG的公正性。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization (VSO)",
+            "url": "https://veritaschain.org/vso"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://veritaschain.org/vap/gam/zh/"
+        },
+        "datePublished": "2025-12"
+    }
+    </script>
+
+    <style>
+        body { font-family: 'Noto Sans SC', 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f59e0b' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        .gam-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            transition: all 0.3s ease;
+        }
+        .gam-card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.15);
+        }
+        .tech-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        .tech-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+        }
+        .level-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .level-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+        .domain-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .domain-card:hover {
+            border-color: rgba(139, 92, 246, 0.6);
+        }
+        .architecture-box {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 2px solid rgba(245, 158, 11, 0.3);
+        }
+        .flow-arrow {
+            color: rgba(245, 158, 11, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-slate-900">
+    <vcp-header theme="dark" lang="zh" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-24 pb-20 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <!-- Framework Badge -->
+            <div class="inline-flex items-center gap-2 bg-amber-900/50 border border-amber-500/30 px-4 py-2 rounded-full mb-6">
+                <i class="fas fa-gamepad text-amber-400"></i>
+                <span class="text-amber-300 text-sm font-medium">VSO-VAP-GAM-SPEC-001 | 版本 0.1 | 草案规范</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                VAP-GAM
+            </h1>
+            <p class="text-2xl md:text-3xl text-amber-400 font-semibold mb-6">
+                游戏应用模块
+            </p>
+
+            <!-- Subcopy -->
+            <div class="bg-slate-800/60 rounded-2xl p-6 mb-8 max-w-4xl mx-auto border border-slate-700">
+                <p class="text-xl text-slate-200 mb-4">
+                    VAP框架的领域特定配置文件，用于加密证明
+                </p>
+                <p class="text-lg text-slate-300">
+                    <strong class="text-amber-400">RNG公正性</strong> · <strong class="text-blue-400">算法完整性</strong> · <strong class="text-emerald-400">玩家可验证性</strong>
+                </p>
+            </div>
+
+            <!-- Core Paradigm Shift -->
+            <div class="bg-amber-900/30 border border-amber-500/30 rounded-xl p-6 max-w-3xl mx-auto mb-8">
+                <p class="text-amber-200 text-lg italic">
+                    <i class="fas fa-quote-left text-amber-400 mr-2"></i>
+                    从"信任但验证"到"不信任，验证"
+                    <i class="fas fa-quote-right text-amber-400 ml-2"></i>
+                </p>
+                <p class="text-slate-300 text-sm mt-3">
+                    玩家不再需要相信运营商"没有操控"的声明——他们可以自己验证。
+                </p>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+                <a href="https://github.com/VeritasChain/vcp-spec" class="inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-amber-600/20" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-file-alt"></i>
+                    查看规范
+                </a>
+                <a href="/vap/zh/" class="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-xl transition-all">
+                    <i class="fas fa-layer-group"></i>
+                    VAP框架
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-exclamation-triangle text-red-400 mr-3"></i>
+                在线游戏中的信任鸿沟
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                玩家的疑虑与运营商的声明之间存在结构性差距
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+                <!-- Player Suspicions -->
+                <div class="gam-card rounded-xl p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-red-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-times text-red-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">玩家的疑虑</h3>
+                    </div>
+                    <ul class="space-y-3 text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-question-circle text-red-400 mt-1"></i>
+                            <span>"牌局分配被操控了"</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-question-circle text-red-400 mt-1"></i>
+                            <span>"付费玩家有更好的概率"</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-question-circle text-red-400 mt-1"></i>
+                            <span>"连败是被操纵的"</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Operator Claims -->
+                <div class="gam-card rounded-xl p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-building text-blue-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">运营商的声明</h3>
+                    </div>
+                    <ul class="space-y-3 text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span>"我们没有操控任何东西"</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span>"我们的RNG是公正的"</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span>"只是概率问题"</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- The Gap -->
+            <div class="bg-slate-900/80 border border-red-500/30 rounded-xl p-8 max-w-4xl mx-auto text-center">
+                <div class="text-6xl mb-4">⚠️</div>
+                <h3 class="text-2xl font-bold text-white mb-4">缺乏验证手段</h3>
+                <p class="text-slate-300 text-lg">
+                    双方都无法证明自己的立场。直到现在，玩家没有技术手段来独立验证RNG的公正性。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- What VAP-GAM Solves Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-lightbulb text-amber-400 mr-3"></i>
+                VAP-GAM解决的问题
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                针对游戏信任问题的加密解决方案
+            </p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- RNG Distrust -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-dice text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">RNG不信任</h3>
+                    <p class="text-slate-400 text-sm mb-4">"牌局分配被操控"</p>
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-lg p-3">
+                        <p class="text-emerald-300 text-sm font-medium">
+                            <i class="fas fa-check mr-2"></i>
+                            VRF + Commit-Reveal公正性证明
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Unverifiability -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-eye-slash text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">不可验证性</h3>
+                    <p class="text-slate-400 text-sm mb-4">没有自我验证的手段</p>
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-lg p-3">
+                        <p class="text-emerald-300 text-sm font-medium">
+                            <i class="fas fa-check mr-2"></i>
+                            公开可验证的加密证明
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Post-hoc Tampering -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-edit text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">事后篡改</h3>
+                    <p class="text-slate-400 text-sm mb-4">结果可能被事后修改</p>
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-lg p-3">
+                        <p class="text-emerald-300 text-sm font-medium">
+                            <i class="fas fa-check mr-2"></i>
+                            Merkle Tree篡改检测
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Lack of Transparency -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-box text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">黑箱算法</h3>
+                    <p class="text-slate-400 text-sm mb-4">算法细节被隐藏</p>
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-lg p-3">
+                        <p class="text-emerald-300 text-sm font-medium">
+                            <i class="fas fa-check mr-2"></i>
+                            ZKP：保密但可证明公正
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Architecture Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-cubes text-blue-400 mr-3"></i>
+                技术架构
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                四项核心技术相结合证明RNG公正性
+            </p>
+
+            <!-- Architecture Diagram -->
+            <div class="architecture-box rounded-2xl p-8 mb-12 max-w-4xl mx-auto">
+                <div class="text-center mb-8">
+                    <h3 class="text-xl font-bold text-white mb-4">VAP-GAM 架构</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- VRF -->
+                    <div class="tech-card rounded-xl p-5 text-center">
+                        <div class="w-14 h-14 bg-blue-900/50 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-random text-blue-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">VRF</h4>
+                        <p class="text-slate-400 text-sm">公正随机生成</p>
+                    </div>
+
+                    <!-- Commit-Reveal -->
+                    <div class="tech-card rounded-xl p-5 text-center">
+                        <div class="w-14 h-14 bg-purple-900/50 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-lock text-purple-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">Commit-Reveal</h4>
+                        <p class="text-slate-400 text-sm">预先确定</p>
+                    </div>
+
+                    <!-- Merkle Tree -->
+                    <div class="tech-card rounded-xl p-5 text-center">
+                        <div class="w-14 h-14 bg-emerald-900/50 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-project-diagram text-emerald-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">Merkle Tree</h4>
+                        <p class="text-slate-400 text-sm">篡改检测</p>
+                    </div>
+                </div>
+
+                <!-- Arrow to ZKP -->
+                <div class="text-center mb-6">
+                    <i class="fas fa-arrow-down flow-arrow text-3xl"></i>
+                </div>
+
+                <!-- ZKP -->
+                <div class="tech-card rounded-xl p-6 max-w-md mx-auto text-center">
+                    <div class="w-16 h-16 bg-amber-900/50 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-secret text-amber-400 text-2xl"></i>
+                    </div>
+                    <h4 class="text-white font-bold text-lg mb-2">零知识证明（ZKP）</h4>
+                    <p class="text-slate-400 text-sm">算法保密 + 公正性证明</p>
+                </div>
+            </div>
+
+            <!-- Technology Details -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- VRF Details -->
+                <div class="tech-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                        <i class="fas fa-random text-blue-400"></i>
+                        可验证随机函数（VRF）
+                    </h3>
+                    <ul class="space-y-2 text-slate-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>只有私钥持有者可以生成输出</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>任何人都可以用公钥验证</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>确定性但不可预测的输出</span>
+                        </li>
+                    </ul>
+                    <div class="bg-slate-800/60 rounded-lg p-3 mt-4 border border-slate-700">
+                        <code class="text-xs text-amber-300 font-mono">
+                            VRF_prove(secret_key, game_id + round + entropy) → (seed, π)
+                        </code>
+                    </div>
+                </div>
+
+                <!-- Commit-Reveal Details -->
+                <div class="tech-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                        <i class="fas fa-lock text-purple-400"></i>
+                        Commit-Reveal方案
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-purple-900/20 border border-purple-500/30 rounded-lg p-3">
+                            <h4 class="text-purple-300 font-medium text-sm mb-2">阶段1：承诺（游戏开始）</h4>
+                            <code class="text-xs text-slate-300 font-mono">
+                                commitment = SHA-256(seed || nonce)
+                            </code>
+                        </div>
+                        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-3">
+                            <h4 class="text-emerald-300 font-medium text-sm mb-2">阶段2：揭示（游戏结束）</h4>
+                            <code class="text-xs text-slate-300 font-mono">
+                                公开：seed, nonce, VRF证明
+                            </code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Domains Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-bullseye text-purple-400 mr-3"></i>
+                目标领域
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                VAP-GAM涵盖所有包含概率元素的游戏
+            </p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Online Mahjong -->
+                <div class="domain-card rounded-xl p-6">
+                    <div class="text-4xl mb-4">🀄</div>
+                    <h3 class="text-lg font-bold text-white mb-3">在线麻将</h3>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li>• 起牌生成</li>
+                        <li>• 牌墙构成</li>
+                        <li>• 宝牌指示牌</li>
+                        <li>• 骰子掷点</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs text-slate-500">雀魂、MJ Mobile、Maru-Jan等</p>
+                    </div>
+                </div>
+
+                <!-- Online Poker -->
+                <div class="domain-card rounded-xl p-6">
+                    <div class="text-4xl mb-4">🃏</div>
+                    <h3 class="text-lg font-bold text-white mb-3">在线扑克/卡牌</h3>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li>• 洗牌</li>
+                        <li>• 发牌</li>
+                        <li>• 公共牌</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs text-slate-500">扑克、21点、TCG等</p>
+                    </div>
+                </div>
+
+                <!-- Gacha -->
+                <div class="domain-card rounded-xl p-6">
+                    <div class="text-4xl mb-4">🎰</div>
+                    <h3 class="text-lg font-bold text-white mb-3">抽卡/战利品箱</h3>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li>• 掉率</li>
+                        <li>• 保底系统</li>
+                        <li>• UP证明</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs text-slate-500">手游、RPG等</p>
+                    </div>
+                </div>
+
+                <!-- Esports -->
+                <div class="domain-card rounded-xl p-6">
+                    <div class="text-4xl mb-4">🎮</div>
+                    <h3 class="text-lg font-bold text-white mb-3">电竞/竞技</h3>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li>• 匹配机制</li>
+                        <li>• 地图/舞台选择</li>
+                        <li>• 初始位置</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs text-slate-500">FPS、MOBA、大逃杀等</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conformance Levels Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-layer-group text-emerald-400 mr-3"></i>
+                合规级别
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                从基本完整性到完整溯源的渐进式级别
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- GAM-1 -->
+                <div class="level-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">1</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">GAM-1</h3>
+                            <p class="text-slate-400 text-sm">基本完整性</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm mb-4">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>SHA-256事件哈希</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>Merkle Tree篡改检测</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>Ed25519签名</span>
+                        </li>
+                    </ul>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <p class="text-xs text-slate-400">
+                            <strong class="text-emerald-400">证明：</strong>游戏过程中无篡改
+                        </p>
+                    </div>
+                </div>
+
+                <!-- GAM-2 -->
+                <div class="level-card rounded-xl p-6 border-amber-500/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-amber-400 font-bold text-lg">2</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">GAM-2</h3>
+                            <p class="text-amber-400 text-sm">可验证随机性</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm mb-4">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-400 mt-1"></i>
+                            <span>所有GAM-1要求</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-400 mt-1"></i>
+                            <span>VRF随机生成</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-400 mt-1"></i>
+                            <span>Commit-Reveal方案</span>
+                        </li>
+                    </ul>
+                    <div class="bg-amber-900/20 rounded-lg p-3 border border-amber-500/30">
+                        <p class="text-xs text-slate-400">
+                            <strong class="text-amber-400">证明：</strong>随机数预先确定且合法
+                        </p>
+                    </div>
+                </div>
+
+                <!-- GAM-3 -->
+                <div class="level-card rounded-xl p-6 border-emerald-500/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-emerald-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-emerald-400 font-bold text-lg">3</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">GAM-3</h3>
+                            <p class="text-emerald-400 text-sm">完整溯源</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm mb-4">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>所有GAM-2要求</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>外部熵源</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>零知识证明</span>
+                        </li>
+                    </ul>
+                    <div class="bg-emerald-900/20 rounded-lg p-3 border border-emerald-500/30">
+                        <p class="text-xs text-slate-400">
+                            <strong class="text-emerald-400">证明：</strong>RNG算法本身是公正的
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certification Program -->
+            <div class="mt-12 bg-slate-900/80 rounded-xl p-8 max-w-4xl mx-auto border border-slate-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-certificate text-amber-400 mr-2"></i>
+                    认证计划
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-clipboard-check text-slate-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold">GAM-Ready</h4>
+                        <p class="text-slate-400 text-sm">自我声明</p>
+                        <p class="text-xs text-slate-500 mt-1">级别：GAM-1</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-amber-900/50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-check-double text-amber-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold">GAM-Verified</h4>
+                        <p class="text-slate-400 text-sm">VSO测试套件通过</p>
+                        <p class="text-xs text-slate-500 mt-1">级别：GAM-2</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-emerald-900/50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-award text-emerald-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold">GAM-Certified</h4>
+                        <p class="text-slate-400 text-sm">第三方审计</p>
+                        <p class="text-xs text-slate-500 mt-1">级别：GAM-3</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Case: Mahjong -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-play-circle text-blue-400 mr-3"></i>
+                用例：在线麻将
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                用加密证据证明牌局分配的公正性
+            </p>
+
+            <div class="bg-slate-800/50 rounded-2xl p-8 max-w-4xl mx-auto">
+                <!-- Flow Steps -->
+                <div class="space-y-6">
+                    <!-- Step 1 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-blue-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-blue-400 font-bold">1</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">游戏开始：VRF生成牌墙种子</h4>
+                            <p class="text-slate-400 text-sm">VRF为牌墙生成随机种子</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-purple-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-purple-400 font-bold">2</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">承诺：显示SHA-256(seed || nonce)</h4>
+                            <p class="text-slate-400 text-sm">游戏前向玩家展示承诺哈希</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-emerald-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-emerald-400 font-bold">3</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">游戏中：在Merkle Tree中记录所有事件</h4>
+                            <p class="text-slate-400 text-sm">摸牌、出牌、吃碰杠等全部记录</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-amber-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-amber-400 font-bold">4</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">游戏结束：公开seed、nonce、VRF证明</h4>
+                            <p class="text-slate-400 text-sm">公开所有加密材料</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-green-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-green-400 font-bold">5</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">玩家验证</h4>
+                            <p class="text-slate-400 text-sm mb-3">玩家可以独立重建和验证</p>
+                            <div class="bg-slate-900/80 rounded-lg p-4 border border-slate-700">
+                                <code class="text-xs text-slate-300 font-mono block space-y-1">
+                                    <span class="block">1. SHA-256(seed || nonce) == displayed_commitment ✓</span>
+                                    <span class="block">2. VRF_verify(public_key, input, seed, proof) ✓</span>
+                                    <span class="block">3. generate_tiles(seed) == actual_tiles ✓</span>
+                                    <span class="block text-emerald-400 mt-2">→ 公正性证明完成！</span>
+                                </code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison with Existing Systems -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-balance-scale text-amber-400 mr-3"></i>
+                VAP-GAM的新增功能
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                在雀魂MD5验证系统等现有解决方案的基础上构建
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Existing: MD5 -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check text-slate-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">现有（MD5哈希）</h3>
+                            <p class="text-slate-400 text-sm">牌墙固定证明</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>证明游戏中未更改牌墙</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>无法证明初始RNG是公正的</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>无法证明种子选择是无偏的</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- VAP-GAM Addition -->
+                <div class="gam-card rounded-xl p-6 border-amber-500/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-plus text-amber-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">+ VAP-GAM</h3>
+                            <p class="text-amber-400 text-sm">RNG公正性证明</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>VRF证明RNG的合法性</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>Commit-Reveal证明预先确定</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>ZKP证明算法公正性</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Complete Fairness -->
+            <div class="mt-8 bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-6 max-w-3xl mx-auto text-center">
+                <h3 class="text-xl font-bold text-white mb-2">
+                    <i class="fas fa-shield-alt text-emerald-400 mr-2"></i>
+                    完整的公正性证明
+                </h3>
+                <p class="text-slate-300">
+                    现有系统 + VAP-GAM = 完整的加密公正性保证
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-12">
+                <i class="fas fa-road text-blue-400 mr-3"></i>
+                开发路线图
+            </h2>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-6">
+                    <!-- v0.1 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-file-alt text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1 w-0.5 bg-slate-700 mt-2"></div>
+                        </div>
+                        <div class="pb-8">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-amber-400 font-bold">v0.1</span>
+                                <span class="text-slate-400 text-sm">2025 Q1</span>
+                                <span class="bg-amber-600 text-white text-xs px-2 py-0.5 rounded">当前</span>
+                            </div>
+                            <h4 class="text-white font-bold">草案规范</h4>
+                            <p class="text-slate-400 text-sm">基本设计和架构</p>
+                        </div>
+                    </div>
+
+                    <!-- v0.5 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
+                                <i class="fas fa-code text-slate-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 w-0.5 bg-slate-700 mt-2"></div>
+                        </div>
+                        <div class="pb-8">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-slate-400 font-bold">v0.5</span>
+                                <span class="text-slate-400 text-sm">2025 Q2</span>
+                            </div>
+                            <h4 class="text-white font-bold">参考实现</h4>
+                            <p class="text-slate-400 text-sm">麻将参考实现和测试套件</p>
+                        </div>
+                    </div>
+
+                    <!-- v1.0 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
+                                <i class="fas fa-rocket text-slate-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 w-0.5 bg-slate-700 mt-2"></div>
+                        </div>
+                        <div class="pb-8">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-slate-400 font-bold">v1.0</span>
+                                <span class="text-slate-400 text-sm">2025 Q3</span>
+                            </div>
+                            <h4 class="text-white font-bold">正式发布</h4>
+                            <p class="text-slate-400 text-sm">完整规范和SDK发布</p>
+                        </div>
+                    </div>
+
+                    <!-- v1.1 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
+                                <i class="fas fa-expand text-slate-400 text-sm"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-slate-400 font-bold">v1.1</span>
+                                <span class="text-slate-400 text-sm">2025 Q4</span>
+                            </div>
+                            <h4 class="text-white font-bold">扩展覆盖</h4>
+                            <p class="text-slate-400 text-sm">抽卡支持和Unity SDK</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Position in VAP Family -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-sitemap text-purple-400 mr-3"></i>
+                在VAP家族中的位置
+            </h2>
+            <p class="text-slate-400 text-center mb-12">
+                VAP-GAM是VAP框架内的领域特定配置文件
+            </p>
+
+            <div class="bg-slate-900/80 rounded-2xl p-8 max-w-4xl mx-auto border border-slate-700">
+                <!-- VAP Parent -->
+                <div class="text-center mb-8">
+                    <div class="inline-block bg-emerald-900/50 border border-emerald-500/30 rounded-xl px-8 py-4">
+                        <h3 class="text-white font-bold text-lg">VAP</h3>
+                        <p class="text-emerald-400 text-sm">可验证AI溯源框架</p>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="text-center mb-8">
+                    <i class="fas fa-arrow-down text-slate-600 text-2xl"></i>
+                </div>
+
+                <!-- Domain Profiles -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4 text-center">
+                        <h4 class="text-white font-bold text-sm">VCP</h4>
+                        <p class="text-blue-400 text-xs">金融</p>
+                        <p class="text-slate-500 text-xs mt-1">v1.0 已发布</p>
+                    </div>
+                    <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-4 text-center">
+                        <h4 class="text-white font-bold text-sm">DVP</h4>
+                        <p class="text-slate-400 text-xs">汽车</p>
+                        <p class="text-slate-500 text-xs mt-1">计划中</p>
+                    </div>
+                    <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-4 text-center">
+                        <h4 class="text-white font-bold text-sm">MAP</h4>
+                        <p class="text-slate-400 text-xs">医疗</p>
+                        <p class="text-slate-500 text-xs mt-1">计划中</p>
+                    </div>
+                    <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4 text-center">
+                        <h4 class="text-amber-400 font-bold text-sm">VAP-GAM</h4>
+                        <p class="text-amber-300 text-xs">游戏</p>
+                        <p class="text-amber-500 text-xs mt-1">v0.1 草案</p>
+                    </div>
+                    <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-4 text-center">
+                        <h4 class="text-white font-bold text-sm">...</h4>
+                        <p class="text-slate-400 text-xs">更多</p>
+                        <p class="text-slate-500 text-xs mt-1">未来</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                准备好实施可证明公正的游戏了吗？
+            </h2>
+            <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
+                加入我们，共同构建一个玩家可以自己验证游戏公正性的未来。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://github.com/VeritasChain/vcp-spec" class="inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-xl transition-all" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-file-alt"></i>
+                    阅读规范
+                </a>
+                <a href="mailto:technical@veritaschain.org" class="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-xl transition-all">
+                    <i class="fas fa-envelope"></i>
+                    联系我们
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Declaration -->
+    <section class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-4xl mx-auto text-center">
+            <blockquote class="text-xl text-slate-300 italic mb-4">
+                "VAP-GAM旨在建立在线游戏中RNG公正性加密证明的国际标准。"
+            </blockquote>
+            <p class="text-amber-400 font-medium mb-4">
+                从"请相信我们"到"请验证"
+            </p>
+            <p class="text-slate-400 text-lg">
+                创造一个玩家可以自己确认公正性的世界。
+            </p>
+            <p class="text-emerald-400 font-bold text-xl mt-6 font-mono">
+                "验证，不要信任"
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="zh"></vcp-footer>
+</body>
+</html>

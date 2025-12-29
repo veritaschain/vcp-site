@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAP-GAM - Gaming Application Module | 暗号学的RNG公正性証明</title>
+    <meta name="description" content="VAP-GAM（Gaming Application Module）は、VRF、Commit-Reveal、ゼロ知識証明を組み合わせて、オンラインゲームにおけるRNG公正性を暗号学的に証明するVAPフレームワークのドメイン固有プロファイルです。">
+    <meta name="keywords" content="VAP-GAM, ゲーミング, RNG公正性, VRF, Commit-Reveal, ゼロ知識証明, オンライン麻雀, ガチャ, 証明可能な公正性, VeritasChain">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VAP-GAM - Gaming Application Module | 暗号学的RNG公正性">
+    <meta property="og:description" content="VRF、Commit-Reveal、ゼロ知識証明によるオンラインゲームのRNG公正性の暗号学的証明。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/gam/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VAP-GAM - Gaming Application Module">
+    <meta name="twitter:description" content="オンラインゲームにおけるRNG公正性の暗号学的証明。「信じてください」から「検証してください」へ。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/gam/ja/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/gam/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/gam/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/gam/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/gam/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "VAP-GAM - Gaming Application Module",
+        "description": "VAP-GAMは、VRF、Commit-Reveal、ゼロ知識証明を組み合わせて、オンラインゲームにおけるRNG公正性を暗号学的に証明するVAPフレームワークのドメイン固有プロファイルです。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization (VSO)",
+            "url": "https://veritaschain.org/vso"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://veritaschain.org/vap/gam/ja/"
+        },
+        "datePublished": "2025-12"
+    }
+    </script>
+
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f59e0b' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        .gam-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            transition: all 0.3s ease;
+        }
+        .gam-card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.15);
+        }
+        .tech-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        .tech-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+        }
+        .level-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .level-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+        .domain-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .domain-card:hover {
+            border-color: rgba(139, 92, 246, 0.6);
+        }
+        .architecture-box {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 2px solid rgba(245, 158, 11, 0.3);
+        }
+        .flow-arrow {
+            color: rgba(245, 158, 11, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-slate-900">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-24 pb-20 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <!-- Framework Badge -->
+            <div class="inline-flex items-center gap-2 bg-amber-900/50 border border-amber-500/30 px-4 py-2 rounded-full mb-6">
+                <i class="fas fa-gamepad text-amber-400"></i>
+                <span class="text-amber-300 text-sm font-medium">VSO-VAP-GAM-SPEC-001 | Version 0.1 | ドラフト仕様</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                VAP-GAM
+            </h1>
+            <p class="text-2xl md:text-3xl text-amber-400 font-semibold mb-6">
+                Gaming Application Module
+            </p>
+
+            <!-- Subcopy -->
+            <div class="bg-slate-800/60 rounded-2xl p-6 mb-8 max-w-4xl mx-auto border border-slate-700">
+                <p class="text-xl text-slate-200 mb-4">
+                    VAPフレームワークのドメイン固有プロファイル
+                </p>
+                <p class="text-lg text-slate-300">
+                    <strong class="text-amber-400">RNG公正性</strong> · <strong class="text-blue-400">アルゴリズム整合性</strong> · <strong class="text-emerald-400">プレイヤー検証可能性</strong>
+                </p>
+            </div>
+
+            <!-- Core Paradigm Shift -->
+            <div class="bg-amber-900/30 border border-amber-500/30 rounded-xl p-6 max-w-3xl mx-auto mb-8">
+                <p class="text-amber-200 text-lg italic">
+                    <i class="fas fa-quote-left text-amber-400 mr-2"></i>
+                    「Trust, but Verify」から「Don't Trust, Verify」へ
+                    <i class="fas fa-quote-right text-amber-400 ml-2"></i>
+                </p>
+                <p class="text-slate-300 text-sm mt-3">
+                    プレイヤーは運営の「不正していません」という宣言を信じる必要がなくなる。自ら検証できる。
+                </p>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+                <a href="https://github.com/VeritasChain/vcp-spec" class="inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-amber-600/20" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-file-alt"></i>
+                    仕様書を見る
+                </a>
+                <a href="/vap/ja/" class="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-xl transition-all">
+                    <i class="fas fa-layer-group"></i>
+                    VAPフレームワーク
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-exclamation-triangle text-red-400 mr-3"></i>
+                オンラインゲームにおける信頼のギャップ
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                プレイヤーの疑念と運営の主張の間には構造的なギャップが存在する
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+                <!-- Player Suspicions -->
+                <div class="gam-card rounded-xl p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-red-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-times text-red-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">プレイヤーの疑念</h3>
+                    </div>
+                    <ul class="space-y-3 text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-question-circle text-red-400 mt-1"></i>
+                            <span>「配牌が偏っている」</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-question-circle text-red-400 mt-1"></i>
+                            <span>「課金者が有利では？」</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-question-circle text-red-400 mt-1"></i>
+                            <span>「負けが込むと操作される」</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Operator Claims -->
+                <div class="gam-card rounded-xl p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-building text-blue-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">運営の主張</h3>
+                    </div>
+                    <ul class="space-y-3 text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span>「不正はしていない」</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span>「RNGは公正」</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span>「ただの確率」</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- The Gap -->
+            <div class="bg-slate-900/80 border border-red-500/30 rounded-xl p-8 max-w-4xl mx-auto text-center">
+                <div class="text-6xl mb-4">⚠️</div>
+                <h3 class="text-2xl font-bold text-white mb-4">検証手段の不在</h3>
+                <p class="text-slate-300 text-lg">
+                    どちらも証明できない。これまで、プレイヤーが独自にRNG公正性を検証する技術的手段は存在しなかった。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- What VAP-GAM Solves Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-lightbulb text-amber-400 mr-3"></i>
+                VAP-GAMが解決すること
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                ゲーミング信頼問題への暗号学的解決策
+            </p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- RNG Distrust -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-dice text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">RNG不信</h3>
+                    <p class="text-slate-400 text-sm mb-4">「配牌が操作されている」</p>
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-lg p-3">
+                        <p class="text-emerald-300 text-sm font-medium">
+                            <i class="fas fa-check mr-2"></i>
+                            VRF + Commit-Reveal公正性証明
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Unverifiability -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-eye-slash text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">検証不能性</h3>
+                    <p class="text-slate-400 text-sm mb-4">自己検証の手段がない</p>
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-lg p-3">
+                        <p class="text-emerald-300 text-sm font-medium">
+                            <i class="fas fa-check mr-2"></i>
+                            公開検証可能な暗号学的証拠
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Post-hoc Tampering -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-edit text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">事後改ざん</h3>
+                    <p class="text-slate-400 text-sm mb-4">結果が後から書き換えられる可能性</p>
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-lg p-3">
+                        <p class="text-emerald-300 text-sm font-medium">
+                            <i class="fas fa-check mr-2"></i>
+                            Merkle Treeによる改ざん検知
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Lack of Transparency -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-box text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">ブラックボックス</h3>
+                    <p class="text-slate-400 text-sm mb-4">アルゴリズムの詳細が非公開</p>
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-lg p-3">
+                        <p class="text-emerald-300 text-sm font-medium">
+                            <i class="fas fa-check mr-2"></i>
+                            ZKP: 秘密だが公正性を証明
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Architecture Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-cubes text-blue-400 mr-3"></i>
+                技術アーキテクチャ
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                RNG公正性を証明するための4つのコア技術
+            </p>
+
+            <!-- Architecture Diagram -->
+            <div class="architecture-box rounded-2xl p-8 mb-12 max-w-4xl mx-auto">
+                <div class="text-center mb-8">
+                    <h3 class="text-xl font-bold text-white mb-4">VAP-GAM アーキテクチャ</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- VRF -->
+                    <div class="tech-card rounded-xl p-5 text-center">
+                        <div class="w-14 h-14 bg-blue-900/50 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-random text-blue-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">VRF</h4>
+                        <p class="text-slate-400 text-sm">公正乱数生成</p>
+                    </div>
+
+                    <!-- Commit-Reveal -->
+                    <div class="tech-card rounded-xl p-5 text-center">
+                        <div class="w-14 h-14 bg-purple-900/50 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-lock text-purple-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">Commit-Reveal</h4>
+                        <p class="text-slate-400 text-sm">事前確定</p>
+                    </div>
+
+                    <!-- Merkle Tree -->
+                    <div class="tech-card rounded-xl p-5 text-center">
+                        <div class="w-14 h-14 bg-emerald-900/50 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-project-diagram text-emerald-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-2">Merkle Tree</h4>
+                        <p class="text-slate-400 text-sm">改ざん検知</p>
+                    </div>
+                </div>
+
+                <!-- Arrow to ZKP -->
+                <div class="text-center mb-6">
+                    <i class="fas fa-arrow-down flow-arrow text-3xl"></i>
+                </div>
+
+                <!-- ZKP -->
+                <div class="tech-card rounded-xl p-6 max-w-md mx-auto text-center">
+                    <div class="w-16 h-16 bg-amber-900/50 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-secret text-amber-400 text-2xl"></i>
+                    </div>
+                    <h4 class="text-white font-bold text-lg mb-2">ゼロ知識証明（ZKP）</h4>
+                    <p class="text-slate-400 text-sm">アルゴリズム秘匿 + 公正性証明の両立</p>
+                </div>
+            </div>
+
+            <!-- Technology Details -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- VRF Details -->
+                <div class="tech-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                        <i class="fas fa-random text-blue-400"></i>
+                        Verifiable Random Function (VRF)
+                    </h3>
+                    <ul class="space-y-2 text-slate-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>秘密鍵保持者のみが出力を生成可能</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>誰でも公開鍵で検証可能</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>決定論的かつ予測不可能な出力</span>
+                        </li>
+                    </ul>
+                    <div class="bg-slate-800/60 rounded-lg p-3 mt-4 border border-slate-700">
+                        <code class="text-xs text-amber-300 font-mono">
+                            VRF_prove(secret_key, game_id + round + entropy) → (seed, π)
+                        </code>
+                    </div>
+                </div>
+
+                <!-- Commit-Reveal Details -->
+                <div class="tech-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                        <i class="fas fa-lock text-purple-400"></i>
+                        Commit-Reveal方式
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-purple-900/20 border border-purple-500/30 rounded-lg p-3">
+                            <h4 class="text-purple-300 font-medium text-sm mb-2">フェーズ1: コミット（対局開始時）</h4>
+                            <code class="text-xs text-slate-300 font-mono">
+                                commitment = SHA-256(seed || nonce)
+                            </code>
+                        </div>
+                        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-3">
+                            <h4 class="text-emerald-300 font-medium text-sm mb-2">フェーズ2: リビール（対局終了時）</h4>
+                            <code class="text-xs text-slate-300 font-mono">
+                                公開: seed, nonce, VRF証明
+                            </code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Domains Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-bullseye text-purple-400 mr-3"></i>
+                対象ドメイン
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                VAP-GAMは確率要素を含む全てのゲームを対象とする
+            </p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Online Mahjong -->
+                <div class="domain-card rounded-xl p-6">
+                    <div class="text-4xl mb-4">🀄</div>
+                    <h3 class="text-lg font-bold text-white mb-3">オンライン麻雀</h3>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li>• 配牌生成</li>
+                        <li>• 牌山構成</li>
+                        <li>• ドラ表示牌</li>
+                        <li>• サイコロ</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs text-slate-500">雀魂、MJモバイル、Maru-Jan等</p>
+                    </div>
+                </div>
+
+                <!-- Online Poker -->
+                <div class="domain-card rounded-xl p-6">
+                    <div class="text-4xl mb-4">🃏</div>
+                    <h3 class="text-lg font-bold text-white mb-3">オンラインポーカー / カード</h3>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li>• デッキシャッフル</li>
+                        <li>• カード配布</li>
+                        <li>• コミュニティカード</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs text-slate-500">ポーカー、ブラックジャック、TCG等</p>
+                    </div>
+                </div>
+
+                <!-- Gacha -->
+                <div class="domain-card rounded-xl p-6">
+                    <div class="text-4xl mb-4">🎰</div>
+                    <h3 class="text-lg font-bold text-white mb-3">ガチャ / ルートボックス</h3>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li>• 排出確率</li>
+                        <li>• 天井システム</li>
+                        <li>• ピックアップ証明</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs text-slate-500">モバイルゲーム、RPG等</p>
+                    </div>
+                </div>
+
+                <!-- Esports -->
+                <div class="domain-card rounded-xl p-6">
+                    <div class="text-4xl mb-4">🎮</div>
+                    <h3 class="text-lg font-bold text-white mb-3">eスポーツ / 競技</h3>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li>• マッチメイキング</li>
+                        <li>• マップ/ステージ選択</li>
+                        <li>• 初期配置</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs text-slate-500">FPS、MOBA、バトルロイヤル等</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conformance Levels Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-layer-group text-emerald-400 mr-3"></i>
+                適合レベル
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                基本整合性から完全証跡までの段階的レベル
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- GAM-1 -->
+                <div class="level-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">1</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">GAM-1</h3>
+                            <p class="text-slate-400 text-sm">基本整合性</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm mb-4">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>SHA-256イベントハッシュ</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>Merkle Tree改ざん検知</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>Ed25519署名</span>
+                        </li>
+                    </ul>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <p class="text-xs text-slate-400">
+                            <strong class="text-emerald-400">証明:</strong> 対局途中での改ざんなし
+                        </p>
+                    </div>
+                </div>
+
+                <!-- GAM-2 -->
+                <div class="level-card rounded-xl p-6 border-amber-500/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-amber-400 font-bold text-lg">2</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">GAM-2</h3>
+                            <p class="text-amber-400 text-sm">検証可能乱数</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm mb-4">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-400 mt-1"></i>
+                            <span>GAM-1の全要件</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-400 mt-1"></i>
+                            <span>VRF乱数生成</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-400 mt-1"></i>
+                            <span>Commit-Reveal方式</span>
+                        </li>
+                    </ul>
+                    <div class="bg-amber-900/20 rounded-lg p-3 border border-amber-500/30">
+                        <p class="text-xs text-slate-400">
+                            <strong class="text-amber-400">証明:</strong> 乱数が事前確定・正当
+                        </p>
+                    </div>
+                </div>
+
+                <!-- GAM-3 -->
+                <div class="level-card rounded-xl p-6 border-emerald-500/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-emerald-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-emerald-400 font-bold text-lg">3</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">GAM-3</h3>
+                            <p class="text-emerald-400 text-sm">完全証跡</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm mb-4">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>GAM-2の全要件</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>外部エントロピー源</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>ゼロ知識証明</span>
+                        </li>
+                    </ul>
+                    <div class="bg-emerald-900/20 rounded-lg p-3 border border-emerald-500/30">
+                        <p class="text-xs text-slate-400">
+                            <strong class="text-emerald-400">証明:</strong> RNGアルゴリズム自体が公平
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certification Program -->
+            <div class="mt-12 bg-slate-900/80 rounded-xl p-8 max-w-4xl mx-auto border border-slate-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-certificate text-amber-400 mr-2"></i>
+                    認証プログラム
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-clipboard-check text-slate-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold">GAM-Ready</h4>
+                        <p class="text-slate-400 text-sm">自己適合宣言</p>
+                        <p class="text-xs text-slate-500 mt-1">レベル: GAM-1</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-amber-900/50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-check-double text-amber-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold">GAM-Verified</h4>
+                        <p class="text-slate-400 text-sm">VSOテストスイート合格</p>
+                        <p class="text-xs text-slate-500 mt-1">レベル: GAM-2</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-emerald-900/50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-award text-emerald-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold">GAM-Certified</h4>
+                        <p class="text-slate-400 text-sm">第三者監査</p>
+                        <p class="text-xs text-slate-500 mt-1">レベル: GAM-3</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Case: Mahjong -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-play-circle text-blue-400 mr-3"></i>
+                ユースケース: オンライン麻雀
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                暗号学的証拠による配牌公正性の証明
+            </p>
+
+            <div class="bg-slate-800/50 rounded-2xl p-8 max-w-4xl mx-auto">
+                <!-- Flow Steps -->
+                <div class="space-y-6">
+                    <!-- Step 1 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-blue-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-blue-400 font-bold">1</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">対局開始: VRFで牌山シードを生成</h4>
+                            <p class="text-slate-400 text-sm">VRFが牌山のランダムシードを生成</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-purple-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-purple-400 font-bold">2</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">コミット: SHA-256(seed || nonce) を表示</h4>
+                            <p class="text-slate-400 text-sm">コミットメントハッシュを対局前にプレイヤーに公開</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-emerald-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-emerald-400 font-bold">3</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">対局中: 全イベントをMerkle Treeに記録</h4>
+                            <p class="text-slate-400 text-sm">ツモ、打牌、鳴き等を全て記録</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-amber-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-amber-400 font-bold">4</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">対局終了: seed, nonce, VRF証明を公開</h4>
+                            <p class="text-slate-400 text-sm">全ての暗号学的材料を公開</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-green-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-green-400 font-bold">5</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-1">プレイヤー検証</h4>
+                            <p class="text-slate-400 text-sm mb-3">プレイヤーが独立して再構成・検証可能</p>
+                            <div class="bg-slate-900/80 rounded-lg p-4 border border-slate-700">
+                                <code class="text-xs text-slate-300 font-mono block space-y-1">
+                                    <span class="block">1. SHA-256(seed || nonce) == displayed_commitment ✓</span>
+                                    <span class="block">2. VRF_verify(public_key, input, seed, proof) ✓</span>
+                                    <span class="block">3. generate_tiles(seed) == actual_tiles ✓</span>
+                                    <span class="block text-emerald-400 mt-2">→ 公正性証明完了！</span>
+                                </code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison with Existing Systems -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-balance-scale text-amber-400 mr-3"></i>
+                VAP-GAMが追加するもの
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-3xl mx-auto">
+                雀魂のMD5検証システムなど既存ソリューションを補完
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Existing: MD5 -->
+                <div class="gam-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check text-slate-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">現行（MD5ハッシュ）</h3>
+                            <p class="text-slate-400 text-sm">牌山固定証明</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>対局途中で牌山を変更していないことを証明</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>最初のRNGが公平だったかは証明不能</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>シード選択が恣意的でなかったかは証明不能</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- VAP-GAM Addition -->
+                <div class="gam-card rounded-xl p-6 border-amber-500/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-plus text-amber-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">+ VAP-GAM</h3>
+                            <p class="text-amber-400 text-sm">RNG公正性証明</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-slate-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>VRFがRNGの正当性を証明</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>Commit-Revealが事前確定を証明</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>ZKPがアルゴリズム公正性を証明</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Complete Fairness -->
+            <div class="mt-8 bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-6 max-w-3xl mx-auto text-center">
+                <h3 class="text-xl font-bold text-white mb-2">
+                    <i class="fas fa-shield-alt text-emerald-400 mr-2"></i>
+                    完全な公正性証明
+                </h3>
+                <p class="text-slate-300">
+                    既存システム + VAP-GAM = 完全な暗号学的公正性保証
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-12">
+                <i class="fas fa-road text-blue-400 mr-3"></i>
+                開発ロードマップ
+            </h2>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-6">
+                    <!-- v0.1 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-file-alt text-white text-sm"></i>
+                            </div>
+                            <div class="flex-1 w-0.5 bg-slate-700 mt-2"></div>
+                        </div>
+                        <div class="pb-8">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-amber-400 font-bold">v0.1</span>
+                                <span class="text-slate-400 text-sm">2025 Q1</span>
+                                <span class="bg-amber-600 text-white text-xs px-2 py-0.5 rounded">現在</span>
+                            </div>
+                            <h4 class="text-white font-bold">ドラフト仕様</h4>
+                            <p class="text-slate-400 text-sm">基本設計とアーキテクチャ</p>
+                        </div>
+                    </div>
+
+                    <!-- v0.5 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
+                                <i class="fas fa-code text-slate-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 w-0.5 bg-slate-700 mt-2"></div>
+                        </div>
+                        <div class="pb-8">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-slate-400 font-bold">v0.5</span>
+                                <span class="text-slate-400 text-sm">2025 Q2</span>
+                            </div>
+                            <h4 class="text-white font-bold">参照実装</h4>
+                            <p class="text-slate-400 text-sm">麻雀参照実装 & テストスイート</p>
+                        </div>
+                    </div>
+
+                    <!-- v1.0 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
+                                <i class="fas fa-rocket text-slate-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 w-0.5 bg-slate-700 mt-2"></div>
+                        </div>
+                        <div class="pb-8">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-slate-400 font-bold">v1.0</span>
+                                <span class="text-slate-400 text-sm">2025 Q3</span>
+                            </div>
+                            <h4 class="text-white font-bold">正式リリース</h4>
+                            <p class="text-slate-400 text-sm">完全仕様 & SDK公開</p>
+                        </div>
+                    </div>
+
+                    <!-- v1.1 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
+                                <i class="fas fa-expand text-slate-400 text-sm"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-slate-400 font-bold">v1.1</span>
+                                <span class="text-slate-400 text-sm">2025 Q4</span>
+                            </div>
+                            <h4 class="text-white font-bold">拡張対応</h4>
+                            <p class="text-slate-400 text-sm">ガチャ対応 & Unity SDK</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Position in VAP Family -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-sitemap text-purple-400 mr-3"></i>
+                VAPファミリーにおける位置付け
+            </h2>
+            <p class="text-slate-400 text-center mb-12">
+                VAP-GAMはVAPフレームワーク内のドメイン固有プロファイル
+            </p>
+
+            <div class="bg-slate-900/80 rounded-2xl p-8 max-w-4xl mx-auto border border-slate-700">
+                <!-- VAP Parent -->
+                <div class="text-center mb-8">
+                    <div class="inline-block bg-emerald-900/50 border border-emerald-500/30 rounded-xl px-8 py-4">
+                        <h3 class="text-white font-bold text-lg">VAP</h3>
+                        <p class="text-emerald-400 text-sm">Verifiable AI Provenance Framework</p>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="text-center mb-8">
+                    <i class="fas fa-arrow-down text-slate-600 text-2xl"></i>
+                </div>
+
+                <!-- Domain Profiles -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4 text-center">
+                        <h4 class="text-white font-bold text-sm">VCP</h4>
+                        <p class="text-blue-400 text-xs">金融</p>
+                        <p class="text-slate-500 text-xs mt-1">v1.0 リリース済</p>
+                    </div>
+                    <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-4 text-center">
+                        <h4 class="text-white font-bold text-sm">DVP</h4>
+                        <p class="text-slate-400 text-xs">自動車</p>
+                        <p class="text-slate-500 text-xs mt-1">計画中</p>
+                    </div>
+                    <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-4 text-center">
+                        <h4 class="text-white font-bold text-sm">MAP</h4>
+                        <p class="text-slate-400 text-xs">医療</p>
+                        <p class="text-slate-500 text-xs mt-1">計画中</p>
+                    </div>
+                    <div class="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4 text-center">
+                        <h4 class="text-amber-400 font-bold text-sm">VAP-GAM</h4>
+                        <p class="text-amber-300 text-xs">ゲーミング</p>
+                        <p class="text-amber-500 text-xs mt-1">v0.1 ドラフト</p>
+                    </div>
+                    <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-4 text-center">
+                        <h4 class="text-white font-bold text-sm">...</h4>
+                        <p class="text-slate-400 text-xs">他</p>
+                        <p class="text-slate-500 text-xs mt-1">将来</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                証明可能な公正ゲーミングを実装する準備はできましたか？
+            </h2>
+            <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
+                プレイヤーが自らゲームの公正性を検証できる未来を一緒に築きましょう。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://github.com/VeritasChain/vcp-spec" class="inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-xl transition-all" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-file-alt"></i>
+                    仕様書を読む
+                </a>
+                <a href="mailto:technical@veritaschain.org" class="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-xl transition-all">
+                    <i class="fas fa-envelope"></i>
+                    お問い合わせ
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Declaration -->
+    <section class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-4xl mx-auto text-center">
+            <blockquote class="text-xl text-slate-300 italic mb-4">
+                「VAP-GAMは、オンラインゲームにおけるRNG公正性を暗号学的に証明するための国際標準を目指す。」
+            </blockquote>
+            <p class="text-amber-400 font-medium mb-4">
+                「信じてください」から「検証してください」へ
+            </p>
+            <p class="text-slate-400 text-lg">
+                プレイヤーが自ら公正性を確認できる世界を実現する。
+            </p>
+            <p class="text-emerald-400 font-bold text-xl mt-6 font-mono">
+                "Verify, Don't Trust"
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="ja"></vcp-footer>
+</body>
+</html>
