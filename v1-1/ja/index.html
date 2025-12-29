@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP v1.1: 外部検証可能性の強化 - VeritasChain Protocol</title>
+    <meta name="description" content="VCP v1.1は3層アーキテクチャ、全ティアでの必須外部アンカリング、ポリシー識別を導入。改ざん証明から完全性保証へ拡張。">
+    <meta name="keywords" content="VCP, VeritasChain Protocol, v1.1, 3層アーキテクチャ, 外部アンカリング, ポリシー識別, アルゴリズム取引, 暗号監査">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP v1.1: 外部検証可能性の強化">
+    <meta property="og:description" content="3層アーキテクチャ、必須外部アンカリング、ポリシー識別による暗号監査証跡の強化。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/v1-1/ja/">
+    <meta property="og:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP v1.1: 外部検証可能性の強化">
+    <meta name="twitter:description" content="3層アーキテクチャ、必須外部アンカリング、ポリシー識別。">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/v1-1/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/v1-1/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/v1-1/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/v1-1/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        /* VCP v1.1 Page Styles */
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+        }
+        
+        .hero-v11 {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-v11::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            animation: pulseGlow 10s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+        
+        .version-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .layer-diagram {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        
+        .layer-box {
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .layer-box:hover {
+            transform: translateX(8px);
+        }
+        
+        .layer-3 { border-color: #a78bfa; background: linear-gradient(90deg, rgba(167, 139, 250, 0.1), transparent); }
+        .layer-2 { border-color: #60a5fa; background: linear-gradient(90deg, rgba(96, 165, 250, 0.1), transparent); }
+        .layer-1 { border-color: #34d399; background: linear-gradient(90deg, rgba(52, 211, 153, 0.1), transparent); }
+        
+        .change-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .change-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .change-new { border-left: 4px solid #10b981; }
+        .change-required { border-left: 4px solid #f59e0b; }
+        .change-optional { border-left: 4px solid #6366f1; }
+        
+        .tier-table th {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+        }
+        
+        .tier-table tr:nth-child(even) {
+            background: rgba(30, 41, 59, 0.5);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0.75rem;
+            width: 10px;
+            height: 10px;
+            background: #3b82f6;
+            border-radius: 50%;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+        }
+        
+        .anchor-option {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .anchor-option:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+    </style>
+    <link rel="canonical" href="https://veritaschain.org/v1-1/ja/" />
+</head>
+<body class="bg-slate-900">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+    
+    <!-- Hero Section -->
+    <section class="hero-v11 min-h-screen flex items-center justify-center px-4 py-20" style="padding-top: 100px;">
+        <div class="relative z-10 max-w-5xl mx-auto text-center">
+            <!-- Version Badge -->
+            <div class="mb-6">
+                <span class="version-badge">
+                    <i class="fas fa-rocket"></i>
+                    2026年リリース予定
+                </span>
+            </div>
+            
+            <!-- Title -->
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                VCP v1.1:<br>
+                <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">外部検証可能性の強化</span>
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="text-xl md:text-2xl text-blue-200 mb-8 max-w-3xl mx-auto leading-relaxed">
+                暗号完全性のための3層アーキテクチャ<br>
+                <strong class="text-white">「信頼するな、検証せよ」</strong>
+            </p>
+            
+            <!-- Core Enhancement -->
+            <div class="bg-gradient-to-r from-blue-900/50 to-purple-900/50 border border-blue-500/30 rounded-2xl p-6 mb-10 max-w-3xl mx-auto">
+                <p class="text-lg text-blue-100">
+                    <i class="fas fa-shield-halved text-blue-400 mr-2"></i>
+                    <strong>コア強化:</strong> VCP v1.1は改ざん証明を<strong class="text-green-400">完全性保証</strong>へ拡張し、第三者がイベントが改変されていないことだけでなく、<strong class="text-yellow-300">必要なイベントが省略されていないこと</strong>を暗号的に検証できるようにします。
+                </p>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#changes" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-500 transition-all shadow-lg">
+                    <i class="fas fa-list-check mr-2"></i>
+                    主な変更点を見る
+                </a>
+                <a href="https://github.com/veritaschain/vcp-spec" target="_blank" class="inline-flex items-center px-8 py-4 bg-slate-700 text-white font-semibold rounded-xl hover:bg-slate-600 transition-all border border-slate-600">
+                    <i class="fab fa-github mr-2"></i>
+                    GitHubで見る
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Key Changes Summary -->
+    <section id="changes" class="py-20 px-4 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">主な変更点</h2>
+                <p class="text-xl text-slate-400">プロトコル互換性を維持した認証レベルの変更</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Change 1: Three-Layer Architecture -->
+                <div class="change-card change-new p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center">
+                            <i class="fas fa-layer-group text-green-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-white">3層アーキテクチャ</h3>
+                                <span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs font-semibold rounded">新規</span>
+                            </div>
+                            <p class="text-slate-400">整合性メカニズムの明確な分離：イベント整合性、コレクション整合性、外部検証可能性。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Change 2: External Anchor Required -->
+                <div class="change-card change-required p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                            <i class="fas fa-anchor text-amber-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-white">外部アンカー → 必須</h3>
+                                <span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded">破壊的変更</span>
+                            </div>
+                            <p class="text-slate-400">Silverティアでも日次アンカリングが必須に。軽量オプション（OpenTimestamps、FreeTSA）も明示的に許容。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Change 3: PrevHash Optional -->
+                <div class="change-card change-optional p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+                            <i class="fas fa-link-slash text-indigo-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-white">PrevHash → オプション</h3>
+                                <span class="px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-xs font-semibold rounded">緩和</span>
+                            </div>
+                            <p class="text-slate-400">検証可能性を犠牲にせず実装を簡素化。ハッシュチェーンは外部アンカリングを補完するが置き換えるものではない。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Change 4: Policy Identification -->
+                <div class="change-card change-required p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                            <i class="fas fa-id-card text-amber-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-white">ポリシー識別 → 必須</h3>
+                                <span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded">新規</span>
+                            </div>
+                            <p class="text-slate-400">明示的なコンプライアンスティア宣言により、マルチティア・マルチポリシー展開を可能に。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Compatibility Note -->
+            <div class="mt-8 p-6 bg-slate-800/50 border border-slate-700 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <i class="fas fa-check-circle text-green-400 text-2xl mt-1"></i>
+                    <div>
+                        <h4 class="text-lg font-semibold text-white mb-2">プロトコル互換性</h4>
+                        <p class="text-slate-400">VCP v1.1はv1.0と<strong class="text-white">プロトコル互換</strong>です。既存の実装は引き続き動作しますが、v1.1 VC-Certified認定を取得するには一部の更新が必要な場合があります。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Three-Layer Architecture -->
+    <section class="py-20 px-4 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">3層アーキテクチャ</h2>
+                <p class="text-xl text-slate-400">暗号完全性を理解するための明確な構造</p>
+            </div>
+            
+            <div class="layer-diagram p-8">
+                <!-- Layer 3 -->
+                <div class="layer-box layer-3 p-6 mb-4 rounded-r-lg">
+                    <div class="flex items-center gap-4 mb-3">
+                        <span class="text-2xl font-bold text-purple-400">レイヤー3</span>
+                        <span class="px-3 py-1 bg-purple-500/20 text-purple-300 text-sm font-semibold rounded-full">外部検証可能性</span>
+                    </div>
+                    <p class="text-slate-300 mb-4">目的: 生成者を信頼せずに第三者検証を可能にする</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">
+                            <i class="fas fa-signature mr-1"></i> デジタル署名: <span class="text-green-400">必須</span>
+                        </span>
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">
+                            <i class="fas fa-clock mr-1"></i> タイムスタンプ: <span class="text-green-400">必須</span>
+                        </span>
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">
+                            <i class="fas fa-anchor mr-1"></i> 外部アンカー: <span class="text-green-400">必須</span>
+                        </span>
+                    </div>
+                    <p class="text-slate-500 text-sm mt-3">頻度: ティアによる (10分 / 1時間 / 24時間)</p>
+                </div>
+                
+                <!-- Layer 2 -->
+                <div class="layer-box layer-2 p-6 mb-4 rounded-r-lg">
+                    <div class="flex items-center gap-4 mb-3">
+                        <span class="text-2xl font-bold text-blue-400">レイヤー2</span>
+                        <span class="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm font-semibold rounded-full">コレクション整合性</span>
+                        <span class="px-2 py-0.5 bg-yellow-500/20 text-yellow-300 text-xs font-semibold rounded">外部検証可能性の核心</span>
+                    </div>
+                    <p class="text-slate-300 mb-4">目的: イベントバッチの完全性を証明</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">
+                            <i class="fas fa-sitemap mr-1"></i> Merkle Tree (RFC 6962): <span class="text-green-400">必須</span>
+                        </span>
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">
+                            <i class="fas fa-cube mr-1"></i> Merkle Root: <span class="text-green-400">必須</span>
+                        </span>
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">
+                            <i class="fas fa-route mr-1"></i> 監査パス: <span class="text-green-400">必須</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Layer 1 -->
+                <div class="layer-box layer-1 p-6 rounded-r-lg">
+                    <div class="flex items-center gap-4 mb-3">
+                        <span class="text-2xl font-bold text-emerald-400">レイヤー1</span>
+                        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-sm font-semibold rounded-full">イベント整合性</span>
+                    </div>
+                    <p class="text-slate-300 mb-4">目的: 個々のイベントの完全性</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">
+                            <i class="fas fa-fingerprint mr-1"></i> EventHash (SHA-256): <span class="text-green-400">必須</span>
+                        </span>
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">
+                            <i class="fas fa-link mr-1"></i> PrevHash: <span class="text-yellow-400">オプション</span>
+                        </span>
+                    </div>
+                    <p class="text-slate-500 text-sm mt-3">注: PrevHashはリアルタイム検知を提供 (v1.1ではオプション)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- External Anchoring Requirements -->
+    <section class="py-20 px-4 bg-slate-800">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">外部アンカリング: 全ティアで必須に</h2>
+                <p class="text-xl text-slate-400">「信頼するな、検証せよ」の重要な整合性メカニズム</p>
+            </div>
+            
+            <!-- Tier Requirements Table -->
+            <div class="overflow-x-auto mb-12">
+                <table class="tier-table w-full text-left">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-4 text-white font-semibold">ティア</th>
+                            <th class="px-6 py-4 text-white font-semibold">頻度</th>
+                            <th class="px-6 py-4 text-white font-semibold">アンカーターゲット</th>
+                            <th class="px-6 py-4 text-white font-semibold">証明タイプ</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="border-b border-slate-700">
+                            <td class="px-6 py-4 font-semibold text-purple-400">
+                                <i class="fas fa-crown mr-2"></i>Platinum
+                            </td>
+                            <td class="px-6 py-4">10分ごと</td>
+                            <td class="px-6 py-4">ブロックチェーンまたはRFC 3161 TSA</td>
+                            <td class="px-6 py-4">完全なMerkle証明</td>
+                        </tr>
+                        <tr class="border-b border-slate-700">
+                            <td class="px-6 py-4 font-semibold text-yellow-400">
+                                <i class="fas fa-medal mr-2"></i>Gold
+                            </td>
+                            <td class="px-6 py-4">1時間ごと</td>
+                            <td class="px-6 py-4">RFC 3161 TSAまたは証明付きデータベース</td>
+                            <td class="px-6 py-4">Merkle root + 監査パス</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-slate-400">
+                                <i class="fas fa-certificate mr-2"></i>Silver
+                            </td>
+                            <td class="px-6 py-4">24時間ごと</td>
+                            <td class="px-6 py-4">公開タイムスタンプサービスまたは証明付きデータベース</td>
+                            <td class="px-6 py-4">Merkle rootのみ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Silver Tier Options -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-feather text-slate-400 mr-2"></i>
+                    Silverティア向け軽量オプション
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="anchor-option p-6">
+                        <div class="text-3xl mb-4">
+                            <i class="fab fa-bitcoin text-orange-400"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-white mb-2">OpenTimestamps</h4>
+                        <p class="text-slate-400 text-sm mb-3">無料、Bitcoin裏付けタイムスタンプ、分散型検証。</p>
+                        <span class="text-green-400 text-sm font-semibold">無料</span>
+                    </div>
+                    <div class="anchor-option p-6">
+                        <div class="text-3xl mb-4">
+                            <i class="fas fa-clock text-blue-400"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-white mb-2">FreeTSA</h4>
+                        <p class="text-slate-400 text-sm mb-3">無料のRFC 3161準拠タイムスタンプ認証局サービス。</p>
+                        <span class="text-green-400 text-sm font-semibold">無料</span>
+                    </div>
+                    <div class="anchor-option p-6">
+                        <div class="text-3xl mb-4">
+                            <i class="fas fa-stamp text-purple-400"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-white mb-2">OriginStamp</h4>
+                        <p class="text-slate-400 text-sm mb-3">基本的なタイムスタンプニーズに対応した無料ティアのある商用サービス。</p>
+                        <span class="text-blue-400 text-sm font-semibold">無料ティアあり</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Policy Identification -->
+    <section class="py-20 px-4 bg-gradient-to-b from-slate-800 to-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">ポリシー識別</h2>
+                <p class="text-xl text-slate-400">明示的なコンプライアンス宣言によるマルチテナント展開のサポート</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Schema Example -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">スキーマ定義</h3>
+                    <div class="code-block p-4">
+                        <pre class="text-green-400"><code>{
+  "PolicyIdentification": {
+    "Version": "1.1",
+    "PolicyID": "org.veritaschain.prod:hft-system-001",
+    "ConformanceTier": "PLATINUM",
+    "RegistrationPolicy": {
+      "Issuer": "VeritasChain Inc.",
+      "PolicyURI": "https://veritaschain.org/policies/prod-hft",
+      "EffectiveDate": 1735084800000
+    },
+    "VerificationDepth": {
+      "HashChainValidation": true,
+      "MerkleProofRequired": true,
+      "ExternalAnchorRequired": true
+    }
+  }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Naming Convention -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">PolicyID命名規則</h3>
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                        <p class="text-slate-300 mb-4">中央レジストリなしでグローバルな一意性を確保:</p>
+                        <div class="code-block p-4 mb-4">
+                            <code class="text-blue-400">PolicyID = &lt;逆ドメイン&gt;:&lt;ローカル識別子&gt;</code>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-400"></i>
+                                <code class="text-slate-300">org.veritaschain.prod:hft-system-001</code>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-400"></i>
+                                <code class="text-slate-300">com.acme.trading:gold-algo-v2</code>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-check text-green-400"></i>
+                                <code class="text-slate-300">jp.co.broker:silver-mt5-bridge</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Migration Guide -->
+    <section class="py-20 px-4 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">移行ガイド</h2>
+                <p class="text-xl text-slate-400">既存実装で更新が必要な点</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <!-- Silver Tier -->
+                <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-slate-400 mb-4 flex items-center gap-2">
+                        <i class="fas fa-certificate"></i>
+                        Silverティア
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-plus-circle text-green-400 mt-1"></i>
+                            <span class="text-slate-300">外部アンカリング（日次）を追加</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-plus-circle text-green-400 mt-1"></i>
+                            <span class="text-slate-300">ポリシー識別を追加</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Gold Tier -->
+                <div class="bg-slate-800/50 border border-yellow-500/30 rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-yellow-400 mb-4 flex items-center gap-2">
+                        <i class="fas fa-medal"></i>
+                        Goldティア
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-plus-circle text-green-400 mt-1"></i>
+                            <span class="text-slate-300">ポリシー識別を追加</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span class="text-slate-300">アンカリングが要件を満たすか確認</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Platinum Tier -->
+                <div class="bg-slate-800/50 border border-purple-500/30 rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
+                        <i class="fas fa-crown"></i>
+                        Platinumティア
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-plus-circle text-green-400 mt-1"></i>
+                            <span class="text-slate-300">ポリシー識別を追加</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span class="text-slate-300">アンカリングが要件を満たすか確認</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Grace Period -->
+            <div class="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-500/30 rounded-xl p-8">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-calendar-alt text-blue-400 mr-2"></i>
+                    移行猶予期間
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-slate-400 text-sm">
+                                <th class="pb-4">要件</th>
+                                <th class="pb-4">猶予期間</th>
+                                <th class="pb-4">最終期限</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-t border-slate-700">
+                                <td class="py-4">外部アンカー（Silver）</td>
+                                <td class="py-4">6ヶ月</td>
+                                <td class="py-4 font-semibold text-yellow-400">2026年6月25日</td>
+                            </tr>
+                            <tr class="border-t border-slate-700">
+                                <td class="py-4">ポリシー識別</td>
+                                <td class="py-4">3ヶ月</td>
+                                <td class="py-4 font-semibold text-yellow-400">2026年3月25日</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-slate-400 text-sm mt-4">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    最終期限後、v1.0のみの実装は新規認定でVC-Certifiedステータスを取得できません。
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Post-Quantum Cryptography -->
+    <section class="py-20 px-4 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">将来を見据えて: ポスト量子暗号</h2>
+                <p class="text-xl text-slate-400">デュアル署名サポートで量子時代に備える</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Dual Signature -->
+                <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-key text-purple-400 mr-2"></i>
+                        デュアル署名戦略
+                    </h3>
+                    <div class="code-block p-4">
+                        <pre class="text-green-400 text-sm"><code>{
+  "Security": {
+    "Signature": "base64(Ed25519_signature)",
+    "SignAlgo": "ED25519",
+    "PQCSignature": "base64(Dilithium2_signature)",
+    "PQCSignAlgo": "DILITHIUM2"
+  }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Timeline -->
+                <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-6">
+                        <i class="fas fa-road text-blue-400 mr-2"></i>
+                        移行タイムライン（推奨）
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="timeline-item">
+                            <h4 class="text-lg font-semibold text-white">準備期間</h4>
+                            <p class="text-slate-400 text-sm">2025-2026: デュアル署名機能を実装</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h4 class="text-lg font-semibold text-white">ハイブリッド期間</h4>
+                            <p class="text-slate-400 text-sm">2027-2029: 本番環境でデュアル署名を展開</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h4 class="text-lg font-semibold text-white">移行期間</h4>
+                            <p class="text-slate-400 text-sm">2030以降: 従来の署名のみを段階的に廃止</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Resources & CTA -->
+    <section class="py-20 px-4 bg-slate-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">参加しよう</h2>
+            <p class="text-xl text-slate-400 mb-8">
+                v1.1仕様は現在<strong class="text-yellow-400">ドラフトステータス</strong>です。コミュニティからのフィードバックを取り入れた後、2026年Q1に製品版をリリース予定です。
+            </p>
+            
+            <div class="grid sm:grid-cols-3 gap-6 mb-12">
+                <a href="https://github.com/veritaschain/vcp-spec" target="_blank" class="bg-slate-700/50 hover:bg-slate-700 border border-slate-600 rounded-xl p-6 transition-all group">
+                    <i class="fab fa-github text-4xl text-white mb-4 group-hover:text-blue-400 transition-colors"></i>
+                    <h3 class="text-lg font-semibold text-white mb-2">GitHub Issues</h3>
+                    <p class="text-slate-400 text-sm">技術的なフィードバックとバグ報告</p>
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="bg-slate-700/50 hover:bg-slate-700 border border-slate-600 rounded-xl p-6 transition-all group">
+                    <i class="fas fa-envelope text-4xl text-white mb-4 group-hover:text-blue-400 transition-colors"></i>
+                    <h3 class="text-lg font-semibold text-white mb-2">メール</h3>
+                    <p class="text-slate-400 text-sm">正式なコメントはstandards@veritaschain.orgまで</p>
+                </a>
+                <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank" class="bg-slate-700/50 hover:bg-slate-700 border border-slate-600 rounded-xl p-6 transition-all group">
+                    <i class="fas fa-globe text-4xl text-white mb-4 group-hover:text-blue-400 transition-colors"></i>
+                    <h3 class="text-lg font-semibold text-white mb-2">IETF SCITT WG</h3>
+                    <p class="text-slate-400 text-sm">アルゴリズム透明性に関する議論に参加</p>
+                </a>
+            </div>
+            
+            <!-- Quote -->
+            <div class="border-l-4 border-blue-500 pl-6 text-left max-w-2xl mx-auto">
+                <p class="text-2xl text-blue-200 italic mb-4">"事故が起こる前に学べる文明を"</p>
+                <p class="text-slate-400">— VeritasChain Standards Organization</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <vcp-footer theme="dark" lang="ja"></vcp-footer>
+    
+    <!-- Smooth scroll -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
