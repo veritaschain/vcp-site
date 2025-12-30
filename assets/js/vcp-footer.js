@@ -42,9 +42,12 @@ class VCPFooter extends HTMLElement {
     constructor() {
         super();
 
+        // X (Twitter) SVG icon - inline for reliability
+        this.xIconSvg = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+
         // Social media links
         this.socialLinks = [
-            { name: 'X', url: 'https://x.com/Veritas_chain', icon: 'fa-brands fa-square-x-twitter' },
+            { name: 'X', url: 'https://x.com/Veritas_chain', svg: this.xIconSvg },
             { name: 'LinkedIn', url: 'https://www.linkedin.com/company/110199945', icon: 'fa-brands fa-linkedin' },
             { name: 'Facebook', url: 'https://www.facebook.com/veritaschain', icon: 'fa-brands fa-facebook' },
             { name: 'Medium', url: 'https://medium.com/@veritaschain', icon: 'fa-brands fa-medium' },
@@ -114,11 +117,12 @@ class VCPFooter extends HTMLElement {
         const t = this.translations[lang] || this.translations.en;
 
         // Generate social links HTML
-        const socialLinksHTML = this.socialLinks.map(link => 
-            `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="vcp-footer-social-link" aria-label="${link.name}">
-                <i class="${link.icon}"></i>
-            </a>`
-        ).join('');
+        const socialLinksHTML = this.socialLinks.map(link => {
+            const iconHTML = link.svg ? link.svg : `<i class="${link.icon}"></i>`;
+            return `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="vcp-footer-social-link" aria-label="${link.name}">
+                ${iconHTML}
+            </a>`;
+        }).join('');
 
         this.innerHTML = `
         <footer class="vcp-footer ${themeClass}">
