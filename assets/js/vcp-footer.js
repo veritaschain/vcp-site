@@ -53,7 +53,8 @@ class VCPFooter extends HTMLElement {
             { name: 'Medium', url: 'https://medium.com/@veritaschain', icon: 'fa-brands fa-medium' },
             { name: 'DEV.to', url: 'https://dev.to/veritaschain', icon: 'fa-brands fa-dev' },
             { name: 'Substack', url: 'https://substack.com/@tokachikamimura', icon: 'fa-solid fa-bookmark' },
-            { name: 'ORCiD', url: 'https://orcid.org/0009-0002-0871-1627', icon: 'fa-brands fa-orcid' }
+            { name: 'ORCiD', url: 'https://orcid.org/0009-0002-0871-1627', icon: 'fa-brands fa-orcid' },
+            { name: 'GitHub', url: 'https://github.com/veritaschain', icon: 'fa-brands fa-github' }
         ];
 
         // Translation data for all supported languages
