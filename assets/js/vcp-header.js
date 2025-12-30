@@ -70,12 +70,13 @@ class VCPHeader extends HTMLElement {
                 certifiedCabs: 'CABs',
                 vap: 'VAP',
                 vapOverview: 'Overview',
-                vapDvp: 'DVP',
-                vapMap: 'MAP',
-                vapEip: 'EIP',
-                vapPap: 'PAP',
-                vapIap: 'IAP',
-                vapCap: 'CAP',
+                vapDvp: 'DVP - Driving Vehicle',
+                vapMap: 'MAP - Medical AI',
+                vapEip: 'EIP - Energy Infrastructure',
+                vapPap: 'PAP - Public Administration',
+                vapIap: 'IAP - Industry Accountability',
+                vapCap: 'CAP - Content / Creative',
+                vapGam: 'GAM - Gaming Application',
                 vapAt: 'VAP-AT',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
@@ -91,6 +92,7 @@ class VCPHeader extends HTMLElement {
                 explorerApi: 'Explorer API',
                 openApiSpec: 'OpenAPI Spec',
                 github: 'GitHub (vcp-explorer-api)',
+                vcpV11: 'VCP V1.1',
                 overview: 'Overview',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: 'Distributed Organization',
@@ -126,12 +128,13 @@ class VCPHeader extends HTMLElement {
                 certifiedCabs: 'CABs',
                 vap: 'VAP',
                 vapOverview: '概要',
-                vapDvp: 'DVP',
-                vapMap: 'MAP',
-                vapEip: 'EIP',
-                vapPap: 'PAP',
-                vapIap: 'IAP',
-                vapCap: 'CAP',
+                vapDvp: 'DVP - 自動運転車両',
+                vapMap: 'MAP - 医療AI',
+                vapEip: 'EIP - エネルギーインフラ',
+                vapPap: 'PAP - 公共行政',
+                vapIap: 'IAP - 産業アカウンタビリティ',
+                vapCap: 'CAP - コンテンツ / クリエイティブ',
+                vapGam: 'GAM - ゲーミングアプリケーション',
                 vapAt: 'VAP-AT',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
@@ -147,6 +150,7 @@ class VCPHeader extends HTMLElement {
                 explorerApi: 'Explorer API',
                 openApiSpec: 'OpenAPI仕様',
                 github: 'GitHub (vcp-explorer-api)',
+                vcpV11: 'VCP V1.1',
                 overview: '概要',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: '分散型組織',
@@ -182,12 +186,13 @@ class VCPHeader extends HTMLElement {
                 certifiedCabs: 'CABs',
                 vap: 'VAP',
                 vapOverview: '概述',
-                vapDvp: 'DVP',
-                vapMap: 'MAP',
-                vapEip: 'EIP',
-                vapPap: 'PAP',
-                vapIap: 'IAP',
-                vapCap: 'CAP',
+                vapDvp: 'DVP - 自动驾驶车辆',
+                vapMap: 'MAP - 医疗AI',
+                vapEip: 'EIP - 能源基础设施',
+                vapPap: 'PAP - 公共行政',
+                vapIap: 'IAP - 行业问责',
+                vapCap: 'CAP - 内容 / 创意',
+                vapGam: 'GAM - 游戏应用',
                 vapAt: 'VAP-AT',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
@@ -203,6 +208,7 @@ class VCPHeader extends HTMLElement {
                 explorerApi: 'Explorer API',
                 openApiSpec: 'OpenAPI规范',
                 github: 'GitHub (vcp-explorer-api)',
+                vcpV11: 'VCP V1.1',
                 overview: '概述',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: '分布式组织',
@@ -299,6 +305,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
                             <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
                             <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
+                            <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
                             <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
                         </div>
                     </div>
@@ -339,6 +346,7 @@ class VCPHeader extends HTMLElement {
                             <a href="https://veritaschain.github.io/vcp-explorer-api/" class="dropdown-item" target="_blank" rel="noopener">${t.explorerApi}</a>
                             <a href="https://raw.githubusercontent.com/veritaschain/vcp-explorer-api/main/openapi.yaml" class="dropdown-item" target="_blank" rel="noopener">${t.openApiSpec}</a>
                             <a href="https://github.com/veritaschain/vcp-explorer-api" class="dropdown-item" target="_blank" rel="noopener">${t.github}</a>
+                            <a href="/v1-1/" class="dropdown-item">${t.vcpV11}</a>
                         </div>
                     </div>
 
