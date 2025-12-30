@@ -76,6 +76,7 @@ class VCPHeader extends HTMLElement {
                 vapPap: 'PAP',
                 vapIap: 'IAP',
                 vapCap: 'CAP',
+                vapGam: 'GAM',
                 vapAt: 'VAP-AT',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
@@ -132,6 +133,7 @@ class VCPHeader extends HTMLElement {
                 vapPap: 'PAP',
                 vapIap: 'IAP',
                 vapCap: 'CAP',
+                vapGam: 'GAM',
                 vapAt: 'VAP-AT',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
@@ -188,6 +190,7 @@ class VCPHeader extends HTMLElement {
                 vapPap: 'PAP',
                 vapIap: 'IAP',
                 vapCap: 'CAP',
+                vapGam: 'GAM',
                 vapAt: 'VAP-AT',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
@@ -299,6 +302,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
                             <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
                             <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
+                            <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
                             <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
                         </div>
                     </div>
