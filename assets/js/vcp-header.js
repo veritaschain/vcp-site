@@ -92,6 +92,7 @@ class VCPHeader extends HTMLElement {
                 explorerApi: 'Explorer API',
                 openApiSpec: 'OpenAPI Spec',
                 github: 'GitHub (vcp-explorer-api)',
+                vcpV11: 'VCP V1.1',
                 overview: 'Overview',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: 'Distributed Organization',
@@ -149,6 +150,7 @@ class VCPHeader extends HTMLElement {
                 explorerApi: 'Explorer API',
                 openApiSpec: 'OpenAPI仕様',
                 github: 'GitHub (vcp-explorer-api)',
+                vcpV11: 'VCP V1.1',
                 overview: '概要',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: '分散型組織',
@@ -206,6 +208,7 @@ class VCPHeader extends HTMLElement {
                 explorerApi: 'Explorer API',
                 openApiSpec: 'OpenAPI规范',
                 github: 'GitHub (vcp-explorer-api)',
+                vcpV11: 'VCP V1.1',
                 overview: '概述',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: '分布式组织',
@@ -343,6 +346,7 @@ class VCPHeader extends HTMLElement {
                             <a href="https://veritaschain.github.io/vcp-explorer-api/" class="dropdown-item" target="_blank" rel="noopener">${t.explorerApi}</a>
                             <a href="https://raw.githubusercontent.com/veritaschain/vcp-explorer-api/main/openapi.yaml" class="dropdown-item" target="_blank" rel="noopener">${t.openApiSpec}</a>
                             <a href="https://github.com/veritaschain/vcp-explorer-api" class="dropdown-item" target="_blank" rel="noopener">${t.github}</a>
+                            <a href="/v1-1/" class="dropdown-item">${t.vcpV11}</a>
                         </div>
                     </div>
 
