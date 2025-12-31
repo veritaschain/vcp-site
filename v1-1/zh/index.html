@@ -315,6 +315,38 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Change 5: Error Event Standardization -->
+                <div class="change-card change-new p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-red-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-white">错误事件标准化</h3>
+                                <span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs font-semibold rounded">新增</span>
+                            </div>
+                            <p class="text-slate-400">标准化的错误事件类型（ERR_CONN、ERR_AUTH、ERR_TIMEOUT等）和结构化的ErrorDetails模式，实现一致的错误日志记录。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Change 6: Sidecar Architecture -->
+                <div class="change-card change-new p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                            <i class="fas fa-cubes text-cyan-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-white">Sidecar架构参考</h3>
+                                <span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs font-semibold rounded">新增</span>
+                            </div>
+                            <p class="text-slate-400">将VCP作为Sidecar容器部署的参考架构（附录F）和集成模式。仅为文档说明，无需实现更改。</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- Compatibility Note -->
@@ -648,8 +680,141 @@
         </div>
     </section>
     
-    <!-- Post-Quantum Cryptography -->
+    <!-- Error Event Standardization -->
+    <section class="py-20 px-4 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">错误事件标准化</h2>
+                <p class="text-xl text-slate-400">通过结构化事件类型实现一致的错误日志记录</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Error Types -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-exclamation-triangle text-red-400 mr-2"></i>
+                        标准错误类型
+                    </h3>
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                        <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_CONN</span>
+                                <span class="text-slate-400">连接</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_AUTH</span>
+                                <span class="text-slate-400">认证</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_TIMEOUT</span>
+                                <span class="text-slate-400">超时</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_RATE</span>
+                                <span class="text-slate-400">速率限制</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_DATA</span>
+                                <span class="text-slate-400">数据验证</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_SYS</span>
+                                <span class="text-slate-400">系统</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ErrorDetails Schema -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-code text-blue-400 mr-2"></i>
+                        ErrorDetails模式
+                    </h3>
+                    <div class="code-block p-4">
+                        <pre class="text-green-400 text-sm"><code>{
+  "ErrorDetails": {
+    "ErrorType": "ERR_CONN",
+    "ErrorCode": "BROKER_DISCONNECT",
+    "Message": "与经纪商API的连接中断",
+    "Severity": "HIGH",
+    "Recoverable": true,
+    "RetryCount": 3,
+    "Context": {
+      "endpoint": "api.broker.com",
+      "lastSuccessful": 1735084800000
+    }
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sidecar Architecture -->
     <section class="py-20 px-4 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Sidecar架构参考</h2>
+                <p class="text-xl text-slate-400">VCP集成的参考部署模式（附录F）</p>
+            </div>
+            
+            <!-- Architecture Diagram -->
+            <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-8 mb-8">
+                <div class="code-block p-6 text-center">
+                    <pre class="text-cyan-400 text-sm leading-relaxed inline-block text-left"><code>┌─────────────────────────────────────────────────────────┐
+│                    应用程序 Pod                          │
+│  ┌─────────────────┐      ┌─────────────────────────┐  │
+│  │   交易算法      │─────▶│     VCP Sidecar         │  │
+│  │   (主应用)      │      │  ┌─────────────────┐    │  │
+│  │                 │      │  │ 事件收集器      │    │  │
+│  │  • 订单逻辑     │ gRPC │  │ Merkle构建器    │    │  │
+│  │  • 风险引擎     │──────│  │ 锚定客户端      │    │  │
+│  │  • 市场数据     │      │  │ 签名生成器      │    │  │
+│  └─────────────────┘      │  └─────────────────┘    │  │
+│                           └───────────┬─────────────┘  │
+└───────────────────────────────────────┼────────────────┘
+                                        │
+                                        ▼
+                    ┌───────────────────────────────────┐
+                    │           外部服务                 │
+                    │  • TSA (RFC 3161)                │
+                    │  • 区块链锚定                     │
+                    │  • VCP Explorer API              │
+                    └───────────────────────────────────┘</code></pre>
+                </div>
+            </div>
+            
+            <!-- Integration Patterns -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                    <div class="text-3xl mb-4 text-cyan-400">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">零代码集成</h4>
+                    <p class="text-slate-400 text-sm">作为Sidecar容器部署。主应用通过gRPC/HTTP发送事件。应用内无需VCP代码。</p>
+                </div>
+                <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                    <div class="text-3xl mb-4 text-cyan-400">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">隔离优势</h4>
+                    <p class="text-slate-400 text-sm">加密操作与业务逻辑隔离。可独立扩展和更新。</p>
+                </div>
+                <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                    <div class="text-3xl mb-4 text-cyan-400">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">仅文档说明</h4>
+                    <p class="text-slate-400 text-sm">附录F中的参考架构。v1.1合规无需实现更改。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Post-Quantum Cryptography -->
+    <section class="py-20 px-4 bg-gradient-to-b from-slate-800 to-slate-900">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">展望未来：后量子密码学</h2>
