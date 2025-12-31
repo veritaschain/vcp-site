@@ -361,6 +361,38 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Change 5: Error Event Standardization -->
+                <div class="change-card change-new p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-red-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-white">エラーイベント標準化</h3>
+                                <span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs font-semibold rounded">新規</span>
+                            </div>
+                            <p class="text-slate-400">標準化されたエラーイベントタイプ（ERR_CONN、ERR_AUTH、ERR_TIMEOUTなど）と構造化されたErrorDetailsスキーマによる一貫したエラーログ記録。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Change 6: Sidecar Architecture -->
+                <div class="change-card change-new p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                            <i class="fas fa-cubes text-cyan-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-white">Sidecarアーキテクチャリファレンス</h3>
+                                <span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs font-semibold rounded">新規</span>
+                            </div>
+                            <p class="text-slate-400">VCPをサイドカーコンテナとして展開するためのリファレンスアーキテクチャ（Appendix F）と統合パターン。ドキュメントのみで実装変更は不要。</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- Compatibility Note -->
@@ -694,8 +726,141 @@
         </div>
     </section>
     
-    <!-- Post-Quantum Cryptography -->
+    <!-- Error Event Standardization -->
+    <section class="py-20 px-4 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">エラーイベント標準化</h2>
+                <p class="text-xl text-slate-400">構造化されたイベントタイプによる一貫したエラーログ記録</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Error Types -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-exclamation-triangle text-red-400 mr-2"></i>
+                        標準エラータイプ
+                    </h3>
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                        <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_CONN</span>
+                                <span class="text-slate-400">接続</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_AUTH</span>
+                                <span class="text-slate-400">認証</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_TIMEOUT</span>
+                                <span class="text-slate-400">タイムアウト</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_RATE</span>
+                                <span class="text-slate-400">レート制限</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_DATA</span>
+                                <span class="text-slate-400">データ検証</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
+                                <span class="text-red-400 font-mono">ERR_SYS</span>
+                                <span class="text-slate-400">システム</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ErrorDetails Schema -->
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-code text-blue-400 mr-2"></i>
+                        ErrorDetailsスキーマ
+                    </h3>
+                    <div class="code-block p-4">
+                        <pre class="text-green-400 text-sm"><code>{
+  "ErrorDetails": {
+    "ErrorType": "ERR_CONN",
+    "ErrorCode": "BROKER_DISCONNECT",
+    "Message": "ブローカーAPIへの接続が切断",
+    "Severity": "HIGH",
+    "Recoverable": true,
+    "RetryCount": 3,
+    "Context": {
+      "endpoint": "api.broker.com",
+      "lastSuccessful": 1735084800000
+    }
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sidecar Architecture -->
     <section class="py-20 px-4 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Sidecarアーキテクチャリファレンス</h2>
+                <p class="text-xl text-slate-400">VCP統合のためのリファレンス展開パターン（Appendix F）</p>
+            </div>
+            
+            <!-- Architecture Diagram -->
+            <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-8 mb-8">
+                <div class="code-block p-6 text-center">
+                    <pre class="text-cyan-400 text-sm leading-relaxed inline-block text-left"><code>┌─────────────────────────────────────────────────────────┐
+│                 アプリケーション Pod                      │
+│  ┌─────────────────┐      ┌─────────────────────────┐  │
+│  │ トレーディング  │─────▶│     VCP Sidecar         │  │
+│  │    アルゴ       │      │  ┌─────────────────┐    │  │
+│  │  (メインアプリ) │      │  │ イベント収集    │    │  │
+│  │                 │ gRPC │  │ Merkle構築      │    │  │
+│  │  • 注文ロジック │──────│  │ アンカークライ  │    │  │
+│  │  • リスク管理   │      │  │ 署名生成        │    │  │
+│  └─────────────────┘      │  └─────────────────┘    │  │
+│                           └───────────┬─────────────┘  │
+└───────────────────────────────────────┼────────────────┘
+                                        │
+                                        ▼
+                    ┌───────────────────────────────────┐
+                    │         外部サービス               │
+                    │  • TSA (RFC 3161)                │
+                    │  • ブロックチェーンアンカー        │
+                    │  • VCP Explorer API              │
+                    └───────────────────────────────────┘</code></pre>
+                </div>
+            </div>
+            
+            <!-- Integration Patterns -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                    <div class="text-3xl mb-4 text-cyan-400">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">ゼロコード統合</h4>
+                    <p class="text-slate-400 text-sm">サイドカーコンテナとして展開。メインアプリはgRPC/HTTPでイベントを送信。アプリ内にVCPコード不要。</p>
+                </div>
+                <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                    <div class="text-3xl mb-4 text-cyan-400">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">分離のメリット</h4>
+                    <p class="text-slate-400 text-sm">暗号処理をビジネスロジックから分離。独立したスケーリングと更新が可能。</p>
+                </div>
+                <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                    <div class="text-3xl mb-4 text-cyan-400">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">ドキュメントのみ</h4>
+                    <p class="text-slate-400 text-sm">Appendix Fのリファレンスアーキテクチャ。v1.1準拠のための実装変更は不要。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Post-Quantum Cryptography -->
+    <section class="py-20 px-4 bg-gradient-to-b from-slate-800 to-slate-900">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">将来を見据えて: ポスト量子暗号</h2>
