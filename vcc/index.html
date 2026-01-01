@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCC - VeritasChain Cloud | Cryptographic Logging Service for Algorithmic Trading</title>
+    <meta name="description" content="VCC (VeritasChain Cloud) is a cloud-based VCP logging and certificate issuance service. Experience VCP v1.1 compliance with our interactive demo.">
+    <meta name="keywords" content="VCC, VeritasChain Cloud, VCP, cryptographic logging, Merkle tree, algorithmic trading, audit trail, RFC 6962">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCC - VeritasChain Cloud | Cryptographic Logging Service">
+    <meta property="og:description" content="VCC provides cloud-based VCP logging and certificate issuance. Try the interactive demo to experience VCP v1.1 compliance.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vcc/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCC - VeritasChain Cloud">
+    <meta name="twitter:description" content="Cryptographic logging service for algorithmic trading. Experience VCP v1.1 compliance.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vcc/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vcc/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vcc/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vcc/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    <link rel="canonical" href="https://veritaschain.org/vcc/" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VCC - VeritasChain Cloud",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "description": "VCC is a cloud-based VCP logging and certificate issuance service that provides cryptographically verifiable audit trails for algorithmic trading.",
+        "url": "https://veritaschain.org/vcc/",
+        "provider": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization (VSO)",
+            "url": "https://veritaschain.org"
+        },
+        "featureList": [
+            "VCP v1.1 Compliant Event Logging",
+            "RFC 6962 Merkle Tree Implementation",
+            "Certificate Generation and Verification",
+            "External Anchoring Support"
+        ]
+    }
+    </script>
+
+    <style>
+        .hero-vcc {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-vcc::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        .feature-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
+        }
+        .layer-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .layer-card:hover {
+            border-color: rgba(16, 185, 129, 0.6);
+        }
+        .architecture-box {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+        .comparison-table th {
+            background: rgba(59, 130, 246, 0.2);
+        }
+        .comparison-table td, .comparison-table th {
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .event-badge {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .code-block {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body class="bg-slate-900">
+    <vcp-header theme="dark" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Hero Section -->
+    <section class="hero-vcc pt-24 pb-20 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <!-- Service Badge -->
+            <div class="inline-flex items-center gap-2 bg-blue-900/50 border border-blue-500/30 px-4 py-2 rounded-full mb-6">
+                <i class="fas fa-cloud text-blue-400"></i>
+                <span class="text-blue-300 text-sm font-medium">VSO-SPEC-VCC-DEMO-001 | Version 1.0.0 | January 2025</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                VCC — VeritasChain Cloud
+            </h1>
+            <p class="text-2xl md:text-3xl text-blue-400 font-semibold mb-6">
+                Cryptographic Logging Service for VCP
+            </p>
+
+            <!-- Intro Statement -->
+            <div class="bg-slate-800/60 rounded-2xl p-6 mb-8 max-w-4xl mx-auto border border-slate-700">
+                <p class="text-xl text-slate-200 mb-4">
+                    <i class="fas fa-database text-blue-400 mr-2"></i>
+                    VCC is a cloud-based VCP logging and certificate issuance service.
+                </p>
+                <p class="text-xl text-white font-semibold">
+                    It provides cryptographically verifiable audit trails
+                    <span class="text-emerald-400">compliant with VCP v1.1.</span>
+                </p>
+                <p class="text-lg text-blue-400 mt-4 font-medium">
+                    Try the interactive demo to experience VCP in action.
+                </p>
+            </div>
+
+            <!-- Tagline -->
+            <p class="text-xl md:text-2xl text-slate-300 font-medium mb-8 max-w-3xl mx-auto italic">
+                "Verify, Don't Trust"
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+                <a href="https://veritaschain.org/vcc/demo/" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-blue-600/20">
+                    <i class="fas fa-play-circle"></i>
+                    Try VCC Demo
+                </a>
+                <a href="https://github.com/VeritasChain/vcp-spec" class="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-xl transition-all" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-book"></i>
+                    VCP Specification
+                </a>
+            </div>
+
+            <!-- Provider -->
+            <p class="text-slate-400 text-sm">
+                Maintained by <strong class="text-slate-300">VeritasChain Standards Organization (VSO)</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- What is VCC Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-question-circle text-blue-400 mr-3"></i>
+                What is VCC?
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                VeritasChain Cloud provides cloud-based logging and certificate issuance for VCP-compliant systems
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Left: Description -->
+                <div class="space-y-6">
+                    <div class="bg-slate-900/80 rounded-xl p-6 border border-blue-800/30">
+                        <h3 class="text-xl font-bold text-white mb-4">
+                            <i class="fas fa-shield-alt text-blue-400 mr-2"></i>
+                            Core Purpose
+                        </h3>
+                        <p class="text-slate-300 mb-4">
+                            VCC is a reference implementation of the VeritasChain Protocol (VCP) that demonstrates:
+                        </p>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-emerald-400 mt-1"></i>
+                                <span>Client-side VCP v1.1 event creation and management</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-emerald-400 mt-1"></i>
+                                <span>RFC 6962-compliant Merkle Tree implementation</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-emerald-400 mt-1"></i>
+                                <span>Certificate generation and verification</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-emerald-400 mt-1"></i>
+                                <span>IndexedDB-based persistent storage</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/80 rounded-xl p-6 border border-emerald-800/30">
+                        <h3 class="text-xl font-bold text-white mb-4">
+                            <i class="fas fa-users text-emerald-400 mr-2"></i>
+                            Target Audience
+                        </h3>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-code text-blue-400 mt-1"></i>
+                                <span><strong class="text-white">Developers</strong> evaluating VCP integration</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-search text-blue-400 mt-1"></i>
+                                <span><strong class="text-white">Auditors</strong> understanding VCP data structures</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-chart-line text-blue-400 mt-1"></i>
+                                <span><strong class="text-white">Prop trading firms</strong> exploring transparency solutions</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-flask text-blue-400 mt-1"></i>
+                                <span><strong class="text-white">RegTech researchers</strong> studying compliance</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right: Key Differentiators Table -->
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-balance-scale text-amber-400 mr-2"></i>
+                        Demo vs Production
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="comparison-table w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-slate-200 font-semibold">Aspect</th>
+                                    <th class="px-4 py-3 text-left text-slate-200 font-semibold">VCC Demo</th>
+                                    <th class="px-4 py-3 text-left text-slate-200 font-semibold">VCC Production</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300">
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">Deployment</td>
+                                    <td class="px-4 py-3">Static hosting</td>
+                                    <td class="px-4 py-3">Cloud infrastructure</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">Storage</td>
+                                    <td class="px-4 py-3">Browser IndexedDB</td>
+                                    <td class="px-4 py-3">PostgreSQL / TimescaleDB</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">External Anchor</td>
+                                    <td class="px-4 py-3">Simulated</td>
+                                    <td class="px-4 py-3">OpenTimestamps / Blockchain</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">Multi-tenancy</td>
+                                    <td class="px-4 py-3">Single user</td>
+                                    <td class="px-4 py-3">Multi-tenant with API keys</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">Cryptographic Signing</td>
+                                    <td class="px-4 py-3">SHA-256 hash</td>
+                                    <td class="px-4 py-3">Ed25519 with HSM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VCP v1.1 Compliance Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-certificate text-emerald-400 mr-3"></i>
+                VCP v1.1 Compliance
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                VCC Demo implements the three-layer integrity architecture defined by VCP v1.1
+            </p>
+
+            <!-- Three-Layer Architecture -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <!-- Layer 1 -->
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">1</div>
+                        <h3 class="text-xl font-bold text-white">Event Integrity</h3>
+                    </div>
+                    <p class="text-slate-400 mb-4">Individual event tamper-evidence</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-check-circle text-emerald-400"></i>
+                            <span>EventHash (SHA-256)</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-minus-circle text-amber-400"></i>
+                            <span>PrevHash (optional)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Layer 2 -->
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold">2</div>
+                        <h3 class="text-xl font-bold text-white">Collection Integrity</h3>
+                    </div>
+                    <p class="text-slate-400 mb-4">Batch verification with Merkle Trees</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-check-circle text-emerald-400"></i>
+                            <span>Merkle Tree (RFC 6962)</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-check-circle text-emerald-400"></i>
+                            <span>MerkleRoot generation</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-check-circle text-emerald-400"></i>
+                            <span>Audit Path generation</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Layer 3 -->
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">3</div>
+                        <h3 class="text-xl font-bold text-white">External Verifiability</h3>
+                    </div>
+                    <p class="text-slate-400 mb-4">Third-party timestamp anchoring</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-minus-circle text-amber-400"></i>
+                            <span>External Anchor (simulated)</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-minus-circle text-amber-400"></i>
+                            <span>Digital Signature (SHA-256)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Event Types -->
+            <div class="bg-slate-800/50 rounded-xl p-8 border border-slate-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-tags text-blue-400 mr-2"></i>
+                    Supported Event Types
+                </h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <span class="event-badge px-4 py-2 bg-blue-900/50 border border-blue-500/30 rounded-lg text-blue-300 text-sm">
+                        <strong>1</strong> SIG — Signal Generated
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-amber-900/50 border border-amber-500/30 rounded-lg text-amber-300 text-sm">
+                        <strong>2</strong> ORD — Order Submitted
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-emerald-900/50 border border-emerald-500/30 rounded-lg text-emerald-300 text-sm">
+                        <strong>3</strong> ACK — Order Acknowledged
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-red-900/50 border border-red-500/30 rounded-lg text-red-300 text-sm">
+                        <strong>4</strong> REJ — Order Rejected
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-purple-900/50 border border-purple-500/30 rounded-lg text-purple-300 text-sm">
+                        <strong>5</strong> EXE — Execution
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-orange-900/50 border border-orange-500/30 rounded-lg text-orange-300 text-sm">
+                        <strong>6</strong> CXL — Cancellation
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-slate-700 border border-slate-500/30 rounded-lg text-slate-300 text-sm">
+                        <strong>10</strong> CLS — Position Closed
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-sitemap text-blue-400 mr-3"></i>
+                Architecture Overview
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                VCC Demo runs entirely in the browser with zero server dependencies
+            </p>
+
+            <!-- Architecture Diagram -->
+            <div class="architecture-box rounded-2xl p-8 mb-12 overflow-x-auto">
+                <pre class="text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre overflow-x-auto"><code>┌─────────────────────────────────────────────────────────────────────┐
+│                        Browser Environment                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                    React Application                         │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │   │
+│  │  │  Dashboard  │  │   Events    │  │      Verify         │  │   │
+│  │  │    Tab      │  │    Tab      │  │       Tab           │  │   │
+│  │  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘  │   │
+│  │         │                │                     │             │   │
+│  │         └────────────────┼─────────────────────┘             │   │
+│  │                          ▼                                   │   │
+│  │              ┌───────────────────────┐                       │   │
+│  │              │     VCCService        │                       │   │
+│  │              │  (Business Logic)     │                       │   │
+│  │              └───────────┬───────────┘                       │   │
+│  │                          │                                   │   │
+│  │         ┌────────────────┼────────────────┐                  │   │
+│  │         ▼                ▼                ▼                  │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │   │
+│  │  │   Crypto    │  │   Merkle    │  │    UUID     │          │   │
+│  │  │   Module    │  │   Module    │  │   Module    │          │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘          │   │
+│  │                                                              │   │
+│  └──────────────────────────────┬───────────────────────────────┘   │
+│                                 │                                   │
+│                                 ▼                                   │
+│                    ┌────────────────────────┐                       │
+│                    │      IndexedDB         │                       │
+│                    │  ┌────────┐ ┌────────┐ │                       │
+│                    │  │ events │ │anchors │ │                       │
+│                    │  └────────┘ └────────┘ │                       │
+│                    └────────────────────────┘                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fab fa-react text-blue-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">React 18.x</h3>
+                    <p class="text-slate-400 text-sm">UI Framework for interactive components</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fab fa-css3-alt text-cyan-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Tailwind CSS 3.x</h3>
+                    <p class="text-slate-400 text-sm">Utility-first CSS framework</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-lock text-amber-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Web Crypto API</h3>
+                    <p class="text-slate-400 text-sm">Native browser cryptography</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-database text-emerald-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">IndexedDB</h3>
+                    <p class="text-slate-400 text-sm">Browser-based persistent storage</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-purple-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-tree text-purple-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">RFC 6962 Merkle Tree</h3>
+                    <p class="text-slate-400 text-sm">Certificate Transparency standard</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-fingerprint text-red-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">UUID v7</h3>
+                    <p class="text-slate-400 text-sm">Time-ordered unique identifiers (RFC 9562)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cryptographic Implementation Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-key text-amber-400 mr-3"></i>
+                Cryptographic Implementation
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                VCC Demo uses industry-standard cryptographic primitives
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- SHA-256 Hashing -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-hashtag text-blue-400 mr-2"></i>
+                        SHA-256 Hashing
+                    </h3>
+                    <p class="text-slate-400 mb-4">Using Web Crypto API for native performance:</p>
+                    <div class="code-block rounded-lg p-4 overflow-x-auto">
+                        <pre class="text-emerald-400 text-sm"><code>const sha256 = async (data) => {
+  const encoder = new TextEncoder();
+  const dataBuffer = encoder.encode(
+    typeof data === 'string' ? data : JSON.stringify(data)
+  );
+  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+};</code></pre>
+                    </div>
+                </div>
+
+                <!-- Merkle Tree -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-project-diagram text-emerald-400 mr-2"></i>
+                        RFC 6962 Merkle Tree
+                    </h3>
+                    <p class="text-slate-400 mb-4">Domain separation to prevent second-preimage attacks:</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="px-4 py-2 text-left text-slate-200">Node Type</th>
+                                    <th class="px-4 py-2 text-left text-slate-200">Prefix Byte</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700">
+                                    <td class="px-4 py-2">Leaf</td>
+                                    <td class="px-4 py-2 font-mono text-emerald-400">0x00</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2">Internal</td>
+                                    <td class="px-4 py-2 font-mono text-emerald-400">0x01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Merkle Tree Visualization -->
+            <div class="mt-8 bg-slate-800/50 rounded-xl p-8 border border-slate-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-sitemap text-purple-400 mr-2"></i>
+                    Merkle Tree Structure Example (5 Events)
+                </h3>
+                <div class="overflow-x-auto">
+                    <pre class="text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre text-center"><code>                    [Root]
+                      │
+           ┌──────────┴──────────┐
+           │                     │
+        [N01]                 [N23-4]
+           │                     │
+      ┌────┴────┐          ┌─────┴─────┐
+      │         │          │           │
+   [N0]      [N1]       [N23]        [L4]
+      │         │          │
+   ┌──┴──┐   ┌──┴──┐   ┌──┴──┐
+   │     │   │     │   │     │
+ [L0]  [L1] [L2] [L3] [L2]  [L3]
+
+Where: Lx = merkleHashLeaf(Ex), Nxy = merkleHashNode(Lx, Ly)</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Considerations Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-shield-alt text-red-400 mr-3"></i>
+                Security Considerations
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                Understanding the demo's limitations and the production alternatives
+            </p>
+
+            <!-- Important Notice -->
+            <div class="bg-amber-900/30 border border-amber-500/50 rounded-xl p-6 mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-amber-300 mb-2">Important Notice</h3>
+                        <p class="text-amber-200">
+                            VCC Demo is a demonstration tool. The "anchor" is simulated within the browser and provides 
+                            <strong>no external verifiability</strong>. Production systems must use real external timestamp 
+                            authorities (OpenTimestamps, RFC 3161), blockchain anchoring for immutability, and HSM-backed digital signatures.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Client-Side Limitations -->
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-red-800/30">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-laptop text-red-400 mr-2"></i>
+                        Client-Side Limitations
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="px-3 py-2 text-left text-slate-200">Aspect</th>
+                                    <th class="px-3 py-2 text-left text-slate-200">VCC Demo</th>
+                                    <th class="px-3 py-2 text-left text-slate-200">Production</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700">
+                                    <td class="px-3 py-2">Key Storage</td>
+                                    <td class="px-3 py-2 text-red-400">None</td>
+                                    <td class="px-3 py-2 text-emerald-400">HSM</td>
+                                </tr>
+                                <tr class="border-b border-slate-700">
+                                    <td class="px-3 py-2">Signature</td>
+                                    <td class="px-3 py-2 text-amber-400">SHA-256</td>
+                                    <td class="px-3 py-2 text-emerald-400">Ed25519</td>
+                                </tr>
+                                <tr class="border-b border-slate-700">
+                                    <td class="px-3 py-2">Tamper Resistance</td>
+                                    <td class="px-3 py-2 text-red-400">Browser</td>
+                                    <td class="px-3 py-2 text-emerald-400">Blockchain</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2">Data Privacy</td>
+                                    <td class="px-3 py-2 text-amber-400">Local</td>
+                                    <td class="px-3 py-2 text-emerald-400">Server-side</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Security Features -->
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-emerald-800/30">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-check-circle text-emerald-400 mr-2"></i>
+                        Security Features
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-slate-300">
+                            <i class="fas fa-lock text-emerald-400 mt-1"></i>
+                            <div>
+                                <strong class="text-white">Web Crypto API</strong>
+                                <p class="text-sm text-slate-400">Native cryptographic operations via crypto.subtle</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-300">
+                            <i class="fas fa-random text-emerald-400 mt-1"></i>
+                            <div>
+                                <strong class="text-white">Secure Random</strong>
+                                <p class="text-sm text-slate-400">crypto.getRandomValues() for UUID generation</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-300">
+                            <i class="fas fa-user-shield text-emerald-400 mt-1"></i>
+                            <div>
+                                <strong class="text-white">Same-Origin Policy</strong>
+                                <p class="text-sm text-slate-400">No cross-site data access enforced by browser</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-300">
+                            <i class="fas fa-trash-alt text-emerald-400 mt-1"></i>
+                            <div>
+                                <strong class="text-white">User Control</strong>
+                                <p class="text-sm text-slate-400">User can clear all data at any time</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                Experience VCP in Action
+            </h2>
+            <p class="text-xl text-slate-300 mb-8">
+                Try the VCC Demo to understand how VCP v1.1 provides cryptographic audit trails for algorithmic trading.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://veritaschain.org/vcc/demo/" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-blue-600/20 text-lg">
+                    <i class="fas fa-play-circle"></i>
+                    Launch VCC Demo
+                </a>
+                <a href="/vcp/specification/" class="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-xl transition-all text-lg">
+                    <i class="fas fa-file-alt"></i>
+                    Read VCP Specification
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certification Notice -->
+    <section class="py-8 px-4 sm:px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 text-center">
+                <p class="text-slate-400 text-sm">
+                    <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                    <strong class="text-slate-300">Certification Status:</strong> This demo is NOT VC-Certified and does not constitute VSO endorsement. 
+                    For official certification, organizations must implement full VCP v1.1 specification, use production-grade cryptography, 
+                    pass conformance testing, and complete certification audit.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer lang="en"></vcp-footer>
+</body>
+</html>

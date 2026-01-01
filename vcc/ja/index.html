@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCC - VeritasChain Cloud | アルゴリズム取引のための暗号化ロギングサービス</title>
+    <meta name="description" content="VCC（VeritasChain Cloud）は、VCPロギングおよび証明書発行のためのクラウドベースサービスです。インタラクティブなデモでVCP v1.1準拠を体験してください。">
+    <meta name="keywords" content="VCC, VeritasChain Cloud, VCP, 暗号化ロギング, マークルツリー, アルゴリズム取引, 監査証跡, RFC 6962">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCC - VeritasChain Cloud | 暗号化ロギングサービス">
+    <meta property="og:description" content="VCCはクラウドベースのVCPロギングおよび証明書発行を提供します。インタラクティブなデモでVCP v1.1準拠を体験してください。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vcc/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCC - VeritasChain Cloud">
+    <meta name="twitter:description" content="アルゴリズム取引のための暗号化ロギングサービス。VCP v1.1準拠を体験してください。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vcc/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vcc/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vcc/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vcc/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    <link rel="canonical" href="https://veritaschain.org/vcc/ja/" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VCC - VeritasChain Cloud",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "description": "VCCは、アルゴリズム取引のための暗号学的に検証可能な監査証跡を提供するクラウドベースのVCPロギングおよび証明書発行サービスです。",
+        "url": "https://veritaschain.org/vcc/ja/",
+        "provider": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization (VSO)",
+            "url": "https://veritaschain.org"
+        },
+        "featureList": [
+            "VCP v1.1準拠イベントロギング",
+            "RFC 6962マークルツリー実装",
+            "証明書の生成と検証",
+            "外部アンカリングサポート"
+        ]
+    }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+        }
+        .hero-vcc {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-vcc::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        .feature-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
+        }
+        .layer-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .layer-card:hover {
+            border-color: rgba(16, 185, 129, 0.6);
+        }
+        .architecture-box {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+        .comparison-table th {
+            background: rgba(59, 130, 246, 0.2);
+        }
+        .comparison-table td, .comparison-table th {
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .event-badge {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .code-block {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body class="bg-slate-900">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Hero Section -->
+    <section class="hero-vcc pt-24 pb-20 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <!-- Service Badge -->
+            <div class="inline-flex items-center gap-2 bg-blue-900/50 border border-blue-500/30 px-4 py-2 rounded-full mb-6">
+                <i class="fas fa-cloud text-blue-400"></i>
+                <span class="text-blue-300 text-sm font-medium">VSO-SPEC-VCC-DEMO-001 | Version 1.0.0 | 2025年1月</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                VCC — VeritasChain Cloud
+            </h1>
+            <p class="text-2xl md:text-3xl text-blue-400 font-semibold mb-6">
+                VCPのための暗号化ロギングサービス
+            </p>
+
+            <!-- Intro Statement -->
+            <div class="bg-slate-800/60 rounded-2xl p-6 mb-8 max-w-4xl mx-auto border border-slate-700">
+                <p class="text-xl text-slate-200 mb-4">
+                    <i class="fas fa-database text-blue-400 mr-2"></i>
+                    VCCは、VCPロギングおよび証明書発行のためのクラウドベースサービスです。
+                </p>
+                <p class="text-xl text-white font-semibold">
+                    暗号学的に検証可能な監査証跡を提供し、
+                    <span class="text-emerald-400">VCP v1.1に準拠</span>しています。
+                </p>
+                <p class="text-lg text-blue-400 mt-4 font-medium">
+                    インタラクティブなデモでVCPの動作を体験してください。
+                </p>
+            </div>
+
+            <!-- Tagline -->
+            <p class="text-xl md:text-2xl text-slate-300 font-medium mb-8 max-w-3xl mx-auto italic">
+                "信頼ではなく、検証を"
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+                <a href="https://veritaschain.org/vcc/demo/" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-blue-600/20">
+                    <i class="fas fa-play-circle"></i>
+                    VCCデモを試す
+                </a>
+                <a href="https://github.com/VeritasChain/vcp-spec" class="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-xl transition-all" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-book"></i>
+                    VCP仕様書
+                </a>
+            </div>
+
+            <!-- Provider -->
+            <p class="text-slate-400 text-sm">
+                提供: <strong class="text-slate-300">VeritasChain Standards Organization (VSO)</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- What is VCC Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-question-circle text-blue-400 mr-3"></i>
+                VCCとは？
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                VeritasChain CloudはVCP準拠システムのためのクラウドベースのロギングと証明書発行を提供します
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Left: Description -->
+                <div class="space-y-6">
+                    <div class="bg-slate-900/80 rounded-xl p-6 border border-blue-800/30">
+                        <h3 class="text-xl font-bold text-white mb-4">
+                            <i class="fas fa-shield-alt text-blue-400 mr-2"></i>
+                            主な目的
+                        </h3>
+                        <p class="text-slate-300 mb-4">
+                            VCCは、VeritasChain Protocol (VCP)のリファレンス実装であり、以下を実証します：
+                        </p>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-emerald-400 mt-1"></i>
+                                <span>クライアントサイドVCP v1.1イベント作成と管理</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-emerald-400 mt-1"></i>
+                                <span>RFC 6962準拠マークルツリー実装</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-emerald-400 mt-1"></i>
+                                <span>証明書の生成と検証</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-emerald-400 mt-1"></i>
+                                <span>IndexedDBベースの永続ストレージ</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/80 rounded-xl p-6 border border-emerald-800/30">
+                        <h3 class="text-xl font-bold text-white mb-4">
+                            <i class="fas fa-users text-emerald-400 mr-2"></i>
+                            対象ユーザー
+                        </h3>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-code text-blue-400 mt-1"></i>
+                                <span>VCP統合を評価する<strong class="text-white">開発者</strong></span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-search text-blue-400 mt-1"></i>
+                                <span>VCPデータ構造を理解する<strong class="text-white">監査人</strong></span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-chart-line text-blue-400 mt-1"></i>
+                                <span>透明性ソリューションを探る<strong class="text-white">プロップファーム</strong></span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-flask text-blue-400 mt-1"></i>
+                                <span>コンプライアンスを研究する<strong class="text-white">RegTech研究者</strong></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right: Key Differentiators Table -->
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-balance-scale text-amber-400 mr-2"></i>
+                        デモ版 vs 本番環境
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="comparison-table w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-slate-200 font-semibold">項目</th>
+                                    <th class="px-4 py-3 text-left text-slate-200 font-semibold">VCCデモ</th>
+                                    <th class="px-4 py-3 text-left text-slate-200 font-semibold">VCC本番</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300">
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">デプロイ</td>
+                                    <td class="px-4 py-3">静的ホスティング</td>
+                                    <td class="px-4 py-3">クラウドインフラ</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">ストレージ</td>
+                                    <td class="px-4 py-3">ブラウザIndexedDB</td>
+                                    <td class="px-4 py-3">PostgreSQL / TimescaleDB</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">外部アンカー</td>
+                                    <td class="px-4 py-3">シミュレート</td>
+                                    <td class="px-4 py-3">OpenTimestamps / Blockchain</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">マルチテナント</td>
+                                    <td class="px-4 py-3">シングルユーザー</td>
+                                    <td class="px-4 py-3">APIキー付きマルチテナント</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">暗号署名</td>
+                                    <td class="px-4 py-3">SHA-256ハッシュ</td>
+                                    <td class="px-4 py-3">HSM付きEd25519</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VCP v1.1 Compliance Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-certificate text-emerald-400 mr-3"></i>
+                VCP v1.1準拠
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                VCCデモはVCP v1.1で定義された3層整合性アーキテクチャを実装しています
+            </p>
+
+            <!-- Three-Layer Architecture -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <!-- Layer 1 -->
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">1</div>
+                        <h3 class="text-xl font-bold text-white">イベント整合性</h3>
+                    </div>
+                    <p class="text-slate-400 mb-4">個々のイベントの改ざん検知</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-check-circle text-emerald-400"></i>
+                            <span>EventHash (SHA-256)</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-minus-circle text-amber-400"></i>
+                            <span>PrevHash (オプション)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Layer 2 -->
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold">2</div>
+                        <h3 class="text-xl font-bold text-white">コレクション整合性</h3>
+                    </div>
+                    <p class="text-slate-400 mb-4">マークルツリーによるバッチ検証</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-check-circle text-emerald-400"></i>
+                            <span>マークルツリー (RFC 6962)</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-check-circle text-emerald-400"></i>
+                            <span>MerkleRoot生成</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-check-circle text-emerald-400"></i>
+                            <span>監査パス生成</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Layer 3 -->
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">3</div>
+                        <h3 class="text-xl font-bold text-white">外部検証可能性</h3>
+                    </div>
+                    <p class="text-slate-400 mb-4">第三者タイムスタンプアンカリング</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-minus-circle text-amber-400"></i>
+                            <span>外部アンカー (シミュレート)</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-slate-300">
+                            <i class="fas fa-minus-circle text-amber-400"></i>
+                            <span>デジタル署名 (SHA-256)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Event Types -->
+            <div class="bg-slate-800/50 rounded-xl p-8 border border-slate-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-tags text-blue-400 mr-2"></i>
+                    対応イベントタイプ
+                </h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <span class="event-badge px-4 py-2 bg-blue-900/50 border border-blue-500/30 rounded-lg text-blue-300 text-sm">
+                        <strong>1</strong> SIG — シグナル生成
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-amber-900/50 border border-amber-500/30 rounded-lg text-amber-300 text-sm">
+                        <strong>2</strong> ORD — 注文送信
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-emerald-900/50 border border-emerald-500/30 rounded-lg text-emerald-300 text-sm">
+                        <strong>3</strong> ACK — 注文確認
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-red-900/50 border border-red-500/30 rounded-lg text-red-300 text-sm">
+                        <strong>4</strong> REJ — 注文拒否
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-purple-900/50 border border-purple-500/30 rounded-lg text-purple-300 text-sm">
+                        <strong>5</strong> EXE — 約定
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-orange-900/50 border border-orange-500/30 rounded-lg text-orange-300 text-sm">
+                        <strong>6</strong> CXL — キャンセル
+                    </span>
+                    <span class="event-badge px-4 py-2 bg-slate-700 border border-slate-500/30 rounded-lg text-slate-300 text-sm">
+                        <strong>10</strong> CLS — ポジション決済
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-sitemap text-blue-400 mr-3"></i>
+                アーキテクチャ概要
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                VCCデモはサーバー依存なしでブラウザ内で完全に動作します
+            </p>
+
+            <!-- Architecture Diagram -->
+            <div class="architecture-box rounded-2xl p-8 mb-12 overflow-x-auto">
+                <pre class="text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre overflow-x-auto"><code>┌─────────────────────────────────────────────────────────────────────┐
+│                        ブラウザ環境                                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                    Reactアプリケーション                      │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │   │
+│  │  │ ダッシュ    │  │  イベント   │  │      検証           │  │   │
+│  │  │  ボード     │  │    タブ     │  │       タブ          │  │   │
+│  │  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘  │   │
+│  │         │                │                     │             │   │
+│  │         └────────────────┼─────────────────────┘             │   │
+│  │                          ▼                                   │   │
+│  │              ┌───────────────────────┐                       │   │
+│  │              │     VCCService        │                       │   │
+│  │              │  (ビジネスロジック)    │                       │   │
+│  │              └───────────┬───────────┘                       │   │
+│  │                          │                                   │   │
+│  │         ┌────────────────┼────────────────┐                  │   │
+│  │         ▼                ▼                ▼                  │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │   │
+│  │  │   暗号      │  │  マークル   │  │    UUID     │          │   │
+│  │  │ モジュール  │  │ モジュール  │  │ モジュール  │          │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘          │   │
+│  │                                                              │   │
+│  └──────────────────────────────┬───────────────────────────────┘   │
+│                                 │                                   │
+│                                 ▼                                   │
+│                    ┌────────────────────────┐                       │
+│                    │      IndexedDB         │                       │
+│                    │  ┌────────┐ ┌────────┐ │                       │
+│                    │  │events  │ │anchors │ │                       │
+│                    │  └────────┘ └────────┘ │                       │
+│                    └────────────────────────┘                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fab fa-react text-blue-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">React 18.x</h3>
+                    <p class="text-slate-400 text-sm">インタラクティブコンポーネント用UIフレームワーク</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fab fa-css3-alt text-cyan-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Tailwind CSS 3.x</h3>
+                    <p class="text-slate-400 text-sm">ユーティリティファーストCSSフレームワーク</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-lock text-amber-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Web Crypto API</h3>
+                    <p class="text-slate-400 text-sm">ネイティブブラウザ暗号化</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-database text-emerald-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">IndexedDB</h3>
+                    <p class="text-slate-400 text-sm">ブラウザベースの永続ストレージ</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-purple-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-tree text-purple-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">RFC 6962 マークルツリー</h3>
+                    <p class="text-slate-400 text-sm">Certificate Transparency標準</p>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-fingerprint text-red-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">UUID v7</h3>
+                    <p class="text-slate-400 text-sm">時間順ユニーク識別子 (RFC 9562)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cryptographic Implementation Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-key text-amber-400 mr-3"></i>
+                暗号実装
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                VCCデモは業界標準の暗号プリミティブを使用しています
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- SHA-256 Hashing -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-hashtag text-blue-400 mr-2"></i>
+                        SHA-256ハッシュ
+                    </h3>
+                    <p class="text-slate-400 mb-4">Web Crypto APIを使用したネイティブパフォーマンス：</p>
+                    <div class="code-block rounded-lg p-4 overflow-x-auto">
+                        <pre class="text-emerald-400 text-sm"><code>const sha256 = async (data) => {
+  const encoder = new TextEncoder();
+  const dataBuffer = encoder.encode(
+    typeof data === 'string' ? data : JSON.stringify(data)
+  );
+  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+};</code></pre>
+                    </div>
+                </div>
+
+                <!-- Merkle Tree -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-project-diagram text-emerald-400 mr-2"></i>
+                        RFC 6962 マークルツリー
+                    </h3>
+                    <p class="text-slate-400 mb-4">第二プリイメージ攻撃を防ぐためのドメイン分離：</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="px-4 py-2 text-left text-slate-200">ノードタイプ</th>
+                                    <th class="px-4 py-2 text-left text-slate-200">プレフィックスバイト</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700">
+                                    <td class="px-4 py-2">リーフ</td>
+                                    <td class="px-4 py-2 font-mono text-emerald-400">0x00</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2">内部</td>
+                                    <td class="px-4 py-2 font-mono text-emerald-400">0x01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Merkle Tree Visualization -->
+            <div class="mt-8 bg-slate-800/50 rounded-xl p-8 border border-slate-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-sitemap text-purple-400 mr-2"></i>
+                    マークルツリー構造例（5イベント）
+                </h3>
+                <div class="overflow-x-auto">
+                    <pre class="text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre text-center"><code>                    [Root]
+                      │
+           ┌──────────┴──────────┐
+           │                     │
+        [N01]                 [N23-4]
+           │                     │
+      ┌────┴────┐          ┌─────┴─────┐
+      │         │          │           │
+   [N0]      [N1]       [N23]        [L4]
+      │         │          │
+   ┌──┴──┐   ┌──┴──┐   ┌──┴──┐
+   │     │   │     │   │     │
+ [L0]  [L1] [L2] [L3] [L2]  [L3]
+
+Lx = merkleHashLeaf(Ex), Nxy = merkleHashNode(Lx, Ly)</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Considerations Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+                <i class="fas fa-shield-alt text-red-400 mr-3"></i>
+                セキュリティに関する考慮事項
+            </h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                デモの制限事項と本番環境の代替案を理解する
+            </p>
+
+            <!-- Important Notice -->
+            <div class="bg-amber-900/30 border border-amber-500/50 rounded-xl p-6 mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-amber-300 mb-2">重要なお知らせ</h3>
+                        <p class="text-amber-200">
+                            VCCデモはデモンストレーションツールです。「アンカー」はブラウザ内でシミュレートされており、
+                            <strong>外部検証可能性を提供しません</strong>。本番システムでは、実際の外部タイムスタンプ認証局
+                            （OpenTimestamps、RFC 3161）、不変性のためのブロックチェーンアンカリング、HSMベースのデジタル署名を使用する必要があります。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Client-Side Limitations -->
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-red-800/30">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-laptop text-red-400 mr-2"></i>
+                        クライアントサイドの制限
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="px-3 py-2 text-left text-slate-200">項目</th>
+                                    <th class="px-3 py-2 text-left text-slate-200">VCCデモ</th>
+                                    <th class="px-3 py-2 text-left text-slate-200">本番環境</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700">
+                                    <td class="px-3 py-2">鍵ストレージ</td>
+                                    <td class="px-3 py-2 text-red-400">なし</td>
+                                    <td class="px-3 py-2 text-emerald-400">HSM</td>
+                                </tr>
+                                <tr class="border-b border-slate-700">
+                                    <td class="px-3 py-2">署名</td>
+                                    <td class="px-3 py-2 text-amber-400">SHA-256</td>
+                                    <td class="px-3 py-2 text-emerald-400">Ed25519</td>
+                                </tr>
+                                <tr class="border-b border-slate-700">
+                                    <td class="px-3 py-2">改ざん耐性</td>
+                                    <td class="px-3 py-2 text-red-400">ブラウザ</td>
+                                    <td class="px-3 py-2 text-emerald-400">ブロックチェーン</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2">データプライバシー</td>
+                                    <td class="px-3 py-2 text-amber-400">ローカル</td>
+                                    <td class="px-3 py-2 text-emerald-400">サーバーサイド</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Security Features -->
+                <div class="bg-slate-900/80 rounded-xl p-6 border border-emerald-800/30">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-check-circle text-emerald-400 mr-2"></i>
+                        セキュリティ機能
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-slate-300">
+                            <i class="fas fa-lock text-emerald-400 mt-1"></i>
+                            <div>
+                                <strong class="text-white">Web Crypto API</strong>
+                                <p class="text-sm text-slate-400">crypto.subtleによるネイティブ暗号操作</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-300">
+                            <i class="fas fa-random text-emerald-400 mt-1"></i>
+                            <div>
+                                <strong class="text-white">セキュアランダム</strong>
+                                <p class="text-sm text-slate-400">UUID生成のためのcrypto.getRandomValues()</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-300">
+                            <i class="fas fa-user-shield text-emerald-400 mt-1"></i>
+                            <div>
+                                <strong class="text-white">同一オリジンポリシー</strong>
+                                <p class="text-sm text-slate-400">ブラウザによるクロスサイトデータアクセス防止</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-300">
+                            <i class="fas fa-trash-alt text-emerald-400 mt-1"></i>
+                            <div>
+                                <strong class="text-white">ユーザーコントロール</strong>
+                                <p class="text-sm text-slate-400">ユーザーはいつでもすべてのデータを削除可能</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                VCPを実際に体験する
+            </h2>
+            <p class="text-xl text-slate-300 mb-8">
+                VCCデモを試して、VCP v1.1がアルゴリズム取引のための暗号監査証跡をどのように提供するかを理解してください。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://veritaschain.org/vcc/demo/" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-blue-600/20 text-lg">
+                    <i class="fas fa-play-circle"></i>
+                    VCCデモを起動
+                </a>
+                <a href="/vcp/specification/" class="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-xl transition-all text-lg">
+                    <i class="fas fa-file-alt"></i>
+                    VCP仕様書を読む
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certification Notice -->
+    <section class="py-8 px-4 sm:px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 text-center">
+                <p class="text-slate-400 text-sm">
+                    <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                    <strong class="text-slate-300">認証ステータス:</strong> このデモはVC認証を受けておらず、VSOの推奨を意味するものではありません。
+                    公式認証を取得するには、組織は完全なVCP v1.1仕様を実装し、本番グレードの暗号化を使用し、
+                    適合性テストに合格し、認証監査を完了する必要があります。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer lang="ja"></vcp-footer>
+</body>
+</html>
