@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP v1.1がアルゴリズム取引のEU AI法コンプライアンス課題を解決する方法 - VeritasChain ブログ</title>
+    <meta name="description" content="EU AI法第12条のロギング要件とVCP v1.1の3層アーキテクチャがアルゴリズム取引システムにコンプライアンスソリューションを提供する技術分析。期限：2026年8月。">
+    <meta name="keywords" content="EU AI法, VCP v1.1, アルゴリズム取引, コンプライアンス, 第12条, MiFID II, RTS 25, 監査証跡, 暗号検証, GDPR, VeritasChain">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP v1.1がEU AI法コンプライアンスを解決する方法">
+    <meta property="og:description" content="EU AI法要件からVCP v1.1実装への技術マッピング。€1500万の罰則リスク対検証ベースのガバナンス。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-01-eu-ai-act-vcp-compliance/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain ブログ">
+    <meta property="article:published_time" content="2026-01-01T00:00:00Z">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP v1.1 & EU AI法コンプライアンス">
+    <meta name="twitter:description" content="VCP v1.1がEU AI法第12条のロギング要件を解決する方法。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-01-01-eu-ai-act-vcp-compliance/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-01-01-eu-ai-act-vcp-compliance/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-01-01-eu-ai-act-vcp-compliance/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-01-01-eu-ai-act-vcp-compliance/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-01-eu-ai-act-vcp-compliance/ja/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', sans-serif; }
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .prose { max-width: 800px; margin: 0 auto; }
+        .prose h2 { color: #f1f5f9; font-size: 1.6rem; font-weight: 700; margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #3b82f6; }
+        .prose h3 { color: #e2e8f0; font-size: 1.25rem; font-weight: 600; margin: 2rem 0 0.75rem; }
+        .prose p { color: #cbd5e1; line-height: 1.9; margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { color: #cbd5e1; margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; line-height: 1.8; }
+        .prose strong { color: #f1f5f9; font-weight: 600; }
+        .prose a { color: #60a5fa; text-decoration: underline; }
+        .prose blockquote { border-left: 4px solid #3b82f6; padding-left: 1.5rem; margin: 1.5rem 0; font-style: italic; color: #94a3b8; }
+        .prose pre { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 1.5rem; overflow-x: auto; margin: 1.5rem 0; }
+        .prose pre code { font-size: 0.75rem; line-height: 1.4; color: #94a3b8; }
+        .highlight-box { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1)); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+        .warning-box { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+        .info-box { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155; }
+        th { background: #1e293b; color: #f1f5f9; font-weight: 600; }
+        td { color: #cbd5e1; }
+        tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
+        .layer-diagram { background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; line-height: 1.3; color: #94a3b8; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Article Hero -->
+    <section class="article-hero">
+        <div style="position: relative; z-index: 1; max-width: 800px; margin: 0 auto;">
+            <a href="/blog/ja/" style="display: inline-flex; align-items: center; gap: 0.5rem; color: #60a5fa; text-decoration: none; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                <i class="fas fa-arrow-left"></i> ブログに戻る
+            </a>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
+                <span style="background: rgba(59, 130, 246, 0.2); color: #93c5fd; padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 500;">
+                    <i class="fas fa-balance-scale"></i> 規制
+                </span>
+                <span style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7; padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 500;">
+                    <i class="fas fa-shield-alt"></i> VCP v1.1
+                </span>
+            </div>
+            
+            <h1 style="color: #f8fafc; font-size: 2rem; font-weight: 800; line-height: 1.4; margin-bottom: 1rem;">
+                VCP v1.1がアルゴリズム取引のEU AI法コンプライアンス課題を解決する方法
+            </h1>
+            
+            <p style="color: #94a3b8; font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                コンプライアンス責任者とテクノロジーリーダーのための技術分析：EU AI法第12条要件からVCP v1.1実装へのマッピング。
+            </p>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
+                <span><i class="far fa-calendar"></i> 2026年1月1日</span>
+                <span><i class="far fa-clock"></i> 18分で読了</span>
+                <span><i class="far fa-user"></i> VeritasChain Standards Organization</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <main style="background: #0f172a; padding: 4rem 2rem;">
+        <article class="prose">
+            
+            <div class="highlight-box">
+                <h3 style="margin-top: 0; color: #f1f5f9;"><i class="fas fa-clipboard-list" style="color: #3b82f6;"></i> エグゼクティブサマリー</h3>
+                <p style="margin-bottom: 0.75rem;">EU AI法はアルゴリズム取引システムに対して、拘束力のあるロギング、トレーサビリティ、説明責任の義務を課しています。高リスクAIシステムは<strong>2026年8月2日</strong>までに自動イベントロギング、完全なライフサイクルトレーサビリティ、改ざん防止監査証跡を提供する必要があります。</p>
+                <p style="margin-bottom: 0;"><strong>非準拠の罰則は€1500万または年間グローバル売上高の3%に達します。</strong>VCP v1.1は数学的に検証可能なエビデンスチェーンを通じてこれらの要件に直接対応します。</p>
+            </div>
+            
+            <h2><i class="fas fa-landmark" style="color: #3b82f6; margin-right: 0.5rem;"></i>規制の全体像</h2>
+            
+            <h3>3つの規制フレームワークの収束</h3>
+            
+            <p>EU市場で事業を行うアルゴリズム取引会社は、3つの主要な規制フレームワークの収束に直面しています：</p>
+            
+            <p><strong>EU AI法（規則2024/1689）：</strong>2024年8月1日に発効し、高リスクAIシステムの義務は2026年8月から適用。ロギング、透明性、人間による監視、説明責任の要件を確立。</p>
+            
+            <p><strong>MiFID II / RTS 25：</strong>既存のアルゴリズム取引規制フレームワーク。注文記録保持、クロック同期（HFTは100マイクロ秒、一般的なアルゴリズム取引は1ミリ秒）、5-7年の監査証跡保存を義務付け。</p>
+            
+            <p><strong>GDPR（規則2016/679）：</strong>広範な監査ロギングと調和させなければならないデータ保護要件—特に不変の監査証跡と緊張関係を生む「消去権」。</p>
+            
+            <h3>高リスク分類</h3>
+            
+            <p>アルゴリズム取引はAnnex IIIの高リスクカテゴリーに明示的に列挙されていませんが、実務上の現実は明白です：<strong>企業は取引AIを高リスク以外として扱う余裕はありません</strong>。</p>
+            
+            <p>第6条(3)が決定的な基準を提供：<strong>自然人のプロファイリング</strong>を行うAIシステムは「常に高リスクとみなされる」。信用スコアリング、投資適合性評価、パーソナライズされた取引推奨はこの定義に完全に該当。</p>
+            
+            <h3>タイムライン</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>シナリオ</th>
+                        <th>高リスクAI期限</th>
+                        <th>条件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>元のAI法</strong></td>
+                        <td>2026年8月2日</td>
+                        <td>自動適用</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Digital Omnibus採択</strong></td>
+                        <td>2027年12月2日</td>
+                        <td>委員会が調和規格の利用可能性を確認</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Omnibus未採択</strong></td>
+                        <td>2026年8月2日</td>
+                        <td>元の期限が適用</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p style="margin: 0;"><strong><i class="fas fa-lightbulb" style="color: #60a5fa;"></i> 戦略的示唆：</strong>原則ベースの要件に対して今すぐ実装。VCP v1.1のオープンスタンダードアーキテクチャ（RFC 6962 Merkle木、RFC 8785 JSON正規化、RFC 9562 UUIDv7）は将来の調和規格との互換性を保証。</p>
+            </div>
+            
+            <h2><i class="fas fa-file-alt" style="color: #8b5cf6; margin-right: 0.5rem;"></i>第12条の詳細分析</h2>
+            
+            <h3>法的条文とその技術的含意</h3>
+            
+            <p>第12条(1)は次のように述べています：<em>「高リスクAIシステムは、システムの存続期間を通じてイベント（『ログ』）の自動記録を技術的に可能にしなければならない。」</em></p>
+            
+            <p>「システムの存続期間を通じて」というフレーズは異例の義務を生み出します：ログはAIシステムの全運用期間（数十年に及ぶ可能性あり）にわたって保存可能で検証可能でなければなりません。</p>
+            
+            <h3>暗黙の改ざん防止要件</h3>
+            
+            <p>EU AI法は暗号検証メカニズムを明示的に義務付けていません。しかし、要件の組み合わせが改ざん防止ロギングの<strong>機能的必要性</strong>を生み出します：</p>
+            
+            <p><strong>前文71</strong>が解釈の鍵を提供：<em>「システムの存続期間を通じたトレーサビリティ...イベントの自動記録を可能にする技術的手段を通じて。」</em></p>
+            
+            <div class="highlight-box">
+                <p style="margin: 0;"><strong>重要な洞察：</strong>規制のパラダイムは「ログを保持する」から<strong>「ログが改ざんされていないことを証明する」</strong>へとシフトしました。VCP v1.1はこのシフトを運用可能にします。</p>
+            </div>
+            
+            <h3>保持期間マトリックス</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>ソース</th>
+                        <th>保持要件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AI法 第19条(1)</strong></td>
+                        <td>自動ログは最低6ヶ月</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI法 第18条(1)</strong></td>
+                        <td>技術文書は10年</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MiFID II</strong></td>
+                        <td>注文記録は5-7年</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p><strong>実務上の結論：</strong>金融サービス企業はすべてのAIシステムログに<strong>最低7年の保持</strong>を実装すべき。</p>
+            
+            <h2><i class="fas fa-layer-group" style="color: #f59e0b; margin-right: 0.5rem;"></i>VCP v1.1 3層アーキテクチャ</h2>
+            
+            <div class="layer-diagram">
+┌─────────────────────────────────────────────────────────────────────┐
+│  レイヤー3: 外部検証可能性                                          │
+│  ─────────────────────────────────                                  │
+│  目的: プロデューサーを信頼せずに第三者検証                         │
+│                                                                     │
+│  コンポーネント:                                                    │
+│  ├─ デジタル署名 (Ed25519/Dilithium): 必須                         │
+│  ├─ タイムスタンプ (二重形式 ISO+int64): 必須                      │
+│  └─ 外部アンカー (Blockchain/TSA): 全ティアで必須                  │
+├─────────────────────────────────────────────────────────────────────┤
+│  レイヤー2: コレクション完全性                                       │
+│  ────────────────────────────────                                   │
+│  目的: イベントバッチの完全性を証明                                  │
+│                                                                     │
+│  コンポーネント:                                                    │
+│  ├─ マークル木 (RFC 6962): 必須                                    │
+│  ├─ マークルルート: 必須                                           │
+│  └─ 監査パス: 必須                                                  │
+├─────────────────────────────────────────────────────────────────────┤
+│  レイヤー1: イベント完全性                                           │
+│  ────────────────────────                                           │
+│  目的: 個別イベントの完全性                                          │
+│                                                                     │
+│  コンポーネント:                                                    │
+│  ├─ EventHash (SHA-256): 必須                                      │
+│  └─ PrevHash (前イベントへのリンク): オプション                    │
+└─────────────────────────────────────────────────────────────────────┘
+            </div>
+            
+            <h3>コンプライアンスティアフレームワーク</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>ティア</th>
+                        <th>対象ユースケース</th>
+                        <th>クロック同期</th>
+                        <th>外部アンカー</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Platinum</strong></td>
+                        <td>HFT、取引所</td>
+                        <td>PTPv2 (&lt;1µs)</td>
+                        <td>10分ごと</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gold</strong></td>
+                        <td>機関投資家、プロップ</td>
+                        <td>NTP (&lt;1ms)</td>
+                        <td>1時間ごと</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Silver</strong></td>
+                        <td>リテール、MT4/MT5</td>
+                        <td>ベストエフォート</td>
+                        <td>24時間ごと</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p style="margin: 0;"><strong><i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i> 重要：</strong>Silverティアは、MiFID II RTS 25の対象となる規制グレードのアルゴリズム取引システムを想定していません。規制義務のあるシステムには、<strong>最低Goldティア</strong>が推奨されます。</p>
+            </div>
+            
+            <h2><i class="fas fa-project-diagram" style="color: #ec4899; margin-right: 0.5rem;"></i>技術マッピング</h2>
+            
+            <h3>EU AI法条文別コンプライアンス</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>EU AI法要件</th>
+                        <th>VCP v1.1実装</th>
+                        <th>レベル</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>第12条(1)</strong> 自動ロギング</td>
+                        <td>VCP-CORE EventHash, Timestamp, TraceID</td>
+                        <td>✓ 超過</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第12条(2)</strong> リスク識別</td>
+                        <td>VCP-RISKモジュール、ERR_*イベント</td>
+                        <td>✓ 超過</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第13条</strong> 透明性</td>
+                        <td>VCP-GOV DecisionFactors, ModelHash</td>
+                        <td>✓ 超過</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第14条</strong> 人間による監視</td>
+                        <td>VCP-GOV承認フィールド、VCP-XREF</td>
+                        <td>✓ 超過</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第15条</strong> サイバーセキュリティ</td>
+                        <td>3層アーキテクチャ、外部アンカリング</td>
+                        <td>✓ 超過</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第18条(1)</strong> 10年文書保持</td>
+                        <td>暗号タイムスタンプが完全性を証明</td>
+                        <td>✓ 準拠</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2><i class="fas fa-user-shield" style="color: #8b5cf6; margin-right: 0.5rem;"></i>GDPR互換性：クリプトシュレッディング</h2>
+            
+            <h3>不変性のパラドックス</h3>
+            
+            <p>GDPR第17条はデータ主体に「消去権」を付与。暗号的に封印されたチェーンから完全性を損なわずに個人データを削除するには？</p>
+            
+            <h3>VCP-PRIVACYソリューション</h3>
+            
+            <p>VCP v1.1は<strong>アーキテクチャ分離</strong>と<strong>クリプトシュレッディング</strong>で解決：</p>
+            
+            <ol>
+                <li>個人データはVCPチェーンに入る前に一意のキーで暗号化</li>
+                <li>暗号化された参照がVCPイベントに含まれる</li>
+                <li>消去リクエスト時に暗号化キーを破棄</li>
+                <li>VCPチェーンは暗号化された参照を保持（意味のないノイズに）</li>
+                <li>監査の完全性は保持；個人データは暗号的に消去</li>
+            </ol>
+            
+            <h2><i class="fas fa-chart-line" style="color: #f59e0b; margin-right: 0.5rem;"></i>ビジネスケース</h2>
+            
+            <h3>罰則エクスポージャー</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>違反タイプ</th>
+                        <th>最大罰則</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>高リスクシステム要件（第9-15条）</td>
+                        <td>€1500万または年間売上高の3%</td>
+                    </tr>
+                    <tr>
+                        <td>禁止されたAI慣行</td>
+                        <td>€3500万または売上高の7%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>競争差別化</h3>
+            
+            <p>2024-2025年に<strong>80社以上のプロプライエタリ取引会社</strong>が規制監視の中で崩壊。検証可能な監査証跡はこの信頼ギャップに対処できます。</p>
+            
+            <div class="highlight-box">
+                <h3 style="margin-top: 0; color: #f1f5f9;"><i class="fas fa-flag-checkered" style="color: #10b981;"></i> 結論</h3>
+                <p>EU AI法は転換点を示します—<strong>信頼ベースのコンプライアンス</strong>から<strong>検証ベースのガバナンス</strong>へのシフト。従来のアプローチでは、ログの完全性の数学的証明を要求できる規制当局を満足させることはできません。</p>
+                <p style="margin-bottom: 0;"><strong>VCP v1.1は本番環境対応。</strong>仕様はCC BY 4.0で公開。「信頼ではなく検証を」の未来はここにあります。</p>
+            </div>
+            
+            <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.3);">
+                <h3 style="margin-top: 0; color: #f1f5f9;"><i class="fas fa-book"></i> リソース</h3>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>VCP v1.1仕様：</strong> <a href="https://veritaschain.org/v1-1/ja/">veritaschain.org/v1-1/ja/</a></li>
+                    <li><strong>GitHub：</strong> <a href="https://github.com/veritaschain">github.com/veritaschain</a></li>
+                    <li><strong>IETFドラフト：</strong> <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/">draft-kamimura-scitt-vcp</a></li>
+                </ul>
+            </div>
+            
+        </article>
+        
+        <!-- Article Footer -->
+        <div style="max-width: 800px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid #334155;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                <div>
+                    <span style="color: #64748b; font-size: 0.9rem;">この記事を共有：</span>
+                    <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+                        <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2026-01-01-eu-ai-act-vcp-compliance/ja/&text=VCP%20v1.1がEU%20AI法コンプライアンスを解決する方法" target="_blank" style="color: #60a5fa; font-size: 1.25rem;"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2026-01-01-eu-ai-act-vcp-compliance/ja/" target="_blank" style="color: #60a5fa; font-size: 1.25rem;"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <a href="/blog/ja/" style="display: inline-flex; align-items: center; gap: 0.5rem; color: #60a5fa; text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> ブログに戻る
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <vcp-footer theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-footer>
+</body>
+</html>
