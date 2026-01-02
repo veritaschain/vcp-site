@@ -93,6 +93,7 @@ class VCPHeader extends HTMLElement {
                 openApiSpec: 'OpenAPI Spec',
                 github: 'GitHub (vcp-explorer-api)',
                 vcpV11: 'VCP V1.1',
+                vccDemo: 'VCC Demo',
                 overview: 'Overview',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: 'Distributed Organization',
@@ -151,6 +152,7 @@ class VCPHeader extends HTMLElement {
                 openApiSpec: 'OpenAPI仕様',
                 github: 'GitHub (vcp-explorer-api)',
                 vcpV11: 'VCP V1.1',
+                vccDemo: 'VCC Demo',
                 overview: '概要',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: '分散型組織',
@@ -209,6 +211,7 @@ class VCPHeader extends HTMLElement {
                 openApiSpec: 'OpenAPI规范',
                 github: 'GitHub (vcp-explorer-api)',
                 vcpV11: 'VCP V1.1',
+                vccDemo: 'VCC Demo',
                 overview: '概述',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
                 distributedOrganization: '分布式组织',
@@ -347,6 +350,7 @@ class VCPHeader extends HTMLElement {
                             <a href="https://raw.githubusercontent.com/veritaschain/vcp-explorer-api/main/openapi.yaml" class="dropdown-item" target="_blank" rel="noopener">${t.openApiSpec}</a>
                             <a href="https://github.com/veritaschain/vcp-explorer-api" class="dropdown-item" target="_blank" rel="noopener">${t.github}</a>
                             <a href="/v1-1/" class="dropdown-item">${t.vcpV11}</a>
+                            <a href="/vcc/" class="dropdown-item">${t.vccDemo}</a>
                         </div>
                     </div>
 
