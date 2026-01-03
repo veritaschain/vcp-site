@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アルゴリズム説明責任の危機：VCP v1.1が2025年の規制転換点に対応する方法 - VeritasChain Protocol</title>
+    <meta name="description" content="2025年Q4の規制動向とVCP v1.1の3層アーキテクチャ、必須外部アンカリング、VCP-XREFがアルゴリズム説明責任ギャップにどう対応するかの包括的分析。">
+    <meta name="keywords" content="VCP, VeritasChain Protocol, アルゴリズム取引, AI監査, EU AI法, SEC, DORA, BaFin, 独禁法, 暗号監査証跡">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="アルゴリズム説明責任の危機：VCP v1.1が2025年の規制転換点に対応する方法">
+    <meta property="og:description" content="2025年Q4の規制動向とVCP v1.1のアルゴリズム説明責任ギャップへの対応の包括的分析。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-04-vcp-v1-1-comprehensive/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="article:published_time" content="2026-01-04">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="アルゴリズム説明責任の危機：VCP v1.1">
+    <meta name="twitter:description" content="VCP v1.1が2025年Q4の規制転換点に暗号監査インフラでどう対応するか。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-01-04-vcp-v1-1-comprehensive/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-01-04-vcp-v1-1-comprehensive/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-01-04-vcp-v1-1-comprehensive/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-01-04-vcp-v1-1-comprehensive/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-04-vcp-v1-1-comprehensive/ja/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', sans-serif; }
+        .article-content h2 { font-size: 1.75rem; font-weight: 700; color: #f1f5f9; margin-top: 3rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #3b82f6; }
+        .article-content h3 { font-size: 1.35rem; font-weight: 600; color: #e2e8f0; margin-top: 2rem; margin-bottom: 1rem; }
+        .article-content p { color: #cbd5e1; line-height: 1.9; margin-bottom: 1.25rem; }
+        .article-content ul, .article-content ol { color: #cbd5e1; margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        .article-content li { margin-bottom: 0.5rem; line-height: 1.8; }
+        .article-content code { background: #1e293b; color: #60a5fa; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+        .article-content pre { background: #0f172a; border: 1px solid #334155; border-radius: 0.5rem; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0; }
+        .article-content pre code { background: none; padding: 0; color: #e2e8f0; }
+        .article-content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .article-content th { background: #1e293b; color: #f1f5f9; padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155; font-weight: 600; }
+        .article-content td { padding: 0.75rem 1rem; border: 1px solid #334155; color: #cbd5e1; }
+        .article-content tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
+        .article-content a { color: #60a5fa; text-decoration: underline; }
+        .article-content strong { color: #f1f5f9; font-weight: 600; }
+        .toc-link { color: #94a3b8; text-decoration: none; display: block; padding: 0.5rem 0; border-bottom: 1px solid #334155; transition: all 0.2s; }
+        .toc-link:hover { color: #60a5fa; padding-left: 0.5rem; }
+        .key-point { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .warning-box { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+    </style>
+</head>
+<body style="background: #0f172a;">
+    <!-- Header -->
+    <vcp-header></vcp-header>
+
+    <!-- Article Header -->
+    <section style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%); padding: 8rem 2rem 4rem; position: relative;">
+        <div style="max-width: 900px; margin: 0 auto; position: relative; z-index: 1;">
+            <!-- Breadcrumb -->
+            <nav style="margin-bottom: 2rem;">
+                <a href="/blog/ja/" style="color: #64748b; text-decoration: none; font-size: 0.9rem;">
+                    <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>ブログに戻る
+                </a>
+            </nav>
+            
+            <!-- Category & Reading Time -->
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+                <span style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; padding: 0.35rem 1rem; border-radius: 2rem; font-size: 0.85rem; font-weight: 500;">
+                    <i class="fas fa-microscope" style="margin-right: 0.5rem;"></i>技術詳細解説
+                </span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.35rem 1rem; border-radius: 2rem; font-size: 0.85rem;">
+                    <i class="fas fa-balance-scale" style="margin-right: 0.5rem;"></i>規制分析
+                </span>
+                <span style="color: #64748b; font-size: 0.85rem; display: flex; align-items: center;">
+                    <i class="far fa-clock" style="margin-right: 0.5rem;"></i>約45分
+                </span>
+            </div>
+            
+            <!-- Title -->
+            <h1 style="font-size: 2.25rem; font-weight: 800; color: #f1f5f9; line-height: 1.3; margin-bottom: 1.5rem;">
+                アルゴリズム説明責任の危機：VCP v1.1が2025年の規制転換点に対応する方法
+            </h1>
+            
+            <!-- Subtitle -->
+            <p style="font-size: 1.15rem; color: #94a3b8; line-height: 1.7; margin-bottom: 2rem;">
+                Infosys ADRフラッシュスパイク、SEC 2026年審査優先事項、BaFin DORA指針、EU/UK独禁法イニシアチブの包括的分析—VCP v1.1の3層アーキテクチャがソリューションを提供。
+            </p>
+            
+            <!-- Meta -->
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem; color: #64748b; font-size: 0.9rem;">
+                <span><i class="far fa-calendar" style="margin-right: 0.5rem;"></i>2026年1月4日</span>
+                <span><i class="far fa-user" style="margin-right: 0.5rem;"></i>VeritasChain Standards Organization</span>
+                <span><i class="fas fa-file-alt" style="margin-right: 0.5rem;"></i>VSO-BLOG-2026-001</span>
+            </div>
+            
+            <!-- Language Switcher -->
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
+                <span style="color: #64748b; font-size: 0.85rem; margin-right: 1rem;">言語:</span>
+                <a href="/blog/posts/2026-01-04-vcp-v1-1-comprehensive/" style="color: #64748b; text-decoration: none; margin-right: 1rem;">English</a>
+                <a href="/blog/posts/2026-01-04-vcp-v1-1-comprehensive/ja/" style="color: #60a5fa; text-decoration: none; margin-right: 1rem; font-weight: 600;">日本語</a>
+                <a href="/blog/posts/2026-01-04-vcp-v1-1-comprehensive/zh/" style="color: #64748b; text-decoration: none;">中文</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main style="background: #0f172a; padding: 4rem 2rem;">
+        <div style="max-width: 900px; margin: 0 auto;">
+            
+            <!-- Executive Summary -->
+            <div class="key-point">
+                <h2 style="color: #60a5fa; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; margin-top: 0; border: none;">
+                    <i class="fas fa-star" style="margin-right: 0.5rem;"></i>エグゼクティブサマリー
+                </h2>
+                <p style="color: #cbd5e1; line-height: 1.9; margin-bottom: 1rem;">
+                    2025年Q4は、アルゴリズム取引規制における決定的な転換点となりました。4つの相互に関連する出来事—<strong style="color: #f1f5f9;">Infosys ADRフラッシュスパイク</strong>、<strong style="color: #f1f5f9;">SEC 2026年審査優先事項</strong>、<strong style="color: #f1f5f9;">BaFin DORA指針</strong>、<strong style="color: #f1f5f9;">EU/UKアルゴリズム価格設定独禁法イニシアチブ</strong>—は、根本的なギャップを露呈しました：<em>アルゴリズム意思決定の暗号学的に検証可能な監査証跡の不在</em>です。
+                </p>
+                <p style="color: #cbd5e1; line-height: 1.9; margin-bottom: 0;">
+                    VCP v1.1（2025年12月30日リリース）は、<strong style="color: #f1f5f9;">3層アーキテクチャ</strong>、全コンプライアンス層への<strong style="color: #f1f5f9;">必須外部アンカリング</strong>、<strong style="color: #f1f5f9;">ポリシー識別</strong>要件、<strong style="color: #f1f5f9;">VCP-XREFデュアルロギング拡張</strong>を導入—それぞれが最近の市場イベントで明らかになった特定の障害モードに対処するために設計されています。
+                </p>
+            </div>
+
+            <!-- Article Content -->
+            <article class="article-content">
+                
+                <h2>1. はじめに：アルゴリズム取引における信頼の欠如</h2>
+                
+                <p>アルゴリズム取引業界は根本的なパラドックスの上に成り立っています：完璧な精度で実行するように設計されたシステムが、簡単に改ざん可能な監査証跡を生成しているのです。アルゴリズムがAAPL株10,000株を09:30:00.123456に買うと決定した場合、その決定はログファイルに記録されますが、改ざんの暗号学的証拠なしに修正、削除、選択的に省略することができます。</p>
+                
+                <p>2025年の現状：</p>
+                <ul>
+                    <li>アルゴリズム取引は<strong>米国株式市場出来高の60-70%</strong>を占める</li>
+                    <li>AI駆動取引システムが全資産クラスで増加</li>
+                    <li>個人トレーダーがMetaTrader 4/5などのプラットフォームを通じてアルゴリズムツールにアクセス可能</li>
+                    <li>規制フレームワークが技術能力に追いつくのに苦労</li>
+                </ul>
+
+                <h2>2. ケーススタディ：Infosys ADRフラッシュスパイク</h2>
+                
+                <p>2025年12月19日、インドのInfosys Ltd.（時価総額約759億ドル）のADRが、ニューヨーク証券取引所で異常な価格変動を経験しました。</p>
+                
+                <table>
+                    <thead>
+                        <tr><th>時刻（EST）</th><th>イベント</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>プレマーケット</td><td>複数のデータプロバイダーが「INFY」ティッカーをAmerican Noble Gas Inc.に誤マッピング</td></tr>
+                        <tr><td>09:30</td><td>NYSE開場；アルゴリズムが見かけ上の価格誤差を処理開始</td></tr>
+                        <tr><td>09:35-09:40</td><td>価格が約$19.18から$30.00に上昇（<strong>56%上昇</strong>）</td></tr>
+                        <tr><td>09:40</td><td>NYSEが初のLULDボラティリティ取引停止を発動</td></tr>
+                        <tr><td>10:00+</td><td>価格が徐々に適正価値に正常化</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>2.1 根本原因分析</h3>
+                <ul>
+                    <li><strong>第1層：データ完全性の失敗</strong> — 金融データプロバイダーがティッカーを誤マッピングしながら基礎データを修正せず</li>
+                    <li><strong>第2層：アルゴリズム増幅</strong> — モメンタムアルゴリズム、マーケットメイキングアルゴリズム、リスク管理システムが連鎖反応</li>
+                    <li><strong>第3層：ショートスクイーズ機構</strong> — 4,500-5,000万株の貸株が回収（通常日次取引量の6-7倍）</li>
+                    <li><strong>第4層：時間的非対称性</strong> — インドと米国には10.5時間の時差があり、クロスマーケット裁定が不可能</li>
+                </ul>
+
+                <h3>2.2 VCP v1.1があれば</h3>
+                <ul>
+                    <li><strong>不変イベント記録</strong>：すべての注文と決定がEd25519で暗号学的にハッシュ化・署名</li>
+                    <li><strong>外部検証可能タイムスタンプ</strong>：必須外部アンカリングが独立した時間証拠を提供</li>
+                    <li><strong>完全性保証</strong>：マークルツリー構築がバッチ全体への暗号学的コミットメントを作成</li>
+                    <li><strong>クロスパーティ検証</strong>：VCP-XREFが取引会社とブローカー両方で独立した記録を作成</li>
+                </ul>
+
+                <h2>3. SEC 2026年審査優先事項</h2>
+                
+                <p>2025年11月17日、SECの審査部門が2026会計年度審査優先事項を発表—AIが前例のない注目を集める包括的ガイダンスです。</p>
+                
+                <table>
+                    <thead><tr><th>領域</th><th>2025年優先事項</th><th>2026年優先事項</th></tr></thead>
+                    <tbody>
+                        <tr><td>暗号通貨</td><td>独立した優先事項</td><td>個別カテゴリから削除</td></tr>
+                        <tr><td>AI/新興技術</td><td>簡単に言及</td><td><strong>横断的リスク領域</strong></td></tr>
+                        <tr><td>CAT統合</td><td>実装重視</td><td>能動的執行ツール</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>4. BaFin DORA指針：欧州フレームワーク</h2>
+                
+                <p>2025年12月18日、ドイツ連邦金融監督庁（BaFin）がAIシステムのICTリスク管理に関する非拘束的指針を公表。DORAとEU AI法の2つの重複する欧州規制フレームワークを運用化します。</p>
+
+                <div class="warning-box">
+                    <p style="color: #f59e0b; font-weight: 600; margin-bottom: 0.5rem;"><i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>BaFin警告（2025年12月4日）</p>
+                    <p style="color: #cbd5e1; margin-bottom: 0;">少数の大手テクノロジー企業（OpenAI、Google、Microsoft、Anthropic）が金融機関の大部分に基盤AIサービスを提供しています。これらのプロバイダーの1つが障害やセキュリティ侵害を経験した場合、システミックな影響が複数の金融機関に同時に及ぶ可能性があります。</p>
+                </div>
+
+                <h2>5. アルゴリズム価格設定と独禁法</h2>
+                
+                <table>
+                    <thead><tr><th>タイプ</th><th>説明</th><th>法的状況</th></tr></thead>
+                    <tbody>
+                        <tr><td>タイプ1：実装</td><td>人間が価格固定に合意；アルゴリズムが実装</td><td>明確に違法</td></tr>
+                        <tr><td>タイプ2：ハブ・アンド・スポーク</td><td>競合他社が同じ価格設定ソフトウェアベンダーを使用</td><td><strong>主要な執行焦点</strong></td></tr>
+                        <tr><td>タイプ3：並行行動</td><td>類似アルゴリズムが非競争的価格に収束</td><td>法的に曖昧</td></tr>
+                        <tr><td>タイプ4：自律学習</td><td>AIが独立して共謀的価格設定を発見</td><td>根本的な法的課題</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>6. VCP v1.1：技術アーキテクチャ概要</h2>
+                
+                <p>VCPは単一の基本原則に基づいて構築されています：<strong>「信頼するな、検証せよ」</strong></p>
+                
+                <p>VCP準拠システムでは、<strong>単一当事者は信頼されません</strong>。代わりに、暗号学的メカニズムが以下を保証します：</p>
+                <ol>
+                    <li>個々のイベントは作成後に修正不可能</li>
+                    <li>イベントは検出されずにバッチから省略不可能</li>
+                    <li>タイムスタンプは外部検証済み</li>
+                    <li>クロスパーティの不一致は検出可能</li>
+                </ol>
+
+                <h2>7. 3層完全性モデル</h2>
+                
+                <div class="key-point">
+                    <p style="color: #cbd5e1; margin-bottom: 0;">VCP v1.1の最も重要なアーキテクチャ変更は、<strong style="color: #f1f5f9;">3層完全性モデル</strong>の形式化です。各層は明確な要件を持つ異なるセキュリティ問題に対処します。</p>
+                </div>
+
+                <h3>第1層：イベント完全性</h3>
+                <p><strong>目的：</strong>個々のイベントが作成後に修正されないことを保証。</p>
+                <ul>
+                    <li><strong>必須：</strong>EventHash（正規化されたイベントのSHA-256ハッシュ）</li>
+                    <li><strong>オプション：</strong>PrevHash（ハッシュチェーン作成用の前イベントのハッシュ）</li>
+                </ul>
+
+                <h3>第2層：コレクション完全性</h3>
+                <p><strong>目的：</strong>イベントバッチが完全であることを証明—省略なし。</p>
+                <ul>
+                    <li><strong>必須：</strong>マークルツリー（RFC 6962準拠）</li>
+                    <li><strong>必須：</strong>マークルルート（バッチ全体を表す単一ハッシュ）</li>
+                </ul>
+
+                <h3>第3層：外部検証可能性</h3>
+                <p><strong>目的：</strong>ログ作成者を信頼せずに第三者検証を可能に。</p>
+                
+                <table>
+                    <thead><tr><th>層</th><th>アンカー頻度</th><th>許容ターゲット</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Platinum</strong></td><td>10分</td><td>ブロックチェーン、RFC 3161 TSA</td></tr>
+                        <tr><td><strong>Gold</strong></td><td>1時間</td><td>RFC 3161 TSA、認証済みデータベース</td></tr>
+                        <tr><td><strong>Silver</strong></td><td>24時間</td><td>OpenTimestamps、FreeTSA</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>8. 必須外部アンカリング</h2>
+                
+                <h3>省略攻撃</h3>
+                <ol>
+                    <li>取引会社が1日に1,000のVCPイベントを生成</li>
+                    <li>5つのイベントが恥ずかしい（例：コンプライアンス違反）と気づく</li>
+                    <li>これらの5イベントを削除し、995イベントでマークルツリーを再生成</li>
+                    <li>「クリーンな」ログを規制当局に提出</li>
+                </ol>
+                
+                <p><strong>外部アンカリングなし</strong>：この攻撃は検出不可能。</p>
+                <p><strong>外部アンカリングあり</strong>：アンカー済みマークルルートが修正されたログと一致しないため、攻撃は失敗。</p>
+
+                <h2>9. VCP-XREF：紛争解決のためのクロスパーティ検証</h2>
+                
+                <p>VCP-XREFは<strong>デュアルロギング</strong>を導入—各当事者が維持する独立したVCPストリームで、相互参照可能です。</p>
+                
+                <p><strong>保証：</strong>両当事者が共謀（かつ互いの外部アンカーを侵害）しない限り、一方による操作は他方によって検出可能です。</p>
+
+                <h2>10. 規制マッピング</h2>
+
+                <h3>MiFID II / RTS 25 対応</h3>
+                <table>
+                    <thead><tr><th>MiFID II要件</th><th>VCP v1.1ソリューション</th></tr></thead>
+                    <tbody>
+                        <tr><td>クロック同期（RTS 25）</td><td>ClockSyncStatusフィールド + 層別要件</td></tr>
+                        <tr><td>注文記録保持</td><td>VCP-TRADEペイロードスキーマ</td></tr>
+                        <tr><td>アルゴリズム識別</td><td>PolicyIDを持つPolicyIdentification</td></tr>
+                        <tr><td>監査証跡保持（7年）</td><td>AnchorRecordが長期証明を提供</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>11. 結論：ブラックボックスからガラスボックスへ</h2>
+                
+                <p>2025年Q4の出来事は共通のテーマを持っています：<strong>アルゴリズム取引のブラックボックス時代は終わりつつあります。</strong></p>
+                
+                <div class="key-point">
+                    <p style="color: #cbd5e1; margin-bottom: 1rem;">VCP v1.1はアルゴリズム取引システムをブラックボックスからガラスボックスに変換します：</p>
+                    <ul style="color: #cbd5e1; margin-bottom: 0;">
+                        <li><strong style="color: #f1f5f9;">イベント完全性（第1層）：</strong>すべての決定が暗号学的にフィンガープリント化</li>
+                        <li><strong style="color: #f1f5f9;">コレクション完全性（第2層）：</strong>検出されずにイベントを省略不可能</li>
+                        <li><strong style="color: #f1f5f9;">外部検証可能性（第3層）：</strong>第三者が作成者を信頼せずに検証可能</li>
+                        <li><strong style="color: #f1f5f9;">クロスパーティ検証（VCP-XREF）：</strong>紛争が暗号学的証拠で解決</li>
+                        <li><strong style="color: #f1f5f9;">プライバシー保護（VCP-PRIVACY）：</strong>監査完全性を損なわずにGDPR準拠</li>
+                        <li><strong style="color: #f1f5f9;">将来対応（暗号アジリティ）：</strong>ポスト量子セキュリティへの移行パス</li>
+                    </ul>
+                </div>
+                
+                <p style="font-size: 1.5rem; font-weight: 700; color: #60a5fa; text-align: center; margin: 3rem 0;">信頼するな、検証せよ。</p>
+
+            </article>
+
+            <!-- Resources Section -->
+            <section style="background: #1e293b; border-radius: 1rem; padding: 2rem; margin-top: 3rem;">
+                <h2 style="color: #f1f5f9; font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">
+                    <i class="fas fa-book" style="color: #60a5fa; margin-right: 0.75rem;"></i>リソース
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <a href="https://veritaschain.org/vcp/specification/" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: #0f172a; border-radius: 0.5rem; text-decoration: none; color: #cbd5e1;">
+                        <i class="fas fa-file-alt" style="color: #3b82f6; font-size: 1.25rem;"></i>
+                        <span>VCP v1.1仕様書</span>
+                    </a>
+                    <a href="https://github.com/veritaschain/vcp-spec" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: #0f172a; border-radius: 0.5rem; text-decoration: none; color: #cbd5e1;">
+                        <i class="fab fa-github" style="color: #8b5cf6; font-size: 1.25rem;"></i>
+                        <span>GitHub VCP SDK</span>
+                    </a>
+                    <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: #0f172a; border-radius: 0.5rem; text-decoration: none; color: #cbd5e1;">
+                        <i class="fas fa-globe" style="color: #10b981; font-size: 1.25rem;"></i>
+                        <span>IETF Internet-Draft</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Document Info -->
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #334155; color: #64748b; font-size: 0.85rem;">
+                <p><strong>文書ID:</strong> VSO-BLOG-2026-001 | <strong>バージョン:</strong> 1.0 | <strong>最終更新:</strong> 2026年1月</p>
+                <p style="margin-top: 1rem;">
+                    <i class="fab fa-creative-commons"></i>
+                    <i class="fab fa-creative-commons-by"></i>
+                    この記事は<a href="https://creativecommons.org/licenses/by/4.0/deed.ja" style="color: #60a5fa;">CC BY 4.0</a>ライセンスの下で公開されています。
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <vcp-footer></vcp-footer>
+</body>
+</html>
