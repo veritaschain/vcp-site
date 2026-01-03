@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>招聘AI的VAP-PAP：简历筛选审计追踪的加密验证框架 - VeritasChain Protocol</title>
+    <meta name="description" content="符合EU AI法案的招聘AI审计追踪技术框架。VAP-PAP为简历筛选系统提供防篡改日志、GDPR加密销毁和Article 86可解释性。">
+    <meta name="keywords" content="VAP, PAP, 招聘AI, 简历筛选, EU AI法案, Article 12, Article 86, GDPR, 加密审计追踪, 可验证AI, VeritasChain">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="招聘AI的VAP-PAP：简历筛选审计追踪的加密验证框架">
+    <meta property="og:description" content="符合EU AI法案的招聘AI审计追踪技术框架，提供防篡改日志和GDPR加密销毁。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-04-vap-pap-hiring-ai/zh/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2026-01-04">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="招聘AI的VAP-PAP：EU AI法案合规审计追踪">
+    <meta name="twitter:description" content="简历筛选审计追踪的加密验证技术框架。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-01-04-vap-pap-hiring-ai/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-01-04-vap-pap-hiring-ai/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-01-04-vap-pap-hiring-ai/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-01-04-vap-pap-hiring-ai/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-04-vap-pap-hiring-ai/zh/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Noto Sans SC', 'Inter', sans-serif; }
+        .article-content h2 { font-size: 1.75rem; font-weight: 700; color: #f1f5f9; margin-top: 3rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #3b82f6; }
+        .article-content h3 { font-size: 1.35rem; font-weight: 600; color: #e2e8f0; margin-top: 2rem; margin-bottom: 1rem; }
+        .article-content p { color: #cbd5e1; line-height: 1.8; margin-bottom: 1.25rem; }
+        .article-content ul, .article-content ol { color: #cbd5e1; margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        .article-content li { margin-bottom: 0.5rem; line-height: 1.7; }
+        .article-content blockquote { border-left: 4px solid #3b82f6; padding-left: 1.5rem; margin: 1.5rem 0; color: #94a3b8; font-style: italic; background: rgba(59, 130, 246, 0.05); padding: 1rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; }
+        .article-content code { background: #1e293b; color: #60a5fa; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+        .article-content pre { background: #0f172a; border: 1px solid #334155; border-radius: 0.5rem; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0; }
+        .article-content pre code { background: none; padding: 0; color: #e2e8f0; }
+        .article-content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .article-content th { background: #1e293b; color: #f1f5f9; padding: 0.75rem 1rem; text-align: left; border: 1px solid #334155; font-weight: 600; }
+        .article-content td { padding: 0.75rem 1rem; border: 1px solid #334155; color: #cbd5e1; }
+        .article-content tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
+        .article-content a { color: #60a5fa; text-decoration: underline; }
+        .article-content strong { color: #f1f5f9; font-weight: 600; }
+        .toc-link { color: #94a3b8; text-decoration: none; display: block; padding: 0.5rem 0; border-bottom: 1px solid #334155; transition: all 0.2s; }
+        .toc-link:hover { color: #60a5fa; padding-left: 0.5rem; }
+        .key-point { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .warning-box { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .disclaimer { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+    </style>
+</head>
+<body style="background: #0f172a; font-family: 'Noto Sans SC', 'Inter', sans-serif;">
+    <!-- Header -->
+    <vcp-header></vcp-header>
+
+    <!-- Article Header -->
+    <section style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%); padding: 8rem 2rem 4rem; position: relative;">
+        <div style="max-width: 900px; margin: 0 auto; position: relative; z-index: 1;">
+            <!-- Breadcrumb -->
+            <nav style="margin-bottom: 2rem;">
+                <a href="/blog/zh/" style="color: #64748b; text-decoration: none; font-size: 0.9rem;">
+                    <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>返回博客
+                </a>
+            </nav>
+            
+            <!-- Category & Reading Time -->
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+                <span style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 0.35rem 1rem; border-radius: 2rem; font-size: 0.85rem; font-weight: 500;">
+                    <i class="fas fa-file-contract" style="margin-right: 0.5rem;"></i>白皮书
+                </span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.35rem 1rem; border-radius: 2rem; font-size: 0.85rem;">
+                    <i class="fas fa-users" style="margin-right: 0.5rem;"></i>招聘AI
+                </span>
+                <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.35rem 1rem; border-radius: 2rem; font-size: 0.85rem;">
+                    研究草案
+                </span>
+                <span style="color: #64748b; font-size: 0.85rem; display: flex; align-items: center;">
+                    <i class="far fa-clock" style="margin-right: 0.5rem;"></i>阅读时间 35分钟
+                </span>
+            </div>
+            
+            <!-- Title -->
+            <h1 style="font-size: 2.25rem; font-weight: 800; color: #f1f5f9; line-height: 1.3; margin-bottom: 1.5rem;">
+                招聘AI的VAP-PAP：简历筛选审计追踪的加密验证技术框架
+            </h1>
+            
+            <!-- Subtitle -->
+            <p style="font-size: 1.15rem; color: #94a3b8; line-height: 1.7; margin-bottom: 2rem;">
+                EU AI法案将招聘AI归类为高风险，要求在2026年8月前实施强制日志记录。本白皮书介绍VAP-PAP——具备GDPR加密销毁和Article 86可解释性的防篡改审计追踪。
+            </p>
+            
+            <!-- Meta -->
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem; color: #64748b; font-size: 0.9rem;">
+                <span><i class="far fa-calendar" style="margin-right: 0.5rem;"></i>2026年1月4日</span>
+                <span><i class="far fa-user" style="margin-right: 0.5rem;"></i>VSO技术委员会</span>
+                <span><i class="fas fa-file-alt" style="margin-right: 0.5rem;"></i>VSO-BLOG-PAP-HIRING-001</span>
+            </div>
+            
+            <!-- Language Switcher -->
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
+                <span style="color: #64748b; font-size: 0.85rem; margin-right: 1rem;">语言:</span>
+                <a href="/blog/posts/2026-01-04-vap-pap-hiring-ai/" style="color: #64748b; text-decoration: none; margin-right: 1rem;">English</a>
+                <a href="/blog/posts/2026-01-04-vap-pap-hiring-ai/ja/" style="color: #64748b; text-decoration: none; margin-right: 1rem;">日本語</a>
+                <a href="/blog/posts/2026-01-04-vap-pap-hiring-ai/zh/" style="color: #60a5fa; text-decoration: none; font-weight: 600;">中文</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main style="background: #0f172a; padding: 4rem 2rem;">
+        <div style="max-width: 900px; margin: 0 auto;">
+            
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <p style="color: #ef4444; font-weight: 600; margin-bottom: 0.5rem;"><i class="fas fa-exclamation-circle" style="margin-right: 0.5rem;"></i>研究草案免责声明</p>
+                <p style="color: #cbd5e1; margin-bottom: 0; font-size: 0.95rem;">本文档代表了将可验证决策审计追踪推广到招聘AI领域的研究。<strong style="color: #f1f5f9;">VSO目前不提供招聘AI应用的产品或认证。</strong>PAP招聘配置文件正在开发中，可能根据监管指导和社区反馈进行更改。</p>
+            </div>
+
+            <!-- Abstract -->
+            <div class="key-point">
+                <h2 style="color: #60a5fa; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; margin-top: 0; border: none;">
+                    <i class="fas fa-star" style="margin-right: 0.5rem;"></i>摘要
+                </h2>
+                <p style="color: #cbd5e1; line-height: 1.8; margin-bottom: 1rem;">
+                    EU AI法案（Regulation 2024/1689）明确将AI驱动的简历筛选和候选人评估系统归类为<strong style="color: #f1f5f9;">高风险AI</strong>，要求其遵守<strong style="color: #f1f5f9;">2026年8月2日</strong>生效的强制日志记录、人工监督和解释要求。当前的招聘AI系统缺乏满足这些义务的技术基础设施——它们产生可修改的日志、没有外部锚定的系统时钟时间戳，以及没有防篡改的加密证明。
+                </p>
+                <p style="color: #cbd5e1; line-height: 1.8; margin-bottom: 0;">
+                    本白皮书介绍<strong style="color: #f1f5f9;">VAP-PAP</strong>（Verifiable AI Provenance – Public Administration Protocol），这是VAP框架内的特定领域配置文件，旨在为影响公共和就业决策的AI系统提供防篡改、加密可验证的审计追踪。
+                </p>
+            </div>
+
+            <!-- Table of Contents -->
+            <div style="background: #1e293b; border-radius: 1rem; padding: 2rem; margin: 3rem 0;">
+                <h2 style="color: #f1f5f9; font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-list" style="color: #60a5fa;"></i>目录
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.5rem;">
+                    <a href="#intro" class="toc-link">1. 招聘AI的可审计性危机</a>
+                    <a href="#regulatory" class="toc-link">2. 监管环境</a>
+                    <a href="#gap" class="toc-link">3. 技术差距分析</a>
+                    <a href="#vap" class="toc-link">4. VAP框架架构</a>
+                    <a href="#pap" class="toc-link">5. PAP招聘配置文件规范</a>
+                    <a href="#implementation" class="toc-link">6. 实施架构</a>
+                    <a href="#crypto" class="toc-link">7. 加密组件</a>
+                    <a href="#gdpr" class="toc-link">8. GDPR：加密销毁</a>
+                    <a href="#explainability" class="toc-link">9. 可解释性集成</a>
+                    <a href="#conformance" class="toc-link">10. 合规级别</a>
+                    <a href="#reference" class="toc-link">11. 参考实现</a>
+                    <a href="#deployment" class="toc-link">12. 部署考虑因素</a>
+                    <a href="#conclusion" class="toc-link">13. 结论</a>
+                </div>
+            </div>
+
+            <!-- Article Content -->
+            <article class="article-content">
+                
+                <h2 id="intro">1. 引言：招聘AI的可审计性危机</h2>
+                
+                <h3>1.1 AI驱动招聘决策的规模</h3>
+                
+                <p>据估计，<strong>99%的财富500强公司</strong>目前在其招聘流程中使用某种形式的自动筛选。这些系统每天评估数百万候选人，做出影响个人生计、职业轨迹和经济流动性的重大决策。</p>
+                
+                <p>然而，这些系统作为<strong>黑盒</strong>运行。当候选人被拒绝时，他们最多收到一个通用通知："经过仔细考虑，我们决定继续与其他候选人合作。"AI的实际推理仍然不透明。</p>
+
+                <h3>1.2 根本问题</h3>
+                
+                <p>核心问题不仅仅是不透明性，而是<strong>不可验证性</strong>。当前的招聘AI系统：</p>
+                <ol>
+                    <li>在个人候选人层面<strong>不记录决策理由</strong></li>
+                    <li>使用允许事后修改的<strong>可变存储</strong></li>
+                    <li>缺乏证明未被篡改的<strong>加密完整性</strong></li>
+                    <li><strong>无法证明</strong>相同的算法被一致应用</li>
+                    <li><strong>没有机制</strong>进行独立第三方验证</li>
+                </ol>
+
+                <h3>1.3 飞行记录仪范式</h3>
+                
+                <p>在监管机构强制要求飞行数据记录仪——捕获飞机运行每个参数的防篡改设备——之后，航空安全发生了转变。<strong>影响基本权利的AI系统应该获得同等的问责基础设施。</strong></p>
+                
+                <p>VAP框架将这种"飞行记录仪"范式应用于AI决策。VAP-PAP专门针对面向公众的AI决策，包括就业。</p>
+
+                <h2 id="regulatory">2. 监管环境</h2>
+                
+                <h3>2.1 EU AI法案：高风险分类</h3>
+                
+                <p>EU AI法案（Regulation 2024/1689）在附件III第4(a)点下明确将招聘AI归类为<strong>高风险</strong>：</p>
+                
+                <blockquote>
+                    "旨在用于自然人招聘或选拔的AI系统，特别是用于发布定向招聘广告、分析和筛选求职申请以及评估候选人的AI系统。"
+                </blockquote>
+
+                <h3>2.2 适用要求</h3>
+                
+                <table>
+                    <thead>
+                        <tr><th>条款</th><th>要求</th><th>技术影响</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Article 9</strong></td><td>风险管理系统</td><td>持续监控和缓解</td></tr>
+                        <tr><td><strong>Article 10</strong></td><td>数据治理</td><td>训练数据质量、偏差检测</td></tr>
+                        <tr><td><strong>Article 11</strong></td><td>技术文档</td><td>完整的系统规范</td></tr>
+                        <tr><td><strong>Article 12</strong></td><td>记录保存</td><td><strong>所有决策的自动日志记录</strong></td></tr>
+                        <tr><td><strong>Article 13</strong></td><td>透明度</td><td>部署者信息义务</td></tr>
+                        <tr><td><strong>Article 14</strong></td><td>人工监督</td><td>覆盖、停止或干预能力</td></tr>
+                        <tr><td><strong>Article 86</strong></td><td>解释权</td><td><strong>应要求提供清晰解释</strong></td></tr>
+                    </tbody>
+                </table>
+
+                <h3>2.3 执行时间表和处罚</h3>
+                
+                <table>
+                    <thead><tr><th>日期</th><th>里程碑</th></tr></thead>
+                    <tbody>
+                        <tr><td>2024年8月1日</td><td>AI法案生效</td></tr>
+                        <tr><td>2025年2月2日</td><td>禁止的AI实践适用</td></tr>
+                        <tr><td><strong>2026年8月2日</strong></td><td><strong>高风险AI要求适用（包括招聘AI）</strong></td></tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>处罚：</strong>违反高风险AI义务可处以最高<strong>1500万欧元或年度全球营业额3%</strong>的罚款。</p>
+
+                <h3>2.4 全球监管环境</h3>
+                
+                <table>
+                    <thead><tr><th>司法管辖区</th><th>法规</th><th>招聘AI相关性</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>纽约市</strong></td><td>地方法144 (2023)</td><td>强制年度偏差审计</td></tr>
+                        <tr><td><strong>伊利诺伊州</strong></td><td>BIPA + AI视频面试法</td><td>同意和透明度</td></tr>
+                        <tr><td><strong>英国</strong></td><td>ICO AI指南</td><td>数据保护执法重点</td></tr>
+                        <tr><td><strong>日本</strong></td><td>软法 + Rikunabi先例</td><td>隐私委员会行动</td></tr>
+                    </tbody>
+                </table>
+
+                <h2 id="gap">3. 技术差距分析</h2>
+                
+                <h3>3.1 当前系统缺陷</h3>
+                
+                <p><strong>当前系统记录：</strong></p>
+                <ul>
+                    <li>✓ 申请提交的时间戳</li>
+                    <li>✓ 最终决定（通过/未通过/待定）</li>
+                    <li>✓ 汇总指标</li>
+                </ul>
+                
+                <p><strong>当前系统不记录：</strong></p>
+                <ul>
+                    <li>✗ 每个候选人的特征提取输出</li>
+                    <li>✗ 模型版本和配置哈希</li>
+                    <li>✗ 个别特征对分数的贡献</li>
+                    <li>✗ 人工审核覆盖详情</li>
+                    <li>✗ 训练数据来源</li>
+                </ul>
+
+                <h3>3.2 法律后果</h3>
+                
+                <table>
+                    <thead><tr><th>差距</th><th>法律风险</th></tr></thead>
+                    <tbody>
+                        <tr><td>无决策日志</td><td>违反Article 12；无法满足Article 86请求</td></tr>
+                        <tr><td>可变存储</td><td>证据不可采信；证据毁灭推定</td></tr>
+                        <tr><td>无完整性证明</td><td>无法为歧视索赔辩护</td></tr>
+                        <tr><td>无时间戳</td><td>无法证明一致处理</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>3.3 诉讼环境</h3>
+                
+                <table>
+                    <thead><tr><th>案例</th><th>状态</th><th>意义</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Mobley v. Workday (2025)</strong></td><td>集体诉讼认证</td><td>AI供应商根据"代理理论"直接承担责任</td></tr>
+                        <tr><td><strong>EEOC v. iTutorGroup (2023)</strong></td><td>365,000美元和解</td><td>首个EEOC AI歧视和解（年龄）</td></tr>
+                        <tr><td><strong>UK ICO审计 (2024)</strong></td><td>296项建议</td><td>发现受保护特征过滤</td></tr>
+                    </tbody>
+                </table>
+
+                <h2 id="vap">4. VAP框架架构</h2>
+                
+                <p><strong>可验证AI来源（VAP）框架</strong>提供：</p>
+                <ol>
+                    <li>通过哈希链和数字签名的<strong>加密完整性</strong></li>
+                    <li>通过同步时间戳和外部锚定的<strong>时间固定</strong></li>
+                    <li>谁、什么、何时、为什么以及结果的<strong>来源追踪</strong></li>
+                    <li>通过已发布证明的<strong>第三方可验证性</strong></li>
+                    <li>针对不同高风险AI类别的<strong>特定领域配置文件</strong></li>
+                </ol>
+
+                <h3>4.1 五层架构</h3>
+                
+                <table>
+                    <thead><tr><th>层</th><th>功能</th><th>招聘AI应用</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>L1: 完整性</strong></td><td>哈希链、默克尔树、签名</td><td>决策事件的篡改检测</td></tr>
+                        <tr><td><strong>L2: 来源</strong></td><td>谁、什么、何时、为什么、结果</td><td>决策理由日志记录</td></tr>
+                        <tr><td><strong>L3: 可追溯性</strong></td><td>通过trace_id的事件关联</td><td>跨事件的候选人旅程</td></tr>
+                        <tr><td><strong>L4: 问责制</strong></td><td>人工操作员记录</td><td>人工监督合规（Art. 14）</td></tr>
+                        <tr><td><strong>L5: 领域配置文件</strong></td><td>行业特定模式</td><td>招聘特定事件和时间</td></tr>
+                    </tbody>
+                </table>
+
+                <h2 id="pap">5. PAP招聘配置文件规范</h2>
+                
+                <h3>5.1 事件类型</h3>
+                
+                <table>
+                    <thead><tr><th>事件类型</th><th>描述</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>HIRING_SESSION_START</code></td><td>新筛选会话启动</td></tr>
+                        <tr><td><code>HIRING_RESUME_RECEIVED</code></td><td>收到候选人申请</td></tr>
+                        <tr><td><code>HIRING_FEATURE_EXTRACTION</code></td><td>从简历中提取特征</td></tr>
+                        <tr><td><code>HIRING_SCORE_GENERATED</code></td><td>ML模型产生分数</td></tr>
+                        <tr><td><code>HIRING_DECISION_MADE</code></td><td>通过/未通过/审查判定</td></tr>
+                        <tr><td><code>HIRING_HUMAN_REVIEW</code></td><td>人工审核员操作</td></tr>
+                        <tr><td><code>HIRING_EXPLANATION_GENERATED</code></td><td>生成Article 86解释</td></tr>
+                        <tr><td><code>HIRING_SESSION_END</code></td><td>筛选会话完成</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>5.2 决策事件示例</h3>
+                
+                <pre><code>{
+  "event_id": "019432ab-7c8d-7def-8123-456789abcdef",
+  "event_type": "HIRING_DECISION_MADE",
+  "timestamp": {
+    "unix_ns": 1735689600000000000,
+    "iso8601": "2026-01-04T12:00:00.000000Z",
+    "precision": "MICROSECOND",
+    "sync_status": "NTP_SYNCED"
+  },
+  "provenance": {
+    "actor": {
+      "type": "AI_MODEL",
+      "identifier": "resume_scorer_v2.3.1",
+      "model_config_hash": "sha256:a1b2c3d4e5f6..."
+    },
+    "action": {
+      "decision": "PASS",
+      "score": 0.82,
+      "threshold_applied": 0.70,
+      "contributing_factors": [
+        {"factor": "relevant_experience_years", "contribution": 0.35, "direction": "POSITIVE"},
+        {"factor": "skills_match_score", "contribution": 0.28, "direction": "POSITIVE"}
+      ]
+    }
+  },
+  "integrity": {
+    "prev_hash": "sha3-256:789xyz...",
+    "event_hash": "sha3-256:abc123...",
+    "signature": "ed25519:..."
+  },
+  "explainability": {
+    "method": "SHAP",
+    "simplified_explanation": "基于您的经验与职位要求的高度匹配，您的申请已通过筛选。"
+  }
+}</code></pre>
+
+                <h2 id="implementation">6. 实施架构</h2>
+                
+                <h3>6.1 Sidecar模式</h3>
+                
+                <p>VAP-PAP建议使用<strong>sidecar架构</strong>与现有招聘系统集成：</p>
+                <ul>
+                    <li>无需修改核心招聘应用程序</li>
+                    <li>在API边界拦截决策事件</li>
+                    <li>独立签名和链接事件</li>
+                    <li>可以增量部署</li>
+                </ul>
+
+                <pre><code>┌─────────────────────────────────────────────────────────────┐
+│              现有招聘系统                                     │
+│  [简历解析器] ──▶ [ML评分器] ──▶ [决策引擎]                 │
+│                                              │               │
+│                                      [API网关]               │
+└──────────────────────────────────────────┼───────────────────┘
+                                           │
+                                   ┌───────▼───────┐
+                                   │  PAP Sidecar  │
+                                   │  • 日志记录器 │
+                                   │  • 签名器     │
+                                   │  • 链接器     │
+                                   └───────┬───────┘
+                                           │
+                                   ┌───────▼───────┐
+                                   │   外部        │
+                                   │   锚定        │
+                                   │  (RFC 3161)  │
+                                   └───────────────┘</code></pre>
+
+                <h2 id="crypto">7. 加密组件</h2>
+                
+                <table>
+                    <thead><tr><th>原语</th><th>标准</th><th>用途</th></tr></thead>
+                    <tbody>
+                        <tr><td>哈希算法</td><td>SHA-3-256</td><td>事件哈希、链接</td></tr>
+                        <tr><td>签名算法</td><td>Ed25519 (RFC 8032)</td><td>事件认证</td></tr>
+                        <tr><td>规范化</td><td>JCS (RFC 8785)</td><td>确定性JSON序列化</td></tr>
+                        <tr><td>默克尔树</td><td>RFC 6962</td><td>批量锚定、包含证明</td></tr>
+                        <tr><td>后量子</td><td>ML-DSA (Dilithium)</td><td>未来迁移路径</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>7.1 默克尔树锚定</h3>
+                
+                <table>
+                    <thead><tr><th>层级</th><th>锚定频率</th><th>锚定目标</th></tr></thead>
+                    <tbody>
+                        <tr><td>高保证</td><td>1小时</td><td>RFC 3161 TSA + 透明度日志</td></tr>
+                        <tr><td>标准</td><td>24小时</td><td>RFC 3161 TSA</td></tr>
+                        <tr><td>基本</td><td>会话结束</td><td>内部时间戳</td></tr>
+                    </tbody>
+                </table>
+
+                <h2 id="gdpr">8. GDPR兼容性：加密销毁</h2>
+                
+                <h3>8.1 矛盾</h3>
+                
+                <p><strong>GDPR Article 17</strong>确立了删除权。<strong>EU AI法案 Article 12</strong>要求日志保留。这两者似乎相互矛盾。</p>
+
+                <h3>8.2 加密销毁解决方案</h3>
+                
+                <ol>
+                    <li>个人数据使用每个候选人的密钥加密（AES-256-GCM）</li>
+                    <li>只有加密的密文包含在哈希链中</li>
+                    <li>在删除请求时，销毁加密密钥</li>
+                    <li>哈希链保持完整，但个人数据在数学上不可恢复</li>
+                </ol>
+
+                <div class="key-point">
+                    <p style="color: #cbd5e1; margin-bottom: 0.5rem;"><strong style="color: #f1f5f9;">结果：</strong></p>
+                    <ul style="color: #cbd5e1; margin-bottom: 0;">
+                        <li>哈希链完整性：<strong style="color: #10b981;">保留 ✓</strong></li>
+                        <li>个人数据：<strong style="color: #10b981;">不可恢复 ✓</strong></li>
+                        <li>审计追踪：<strong style="color: #10b981;">有效 ✓</strong></li>
+                        <li>GDPR合规：<strong style="color: #10b981;">满足 ✓</strong></li>
+                    </ul>
+                </div>
+
+                <h2 id="explainability">9. 可解释性集成</h2>
+                
+                <h3>9.1 多层解释模型</h3>
+                
+                <table>
+                    <thead><tr><th>层</th><th>受众</th><th>内容</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>公民</strong></td><td>候选人</td><td>通俗语言摘要</td></tr>
+                        <tr><td><strong>代表</strong></td><td>法律顾问</td><td>详细因素、阈值</td></tr>
+                        <tr><td><strong>审计员</strong></td><td>监管机构</td><td>模型规格、偏差审计结果</td></tr>
+                        <tr><td><strong>技术</strong></td><td>开发人员</td><td>完整事件链、重现步骤</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>9.2 支持的方法</h3>
+                
+                <table>
+                    <thead><tr><th>方法</th><th>描述</th><th>用例</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>SHAP</strong></td><td>Shapley加法解释</td><td>特征贡献分析</td></tr>
+                        <tr><td><strong>LIME</strong></td><td>局部可解释模型无关</td><td>局部决策边界</td></tr>
+                        <tr><td><strong>反事实</strong></td><td>"什么会改变决定？"</td><td>可操作的反馈</td></tr>
+                        <tr><td><strong>基于规则</strong></td><td>If-then提取</td><td>透明标准</td></tr>
+                    </tbody>
+                </table>
+
+                <h2 id="conformance">10. 合规级别</h2>
+                
+                <table>
+                    <thead><tr><th>级别</th><th>要求</th><th>认证</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>PAP-HIRING-1</strong></td><td>基本完整性、事件日志、签名</td><td>自我声明</td></tr>
+                        <tr><td><strong>PAP-HIRING-2</strong></td><td>+ 外部锚定、加密销毁、人工监督</td><td>VSO测试套件通过</td></tr>
+                        <tr><td><strong>PAP-HIRING-3</strong></td><td>+ 第三方审计、完整可解释性、偏差监控</td><td>第三方CAB认证</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>10.1 监管映射</h3>
+                
+                <table>
+                    <thead><tr><th>要求</th><th>EU AI法案</th><th>PAP-1</th><th>PAP-2</th><th>PAP-3</th></tr></thead>
+                    <tbody>
+                        <tr><td>自动日志记录</td><td>Article 12</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td>6个月保留</td><td>Article 19</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td>人工监督</td><td>Article 14</td><td>-</td><td>✓</td><td>✓</td></tr>
+                        <tr><td>解释能力</td><td>Article 86</td><td>-</td><td>✓</td><td>✓</td></tr>
+                        <tr><td>偏差监控</td><td>Article 10</td><td>-</td><td>-</td><td>✓</td></tr>
+                        <tr><td>第三方验证</td><td>Article 43</td><td>-</td><td>-</td><td>✓</td></tr>
+                    </tbody>
+                </table>
+
+                <h2 id="reference">11. 参考实现</h2>
+                
+                <pre><code>from vap_pap_hiring import HiringAuditLogger, CryptoShredder
+
+# 初始化日志记录器
+logger = HiringAuditLogger(
+    signing_key=load_key_from_hsm(),
+    anchor_client=RFC3161Client("https://freetsa.org/tsr"),
+    storage=ImmutableStorage("s3://audit-logs/"),
+    conformance_level="PAP-HIRING-2"
+)
+
+# 记录决策事件
+event = logger.log_decision(
+    candidate_id_hash=candidate_hash,
+    job_requisition_id="JOB-2026-001",
+    model_version="resume_scorer_v2.3.1",
+    score=0.82,
+    threshold=0.70,
+    decision="PASS",
+    contributing_factors=[
+        {"factor": "experience", "contribution": 0.35, "direction": "POSITIVE"}
+    ],
+    explainability={
+        "method": "SHAP",
+        "simplified": "经验高度匹配"
+    }
+)
+
+# 验证链完整性
+assert logger.verify_chain()
+
+# 处理GDPR删除
+shredder.process_erasure_request(candidate_id)
+assert logger.verify_chain()  # 链仍然有效</code></pre>
+
+                <h2 id="deployment">12. 部署考虑因素</h2>
+                
+                <table>
+                    <thead><tr><th>组件</th><th>规格</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>计算</strong></td><td>sidecar最低2 vCPU、4GB RAM</td></tr>
+                        <tr><td><strong>存储</strong></td><td>建议仅追加/WORM存储</td></tr>
+                        <tr><td><strong>网络</strong></td><td>TSA锚定的出站HTTPS</td></tr>
+                        <tr><td><strong>HSM</strong></td><td>建议用于签名密钥</td></tr>
+                        <tr><td><strong>时间同步</strong></td><td>最低NTP；高保证用PTP</td></tr>
+                    </tbody>
+                </table>
+
+                <h2 id="conclusion">13. 结论</h2>
+                
+                <p>EU AI法案的2026年8月截止日期为招聘AI运营商创造了紧迫的必要性。当前系统缺乏遵守Article 12（日志记录）、Article 14（人工监督）和Article 86（解释）要求的技术基础设施。</p>
+                
+                <div class="key-point">
+                    <p style="color: #cbd5e1; margin-bottom: 1rem;"><strong style="color: #f1f5f9;">VAP-PAP提供：</strong></p>
+                    <ul style="color: #cbd5e1; margin-bottom: 0;">
+                        <li>通过加密哈希链的<strong style="color: #f1f5f9;">防篡改审计追踪</strong></li>
+                        <li>通过数字签名和默克尔证明的<strong style="color: #f1f5f9;">第三方可验证性</strong></li>
+                        <li>通过加密销毁的<strong style="color: #f1f5f9;">GDPR兼容性</strong></li>
+                        <li>通过集成可解释性的<strong style="color: #f1f5f9;">Article 86合规</strong></li>
+                        <li>与组织成熟度匹配的<strong style="color: #f1f5f9;">渐进合规级别</strong></li>
+                    </ul>
+                </div>
+                
+                <p style="font-size: 1.25rem; font-weight: 600; color: #60a5fa; text-align: center; margin: 3rem 0;">"无理由不决策。无证明不日志。"</p>
+
+            </article>
+
+            <!-- Resources Section -->
+            <section style="background: #1e293b; border-radius: 1rem; padding: 2rem; margin-top: 3rem;">
+                <h2 style="color: #f1f5f9; font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">
+                    <i class="fas fa-book" style="color: #60a5fa; margin-right: 0.75rem;"></i>相关资源
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <a href="https://veritaschain.org/vap/zh/" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: #0f172a; border-radius: 0.5rem; text-decoration: none; color: #cbd5e1;">
+                        <i class="fas fa-certificate" style="color: #10b981; font-size: 1.25rem;"></i>
+                        <span>VAP框架</span>
+                    </a>
+                    <a href="https://veritaschain.org/vap/pap/zh/" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: #0f172a; border-radius: 0.5rem; text-decoration: none; color: #cbd5e1;">
+                        <i class="fas fa-file-alt" style="color: #3b82f6; font-size: 1.25rem;"></i>
+                        <span>PAP规范</span>
+                    </a>
+                    <a href="https://veritaschain.org/vcp/specification/zh/" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: #0f172a; border-radius: 0.5rem; text-decoration: none; color: #cbd5e1;">
+                        <i class="fas fa-link" style="color: #8b5cf6; font-size: 1.25rem;"></i>
+                        <span>VCP规范</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Document Info -->
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #334155; color: #64748b; font-size: 0.85rem;">
+                <p><strong>文档ID:</strong> VSO-BLOG-PAP-HIRING-001 | <strong>版本:</strong> 1.0 | <strong>状态:</strong> 研究草案</p>
+                <p style="margin-top: 1rem;">
+                    <i class="fab fa-creative-commons"></i>
+                    <i class="fab fa-creative-commons-by"></i>
+                    本文章根据<a href="https://creativecommons.org/licenses/by/4.0/deed.zh-hans" style="color: #60a5fa;">CC BY 4.0</a>发布。
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <vcp-footer></vcp-footer>
+</body>
+</html>
