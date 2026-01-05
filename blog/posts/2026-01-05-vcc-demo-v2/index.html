@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCC Demo v2.0 Released: Tamper Detection, Live Simulator, and Multi-Language Support - VeritasChain Blog</title>
+    <meta name="description" content="Major update to our browser-based cryptographic audit trail demo. New features include tamper detection visualization, Merkle tree explorer, live trading simulator, and support for 4 languages.">
+    <meta name="keywords" content="VCC Demo, VCP v1.1, cryptography, JavaScript, fintech, open source, Merkle tree, tamper detection, audit trail">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/">
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/">
+    
+    <meta property="og:title" content="VCC Demo v2.0 Released: Tamper Detection, Live Simulator, and Multi-Language Support">
+    <meta property="og:description" content="Major update to our browser-based cryptographic audit trail demo with tamper detection visualization, Merkle tree explorer, and 4 language support.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="article:published_time" content="2026-01-05T00:00:00Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="VCC Demo v2.0 Released">
+    <meta name="twitter:description" content="Browser-based cryptographic audit trail demo with tamper detection, Merkle tree visualization, and live trading simulator.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <link rel="icon" type="image/png" href="/assets/img/logo.png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XTK1LJKRGV');</script>
+    <style>
+        .gradient-text{background:linear-gradient(135deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .card-hover{transition:all .3s ease;}
+        .card-hover:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(59,130,246,.15);}
+        .prose{max-width:none;}
+        .prose h2{color:#e2e8f0;font-size:1.75rem;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(148,163,184,.2);}
+        .prose h3{color:#cbd5e1;font-size:1.25rem;font-weight:600;margin-top:2rem;margin-bottom:.75rem;}
+        .prose p{color:#94a3b8;line-height:1.8;margin-bottom:1.25rem;}
+        .prose ul,.prose ol{color:#94a3b8;margin-bottom:1.25rem;padding-left:1.5rem;}
+        .prose li{margin-bottom:.5rem;line-height:1.7;}
+        .prose strong{color:#e2e8f0;}
+        .prose a{color:#60a5fa;text-decoration:underline;}
+        .prose a:hover{color:#93c5fd;}
+        .prose blockquote{border-left:4px solid #3b82f6;padding-left:1rem;margin:1.5rem 0;color:#94a3b8;font-style:italic;background:rgba(59,130,246,.05);padding:1rem;border-radius:0 .5rem .5rem 0;}
+        .prose code{background:rgba(59,130,246,.1);color:#60a5fa;padding:.125rem .375rem;border-radius:.25rem;font-size:.875rem;}
+        .prose table{width:100%;border-collapse:collapse;margin:1.5rem 0;}
+        .prose th,.prose td{border:1px solid rgba(148,163,184,.2);padding:.75rem;text-align:left;}
+        .prose th{background:rgba(59,130,246,.1);color:#e2e8f0;font-weight:600;}
+        .prose td{color:#94a3b8;}
+        .prose hr{border-color:rgba(148,163,184,.2);margin:2rem 0;}
+        .info-box{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:.5rem;padding:1.25rem;margin:1.5rem 0;}
+        .success-box{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:.5rem;padding:1.25rem;margin:1.5rem 0;}
+        .warning-box{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:.5rem;padding:1.25rem;margin:1.5rem 0;}
+        .feature-card{background:rgba(30,41,59,.8);border:1px solid rgba(59,130,246,.2);border-radius:.75rem;padding:1.5rem;margin:1rem 0;}
+        .cta-button{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:white;padding:.75rem 1.5rem;border-radius:.5rem;font-weight:600;text-decoration:none;transition:all .3s ease;}
+        .cta-button:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(59,130,246,.3);color:white;}
+    </style>
+
+    <!-- Structured Data - Article -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "VCC Demo v2.0 Released: Tamper Detection, Live Simulator, and Multi-Language Support",
+        "description": "Major update to our browser-based cryptographic audit trail demo. New features include tamper detection visualization, Merkle tree explorer, live trading simulator, and support for 4 languages.",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "url": "https://veritaschain.org/"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2026-01-05T00:00:00Z",
+        "dateModified": "2026-01-05T00:00:00Z",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/"
+        },
+        "keywords": ["VCC Demo", "VCP v1.1", "cryptography", "JavaScript", "fintech", "open source", "Merkle tree"],
+        "inLanguage": "en"
+    }
+    </script>
+    
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://veritaschain.org/"},
+            {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://veritaschain.org/blog/"},
+            {"@type": "ListItem", "position": 3, "name": "VCC Demo v2.0 Released", "item": "https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/"}
+        ]
+    }
+    </script>
+</head>
+<body class="bg-[#0f172a] text-gray-100 min-h-screen">
+    <vcp-header theme="dark" lang="en"></vcp-header>
+    
+    <main class="pt-20">
+        <!-- Article Header -->
+        <div class="bg-gradient-to-b from-[#1e293b] to-[#0f172a] py-16">
+            <div class="max-w-4xl mx-auto px-4">
+                <div class="flex items-center gap-3 mb-6 flex-wrap">
+                    <a href="/blog/" class="text-blue-400 hover:text-blue-300 transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Blog
+                    </a>
+                    <span class="text-gray-500">|</span>
+                    <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-medium">
+                        <i class="fas fa-bullhorn mr-1"></i>Announcement
+                    </span>
+                    <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-medium">
+                        <i class="fas fa-code mr-1"></i>Open Source
+                    </span>
+                </div>
+                
+                <h1 class="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+                    VCC Demo v2.0 Released: <span class="gradient-text">Tamper Detection, Live Simulator, and Multi-Language Support</span>
+                </h1>
+                
+                <p class="text-xl text-gray-400 mb-8 leading-relaxed">
+                    Major update to our browser-based VCP v1.1 reference implementation. Making cryptographic verification more visual, interactive, and accessible to a global audience.
+                </p>
+                
+                <div class="flex items-center gap-6 text-gray-500 text-sm flex-wrap mb-6">
+                    <span><i class="far fa-calendar mr-2"></i>January 5, 2026</span>
+                    <span><i class="far fa-clock mr-2"></i>8 min read</span>
+                    <span><i class="fas fa-user mr-2"></i>VeritasChain Standards Organization</span>
+                </div>
+                
+                <a href="https://veritaschain.org/vcc/demo/" target="_blank" class="cta-button">
+                    <i class="fas fa-external-link-alt"></i> Try VCC Demo v2.0 Now
+                </a>
+            </div>
+        </div>
+        
+        <!-- Article Content -->
+        <div class="max-w-4xl mx-auto px-4 py-12">
+            <article class="prose">
+                
+                <h2>What's New in v2.0</h2>
+                
+                <div class="feature-card">
+                    <h3 style="margin-top:0;color:#ef4444;"><i class="fas fa-circle mr-2" style="font-size:.75rem;"></i>Tamper Detection Demo</h3>
+                    <p style="margin-bottom:.75rem;">The most requested feature: <strong>see what happens when someone tries to modify data after it's been anchored.</strong></p>
+                    <p style="margin-bottom:.75rem;">This is the heart of "Verify, Don't Trust":</p>
+                    <ol style="margin-bottom:.75rem;">
+                        <li>Select any anchored event</li>
+                        <li>Click "Simulate Tampering" to modify the price field</li>
+                        <li>Run verification on the tampered data</li>
+                        <li>Watch it <strong>fail</strong> with a detailed explanation of why</li>
+                    </ol>
+                    <p style="margin-bottom:0;">The demo shows side-by-side comparison of original hash vs. tampered hash, why the tampered hash can't reach the same Merkle root, and what this means for data integrity.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 style="margin-top:0;color:#22c55e;"><i class="fas fa-tree mr-2"></i>Interactive Merkle Tree Visualization</h3>
+                    <p style="margin-bottom:.75rem;">Ever wondered what a Merkle tree actually looks like? Now you can see it.</p>
+                    <p style="margin-bottom:.75rem;">The new <strong>Merkle Tree</strong> tab renders the complete tree structure as an interactive SVG:</p>
+                    <ul style="margin-bottom:0;">
+                        <li>Click any leaf node to highlight its audit path</li>
+                        <li>Watch the path trace from leaf → root</li>
+                        <li>See the sibling hashes at each level</li>
+                        <li>Understand why proofs are O(log n)</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 style="margin-top:0;color:#3b82f6;"><i class="fas fa-chart-line mr-2"></i>Live Trading Simulator</h3>
+                    <p style="margin-bottom:.75rem;">The new <strong>Simulator</strong> tab brings the demo to life with real-time data:</p>
+                    <ul style="margin-bottom:0;">
+                        <li>Simulated price feeds for XAUUSD, EURUSD, BTCUSD, USDJPY</li>
+                        <li>Automatic event generation (1 per second)</li>
+                        <li>Auto-anchoring every 10 events (configurable)</li>
+                        <li>Watch your event count and anchor count grow in real-time</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 style="margin-top:0;color:#a855f7;"><i class="fas fa-globe mr-2"></i>Multi-Language Support</h3>
+                    <p style="margin-bottom:.75rem;">VCC Demo now speaks <strong>4 languages</strong>:</p>
+                    <table style="margin-bottom:0;">
+                        <thead>
+                            <tr>
+                                <th>Language</th>
+                                <th>Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>English</td><td>EN</td></tr>
+                            <tr><td>日本語 (Japanese)</td><td>JA</td></tr>
+                            <tr><td>中文 (Chinese)</td><td>ZH</td></tr>
+                            <tr><td>Español (Spanish)</td><td>ES</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3><i class="fas fa-moon mr-2"></i>Dark Mode</h3>
+                <p>Your eyes will thank you. Toggle between light and dark themes with one click. The entire UI—including the Merkle tree visualization—adapts to your preference.</p>
+                
+                <h3><i class="fas fa-file-export mr-2"></i>Enhanced Export Options</h3>
+                <ul>
+                    <li><strong>JSON Export:</strong> Export all events, individual anchors, or verification certificates</li>
+                    <li><strong>PDF Certificates:</strong> Download official-looking verification certificates with event details, hashes, and proof data</li>
+                    <li><strong>QR Codes:</strong> Generate QR codes for any certificate—perfect for sharing verification links</li>
+                </ul>
+                
+                <h3><i class="fas fa-search mr-2"></i>Search & Filter</h3>
+                <p>Finally! Find what you're looking for:</p>
+                <ul>
+                    <li>Search by trace ID, symbol, or event ID</li>
+                    <li>Filter by event type (SIG, ORD, ACK, EXE, etc.)</li>
+                    <li>Filter by status (PENDING, ANCHORED)</li>
+                    <li>Export filtered results</li>
+                </ul>
+                
+                <hr>
+                
+                <h2>Feature Comparison: v1.0 vs v2.0</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>v1.0</th>
+                            <th>v2.0</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Event Creation</td><td>✅</td><td>✅</td></tr>
+                        <tr><td>Merkle Anchoring</td><td>✅</td><td>✅</td></tr>
+                        <tr><td>Certificate Verification</td><td>✅</td><td>✅</td></tr>
+                        <tr><td>Tamper Detection Demo</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>Tree Visualization</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>Live Simulator</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>Multi-Language</td><td>❌</td><td>✅ (4)</td></tr>
+                        <tr><td>Dark Mode</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>JSON Export</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>PDF Export</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>QR Codes</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>Search/Filter</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>File Size</td><td>42KB</td><td>99KB</td></tr>
+                    </tbody>
+                </table>
+                
+                <hr>
+                
+                <h2>Technical Notes</h2>
+                
+                <div class="info-box">
+                    <p style="margin:0;"><strong><i class="fas fa-laptop-code mr-2"></i>100% Client-Side:</strong> Everything still runs entirely in your browser. No server required, no signup needed, data persists in IndexedDB, all cryptography via Web Crypto API, and single HTML file deployment.</p>
+                </div>
+                
+                <p><strong>New dependencies:</strong></p>
+                <ul>
+                    <li><a href="https://github.com/soldair/node-qrcode" target="_blank">QRCode.js</a> for QR generation (loaded from CDN)</li>
+                </ul>
+                
+                <p><strong>Browser support:</strong> Chrome 90+, Firefox 88+, Safari 14+, Edge 90+</p>
+                
+                <hr>
+                
+                <h2>What's Next?</h2>
+                
+                <p>We're considering these features for v2.1:</p>
+                
+                <ul>
+                    <li><strong>OpenTimestamps Integration</strong> — Real Bitcoin anchoring</li>
+                    <li><strong>Event Import</strong> — Load events from JSON/CSV</li>
+                    <li><strong>Comparison Mode</strong> — Compare two events side-by-side</li>
+                    <li><strong>Embeddable Widget</strong> — Drop VCC verification into any page</li>
+                </ul>
+                
+                <hr>
+                
+                <h2>Try It Now</h2>
+                
+                <div class="success-box">
+                    <p style="margin-bottom:1rem;"><strong><i class="fas fa-rocket mr-2"></i>Get Started:</strong></p>
+                    <ol style="margin-bottom:1rem;">
+                        <li>Create some events</li>
+                        <li>Anchor them</li>
+                        <li>Try the Tamper Demo</li>
+                        <li>Explore the Merkle tree</li>
+                        <li>Switch to dark mode and Japanese</li>
+                    </ol>
+                    <p style="margin-bottom:1rem;">Everything happens in your browser. Your data stays with you.</p>
+                    <a href="https://veritaschain.org/vcc/demo/" target="_blank" class="cta-button">
+                        <i class="fas fa-external-link-alt"></i> Launch VCC Demo v2.0
+                    </a>
+                </div>
+                
+                <hr>
+                
+                <h2>Resources</h2>
+                
+                <ul>
+                    <li><strong>Live Demo:</strong> <a href="https://veritaschain.org/vcc/demo/" target="_blank">veritaschain.org/vcc/demo</a></li>
+                    <li><strong>VCP Specification:</strong> <a href="https://github.com/veritaschain/vcp-spec" target="_blank">github.com/veritaschain/vcp-spec</a></li>
+                    <li><strong>GitHub:</strong> <a href="https://github.com/veritaschain" target="_blank">github.com/veritaschain</a></li>
+                    <li><strong>Website:</strong> <a href="https://veritaschain.org" target="_blank">veritaschain.org</a></li>
+                </ul>
+                
+                <hr>
+                
+                <h2>Changelog</h2>
+                
+                <h3>v2.0.0 (2026-01-05)</h3>
+                <ul>
+                    <li>Added: Tamper Detection Demo tab</li>
+                    <li>Added: Merkle Tree Visualization tab</li>
+                    <li>Added: Live Trading Simulator tab</li>
+                    <li>Added: Multi-language support (EN/JA/ZH/ES)</li>
+                    <li>Added: Dark mode toggle</li>
+                    <li>Added: JSON export for events, anchors, certificates</li>
+                    <li>Added: PDF certificate generation</li>
+                    <li>Added: QR code generation for certificates</li>
+                    <li>Added: Search and filter for events</li>
+                    <li>Changed: Tab navigation expanded from 4 to 7 tabs</li>
+                    <li>Changed: File size increased from 42KB to 99KB</li>
+                </ul>
+                
+                <h3>v1.0.0 (2026-01-01)</h3>
+                <ul>
+                    <li>Initial release</li>
+                </ul>
+                
+                <hr>
+                
+                <div class="warning-box">
+                    <p style="margin:0;"><strong><i class="fas fa-info-circle mr-2"></i>Disclaimer:</strong> VCC Demo is a reference implementation for educational purposes. It is not VC-Certified and does not constitute endorsement by the VeritasChain Standards Organization (VSO).</p>
+                </div>
+                
+                <blockquote>
+                    <p style="margin:0;">The era of "trust me" is over. The era of "verify it yourself" has begun.</p>
+                </blockquote>
+                
+            </article>
+            
+            <!-- Article Footer -->
+            <div style="margin-top: 3rem; padding: 1.5rem; background: rgba(30, 41, 59, 0.5); border: 1px solid #334155; border-radius: 12px;">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">
+                            <i class="fab fa-creative-commons mr-1" style="color: #60a5fa;"></i>
+                            <i class="fab fa-creative-commons-by mr-2" style="color: #60a5fa;"></i>
+                            Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="color: #60a5fa; text-decoration: underline;">CC BY 4.0 International</a>
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/&text=VCC Demo v2.0 Released - Tamper Detection, Live Simulator, Multi-Language Support" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="https://github.com/veritaschain" target="_blank" class="text-gray-400 hover:text-gray-300 transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="mt-12 pt-8 border-t border-gray-700">
+                <a href="/blog/" class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to All Articles
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 4rem 2rem; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="color: #f1f5f9; font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">
+                Experience VCC Demo v2.0
+            </h2>
+            <p style="color: #94a3b8; font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem;">
+                See cryptographic verification in action. No signup required—everything runs in your browser.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <a href="https://veritaschain.org/vcc/demo/" class="btn btn-primary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fas fa-play"></i> Try Demo
+                </a>
+                <a href="/what-is-vcp/" class="btn btn-secondary" style="padding: 1rem 2rem;">
+                    <i class="fas fa-info-circle"></i> What is VCP?
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="en"></vcp-footer>
+</body>
+</html>
