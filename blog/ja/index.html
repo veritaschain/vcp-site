@@ -456,6 +456,79 @@
             display: none;
         }
         
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .pagination-btn {
+            min-width: 40px;
+            height: 40px;
+            padding: 0 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pagination-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .pagination-info {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-left: 1rem;
+        }
+        
+        .pagination-ellipsis {
+            color: #64748b;
+            padding: 0 0.25rem;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .no-results h3 {
+            color: #94a3b8;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
         @media (max-width: 768px) {
             .featured-post {
                 grid-template-columns: 1fr !important;
@@ -1171,6 +1244,16 @@
                     
                     
                 </div>
+                
+                <!-- No Results Message -->
+                <div class="no-results" id="noResults" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <h3>記事が見つかりません</h3>
+                    <p>フィルターを調整するか、タグをクリアしてください。</p>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination" id="pagination"></div>
             </section>
             
             <!-- License Notice -->
@@ -1208,27 +1291,115 @@
     <vcp-footer theme="dark" lang="ja"></vcp-footer>
 
     <script>
-        // Active filters state
+        // Pagination and Filter State
+        const ITEMS_PER_PAGE = 9;
+        let currentPage = 1;
         let activeTags = [];
         let activeCategory = 'all';
         
-        // Filter function
-        function applyFilters() {
-            document.querySelectorAll('.blog-card').forEach(card => {
+        // Get filtered cards
+        function getFilteredCards() {
+            const allCards = Array.from(document.querySelectorAll('.blog-card'));
+            return allCards.filter(card => {
                 const cardCategory = card.dataset.category;
                 const cardTags = card.dataset.tags ? card.dataset.tags.split(',') : [];
-                
-                // Check category
                 const categoryMatch = activeCategory === 'all' || cardCategory === activeCategory;
-                
-                // Check tags (if any tags are active, card must have at least one)
                 const tagMatch = activeTags.length === 0 || activeTags.some(tag => cardTags.includes(tag));
-                
-                if (categoryMatch && tagMatch) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
+                return categoryMatch && tagMatch;
+            });
+        }
+        
+        // Render pagination controls
+        function renderPagination(filteredCards) {
+            const paginationEl = document.getElementById('pagination');
+            const totalPages = Math.ceil(filteredCards.length / ITEMS_PER_PAGE);
+            
+            if (totalPages <= 1) {
+                paginationEl.innerHTML = '';
+                return;
+            }
+            
+            let html = '';
+            
+            // Previous button
+            html += `<button class="pagination-btn" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} aria-label="前のページ">
+                <i class="fas fa-chevron-left"></i>
+            </button>`;
+            
+            // Page numbers with ellipsis
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+            
+            if (startPage > 1) {
+                html += `<button class="pagination-btn" onclick="goToPage(1)">1</button>`;
+                if (startPage > 2) {
+                    html += `<span class="pagination-ellipsis">...</span>`;
                 }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                html += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})" aria-label="${i}ページ" ${i === currentPage ? 'aria-current="page"' : ''}>${i}</button>`;
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    html += `<span class="pagination-ellipsis">...</span>`;
+                }
+                html += `<button class="pagination-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+            }
+            
+            // Next button
+            html += `<button class="pagination-btn" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} aria-label="次のページ">
+                <i class="fas fa-chevron-right"></i>
+            </button>`;
+            
+            // Page info
+            html += `<span class="pagination-info">${filteredCards.length} 記事</span>`;
+            
+            paginationEl.innerHTML = html;
+        }
+        
+        // Go to specific page
+        function goToPage(page) {
+            const filteredCards = getFilteredCards();
+            const totalPages = Math.ceil(filteredCards.length / ITEMS_PER_PAGE);
+            
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            applyFilters();
+            
+            // Scroll to blog grid
+            document.querySelector('.blog-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Filter function with pagination
+        function applyFilters() {
+            const allCards = Array.from(document.querySelectorAll('.blog-card'));
+            const filteredCards = getFilteredCards();
+            const totalPages = Math.ceil(filteredCards.length / ITEMS_PER_PAGE);
+            
+            // Ensure current page is valid
+            if (currentPage > totalPages) {
+                currentPage = Math.max(1, totalPages);
+            }
+            
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            
+            // Hide all cards first
+            allCards.forEach(card => {
+                card.style.display = 'none';
+            });
+            
+            // Show only cards for current page
+            filteredCards.slice(startIndex, endIndex).forEach(card => {
+                card.style.display = '';
             });
             
             // Also filter featured post
@@ -1246,6 +1417,14 @@
                 }
             }
             
+            // Show/hide no results message
+            const noResults = document.getElementById('noResults');
+            if (filteredCards.length === 0) {
+                noResults.style.display = '';
+            } else {
+                noResults.style.display = 'none';
+            }
+            
             // Show/hide clear button
             const clearBtn = document.getElementById('clearTagsBtn');
             if (activeTags.length > 0) {
@@ -1253,6 +1432,9 @@
             } else {
                 clearBtn.classList.add('hidden');
             }
+            
+            // Render pagination
+            renderPagination(filteredCards);
         }
         
         // Category Filter Functionality
@@ -1261,6 +1443,7 @@
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 activeCategory = this.dataset.category;
+                currentPage = 1; // Reset to first page on filter change
                 applyFilters();
             });
         });
@@ -1278,6 +1461,7 @@
                     activeTags.push(tag);
                 }
                 
+                currentPage = 1; // Reset to first page on filter change
                 applyFilters();
             });
         });
@@ -1286,6 +1470,7 @@
         document.getElementById('clearTagsBtn').addEventListener('click', function() {
             activeTags = [];
             document.querySelectorAll('.tag-filter-btn').forEach(btn => btn.classList.remove('active'));
+            currentPage = 1;
             applyFilters();
         });
         
@@ -1305,6 +1490,11 @@
                 // Scroll to filter section
                 document.querySelector('.tag-filter-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
             });
+        });
+        
+        // Initialize pagination on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
         });
     </script>
 </body>
