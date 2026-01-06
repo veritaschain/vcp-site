@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP v1.2 Draft Proposal: The Evolution from Experimental Protocol to Enterprise-Grade Audit Infrastructure - VeritasChain Blog</title>
+    <meta name="description" content="Today we release the draft proposal for VCP v1.2 — introducing ERASURE events for GDPR compliance, enhanced RECOVERY constraints, and Silver Tier SDK accessibility. Feedback deadline: February 28, 2026.">
+    <meta name="keywords" content="VCP, VeritasChain Protocol, v1.2, draft proposal, GDPR, ERASURE, crypto-shredding, RECOVERY, SCITT, IETF, audit trail, algorithmic trading">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP v1.2 Draft Proposal: Enterprise-Grade Audit Infrastructure">
+    <meta property="og:description" content="The most comprehensive VCP update: ERASURE for GDPR, enhanced RECOVERY, SCITT alignment, and Silver Tier accessibility. Feedback deadline: Feb 28, 2026.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-06-vcp-v1-2-draft-announcement/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:published_time" content="2026-01-06">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Announcement">
+    <meta property="article:tag" content="VCP v1.2">
+    <meta property="article:tag" content="Draft Proposal">
+    <meta property="article:tag" content="GDPR">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP v1.2 Draft Proposal Released">
+    <meta name="twitter:description" content="The evolution from experimental protocol to enterprise-grade audit infrastructure. ERASURE, RECOVERY, SCITT alignment, and more.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-01-06-vcp-v1-2-draft-announcement/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-01-06-vcp-v1-2-draft-announcement/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-01-06-vcp-v1-2-draft-announcement/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-01-06-vcp-v1-2-draft-announcement/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-06-vcp-v1-2-draft-announcement/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .prose { max-width: 75ch; }
+        .prose h2 { color: #f1f5f9; font-size: 1.75rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid rgba(59, 130, 246, 0.3); }
+        .prose h3 { color: #e2e8f0; font-size: 1.35rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; }
+        .prose h4 { color: #cbd5e1; font-size: 1.15rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .prose p { color: #94a3b8; line-height: 1.8; margin-bottom: 1.25rem; }
+        .prose a { color: #60a5fa; text-decoration: underline; }
+        .prose a:hover { color: #93c5fd; }
+        .prose ul, .prose ol { color: #94a3b8; margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; line-height: 1.7; }
+        .prose strong { color: #e2e8f0; }
+        .prose blockquote { border-left: 4px solid #3b82f6; padding-left: 1.5rem; margin: 1.5rem 0; color: #94a3b8; font-style: italic; background: rgba(59, 130, 246, 0.05); padding: 1rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; }
+        .prose code { font-family: 'JetBrains Mono', monospace; background: rgba(30, 41, 59, 0.8); padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875rem; color: #e2e8f0; }
+        .prose pre { background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; padding: 1.5rem; overflow-x: auto; margin: 1.5rem 0; }
+        .prose pre code { background: none; padding: 0; font-size: 0.8rem; line-height: 1.6; }
+        .prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .prose th { background: rgba(59, 130, 246, 0.1); color: #e2e8f0; padding: 0.75rem 1rem; text-align: left; font-weight: 600; border: 1px solid rgba(59, 130, 246, 0.2); }
+        .prose td { padding: 0.75rem 1rem; border: 1px solid rgba(59, 130, 246, 0.1); color: #94a3b8; }
+        .prose tr:nth-child(even) { background: rgba(30, 41, 59, 0.3); }
+        .info-box { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .warning-box { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .draft-banner { background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(234, 88, 12, 0.2) 100%); border: 2px solid rgba(245, 158, 11, 0.5); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; text-align: center; }
+        .feature-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1rem 0; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .stat-card { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; padding: 1.25rem; text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: 800; color: #60a5fa; margin-bottom: 0.25rem; }
+        .stat-label { font-size: 0.85rem; color: #94a3b8; }
+        .toc-link { color: #60a5fa; text-decoration: none; display: block; padding: 0.5rem 0; border-bottom: 1px solid rgba(59, 130, 246, 0.1); }
+        .toc-link:hover { color: #93c5fd; background: rgba(59, 130, 246, 0.05); }
+        .code-block { background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.75rem; padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; overflow-x: auto; white-space: pre; color: #94a3b8; margin: 1.5rem 0; }
+        .timeline-item { position: relative; padding-left: 2rem; margin-bottom: 1.5rem; }
+        .timeline-item::before { content: ''; position: absolute; left: 0; top: 0.5rem; width: 0.75rem; height: 0.75rem; background: #3b82f6; border-radius: 50%; }
+        .timeline-item::after { content: ''; position: absolute; left: 0.3125rem; top: 1.5rem; width: 2px; height: calc(100% - 0.5rem); background: rgba(59, 130, 246, 0.3); }
+        .timeline-item:last-child::after { display: none; }
+    </style>
+
+    <!-- Structured Data - Article -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "VCP v1.2 Draft Proposal: The Evolution from Experimental Protocol to Enterprise-Grade Audit Infrastructure",
+    "description": "Today we release the draft proposal for VCP v1.2 — introducing ERASURE events for GDPR compliance, enhanced RECOVERY constraints, and Silver Tier SDK accessibility.",
+    "image": "https://veritaschain.org/assets/OGP.png",
+    "author": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization",
+        "url": "https://veritaschain.org/"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://veritaschain.org/assets/img/logo.png"
+        }
+    },
+    "datePublished": "2026-01-06",
+    "dateModified": "2026-01-06",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://veritaschain.org/blog/posts/2026-01-06-vcp-v1-2-draft-announcement/"
+    },
+    "keywords": [
+        "VCP v1.2",
+        "draft proposal",
+        "GDPR",
+        "ERASURE",
+        "RECOVERY",
+        "SCITT",
+        "cryptographic audit"
+    ],
+    "inLanguage": "en"
+}
+    </script>
+    
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://veritaschain.org/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://veritaschain.org/blog/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "VCP v1.2 Draft Proposal",
+            "item": "https://veritaschain.org/blog/posts/2026-01-06-vcp-v1-2-draft-announcement/"
+        }
+    ]
+}
+    </script>
+</head>
+<body class="bg-slate-900">
+    <vcp-header theme="dark" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Hero Section -->
+    <section style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%); padding: 8rem 2rem 4rem; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);"></div>
+        
+        <div style="position: relative; z-index: 1; max-width: 900px; margin: 0 auto;">
+            <!-- Breadcrumb -->
+            <nav style="margin-bottom: 2rem;">
+                <a href="/blog/" style="color: #60a5fa; text-decoration: none; font-size: 0.9rem;">
+                    <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>Back to Blog
+                </a>
+            </nav>
+            
+            <!-- Category & Meta -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.35rem 1rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600;">
+                    <i class="fas fa-bullhorn" style="margin-right: 0.5rem;"></i>Announcement
+                </span>
+                <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; padding: 0.35rem 1rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600;">
+                    <i class="fas fa-file-alt" style="margin-right: 0.5rem;"></i>DRAFT
+                </span>
+                <span style="color: #64748b; font-size: 0.85rem;">
+                    <i class="far fa-calendar" style="margin-right: 0.35rem;"></i>January 6, 2026
+                </span>
+                <span style="color: #64748b; font-size: 0.85rem;">
+                    <i class="far fa-clock" style="margin-right: 0.35rem;"></i>25 min read
+                </span>
+            </div>
+            
+            <!-- Title -->
+            <h1 style="color: #f8fafc; font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem;">
+                VCP v1.2 Draft Proposal: The Evolution from Experimental Protocol to Enterprise-Grade Audit Infrastructure
+            </h1>
+            
+            <!-- Subtitle -->
+            <p style="color: #94a3b8; font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem;">
+                Seven normative changes and three informative additions that transform VCP from an experimental standard into production-ready infrastructure. <strong style="color: #fbbf24;">Feedback deadline: February 28, 2026.</strong>
+            </p>
+            
+            <!-- Draft Banner -->
+            <div class="draft-banner">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #fbbf24; margin-bottom: 0.5rem;">
+                    <i class="fas fa-file-signature" style="margin-right: 0.5rem;"></i>DRAFT — Open for Community Feedback
+                </div>
+                <p style="color: #e2e8f0; margin: 0;">Your input — whether you're an implementer, regulator, auditor, or skeptic — will shape the final specification.</p>
+            </div>
+            
+            <!-- Key Stats -->
+            <div class="stat-grid" style="margin-top: 2rem;">
+                <div class="stat-card">
+                    <div class="stat-number" style="color: #60a5fa;">7</div>
+                    <div class="stat-label">Normative Changes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" style="color: #a78bfa;">3</div>
+                    <div class="stat-label">Informative Additions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" style="color: #34d399;">0</div>
+                    <div class="stat-label">Breaking Changes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" style="color: #fbbf24;">Feb 28</div>
+                    <div class="stat-label">Feedback Deadline</div>
+                </div>
+            </div>
+            
+            <!-- Tags -->
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;">
+                <span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">GDPR</span>
+                <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">SCITT</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">SEC 17a-4</span>
+                <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">MiFID II</span>
+                <span style="background: rgba(236, 72, 153, 0.2); color: #f472b6; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">EU AI Act</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main style="max-width: 900px; margin: 0 auto; padding: 4rem 2rem;">
+        
+        <!-- Table of Contents -->
+        <div class="info-box" style="margin-bottom: 3rem;">
+            <h2 style="color: #f1f5f9; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">
+                <i class="fas fa-list" style="margin-right: 0.5rem; color: #60a5fa;"></i>Table of Contents
+            </h2>
+            <nav>
+                <a href="#executive-summary" class="toc-link">Executive Summary</a>
+                <a href="#story-behind" class="toc-link">The Story Behind v1.2</a>
+                <a href="#design-philosophy" class="toc-link">Design Philosophy</a>
+                <a href="#major-changes" class="toc-link">Major Changes in Detail</a>
+                <a href="#silver-tier" class="toc-link">Silver Tier: Making Compliance Accessible</a>
+                <a href="#not-changing" class="toc-link">What's NOT Changing</a>
+                <a href="#implementation-roadmap" class="toc-link">Implementation Roadmap</a>
+                <a href="#call-for-feedback" class="toc-link">Call for Feedback</a>
+            </nav>
+        </div>
+
+        <article class="prose">
+            
+            <!-- Executive Summary -->
+            <section id="executive-summary">
+                <h2><i class="fas fa-bookmark" style="margin-right: 0.75rem; color: #60a5fa;"></i>Executive Summary</h2>
+                
+                <p>Today, we publicly release the <strong>draft proposal for VeritasChain Protocol version 1.2</strong> — the most comprehensive update since VCP's inception. This proposal represents a fundamental shift in how we think about cryptographic audit trails: from proving "this data wasn't tampered with" to answering <strong>"what happens when things go wrong in the real world?"</strong></p>
+                
+                <p>VCP v1.2 introduces seven normative changes and three informative additions that collectively transform the protocol from an experimental standard into production-ready infrastructure capable of handling the messy realities of enterprise deployment: system failures, regulatory compliance conflicts, service provider outages, and the operational needs of organizations ranging from three-person prop trading firms to global financial institutions.</p>
+                
+                <div class="warning-box">
+                    <h4 style="color: #fbbf24; margin-top: 0;"><i class="fas fa-comments" style="margin-right: 0.5rem;"></i>We Need Your Feedback</h4>
+                    <p style="margin-bottom: 0;">This is a draft proposal. We are actively seeking community feedback before finalization. Your input — whether you're an implementer, regulator, auditor, or skeptic — will shape the final specification. <strong>Deadline: February 28, 2026.</strong></p>
+                </div>
+            </section>
+
+            <!-- Story Behind v1.2 -->
+            <section id="story-behind">
+                <h2><i class="fas fa-book-open" style="margin-right: 0.75rem; color: #a78bfa;"></i>The Story Behind v1.2</h2>
+                
+                <h3>From Cryptographic Proof to Operational Reality</h3>
+                
+                <p>When we released VCP v1.0 in 2024, our focus was singular: create a tamper-evident audit trail for algorithmic trading systems. Hash chains provide sequential integrity. Merkle trees enable efficient verification. Digital signatures prove authenticity. External anchoring to public blockchains makes the entire chain independently verifiable.</p>
+                
+                <p>The cryptography worked. The architecture was sound. But as we engaged with potential adopters — prop trading firms recovering from the 2024-2025 industry trust crisis, brokers seeking regulatory differentiation, exchanges exploring transparency initiatives — we encountered a pattern of questions that our elegant cryptographic design couldn't answer.</p>
+                
+                <h3>The "What If" Questions</h3>
+                
+                <div class="feature-card">
+                    <p style="margin: 0; font-style: italic; color: #94a3b8;"><strong style="color: #60a5fa;">From a CTO at a mid-sized prop firm:</strong></p>
+                    <blockquote style="margin: 1rem 0 0 0;">"Your hash chain is great, but what happens when our server crashes at 3 AM and we lose 47 events? Do we just... start a new chain? How do auditors know that's legitimate and not us hiding something?"</blockquote>
+                </div>
+                
+                <div class="feature-card">
+                    <p style="margin: 0; font-style: italic; color: #94a3b8;"><strong style="color: #34d399;">From a compliance officer at an EU broker:</strong></p>
+                    <blockquote style="margin: 1rem 0 0 0;">"We're required to keep records for 5 years under MiFID II. But GDPR says customers can demand deletion. Your immutable audit trail makes that impossible. Which law do we break?"</blockquote>
+                </div>
+                
+                <div class="feature-card">
+                    <p style="margin: 0; font-style: italic; color: #94a3b8;"><strong style="color: #fbbf24;">From a three-person trading team:</strong></p>
+                    <blockquote style="margin: 1rem 0 0 0;">"We love the concept, but we're running MT4 on a VPS. We don't have HSMs. We don't have 24/7 ops. Is VCP only for big institutions?"</blockquote>
+                </div>
+                
+                <p>These weren't edge cases. These were fundamental operational realities that any production deployment would face. VCP v1.0 and v1.1 had built the cryptographic foundation. <strong>VCP v1.2 needed to build the operational framework.</strong></p>
+            </section>
+
+            <!-- Design Philosophy -->
+            <section id="design-philosophy">
+                <h2><i class="fas fa-lightbulb" style="margin-right: 0.75rem; color: #fbbf24;"></i>Design Philosophy</h2>
+                
+                <h3>Protocol-Compatible, Certification-Stricter</h3>
+                
+                <p>VCP v1.2 follows a deliberate design philosophy that we call <strong>"Protocol-Compatible, Certification-Stricter"</strong>:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>v1.2 Approach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data Format</td>
+                            <td>Fully backward compatible. v1.0/v1.1 events work with v1.2 verifiers.</td>
+                        </tr>
+                        <tr>
+                            <td>New Features</td>
+                            <td>Additive only. New event types and fields are optional.</td>
+                        </tr>
+                        <tr>
+                            <td>Certification</td>
+                            <td>Stricter requirements for VC-Certified badge. Closes loopholes.</td>
+                        </tr>
+                        <tr>
+                            <td>Breaking Changes</td>
+                            <td style="color: #34d399; font-weight: 600;">Zero. No existing implementation breaks.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>The "Thicker Trail" Principle</h3>
+                
+                <div class="info-box">
+                    <p style="margin: 0; font-size: 1.1rem; color: #e2e8f0;"><strong>When operational necessity requires deviation from the ideal cryptographic flow, the deviation itself must be documented with equal or greater rigor than normal operations.</strong></p>
+                </div>
+                
+                <p>Examples:</p>
+                <ul>
+                    <li><strong>SKIP operations</strong> (skipping corrupted events) are allowed, but with strict limits and mandatory logging</li>
+                    <li><strong>Emergency checkpoints</strong> (resetting the chain during crises) require multi-party approval and post-incident review</li>
+                    <li><strong>Data erasure</strong> (GDPR compliance) becomes a cryptographically verifiable event</li>
+                </ul>
+            </section>
+
+            <!-- Major Changes -->
+            <section id="major-changes">
+                <h2><i class="fas fa-code-branch" style="margin-right: 0.75rem; color: #60a5fa;"></i>Major Changes in Detail</h2>
+                
+                <!-- Change 1: RECOVERY -->
+                <h3>1. VCP-RECOVERY Constraint Strengthening</h3>
+                
+                <p>VCP v1.1's recovery operations came with almost no constraints, creating a potential escape hatch for bad actors. <strong>VCP v1.2 introduces hard limits</strong> calibrated to each compliance tier:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Max Events</th>
+                            <th>Max Duration</th>
+                            <th>Anchor Boundary Rule</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span style="color: #a78bfa; font-weight: 600;">Platinum</span></td>
+                            <td>10 events</td>
+                            <td>1 second</td>
+                            <td>Cannot cross 10-minute anchor</td>
+                        </tr>
+                        <tr>
+                            <td><span style="color: #fbbf24; font-weight: 600;">Gold</span></td>
+                            <td>100 events</td>
+                            <td>1 minute</td>
+                            <td>Cannot cross 1-hour anchor</td>
+                        </tr>
+                        <tr>
+                            <td><span style="color: #60a5fa; font-weight: 600;">Silver</span></td>
+                            <td>1,000 events</td>
+                            <td>1 hour</td>
+                            <td>Cannot cross 24-hour anchor</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>Emergency Override:</strong> Genuine emergencies require immediate action. VCP v1.2 creates an Emergency Override mechanism with minimum 2 approvers, detailed justification, incident reference, and mandatory 72-hour post-incident review.</p>
+                
+                <!-- Change 2: ERASURE -->
+                <h3>2. ERASURE Event Type: Solving the GDPR Paradox</h3>
+                
+                <p>GDPR Article 17 requires the right to erasure. MiFID II requires 5-year retention. VCP requires immutability. <strong>These seem fundamentally incompatible.</strong></p>
+                
+                <p>VCP v1.2 resolves this through <strong>crypto-shredding</strong>:</p>
+                
+                <ol>
+                    <li><strong>During normal operation:</strong> Personal data is encrypted with per-subject keys</li>
+                    <li><strong>When erasure is required:</strong> The encryption key is destroyed (HSM zeroization)</li>
+                    <li><strong>The ERASURE event:</strong> A new event documents the erasure with cryptographic proof</li>
+                </ol>
+                
+                <div class="code-block">{
+  "Header": {
+    "EventType": "ERASURE",
+    "Timestamp": 1736150400000000
+  },
+  "ErasureDetails": {
+    "TargetIdentifier": { "Type": "ACCOUNT", "Hash": "sha256(account_id + salt)" },
+    "Scope": { "AffectedEventCount": 147, "AffectedFields": ["ClientID", "Email"] },
+    "Reason": { "Code": "GDPR_ART_17_1A", "LegalBasis": "GDPR Art. 17(1)(a)" },
+    "CryptoShredding": {
+      "KeyAlgorithm": "AES-256-GCM",
+      "DestructionMethod": "HSM_ZEROIZE",
+      "DestructionCertificate": "base64_hsm_attestation..."
+    }
+  }
+}</div>
+                
+                <p>This is VCP's <strong>unique value proposition</strong> for EU compliance. Traditional audit logs force a choice between GDPR and record-keeping. VCP allows both simultaneously.</p>
+                
+                <!-- Change 3: Blockchain Selection -->
+                <h3>3. External Anchor Blockchain Selection Criteria</h3>
+                
+                <p>VCP v1.2 introduces a formal classification system:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>History</th>
+                            <th>Tier Applicability</th>
+                            <th>Examples</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>A</strong></td>
+                            <td>≥10 years</td>
+                            <td>All tiers</td>
+                            <td>Bitcoin, Ethereum</td>
+                        </tr>
+                        <tr>
+                            <td><strong>B</strong></td>
+                            <td>5-10 years</td>
+                            <td>All tiers</td>
+                            <td>Polygon, Arbitrum</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C</strong></td>
+                            <td>2-5 years</td>
+                            <td>Gold/Silver only</td>
+                            <td>Solana, Base, Avalanche</td>
+                        </tr>
+                        <tr>
+                            <td><strong>D</strong></td>
+                            <td>&lt;2 years</td>
+                            <td>Silver only</td>
+                            <td>Requires documented justification</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- Change 4: Anchor Continuity -->
+                <h3>4. Anchor Target Continuity Plan</h3>
+                
+                <p>VCP v1.2 defines <strong>Recovery Time Objectives (RTO)</strong> and <strong>Recovery Point Objectives (RPO)</strong> for anchor failures:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Anchor Frequency</th>
+                            <th>Max Outage</th>
+                            <th>Failover Deadline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Platinum</td>
+                            <td>10 min</td>
+                            <td>10 min</td>
+                            <td>30 min</td>
+                        </tr>
+                        <tr>
+                            <td>Gold</td>
+                            <td>1 hour</td>
+                            <td>2 hours</td>
+                            <td>4 hours</td>
+                        </tr>
+                        <tr>
+                            <td>Silver</td>
+                            <td>24 hours</td>
+                            <td>48 hours</td>
+                            <td>7 days</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- Change 5: SCITT -->
+                <h3>5. IETF SCITT Alignment</h3>
+                
+                <p>VCP v1.2 adds optional <code>SCITTAlignment</code> fields for interoperability with the <strong>Supply Chain Integrity, Transparency and Trust (SCITT)</strong> framework:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>VCP Concept</th>
+                            <th>SCITT Concept</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>VCP Event</td>
+                            <td>Signed Statement</td>
+                        </tr>
+                        <tr>
+                            <td>VCP Chain</td>
+                            <td>Append-Only Log</td>
+                        </tr>
+                        <tr>
+                            <td>Merkle Proof</td>
+                            <td>COSE Receipt</td>
+                        </tr>
+                        <tr>
+                            <td>External Anchor</td>
+                            <td>Transparency Service</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- Change 6: Latency -->
+                <h3>6. Latency Budget Clarification</h3>
+                
+                <p>VCP v1.2 separates operations into <strong>critical path</strong> (synchronous) and <strong>non-critical path</strong> (asynchronous):</p>
+                
+                <div class="code-block">Critical Path (Synchronous):
+Event Capture → Canonical Transform → Hash Calculation → Queue Write
+    &lt;1µs            &lt;2µs                 &lt;3µs             &lt;1µs
+                                                    
+Total: &lt;7µs target / &lt;10µs maximum (Platinum)</div>
+                
+                <!-- Change 7: Multi-Actor -->
+                <h3>7. Multi-Actor Chain Linking</h3>
+                
+                <p>Real-world trading involves more than two parties. VCP v1.2 extends VCP-XREF with topology awareness:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Topology</th>
+                            <th>Pattern</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BILATERAL</td>
+                            <td>A ↔ B</td>
+                            <td>Trader-Broker</td>
+                        </tr>
+                        <tr>
+                            <td>LINEAR</td>
+                            <td>A → B → C</td>
+                            <td>Routed order</td>
+                        </tr>
+                        <tr>
+                            <td>FAN_OUT</td>
+                            <td>A → [B, C, D]</td>
+                            <td>SOR execution</td>
+                        </tr>
+                        <tr>
+                            <td>FAN_IN</td>
+                            <td>[A, B, C] → D</td>
+                            <td>Aggregation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Silver Tier -->
+            <section id="silver-tier">
+                <h2><i class="fas fa-door-open" style="margin-right: 0.75rem; color: #34d399;"></i>Silver Tier: Making Compliance Accessible</h2>
+                
+                <p>VCP v1.2 commits to making Silver Tier compliance achievable through <strong>SDK defaults alone</strong>:</p>
+                
+                <div class="code-block"># Python - One-Line Compliance
+from vcp import VCPLogger
+logger = VCPLogger(tier="silver")
+logger.log_trade(order_id, symbol, side, quantity, price)</div>
+                
+                <div class="code-block">// MQL5 (MetaTrader) - Sidecar Integration
+#include &lt;VCP/VCPBridge.mqh&gt;
+VCPBridge bridge;
+bridge.Init("silver");
+bridge.LogOrder(ticket, symbol, type, lots, price);</div>
+                
+                <h4>What Silver Does NOT Require</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Required?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HSM</td>
+                            <td style="color: #f87171;">❌ Software signing acceptable</td>
+                        </tr>
+                        <tr>
+                            <td>Real-time anchoring</td>
+                            <td style="color: #f87171;">❌ 24h batch is compliant</td>
+                        </tr>
+                        <tr>
+                            <td>Automatic failover</td>
+                            <td style="color: #f87171;">❌ Manual acceptable</td>
+                        </tr>
+                        <tr>
+                            <td>Sub-millisecond latency</td>
+                            <td style="color: #f87171;">❌ &lt;100ms is compliant</td>
+                        </tr>
+                        <tr>
+                            <td>Dedicated infrastructure</td>
+                            <td style="color: #f87171;">❌ Shared hosting acceptable</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>The goal:</strong> No organization should be unable to adopt VCP due to resource constraints. The technology should adapt to you, not the other way around.</p>
+            </section>
+
+            <!-- Not Changing -->
+            <section id="not-changing">
+                <h2><i class="fas fa-lock" style="margin-right: 0.75rem; color: #60a5fa;"></i>What's NOT Changing</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>v1.2 Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hash Chain Algorithm</td>
+                            <td>SHA-256 (unchanged)</td>
+                        </tr>
+                        <tr>
+                            <td>Signature Algorithm</td>
+                            <td>Ed25519 default (unchanged)</td>
+                        </tr>
+                        <tr>
+                            <td>Merkle Tree Structure</td>
+                            <td>RFC 6962 compliant (unchanged)</td>
+                        </tr>
+                        <tr>
+                            <td>Event Schema</td>
+                            <td>Additive changes only</td>
+                        </tr>
+                        <tr>
+                            <td>Tier Structure</td>
+                            <td>Platinum/Gold/Silver (unchanged)</td>
+                        </tr>
+                        <tr>
+                            <td>Existing Events</td>
+                            <td style="color: #34d399;">v1.0/v1.1 events work with v1.2 verifiers ✓</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Implementation Roadmap -->
+            <section id="implementation-roadmap">
+                <h2><i class="fas fa-road" style="margin-right: 0.75rem; color: #fbbf24;"></i>Implementation Roadmap</h2>
+                
+                <div style="margin: 2rem 0;">
+                    <div class="timeline-item">
+                        <strong style="color: #60a5fa;">Phase 1: Foundation (Q1 2026)</strong>
+                        <p style="margin: 0.5rem 0 0 0;">VCP-RECOVERY constraints, Blockchain classification, Basic anchor continuity</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong style="color: #34d399;">Phase 2: Regulatory Compliance (Q2-Q3 2026)</strong>
+                        <p style="margin: 0.5rem 0 0 0;">ERASURE event type, Advanced anchor continuity, VCP-Regulatory profile</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong style="color: #a78bfa;">Phase 3: Interoperability (Q3-Q4 2026)</strong>
+                        <p style="margin: 0.5rem 0 0 0;">SCITT alignment, Multi-Actor XREF, Advanced verification APIs</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong style="color: #fbbf24;">Phase 4: Future-Proofing (2027+)</strong>
+                        <p style="margin: 0.5rem 0 0 0;">Post-quantum algorithm support, Performance optimizations</p>
+                    </div>
+                </div>
+                
+                <h3>Effort Estimates</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Engineering Weeks</th>
+                            <th>Dependencies</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>RECOVERY constraints</td>
+                            <td>2-3</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>Blockchain classification</td>
+                            <td>1</td>
+                            <td>Ops runbook</td>
+                        </tr>
+                        <tr>
+                            <td>ERASURE event</td>
+                            <td>4-6</td>
+                            <td>HSM/KMS</td>
+                        </tr>
+                        <tr>
+                            <td>SCITT alignment</td>
+                            <td>2-4</td>
+                            <td>COSE library</td>
+                        </tr>
+                        <tr>
+                            <td>Silver SDK updates</td>
+                            <td>&lt;1</td>
+                            <td>None</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Call for Feedback -->
+            <section id="call-for-feedback">
+                <h2><i class="fas fa-comments" style="margin-right: 0.75rem; color: #60a5fa;"></i>Call for Feedback</h2>
+                
+                <div class="draft-banner">
+                    <div style="font-size: 1.25rem; font-weight: 700; color: #fbbf24; margin-bottom: 0.75rem;">
+                        <i class="fas fa-calendar-alt" style="margin-right: 0.5rem;"></i>Feedback Deadline: February 28, 2026
+                    </div>
+                    <p style="color: #e2e8f0; margin: 0;">We will review all feedback in March and target a final v1.2 specification release in Q2 2026.</p>
+                </div>
+                
+                <h3>Who We Want to Hear From</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stakeholder</th>
+                            <th>Questions We'd Like Answered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Implementers</td>
+                            <td>Are requirements achievable? What's missing?</td>
+                        </tr>
+                        <tr>
+                            <td>Regulators</td>
+                            <td>Does ERASURE address GDPR adequately?</td>
+                        </tr>
+                        <tr>
+                            <td>Auditors</td>
+                            <td>Are CAB requirements for Emergency Override sufficient?</td>
+                        </tr>
+                        <tr>
+                            <td>Small teams</td>
+                            <td>Is Silver Tier simple enough?</td>
+                        </tr>
+                        <tr>
+                            <td>HFT firms</td>
+                            <td>Are latency budgets realistic?</td>
+                        </tr>
+                        <tr>
+                            <td>Skeptics</td>
+                            <td>What attack vectors are we missing?</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>How to Provide Feedback</h3>
+                
+                <div class="info-box">
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>GitHub Discussion:</strong> <a href="https://github.com/veritaschain/vcp-spec/discussions" target="_blank">veritaschain/vcp-spec/discussions</a></li>
+                        <li><strong>Email:</strong> <a href="mailto:standards@veritaschain.org">standards@veritaschain.org</a></li>
+                        <li><strong>IETF SCITT ML:</strong> For SCITT alignment comments</li>
+                        <li><strong>Direct meeting:</strong> Request via <a href="mailto:enterprise@veritaschain.org">enterprise@veritaschain.org</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Conclusion -->
+            <section style="margin-top: 4rem;">
+                <h2><i class="fas fa-flag-checkered" style="margin-right: 0.75rem; color: #60a5fa;"></i>Conclusion</h2>
+                
+                <p>VCP v1.2 represents the maturation of VeritasChain Protocol from an experimental standard to production-ready infrastructure. It addresses the real-world questions that every enterprise deployment must answer:</p>
+                
+                <div class="feature-card">
+                    <ul style="margin: 0;">
+                        <li><strong>What happens when systems fail?</strong> → RECOVERY constraints with audit trails</li>
+                        <li><strong>How do we comply with GDPR?</strong> → ERASURE with crypto-shredding</li>
+                        <li><strong>What if our anchor goes down?</strong> → Continuity plans with tier-specific RTO/RPO</li>
+                        <li><strong>Is this only for big institutions?</strong> → Silver Tier with one-line SDK compliance</li>
+                        <li><strong>How does this fit international standards?</strong> → IETF SCITT alignment</li>
+                    </ul>
+                </div>
+                
+                <p>The cryptographic foundation remains unchanged. The operational framework is now complete.</p>
+                
+                <div class="info-box" style="border-color: rgba(52, 211, 153, 0.5); background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.05) 100%); text-align: center;">
+                    <p style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #34d399;">Because "trust me" isn't good enough. <strong>Verify.</strong></p>
+                </div>
+            </section>
+
+            <!-- Resources -->
+            <section style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid rgba(59, 130, 246, 0.2);">
+                <h2><i class="fas fa-link" style="margin-right: 0.75rem; color: #60a5fa;"></i>Resources</h2>
+                
+                <div class="info-box">
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>Full Specification:</strong> <a href="https://github.com/veritaschain/vcp-spec/blob/main/proposals/VCP_v1_2_Change_Proposal_v3.md" target="_blank">VCP v1.2 Change Proposal v3</a></li>
+                        <li><strong>GitHub:</strong> <a href="https://github.com/veritaschain" target="_blank">github.com/veritaschain</a></li>
+                        <li><strong>Website:</strong> <a href="https://veritaschain.org" target="_blank">veritaschain.org</a></li>
+                        <li><strong>IETF Draft:</strong> <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">draft-kamimura-scitt-vcp</a></li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <h4 style="color: #60a5fa; margin-top: 0;">Contact</h4>
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>General inquiries:</strong> <a href="mailto:info@veritaschain.org">info@veritaschain.org</a></li>
+                        <li><strong>Technical questions:</strong> <a href="mailto:technical@veritaschain.org">technical@veritaschain.org</a></li>
+                        <li><strong>Standards feedback:</strong> <a href="mailto:standards@veritaschain.org">standards@veritaschain.org</a></li>
+                        <li><strong>Enterprise partnerships:</strong> <a href="mailto:enterprise@veritaschain.org">enterprise@veritaschain.org</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Document Info -->
+            <section style="margin-top: 3rem; padding: 1.5rem; background: rgba(30, 41, 59, 0.5); border-radius: 0.75rem; border: 1px solid rgba(59, 130, 246, 0.1);">
+                <p style="margin: 0; font-size: 0.85rem; color: #64748b;">
+                    <strong>Document ID:</strong> VSO-BLOG-2026-001 | 
+                    <strong>Version:</strong> 1.0 | 
+                    <strong>Status:</strong> DRAFT | 
+                    <strong>License:</strong> <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" style="color: #60a5fa;">CC BY 4.0</a>
+                </p>
+            </section>
+        </article>
+
+        <!-- Author Box -->
+        <div style="margin-top: 4rem; padding: 2rem; background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-building" style="font-size: 2rem; color: white;"></i>
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <h3 style="color: #f1f5f9; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">VeritasChain Standards Organization</h3>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 0.75rem;">Encoding Trust in the Algorithmic Age</p>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="https://veritaschain.org" target="_blank" style="color: #60a5fa; font-size: 0.9rem;"><i class="fas fa-globe" style="margin-right: 0.25rem;"></i>Website</a>
+                        <a href="https://github.com/veritaschain" target="_blank" style="color: #60a5fa; font-size: 0.9rem;"><i class="fab fa-github" style="margin-right: 0.25rem;"></i>GitHub</a>
+                        <a href="https://twitter.com/veritaschain" target="_blank" style="color: #60a5fa; font-size: 0.9rem;"><i class="fab fa-twitter" style="margin-right: 0.25rem;"></i>Twitter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Articles -->
+        <section style="margin-top: 4rem;">
+            <h2 style="color: #f1f5f9; font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem;">
+                <i class="fas fa-newspaper" style="margin-right: 0.75rem; color: #60a5fa;"></i>Related Articles
+            </h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <a href="/blog/posts/2025-12-26-vcp-v1-1-announcement/" style="text-decoration: none;">
+                    <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; padding: 1.5rem; transition: all 0.3s ease;">
+                        <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">Announcement</span>
+                        <h3 style="color: #f1f5f9; font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.5rem; line-height: 1.4;">VCP v1.1 Announcement</h3>
+                        <p style="color: #64748b; font-size: 0.85rem;">Three-layer architecture, mandatory external anchoring, and policy identifiers.</p>
+                    </div>
+                </a>
+                
+                <a href="/blog/posts/2026-01-05-vcp-vs-transparency-logs/" style="text-decoration: none;">
+                    <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; padding: 1.5rem; transition: all 0.3s ease;">
+                        <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">Technical</span>
+                        <h3 style="color: #f1f5f9; font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.5rem; line-height: 1.4;">Why Certificate Transparency Isn't Enough</h3>
+                        <p style="color: #64748b; font-size: 0.85rem;">The case for purpose-built audit standards in algorithmic trading.</p>
+                    </div>
+                </a>
+                
+                <a href="/blog/posts/2026-01-03-vcp-v1-1-eu-ai-act-compliance/" style="text-decoration: none;">
+                    <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; padding: 1.5rem; transition: all 0.3s ease;">
+                        <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">Regulation</span>
+                        <h3 style="color: #f1f5f9; font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.5rem; line-height: 1.4;">VCP v1.1 EU AI Act Compliance</h3>
+                        <p style="color: #64748b; font-size: 0.85rem;">Module-by-module compliance mapping for Article 12.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section style="margin-top: 4rem; padding: 3rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%); border: 2px solid rgba(245, 158, 11, 0.3); border-radius: 1rem; text-align: center;">
+            <h2 style="color: #f1f5f9; font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">
+                <i class="fas fa-comments" style="margin-right: 0.5rem; color: #fbbf24;"></i>Share Your Feedback
+            </h2>
+            <p style="color: #94a3b8; font-size: 1.1rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                VCP v1.2 is a draft. Your input will shape the final specification. <strong style="color: #fbbf24;">Deadline: February 28, 2026.</strong>
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <a href="https://github.com/veritaschain/vcp-spec/discussions" target="_blank" style="background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fab fa-github"></i>GitHub Discussion
+                </a>
+                <a href="mailto:standards@veritaschain.org" style="background: transparent; color: #fbbf24; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; border: 2px solid rgba(245, 158, 11, 0.5); display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-envelope"></i>Email Feedback
+                </a>
+                <a href="https://veritaschain.org/explorer/app/" target="_blank" style="background: transparent; color: #60a5fa; padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; border: 2px solid rgba(59, 130, 246, 0.5); display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-play"></i>Try VCP Explorer
+                </a>
+            </div>
+        </section>
+
+        <!-- License Notice -->
+        <div style="margin-top: 3rem; padding: 1rem; background: rgba(30, 41, 59, 0.5); border-radius: 0.5rem; text-align: center;">
+            <p style="color: #64748b; font-size: 0.85rem; margin: 0;">
+                <i class="fab fa-creative-commons" style="margin-right: 0.25rem;"></i>
+                <i class="fab fa-creative-commons-by" style="margin-right: 0.5rem;"></i>
+                This article is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" style="color: #60a5fa;">CC BY 4.0 International</a>
+            </p>
+        </div>
+    </main>
+
+    <vcp-footer theme="dark" lang="en"></vcp-footer>
+</body>
+</html>
