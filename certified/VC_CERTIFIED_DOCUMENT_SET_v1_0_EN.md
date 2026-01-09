@@ -230,7 +230,7 @@ github.com/veritaschain/
 | **EU AI Act (2026)** | VCP Spec (VCP-GOV), SDK Spec, Conformance Guide |
 | **MiFID II RTS 25** | VCP Spec (ClockSyncStatus), Conformance Guide (TST-*) |
 | **SEC/FINRA** | VCP Spec, API Reference, Market Intel |
-| **FCA Market Abuse** | VCP Spec, Sidecar Guide |
+| **Submissions Market Abuse** | VCP Spec, Sidecar Guide |
 | **JFSA** | VCP Spec (Japanese), Target List |
 
 ---
