@@ -529,6 +529,85 @@
             margin-bottom: 0.5rem;
         }
         
+        /* Search Styles */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+            color: #f1f5f9;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input::placeholder {
+            color: #64748b;
+        }
+        
+        .search-input:focus {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            color: #64748b;
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+        
+        .search-input:focus + .search-icon,
+        .search-input:not(:placeholder-shown) + .search-icon {
+            color: #60a5fa;
+        }
+        
+        .search-clear-btn {
+            position: absolute;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0.25rem;
+            display: none;
+            transition: color 0.2s ease;
+        }
+        
+        .search-clear-btn:hover {
+            color: #ef4444;
+        }
+        
+        .search-clear-btn.visible {
+            display: block;
+        }
+        
+        .search-results-info {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+            display: none;
+        }
+        
+        .search-results-info.visible {
+            display: block;
+        }
+
         @media (max-width: 768px) {
             .featured-post {
                 grid-template-columns: 1fr !important;
@@ -645,6 +724,18 @@
     <!-- Main Content -->
     <main style="background: #0f172a; padding: 4rem 2rem;">
         <div style="max-width: 1200px; margin: 0 auto;">
+            
+            <!-- Search Box -->
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <input type="text" id="blogSearchInput" class="search-input" placeholder="按标题、内容或标签搜索文章...">
+                    <i class="fas fa-search search-icon"></i>
+                    <button class="search-clear-btn" id="searchClearBtn" title="清除搜索">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="search-results-info" id="searchResultsInfo"></div>
+            </div>
             
             <!-- Category Filter -->
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem;">
@@ -1464,8 +1555,94 @@
         let currentPage = 1;
         let activeTags = [];
         let activeCategory = 'all';
+        let searchQuery = '';
         
-        // Get filtered cards
+        // Search functionality
+        const searchInput = document.getElementById('blogSearchInput');
+        const searchClearBtn = document.getElementById('searchClearBtn');
+        const searchResultsInfo = document.getElementById('searchResultsInfo');
+        
+        // Debounce function for search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Search input handler
+        const handleSearch = debounce(function(query) {
+            searchQuery = query.toLowerCase().trim();
+            currentPage = 1;
+            
+            // Show/hide clear button
+            if (searchQuery) {
+                searchClearBtn.classList.add('visible');
+            } else {
+                searchClearBtn.classList.remove('visible');
+            }
+            
+            applyFilters();
+            updateSearchResultsInfo();
+        }, 300);
+        
+        // Update search results info
+        function updateSearchResultsInfo() {
+            const filteredCards = getFilteredCards();
+            
+            if (searchQuery) {
+                searchResultsInfo.classList.add('visible');
+                if (filteredCards.length === 0) {
+                    searchResultsInfo.innerHTML = `<i class="fas fa-search"></i> 未找到与「<strong>${escapeHtml(searchQuery)}</strong>」匹配的文章`;
+                } else {
+                    searchResultsInfo.innerHTML = `<i class="fas fa-check-circle" style="color: #10b981;"></i> 找到 <strong>${filteredCards.length}</strong> 篇与「<strong>${escapeHtml(searchQuery)}</strong>」匹配的文章`;
+                }
+            } else {
+                searchResultsInfo.classList.remove('visible');
+            }
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Search input event listener
+        searchInput.addEventListener('input', function(e) {
+            handleSearch(e.target.value);
+        });
+        
+        // Clear search button
+        searchClearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            searchQuery = '';
+            searchClearBtn.classList.remove('visible');
+            searchResultsInfo.classList.remove('visible');
+            currentPage = 1;
+            applyFilters();
+            searchInput.focus();
+        });
+        
+        // Handle Escape key in search
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                searchQuery = '';
+                searchClearBtn.classList.remove('visible');
+                searchResultsInfo.classList.remove('visible');
+                currentPage = 1;
+                applyFilters();
+            }
+        });
+        
+        // Get filtered cards (with search support)
         function getFilteredCards() {
             const allCards = Array.from(document.querySelectorAll('.blog-card'));
             return allCards.filter(card => {
@@ -1473,7 +1650,22 @@
                 const cardTags = card.dataset.tags ? card.dataset.tags.split(',') : [];
                 const categoryMatch = activeCategory === 'all' || cardCategory === activeCategory;
                 const tagMatch = activeTags.length === 0 || activeTags.some(tag => cardTags.includes(tag));
-                return categoryMatch && tagMatch;
+                
+                // Search match
+                let searchMatch = true;
+                if (searchQuery) {
+                    const title = (card.querySelector('.blog-card-title')?.textContent || '').toLowerCase();
+                    const excerpt = (card.querySelector('.blog-card-excerpt')?.textContent || '').toLowerCase();
+                    const tagsText = cardTags.join(' ').toLowerCase();
+                    const categoryText = cardCategory.toLowerCase();
+                    
+                    searchMatch = title.includes(searchQuery) || 
+                                  excerpt.includes(searchQuery) || 
+                                  tagsText.includes(searchQuery) ||
+                                  categoryText.includes(searchQuery);
+                }
+                
+                return categoryMatch && tagMatch && searchMatch;
             });
         }
         
