@@ -54,7 +54,8 @@ class VCPFooter extends HTMLElement {
             { name: 'DEV.to', url: 'https://dev.to/veritaschain', icon: 'fa-brands fa-dev' },
             { name: 'Substack', url: 'https://substack.com/@tokachikamimura', icon: 'fa-solid fa-bookmark' },
             { name: 'ORCiD', url: 'https://orcid.org/0009-0002-0871-1627', icon: 'fa-brands fa-orcid' },
-            { name: 'GitHub', url: 'https://github.com/veritaschain', icon: 'fa-brands fa-github' }
+            { name: 'GitHub', url: 'https://github.com/veritaschain', icon: 'fa-brands fa-github' },
+            { name: 'Bluesky', url: 'https://bsky.app/profile/veritaschain.bsky.social', icon: 'fa-brands fa-bluesky' }
         ];
 
         // Translation data for all supported languages
@@ -65,6 +66,7 @@ class VCPFooter extends HTMLElement {
                 disclaimer1: 'VSO does not endorse or certify any financial performance claims.',
                 disclaimer2: 'All specifications are provided "as-is" without warranties of any kind.',
                 organization: 'VeritasChain Standards Organization',
+                duns: 'VeritasChain株式会社 D-U-N-S: 698368529',
                 address: 'Ebisu Office — 2-4-8 Ebisu-Nishi, Shibuya-ku, Tokyo 150-0021, Japan',
                 revision: 'VCP Specification v1.0 — Released 2025-01-20 | Next update: v1.1 (Q2 2026)'
             },
@@ -74,6 +76,7 @@ class VCPFooter extends HTMLElement {
                 disclaimer1: 'VSOは金融パフォーマンスに関する主張を保証または認証しません。',
                 disclaimer2: 'すべての仕様は「現状のまま」提供され、いかなる種類の保証も伴いません。',
                 organization: 'VeritasChain Standards Organization',
+                duns: 'VeritasChain株式会社 D-U-N-S: 698368529',
                 address: '恵比寿オフィス — 〒150-0021 東京都渋谷区恵比寿西2-4-8',
                 revision: 'VCP仕様 v1.0 — 2025年1月20日リリース | 次回更新: v1.1 (2026年第2四半期)'
             },
@@ -83,6 +86,7 @@ class VCPFooter extends HTMLElement {
                 disclaimer1: 'VSO不认可或证明任何财务绩效声明。',
                 disclaimer2: '所有规范均按"原样"提供，不提供任何形式的保证。',
                 organization: 'VeritasChain Standards Organization',
+                duns: 'VeritasChain株式会社 D-U-N-S: 698368529',
                 address: '惠比寿办公室 — 日本东京都涩谷区惠比寿西2-4-8 邮编150-0021',
                 revision: 'VCP规范 v1.0 — 2025年1月20日发布 | 下次更新: v1.1 (2026年第二季度)'
             }
@@ -135,7 +139,7 @@ class VCPFooter extends HTMLElement {
                 <p class="vcp-footer-independence">${t.independence}</p>
                 <p class="vcp-footer-disclaimer">${t.disclaimer1}</p>
                 <p class="vcp-footer-disclaimer">${t.disclaimer2}</p>
-                <p class="vcp-footer-address">${t.organization}<br>${t.address}</p>
+                <p class="vcp-footer-address">${t.organization}<br>${t.duns}<br>${t.address}</p>
                 <p class="vcp-footer-revision">${t.revision}</p>
             </div>
         </footer>
