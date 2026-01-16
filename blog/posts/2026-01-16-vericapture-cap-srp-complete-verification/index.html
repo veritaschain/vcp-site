@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From "Trust Us" to "Verify": How Cryptographic Standards Can Solve the AI Content Crisis - VeritasChain Blog</title>
+    <meta name="description" content="The Grok scandal revealed two distinct verification failures. Here's how CAP-SRP and VeriCapture address both sides of the equation—proving what AI refused to generate and what cameras actually captured.">
+    <meta name="keywords" content="CAP-SRP, VeriCapture, Grok scandal, deepfake, AI content moderation, cryptographic verification, C2PA, SCITT, EU AI Act, DSA">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="From 'Trust Us' to 'Verify': How Cryptographic Standards Can Solve the AI Content Crisis">
+    <meta property="og:description" content="The Grok scandal revealed two distinct verification failures. Here's how CAP-SRP and VeriCapture address both sides of the equation.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-16-vericapture-cap-srp-complete-verification/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:published_time" content="2026-01-16">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Technical">
+    <meta property="article:tag" content="CAP-SRP">
+    <meta property="article:tag" content="VeriCapture">
+    <meta property="article:tag" content="AI Accountability">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="From 'Trust Us' to 'Verify': Solving the AI Content Crisis">
+    <meta name="twitter:description" content="How CAP-SRP and VeriCapture address both sides of the verification equation.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-16-vericapture-cap-srp-complete-verification/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .prose { max-width: 75ch; }
+        .prose h2 { color: #f1f5f9; font-size: 1.75rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid rgba(59, 130, 246, 0.3); }
+        .prose h3 { color: #e2e8f0; font-size: 1.35rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; }
+        .prose h4 { color: #cbd5e1; font-size: 1.15rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .prose p { color: #94a3b8; line-height: 1.8; margin-bottom: 1.25rem; }
+        .prose a { color: #60a5fa; text-decoration: underline; }
+        .prose a:hover { color: #93c5fd; }
+        .prose ul, .prose ol { color: #94a3b8; margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; line-height: 1.7; }
+        .prose strong { color: #e2e8f0; }
+        .prose blockquote { border-left: 4px solid #3b82f6; padding-left: 1.5rem; margin: 1.5rem 0; color: #94a3b8; font-style: italic; background: rgba(59, 130, 246, 0.05); padding: 1rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; }
+        .prose code { font-family: 'JetBrains Mono', monospace; background: rgba(30, 41, 59, 0.8); padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875rem; color: #e2e8f0; }
+        .prose pre { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin: 1.5rem 0; }
+        .prose pre code { background: none; padding: 0; font-size: 0.8rem; color: #94a3b8; }
+        .prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .prose th { background: rgba(59, 130, 246, 0.1); color: #e2e8f0; padding: 0.75rem 1rem; text-align: left; font-weight: 600; border: 1px solid rgba(59, 130, 246, 0.2); }
+        .prose td { padding: 0.75rem 1rem; border: 1px solid rgba(59, 130, 246, 0.1); color: #94a3b8; }
+        .prose tr:nth-child(even) { background: rgba(30, 41, 59, 0.3); }
+        .info-box { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .warning-box { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .critical-box { background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .success-box { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .feature-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1rem 0; }
+        .diagram-box { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.5rem; padding: 1.5rem; margin: 1.5rem 0; overflow-x: auto; }
+        .diagram-box pre { margin: 0; background: none; border: none; padding: 0; font-size: 0.75rem; color: #94a3b8; }
+        .toc-link { color: #60a5fa; text-decoration: none; display: block; padding: 0.5rem 0; border-bottom: 1px solid rgba(59, 130, 246, 0.1); }
+        .toc-link:hover { color: #93c5fd; background: rgba(59, 130, 246, 0.05); }
+        .resource-link { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.5rem; margin: 0.5rem 0; text-decoration: none; transition: all 0.2s; }
+        .resource-link:hover { border-color: rgba(59, 130, 246, 0.5); background: rgba(59, 130, 246, 0.1); }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .stat-card { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; padding: 1.25rem; text-align: center; }
+        .stat-number { font-size: 1.5rem; font-weight: 800; color: #ef4444; margin-bottom: 0.25rem; }
+        .stat-label { font-size: 0.8rem; color: #94a3b8; }
+    </style>
+
+    <!-- Structured Data - Article -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "From 'Trust Us' to 'Verify': How Cryptographic Standards Can Solve the AI Content Crisis",
+    "description": "The Grok scandal revealed two distinct verification failures. Here's how CAP-SRP and VeriCapture address both sides of the equation.",
+    "image": "https://veritaschain.org/assets/OGP.png",
+    "author": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization",
+        "url": "https://veritaschain.org/"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://veritaschain.org/assets/img/logo.png"
+        }
+    },
+    "datePublished": "2026-01-16",
+    "dateModified": "2026-01-16",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://veritaschain.org/blog/posts/2026-01-16-vericapture-cap-srp-complete-verification/"
+    },
+    "keywords": [
+        "CAP-SRP",
+        "VeriCapture",
+        "Grok",
+        "deepfake",
+        "AI accountability",
+        "cryptographic verification"
+    ]
+    }
+    </script>
+
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://veritaschain.org/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://veritaschain.org/blog/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "From Trust Us to Verify",
+            "item": "https://veritaschain.org/blog/posts/2026-01-16-vericapture-cap-srp-complete-verification/"
+        }
+    ]
+    }
+    </script>
+</head>
+<body class="bg-slate-900 text-gray-100">
+    <!-- Header placeholder -->
+    <div id="vcp-header"></div>
+
+    <!-- Article Header -->
+    <section class="pt-24 pb-12 px-4" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);">
+        <div class="max-w-4xl mx-auto">
+            <!-- Breadcrumb -->
+            <nav class="flex items-center gap-2 text-sm text-slate-400 mb-6">
+                <a href="/" class="hover:text-blue-400 transition-colors">Home</a>
+                <i class="fas fa-chevron-right text-xs"></i>
+                <a href="/blog/" class="hover:text-blue-400 transition-colors">Blog</a>
+                <i class="fas fa-chevron-right text-xs"></i>
+                <span class="text-slate-500">From Trust Us to Verify</span>
+            </nav>
+            
+            <!-- Category Badge -->
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium mb-4" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white;">
+                <i class="fas fa-code"></i> Technical Deep Dive
+            </span>
+            
+            <!-- Title -->
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+                From "Trust Us" to "Verify": How Cryptographic Standards Can Solve the AI Content Crisis
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="text-xl text-slate-300 mb-6">
+                The Grok scandal revealed two distinct verification failures. Here's how CAP-SRP and VeriCapture address both sides of the equation.
+            </p>
+            
+            <!-- Meta Information -->
+            <div class="flex flex-wrap items-center gap-4 text-sm text-slate-400">
+                <span class="flex items-center gap-2">
+                    <i class="far fa-calendar"></i> January 16, 2026
+                </span>
+                <span class="flex items-center gap-2">
+                    <i class="far fa-clock"></i> 18 min read
+                </span>
+                <span class="flex items-center gap-2">
+                    <i class="far fa-user"></i> VeritasChain Standards Organization
+                </span>
+            </div>
+            
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2 mt-4">
+                <span class="px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3);">CAP-SRP</span>
+                <span class="px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3);">VeriCapture</span>
+                <span class="px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3);">EU AI Act</span>
+                <span class="px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3);">DSA</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="py-12 px-4">
+        <div class="max-w-4xl mx-auto">
+            <article class="prose">
+                
+                <!-- Key Stats -->
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">93x</div>
+                        <div class="stat-label">AI-CSAM increase<br>(2023-2025)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">79%</div>
+                        <div class="stat-label">Watermark removal<br>success rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">31%</div>
+                        <div class="stat-label">Europeans believe AI<br>influenced elections</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">€15M</div>
+                        <div class="stat-label">EU AI Act<br>max penalty</div>
+                    </div>
+                </div>
+
+                <!-- The Moment -->
+                <h2>The Moment Everything Changed</h2>
+                
+                <p>On January 9, 2026, a coalition of United States Senators—Ron Wyden, Ed Markey, and Ben Ray Luján—sent an unprecedented letter to Apple and Google, demanding the removal of X (formerly Twitter) and its AI assistant Grok from their app stores. The reason was shocking even by 2026 standards: Grok had become what California Governor Gavin Newsom called "a predator breeding ground," generating approximately <strong>one nonconsensual sexualized image per minute</strong>.</p>
+
+                <p>But when xAI responded to the crisis, their statement revealed something even more troubling than the images themselves. They claimed their "safeguards are working" and that they had blocked "millions of harmful requests." Yet when pressed for evidence, they could offer none that anyone could independently verify.</p>
+
+                <div class="critical-box">
+                    <p style="margin-bottom: 0;"><strong>This wasn't just a content moderation failure. It was the collapse of the "Trust Us" model that has governed AI systems since their inception.</strong></p>
+                </div>
+
+                <!-- Two Verification Crises -->
+                <h2>The Two Verification Crises</h2>
+                
+                <p>The Grok scandal didn't expose one problem—it exposed two fundamentally different verification failures that require fundamentally different solutions.</p>
+
+                <h3>Crisis #1: The Deepfake Indistinguishability Problem</h3>
+                
+                <p>Grok generated sexualized images of real people—Taylor Swift, Michelle Obama, Alexandria Ocasio-Cortez, and most disturbingly, minors including 14-year-old actress Nell Fisher. Victims found themselves unable to prove a critical fact: <strong>"This image is not a real photograph of me."</strong></p>
+
+                <p>This problem extends far beyond celebrity victims:</p>
+                <ul>
+                    <li>In 2025, RAND Corporation found that <strong>13% of K-12 school principals</strong> reported deepfake bullying incidents</li>
+                    <li>The Center for Democracy & Technology discovered that <strong>36% of students</strong> had encountered deepfake-related problems at school</li>
+                    <li>At Cascade High School in Iowa, <strong>44 female students</strong> became victims of AI-generated intimate imagery—they called themselves "The Voices of the Strong 44"</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4 style="margin-top: 0;"><i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i> The Fundamental Issue</h4>
+                    <p style="margin-bottom: 0;">There is no way to cryptographically prove that a photograph was captured in the real world by a real camera operated by a real human being. Existing solutions like C2PA are designed for content provenance—tracking editing history and tool usage—not for proving the moment of capture.</p>
+                </div>
+
+                <h3>Crisis #2: The Moderation Verification Problem</h3>
+                
+                <p>When xAI claimed they blocked millions of harmful requests, they expected us to simply believe them. But in an age where AI companies have every incentive to minimize reported harms and maximize reported safety, trust is no longer sufficient.</p>
+
+                <p>The evidence tells a different story:</p>
+                <ul>
+                    <li>The Internet Watch Foundation documented Grok-generated images of children aged 11-13 appearing on dark web forums</li>
+                    <li>NCMEC reports showed AI-generated CSAM exploding from <strong>4,700 reports in 2023</strong> to <strong>440,000 in just the first half of 2025</strong>—a <strong>93x increase</strong></li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4 style="margin-top: 0;"><i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i> The Fundamental Issue</h4>
+                    <p style="margin-bottom: 0;">There is no way to cryptographically prove that an AI system refused to generate harmful content. Internal logs can be fabricated, selectively deleted, or retroactively modified. The absence of evidence is not evidence of absence—and platforms have every incentive to present absence of evidence as exactly that.</p>
+                </div>
+
+                <!-- Why Existing Standards Fall Short -->
+                <h2>Why Existing Standards Fall Short</h2>
+                
+                <p>Before introducing our solutions, it's important to understand why current approaches cannot solve these problems.</p>
+
+                <h3>C2PA: The Wrong Tool for the Job</h3>
+                
+                <p>C2PA is an excellent standard for what it was designed to do: prove that content has a documented chain of custody from creation through distribution. It can tell you that an image was edited in Adobe Photoshop, that a video was compressed by YouTube, that metadata was stripped by a social media platform.</p>
+
+                <p><strong>What C2PA cannot do:</strong></p>
+                <ul>
+                    <li><strong>Prove human presence</strong>: The specification explicitly states that "the signer need not be human." A robot, a drone, or a server can sign C2PA credentials just as easily as a person.</li>
+                    <li><strong>Prove capture moment</strong>: C2PA can be applied after the fact. An AI-generated image can be given C2PA credentials that make it look legitimate.</li>
+                    <li><strong>Prove refusal</strong>: C2PA is designed for content that exists, not content that was never created.</li>
+                </ul>
+
+                <h3>Watermarking: A Broken Promise</h3>
+                
+                <p>Google's SynthID has been applied to over 10 billion pieces of content. It sounds impressive until you learn that in 2025, researchers demonstrated a <strong>79% success rate in removing watermarks</strong> through diffusion model re-rendering. The University of Maryland concluded bluntly: <strong>"No reliable watermarking exists currently."</strong></p>
+
+                <p>Watermarking is a cat-and-mouse game that AI generators will always eventually win. It cannot provide the cryptographic certainty that legal and regulatory frameworks require.</p>
+
+                <h3>SCITT: Close, But Not Complete</h3>
+                
+                <p>IETF's Supply Chain Integrity, Transparency and Trust (SCITT) architecture provides robust transparency logs for software supply chains. It's a powerful tool, and one we actively build upon. However, SCITT has a fundamental limitation when applied to AI systems: it cannot guarantee completeness.</p>
+
+                <p>As the draft specification acknowledges, "the Issuer can refuse registration or selectively register Statements." This means an AI platform could log some refusals while hiding others.</p>
+
+                <!-- CAP-SRP -->
+                <h2>Introducing CAP-SRP: Cryptographic Proof of What AI Didn't Generate</h2>
+
+                <p>The Content/Creative AI Profile with Safe Refusal Provenance extension (CAP-SRP) is designed specifically to solve the moderation verification problem. It treats non-generation as a first-class, cryptographically provable event.</p>
+
+                <h3>The Core Innovation: Completeness Invariant</h3>
+                
+                <p>At the heart of CAP-SRP is a mathematical constraint that makes selective logging detectable:</p>
+
+                <div class="diagram-box">
+                    <pre style="text-align: center; font-size: 1rem; color: #60a5fa;">∑ GEN_ATTEMPT = ∑ GEN + ∑ GEN_DENY + ∑ GEN_ERROR</pre>
+                </div>
+
+                <p>This equation states that the total number of generation attempts must equal the sum of successful generations, explicit refusals, and system errors. Every request that enters the system must have exactly one recorded outcome.</p>
+
+                <div class="success-box">
+                    <h4 style="margin-top: 0;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Why This Matters</h4>
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>Hidden results are detectable</strong>: If Attempts > Outcomes, someone hid generation results</li>
+                        <li><strong>Fabricated refusals are detectable</strong>: If Outcomes > Attempts, someone created fake refusal records</li>
+                        <li><strong>Mathematical certainty replaces trust</strong>: Auditors can verify completeness without trusting the platform</li>
+                    </ul>
+                </div>
+
+                <h3>The Event Architecture</h3>
+                
+                <p>CAP-SRP defines four primary event types that create an unbroken chain of accountability:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event Type</th>
+                            <th>When Recorded</th>
+                            <th>What It Proves</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GEN_ATTEMPT</strong></td>
+                            <td>Before any safety checks</td>
+                            <td>A request was received and will be processed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GEN</strong></td>
+                            <td>After successful generation</td>
+                            <td>Content was created and can be linked to this request</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GEN_DENY</strong></td>
+                            <td>After safety system blocks request</td>
+                            <td>The system refused to generate, with reason codes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GEN_ERROR</strong></td>
+                            <td>After system failure</td>
+                            <td>Processing failed for technical reasons</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box">
+                    <p style="margin-bottom: 0;"><strong>Critical insight:</strong> GEN_ATTEMPT must be recorded <strong>before</strong> safety checks execute. This prevents platforms from selectively logging only the requests they want to document. Once a request enters the system, its existence is cryptographically committed before anyone can decide whether to hide it.</p>
+                </div>
+
+                <h3>How It Would Have Changed Grok</h3>
+                
+                <p>Let's apply CAP-SRP to xAI's claims during the scandal:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>xAI's Claim</th>
+                            <th>Without CAP-SRP</th>
+                            <th>With CAP-SRP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>"We blocked millions of harmful requests"</td>
+                            <td>Unverifiable assertion</td>
+                            <td>Cryptographically signed GEN_DENY events with external timestamps</td>
+                        </tr>
+                        <tr>
+                            <td>"Our safeguards are working"</td>
+                            <td>Trust us</td>
+                            <td>Completeness Invariant proves all requests are accounted for</td>
+                        </tr>
+                        <tr>
+                            <td>"Our logs are accurate"</td>
+                            <td>Internal documentation only</td>
+                            <td>External TSA anchoring proves logs weren't modified after the fact</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Conformance Levels</h3>
+                
+                <p>CAP-SRP defines three implementation tiers to accommodate different regulatory requirements:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Level</th>
+                            <th>Requirements</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Bronze</strong></td>
+                            <td>Basic hash chain, 6-month retention</td>
+                            <td>Voluntary transparency initiatives</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Silver</strong></td>
+                            <td>+ External anchoring, SRP extension, 2-year retention</td>
+                            <td>EU AI Act Article 12 compliance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gold</strong></td>
+                            <td>+ Real-time verification, HSM, 5-year retention</td>
+                            <td>DSA Article 37 audit readiness</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Privacy-Preserving Verification</h3>
+                
+                <p>A critical concern with any logging system is privacy: how do you prove you blocked harmful content without storing the harmful prompts themselves?</p>
+
+                <p>CAP-SRP addresses this through cryptographic hashing:</p>
+                <ol>
+                    <li>Harmful prompts are stored only as SHA-256 hashes</li>
+                    <li>Regulators receive a complaint containing the original prompt</li>
+                    <li>Regulators compute the hash and query the platform for GEN_DENY events with matching hashes</li>
+                    <li>Verification succeeds without the platform ever revealing the stored prompt content</li>
+                </ol>
+
+                <!-- VeriCapture -->
+                <h2>The Other Half: VeriCapture and the Capture Problem</h2>
+
+                <p>While CAP-SRP solves the "what did AI refuse to generate" problem, the deepfake indistinguishability problem requires a different approach. This is where VeriCapture enters the picture.</p>
+
+                <h3>The Vision: A Camera That Proves Itself</h3>
+                
+                <p>VeriCapture is a mobile application currently in development that implements CAP v1.0—the Capture Authenticity Protocol. Think of it as a <strong>"flight recorder for photographs"</strong> that cryptographically proves:</p>
+
+                <div class="feature-card">
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>When</strong>: RFC 3161 compliant external timestamps from independent authorities</li>
+                        <li><strong>Who</strong>: Device-bound cryptographic keys stored in hardware security modules</li>
+                        <li><strong>What</strong>: SHA-256 hash of raw image data computed at capture time</li>
+                        <li><strong>Where</strong>: GPS coordinates (optional, with privacy protections)</li>
+                    </ul>
+                </div>
+
+                <p>The key innovation is timing: all cryptographic commitments happen at the moment of capture, not afterward. Unlike C2PA, which can be applied to any image at any time, VeriCapture credentials can only be created by a device that was physically present when the shutter was pressed.</p>
+
+                <h3>How It Differs From Existing Solutions</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Solution</th>
+                            <th>What It Proves</th>
+                            <th>VeriCapture Difference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>C2PA</strong></td>
+                            <td>Content has documented provenance</td>
+                            <td>VeriCapture proves capture moment, not just provenance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Truepic</strong></td>
+                            <td>Image captured on verified device</td>
+                            <td>VeriCapture adds hash chains for completeness</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Numbers Protocol</strong></td>
+                            <td>Wallet ownership</td>
+                            <td>VeriCapture proves physical capture, not digital ownership</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ProofMode</strong></td>
+                            <td>Content signed by device</td>
+                            <td>VeriCapture adds external timestamp verification</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>The "Liar's Dividend" Problem</h3>
+                
+                <p>Deepfakes create a pernicious secondary effect: the <strong>"liar's dividend."</strong> When any image could potentially be AI-generated, even authentic images become deniable. Politicians can claim leaked photos are fake. Criminals can argue surveillance footage was manufactured. Whistleblowers find their evidence dismissed as "probably AI."</p>
+
+                <p><strong>31% of Europeans</strong> believe AI influenced voting in recent elections. This skepticism, while sometimes warranted, creates a crisis of evidence. How do we know what's real anymore?</p>
+
+                <div class="success-box">
+                    <h4 style="margin-top: 0;"><i class="fas fa-camera" style="color: #10b981;"></i> VeriCapture's Answer</h4>
+                    <p style="margin-bottom: 0;">Images with cryptographic proof of capture are in a <strong>different category</strong> than images without such proof. We don't need to detect fakes—we need to prove authenticity. The burden of proof shifts from "prove this is fake" to "prove this is real."</p>
+                </div>
+
+                <h3>Coming Soon</h3>
+                
+                <p>VeriCapture is currently in final development stages. We anticipate an <strong>iOS release in Q2 2026</strong>, with Android following shortly after. The application will support 10 languages at launch and implement a freemium model that makes basic capture verification accessible to everyone while offering premium features for professional and legal use cases.</p>
+
+                <!-- Complete Ecosystem -->
+                <h2>The Complete Verification Ecosystem</h2>
+
+                <p>VeriCapture and CAP-SRP are not competing standards—they're two halves of a complete verification ecosystem.</p>
+
+                <div class="diagram-box">
+                    <pre>
+┌─────────────────────────────────────────────────────────────────────┐
+│                    The Content Authenticity Stack                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  "Is this image a real photograph?"                                 │
+│  └─▶ VeriCapture (CAP v1.0): Proves capture moment                 │
+│                                                                     │
+│  "Who edited this content and how?"                                 │
+│  └─▶ C2PA: Proves editing provenance                               │
+│                                                                     │
+│  "Did AI refuse to generate harmful content?"                       │
+│  └─▶ CAP-SRP: Proves refusal with completeness guarantee           │
+│                                                                     │
+│  "Is this transparency log authentic?"                              │
+│  └─▶ SCITT: Proves log integrity                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+                    </pre>
+                </div>
+
+                <h3>Input Side vs. Output Side</h3>
+                
+                <p>The Grok scandal revealed failures on both sides of the AI content pipeline:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Side</th>
+                            <th>Problem</th>
+                            <th>Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Input (Capture)</strong></td>
+                            <td>Cannot prove real photos are real</td>
+                            <td>VeriCapture</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Output (Generation)</strong></td>
+                            <td>Cannot prove harmful content was blocked</td>
+                            <td>CAP-SRP</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>A complete solution requires both. An AI company implementing CAP-SRP can prove their moderation works. A photographer using VeriCapture can prove their images are authentic. Together, they create an ecosystem where trust is replaced by verification at every stage.</p>
+
+                <h3>Integration Scenarios</h3>
+
+                <div class="feature-card">
+                    <h4 style="margin-top: 0;"><i class="fas fa-camera-retro" style="color: #60a5fa;"></i> Scenario 1: Photojournalism</h4>
+                    <p style="margin-bottom: 0;">A journalist captures images of a conflict zone using VeriCapture. The images carry cryptographic proof of capture time, location, and device. When published, readers can verify the images are authentic without trusting the journalist or publication. If AI-generated propaganda attempts to discredit the images, the cryptographic proof stands as mathematical evidence.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4 style="margin-top: 0;"><i class="fas fa-robot" style="color: #8b5cf6;"></i> Scenario 2: AI Platform Compliance</h4>
+                    <p style="margin-bottom: 0;">An AI image generator implements CAP-SRP. Every request is logged with GEN_ATTEMPT before safety filtering. Blocked requests generate GEN_DENY events with external timestamps. Monthly, the platform publishes Completeness Invariant audits proving all requests are accounted for. Regulators can request Evidence Packs for specific time ranges and verify independently.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4 style="margin-top: 0;"><i class="fas fa-gavel" style="color: #ef4444;"></i> Scenario 3: Legal Evidence</h4>
+                    <p>A victim of AI-generated intimate imagery files suit. They provide:</p>
+                    <ul>
+                        <li>Hash of the harmful prompt they received</li>
+                        <li>Timestamp of when they first observed the image</li>
+                    </ul>
+                    <p style="margin-bottom: 0;">The court requests the AI platform's CAP-SRP Evidence Pack for that time range. Either the platform has GEN_DENY proof showing they blocked the request, or they don't. The court has cryptographic evidence, not competing narratives.</p>
+                </div>
+
+                <!-- Regulatory Alignment -->
+                <h2>Regulatory Alignment</h2>
+
+                <p>Both VeriCapture and CAP-SRP are designed with regulatory compliance as a core requirement, not an afterthought.</p>
+
+                <h3>EU AI Act (Effective August 2, 2026)</h3>
+                
+                <p>Article 12 of the EU AI Act mandates "automatic recording of events" for high-risk AI systems, with:</p>
+                <ul>
+                    <li>Logging throughout system lifetime</li>
+                    <li>Minimum 6-month retention</li>
+                    <li>Traceability of AI system operation</li>
+                </ul>
+
+                <p><strong>CAP-SRP at Silver level or above directly satisfies these requirements.</strong> The Completeness Invariant goes beyond the minimum by providing mathematical proof of logging completeness—something the regulation doesn't require but auditors will appreciate.</p>
+
+                <p>Penalties for non-compliance: up to <strong>€15 million or 3% of global annual turnover</strong>.</p>
+
+                <h3>Digital Services Act</h3>
+                
+                <p>DSA Article 37 requires Very Large Online Platforms (VLOPs) to undergo annual independent audits and maintain audit trails. CAP-SRP's Evidence Pack format is designed specifically for audit efficiency—auditors receive cryptographically sealed bundles they can verify without platform cooperation.</p>
+
+                <p>Penalties for non-compliance: up to <strong>6% of global annual turnover</strong>.</p>
+
+                <h3>United States Regulations</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Regulation</th>
+                            <th>Effective Date</th>
+                            <th>CAP-SRP Relevance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>TAKE IT DOWN Act</strong></td>
+                            <td>Platform obligations: May 19, 2026</td>
+                            <td>GEN_DENY proves blocked content</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Colorado AI Act</strong></td>
+                            <td>June 30, 2026</td>
+                            <td>3-year record retention requirement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>State Deepfake Laws</strong></td>
+                            <td>Various (CA, TX, others)</td>
+                            <td>Evidence of moderation attempts</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>UK Online Safety Act</h3>
+                
+                <p>The UK's Ofcom has authority to impose penalties of <strong>£18 million or 10% of global revenue</strong> for platforms that fail to demonstrate "reasonable measures" against harmful content. CAP-SRP provides exactly the kind of auditable evidence that satisfies "reasonable measures" requirements.</p>
+
+                <p>As of January 12, 2026, <strong>Ofcom has opened a formal investigation into X/Grok</strong>. Platforms implementing CAP-SRP before such investigations can demonstrate proactive compliance rather than reactive damage control.</p>
+
+                <!-- Inevitability -->
+                <h2>The Inevitability of Verification-Based Governance</h2>
+
+                <p>The transition from trust-based to verification-based AI governance isn't optional—it's inevitable. History shows this pattern repeatedly:</p>
+
+                <h3>Aviation Safety</h3>
+                
+                <p>Before flight data recorders became mandatory, airlines investigated crashes through witness testimony and wreckage analysis. Results were inconsistent and often inconclusive. Today, no one questions the need for black boxes. They're simply part of how aviation works.</p>
+
+                <p>AI systems are undergoing the same evolution. The question isn't whether cryptographic audit trails will become standard—it's whether your organization will implement them proactively or be forced to retrofit them under regulatory pressure.</p>
+
+                <h3>Certificate Transparency</h3>
+                
+                <p>When Google mandated Certificate Transparency for HTTPS certificates, skeptics argued it would slow down the web and burden certificate authorities. Today, CT logs are invisible infrastructure that everyone relies upon. The web is more secure because we stopped trusting CAs and started verifying their behavior.</p>
+
+                <p>AI moderation will follow the same path. Platforms that resist verification will eventually be forced to implement it. Platforms that embrace it early will have competitive advantages: regulatory goodwill, user trust, and operational maturity.</p>
+
+                <h3>Financial Audit</h3>
+                
+                <p>Every publicly traded company submits to external financial audits. This wasn't always true—it became mandatory after enough scandals demonstrated that self-reported financials couldn't be trusted. Today, no one argues that companies should be trusted to report their own profits.</p>
+
+                <p>AI companies claiming millions of blocked requests are in the same position as pre-regulation companies claiming whatever profits they wanted. The audit requirement is coming. CAP-SRP provides the technical foundation for how those audits will work.</p>
+
+                <!-- Technical Specifications -->
+                <h2>Technical Specifications</h2>
+
+                <p>For organizations considering implementation, here are the key technical details:</p>
+
+                <h3>CAP-SRP</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Specification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hash Algorithm</td>
+                            <td>SHA-256 (crypto-agile design supports future migration)</td>
+                        </tr>
+                        <tr>
+                            <td>Signature Algorithm</td>
+                            <td>Ed25519 (ML-DSA-65 post-quantum migration planned)</td>
+                        </tr>
+                        <tr>
+                            <td>Event Ordering</td>
+                            <td>UUID v7 (temporal ordering built into identifiers)</td>
+                        </tr>
+                        <tr>
+                            <td>Chain Structure</td>
+                            <td>Linear hash chain with RFC 6962 Merkle tree aggregation</td>
+                        </tr>
+                        <tr>
+                            <td>External Anchoring</td>
+                            <td>RFC 3161 TSA, SCITT Transparency Services, blockchain (optional)</td>
+                        </tr>
+                        <tr>
+                            <td>Retention</td>
+                            <td>Bronze: 6 months, Silver: 2 years, Gold: 5 years</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>VeriCapture</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Specification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Platform</td>
+                            <td>iOS 17.0+ (Android planned)</td>
+                        </tr>
+                        <tr>
+                            <td>Key Storage</td>
+                            <td>Apple Secure Enclave</td>
+                        </tr>
+                        <tr>
+                            <td>Signature Algorithm</td>
+                            <td>ES256 (ECDSA P-256)</td>
+                        </tr>
+                        <tr>
+                            <td>Hash Algorithm</td>
+                            <td>SHA-256</td>
+                        </tr>
+                        <tr>
+                            <td>External Timestamp</td>
+                            <td>RFC 3161 TSA</td>
+                        </tr>
+                        <tr>
+                            <td>Proof Format</td>
+                            <td>JSON with JCS (JSON Canonicalization Scheme)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Interoperability</h3>
+                
+                <p>Both standards are designed for interoperability:</p>
+                <ul>
+                    <li>VeriCapture proofs can be embedded in C2PA manifests</li>
+                    <li>CAP-SRP logs can be registered in SCITT transparency services</li>
+                    <li>Evidence Packs use standard formats (JSON, CBOR) for tool compatibility</li>
+                </ul>
+
+                <!-- Open Standards -->
+                <h2>Open Standards, Open Future</h2>
+
+                <p>Both CAP-SRP and the underlying VCP (VeritasChain Protocol) are open standards released under <strong>CC BY 4.0 licensing</strong>. Our specifications are available on GitHub. Our IETF Internet-Draft (draft-kamimura-scitt-vcp) is under review by the SCITT Working Group.</p>
+
+                <p>We believe open standards are the only viable path forward for AI governance infrastructure. Proprietary solutions create lock-in, limit auditor access, and ultimately undermine the trust they're meant to establish. If verification requires trusting a vendor, you haven't actually replaced trust with verification—you've just moved it.</p>
+
+                <p>This is why VeritasChain Standards Organization operates as a vendor-neutral standards body, separate from any commercial certification services. Our mission is to establish the technical foundation for AI accountability, not to profit from it.</p>
+
+                <!-- What You Can Do -->
+                <h2>What You Can Do Now</h2>
+
+                <h3>For AI Platform Operators</h3>
+                <ol>
+                    <li><strong>Assess your logging infrastructure</strong>: Can you prove completeness? Can you prove non-modification?</li>
+                    <li><strong>Review regulatory timelines</strong>: EU AI Act enforcement begins August 2, 2026</li>
+                    <li><strong>Evaluate CAP-SRP implementation</strong>: Start with Bronze for internal monitoring, plan Silver for compliance</li>
+                    <li><strong>Contact us</strong>: enterprise@veritaschain.org for implementation guidance</li>
+                </ol>
+
+                <h3>For Regulators and Auditors</h3>
+                <ol>
+                    <li><strong>Review the specifications</strong>: Available at github.com/veritaschain</li>
+                    <li><strong>Consider audit frameworks</strong>: How will you verify AI platform claims?</li>
+                    <li><strong>Engage with standards development</strong>: Our process welcomes regulatory input</li>
+                    <li><strong>Contact us</strong>: compliance@veritaschain.org for regulatory engagement</li>
+                </ol>
+
+                <h3>For Everyone Else</h3>
+                <ol>
+                    <li><strong>Understand the stakes</strong>: The "Trust Us" model has failed</li>
+                    <li><strong>Demand verification</strong>: Ask AI platforms how they prove their safety claims</li>
+                    <li><strong>Watch for VeriCapture</strong>: Coming soon to help you prove your photos are real</li>
+                    <li><strong>Stay informed</strong>: Subscribe to our updates at veritaschain.org</li>
+                </ol>
+
+                <!-- Conclusion -->
+                <h2>Conclusion: Verify, Don't Trust</h2>
+
+                <p>The Grok scandal was a watershed moment, but it was also predictable. When AI systems operate behind closed doors, claiming safety without proving it, failures are inevitable. The only question is how bad the failure will be before we demand better.</p>
+
+                <p><strong>CAP-SRP and VeriCapture represent that better future.</strong> They don't ask you to trust AI companies—they give you the tools to verify their claims. They don't argue about whether moderation is effective—they provide mathematical proof of what happened. They don't debate whether images are real—they prove capture with cryptographic certainty.</p>
+
+                <p>The transition won't happen overnight. Platforms will resist. Regulators will move slowly. But the direction is clear. Aviation got flight recorders. The web got Certificate Transparency. Finance got external audits.</p>
+
+                <p>AI will get verification infrastructure. The only question is whether we build it proactively, learning from the Grok disaster, or reactively, after even worse scandals force our hand.</p>
+
+                <div class="success-box" style="text-align: center;">
+                    <p style="font-size: 1.5rem; font-weight: 700; color: #e2e8f0; margin-bottom: 0.5rem;">We choose proactive.</p>
+                    <p style="margin-bottom: 0;">We hope you'll join us.</p>
+                </div>
+
+                <div class="info-box" style="text-align: center; margin-top: 3rem;">
+                    <p style="font-size: 1.75rem; font-weight: 800; color: #60a5fa; margin-bottom: 0;">"Verify, Don't Trust."</p>
+                </div>
+
+                <!-- Resources -->
+                <h2>Resources</h2>
+
+                <a href="https://github.com/veritaschain/cap-spec" class="resource-link" target="_blank">
+                    <i class="fab fa-github" style="color: #60a5fa; font-size: 1.25rem;"></i>
+                    <div>
+                        <div style="color: #e2e8f0; font-weight: 600;">CAP-SRP Specification</div>
+                        <div style="color: #94a3b8; font-size: 0.875rem;">github.com/veritaschain/cap-spec</div>
+                    </div>
+                </a>
+
+                <a href="https://github.com/veritaschain/vcp-spec" class="resource-link" target="_blank">
+                    <i class="fab fa-github" style="color: #60a5fa; font-size: 1.25rem;"></i>
+                    <div>
+                        <div style="color: #e2e8f0; font-weight: 600;">VCP Specification</div>
+                        <div style="color: #94a3b8; font-size: 0.875rem;">github.com/veritaschain/vcp-spec</div>
+                    </div>
+                </a>
+
+                <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" class="resource-link" target="_blank">
+                    <i class="fas fa-file-alt" style="color: #60a5fa; font-size: 1.25rem;"></i>
+                    <div>
+                        <div style="color: #e2e8f0; font-weight: 600;">IETF Internet-Draft</div>
+                        <div style="color: #94a3b8; font-size: 0.875rem;">datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/</div>
+                    </div>
+                </a>
+
+                <!-- Contact -->
+                <div class="info-box" style="margin-top: 3rem;">
+                    <h3 style="margin-top: 0;"><i class="fas fa-envelope" style="color: #60a5fa;"></i> Contact</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div>
+                            <strong style="color: #e2e8f0;">General Inquiries</strong><br>
+                            <a href="mailto:info@veritaschain.org">info@veritaschain.org</a>
+                        </div>
+                        <div>
+                            <strong style="color: #e2e8f0;">Technical Questions</strong><br>
+                            <a href="mailto:technical@veritaschain.org">technical@veritaschain.org</a>
+                        </div>
+                        <div>
+                            <strong style="color: #e2e8f0;">Enterprise Implementation</strong><br>
+                            <a href="mailto:enterprise@veritaschain.org">enterprise@veritaschain.org</a>
+                        </div>
+                        <div>
+                            <strong style="color: #e2e8f0;">Regulatory Engagement</strong><br>
+                            <a href="mailto:compliance@veritaschain.org">compliance@veritaschain.org</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disclaimer -->
+                <div style="margin-top: 3rem; padding: 1rem; background: rgba(30, 41, 59, 0.5); border-radius: 0.5rem; font-size: 0.875rem; color: #64748b;">
+                    <p style="margin-bottom: 0.5rem;"><em>VeritasChain Standards Organization is a vendor-neutral standards body dedicated to developing open, interoperable standards for AI accountability and content authenticity. We do not endorse specific products or implementations. VC-Certified certification services are provided by VeritasChain株式会社, a separate entity, to maintain standards development independence.</em></p>
+                    <p style="margin-bottom: 0;">© 2026 VeritasChain Standards Organization. Released under CC BY 4.0 International License.</p>
+                </div>
+            </article>
+
+            <!-- Back to Blog -->
+            <div class="mt-12 pt-8 border-t border-slate-700">
+                <a href="/blog/" class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Blog
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer placeholder -->
+    <div id="vcp-footer"></div>
+</body>
+</html>
