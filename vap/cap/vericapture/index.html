@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeriCapture - Evidence Generation Tool for Capture Events | CAP-Compliant iOS App</title>
+    <meta name="description" content="VeriCapture is an evidence generation tool that cryptographically records capture events and data provenance in a tamper-evident manner. NOT a camera app. NOT a truth verification tool. A professional evidence tool for legal, audit, and forensic use cases.">
+    <meta name="keywords" content="VeriCapture, evidence generation, capture attestation, CAP, provenance, tamper-evident, legal evidence, audit trail, forensic, iOS app, cryptographic record">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VeriCapture - Evidence Generation Tool for Capture Events">
+    <meta property="og:description" content="VeriCapture cryptographically records capture events and data provenance. Evidence generation tool for legal, audit, and forensic use cases.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/cap/vericapture/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VeriCapture - Evidence Generation Tool for Capture Events">
+    <meta name="twitter:description" content="VeriCapture cryptographically records capture events and data provenance. Evidence generation tool for legal, audit, and forensic use cases.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/cap/vericapture/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/cap/vericapture/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/cap/vericapture/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/cap/vericapture/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/cap/vericapture/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'vc-teal': '#14b8a6',
+                        'vc-cyan': '#06b6d4',
+                        'vc-slate': '#475569',
+                        'vc-dark': '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #134e4a 50%, #0f172a 100%);
+        }
+        .vc-gradient {
+            background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(20, 184, 166, 0.5);
+        }
+        .warning-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+            border: 1px solid rgba(251, 191, 36, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VeriCapture",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "iOS 17.0+",
+        "description": "VeriCapture is an evidence generation tool that cryptographically records capture events and data provenance in a tamper-evident manner.",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "url": "https://veritaschain.org/vap/cap/vericapture/"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Critical Warning Banner -->
+    <div class="pt-12 lg:pt-0 bg-gradient-to-r from-amber-900/50 to-yellow-900/50 border-b border-amber-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-center gap-3 flex-wrap text-center">
+                <i class="fas fa-exclamation-triangle text-amber-400 text-xl"></i>
+                <span class="text-amber-200 font-medium">
+                    VeriCapture is <strong class="text-white">NOT</strong> a "truth verification" tool. 
+                    It records capture events — it does <strong class="text-white">NOT</strong> guarantee content accuracy or legitimacy.
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%2210%22 y=%2210%22 width=%2280%22 height=%2280%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><rect x=%2225%22 y=%2225%22 width=%2250%22 height=%2250%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><rect x=%2240%22 y=%2240%22 width=%2220%22 height=%2220%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Product Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-shield-alt text-teal-400"></i>
+                    <span class="text-teal-300 text-sm font-semibold tracking-wide">CAP v1.0 COMPLIANT • EVIDENCE GENERATION TOOL</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-4">
+                <span class="text-white">Veri</span><span class="text-teal-400">Capture</span>
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-center text-gray-300 mb-6">
+                Evidence Generation Tool
+            </p>
+            
+            <!-- Core Definition -->
+            <div class="max-w-4xl mx-auto text-center mb-8">
+                <p class="text-xl text-teal-400 font-semibold">
+                    "Record capture events and data provenance in a cryptographically verifiable manner."
+                </p>
+            </div>
+            
+            <!-- Hero Quote Box -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- What VeriCapture DOES -->
+                    <div>
+                        <h3 class="text-teal-400 font-bold text-lg mb-4 flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            What VeriCapture Records
+                        </h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>The fact that a capture operation occurred</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Provenance data (hash, timestamp, signature)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Tamper detection capability</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Third-party independent verification</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- What VeriCapture DOES NOT -->
+                    <div>
+                        <h3 class="text-red-400 font-bold text-lg mb-4 flex items-center">
+                            <i class="fas fa-times-circle mr-2"></i>
+                            What VeriCapture Does NOT Provide
+                        </h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Truth verification of content</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Legitimacy guarantee of subjects</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Identity verification / personal authentication</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Fake detection / anti-fake capability</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Core Principle -->
+            <div class="text-center mb-10">
+                <p class="text-2xl text-white font-bold">
+                    Verify, Don't Trust.
+                </p>
+                <p class="text-gray-400 mt-2">
+                    — Mathematical verification, not trust-based assumptions
+                </p>
+            </div>
+            
+            <!-- App Store Category Notice -->
+            <div class="max-w-2xl mx-auto bg-gray-800/50 border border-gray-700 rounded-xl p-6 mb-10">
+                <div class="flex items-center gap-3 mb-3">
+                    <i class="fab fa-app-store-ios text-teal-400 text-2xl"></i>
+                    <span class="text-white font-semibold">App Store Category</span>
+                </div>
+                <p class="text-gray-300 text-sm">
+                    <strong class="text-teal-400">Utilities / Business</strong> — NOT in Photo & Video category.
+                    VeriCapture is a specialized professional tool, not a general consumer camera app.
+                </p>
+            </div>
+            
+            <!-- CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#features" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-shield-alt mr-2"></i>
+                    View Features
+                </a>
+                <a href="#use-cases" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-8 py-4 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-briefcase mr-2"></i>
+                    Use Cases
+                </a>
+                <a href="/vap/cap/" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-purple-400 font-bold px-8 py-4 rounded-lg transition-all border border-purple-400/50">
+                    <i class="fas fa-book mr-2"></i>
+                    CAP Specification
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Critical Disclaimer Section -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="warning-box rounded-xl p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-exclamation-triangle text-amber-400 text-4xl mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">Critical Understanding</h2>
+                    <p class="text-amber-200 mt-2">Please read before using VeriCapture</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Misconceptions to Avoid -->
+                    <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+                        <h3 class="text-red-400 font-bold text-lg mb-4">
+                            <i class="fas fa-ban mr-2"></i>
+                            Misconceptions to Avoid
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>"Captured with VeriCapture = Truth / Real"</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>"Verifiable = Legitimacy Guaranteed"</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>"Anti-fake / Deepfake Prevention App"</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>"Everyday camera app for everyone"</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Correct Understanding -->
+                    <div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-6">
+                        <h3 class="text-teal-400 font-bold text-lg mb-4">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            Correct Understanding
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Records capture events cryptographically</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Provides tamper-evident provenance data</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Enables third-party independent verification</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>Professional evidence generation tool</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <p class="text-gray-300">
+                        <strong class="text-white">The truth or legitimacy of captured content requires separate verification and investigation.</strong><br>
+                        VeriCapture evidence should be used as <em>one piece of supporting information</em> in your judgment process.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Core Features</h2>
+                <p class="text-gray-400 text-lg">CAP v1.0 compliant evidence generation capabilities</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1: Capture with Evidence -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-teal-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-camera text-3xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Capture with Evidence Trail</h3>
+                    <p class="text-gray-400 mb-4">
+                        Generate CAP-compliant evidence simultaneously with capture. SHA-256 hash, ES256 digital signature, RFC 3161 timestamp.
+                    </p>
+                    <div class="text-teal-400 text-sm">
+                        <i class="fas fa-shield-alt mr-1"></i> Cryptographic integrity from capture moment
+                    </div>
+                </div>
+                
+                <!-- Feature 2: VeriCheck -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-cyan-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-search text-3xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">VeriCheck Verification</h3>
+                    <p class="text-gray-400 mb-4">
+                        Verify evidence integrity via QR scan, JSON import, or file selection. Detects tampering through hash and signature validation.
+                    </p>
+                    <div class="text-cyan-400 text-sm">
+                        <i class="fas fa-check-double mr-1"></i> Third-party independent verification
+                    </div>
+                </div>
+                
+                <!-- Feature 3: Attested Capture -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-purple-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-fingerprint text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Attested Capture Mode</h3>
+                    <p class="text-gray-400 mb-4">
+                        Records biometric authentication <strong class="text-white">attempt</strong> at capture time. NOT identity verification — only records that authentication was attempted.
+                    </p>
+                    <div class="text-amber-400 text-sm">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> Not personal identification
+                    </div>
+                </div>
+                
+                <!-- Feature 4: Evidence Pack -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-blue-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-file-archive text-3xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Evidence Pack Export</h3>
+                    <p class="text-gray-400 mb-4">
+                        Complete evidence package for legal/audit submission: Image + Proof JSON + Verification Summary PDF with disclaimers.
+                    </p>
+                    <div class="text-blue-400 text-sm">
+                        <i class="fas fa-gavel mr-1"></i> Recommended for formal evidence submission
+                    </div>
+                </div>
+                
+                <!-- Feature 5: External Anchoring -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-green-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-anchor text-3xl text-green-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">External Anchoring</h3>
+                    <p class="text-gray-400 mb-4">
+                        RFC 3161 TSA timestamps and Merkle tree inclusion proofs. Third-party time authority for legal-grade timestamp evidence.
+                    </p>
+                    <div class="text-green-400 text-sm">
+                        <i class="fas fa-clock mr-1"></i> RFC 3161 compliant timestamps
+                    </div>
+                </div>
+                
+                <!-- Feature 6: Privacy by Design -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-slate-700/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-user-shield text-3xl text-slate-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Privacy by Design</h3>
+                    <p class="text-gray-400 mb-4">
+                        Evidence data stored on-device only. External transmission limited to hash values only. No images or personal data transmitted.
+                    </p>
+                    <div class="text-slate-400 text-sm">
+                        <i class="fas fa-lock mr-1"></i> Local-first architecture
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Intended Use Cases</h2>
+                <p class="text-gray-400 text-lg">Professional evidence generation for specific industries</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <!-- Primary Use Cases -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-check-circle text-teal-400 text-2xl"></i>
+                        <span class="text-white font-bold text-xl">Primary Use Cases</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-gavel text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Legal Submission</p>
+                                <p class="text-gray-400 text-sm">Evidence documentation for litigation and disputes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-clipboard-check text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Audit Trail</p>
+                                <p class="text-gray-400 text-sm">Business process documentation and compliance records</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-hard-hat text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Field Documentation</p>
+                                <p class="text-gray-400 text-sm">Construction sites, inspections, on-site work records</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-newspaper text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Journalism & Investigation</p>
+                                <p class="text-gray-400 text-sm">Interview records, research documentation</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-building text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Real Estate & Construction</p>
+                                <p class="text-gray-400 text-sm">Property condition records, construction progress</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-car-crash text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Incident Documentation</p>
+                                <p class="text-gray-400 text-sm">Accident scenes, trouble situations, evidence preservation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Not Intended For -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-times-circle text-red-400 text-2xl"></i>
+                        <span class="text-white font-bold text-xl">NOT Intended For</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-share-alt text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Social Media Sharing</p>
+                                <p class="text-gray-400 text-sm">Evidence generation overhead unnecessary for casual sharing</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-image text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Everyday Photography</p>
+                                <p class="text-gray-400 text-sm">Designed as specialized professional tool, not casual camera</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-users text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Photo Sharing / Distribution</p>
+                                <p class="text-gray-400 text-sm">Privacy-sensitive data may be included in evidence</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-palette text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">Art & Creative Work</p>
+                                <p class="text-gray-400 text-sm">No creative workflow features included</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-red-900/20 border border-red-500/30 rounded-lg p-4">
+                        <p class="text-red-300 text-sm">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            VeriCapture is a <strong>professional evidence tool</strong>, not a general consumer camera app. 
+                            Use your device's standard camera for everyday photography.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specifications Section -->
+    <section id="specs" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Technical Specifications</h2>
+                <p class="text-gray-400 text-lg">CAP v1.0 compliant cryptographic architecture</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Cryptographic Specifications -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                        <i class="fas fa-key text-teal-400 mr-2"></i>
+                        Cryptographic Stack
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">Hash Algorithm</span>
+                            <span class="text-white font-mono">SHA-256</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">Signature Algorithm</span>
+                            <span class="text-white font-mono">ES256 (ECDSA P-256)</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">Key Storage</span>
+                            <span class="text-white font-mono">Secure Enclave</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">Timestamp Protocol</span>
+                            <span class="text-white font-mono">RFC 3161 TSA</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">JSON Canonicalization</span>
+                            <span class="text-white font-mono">RFC 8785 (JCS)</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <span class="text-gray-400">UUID Version</span>
+                            <span class="text-white font-mono">RFC 9562 (UUIDv7)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- App Specifications -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                        <i class="fab fa-apple text-teal-400 mr-2"></i>
+                        Application Details
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">Platform</span>
+                            <span class="text-white">iOS 17.0+</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">Development Language</span>
+                            <span class="text-white">Swift / SwiftUI</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">Specification Compliance</span>
+                            <span class="text-white">CAP v1.0</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">App Store Category</span>
+                            <span class="text-white">Utilities / Business</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">Data Storage</span>
+                            <span class="text-white">On-device only</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <span class="text-gray-400">External Transmission</span>
+                            <span class="text-white">Hash values only</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Evidence Structure -->
+            <div class="mt-12 bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-file-code text-teal-400 mr-2"></i>
+                    Evidence Pack Structure
+                </h3>
+                
+                <div class="code-block">
+                    <pre>evidence_pack_{proofId}/
+├── image.jpg                    # Original captured image
+├── proof.json                   # Forensic Proof (complete evidence trail)
+├── verification_summary.pdf     # Verification summary (with disclaimers)
+└── README.txt                   # Evidence Pack explanation
+
+<span class="text-teal-400"># proof.json contains:</span>
+{
+  "proofId": "...",
+  "captureTime": "2026-01-16T18:30:45.123+09:00",
+  "imageHash": "SHA-256 Base64",
+  "eventHash": "SHA-256 Base64",
+  "signature": "ES256 Base64",
+  "publicKey": "PEM format",
+  "location": { ... },           <span class="text-gray-500"># Optional</span>
+  "device": { ... },
+  "humanAttestation": { ... },   <span class="text-gray-500"># Optional (Attested Capture Mode)</span>
+  "timestampResponse": { ... },  <span class="text-gray-500"># RFC 3161 TSA response</span>
+  "merkleProof": { ... }         <span class="text-gray-500"># Merkle inclusion proof</span>
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Self-Signing Model Limitations -->
+    <section class="py-20 bg-gray-800">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-exclamation-circle text-amber-400 text-4xl mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">Self-Signing Model Limitations</h2>
+                    <p class="text-amber-200 mt-2">Understanding the "I signed myself" constraint</p>
+                </div>
+                
+                <div class="space-y-6 text-gray-300">
+                    <p>
+                        CAP uses a <strong class="text-white">self-signing model</strong>, which has inherent limitations:
+                    </p>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>The signing key manager's identity is <strong class="text-white">outside CAP's scope</strong></span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>Device key only proves "signed on this device" — not <strong class="text-white">who</strong> signed</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>Photographer identity or organizational affiliation is <strong class="text-white">not guaranteed</strong></span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-8 bg-gray-800/50 rounded-lg p-6">
+                        <h4 class="text-white font-semibold mb-3">For Enterprise Use</h4>
+                        <p class="text-gray-400 text-sm">
+                            Organizations using VeriCapture should establish separate policies for:
+                            key issuance procedures, device-user binding records, key revocation processes, and audit trail retention.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Attested Capture Clarification -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-fingerprint text-purple-400 text-4xl mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">About "Attested Capture Mode"</h2>
+                    <p class="text-purple-200 mt-2">Why we don't use "Verified"</p>
+                </div>
+                
+                <div class="space-y-6 text-gray-300">
+                    <p>
+                        We deliberately use <strong class="text-white">"Attested"</strong> instead of "Verified" because:
+                    </p>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>"Verified" is easily misunderstood as "truth / correctness / identity confirmation" in many contexts</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>B2B customers may misuse "Verified" in sales materials claiming truth guarantees</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>End users may misinterpret "Verified" as "identity confirmed"</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-8 bg-gray-800/50 rounded-lg p-6">
+                        <h4 class="text-white font-semibold mb-3">What Attested Capture Records:</h4>
+                        <ul class="text-gray-400 text-sm space-y-2">
+                            <li>• Authentication was <strong class="text-white">attempted</strong> (not necessarily successful)</li>
+                            <li>• Success/failure result cryptographically bound to capture event</li>
+                            <li>• Time offset between authentication and capture</li>
+                        </ul>
+                        
+                        <h4 class="text-white font-semibold mt-4 mb-3">What Attested Capture Does NOT Prove:</h4>
+                        <ul class="text-red-300 text-sm space-y-2">
+                            <li>• Who the photographer is</li>
+                            <li>• Whether the photographer is the device's legitimate owner</li>
+                            <li>• Whether a human (not a bot) performed the capture</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Resources -->
+    <section class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Related Resources</h2>
+                <p class="text-gray-400 text-lg">Specifications and documentation</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- CAP Specification -->
+                <a href="/vap/cap/" class="bg-gray-900 rounded-xl p-8 border border-purple-500/30 hover:border-purple-500 transition-all group">
+                    <div class="w-16 h-16 bg-purple-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-book text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-purple-400 transition-colors">
+                        CAP Specification
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        Content / Creative AI Profile — the underlying framework VeriCapture implements.
+                    </p>
+                    <span class="text-purple-400 text-sm">
+                        View Specification <i class="fas fa-arrow-right ml-1"></i>
+                    </span>
+                </a>
+                
+                <!-- VAP Framework -->
+                <a href="/vap/" class="bg-gray-900 rounded-xl p-8 border border-teal-500/30 hover:border-teal-500 transition-all group">
+                    <div class="w-16 h-16 bg-teal-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-layer-group text-3xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-teal-400 transition-colors">
+                        VAP Framework
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        Verifiable AI Protocol — the parent framework defining verifiable AI decision provenance.
+                    </p>
+                    <span class="text-teal-400 text-sm">
+                        View Framework <i class="fas fa-arrow-right ml-1"></i>
+                    </span>
+                </a>
+                
+                <!-- GitHub Repository -->
+                <a href="https://github.com/veritaschain/cap-spec" target="_blank" rel="noopener noreferrer" class="bg-gray-900 rounded-xl p-8 border border-gray-700 hover:border-gray-500 transition-all group">
+                    <div class="w-16 h-16 bg-gray-700/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fab fa-github text-3xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-gray-300 transition-colors">
+                        CAP GitHub Repository
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        Specification source, JSON schemas, example payloads, and test vectors.
+                    </p>
+                    <span class="text-gray-400 text-sm">
+                        View Repository <i class="fas fa-external-link-alt ml-1"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">Contact</h2>
+            <p class="text-gray-400 mb-8">
+                For inquiries about VeriCapture, CAP specification, or enterprise licensing
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="mailto:info@veritaschain.org" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-6 py-3 rounded-lg transition-all">
+                    <i class="fas fa-envelope mr-2"></i>
+                    General Inquiries
+                </a>
+                <a href="mailto:technical@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-6 py-3 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-code mr-2"></i>
+                    Technical Support
+                </a>
+                <a href="mailto:compliance@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-gray-400 font-bold px-6 py-3 rounded-lg transition-all border border-gray-400/50">
+                    <i class="fas fa-gavel mr-2"></i>
+                    Legal / Compliance
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="en"></vcp-footer>
+</body>
+</html>

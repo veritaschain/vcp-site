@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeriCapture - 証跡生成ツール | CAP準拠iOSアプリ</title>
+    <meta name="description" content="VeriCaptureは、撮影操作とデータの来歴を改ざん検知可能な形で暗号学的に記録する証跡生成ツールです。カメラアプリではありません。真実検証ツールでもありません。法務・監査・業務記録のための専門ツールです。">
+    <meta name="keywords" content="VeriCapture, 証跡生成, 撮影証跡, CAP, 来歴, 改ざん検知, 法務証拠, 監査証跡, iOS アプリ, 暗号学的記録">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VeriCapture - 証跡生成ツール">
+    <meta property="og:description" content="VeriCaptureは撮影操作とデータの来歴を暗号学的に記録します。法務・監査・業務記録のための証跡生成ツールです。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/cap/vericapture/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VeriCapture - 証跡生成ツール">
+    <meta name="twitter:description" content="VeriCaptureは撮影操作とデータの来歴を暗号学的に記録します。法務・監査・業務記録のための証跡生成ツールです。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/cap/vericapture/ja/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/cap/vericapture/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/cap/vericapture/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/cap/vericapture/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/cap/vericapture/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'vc-teal': '#14b8a6',
+                        'vc-cyan': '#06b6d4',
+                        'vc-slate': '#475569',
+                        'vc-dark': '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #134e4a 50%, #0f172a 100%);
+        }
+        .vc-gradient {
+            background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(20, 184, 166, 0.5);
+        }
+        .warning-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+            border: 1px solid rgba(251, 191, 36, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VeriCapture",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "iOS 17.0+",
+        "description": "VeriCaptureは、撮影操作とデータの来歴を改ざん検知可能な形で暗号学的に記録する証跡生成ツールです。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "url": "https://veritaschain.org/vap/cap/vericapture/ja/"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Critical Warning Banner -->
+    <div class="pt-12 lg:pt-0 bg-gradient-to-r from-amber-900/50 to-yellow-900/50 border-b border-amber-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-center gap-3 flex-wrap text-center">
+                <i class="fas fa-exclamation-triangle text-amber-400 text-xl"></i>
+                <span class="text-amber-200 font-medium">
+                    VeriCaptureは「真実検証」ツールでは<strong class="text-white">ありません</strong>。
+                    撮影イベントを記録するものであり、内容の正確性や正当性を<strong class="text-white">保証しません</strong>。
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%2210%22 y=%2210%22 width=%2280%22 height=%2280%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><rect x=%2225%22 y=%2225%22 width=%2250%22 height=%2250%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><rect x=%2240%22 y=%2240%22 width=%2220%22 height=%2220%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Product Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-shield-alt text-teal-400"></i>
+                    <span class="text-teal-300 text-sm font-semibold tracking-wide">CAP v1.0 準拠 • 証跡生成ツール</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-4">
+                <span class="text-white">Veri</span><span class="text-teal-400">Capture</span>
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-center text-gray-300 mb-6">
+                証跡生成ツール
+            </p>
+            
+            <!-- Core Definition -->
+            <div class="max-w-4xl mx-auto text-center mb-8">
+                <p class="text-xl text-teal-400 font-semibold">
+                    「撮影という行為と、その結果データの来歴を、<br class="hidden sm:inline">後から検証可能な形で記録する。」
+                </p>
+            </div>
+            
+            <!-- Hero Quote Box -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- What VeriCapture DOES -->
+                    <div>
+                        <h3 class="text-teal-400 font-bold text-lg mb-4 flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            VeriCaptureが記録するもの
+                        </h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>撮影操作が行われた事実</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>来歴データ（ハッシュ・タイムスタンプ・署名）</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>改ざん検知の手段</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>第三者による独立検証の手段</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- What VeriCapture DOES NOT -->
+                    <div>
+                        <h3 class="text-red-400 font-bold text-lg mb-4 flex items-center">
+                            <i class="fas fa-times-circle mr-2"></i>
+                            VeriCaptureが提供しないもの
+                        </h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>内容の真偽判定</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>撮影対象の正当性保証</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>身元確認・本人証明</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>フェイク検出・防止</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Core Principle -->
+            <div class="text-center mb-10">
+                <p class="text-2xl text-white font-bold">
+                    Verify, Don't Trust.
+                </p>
+                <p class="text-gray-400 mt-2">
+                    — 信頼ではなく、検証を。
+                </p>
+            </div>
+            
+            <!-- App Store Category Notice -->
+            <div class="max-w-2xl mx-auto bg-gray-800/50 border border-gray-700 rounded-xl p-6 mb-10">
+                <div class="flex items-center gap-3 mb-3">
+                    <i class="fab fa-app-store-ios text-teal-400 text-2xl"></i>
+                    <span class="text-white font-semibold">App Storeカテゴリ</span>
+                </div>
+                <p class="text-gray-300 text-sm">
+                    <strong class="text-teal-400">ユーティリティ / ビジネス</strong> — 写真・ビデオカテゴリではありません。
+                    VeriCaptureは専門的な業務ツールであり、一般向けカメラアプリではありません。
+                </p>
+            </div>
+            
+            <!-- CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#features" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-shield-alt mr-2"></i>
+                    機能を見る
+                </a>
+                <a href="#use-cases" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-8 py-4 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-briefcase mr-2"></i>
+                    想定用途
+                </a>
+                <a href="/vap/cap/ja/" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-purple-400 font-bold px-8 py-4 rounded-lg transition-all border border-purple-400/50">
+                    <i class="fas fa-book mr-2"></i>
+                    CAP仕様
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Critical Disclaimer Section -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="warning-box rounded-xl p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-exclamation-triangle text-amber-400 text-4xl mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">重要な注意事項</h2>
+                    <p class="text-amber-200 mt-2">VeriCaptureをご利用になる前にお読みください</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Misconceptions to Avoid -->
+                    <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+                        <h3 class="text-red-400 font-bold text-lg mb-4">
+                            <i class="fas fa-ban mr-2"></i>
+                            避けるべき誤解
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>「VeriCaptureで撮った＝本物／真実」</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>「検証可能＝正当性保証」</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>「フェイク対策アプリ」</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>「誰でも使える普通のカメラ」</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Correct Understanding -->
+                    <div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-6">
+                        <h3 class="text-teal-400 font-bold text-lg mb-4">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            正しい理解
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>撮影操作を暗号学的に記録するツール</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>改ざん検知可能な来歴データを提供</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>第三者による独立検証を可能にする</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>専門的な証跡生成ツール</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <p class="text-gray-300">
+                        <strong class="text-white">撮影された内容の真実性・正当性・適法性の判断には、別途の検証や調査が必要です。</strong><br>
+                        VeriCaptureの証跡は、ご判断の<em>一つの材料</em>としてご利用ください。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">主要機能</h2>
+                <p class="text-gray-400 text-lg">CAP v1.0準拠の証跡生成機能</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1: Capture with Evidence -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-teal-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-camera text-3xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">証跡付き撮影</h3>
+                    <p class="text-gray-400 mb-4">
+                        撮影と同時にCAP準拠の証跡を生成。SHA-256ハッシュ、ES256デジタル署名、RFC 3161タイムスタンプ。
+                    </p>
+                    <div class="text-teal-400 text-sm">
+                        <i class="fas fa-shield-alt mr-1"></i> 撮影時点から暗号学的整合性を確保
+                    </div>
+                </div>
+                
+                <!-- Feature 2: VeriCheck -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-cyan-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-search text-3xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">VeriCheck検証</h3>
+                    <p class="text-gray-400 mb-4">
+                        QRスキャン、JSON入力、ファイル選択で証跡の整合性を検証。ハッシュと署名の検証により改ざんを検出。
+                    </p>
+                    <div class="text-cyan-400 text-sm">
+                        <i class="fas fa-check-double mr-1"></i> 第三者による独立検証
+                    </div>
+                </div>
+                
+                <!-- Feature 3: Attested Capture -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-purple-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-fingerprint text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Attested Capture Mode</h3>
+                    <p class="text-gray-400 mb-4">
+                        撮影時の生体認証<strong class="text-white">試行</strong>を記録。本人確認ではなく、認証が試行されたという事実のみを記録。
+                    </p>
+                    <div class="text-amber-400 text-sm">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> 身元証明ではありません
+                    </div>
+                </div>
+                
+                <!-- Feature 4: Evidence Pack -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-blue-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-file-archive text-3xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Evidence Packエクスポート</h3>
+                    <p class="text-gray-400 mb-4">
+                        法務・監査提出用の完全証跡パッケージ：画像 + Proof JSON + 検証サマリPDF（免責文言付き）。
+                    </p>
+                    <div class="text-blue-400 text-sm">
+                        <i class="fas fa-gavel mr-1"></i> 正式証拠提出に推奨
+                    </div>
+                </div>
+                
+                <!-- Feature 5: External Anchoring -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-green-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-anchor text-3xl text-green-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">外部アンカリング</h3>
+                    <p class="text-gray-400 mb-4">
+                        RFC 3161 TSAタイムスタンプとMerkle Tree包含証明。第三者タイムオーソリティによる法的グレードのタイムスタンプ。
+                    </p>
+                    <div class="text-green-400 text-sm">
+                        <i class="fas fa-clock mr-1"></i> RFC 3161準拠タイムスタンプ
+                    </div>
+                </div>
+                
+                <!-- Feature 6: Privacy by Design -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-slate-700/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-user-shield text-3xl text-slate-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">プライバシー・バイ・デザイン</h3>
+                    <p class="text-gray-400 mb-4">
+                        証跡データはデバイス内のみに保存。外部送信はハッシュ値のみ。画像や個人情報は送信されません。
+                    </p>
+                    <div class="text-slate-400 text-sm">
+                        <i class="fas fa-lock mr-1"></i> ローカルファーストアーキテクチャ
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">想定用途</h2>
+                <p class="text-gray-400 text-lg">特定業界向けの専門的な証跡生成</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <!-- Primary Use Cases -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-check-circle text-teal-400 text-2xl"></i>
+                        <span class="text-white font-bold text-xl">主要用途</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-gavel text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">法務提出</p>
+                                <p class="text-gray-400 text-sm">訴訟・紛争における証拠資料の作成</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-clipboard-check text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">監査証跡</p>
+                                <p class="text-gray-400 text-sm">業務プロセスの記録・監査対応</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-hard-hat text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">業務記録</p>
+                                <p class="text-gray-400 text-sm">現場作業・検査結果の記録</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-newspaper text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">報道・調査</p>
+                                <p class="text-gray-400 text-sm">取材記録・調査資料の作成</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-building text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">不動産・建設</p>
+                                <p class="text-gray-400 text-sm">現況確認・施工記録</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-car-crash text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">事故・トラブル</p>
+                                <p class="text-gray-400 text-sm">状況記録・証拠保全</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Not Intended For -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-times-circle text-red-400 text-2xl"></i>
+                        <span class="text-white font-bold text-xl">非推奨用途</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-share-alt text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">SNS投稿</p>
+                                <p class="text-gray-400 text-sm">証跡生成のオーバーヘッドが不要</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-image text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">日常写真</p>
+                                <p class="text-gray-400 text-sm">専門ツールとしての設計</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-users text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">写真共有</p>
+                                <p class="text-gray-400 text-sm">プライバシー情報を含む可能性</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-palette text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">美術・アート</p>
+                                <p class="text-gray-400 text-sm">創作活動向けの機能なし</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-red-900/20 border border-red-500/30 rounded-lg p-4">
+                        <p class="text-red-300 text-sm">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            VeriCaptureは<strong>専門的な証跡生成ツール</strong>であり、一般向けカメラアプリではありません。
+                            日常の写真撮影にはデバイス標準のカメラアプリをご利用ください。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specifications Section -->
+    <section id="specs" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">技術仕様</h2>
+                <p class="text-gray-400 text-lg">CAP v1.0準拠の暗号アーキテクチャ</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Cryptographic Specifications -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                        <i class="fas fa-key text-teal-400 mr-2"></i>
+                        暗号スタック
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">ハッシュアルゴリズム</span>
+                            <span class="text-white font-mono">SHA-256</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">署名アルゴリズム</span>
+                            <span class="text-white font-mono">ES256 (ECDSA P-256)</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">鍵保存</span>
+                            <span class="text-white font-mono">Secure Enclave</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">タイムスタンププロトコル</span>
+                            <span class="text-white font-mono">RFC 3161 TSA</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">JSON正規化</span>
+                            <span class="text-white font-mono">RFC 8785 (JCS)</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <span class="text-gray-400">UUIDバージョン</span>
+                            <span class="text-white font-mono">RFC 9562 (UUIDv7)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- App Specifications -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                        <i class="fab fa-apple text-teal-400 mr-2"></i>
+                        アプリケーション詳細
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">プラットフォーム</span>
+                            <span class="text-white">iOS 17.0+</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">開発言語</span>
+                            <span class="text-white">Swift / SwiftUI</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">準拠仕様</span>
+                            <span class="text-white">CAP v1.0</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">App Storeカテゴリ</span>
+                            <span class="text-white">ユーティリティ / ビジネス</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">データ保存</span>
+                            <span class="text-white">デバイス内のみ</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <span class="text-gray-400">外部送信</span>
+                            <span class="text-white">ハッシュ値のみ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Evidence Structure -->
+            <div class="mt-12 bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-file-code text-teal-400 mr-2"></i>
+                    Evidence Pack構造
+                </h3>
+                
+                <div class="code-block">
+                    <pre>evidence_pack_{proofId}/
+├── image.jpg                    # 元画像
+├── proof.json                   # Forensic Proof（完全証跡）
+├── verification_summary.pdf     # 検証サマリ（免責文言付き）
+└── README.txt                   # Evidence Packの説明
+
+<span class="text-teal-400"># proof.json の内容:</span>
+{
+  "proofId": "...",
+  "captureTime": "2026-01-16T18:30:45.123+09:00",
+  "imageHash": "SHA-256 Base64",
+  "eventHash": "SHA-256 Base64",
+  "signature": "ES256 Base64",
+  "publicKey": "PEM形式",
+  "location": { ... },           <span class="text-gray-500"># オプション</span>
+  "device": { ... },
+  "humanAttestation": { ... },   <span class="text-gray-500"># オプション (Attested Capture Mode)</span>
+  "timestampResponse": { ... },  <span class="text-gray-500"># RFC 3161 TSAレスポンス</span>
+  "merkleProof": { ... }         <span class="text-gray-500"># Merkle包含証明</span>
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Self-Signing Model Limitations -->
+    <section class="py-20 bg-gray-800">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-exclamation-circle text-amber-400 text-4xl mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">自己署名モデルの限界</h2>
+                    <p class="text-amber-200 mt-2">「俺が俺を証明した」問題について</p>
+                </div>
+                
+                <div class="space-y-6 text-gray-300">
+                    <p>
+                        CAPは<strong class="text-white">自己署名モデル</strong>を採用しており、以下の本質的限界があります：
+                    </p>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>署名鍵の管理者が誰であるかは、<strong class="text-white">CAPの範囲外</strong>である</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>デバイス鍵は「そのデバイスで署名された」ことのみを示す — <strong class="text-white">誰が</strong>署名したかは示さない</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>撮影者の身元や組織との紐付けは<strong class="text-white">保証しない</strong></span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-8 bg-gray-800/50 rounded-lg p-6">
+                        <h4 class="text-white font-semibold mb-3">エンタープライズ利用の場合</h4>
+                        <p class="text-gray-400 text-sm">
+                            組織でVeriCaptureを利用する場合、以下のポリシーを別途策定してください：
+                            鍵発行手順、デバイス・利用者紐付け台帳、鍵廃棄手順、監査証跡の保存。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Attested Capture Clarification -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-fingerprint text-purple-400 text-4xl mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">「Attested Capture Mode」について</h2>
+                    <p class="text-purple-200 mt-2">「Verified」を使用しない理由</p>
+                </div>
+                
+                <div class="space-y-6 text-gray-300">
+                    <p>
+                        私たちは「Verified」ではなく<strong class="text-white">「Attested」</strong>という語を意図的に使用しています：
+                    </p>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>「Verified」は多くの文脈で「真実・正しさ・本人確認」と誤解されやすい</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>B2B顧客が「Verified＝真実」と営業トークに誤用するリスク</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>エンドユーザーが「Verified＝本人確認済み」と誤認するリスク</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-8 bg-gray-800/50 rounded-lg p-6">
+                        <h4 class="text-white font-semibold mb-3">Attested Captureが記録するもの：</h4>
+                        <ul class="text-gray-400 text-sm space-y-2">
+                            <li>• 認証が<strong class="text-white">試行された</strong>という事実（成功とは限らない）</li>
+                            <li>• 成功/失敗結果を撮影イベントと暗号学的に結合</li>
+                            <li>• 認証と撮影の時間オフセット</li>
+                        </ul>
+                        
+                        <h4 class="text-white font-semibold mt-4 mb-3">Attested Captureが証明しないもの：</h4>
+                        <ul class="text-red-300 text-sm space-y-2">
+                            <li>• 撮影者が誰であるか</li>
+                            <li>• 撮影者がデバイスの正当な所有者であるか</li>
+                            <li>• 撮影者が人間（ボットでない）であるか</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Resources -->
+    <section class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">関連リソース</h2>
+                <p class="text-gray-400 text-lg">仕様とドキュメント</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- CAP Specification -->
+                <a href="/vap/cap/ja/" class="bg-gray-900 rounded-xl p-8 border border-purple-500/30 hover:border-purple-500 transition-all group">
+                    <div class="w-16 h-16 bg-purple-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-book text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-purple-400 transition-colors">
+                        CAP仕様
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        Content / Creative AI Profile — VeriCaptureが実装する基盤フレームワーク。
+                    </p>
+                    <span class="text-purple-400 text-sm">
+                        仕様を見る <i class="fas fa-arrow-right ml-1"></i>
+                    </span>
+                </a>
+                
+                <!-- VAP Framework -->
+                <a href="/vap/ja/" class="bg-gray-900 rounded-xl p-8 border border-teal-500/30 hover:border-teal-500 transition-all group">
+                    <div class="w-16 h-16 bg-teal-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-layer-group text-3xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-teal-400 transition-colors">
+                        VAPフレームワーク
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        Verifiable AI Protocol — 検証可能なAI決定来歴を定義する親フレームワーク。
+                    </p>
+                    <span class="text-teal-400 text-sm">
+                        フレームワークを見る <i class="fas fa-arrow-right ml-1"></i>
+                    </span>
+                </a>
+                
+                <!-- GitHub Repository -->
+                <a href="https://github.com/veritaschain/cap-spec" target="_blank" rel="noopener noreferrer" class="bg-gray-900 rounded-xl p-8 border border-gray-700 hover:border-gray-500 transition-all group">
+                    <div class="w-16 h-16 bg-gray-700/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fab fa-github text-3xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-gray-300 transition-colors">
+                        CAP GitHubリポジトリ
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        仕様ソース、JSONスキーマ、サンプルペイロード、テストベクタ。
+                    </p>
+                    <span class="text-gray-400 text-sm">
+                        リポジトリを見る <i class="fas fa-external-link-alt ml-1"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">お問い合わせ</h2>
+            <p class="text-gray-400 mb-8">
+                VeriCapture、CAP仕様、エンタープライズライセンスに関するお問い合わせ
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="mailto:info@veritaschain.org" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-6 py-3 rounded-lg transition-all">
+                    <i class="fas fa-envelope mr-2"></i>
+                    一般お問い合わせ
+                </a>
+                <a href="mailto:technical@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-6 py-3 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-code mr-2"></i>
+                    技術サポート
+                </a>
+                <a href="mailto:compliance@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-gray-400 font-bold px-6 py-3 rounded-lg transition-all border border-gray-400/50">
+                    <i class="fas fa-gavel mr-2"></i>
+                    法務・コンプライアンス
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="ja"></vcp-footer>
+</body>
+</html>

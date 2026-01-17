@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeriCapture - 证据生成工具 | CAP合规iOS应用</title>
+    <meta name="description" content="VeriCapture是一款以加密方式记录拍摄事件和数据溯源的证据生成工具。它不是相机应用,也不是真实性验证工具。这是面向法务、审计和取证用途的专业工具。">
+    <meta name="keywords" content="VeriCapture, 证据生成, 拍摄证明, CAP, 溯源, 防篡改, 法律证据, 审计追踪, iOS应用, 加密记录">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VeriCapture - 证据生成工具">
+    <meta property="og:description" content="VeriCapture以加密方式记录拍摄事件和数据溯源。面向法务、审计和取证用途的证据生成工具。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/cap/vericapture/zh/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VeriCapture - 证据生成工具">
+    <meta name="twitter:description" content="VeriCapture以加密方式记录拍摄事件和数据溯源。面向法务、审计和取证用途的证据生成工具。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/cap/vericapture/zh/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/cap/vericapture/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/cap/vericapture/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/cap/vericapture/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/cap/vericapture/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'vc-teal': '#14b8a6',
+                        'vc-cyan': '#06b6d4',
+                        'vc-slate': '#475569',
+                        'vc-dark': '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Noto Sans SC', 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #134e4a 50%, #0f172a 100%);
+        }
+        .vc-gradient {
+            background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(20, 184, 166, 0.5);
+        }
+        .warning-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+            border: 1px solid rgba(251, 191, 36, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VeriCapture",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "iOS 17.0+",
+        "description": "VeriCapture是一款以加密方式记录拍摄事件和数据溯源的证据生成工具。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "url": "https://veritaschain.org/vap/cap/vericapture/zh/"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="zh" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Critical Warning Banner -->
+    <div class="pt-12 lg:pt-0 bg-gradient-to-r from-amber-900/50 to-yellow-900/50 border-b border-amber-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-center gap-3 flex-wrap text-center">
+                <i class="fas fa-exclamation-triangle text-amber-400 text-xl"></i>
+                <span class="text-amber-200 font-medium">
+                    VeriCapture<strong class="text-white">不是</strong>"真实性验证"工具。
+                    它记录拍摄事件——<strong class="text-white">不保证</strong>内容的准确性或合法性。
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%2210%22 y=%2210%22 width=%2280%22 height=%2280%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><rect x=%2225%22 y=%2225%22 width=%2250%22 height=%2250%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><rect x=%2240%22 y=%2240%22 width=%2220%22 height=%2220%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Product Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-shield-alt text-teal-400"></i>
+                    <span class="text-teal-300 text-sm font-semibold tracking-wide">CAP v1.0 合规 • 证据生成工具</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-4">
+                <span class="text-white">Veri</span><span class="text-teal-400">Capture</span>
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-center text-gray-300 mb-6">
+                证据生成工具
+            </p>
+            
+            <!-- Core Definition -->
+            <div class="max-w-4xl mx-auto text-center mb-8">
+                <p class="text-xl text-teal-400 font-semibold">
+                    "以可验证的加密方式记录拍摄行为及其数据溯源。"
+                </p>
+            </div>
+            
+            <!-- Hero Quote Box -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- What VeriCapture DOES -->
+                    <div>
+                        <h3 class="text-teal-400 font-bold text-lg mb-4 flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            VeriCapture记录的内容
+                        </h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>拍摄操作发生的事实</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>溯源数据（哈希、时间戳、签名）</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>篡改检测能力</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>第三方独立验证</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- What VeriCapture DOES NOT -->
+                    <div>
+                        <h3 class="text-red-400 font-bold text-lg mb-4 flex items-center">
+                            <i class="fas fa-times-circle mr-2"></i>
+                            VeriCapture不提供的内容
+                        </h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>内容真伪判断</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>拍摄对象的合法性保证</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>身份验证/本人确认</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>虚假检测/防伪功能</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Core Principle -->
+            <div class="text-center mb-10">
+                <p class="text-2xl text-white font-bold">
+                    Verify, Don't Trust.
+                </p>
+                <p class="text-gray-400 mt-2">
+                    — 验证，而非信任。
+                </p>
+            </div>
+            
+            <!-- App Store Category Notice -->
+            <div class="max-w-2xl mx-auto bg-gray-800/50 border border-gray-700 rounded-xl p-6 mb-10">
+                <div class="flex items-center gap-3 mb-3">
+                    <i class="fab fa-app-store-ios text-teal-400 text-2xl"></i>
+                    <span class="text-white font-semibold">App Store类别</span>
+                </div>
+                <p class="text-gray-300 text-sm">
+                    <strong class="text-teal-400">工具/商务</strong> — 非照片与视频类别。
+                    VeriCapture是专业工具，不是普通消费者相机应用。
+                </p>
+            </div>
+            
+            <!-- CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#features" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-shield-alt mr-2"></i>
+                    查看功能
+                </a>
+                <a href="#use-cases" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-8 py-4 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-briefcase mr-2"></i>
+                    使用场景
+                </a>
+                <a href="/vap/cap/zh/" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-purple-400 font-bold px-8 py-4 rounded-lg transition-all border border-purple-400/50">
+                    <i class="fas fa-book mr-2"></i>
+                    CAP规范
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Critical Disclaimer Section -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="warning-box rounded-xl p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-exclamation-triangle text-amber-400 text-4xl mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">重要注意事项</h2>
+                    <p class="text-amber-200 mt-2">使用VeriCapture前请阅读</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Misconceptions to Avoid -->
+                    <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+                        <h3 class="text-red-400 font-bold text-lg mb-4">
+                            <i class="fas fa-ban mr-2"></i>
+                            需要避免的误解
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>"用VeriCapture拍摄＝真实/原版"</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>"可验证＝合法性保证"</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>"防伪/深度伪造预防应用"</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-times text-red-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>"人人可用的普通相机"</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Correct Understanding -->
+                    <div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-6">
+                        <h3 class="text-teal-400 font-bold text-lg mb-4">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            正确理解
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>以加密方式记录拍摄事件</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>提供防篡改的溯源数据</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>支持第三方独立验证</span>
+                            </li>
+                            <li class="flex items-start text-gray-300">
+                                <i class="fas fa-check text-teal-400 mr-2 mt-1 flex-shrink-0"></i>
+                                <span>专业的证据生成工具</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <p class="text-gray-300">
+                        <strong class="text-white">拍摄内容的真实性、合法性、适法性的判断需要另行验证和调查。</strong><br>
+                        VeriCapture的证据应作为您判断过程中的<em>参考材料之一</em>。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">核心功能</h2>
+                <p class="text-gray-400 text-lg">CAP v1.0合规的证据生成能力</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1: Capture with Evidence -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-teal-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-camera text-3xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">证据附带拍摄</h3>
+                    <p class="text-gray-400 mb-4">
+                        拍摄时同步生成CAP合规证据。SHA-256哈希、ES256数字签名、RFC 3161时间戳。
+                    </p>
+                    <div class="text-teal-400 text-sm">
+                        <i class="fas fa-shield-alt mr-1"></i> 从拍摄时刻起确保加密完整性
+                    </div>
+                </div>
+                
+                <!-- Feature 2: VeriCheck -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-cyan-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-search text-3xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">VeriCheck验证</h3>
+                    <p class="text-gray-400 mb-4">
+                        通过二维码扫描、JSON导入或文件选择验证证据完整性。通过哈希和签名验证检测篡改。
+                    </p>
+                    <div class="text-cyan-400 text-sm">
+                        <i class="fas fa-check-double mr-1"></i> 第三方独立验证
+                    </div>
+                </div>
+                
+                <!-- Feature 3: Attested Capture -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-purple-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-fingerprint text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Attested Capture模式</h3>
+                    <p class="text-gray-400 mb-4">
+                        记录拍摄时的生物认证<strong class="text-white">尝试</strong>。不是身份验证——只记录认证被尝试的事实。
+                    </p>
+                    <div class="text-amber-400 text-sm">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> 不是身份证明
+                    </div>
+                </div>
+                
+                <!-- Feature 4: Evidence Pack -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-blue-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-file-archive text-3xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">证据包导出</h3>
+                    <p class="text-gray-400 mb-4">
+                        法务/审计提交用的完整证据包：图像 + Proof JSON + 验证摘要PDF（含免责声明）。
+                    </p>
+                    <div class="text-blue-400 text-sm">
+                        <i class="fas fa-gavel mr-1"></i> 推荐用于正式证据提交
+                    </div>
+                </div>
+                
+                <!-- Feature 5: External Anchoring -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-green-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-anchor text-3xl text-green-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">外部锚定</h3>
+                    <p class="text-gray-400 mb-4">
+                        RFC 3161 TSA时间戳和Merkle树包含证明。第三方时间权威提供法律级别的时间戳证据。
+                    </p>
+                    <div class="text-green-400 text-sm">
+                        <i class="fas fa-clock mr-1"></i> RFC 3161合规时间戳
+                    </div>
+                </div>
+                
+                <!-- Feature 6: Privacy by Design -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 card-hover">
+                    <div class="w-16 h-16 bg-slate-700/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-user-shield text-3xl text-slate-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">隐私优先设计</h3>
+                    <p class="text-gray-400 mb-4">
+                        证据数据仅存储在设备上。外部传输仅限哈希值。不传输图像或个人数据。
+                    </p>
+                    <div class="text-slate-400 text-sm">
+                        <i class="fas fa-lock mr-1"></i> 本地优先架构
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">预期使用场景</h2>
+                <p class="text-gray-400 text-lg">面向特定行业的专业证据生成</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <!-- Primary Use Cases -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-check-circle text-teal-400 text-2xl"></i>
+                        <span class="text-white font-bold text-xl">主要用途</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-gavel text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">法务提交</p>
+                                <p class="text-gray-400 text-sm">诉讼和纠纷的证据文档</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-clipboard-check text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">审计追踪</p>
+                                <p class="text-gray-400 text-sm">业务流程文档和合规记录</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-hard-hat text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">现场记录</p>
+                                <p class="text-gray-400 text-sm">建筑工地、检查、现场工作记录</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-newspaper text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">新闻与调查</p>
+                                <p class="text-gray-400 text-sm">采访记录、调查文档</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-building text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">房地产与建筑</p>
+                                <p class="text-gray-400 text-sm">物业状况记录、施工进度</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-teal-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-car-crash text-teal-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">事故记录</p>
+                                <p class="text-gray-400 text-sm">事故现场、纠纷情况、证据保全</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Not Intended For -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-times-circle text-red-400 text-2xl"></i>
+                        <span class="text-white font-bold text-xl">不适用场景</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-share-alt text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">社交媒体分享</p>
+                                <p class="text-gray-400 text-sm">日常分享不需要证据生成开销</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-image text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">日常摄影</p>
+                                <p class="text-gray-400 text-sm">专为专业用途设计，非休闲相机</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-users text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">照片分享/传播</p>
+                                <p class="text-gray-400 text-sm">证据中可能包含隐私敏感数据</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-palette text-red-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-semibold">艺术与创作</p>
+                                <p class="text-gray-400 text-sm">不包含创意工作流程功能</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-red-900/20 border border-red-500/30 rounded-lg p-4">
+                        <p class="text-red-300 text-sm">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            VeriCapture是<strong>专业证据工具</strong>，不是普通消费者相机应用。
+                            日常摄影请使用设备自带的标准相机应用。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specifications Section -->
+    <section id="specs" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">技术规格</h2>
+                <p class="text-gray-400 text-lg">CAP v1.0合规的加密架构</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Cryptographic Specifications -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                        <i class="fas fa-key text-teal-400 mr-2"></i>
+                        加密技术栈
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">哈希算法</span>
+                            <span class="text-white font-mono">SHA-256</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">签名算法</span>
+                            <span class="text-white font-mono">ES256 (ECDSA P-256)</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">密钥存储</span>
+                            <span class="text-white font-mono">Secure Enclave</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">时间戳协议</span>
+                            <span class="text-white font-mono">RFC 3161 TSA</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">JSON规范化</span>
+                            <span class="text-white font-mono">RFC 8785 (JCS)</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <span class="text-gray-400">UUID版本</span>
+                            <span class="text-white font-mono">RFC 9562 (UUIDv7)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- App Specifications -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                        <i class="fab fa-apple text-teal-400 mr-2"></i>
+                        应用详情
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">平台</span>
+                            <span class="text-white">iOS 17.0+</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">开发语言</span>
+                            <span class="text-white">Swift / SwiftUI</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">规范合规</span>
+                            <span class="text-white">CAP v1.0</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">App Store类别</span>
+                            <span class="text-white">工具/商务</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-400">数据存储</span>
+                            <span class="text-white">仅设备本地</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <span class="text-gray-400">外部传输</span>
+                            <span class="text-white">仅哈希值</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Evidence Structure -->
+            <div class="mt-12 bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-file-code text-teal-400 mr-2"></i>
+                    证据包结构
+                </h3>
+                
+                <div class="code-block">
+                    <pre>evidence_pack_{proofId}/
+├── image.jpg                    # 原始拍摄图像
+├── proof.json                   # Forensic Proof（完整证据链）
+├── verification_summary.pdf     # 验证摘要（含免责声明）
+└── README.txt                   # 证据包说明
+
+<span class="text-teal-400"># proof.json 包含:</span>
+{
+  "proofId": "...",
+  "captureTime": "2026-01-16T18:30:45.123+09:00",
+  "imageHash": "SHA-256 Base64",
+  "eventHash": "SHA-256 Base64",
+  "signature": "ES256 Base64",
+  "publicKey": "PEM格式",
+  "location": { ... },           <span class="text-gray-500"># 可选</span>
+  "device": { ... },
+  "humanAttestation": { ... },   <span class="text-gray-500"># 可选 (Attested Capture Mode)</span>
+  "timestampResponse": { ... },  <span class="text-gray-500"># RFC 3161 TSA响应</span>
+  "merkleProof": { ... }         <span class="text-gray-500"># Merkle包含证明</span>
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Self-Signing Model Limitations -->
+    <section class="py-20 bg-gray-800">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-exclamation-circle text-amber-400 text-4xl mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">自签名模型的局限性</h2>
+                    <p class="text-amber-200 mt-2">理解"自证其明"的约束</p>
+                </div>
+                
+                <div class="space-y-6 text-gray-300">
+                    <p>
+                        CAP使用<strong class="text-white">自签名模型</strong>，存在固有局限性：
+                    </p>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>签名密钥管理者的身份<strong class="text-white">超出CAP的范围</strong></span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>设备密钥仅证明"在此设备上签名"——不证明<strong class="text-white">谁</strong>签名</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>摄影者身份或组织归属<strong class="text-white">不保证</strong></span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-8 bg-gray-800/50 rounded-lg p-6">
+                        <h4 class="text-white font-semibold mb-3">企业使用注意事项</h4>
+                        <p class="text-gray-400 text-sm">
+                            组织使用VeriCapture时应另行制定以下策略：
+                            密钥签发流程、设备-用户绑定记录、密钥撤销流程、审计追踪保留。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Attested Capture Clarification -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-fingerprint text-purple-400 text-4xl mb-4"></i>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white">关于"Attested Capture Mode"</h2>
+                    <p class="text-purple-200 mt-2">为什么不使用"Verified"</p>
+                </div>
+                
+                <div class="space-y-6 text-gray-300">
+                    <p>
+                        我们故意使用<strong class="text-white">"Attested"</strong>而非"Verified"，原因如下：
+                    </p>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>"Verified"在很多语境下容易被误解为"真实/正确/身份确认"</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>B2B客户可能在销售材料中误用"Verified"声称真实性保证</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                            <span>最终用户可能将"Verified"误解为"身份已确认"</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-8 bg-gray-800/50 rounded-lg p-6">
+                        <h4 class="text-white font-semibold mb-3">Attested Capture记录的内容：</h4>
+                        <ul class="text-gray-400 text-sm space-y-2">
+                            <li>• 认证被<strong class="text-white">尝试</strong>（不一定成功）</li>
+                            <li>• 成功/失败结果与拍摄事件加密绑定</li>
+                            <li>• 认证与拍摄之间的时间偏移</li>
+                        </ul>
+                        
+                        <h4 class="text-white font-semibold mt-4 mb-3">Attested Capture不证明的内容：</h4>
+                        <ul class="text-red-300 text-sm space-y-2">
+                            <li>• 摄影者是谁</li>
+                            <li>• 摄影者是否是设备的合法所有者</li>
+                            <li>• 摄影者是否是人类（而非机器人）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Resources -->
+    <section class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">相关资源</h2>
+                <p class="text-gray-400 text-lg">规范和文档</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- CAP Specification -->
+                <a href="/vap/cap/zh/" class="bg-gray-900 rounded-xl p-8 border border-purple-500/30 hover:border-purple-500 transition-all group">
+                    <div class="w-16 h-16 bg-purple-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-book text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-purple-400 transition-colors">
+                        CAP规范
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        Content / Creative AI Profile — VeriCapture实现的基础框架。
+                    </p>
+                    <span class="text-purple-400 text-sm">
+                        查看规范 <i class="fas fa-arrow-right ml-1"></i>
+                    </span>
+                </a>
+                
+                <!-- VAP Framework -->
+                <a href="/vap/zh/" class="bg-gray-900 rounded-xl p-8 border border-teal-500/30 hover:border-teal-500 transition-all group">
+                    <div class="w-16 h-16 bg-teal-900/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-layer-group text-3xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-teal-400 transition-colors">
+                        VAP框架
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        Verifiable AI Protocol — 定义可验证AI决策溯源的父框架。
+                    </p>
+                    <span class="text-teal-400 text-sm">
+                        查看框架 <i class="fas fa-arrow-right ml-1"></i>
+                    </span>
+                </a>
+                
+                <!-- GitHub Repository -->
+                <a href="https://github.com/veritaschain/cap-spec" target="_blank" rel="noopener noreferrer" class="bg-gray-900 rounded-xl p-8 border border-gray-700 hover:border-gray-500 transition-all group">
+                    <div class="w-16 h-16 bg-gray-700/30 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fab fa-github text-3xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-gray-300 transition-colors">
+                        CAP GitHub仓库
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        规范源码、JSON Schema、示例负载、测试向量。
+                    </p>
+                    <span class="text-gray-400 text-sm">
+                        查看仓库 <i class="fas fa-external-link-alt ml-1"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">联系我们</h2>
+            <p class="text-gray-400 mb-8">
+                关于VeriCapture、CAP规范或企业许可的咨询
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="mailto:info@veritaschain.org" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-6 py-3 rounded-lg transition-all">
+                    <i class="fas fa-envelope mr-2"></i>
+                    一般咨询
+                </a>
+                <a href="mailto:technical@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-6 py-3 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-code mr-2"></i>
+                    技术支持
+                </a>
+                <a href="mailto:compliance@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-gray-400 font-bold px-6 py-3 rounded-lg transition-all border border-gray-400/50">
+                    <i class="fas fa-gavel mr-2"></i>
+                    法务/合规
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="zh"></vcp-footer>
+</body>
+</html>
