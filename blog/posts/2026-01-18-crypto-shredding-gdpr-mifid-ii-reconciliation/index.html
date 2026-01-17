@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto-Shredding: The Technical Foundation for Reconciling GDPR and Financial Record-Keeping Obligations - VeritasChain Blog</title>
+    <meta name="description" content="A comprehensive technical analysis of how cryptographic key destruction enables simultaneous compliance with GDPR Article 17 erasure rights and MiFID II Article 16(7) record retention requirements.">
+    <meta name="keywords" content="crypto-shredding, GDPR, MiFID II, cryptographic erasure, right to be forgotten, record retention, VCP, EU AI Act, data protection, HSM">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Crypto-Shredding: Reconciling GDPR and Financial Record-Keeping">
+    <meta property="og:description" content="How cryptographic key destruction enables simultaneous compliance with GDPR erasure rights and MiFID II record retention requirements.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-18-crypto-shredding-gdpr-mifid-ii-reconciliation/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:published_time" content="2026-01-18">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Technical">
+    <meta property="article:tag" content="GDPR">
+    <meta property="article:tag" content="MiFID II">
+    <meta property="article:tag" content="Crypto-Shredding">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="Crypto-Shredding: GDPR + MiFID II Compliance">
+    <meta name="twitter:description" content="How cryptographic key destruction enables simultaneous compliance with GDPR erasure and MiFID II retention.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-18-crypto-shredding-gdpr-mifid-ii-reconciliation/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .prose { max-width: 75ch; }
+        .prose h2 { color: #f1f5f9; font-size: 1.75rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid rgba(59, 130, 246, 0.3); }
+        .prose h3 { color: #e2e8f0; font-size: 1.35rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; }
+        .prose h4 { color: #cbd5e1; font-size: 1.15rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .prose p { color: #94a3b8; line-height: 1.8; margin-bottom: 1.25rem; }
+        .prose a { color: #60a5fa; text-decoration: underline; }
+        .prose a:hover { color: #93c5fd; }
+        .prose ul, .prose ol { color: #94a3b8; margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; line-height: 1.7; }
+        .prose strong { color: #e2e8f0; }
+        .prose blockquote { border-left: 4px solid #3b82f6; padding-left: 1.5rem; margin: 1.5rem 0; color: #94a3b8; font-style: italic; background: rgba(59, 130, 246, 0.05); padding: 1rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; }
+        .prose code { font-family: 'JetBrains Mono', monospace; background: rgba(30, 41, 59, 0.8); padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875rem; color: #e2e8f0; }
+        .prose pre { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin: 1.5rem 0; }
+        .prose pre code { background: none; padding: 0; font-size: 0.8rem; color: #94a3b8; }
+        .prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .prose th { background: rgba(59, 130, 246, 0.1); color: #e2e8f0; padding: 0.75rem 1rem; text-align: left; font-weight: 600; border: 1px solid rgba(59, 130, 246, 0.2); }
+        .prose td { padding: 0.75rem 1rem; border: 1px solid rgba(59, 130, 246, 0.1); color: #94a3b8; }
+        .prose tr:nth-child(even) { background: rgba(30, 41, 59, 0.3); }
+        .info-box { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .warning-box { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .critical-box { background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .success-box { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .feature-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1rem 0; }
+        .diagram-box { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.5rem; padding: 1.5rem; margin: 1.5rem 0; overflow-x: auto; }
+        .diagram-box pre { margin: 0; background: none; border: none; padding: 0; font-size: 0.7rem; color: #94a3b8; line-height: 1.4; }
+        .toc-link { color: #60a5fa; text-decoration: none; display: block; padding: 0.5rem 0; border-bottom: 1px solid rgba(59, 130, 246, 0.1); }
+        .toc-link:hover { color: #93c5fd; background: rgba(59, 130, 246, 0.05); }
+        .resource-link { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.5rem; margin: 0.5rem 0; text-decoration: none; transition: all 0.2s; }
+        .resource-link:hover { border-color: rgba(59, 130, 246, 0.5); background: rgba(59, 130, 246, 0.1); }
+        .math-box { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 0.5rem; padding: 1rem 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #e2e8f0; }
+    </style>
+
+    <!-- Structured Data - Article -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Crypto-Shredding: The Technical Foundation for Reconciling GDPR and Financial Record-Keeping Obligations",
+    "description": "A comprehensive technical analysis of how cryptographic key destruction enables simultaneous compliance with GDPR Article 17 erasure rights and MiFID II Article 16(7) record retention requirements.",
+    "image": "https://veritaschain.org/assets/OGP.png",
+    "author": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization",
+        "url": "https://veritaschain.org/"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://veritaschain.org/assets/img/logo.png"
+        }
+    },
+    "datePublished": "2026-01-18",
+    "dateModified": "2026-01-18",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://veritaschain.org/blog/posts/2026-01-18-crypto-shredding-gdpr-mifid-ii-reconciliation/"
+    },
+    "keywords": [
+        "crypto-shredding",
+        "GDPR",
+        "MiFID II",
+        "cryptographic erasure",
+        "data protection",
+        "VCP"
+    ]
+    }
+    </script>
+
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://veritaschain.org/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://veritaschain.org/blog/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Crypto-Shredding: GDPR + MiFID II Reconciliation",
+            "item": "https://veritaschain.org/blog/posts/2026-01-18-crypto-shredding-gdpr-mifid-ii-reconciliation/"
+        }
+    ]
+    }
+    </script>
+</head>
+<body class="bg-slate-900 text-gray-100 min-h-screen">
+    <vcp-header></vcp-header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-16 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="relative max-w-4xl mx-auto px-6">
+            <!-- Breadcrumb -->
+            <nav class="flex items-center gap-2 text-sm text-slate-400 mb-8">
+                <a href="/" class="hover:text-blue-400 transition-colors">Home</a>
+                <i class="fas fa-chevron-right text-xs"></i>
+                <a href="/blog/" class="hover:text-blue-400 transition-colors">Blog</a>
+                <i class="fas fa-chevron-right text-xs"></i>
+                <span class="text-slate-300">Crypto-Shredding</span>
+            </nav>
+            
+            <!-- Category & Tags -->
+            <div class="flex flex-wrap items-center gap-3 mb-6">
+                <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-sm font-medium rounded-full border border-blue-500/30">
+                    <i class="fas fa-cogs mr-1"></i> Technical Standards
+                </span>
+                <span class="px-3 py-1 bg-purple-500/20 text-purple-400 text-sm font-medium rounded-full border border-purple-500/30">
+                    GDPR
+                </span>
+                <span class="px-3 py-1 bg-green-500/20 text-green-400 text-sm font-medium rounded-full border border-green-500/30">
+                    MiFID II
+                </span>
+                <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 text-sm font-medium rounded-full border border-yellow-500/30">
+                    EU AI Act
+                </span>
+            </div>
+            
+            <!-- Title -->
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                Crypto-Shredding: The Technical Foundation for Reconciling GDPR and Financial Record-Keeping Obligations
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="text-xl text-slate-300 mb-8 leading-relaxed">
+                A comprehensive technical analysis of how cryptographic key destruction enables simultaneous compliance with GDPR Article 17 erasure rights and MiFID II Article 16(7) record retention requirements
+            </p>
+            
+            <!-- Meta -->
+            <div class="flex flex-wrap items-center gap-6 text-slate-400 text-sm">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-building text-blue-400"></i>
+                    <span>VeritasChain Standards Organization</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-calendar text-blue-400"></i>
+                    <span>January 18, 2026</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-clock text-blue-400"></i>
+                    <span>40 min read</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-6 pb-24">
+        <article class="prose prose-lg prose-invert">
+            
+            <!-- Executive Summary -->
+            <div class="info-box">
+                <h4 class="text-blue-400 font-semibold mb-3"><i class="fas fa-bullhorn mr-2"></i>Executive Summary</h4>
+                <p class="text-slate-300 mb-3">
+                    The intersection of data protection regulations (GDPR) and financial record-keeping requirements (MiFID II, Dodd-Frank, MAR) creates a fundamental architectural challenge: how to maintain <strong>immutable audit trails</strong> while honoring <strong>data subject erasure requests</strong>.
+                </p>
+                <p class="text-slate-300 mb-0">
+                    This document presents <strong>crypto-shredding</strong> — a cryptographic technique that resolves this regulatory paradox by separating data confidentiality from data integrity. The VeritasChain Protocol (VCP) v1.1 implements this technique as part of its GDPR Privacy Extension, now available as open-source software.
+                </p>
+            </div>
+
+            <!-- Table of Contents -->
+            <div class="feature-card mt-8">
+                <h3 class="text-lg font-semibold text-slate-200 mb-4"><i class="fas fa-list mr-2 text-blue-400"></i>Table of Contents</h3>
+                <nav class="grid md:grid-cols-2 gap-x-6">
+                    <a href="#regulatory-landscape" class="toc-link">1. The Regulatory Landscape</a>
+                    <a href="#technical-paradox" class="toc-link">2. The Technical Paradox</a>
+                    <a href="#crypto-shredding-foundation" class="toc-link">3. Crypto-Shredding: Theoretical Foundation</a>
+                    <a href="#vcp-implementation" class="toc-link">4. VCP v1.1 Implementation Architecture</a>
+                    <a href="#cryptographic-primitives" class="toc-link">5. Cryptographic Primitives & Security</a>
+                    <a href="#compliance-mapping" class="toc-link">6. Regulatory Compliance Mapping</a>
+                    <a href="#implementation-guidelines" class="toc-link">7. Implementation Guidelines</a>
+                    <a href="#erasure-certificate" class="toc-link">8. Erasure Certificate Specification</a>
+                    <a href="#operational-considerations" class="toc-link">9. Operational Considerations</a>
+                    <a href="#future-directions" class="toc-link">10. Future Directions</a>
+                    <a href="#conclusion" class="toc-link">11. Conclusion</a>
+                    <a href="#references" class="toc-link">12. References</a>
+                </nav>
+            </div>
+
+            <!-- Section 1: Regulatory Landscape -->
+            <h2 id="regulatory-landscape">1. The Regulatory Landscape</h2>
+
+            <h3>1.1 GDPR Article 17 — Right to Erasure</h3>
+
+            <p>
+                The General Data Protection Regulation establishes a fundamental right for data subjects to request erasure of their personal data. Article 17(1) states:
+            </p>
+
+            <blockquote>
+                "The data subject shall have the right to obtain from the controller the erasure of personal data concerning him or her without undue delay and the controller shall have the obligation to erase personal data without undue delay..."
+            </blockquote>
+
+            <p>
+                This right applies when:
+            </p>
+            <ul>
+                <li>The personal data is no longer necessary for the purpose for which it was collected</li>
+                <li>The data subject withdraws consent</li>
+                <li>The data subject objects to processing</li>
+                <li>The personal data has been unlawfully processed</li>
+            </ul>
+
+            <p>
+                The maximum timeframe for compliance is <strong>30 days</strong> from receipt of request.
+            </p>
+
+            <h3>1.2 MiFID II Article 16(7) — Record Retention</h3>
+
+            <p>
+                The Markets in Financial Instruments Directive II imposes strict record-keeping obligations on investment firms. Article 16(7) requires:
+            </p>
+
+            <blockquote>
+                "An investment firm shall arrange for records to be kept of all services, activities and transactions undertaken by it which shall be sufficient to enable the competent authority to fulfil its supervisory tasks and to perform enforcement actions..."
+            </blockquote>
+
+            <p>
+                Regulatory Technical Standard (RTS) 25 further specifies:
+            </p>
+            <ul>
+                <li><strong>Retention period</strong>: 5-7 years</li>
+                <li><strong>Timestamp accuracy</strong>: Microsecond precision</li>
+                <li><strong>Clock synchronization</strong>: GPS/PTP/NTP certified sources</li>
+                <li><strong>Tamper evidence</strong>: Records must demonstrate integrity</li>
+            </ul>
+
+            <h3>1.3 EU AI Act Article 12 — Logging Requirements</h3>
+
+            <p>
+                The Artificial Intelligence Act, effective August 2, 2026, establishes logging requirements for high-risk AI systems:
+            </p>
+
+            <blockquote>
+                "High-risk AI systems shall be designed and developed with capabilities enabling the automatic recording of events ('logs') while the high-risk AI systems is operating."
+            </blockquote>
+
+            <p>
+                Algorithmic trading systems utilizing AI/ML components fall under this regulation, creating an additional layer of logging obligations that must be reconciled with GDPR.
+            </p>
+
+            <h3>1.4 The Regulatory Conflict</h3>
+
+            <div class="critical-box">
+                <h4 class="text-red-400 font-semibold mb-3"><i class="fas fa-exclamation-triangle mr-2"></i>Direct Regulatory Conflict</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Regulation</th>
+                            <th>Requirement</th>
+                            <th>Timeframe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GDPR Art. 17</td>
+                            <td>Delete personal data</td>
+                            <td>30 days</td>
+                        </tr>
+                        <tr>
+                            <td>MiFID II Art. 16(7)</td>
+                            <td>Retain all records</td>
+                            <td>5-7 years</td>
+                        </tr>
+                        <tr>
+                            <td>EU AI Act Art. 12</td>
+                            <td>Log all AI decisions</td>
+                            <td>System lifetime</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-slate-300 mt-3 mb-0">
+                    For an algorithmic trading firm, each trade execution log contains personal data (trader ID, account number, IP address) that is simultaneously subject to erasure rights and retention obligations.
+                </p>
+            </div>
+
+            <!-- Section 2: Technical Paradox -->
+            <h2 id="technical-paradox">2. The Technical Paradox</h2>
+
+            <h3>2.1 Traditional Approaches and Their Limitations</h3>
+
+            <div class="feature-card">
+                <h4 class="text-slate-200 font-semibold mb-2">Approach 1: Legal Exemption Claims</h4>
+                <p class="text-slate-400 mb-2">
+                    GDPR Article 17(3)(e) provides an exemption for data necessary "for the establishment, exercise or defence of legal claims."
+                </p>
+                <p class="text-red-400 text-sm mb-0">
+                    <i class="fas fa-times-circle mr-1"></i> <strong>Limitations:</strong> Regulators interpret this exemption narrowly. Does not apply to all personal data elements. Creates ongoing legal risk and uncertainty.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="text-slate-200 font-semibold mb-2">Approach 2: Pseudonymization</h4>
+                <p class="text-slate-400 mb-2">
+                    Replace direct identifiers with pseudonyms, maintaining a separate mapping table.
+                </p>
+                <p class="text-red-400 text-sm mb-0">
+                    <i class="fas fa-times-circle mr-1"></i> <strong>Limitations:</strong> Pseudonymized data is still personal data under GDPR. Deleting the mapping table may not satisfy "erasure". Re-identification risk from auxiliary data.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="text-slate-200 font-semibold mb-2">Approach 3: Physical Deletion with Gaps</h4>
+                <p class="text-slate-400 mb-2">
+                    Delete the personal data and accept gaps in the audit trail.
+                </p>
+                <p class="text-red-400 text-sm mb-0">
+                    <i class="fas fa-times-circle mr-1"></i> <strong>Limitations:</strong> Directly violates MiFID II retention requirements. Raises suspicion of record tampering. May trigger regulatory investigation.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="text-slate-200 font-semibold mb-2">Approach 4: Maintaining Dual Systems</h4>
+                <p class="text-slate-400 mb-2">
+                    Separate systems for regulatory retention and GDPR compliance.
+                </p>
+                <p class="text-red-400 text-sm mb-0">
+                    <i class="fas fa-times-circle mr-1"></i> <strong>Limitations:</strong> Operational complexity. Data synchronization challenges. Increases attack surface.
+                </p>
+            </div>
+
+            <h3>2.2 The Fundamental Problem</h3>
+
+            <p>
+                The core issue is that traditional approaches conflate two distinct properties:
+            </p>
+
+            <ol>
+                <li><strong>Data Integrity</strong>: The ability to verify that records have not been altered</li>
+                <li><strong>Data Confidentiality</strong>: The ability to access the content of records</li>
+            </ol>
+
+            <div class="info-box">
+                <p class="text-slate-300 mb-0">
+                    Audit trails require <strong>integrity</strong>. GDPR erasure requires eliminating <strong>confidentiality</strong> for specific data subjects. These are not inherently contradictory — they only appear so when both properties are bound to the same artifact (the plaintext data).
+                </p>
+            </div>
+
+            <!-- Section 3: Crypto-Shredding Foundation -->
+            <h2 id="crypto-shredding-foundation">3. Crypto-Shredding: Theoretical Foundation</h2>
+
+            <h3>3.1 Core Concept</h3>
+
+            <p>
+                Crypto-shredding (also known as cryptographic erasure) resolves the paradox by separating integrity and confidentiality:
+            </p>
+
+            <ol>
+                <li><strong>Encrypt</strong> personal data with unique keys per data subject</li>
+                <li><strong>Compute</strong> integrity hashes over the ciphertext (not plaintext)</li>
+                <li><strong>Destroy</strong> encryption keys to achieve erasure</li>
+            </ol>
+
+            <div class="success-box">
+                <p class="text-slate-300 mb-0">
+                    <strong>The critical insight:</strong> Hash chain integrity is independent of plaintext recoverability.
+                </p>
+            </div>
+
+            <h3>3.2 Mathematical Foundation</h3>
+
+            <div class="math-box">
+                <p class="mb-2"><strong>Let:</strong></p>
+                <p class="mb-1">P = plaintext personal data</p>
+                <p class="mb-1">K<sub>s</sub> = encryption key for subject s</p>
+                <p class="mb-1">E(P, K<sub>s</sub>) = ciphertext</p>
+                <p class="mb-3">H(x) = cryptographic hash function</p>
+                
+                <p class="mb-2"><strong>Traditional approach (integrity over plaintext):</strong></p>
+                <p class="mb-3 text-yellow-400">H<sub>chain</sub> = H(H<sub>prev</sub> || P) → Erasure of P breaks the hash chain</p>
+                
+                <p class="mb-2"><strong>Crypto-shredding approach (integrity over ciphertext):</strong></p>
+                <p class="mb-1 text-green-400">C = E(P, K<sub>s</sub>)</p>
+                <p class="mb-0 text-green-400">H<sub>chain</sub> = H(H<sub>prev</sub> || C) → Destruction of K<sub>s</sub> renders P unrecoverable, but C and H<sub>chain</sub> remain unchanged</p>
+            </div>
+
+            <h3>3.3 Security Properties</h3>
+
+            <div class="feature-card">
+                <h4 class="text-green-400 font-semibold mb-2"><i class="fas fa-shield-alt mr-2"></i>Property 1: Integrity Preservation</h4>
+                <p class="text-slate-400 mb-0">
+                    The hash chain H<sub>1</sub> → H<sub>2</sub> → ... → H<sub>n</sub> remains valid after key destruction. Any tampering is detectable.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="text-blue-400 font-semibold mb-2"><i class="fas fa-eraser mr-2"></i>Property 2: Erasure Equivalence</h4>
+                <p class="text-slate-400 mb-0">
+                    Under the assumption that AES-256 is secure, destruction of K<sub>s</sub> renders P computationally unrecoverable. This satisfies the EDPB definition of erasure.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="text-purple-400 font-semibold mb-2"><i class="fas fa-user-shield mr-2"></i>Property 3: Subject Isolation</h4>
+                <p class="text-slate-400 mb-0">
+                    Each data subject has unique keys. Erasure for subject s<sub>1</sub> does not affect recoverability for subject s<sub>2</sub>.
+                </p>
+            </div>
+
+            <h3>3.4 EDPB Endorsement</h3>
+
+            <p>
+                The European Data Protection Board explicitly endorses this approach in Guidelines 02/2025:
+            </p>
+
+            <blockquote>
+                "Where personal data has been encrypted using state of the art encryption technology and the encryption key has been securely destroyed, the encrypted data may be considered to have been erased, provided that decryption is not computationally feasible."
+            </blockquote>
+
+            <p>
+                This provides the regulatory foundation for crypto-shredding as a compliant erasure mechanism.
+            </p>
+
+            <!-- Section 4: VCP Implementation -->
+            <h2 id="vcp-implementation">4. VCP v1.1 Implementation Architecture</h2>
+
+            <h3>4.1 System Overview</h3>
+
+            <p>
+                The VeritasChain Protocol v1.1 implements crypto-shredding through the VCP-PRIVACY extension:
+            </p>
+
+            <div class="diagram-box">
+                <pre>
+┌─────────────────────────────────────────────────────────────────────┐
+│                     Trading Platform Layer                          │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐          │
+│  │  MT5/MT4 EA  │    │   cTrader    │    │  Custom Algo │          │
+│  └──────┬───────┘    └──────┬───────┘    └──────┬───────┘          │
+│         └───────────────────┼───────────────────┘                   │
+│                             ▼                                       │
+│                    ┌────────────────┐                               │
+│                    │   VCP Bridge   │                               │
+│                    └────────┬───────┘                               │
+└─────────────────────────────┼───────────────────────────────────────┘
+                              │ VCP Events (JSON/Binary)
+┌─────────────────────────────▼───────────────────────────────────────┐
+│                      VCP Sidecar Adapter                            │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │                    Event Processor                            │  │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │  │
+│  │  │     PII     │  │ Hash Chain  │  │   Event     │          │  │
+│  │  │  Encryptor  │  │   Manager   │  │  Validator  │          │  │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘          │  │
+│  └──────────────────────────┬───────────────────────────────────┘  │
+│  ┌──────────────────────────▼───────────────────────────────────┐  │
+│  │              Key Management System (KMS)                      │  │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │  │
+│  │  │     Key     │  │     HSM     │  │  Erasure    │          │  │
+│  │  │  Generator  │  │   Storage   │  │  Handler    │          │  │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘          │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │                  VCP Event Chain Store                        │  │
+│  │  Event₁ ──hash──▶ Event₂ ──hash──▶ Event₃ ──hash──▶ ...     │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>4.2 Event Structure</h3>
+
+            <p>Each VCP event contains:</p>
+
+            <pre><code>{
+  "header": {
+    "event_id": "019bcc76-fb8c-730d-2a5b-1234567890ab",
+    "event_type": "ORD",
+    "timestamp": "2026-01-18T10:00:01.123456Z",
+    "prev_hash": "a1b2c3d4e5f6...",
+    "event_hash": "f6e5d4c3b2a1...",
+    "pii_key_ids": ["KEY-TRADER-001-20260118-abc123"]
+  },
+  "payload": {
+    "account_id": {
+      "key_id": "KEY-TRADER-001-20260118-abc123",
+      "nonce": "dGVzdG5vbmNlMTIz",
+      "ciphertext": "Y2lwaGVydGV4dGRhdGE=",
+      "algorithm": "AES-256-GCM"
+    },
+    "symbol": "EURUSD",
+    "side": "BUY",
+    "quantity": 100000,
+    "price": 1.0850
+  },
+  "gdpr_metadata": {
+    "pii_fields_encrypted": ["account_id"],
+    "subject_id_hash": "sha256:603aefde2da1b17ed640f537bb5c4689...",
+    "retention_until": "2031-01-18T10:00:01Z",
+    "legal_basis": "MiFID II Article 16(7)"
+  }
+}</code></pre>
+
+            <h3>4.3 Key Management Lifecycle</h3>
+
+            <div class="diagram-box">
+                <pre>
+GENERATE ──▶ STORE ──▶ USE ──▶ ROTATE ──▶ DESTROY
+    │          │        │         │          │
+    ▼          ▼        ▼         ▼          ▼
+ Subject    HSM     Encrypt    New Key   GDPR Art.17
+  bound    secure    PII       same      Erasure
+           storage   fields    subject   Request
+                </pre>
+            </div>
+
+            <ul>
+                <li><strong>Key Generation</strong>: AES-256, one key per data subject</li>
+                <li><strong>Key Storage</strong>: HSM (AWS CloudHSM, Azure Key Vault, Thales Luna)</li>
+                <li><strong>Key Destruction</strong>: Triggered by validated GDPR erasure request</li>
+            </ul>
+
+            <!-- Section 5: Cryptographic Primitives -->
+            <h2 id="cryptographic-primitives">5. Cryptographic Primitives and Security Analysis</h2>
+
+            <h3>5.1 Encryption: AES-256-GCM</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Specification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Key Size</td>
+                        <td>256 bits</td>
+                    </tr>
+                    <tr>
+                        <td>Nonce Size</td>
+                        <td>96 bits (12 bytes)</td>
+                    </tr>
+                    <tr>
+                        <td>Tag Size</td>
+                        <td>128 bits (16 bytes)</td>
+                    </tr>
+                    <tr>
+                        <td>Standard</td>
+                        <td>NIST SP 800-38D</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>AES-GCM provides:</p>
+            <ul>
+                <li><strong>Confidentiality</strong>: Semantic security under chosen-plaintext attack</li>
+                <li><strong>Authenticity</strong>: Integrity verification via authentication tag</li>
+                <li><strong>Performance</strong>: Hardware acceleration (AES-NI) support</li>
+            </ul>
+
+            <h3>5.2 Hashing: SHA-256</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Specification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Output Size</td>
+                        <td>256 bits (32 bytes)</td>
+                    </tr>
+                    <tr>
+                        <td>Block Size</td>
+                        <td>512 bits</td>
+                    </tr>
+                    <tr>
+                        <td>Standard</td>
+                        <td>FIPS 180-4</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>5.3 Key Destruction Security</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Threat</th>
+                        <th>Mitigation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Key extraction from HSM</td>
+                        <td>FIPS 140-2 Level 3+ certified HSM</td>
+                    </tr>
+                    <tr>
+                        <td>Key backup recovery</td>
+                        <td>Backup policies must include key destruction</td>
+                    </tr>
+                    <tr>
+                        <td>Quantum computing</td>
+                        <td>Migration path to post-quantum algorithms</td>
+                    </tr>
+                    <tr>
+                        <td>Side-channel attacks</td>
+                        <td>HSM physical security</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>5.4 Post-Quantum Considerations</h3>
+
+            <p>
+                Current algorithms (AES-256, SHA-256) are considered quantum-resistant for symmetric operations. The VCP architecture supports cryptographic agility for future migration:
+            </p>
+
+            <ul>
+                <li><strong>Encryption</strong>: AES-256-GCM → CRYSTALS-Kyber (NIST PQC)</li>
+                <li><strong>Signatures</strong>: Ed25519 → CRYSTALS-Dilithium (NIST PQC)</li>
+            </ul>
+
+            <!-- Section 6: Compliance Mapping -->
+            <h2 id="compliance-mapping">6. Regulatory Compliance Mapping</h2>
+
+            <h3>6.1 GDPR Compliance</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>GDPR Article</th>
+                        <th>Requirement</th>
+                        <th>VCP Implementation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Art. 5(1)(e)</td>
+                        <td>Storage limitation</td>
+                        <td>Retention metadata in events</td>
+                    </tr>
+                    <tr>
+                        <td>Art. 17(1)</td>
+                        <td>Right to erasure</td>
+                        <td>Crypto-shredding via key destruction</td>
+                    </tr>
+                    <tr>
+                        <td>Art. 25</td>
+                        <td>Data protection by design</td>
+                        <td>Encryption-first architecture</td>
+                    </tr>
+                    <tr>
+                        <td>Art. 32</td>
+                        <td>Security of processing</td>
+                        <td>AES-256-GCM, HSM key storage</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>6.2 MiFID II Compliance</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>MiFID II Requirement</th>
+                        <th>VCP Implementation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Art. 16(7) Record retention</td>
+                        <td>Hash chain with 5-7 year storage</td>
+                    </tr>
+                    <tr>
+                        <td>RTS 25 Timestamp accuracy</td>
+                        <td>Microsecond precision timestamps</td>
+                    </tr>
+                    <tr>
+                        <td>Tamper evidence</td>
+                        <td>SHA-256 hash chain</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>6.3 EU AI Act Compliance</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>EU AI Act Article</th>
+                        <th>Requirement</th>
+                        <th>VCP Implementation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Art. 12(1)</td>
+                        <td>Automatic logging</td>
+                        <td>Event-driven capture</td>
+                    </tr>
+                    <tr>
+                        <td>Art. 12(2)</td>
+                        <td>Traceability</td>
+                        <td>Hash chain linkage</td>
+                    </tr>
+                    <tr>
+                        <td>Art. 12(4)</td>
+                        <td>Log accessibility</td>
+                        <td>Explorer API, verification endpoints</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Section 7: Implementation Guidelines -->
+            <h2 id="implementation-guidelines">7. Implementation Guidelines</h2>
+
+            <h3>7.1 Prerequisites</h3>
+
+            <div class="feature-card">
+                <h4 class="text-slate-200 font-semibold mb-2"><i class="fas fa-server mr-2 text-blue-400"></i>Infrastructure</h4>
+                <ul class="text-slate-400 mb-0">
+                    <li>Hardware Security Module (HSM) — FIPS 140-2 Level 3+</li>
+                    <li>Time synchronization — NTP (stratum 2+) or PTP</li>
+                    <li>Secure key backup — Geographically distributed, access controlled</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="text-slate-200 font-semibold mb-2"><i class="fas fa-file-contract mr-2 text-green-400"></i>Governance</h4>
+                <ul class="text-slate-400 mb-0">
+                    <li>Data Protection Officer (DPO) approval</li>
+                    <li>Key management policy documentation</li>
+                    <li>Incident response procedures for key compromise</li>
+                </ul>
+            </div>
+
+            <h3>7.2 Integration Example</h3>
+
+            <pre><code># Example: AWS CloudHSM integration
+from vcp_crypto_shredding import VCPCryptoShredder
+from aws_cloudhsm import CloudHSMKeyManager
+
+kms = CloudHSMKeyManager(
+    cluster_id="cluster-abc123",
+    hsm_user="vcp_operator",
+    key_policy={
+        "rotation_days": 365,
+        "backup_enabled": True,
+        "destruction_requires_approval": True
+    }
+)
+
+shredder = VCPCryptoShredder(kms=kms)
+
+# Create encrypted event
+event = shredder.create_event(
+    event_type=EventType.ORD,
+    payload={
+        "account_id": "ACC-12345-DE",
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 100000,
+        "price": 1.0850
+    },
+    pii_fields=["account_id"],
+    subject_id="TRADER-DE-12345"
+)</code></pre>
+
+            <!-- Section 8: Erasure Certificate -->
+            <h2 id="erasure-certificate">8. Erasure Certificate Specification</h2>
+
+            <p>
+                Upon erasure execution, VCP generates a cryptographic certificate:
+            </p>
+
+            <pre><code>{
+  "certificate_id": "019bcc76-fb8d-77c3-affd-17571306af2a",
+  "type": "VCP_ERASURE_CERTIFICATE",
+  "version": "1.0",
+  "subject_id_hash": "sha256:603aefde2da1b17ed640f537bb5c46892641df77...",
+  "erasure_timestamp": "2026-01-18T14:58:28.365834+00:00Z",
+  "keys_destroyed": 1,
+  "method": "CRYPTOGRAPHIC_KEY_DESTRUCTION",
+  "hsm_attestation": {
+    "hsm_id": "hsm-cluster-abc123",
+    "destruction_confirmed": true,
+    "attestation_signature": "base64:MEUCIQDx..."
+  },
+  "verification": {
+    "hash_chain_intact": true,
+    "pii_recoverable": false,
+    "audit_trail_preserved": true,
+    "events_affected": 47
+  }
+}</code></pre>
+
+            <p>The erasure certificate serves as:</p>
+            <ul>
+                <li><strong>Evidence for DPO</strong>: Proof of GDPR compliance for data subject requests</li>
+                <li><strong>Audit Documentation</strong>: Record for regulatory examinations</li>
+                <li><strong>Legal Defense</strong>: Mathematical proof of erasure if challenged</li>
+            </ul>
+
+            <!-- Section 9: Operational Considerations -->
+            <h2 id="operational-considerations">9. Operational Considerations</h2>
+
+            <h3>9.1 Key Backup and Recovery</h3>
+
+            <div class="warning-box">
+                <h4 class="text-yellow-400 font-semibold mb-3"><i class="fas fa-exclamation-triangle mr-2"></i>Critical Warning</h4>
+                <p class="text-slate-300 mb-0">
+                    Key backups <strong>must be destroyed</strong> during erasure. Failure to destroy backups means data is not truly erased and violates GDPR compliance.
+                </p>
+            </div>
+
+            <h3>9.2 Incident Response</h3>
+
+            <p><strong>Key Compromise Scenario:</strong></p>
+            <ol>
+                <li>Immediately rotate affected keys</li>
+                <li>Re-encrypt affected data with new keys</li>
+                <li>Destroy compromised keys</li>
+                <li>Assess data exposure window</li>
+                <li>Notify affected data subjects if required (GDPR Art. 34)</li>
+            </ol>
+
+            <h3>9.3 Audit and Monitoring</h3>
+
+            <ul>
+                <li><strong>Continuous Monitoring</strong>: Hash chain integrity verification (daily), key usage anomaly detection</li>
+                <li><strong>Periodic Audits</strong>: Annual penetration testing, key management policy review</li>
+            </ul>
+
+            <!-- Section 10: Future Directions -->
+            <h2 id="future-directions">10. Future Directions</h2>
+
+            <h3>10.1 VCP v1.2 Enhancements</h3>
+
+            <ul>
+                <li>Zero-knowledge proof of erasure (prove erasure without revealing what was erased)</li>
+                <li>Federated key management across organizations</li>
+                <li>Selective disclosure (reveal specific fields without decrypting all)</li>
+            </ul>
+
+            <h3>10.2 Standards Development</h3>
+
+            <ul>
+                <li><strong>IETF</strong>: draft-kamimura-scitt-vcp (Supply Chain Integrity, Transparency, and Trust)</li>
+                <li><strong>ISO/TC 68</strong>: Financial services standards alignment</li>
+                <li><strong>IOSCO</strong>: Securities regulation harmonization</li>
+            </ul>
+
+            <!-- Section 11: Conclusion -->
+            <h2 id="conclusion">11. Conclusion</h2>
+
+            <p>
+                The apparent conflict between GDPR erasure rights and financial record-keeping obligations is a <strong>design problem, not a legal problem</strong>. By separating data integrity (hash chain) from data confidentiality (encryption), crypto-shredding enables simultaneous compliance with both regulatory frameworks.
+            </p>
+
+            <div class="success-box">
+                <h4 class="text-green-400 font-semibold mb-3"><i class="fas fa-check-circle mr-2"></i>Key Takeaways</h4>
+                <ol class="text-slate-300 mb-0">
+                    <li><strong>Crypto-shredding is EDPB-endorsed</strong> — This is not a legal loophole but a recognized compliance mechanism.</li>
+                    <li><strong>Hash chain integrity survives erasure</strong> — The audit trail remains valid and verifiable.</li>
+                    <li><strong>Implementation requires HSM</strong> — Software-only solutions do not provide sufficient key protection.</li>
+                    <li><strong>Erasure certificates provide evidence</strong> — Mathematical proof of compliance for regulators and data subjects.</li>
+                    <li><strong>Architecture is future-proof</strong> — Cryptographic agility enables post-quantum migration.</li>
+                </ol>
+            </div>
+
+            <p>
+                The code is open source. The specification is public. The path to compliance is clear.
+            </p>
+
+            <!-- Section 12: References -->
+            <h2 id="references">12. References</h2>
+
+            <h3>Regulatory Documents</h3>
+
+            <ul>
+                <li><strong>GDPR</strong>: Regulation (EU) 2016/679 of the European Parliament</li>
+                <li><strong>MiFID II</strong>: Directive 2014/65/EU</li>
+                <li><strong>MiFID II RTS 25</strong>: Commission Delegated Regulation (EU) 2017/580</li>
+                <li><strong>EU AI Act</strong>: Regulation (EU) 2024/1689</li>
+                <li><strong>EDPB Guidelines 02/2025</strong>: Guidelines on Blockchain and Distributed Ledger Technologies</li>
+            </ul>
+
+            <h3>Technical Standards</h3>
+
+            <ul>
+                <li><strong>NIST SP 800-38D</strong>: Recommendation for Block Cipher Modes of Operation: GCM</li>
+                <li><strong>FIPS 180-4</strong>: Secure Hash Standard (SHS)</li>
+                <li><strong>FIPS 140-2</strong>: Security Requirements for Cryptographic Modules</li>
+            </ul>
+
+            <h3>VCP Resources</h3>
+
+            <div class="feature-card">
+                <a href="https://github.com/veritaschain/vcp-spec/tree/main/spec/v1.1" class="resource-link" target="_blank" rel="noopener">
+                    <i class="fab fa-github text-2xl text-purple-400"></i>
+                    <div>
+                        <div class="text-slate-200 font-medium">VCP Specification v1.1</div>
+                        <div class="text-sm text-slate-400">GitHub - Open specification repository</div>
+                    </div>
+                </a>
+                <a href="https://github.com/veritaschain/vcp-gdpr-poc" class="resource-link" target="_blank" rel="noopener">
+                    <i class="fab fa-github text-2xl text-blue-400"></i>
+                    <div>
+                        <div class="text-slate-200 font-medium">VCP GDPR PoC</div>
+                        <div class="text-sm text-slate-400">Crypto-shredding proof of concept</div>
+                    </div>
+                </a>
+                <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" class="resource-link" target="_blank" rel="noopener">
+                    <i class="fas fa-globe text-2xl text-green-400"></i>
+                    <div>
+                        <div class="text-slate-200 font-medium">IETF Draft</div>
+                        <div class="text-sm text-slate-400">draft-kamimura-scitt-vcp</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Article Footer -->
+            <div class="border-t border-slate-700 mt-12 pt-8">
+                <div class="flex flex-wrap items-center justify-between gap-4 text-sm text-slate-400">
+                    <div>
+                        <strong class="text-slate-300">Document ID:</strong> VSO-BLOG-2026-001
+                    </div>
+                    <div>
+                        <strong class="text-slate-300">License:</strong> 
+                        <a href="https://www.apache.org/licenses/LICENSE-2.0" class="text-blue-400 hover:text-blue-300" target="_blank" rel="noopener">Apache 2.0</a>
+                    </div>
+                </div>
+                <div class="mt-4 text-sm text-slate-500">
+                    <strong>Contact:</strong> 
+                    <a href="mailto:technical@veritaschain.org" class="text-blue-400 hover:text-blue-300">technical@veritaschain.org</a>
+                </div>
+                <div class="mt-2 text-sm text-slate-500 italic">
+                    VeritasChain Standards Organization — "Verify, Don't Trust"
+                </div>
+            </div>
+
+        </article>
+    </main>
+
+    <vcp-footer></vcp-footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all opacity-0 invisible" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll for TOC links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
