@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPP - 捕获溯源配置文件 | 您的瞬间，可验证封存</title>
+    <meta name="description" content="CPP（Capture Provenance Profile）是用于媒体捕获溯源的VAP配置文件。在AI生成内容时代，提供加密学框架来证明捕获事件何时、何地、由谁执行。">
+    <meta name="keywords" content="CPP, 捕获溯源配置文件, 媒体溯源, 照片验证, 深度伪造防护, 捕获证据, VeriCapture, VeritasChain, VAP">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="CPP - 捕获溯源配置文件 | 您的瞬间，可验证封存">
+    <meta property="og:description" content="不是认证内容，而是证明捕获事件。CPP是建立可验证媒体捕获记录的VAP配置文件。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/cpp/zh/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CPP - 捕获溯源配置文件 | 您的瞬间，可验证封存">
+    <meta name="twitter:description" content="不是认证内容，而是证明捕获事件。CPP建立可验证的媒体捕获记录。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/cpp/zh/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/cpp/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/cpp/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/cpp/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/cpp/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cpp-teal': '#14b8a6',
+                        'cpp-cyan': '#06b6d4',
+                        'cpp-sky': '#0ea5e9',
+                        'cpp-dark': '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Noto Sans SC', 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #134e4a 50%, #0f172a 100%);
+        }
+        .cpp-gradient {
+            background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            line-height: 1.6;
+        }
+        @media (min-width: 640px) {
+            .code-block pre {
+                font-size: 0.75rem;
+            }
+        }
+        .architecture-diagram {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: #94a3b8;
+            white-space: pre;
+            overflow-x: auto;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .architecture-diagram {
+                font-size: 0.7rem;
+                padding: 1.5rem;
+            }
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(20, 184, 166, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .layer-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+        .layer-card:hover {
+            border-color: rgba(20, 184, 166, 0.6);
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "CPP - 捕获溯源配置文件",
+        "description": "CPP是用于媒体捕获溯源的VAP配置文件，提供加密学框架来证明捕获事件何时、何地、由谁执行。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2026-01-18",
+        "dateModified": "2026-01-18",
+        "version": "0.1.0",
+        "url": "https://veritaschain.org/vap/cpp/zh/"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="zh" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div class="pt-12 lg:pt-0 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 border-b border-teal-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-center gap-3 flex-wrap">
+                <i class="fas fa-flask text-teal-400"></i>
+                <span class="text-teal-200 font-medium">CPP状态: <span class="text-teal-400 font-bold">草案 v0.1</span></span>
+                <span class="text-teal-200/70 text-sm">— 包含ACE（认证捕获扩展）。欢迎反馈。</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Profile Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-camera text-teal-400"></i>
+                    <span class="text-teal-300 text-sm font-semibold tracking-wide">VAP配置文件: 捕获溯源</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-4">
+                <span class="text-white">CPP</span>
+                <span class="text-teal-400"> - 捕获溯源配置文件</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-center text-gray-300 mb-6">
+                媒体捕获的证据基础
+            </p>
+            
+            <!-- Tagline -->
+            <div class="text-center mb-8">
+                <p class="text-xl text-teal-400 font-semibold italic">
+                    "您的瞬间，可验证封存"
+                </p>
+                <p class="text-lg text-gray-400 mt-2">
+                    — 证明捕获事件，而非内容真实性
+                </p>
+            </div>
+            
+            <!-- Hero Quote -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    <span class="text-teal-400 font-bold text-2xl">"</span>
+                    随着AI生成图像变得与捕获的媒体难以区分，证明捕获事件<strong class="text-white">何时</strong>、<strong class="text-white">何地</strong>、<strong class="text-white">由谁</strong>执行的能力对于个人档案、法律证据和历史文献变得至关重要。
+                    <span class="text-teal-400 font-bold text-2xl">"</span>
+                </p>
+                <div class="mt-6 text-gray-400 text-sm leading-relaxed">
+                    <p><strong class="text-amber-400">CPP不是内容认证系统。</strong></p>
+                    <p><strong class="text-teal-400">CPP是创建可由第三方独立审计的可验证捕获记录的框架。</strong></p>
+                </div>
+            </div>
+            
+            <!-- Hero CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#event-model" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-stream mr-2"></i>
+                    查看事件模型
+                </a>
+                <a href="#ace" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-fingerprint mr-2"></i>
+                    ACE扩展
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-8 py-4 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-handshake mr-2"></i>
+                    参与开发
+                </a>
+            </div>
+            
+            <!-- Implementation Profiles -->
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <div class="inline-flex items-center gap-4 bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border border-blue-500/50 rounded-xl px-6 py-4">
+                    <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-briefcase text-blue-400 text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold">VeriCapture（B2B）</p>
+                        <p class="text-blue-300 text-sm">面向法律和新闻的证据级捕获</p>
+                    </div>
+                </div>
+                <div class="inline-flex items-center gap-4 bg-gradient-to-r from-teal-900/60 to-cyan-900/60 border border-teal-500/50 rounded-xl px-6 py-4">
+                    <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-heart text-teal-400 text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold">VeriCapture Moments（B2C）</p>
+                        <p class="text-teal-300 text-sm">面向未来的家庭记忆</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What CPP Proves Section -->
+    <section id="what-cpp-proves" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">CPP能证明和不能证明什么</h2>
+                <p class="text-gray-400 text-lg">客观捕获数据与主观解释的明确区分</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- CPP PROVES -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle text-teal-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-teal-400">CPP能证明</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>在时间戳T发生了捕获事件</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>媒体文件自封存以来未被修改</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>捕获设备报告了位置L</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>序列中没有封存的媒体被删除</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>进行了身份验证尝试（可选）</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- CPP DOES NOT PROVE -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-times-circle text-red-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-red-400">CPP不能证明</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>内容是"真实"或"正宗"的</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>所描绘的场景实际发生了</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>摄影师的身份</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>内容没有摆拍或篡改</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>经过身份验证的人就是他们所声称的人</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Key Distinction -->
+            <div class="mt-12 bg-gradient-to-r from-teal-900/40 to-cyan-900/40 rounded-xl p-6 border border-teal-500/30 max-w-3xl mx-auto">
+                <p class="text-center text-lg text-white">
+                    <i class="fas fa-lightbulb text-amber-400 mr-2"></i>
+                    <strong>设计哲学：</strong>"我们证明捕获事件发生了。我们不声称它们描绘的是真相。"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">目标用例</h2>
+                <p class="text-gray-400 text-lg">按优先级划分的CPP应用范围</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Priority A -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">优先级A</span>
+                        <span class="text-red-400 font-medium">关键</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-gavel text-red-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">法律证据</p>
+                                <p class="text-gray-400 text-sm">法庭可采信的捕获记录</p>
+                                <p class="text-red-300 text-xs mt-1">要求：RFC 3161 TSA、证据链</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-newspaper text-red-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">新闻/记者</p>
+                                <p class="text-gray-400 text-sm">媒体来源验证</p>
+                                <p class="text-red-300 text-xs mt-1">要求：删除检测、时间戳</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Priority B -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">优先级B</span>
+                        <span class="text-yellow-400 font-medium">高</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-users text-yellow-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">个人档案</p>
+                                <p class="text-gray-400 text-sm">带有溯源的家庭记忆</p>
+                                <p class="text-yellow-300 text-xs mt-1">要求：长期验证、易用性</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-file-invoice-dollar text-yellow-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">保险理赔</p>
+                                <p class="text-gray-400 text-sm">损害文档记录</p>
+                                <p class="text-yellow-300 text-xs mt-1">要求：位置证明、时间戳证明</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Priority C -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">优先级C</span>
+                        <span class="text-blue-400 font-medium">中</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-flask text-blue-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">学术研究</p>
+                                <p class="text-gray-400 text-sm">现场数据收集</p>
+                                <p class="text-blue-300 text-xs mt-1">要求：完整性、可重现性</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-building text-blue-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">房地产</p>
+                                <p class="text-gray-400 text-sm">房产文档记录</p>
+                                <p class="text-blue-300 text-xs mt-1">要求：日期证明、完整性</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Model Section -->
+    <section id="event-model" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">CPP事件模型</h2>
+                <p class="text-gray-400 text-lg">媒体捕获生命周期中的核心事件</p>
+            </div>
+            
+            <!-- Event Flow -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-stream text-teal-400 mr-2"></i>
+                    CPP事件生命周期
+                </h3>
+                
+                <div class="architecture-diagram mx-auto max-w-4xl overflow-x-auto">
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       <span class="text-teal-400 font-bold">CPP事件生命周期</span>                                 │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  [用户操作]                                                              │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐             │
+│  │ <span class="text-blue-400">CAPTURE</span> │───▶│  <span class="text-teal-400">SEAL</span>   │───▶│  <span class="text-yellow-400">SHARE</span>  │───▶│ <span class="text-cyan-400">VERIFY</span>  │             │
+│  │ (捕获)  │    │ (封存)  │    │(分享/可选)│   │(验证/可选)│            │
+│  └─────────┘    └─────────┘    └─────────┘    └─────────┘             │
+│       │              │                                                  │
+│       ▼              ▼                                                  │
+│  本地哈希        外部锚定                                                │
+│  计算           (RFC 3161 TSA)                                          │
+│                                                                         │
+│  [可选: 认证捕获扩展]                                                    │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────────┐                                                        │
+│  │ <span class="text-purple-400">CAPTURE_ATT</span> │  (记录生物认证尝试)                                  │
+│  └─────────────┘                                                        │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Event Type Cards -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- CAPTURE -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-camera text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">CAPTURE</h3>
+                            <p class="text-blue-400 text-sm">媒体捕获启动</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        记录捕获事件，包含设备ID、媒体哈希和时间戳。
+                    </p>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">必需字段:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• DeviceID, MediaHash, Timestamp</li>
+                            <li>• MediaType, MediaFormat</li>
+                            <li>• Location（可选）</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- SEAL -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-stamp text-teal-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">SEAL</h3>
+                            <p class="text-teal-400 text-sm">应用加密封存</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        应用带有外部时间戳锚定的加密封存。
+                    </p>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">必需字段:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• EventHash, Signature, AnchorProof</li>
+                            <li>• MerkleRoot, MerkleProof</li>
+                            <li>• TSA Response（RFC 3161）</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- SHARE -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-share-alt text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">SHARE</h3>
+                            <p class="text-yellow-400 text-sm">媒体分享（可选）</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        记录带有验证链接的分享给接收者。
+                    </p>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">必需字段:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• RecipientHash（可选）</li>
+                            <li>• ShareMethod: LINK, EXPORT, AIRDROP, MESSAGE</li>
+                            <li>• VerificationURL</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- VERIFY -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-cyan-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-double text-cyan-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">VERIFY</h3>
+                            <p class="text-cyan-400 text-sm">第三方验证（可选）</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        记录第三方验证捕获的时间。
+                    </p>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">必需字段:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• VerifierID</li>
+                            <li>• VerificationResult</li>
+                            <li>• VerificationTimestamp</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three-Layer Architecture Section -->
+    <section id="architecture" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">三层完整性架构</h2>
+                <p class="text-gray-400 text-lg">可验证捕获记录的加密基础</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│  <span class="text-cyan-400 font-bold">第三层: 外部可验证性</span>                                          │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  RFC 3161 TSA / 区块链 / SCITT                            │  │
+│  │  • 独立第三方时间戳                                        │  │
+│  │  • 时间T存在的加密证明                                     │  │
+│  │  • 去中心化验证能力                                        │  │
+│  └───────────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────────┤
+│  <span class="text-teal-400 font-bold">第二层: 集合完整性</span>                                             │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  RFC 6962 默克尔树                                         │  │
+│  │  • 批量级完整性证明                                        │  │
+│  │  • 高效验证 O(log n)                                       │  │
+│  │  • 删除检测                                                │  │
+│  └───────────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────────┤
+│  <span class="text-blue-400 font-bold">第一层: 事件完整性</span>                                             │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  SHA-256 哈希 + Ed25519 签名                               │  │
+│  │  • 单事件内容完整性                                        │  │
+│  │  • 真实性验证                                              │  │
+│  │  • PrevHash链接（可选）                                    │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACE Extension Section -->
+    <section id="ace" class="py-20 bg-gradient-to-b from-gray-800 to-purple-900/20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 bg-purple-900/50 border border-purple-500/50 px-4 py-2 rounded-full mb-6">
+                    <i class="fas fa-fingerprint text-purple-400"></i>
+                    <span class="text-purple-300 font-semibold">CPP扩展</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">ACE - 认证捕获扩展</h2>
+                <p class="text-xl text-purple-400 font-semibold">捕获时的生物识别认证</p>
+                <p class="text-gray-400 text-lg mt-2">"捕获发生时，谁在持有设备？"</p>
+            </div>
+            
+            <!-- Critical Distinction -->
+            <div class="bg-gray-900/80 rounded-xl p-8 border border-purple-500/30 mb-12 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-4">
+                    <i class="fas fa-exclamation-circle text-amber-400 mr-2"></i>
+                    关键区别
+                </h3>
+                <p class="text-lg text-gray-300 mb-4">
+                    <strong class="text-purple-400">ACE证明进行了身份验证尝试。</strong>
+                    <br>
+                    <strong class="text-red-400">ACE不验证身份。</strong>
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <h4 class="text-purple-400 font-semibold mb-2">ACE能证明</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>在捕获时尝试了生物识别认证</li>
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>认证结果（成功/失败/分数）</li>
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>潜在胁迫（异常模式）</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <h4 class="text-red-400 font-semibold mb-2">ACE不能证明</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>此人就是他们声称的人</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>法律身份</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>不存在胁迫</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zero-Knowledge Approach -->
+            <div class="bg-gradient-to-r from-purple-900/40 to-indigo-900/40 rounded-xl p-8 border border-purple-500/30 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-4 text-center">
+                    <i class="fas fa-user-shield text-purple-400 mr-2"></i>
+                    零知识隐私方法
+                </h3>
+                <p class="text-lg text-center text-purple-300 mb-6 italic">
+                    "我们证明进行了身份验证。我们不存储生物识别数据。"
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">ACE存储的内容</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>使用的认证方法</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>认证结果（成功/失败）</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>尝试持续时间</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>设备认证链</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">ACE不存储的内容</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>面部几何数据</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>指纹数据</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>生物识别模板</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>任何生物识别原始数据</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conformance Levels Section -->
+    <section id="conformance" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">合规级别</h2>
+                <p class="text-gray-400 text-lg">针对不同用例的分级合规</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Bronze -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-amber-700/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-amber-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-600">铜牌</h3>
+                            <p class="text-gray-400 text-sm">爱好者、早期采用者</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>CAPTURE事件记录（必须）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>SHA-256哈希计算（必须）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>Ed25519数字签名（必须）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>每周外部锚定（必须）</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">用途：个人档案</p>
+                        <p class="text-gray-400 text-xs">保留期：至少1年（应该）</p>
+                    </div>
+                </div>
+                
+                <!-- Silver -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-gray-400/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-gray-600/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-gray-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-300">银牌</h3>
+                            <p class="text-gray-400 text-sm">家庭、专业消费者</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>所有铜牌要求</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>每日RFC 3161 TSA（必须）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>RFC 6962默克尔树（必须）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>删除检测（必须）</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">用途：长期记忆保存</p>
+                        <p class="text-gray-400 text-xs">保留期：至少10年（应该）</p>
+                    </div>
+                </div>
+                
+                <!-- Gold -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-yellow-400">金牌</h3>
+                            <p class="text-gray-400 text-sm">法律、新闻、企业</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>所有银牌要求</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>每次捕获TSA（必须）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>ACE支持（必须）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>完整证据链（必须）</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">用途：法庭证据</p>
+                        <p class="text-gray-400 text-xs">保留期：永久（必须）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VAP/VSO Relationship Section -->
+    <section id="vap-relationship" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">在VAP框架中的位置</h2>
+                <p class="text-gray-400 text-lg">CPP在框架层次结构中的位置</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌────────────────────────────────────────────────────────────────────────────┐
+│                                                                            │
+│   <span class="text-cyan-400 font-bold">VAP (可验证AI溯源框架)</span>                                              │
+│   <span class="text-gray-400">AI审计追踪的跨领域元框架</span>                                                 │
+│                                                                            │
+└────────────────────────────────────────────┬───────────────────────────────┘
+                                             │
+                                             │ 定义和维护
+                                             │
+┌────────────────────────────────────────────▼───────────────────────────────┐
+│                                                                            │
+│   <span class="text-emerald-400 font-bold">VSO (VeritasChain标准组织)</span>                                          │
+│   <span class="text-gray-400">独立标准化机构（日本东京）</span>                                               │
+│                                                                            │
+└────────────────────────────────────────────┬───────────────────────────────┘
+                                             │
+                                             │ 发布领域配置文件
+                                             │
+          ┌──────────┬───────────────────────┼───────────────────┬──────────┐
+          │          │                       │                   │          │
+          ▼          ▼                       ▼                   ▼          ▼
+     ┌─────────┐ ┌─────────┐          ┌─────────┐         ┌─────────┐ ┌─────────┐
+     │  <span class="text-blue-400 font-bold">VCP</span>    │ │  <span class="text-purple-400 font-bold">CAP</span>    │          │  <span class="text-teal-400 font-bold">CPP</span>    │         │  <span class="text-amber-400 font-bold">DVP</span>    │ │   ...   │
+     │金融     │ │内容/    │          │捕获     │         │汽车     │ │         │
+     │配置文件 │ │创意     │          │溯源     │         │配置文件 │ │         │
+     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v0.1</span>    │         │ <span class="text-amber-300">(草案)</span>  │ │         │
+     └─────────┘ └─────────┘          └─────────┘         └─────────┘ └─────────┘
+
+                      <span class="text-gray-500">领域特定的协议实现</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="py-20 bg-gradient-to-br from-teal-900/30 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">参与其中</h2>
+                <p class="text-gray-400 text-lg">加入CPP的开发，塑造捕获溯源的未来</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <a href="/vap/zh/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-layer-group text-3xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">查看VAP框架</h3>
+                    <p class="text-gray-400 text-sm">了解CPP所扩展的父框架</p>
+                </a>
+                
+                <a href="/vap/cap/zh/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-palette text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">CAP（内容配置文件）</h3>
+                    <p class="text-gray-400 text-sm">查看创意AI工作流程的相关配置文件</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-8 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-handshake text-3xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">参与CPP开发</h3>
+                    <p class="text-gray-400 text-sm">面向设备制造商、应用开发者和记者</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Quote -->
+    <section class="py-16 bg-gray-900 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <blockquote class="text-xl text-gray-300 italic mb-6">
+                "在AI生成图像的时代，证明一个瞬间是被捕获的<br>
+                — 而不是被创建的 — 变得无价。"
+            </blockquote>
+            <p class="text-gray-500">— VeritasChain Standards Organization</p>
+            
+            <blockquote class="text-lg text-teal-400 italic mt-8 font-semibold">
+                "您的瞬间，可验证封存"
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- License Footer -->
+    <section class="py-8 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+                <i class="fab fa-creative-commons mr-1"></i>
+                本作品采用 
+                <a href="https://creativecommons.org/licenses/by/4.0/" class="text-teal-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                    CC BY 4.0 国际许可协议
+                </a>
+                授权
+            </p>
+            <p class="text-gray-600 text-xs mt-2">
+                CPP规范 v0.1.0 — 最后更新: 2026-01-18
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer lang="zh"></vcp-footer>
+</body>
+</html>

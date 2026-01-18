@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPP - Capture Provenance Profile | Your Moments, Verifiably Sealed</title>
+    <meta name="description" content="CPP (Capture Provenance Profile) is a VAP profile for media capture provenance. A framework for cryptographically proving when, where, and by whom a capture event occurred in an age of AI-generated content.">
+    <meta name="keywords" content="CPP, Capture Provenance Profile, media provenance, photo verification, deepfake protection, capture evidence, VeriCapture, VeritasChain, VAP">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="CPP - Capture Provenance Profile | Your Moments, Verifiably Sealed">
+    <meta property="og:description" content="Not to authenticate content, but to prove capture events. CPP is the VAP profile for establishing verifiable media capture records.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/cpp/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CPP - Capture Provenance Profile | Your Moments, Verifiably Sealed">
+    <meta name="twitter:description" content="Not to authenticate content, but to prove capture events. CPP establishes verifiable media capture records.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/cpp/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/cpp/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/cpp/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/cpp/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/cpp/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cpp-teal': '#14b8a6',
+                        'cpp-cyan': '#06b6d4',
+                        'cpp-sky': '#0ea5e9',
+                        'cpp-dark': '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #134e4a 50%, #0f172a 100%);
+        }
+        .cpp-gradient {
+            background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            line-height: 1.6;
+        }
+        @media (min-width: 640px) {
+            .code-block pre {
+                font-size: 0.75rem;
+            }
+        }
+        .architecture-diagram {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: #94a3b8;
+            white-space: pre;
+            overflow-x: auto;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .architecture-diagram {
+                font-size: 0.7rem;
+                padding: 1.5rem;
+            }
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(20, 184, 166, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .layer-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+        .layer-card:hover {
+            border-color: rgba(20, 184, 166, 0.6);
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "CPP - Capture Provenance Profile",
+        "description": "CPP is a VAP profile for media capture provenance, providing a framework for cryptographically proving when, where, and by whom a capture event occurred.",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2026-01-18",
+        "dateModified": "2026-01-18",
+        "version": "0.1.0",
+        "url": "https://veritaschain.org/vap/cpp/"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div class="pt-12 lg:pt-0 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 border-b border-teal-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-center gap-3 flex-wrap">
+                <i class="fas fa-flask text-teal-400"></i>
+                <span class="text-teal-200 font-medium">CPP Status: <span class="text-teal-400 font-bold">DRAFT v0.1</span></span>
+                <span class="text-teal-200/70 text-sm">— Includes ACE (Attested Capture Extension). Feedback welcome.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Profile Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-camera text-teal-400"></i>
+                    <span class="text-teal-300 text-sm font-semibold tracking-wide">VAP PROFILE: CAPTURE PROVENANCE</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-4">
+                <span class="text-white">CPP</span>
+                <span class="text-teal-400"> - Capture Provenance Profile</span>
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-center text-gray-300 mb-6">
+                The Evidentiary Foundation for Media Capture
+            </p>
+            
+            <!-- Tagline -->
+            <div class="text-center mb-8">
+                <p class="text-xl text-teal-400 font-semibold italic">
+                    "Your moments, verifiably sealed."
+                </p>
+                <p class="text-lg text-gray-400 mt-2">
+                    — Proving capture events, not content truth
+                </p>
+            </div>
+            
+            <!-- Hero Quote -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    <span class="text-teal-400 font-bold text-2xl">"</span>
+                    As AI-generated imagery becomes indistinguishable from captured media, the ability to prove <strong class="text-white">when</strong>, <strong class="text-white">where</strong>, and <strong class="text-white">by whom</strong> a capture event occurred becomes critical for personal archives, legal evidence, and historical documentation.
+                    <span class="text-teal-400 font-bold text-2xl">"</span>
+                </p>
+                <div class="mt-6 text-gray-400 text-sm leading-relaxed">
+                    <p><strong class="text-amber-400">CPP is NOT a content authentication system.</strong></p>
+                    <p><strong class="text-teal-400">CPP IS a framework for creating verifiable capture records that third parties can independently audit.</strong></p>
+                </div>
+            </div>
+            
+            <!-- Hero CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#event-model" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-stream mr-2"></i>
+                    View Event Model
+                </a>
+                <a href="#ace" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-fingerprint mr-2"></i>
+                    ACE Extension
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-8 py-4 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-handshake mr-2"></i>
+                    Join Development
+                </a>
+            </div>
+            
+            <!-- Implementation Profiles -->
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <div class="inline-flex items-center gap-4 bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border border-blue-500/50 rounded-xl px-6 py-4">
+                    <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-briefcase text-blue-400 text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold">VeriCapture (B2B)</p>
+                        <p class="text-blue-300 text-sm">Evidence-grade capture for legal & journalism</p>
+                    </div>
+                </div>
+                <div class="inline-flex items-center gap-4 bg-gradient-to-r from-teal-900/60 to-cyan-900/60 border border-teal-500/50 rounded-xl px-6 py-4">
+                    <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-heart text-teal-400 text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold">VeriCapture Moments (B2C)</p>
+                        <p class="text-teal-300 text-sm">Future-proof family memories</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What CPP Proves Section -->
+    <section id="what-cpp-proves" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">What CPP Proves and Does NOT Prove</h2>
+                <p class="text-gray-400 text-lg">Clear distinction between objective capture data and subjective interpretation</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- CPP PROVES -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle text-teal-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-teal-400">CPP PROVES</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>A capture event occurred at timestamp T</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>The media file has not been modified since sealing</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>The capture device reported location L</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>No sealed media was deleted from the sequence</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>An authentication attempt occurred (optional)</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- CPP DOES NOT PROVE -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-times-circle text-red-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-red-400">CPP DOES NOT PROVE</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The content is "true" or "authentic"</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The scene depicted actually happened</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The photographer's identity</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The content is free of staging or manipulation</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The authenticated person is who they claim to be</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Key Distinction -->
+            <div class="mt-12 bg-gradient-to-r from-teal-900/40 to-cyan-900/40 rounded-xl p-6 border border-teal-500/30 max-w-3xl mx-auto">
+                <p class="text-center text-lg text-white">
+                    <i class="fas fa-lightbulb text-amber-400 mr-2"></i>
+                    <strong>Design Philosophy:</strong> "We prove capture events occurred. We do not claim they depict truth."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Target Use Cases</h2>
+                <p class="text-gray-400 text-lg">CPP application scope by priority</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Priority A -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">Priority A</span>
+                        <span class="text-red-400 font-medium">Critical</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-gavel text-red-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Legal Evidence</p>
+                                <p class="text-gray-400 text-sm">Court-admissible capture records</p>
+                                <p class="text-red-300 text-xs mt-1">Key: RFC 3161 TSA, chain of custody</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-newspaper text-red-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">News / Journalism</p>
+                                <p class="text-gray-400 text-sm">Source verification for media</p>
+                                <p class="text-red-300 text-xs mt-1">Key: Deletion detection, timestamping</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Priority B -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">Priority B</span>
+                        <span class="text-yellow-400 font-medium">High</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-users text-yellow-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Personal Archives</p>
+                                <p class="text-gray-400 text-sm">Family memories with provenance</p>
+                                <p class="text-yellow-300 text-xs mt-1">Key: Long-term verification, ease of use</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-file-invoice-dollar text-yellow-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Insurance Claims</p>
+                                <p class="text-gray-400 text-sm">Damage documentation</p>
+                                <p class="text-yellow-300 text-xs mt-1">Key: Location proof, timestamp proof</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Priority C -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">Priority C</span>
+                        <span class="text-blue-400 font-medium">Medium</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-flask text-blue-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Academic Research</p>
+                                <p class="text-gray-400 text-sm">Field data collection</p>
+                                <p class="text-blue-300 text-xs mt-1">Key: Integrity, reproducibility</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-building text-blue-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Real Estate</p>
+                                <p class="text-gray-400 text-sm">Property documentation</p>
+                                <p class="text-blue-300 text-xs mt-1">Key: Date proof, completeness</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Threat Model Section -->
+    <section id="threats" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Threat Model</h2>
+                <p class="text-gray-400 text-lg">What CPP addresses and what it doesn't</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Threats Addressed -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-teal-500/50">
+                    <h3 class="text-xl font-bold text-teal-400 mb-6">
+                        <i class="fas fa-shield-alt mr-2"></i>
+                        Threats CPP Addresses
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Backdating</p>
+                            <p class="text-gray-400 text-sm">Claiming capture occurred at an earlier time</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Mitigation: RFC 3161 TSA external timestamp</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Tampering</p>
+                            <p class="text-gray-400 text-sm">Modifying media after capture</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Mitigation: SHA-256 hash chain, digital signature</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Cherry-Picking</p>
+                            <p class="text-gray-400 text-sm">Deleting unfavorable captures</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Mitigation: Merkle tree deletion detection</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Fabrication</p>
+                            <p class="text-gray-400 text-sm">Claiming AI-generated content was captured</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Mitigation: Capture event attestation</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Threats NOT Addressed -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-red-500/30">
+                    <h3 class="text-xl font-bold text-red-400 mb-6">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Threats CPP Does NOT Address
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Scene Staging</p>
+                            <p class="text-gray-400 text-sm">Content truth outside scope</p>
+                            <p class="text-gray-500 text-xs mt-1">Alternative: Human judgment, investigation</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Device Compromise</p>
+                            <p class="text-gray-400 text-sm">Hardware security out of scope</p>
+                            <p class="text-gray-500 text-xs mt-1">Alternative: TEE/Secure Enclave (future)</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Identity Fraud</p>
+                            <p class="text-gray-400 text-sm">Identity verification not claimed</p>
+                            <p class="text-gray-500 text-xs mt-1">Alternative: External KYC services</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Network Interception</p>
+                            <p class="text-gray-400 text-sm">Transport security out of scope</p>
+                            <p class="text-gray-500 text-xs mt-1">Alternative: TLS, certificate pinning</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Model Section -->
+    <section id="event-model" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">CPP Event Model</h2>
+                <p class="text-gray-400 text-lg">Core events in the media capture lifecycle</p>
+            </div>
+            
+            <!-- Event Flow -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-stream text-teal-400 mr-2"></i>
+                    CPP Event Lifecycle
+                </h3>
+                
+                <div class="architecture-diagram mx-auto max-w-4xl overflow-x-auto">
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       <span class="text-teal-400 font-bold">CPP Event Lifecycle</span>                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  [User Action]                                                          │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐             │
+│  │ <span class="text-blue-400">CAPTURE</span> │───▶│  <span class="text-teal-400">SEAL</span>   │───▶│  <span class="text-yellow-400">SHARE</span>  │───▶│ <span class="text-cyan-400">VERIFY</span>  │             │
+│  │         │    │         │    │(optional)│    │(optional)│            │
+│  └─────────┘    └─────────┘    └─────────┘    └─────────┘             │
+│       │              │                                                  │
+│       │              │                                                  │
+│       ▼              ▼                                                  │
+│  Local Hash    External Anchor                                          │
+│  Computed      (RFC 3161 TSA)                                           │
+│                                                                         │
+│  [Optional: Attested Capture Extension]                                 │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────────┐                                                        │
+│  │ <span class="text-purple-400">CAPTURE_ATT</span> │  (Biometric attestation attempt recorded)              │
+│  └─────────────┘                                                        │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Event Type Cards -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- CAPTURE -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-camera text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">CAPTURE</h3>
+                            <p class="text-blue-400 text-sm">Media Capture Initiated</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Records the capture event with device ID, media hash, and timestamp.
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">Required Fields:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• DeviceID, MediaHash, Timestamp</li>
+                            <li>• MediaType, MediaFormat</li>
+                            <li>• Location (OPTIONAL)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- SEAL -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-stamp text-teal-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">SEAL</h3>
+                            <p class="text-teal-400 text-sm">Cryptographic Seal Applied</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Applies cryptographic seal with external timestamp anchor.
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">Required Fields:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• EventHash, Signature, AnchorProof</li>
+                            <li>• MerkleRoot, MerkleProof</li>
+                            <li>• TSA Response (RFC 3161)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- SHARE -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-share-alt text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">SHARE</h3>
+                            <p class="text-yellow-400 text-sm">Media Shared (Optional)</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Records sharing with verification link for recipients.
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">Required Fields:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• RecipientHash (optional)</li>
+                            <li>• ShareMethod: LINK, EXPORT, AIRDROP, MESSAGE</li>
+                            <li>• VerificationURL</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- VERIFY -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-cyan-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-double text-cyan-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">VERIFY</h3>
+                            <p class="text-cyan-400 text-sm">Third-Party Verification (Optional)</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Records when third parties verify the capture.
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">Required Fields:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• VerifierID</li>
+                            <li>• VerificationResult</li>
+                            <li>• VerificationTimestamp</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three-Layer Architecture Section -->
+    <section id="architecture" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Three-Layer Integrity Architecture</h2>
+                <p class="text-gray-400 text-lg">Cryptographic foundation for verifiable capture records</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│  <span class="text-cyan-400 font-bold">Layer 3: External Verifiability</span>                                │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  RFC 3161 TSA / Blockchain / SCITT                        │  │
+│  │  • Independent third-party timestamp                      │  │
+│  │  • Cryptographic proof of existence at time T             │  │
+│  │  • Decentralized verification capability                  │  │
+│  └───────────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────────┤
+│  <span class="text-teal-400 font-bold">Layer 2: Collection Integrity</span>                                   │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  RFC 6962 Merkle Tree                                     │  │
+│  │  • Batch-level completeness proof                         │  │
+│  │  • Efficient verification O(log n)                        │  │
+│  │  • Deletion detection                                     │  │
+│  └───────────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────────┤
+│  <span class="text-blue-400 font-bold">Layer 1: Event Integrity</span>                                        │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  SHA-256 Hash + Ed25519 Signature                         │  │
+│  │  • Per-event content integrity                            │  │
+│  │  • Authenticity verification                              │  │
+│  │  • PrevHash linking (OPTIONAL)                            │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Layer Cards -->
+            <div class="grid md:grid-cols-3 gap-6 mt-12">
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-xl font-bold text-blue-400">1</span>
+                        </div>
+                        <h3 class="text-white font-bold">Event Integrity</h3>
+                    </div>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><i class="fas fa-link text-blue-400 mr-2"></i>SHA-256 hash chain</li>
+                        <li><i class="fas fa-signature text-blue-400 mr-2"></i>Ed25519 signature</li>
+                        <li><i class="fas fa-clock text-blue-400 mr-2"></i>UUIDv7 timestamps</li>
+                    </ul>
+                </div>
+                
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-xl font-bold text-teal-400">2</span>
+                        </div>
+                        <h3 class="text-white font-bold">Collection Integrity</h3>
+                    </div>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><i class="fas fa-tree text-teal-400 mr-2"></i>RFC 6962 Merkle tree</li>
+                        <li><i class="fas fa-search text-teal-400 mr-2"></i>Deletion detection</li>
+                        <li><i class="fas fa-bolt text-teal-400 mr-2"></i>O(log n) verification</li>
+                    </ul>
+                </div>
+                
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-cyan-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-xl font-bold text-cyan-400">3</span>
+                        </div>
+                        <h3 class="text-white font-bold">External Verifiability</h3>
+                    </div>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><i class="fas fa-anchor text-cyan-400 mr-2"></i>RFC 3161 TSA</li>
+                        <li><i class="fas fa-cubes text-cyan-400 mr-2"></i>Blockchain option</li>
+                        <li><i class="fas fa-globe text-cyan-400 mr-2"></i>SCITT integration</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACE Extension Section -->
+    <section id="ace" class="py-20 bg-gradient-to-b from-gray-900 to-purple-900/20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 bg-purple-900/50 border border-purple-500/50 px-4 py-2 rounded-full mb-6">
+                    <i class="fas fa-fingerprint text-purple-400"></i>
+                    <span class="text-purple-300 font-semibold">CPP Extension</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">ACE - Attested Capture Extension</h2>
+                <p class="text-xl text-purple-400 font-semibold">Biometric Attestation at Capture Time</p>
+                <p class="text-gray-400 text-lg mt-2">"Who was holding the device when the capture occurred?"</p>
+            </div>
+            
+            <!-- Critical Distinction -->
+            <div class="bg-gray-900/80 rounded-xl p-8 border border-purple-500/30 mb-12 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-4">
+                    <i class="fas fa-exclamation-circle text-amber-400 mr-2"></i>
+                    Critical Distinction
+                </h3>
+                <p class="text-lg text-gray-300 mb-4">
+                    <strong class="text-purple-400">ACE proves an authentication attempt occurred.</strong>
+                    <br>
+                    <strong class="text-red-400">ACE does NOT verify identity.</strong>
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <h4 class="text-purple-400 font-semibold mb-2">ACE PROVES</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>Biometric auth was attempted at capture time</li>
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>Auth result (success/failure/score)</li>
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>Potential duress (unusual patterns)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <h4 class="text-red-400 font-semibold mb-2">ACE DOES NOT PROVE</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>The person is who they claim to be</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Legal identity</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Absence of coercion</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Attestation Results -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-list-ul text-purple-400 mr-2"></i>
+                    Attestation Results
+                </h3>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-gray-900 rounded-lg p-4 border border-green-500/30">
+                        <p class="text-green-400 font-bold">SUCCESS</p>
+                        <p class="text-gray-400 text-sm">Biometric matched enrolled profile</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-4 border border-red-500/30">
+                        <p class="text-red-400 font-bold">FAILURE</p>
+                        <p class="text-gray-400 text-sm">Biometric did not match</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-4 border border-yellow-500/30">
+                        <p class="text-yellow-400 font-bold">TIMEOUT</p>
+                        <p class="text-gray-400 text-sm">Auth timed out</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-4 border border-orange-500/30">
+                        <p class="text-orange-400 font-bold">CANCELLED</p>
+                        <p class="text-gray-400 text-sm">User cancelled auth</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-4 border border-gray-500/30">
+                        <p class="text-gray-400 font-bold">NOT_ENROLLED</p>
+                        <p class="text-gray-400 text-sm">No biometric enrolled on device</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-purple-900/30 rounded-lg p-4 border border-purple-500/30">
+                    <p class="text-purple-300 text-sm text-center">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <strong>Key Design:</strong> Capture proceeds regardless of auth result. Auth failure is recorded, not blocking.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Zero-Knowledge Approach -->
+            <div class="mt-12 bg-gradient-to-r from-purple-900/40 to-indigo-900/40 rounded-xl p-8 border border-purple-500/30 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-4 text-center">
+                    <i class="fas fa-user-shield text-purple-400 mr-2"></i>
+                    Zero-Knowledge Privacy Approach
+                </h3>
+                <p class="text-lg text-center text-purple-300 mb-6 italic">
+                    "We prove authentication was attempted. We store no biometric data."
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">What ACE Stores</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Auth method used</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Auth result (success/failure)</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Attempt duration</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Device attestation chain</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">What ACE Does NOT Store</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Facial geometry</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Fingerprint data</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Biometric templates</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Any biometric raw data</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conformance Levels Section -->
+    <section id="conformance" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Conformance Levels</h2>
+                <p class="text-gray-400 text-lg">Tiered compliance for different use cases</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Bronze -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-amber-700/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-amber-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-600">Bronze</h3>
+                            <p class="text-gray-400 text-sm">Hobbyists, Early Adopters</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>CAPTURE event logging (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>SHA-256 hash computation (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>Ed25519 digital signature (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>Weekly external anchoring (MUST)</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">Use: Personal archives</p>
+                        <p class="text-gray-400 text-xs">Retention: 1 year minimum (SHOULD)</p>
+                    </div>
+                </div>
+                
+                <!-- Silver -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-gray-400/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-gray-600/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-gray-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-300">Silver</h3>
+                            <p class="text-gray-400 text-sm">Families, Prosumers</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>All Bronze requirements</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>Daily RFC 3161 TSA (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>RFC 6962 Merkle tree (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>Deletion detection (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>Verification Pack export (MUST)</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">Use: Long-term memories</p>
+                        <p class="text-gray-400 text-xs">Retention: 10 years minimum (SHOULD)</p>
+                    </div>
+                </div>
+                
+                <!-- Gold -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-yellow-400">Gold</h3>
+                            <p class="text-gray-400 text-sm">Legal, Journalism, Enterprise</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>All Silver requirements</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>Per-capture TSA (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>ACE support (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>HSM key management (SHOULD)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>Full chain of custody (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>Audit API (MUST)</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">Use: Court evidence</p>
+                        <p class="text-gray-400 text-xs">Retention: Perpetual (MUST)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Implementation Profiles Section -->
+    <section id="profiles" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Implementation Profiles</h2>
+                <p class="text-gray-400 text-lg">B2B vs B2C positioning</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- VeriCapture B2B -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-14 h-14 bg-blue-900/50 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-briefcase text-blue-400 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">VeriCapture</h3>
+                            <p class="text-blue-400 text-sm">B2B Evidence Tool</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4 italic">"Verifiable evidence generation"</p>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Target:</strong> Legal professionals, journalists, insurers</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Conformance:</strong> Gold (mandatory)</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Location:</strong> ON by default</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">ACE:</strong> Mandatory</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">TSA:</strong> Per-capture</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Export:</strong> Evidence Pack (PDF + JSON + Proofs)</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Pricing:</strong> Enterprise license</li>
+                    </ul>
+                </div>
+                
+                <!-- VeriCapture Moments B2C -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-14 h-14 bg-teal-900/50 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-heart text-teal-400 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">VeriCapture Moments</h3>
+                            <p class="text-teal-400 text-sm">B2C Consumer Application</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4 italic">"Your moments, verifiably sealed"</p>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Target:</strong> Families, travelers, memory keepers</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Conformance:</strong> Silver (default), Gold (optional)</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Location:</strong> OFF by default (privacy-first)</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">ACE:</strong> Optional with clear explanation</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">TSA:</strong> Daily batch (upgradable)</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Export:</strong> Share link + QR</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Pricing:</strong> Freemium / Perpetual verification</li>
+                    </ul>
+                    
+                    <!-- Pricing Philosophy -->
+                    <div class="mt-6 bg-teal-900/30 rounded-lg p-4 border border-teal-500/30">
+                        <p class="text-teal-300 text-sm">
+                            <i class="fas fa-heart mr-2"></i>
+                            <strong>Kindness in pricing:</strong> Perpetual verification links never expire, even if subscription ends.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- C2PA Integration Section -->
+    <section id="c2pa" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">C2PA Integration</h2>
+                <p class="text-gray-400 text-lg">Complementary positioning with Content Credentials</p>
+            </div>
+            
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 max-w-4xl mx-auto">
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[500px]">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-gray-400 font-semibold">Aspect</th>
+                                <th class="px-4 py-3 text-left text-blue-400 font-semibold">C2PA</th>
+                                <th class="px-4 py-3 text-left text-teal-400 font-semibold">CPP</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Question Answered</td>
+                                <td class="px-4 py-4 text-gray-300">"Is this content authentic?"</td>
+                                <td class="px-4 py-4 text-gray-300">"Was this media captured?"</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Focus</td>
+                                <td class="px-4 py-4 text-gray-300">Content provenance</td>
+                                <td class="px-4 py-4 text-gray-300">Capture event provenance</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Scope</td>
+                                <td class="px-4 py-4 text-gray-300">Individual assets</td>
+                                <td class="px-4 py-4 text-gray-300">Sequential capture records</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Deletion Detection</td>
+                                <td class="px-4 py-4 text-gray-300">Per-asset only</td>
+                                <td class="px-4 py-4 text-gray-300">Sequence-level</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Metaphor</td>
+                                <td class="px-4 py-4 text-gray-300">Content passport</td>
+                                <td class="px-4 py-4 text-teal-400 font-medium">Capture flight recorder</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-6 bg-gradient-to-r from-blue-900/30 to-teal-900/30 rounded-lg p-4 border border-gray-600">
+                    <p class="text-center text-gray-300">
+                        <i class="fas fa-handshake text-white mr-2"></i>
+                        <strong>Integration:</strong> CPP can embed C2PA manifests while providing additional sequence-level guarantees.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VAP/VSO Relationship Section -->
+    <section id="vap-relationship" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Position within VAP Framework</h2>
+                <p class="text-gray-400 text-lg">CPP's position in the framework hierarchy</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌────────────────────────────────────────────────────────────────────────────┐
+│                                                                            │
+│   <span class="text-cyan-400 font-bold">VAP (Verifiable AI Provenance Framework)</span>                                │
+│   <span class="text-gray-400">Cross-domain meta-framework for AI audit trails</span>                            │
+│                                                                            │
+└────────────────────────────────────────────┬───────────────────────────────┘
+                                             │
+                                             │ defines & maintains
+                                             │
+┌────────────────────────────────────────────▼───────────────────────────────┐
+│                                                                            │
+│   <span class="text-emerald-400 font-bold">VSO (VeritasChain Standards Organization)</span>                              │
+│   <span class="text-gray-400">Independent standards body (Tokyo, Japan)</span>                                  │
+│                                                                            │
+└────────────────────────────────────────────┬───────────────────────────────┘
+                                             │
+                                             │ publishes domain profiles
+                                             │
+          ┌──────────┬───────────────────────┼───────────────────┬──────────┐
+          │          │                       │                   │          │
+          ▼          ▼                       ▼                   ▼          ▼
+     ┌─────────┐ ┌─────────┐          ┌─────────┐         ┌─────────┐ ┌─────────┐
+     │  <span class="text-blue-400 font-bold">VCP</span>    │ │  <span class="text-purple-400 font-bold">CAP</span>    │          │  <span class="text-teal-400 font-bold">CPP</span>    │         │  <span class="text-amber-400 font-bold">DVP</span>    │ │   ...   │
+     │Finance  │ │Content/ │          │Capture  │         │Automotive│ │         │
+     │Profile  │ │Creative │          │Provenance│        │ Profile  │ │         │
+     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v0.1</span>    │         │ <span class="text-amber-300">(draft)</span> │ │         │
+     └─────────┘ └─────────┘          └─────────┘         └─────────┘ └─────────┘
+
+                      <span class="text-gray-500">Domain-specific protocol implementations</span>
+                </div>
+            </div>
+            
+            <!-- Comparison Table -->
+            <div class="mt-12 bg-gray-800 rounded-xl p-8 border border-gray-700 max-w-5xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-exchange-alt text-teal-400 mr-2"></i>
+                    Profile Comparison
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[700px]">
+                        <thead class="bg-gray-900">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-gray-400 font-semibold">Aspect</th>
+                                <th class="px-4 py-3 text-left text-blue-400 font-semibold">VCP (Finance)</th>
+                                <th class="px-4 py-3 text-left text-purple-400 font-semibold">CAP (Content)</th>
+                                <th class="px-4 py-3 text-left text-teal-400 font-semibold">CPP (Capture)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Subject</td>
+                                <td class="px-4 py-4 text-gray-300">Trading decisions</td>
+                                <td class="px-4 py-4 text-gray-300">AI generation decisions</td>
+                                <td class="px-4 py-4 text-gray-300">Media capture events</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Actor</td>
+                                <td class="px-4 py-4 text-gray-300">Algorithm/Trader</td>
+                                <td class="px-4 py-4 text-gray-300">AI Model/Creator</td>
+                                <td class="px-4 py-4 text-gray-300">Device/Photographer</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Industries</td>
+                                <td class="px-4 py-4 text-gray-300">Finance, Trading</td>
+                                <td class="px-4 py-4 text-gray-300">Games, Film, AI Platforms</td>
+                                <td class="px-4 py-4 text-gray-300">Personal, Legal, News</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Core Events</td>
+                                <td class="px-4 py-4 text-gray-300">SIG/ORD/EXE/CXL</td>
+                                <td class="px-4 py-4 text-gray-300">INGEST/TRAIN/GEN/EXPORT</td>
+                                <td class="px-4 py-4 text-gray-300">CAPTURE/SEAL/SHARE/VERIFY</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Time Precision</td>
+                                <td class="px-4 py-4 text-gray-300">Nanosecond–Millisecond</td>
+                                <td class="px-4 py-4 text-gray-300">Second–Minute</td>
+                                <td class="px-4 py-4 text-gray-300">Millisecond–Second</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="py-20 bg-gradient-to-br from-teal-900/30 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Get Involved</h2>
+                <p class="text-gray-400 text-lg">Join the development of CPP and shape the future of capture provenance</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <a href="/vap/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-layer-group text-3xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">View VAP Framework</h3>
+                    <p class="text-gray-400 text-sm">Understand the parent framework that CPP extends</p>
+                </a>
+                
+                <a href="/vap/cap/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-palette text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">CAP (Content Profile)</h3>
+                    <p class="text-gray-400 text-sm">See the related profile for creative AI workflows</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-8 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-handshake text-3xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Participate in CPP Development</h3>
+                    <p class="text-gray-400 text-sm">For device manufacturers, app developers, and journalists</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Quote -->
+    <section class="py-16 bg-gray-900 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <blockquote class="text-xl text-gray-300 italic mb-6">
+                "In an age of AI-generated imagery, proving that a moment was captured — not created — becomes invaluable."
+            </blockquote>
+            <p class="text-gray-500">— VeritasChain Standards Organization</p>
+            
+            <blockquote class="text-lg text-teal-400 italic mt-8 font-semibold">
+                "Your moments, verifiably sealed."
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- License Footer -->
+    <section class="py-8 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+                <i class="fab fa-creative-commons mr-1"></i>
+                This work is licensed under 
+                <a href="https://creativecommons.org/licenses/by/4.0/" class="text-teal-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                    CC BY 4.0 International
+                </a>
+            </p>
+            <p class="text-gray-600 text-xs mt-2">
+                CPP Specification v0.1.0 — Last Updated: 2026-01-18
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer lang="en"></vcp-footer>
+</body>
+</html>
