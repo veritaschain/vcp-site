@@ -164,7 +164,7 @@
         },
         "datePublished": "2026-01-18",
         "dateModified": "2026-01-18",
-        "version": "0.1.0",
+        "version": "1.0.0",
         "url": "https://veritaschain.org/vap/cpp/ja/"
     }
     </script>
@@ -176,9 +176,9 @@
     <div class="pt-12 lg:pt-0 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 border-b border-teal-500/30">
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex items-center justify-center gap-3 flex-wrap">
-                <i class="fas fa-flask text-teal-400"></i>
-                <span class="text-teal-200 font-medium">CPPステータス: <span class="text-teal-400 font-bold">ドラフト v0.1</span></span>
-                <span class="text-teal-200/70 text-sm">— ACE（認証付きキャプチャ拡張）を含む。フィードバック歓迎。</span>
+                <i class="fas fa-certificate text-teal-400"></i>
+                <span class="text-teal-200 font-medium">CPPステータス: <span class="text-teal-400 font-bold">v1.0 リリース候補</span></span>
+                <span class="text-teal-200/70 text-sm">— Verify, Don't Trust. 外部第三者検証が必須。</span>
             </div>
         </div>
     </div>
@@ -228,16 +228,21 @@
                 <div class="mt-6 text-gray-400 text-sm leading-relaxed">
                     <p><strong class="text-amber-400">CPPはコンテンツ認証システムではありません。</strong></p>
                     <p><strong class="text-teal-400">CPPは第三者が独立して監査できる検証可能なキャプチャ記録を作成するフレームワークです。</strong></p>
+                    <p class="mt-2"><strong class="text-cyan-400">"Verify, Don't Trust." — 外部RFC 3161 TSAアンカリングにより独立検証性を保証。</strong></p>
                 </div>
             </div>
             
             <!-- Hero CTAs -->
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="#event-model" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
-                    <i class="fas fa-stream mr-2"></i>
-                    イベントモデルを見る
+                <a href="https://github.com/veritaschain/cpp-spec" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fab fa-github mr-2"></i>
+                    CPP仕様書
                 </a>
-                <a href="#ace" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                <a href="#architecture" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-layer-group mr-2"></i>
+                    三層アーキテクチャ
+                </a>
+                <a href="#ace" class="inline-flex items-center bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
                     <i class="fas fa-fingerprint mr-2"></i>
                     ACE拡張
                 </a>
@@ -608,26 +613,26 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │  <span class="text-cyan-400 font-bold">レイヤー3: 外部検証可能性</span>                                      │
 │  ┌───────────────────────────────────────────────────────────┐  │
-│  │  RFC 3161 TSA / ブロックチェーン / SCITT                  │  │
+│  │  RFC 3161 TSA（必須）                                     │  │
 │  │  • 独立した第三者タイムスタンプ                           │  │
-│  │  • 時刻Tでの存在の暗号証明                               │  │
-│  │  • 分散型検証機能                                        │  │
+│  │  • 検証URL: 50年以上の保持                               │  │
+│  │  • SLA: 99.95%可用性                                     │  │
 │  └───────────────────────────────────────────────────────────┘  │
 ├─────────────────────────────────────────────────────────────────┤
 │  <span class="text-teal-400 font-bold">レイヤー2: コレクション整合性</span>                                    │
 │  ┌───────────────────────────────────────────────────────────┐  │
-│  │  RFC 6962 マークルツリー                                  │  │
-│  │  • バッチレベル完全性証明                                 │  │
+│  │  RFC 6962 マークルツリー + 完全性不変量                   │  │
+│  │  • XORハッシュによる削除検出                              │  │
+│  │  • イベント数の検証                                       │  │
 │  │  • 効率的な検証 O(log n)                                  │  │
-│  │  • 削除検出                                               │  │
 │  └───────────────────────────────────────────────────────────┘  │
 ├─────────────────────────────────────────────────────────────────┤
 │  <span class="text-blue-400 font-bold">レイヤー1: イベント整合性</span>                                        │
 │  ┌───────────────────────────────────────────────────────────┐  │
 │  │  SHA-256 ハッシュ + Ed25519 署名                          │  │
+│  │  • 除外リストなし（全フィールド署名）                     │  │
 │  │  • イベント単位のコンテンツ整合性                         │  │
 │  │  • 真正性検証                                             │  │
-│  │  • PrevHashリンク（オプション）                           │  │
 │  └───────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
                 </div>
@@ -718,7 +723,7 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">適合レベル</h2>
-                <p class="text-gray-400 text-lg">異なるユースケース向けの段階的コンプライアンス</p>
+                <p class="text-gray-400 text-lg">段階的コンプライアンス — 完全性不変量は全レベルで必須</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
@@ -736,24 +741,24 @@
                     <ul class="space-y-3 text-gray-300 text-sm">
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>CAPTUREイベント記録（MUST）</span>
+                            <span>完全性不変量（必須）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>SHA-256ハッシュ計算（MUST）</span>
+                            <span>SHA-256 + Ed25519（MUST）</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>Ed25519デジタル署名（MUST）</span>
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">TSA: オプション</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>週次外部アンカリング（MUST）</span>
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">ACE: オプション</span>
                         </li>
                     </ul>
                     <div class="mt-6 pt-4 border-t border-gray-700">
                         <p class="text-gray-400 text-xs">用途: 個人アーカイブ</p>
-                        <p class="text-gray-400 text-xs">保持期間: 最低1年（SHOULD）</p>
+                        <p class="text-amber-400 text-xs font-medium">自己検証のみ</p>
                     </div>
                 </div>
                 
@@ -771,7 +776,7 @@
                     <ul class="space-y-3 text-gray-300 text-sm">
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>全ブロンズ要件</span>
+                            <span>完全性不変量（必須）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-gray-300 mt-1"></i>
@@ -779,16 +784,16 @@
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>RFC 6962マークルツリー（MUST）</span>
+                            <span>検証URL（MUST）</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>削除検出（MUST）</span>
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">ACE: オプション</span>
                         </li>
                     </ul>
                     <div class="mt-6 pt-4 border-t border-gray-700">
                         <p class="text-gray-400 text-xs">用途: 長期思い出保存</p>
-                        <p class="text-gray-400 text-xs">保持期間: 最低10年（SHOULD）</p>
+                        <p class="text-gray-300 text-xs font-medium">第三者検証可能</p>
                     </div>
                 </div>
                 
@@ -806,26 +811,34 @@
                     <ul class="space-y-3 text-gray-300 text-sm">
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>全シルバー要件</span>
+                            <span>完全性不変量（必須）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>キャプチャ毎TSA（MUST）</span>
+                            <span>キャプチャ毎RFC 3161 TSA（MUST）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>ACEサポート（MUST）</span>
+                            <span>ACEサポート（必須）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>完全な証拠連鎖（MUST）</span>
+                            <span>検証URL（MUST）</span>
                         </li>
                     </ul>
                     <div class="mt-6 pt-4 border-t border-gray-700">
                         <p class="text-gray-400 text-xs">用途: 裁判証拠</p>
-                        <p class="text-gray-400 text-xs">保持期間: 永久（MUST）</p>
+                        <p class="text-yellow-400 text-xs font-medium">証拠グレード検証可能</p>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Conformance Note -->
+            <div class="mt-8 bg-gradient-to-r from-amber-900/20 to-yellow-900/20 rounded-xl p-6 border border-amber-500/30 max-w-3xl mx-auto">
+                <p class="text-center text-amber-300">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <strong>重要原則:</strong> 外部第三者検証（RFC 3161 TSA）が「来歴利用可能」と単なる自己証明を区別します。
+                </p>
             </div>
         </div>
     </section>
@@ -865,7 +878,7 @@
      │  <span class="text-blue-400 font-bold">VCP</span>    │ │  <span class="text-purple-400 font-bold">CAP</span>    │          │  <span class="text-teal-400 font-bold">CPP</span>    │         │  <span class="text-amber-400 font-bold">DVP</span>    │ │   ...   │
      │金融     │ │コンテンツ │          │キャプチャ│         │自動車   │ │         │
      │プロファイル│ │/クリエイティブ│       │来歴     │        │プロファイル│ │         │
-     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v0.1</span>    │         │ <span class="text-amber-300">(草案)</span>  │ │         │
+     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v1.0</span>    │         │ <span class="text-amber-300">(草案)</span>  │ │         │
      └─────────┘ └─────────┘          └─────────┘         └─────────┘ └─────────┘
 
                       <span class="text-gray-500">ドメイン固有のプロトコル実装</span>
@@ -882,29 +895,37 @@
                 <p class="text-gray-400 text-lg">CPPの開発に参加し、キャプチャ来歴の未来を形作りましょう</p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
-                <a href="/vap/ja/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
-                    <div class="w-16 h-16 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-layer-group text-3xl text-cyan-400"></i>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="https://github.com/veritaschain/cpp-spec" target="_blank" rel="noopener noreferrer" class="bg-gray-800 rounded-xl p-6 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-github text-2xl text-teal-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">VAPフレームワークを見る</h3>
-                    <p class="text-gray-400 text-sm">CPPが拡張する親フレームワークを理解する</p>
+                    <h3 class="text-lg font-bold text-white mb-2">CPP仕様書</h3>
+                    <p class="text-gray-400 text-sm">GitHub上の完全な技術仕様</p>
                 </a>
                 
-                <a href="/vap/cap/ja/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
-                    <div class="w-16 h-16 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-palette text-3xl text-purple-400"></i>
+                <a href="/vap/ja/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-layer-group text-2xl text-cyan-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">CAP（コンテンツプロファイル）</h3>
-                    <p class="text-gray-400 text-sm">クリエイティブAIワークフロー向けの関連プロファイルを見る</p>
+                    <h3 class="text-lg font-bold text-white mb-2">VAPフレームワーク</h3>
+                    <p class="text-gray-400 text-sm">親フレームワークの概要</p>
                 </a>
                 
-                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-8 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
-                    <div class="w-16 h-16 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-handshake text-3xl text-teal-400"></i>
+                <a href="/vap/cap/ja/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-palette text-2xl text-purple-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">CPP開発に参加</h3>
-                    <p class="text-gray-400 text-sm">デバイスメーカー、アプリ開発者、ジャーナリスト向け</p>
+                    <h3 class="text-lg font-bold text-white mb-2">CAPプロファイル</h3>
+                    <p class="text-gray-400 text-sm">コンテンツ/クリエイティブAI</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-amber-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-amber-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-handshake text-2xl text-amber-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">開発に参加</h3>
+                    <p class="text-gray-400 text-sm">CPP標準に貢献</p>
                 </a>
             </div>
         </div>
@@ -937,7 +958,7 @@
                 の下でライセンスされています
             </p>
             <p class="text-gray-600 text-xs mt-2">
-                CPP仕様 v0.1.0 — 最終更新: 2026-01-18
+                CPP仕様 v1.0.0 リリース候補 — 最終更新: 2026-01-18
             </p>
         </div>
     </section>
