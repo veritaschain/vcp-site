@@ -164,7 +164,7 @@
         },
         "datePublished": "2026-01-18",
         "dateModified": "2026-01-18",
-        "version": "0.1.0",
+        "version": "1.0.0",
         "url": "https://veritaschain.org/vap/cpp/"
     }
     </script>
@@ -176,9 +176,9 @@
     <div class="pt-12 lg:pt-0 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 border-b border-teal-500/30">
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex items-center justify-center gap-3 flex-wrap">
-                <i class="fas fa-flask text-teal-400"></i>
-                <span class="text-teal-200 font-medium">CPP Status: <span class="text-teal-400 font-bold">DRAFT v0.1</span></span>
-                <span class="text-teal-200/70 text-sm">— Includes ACE (Attested Capture Extension). Feedback welcome.</span>
+                <i class="fas fa-certificate text-teal-400"></i>
+                <span class="text-teal-200 font-medium">CPP Status: <span class="text-teal-400 font-bold">v1.0 Release Candidate</span></span>
+                <span class="text-teal-200/70 text-sm">— Verify, Don't Trust. External third-party verification required.</span>
             </div>
         </div>
     </div>
@@ -229,16 +229,21 @@
                 <div class="mt-6 text-gray-400 text-sm leading-relaxed">
                     <p><strong class="text-amber-400">CPP is NOT a content authentication system.</strong></p>
                     <p><strong class="text-teal-400">CPP IS a framework for creating verifiable capture records that third parties can independently audit.</strong></p>
+                    <p class="mt-2"><strong class="text-cyan-400">"Verify, Don't Trust." — External RFC 3161 TSA anchoring ensures independent verifiability.</strong></p>
                 </div>
             </div>
             
             <!-- Hero CTAs -->
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="#event-model" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
-                    <i class="fas fa-stream mr-2"></i>
-                    View Event Model
+                <a href="https://github.com/veritaschain/cpp-spec" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fab fa-github mr-2"></i>
+                    CPP Specification
                 </a>
-                <a href="#ace" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                <a href="#architecture" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-layer-group mr-2"></i>
+                    Three-Layer Architecture
+                </a>
+                <a href="#ace" class="inline-flex items-center bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
                     <i class="fas fa-fingerprint mr-2"></i>
                     ACE Extension
                 </a>
@@ -719,7 +724,7 @@
                     <ul class="text-gray-400 text-sm space-y-2">
                         <li><i class="fas fa-link text-blue-400 mr-2"></i>SHA-256 hash chain</li>
                         <li><i class="fas fa-signature text-blue-400 mr-2"></i>Ed25519 signature</li>
-                        <li><i class="fas fa-clock text-blue-400 mr-2"></i>UUIDv7 timestamps</li>
+                        <li><i class="fas fa-ban text-blue-400 mr-2"></i>NO exclusion lists</li>
                     </ul>
                 </div>
                 
@@ -732,8 +737,8 @@
                     </div>
                     <ul class="text-gray-400 text-sm space-y-2">
                         <li><i class="fas fa-tree text-teal-400 mr-2"></i>RFC 6962 Merkle tree</li>
+                        <li><i class="fas fa-calculator text-teal-400 mr-2"></i>Completeness Invariant (XOR)</li>
                         <li><i class="fas fa-search text-teal-400 mr-2"></i>Deletion detection</li>
-                        <li><i class="fas fa-bolt text-teal-400 mr-2"></i>O(log n) verification</li>
                     </ul>
                 </div>
                 
@@ -745,10 +750,85 @@
                         <h3 class="text-white font-bold">External Verifiability</h3>
                     </div>
                     <ul class="text-gray-400 text-sm space-y-2">
-                        <li><i class="fas fa-anchor text-cyan-400 mr-2"></i>RFC 3161 TSA</li>
-                        <li><i class="fas fa-cubes text-cyan-400 mr-2"></i>Blockchain option</li>
-                        <li><i class="fas fa-globe text-cyan-400 mr-2"></i>SCITT integration</li>
+                        <li><i class="fas fa-anchor text-cyan-400 mr-2"></i>RFC 3161 TSA (REQUIRED)</li>
+                        <li><i class="fas fa-link text-cyan-400 mr-2"></i>Verification URL</li>
+                        <li><i class="fas fa-globe text-cyan-400 mr-2"></i>50+ year retention</li>
                     </ul>
+                </div>
+            </div>
+            
+            <!-- Completeness Invariant Section -->
+            <div class="mt-16 bg-gray-900 rounded-xl p-8 border border-teal-500/30">
+                <h3 class="text-2xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-calculator text-teal-400 mr-2"></i>
+                    Completeness Invariant (CI)
+                </h3>
+                <p class="text-gray-400 text-center mb-8">XOR-based deletion detection — the core innovation for proving nothing was removed</p>
+                
+                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                    <div class="code-block">
+                        <pre><span class="text-teal-400">// Completeness Invariant Structure</span>
+CI = {
+  expected_count: n,                           <span class="text-gray-500">// Number of events</span>
+  hash_sum: H(E1) ⊕ H(E2) ⊕ ... ⊕ H(En),      <span class="text-gray-500">// XOR of all event hashes</span>
+  first_timestamp: T1,                         <span class="text-gray-500">// Earliest event</span>
+  last_timestamp: Tn                           <span class="text-gray-500">// Latest event</span>
+}
+
+<span class="text-cyan-400">// Verification Algorithm</span>
+if len(events) != expected_count:
+    return <span class="text-red-400">VIOLATION</span>
+if XOR(H(events)) != hash_sum:
+    return <span class="text-red-400">VIOLATION</span>
+return <span class="text-green-400">VALID</span></pre>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800/50 rounded-lg p-4">
+                        <h4 class="text-teal-400 font-semibold mb-2"><i class="fas fa-shield-alt mr-2"></i>Why XOR?</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• Order-independent: A ⊕ B = B ⊕ A</li>
+                            <li>• Cannot fake removal without original hash</li>
+                            <li>• Constant-size regardless of event count</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800/50 rounded-lg p-4">
+                        <h4 class="text-cyan-400 font-semibold mb-2"><i class="fas fa-check-double mr-2"></i>Detection Capability</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• Single event deletion: Detected</li>
+                            <li>• Multiple event deletion: Detected</li>
+                            <li>• Event modification: Detected</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Verification URL Section -->
+            <div class="mt-8 bg-gradient-to-r from-cyan-900/30 to-teal-900/30 rounded-xl p-8 border border-cyan-500/30">
+                <h3 class="text-xl font-bold text-white mb-4 text-center">
+                    <i class="fas fa-link text-cyan-400 mr-2"></i>
+                    Verification URL Architecture
+                </h3>
+                <p class="text-gray-400 text-center mb-6">Survives metadata stripping — verification always accessible</p>
+                
+                <div class="bg-gray-900 rounded-lg p-4 text-center">
+                    <code class="text-cyan-400 text-lg font-mono">https://verify.veritaschain.org/cpp/{verification_code}</code>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-4 mt-6 text-center">
+                    <div>
+                        <p class="text-white font-semibold">SLA</p>
+                        <p class="text-cyan-400">99.95% availability</p>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold">Retention</p>
+                        <p class="text-cyan-400">50+ years</p>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold">Recovery</p>
+                        <p class="text-cyan-400">pHash matching</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -875,7 +955,7 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Conformance Levels</h2>
-                <p class="text-gray-400 text-lg">Tiered compliance for different use cases</p>
+                <p class="text-gray-400 text-lg">Tiered compliance for different use cases — Completeness Invariant REQUIRED at all levels</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
@@ -893,24 +973,24 @@
                     <ul class="space-y-3 text-gray-300 text-sm">
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>CAPTURE event logging (MUST)</span>
+                            <span>Completeness Invariant (REQUIRED)</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>SHA-256 hash computation (MUST)</span>
+                            <span>SHA-256 + Ed25519 (MUST)</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>Ed25519 digital signature (MUST)</span>
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">TSA: Optional</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>Weekly external anchoring (MUST)</span>
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">ACE: Optional</span>
                         </li>
                     </ul>
                     <div class="mt-6 pt-4 border-t border-gray-700">
                         <p class="text-gray-400 text-xs">Use: Personal archives</p>
-                        <p class="text-gray-400 text-xs">Retention: 1 year minimum (SHOULD)</p>
+                        <p class="text-amber-400 text-xs font-medium">Self-verifiable only</p>
                     </div>
                 </div>
                 
@@ -928,7 +1008,7 @@
                     <ul class="space-y-3 text-gray-300 text-sm">
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>All Bronze requirements</span>
+                            <span>Completeness Invariant (REQUIRED)</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-gray-300 mt-1"></i>
@@ -936,20 +1016,16 @@
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>RFC 6962 Merkle tree (MUST)</span>
+                            <span>Verification URL (MUST)</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>Deletion detection (MUST)</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>Verification Pack export (MUST)</span>
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">ACE: Optional</span>
                         </li>
                     </ul>
                     <div class="mt-6 pt-4 border-t border-gray-700">
                         <p class="text-gray-400 text-xs">Use: Long-term memories</p>
-                        <p class="text-gray-400 text-xs">Retention: 10 years minimum (SHOULD)</p>
+                        <p class="text-gray-300 text-xs font-medium">Third-party verifiable</p>
                     </div>
                 </div>
                 
@@ -967,34 +1043,34 @@
                     <ul class="space-y-3 text-gray-300 text-sm">
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>All Silver requirements</span>
+                            <span>Completeness Invariant (REQUIRED)</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>Per-capture TSA (MUST)</span>
+                            <span>Per-capture RFC 3161 TSA (MUST)</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>ACE support (MUST)</span>
+                            <span>ACE support (REQUIRED)</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>HSM key management (SHOULD)</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>Full chain of custody (MUST)</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>Audit API (MUST)</span>
+                            <span>Verification URL (MUST)</span>
                         </li>
                     </ul>
                     <div class="mt-6 pt-4 border-t border-gray-700">
                         <p class="text-gray-400 text-xs">Use: Court evidence</p>
-                        <p class="text-gray-400 text-xs">Retention: Perpetual (MUST)</p>
+                        <p class="text-yellow-400 text-xs font-medium">Evidence-grade verifiable</p>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Conformance Note -->
+            <div class="mt-8 bg-gradient-to-r from-amber-900/20 to-yellow-900/20 rounded-xl p-6 border border-amber-500/30 max-w-3xl mx-auto">
+                <p class="text-center text-amber-300">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <strong>Key Principle:</strong> External third-party verification (RFC 3161 TSA) is what distinguishes "Provenance Available" from mere self-attestation.
+                </p>
             </div>
         </div>
     </section>
@@ -1158,7 +1234,7 @@
      │  <span class="text-blue-400 font-bold">VCP</span>    │ │  <span class="text-purple-400 font-bold">CAP</span>    │          │  <span class="text-teal-400 font-bold">CPP</span>    │         │  <span class="text-amber-400 font-bold">DVP</span>    │ │   ...   │
      │Finance  │ │Content/ │          │Capture  │         │Automotive│ │         │
      │Profile  │ │Creative │          │Provenance│        │ Profile  │ │         │
-     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v0.1</span>    │         │ <span class="text-amber-300">(draft)</span> │ │         │
+     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v1.0</span>    │         │ <span class="text-amber-300">(draft)</span> │ │         │
      └─────────┘ └─────────┘          └─────────┘         └─────────┘ └─────────┘
 
                       <span class="text-gray-500">Domain-specific protocol implementations</span>
@@ -1228,29 +1304,37 @@
                 <p class="text-gray-400 text-lg">Join the development of CPP and shape the future of capture provenance</p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
-                <a href="/vap/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
-                    <div class="w-16 h-16 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-layer-group text-3xl text-cyan-400"></i>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="https://github.com/veritaschain/cpp-spec" target="_blank" rel="noopener noreferrer" class="bg-gray-800 rounded-xl p-6 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-github text-2xl text-teal-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">View VAP Framework</h3>
-                    <p class="text-gray-400 text-sm">Understand the parent framework that CPP extends</p>
+                    <h3 class="text-lg font-bold text-white mb-2">CPP Specification</h3>
+                    <p class="text-gray-400 text-sm">Full technical spec on GitHub</p>
                 </a>
                 
-                <a href="/vap/cap/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
-                    <div class="w-16 h-16 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-palette text-3xl text-purple-400"></i>
+                <a href="/vap/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-layer-group text-2xl text-cyan-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">CAP (Content Profile)</h3>
-                    <p class="text-gray-400 text-sm">See the related profile for creative AI workflows</p>
+                    <h3 class="text-lg font-bold text-white mb-2">VAP Framework</h3>
+                    <p class="text-gray-400 text-sm">Parent framework overview</p>
                 </a>
                 
-                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-8 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
-                    <div class="w-16 h-16 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-handshake text-3xl text-teal-400"></i>
+                <a href="/vap/cap/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-palette text-2xl text-purple-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Participate in CPP Development</h3>
-                    <p class="text-gray-400 text-sm">For device manufacturers, app developers, and journalists</p>
+                    <h3 class="text-lg font-bold text-white mb-2">CAP Profile</h3>
+                    <p class="text-gray-400 text-sm">Content/Creative AI workflows</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-amber-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-amber-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-handshake text-2xl text-amber-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Join Development</h3>
+                    <p class="text-gray-400 text-sm">Contribute to CPP standard</p>
                 </a>
             </div>
         </div>
@@ -1281,7 +1365,7 @@
                 </a>
             </p>
             <p class="text-gray-600 text-xs mt-2">
-                CPP Specification v0.1.0 — Last Updated: 2026-01-18
+                CPP Specification v1.0.0 Release Candidate — Last Updated: 2026-01-18
             </p>
         </div>
     </section>

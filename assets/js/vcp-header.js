@@ -76,6 +76,7 @@ class VCPHeader extends HTMLElement {
                 vapPap: 'PAP - Public Administration',
                 vapIap: 'IAP - Industry Accountability',
                 vapCap: 'CAP - Content / Creative',
+                vapCpp: 'CPP - Capture Provenance',
                 vapGam: 'GAM - Gaming Application',
                 vapAt: 'VAP-AT',
                 faq: 'FAQ (Scope / Limitations)',
@@ -135,6 +136,7 @@ class VCPHeader extends HTMLElement {
                 vapPap: 'PAP - 公共行政',
                 vapIap: 'IAP - 産業アカウンタビリティ',
                 vapCap: 'CAP - コンテンツ / クリエイティブ',
+                vapCpp: 'CPP - キャプチャ来歴',
                 vapGam: 'GAM - ゲーミングアプリケーション',
                 vapAt: 'VAP-AT',
                 faq: 'FAQ（範囲と制限）',
@@ -194,6 +196,7 @@ class VCPHeader extends HTMLElement {
                 vapPap: 'PAP - 公共行政',
                 vapIap: 'IAP - 行业问责',
                 vapCap: 'CAP - 内容 / 创意',
+                vapCpp: 'CPP - 捕获来源',
                 vapGam: 'GAM - 游戏应用',
                 vapAt: 'VAP-AT',
                 faq: '常见问题（范围/限制）',
@@ -308,6 +311,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
                             <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
                             <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
+                            <a href="/vap/cpp/" class="dropdown-item">${t.vapCpp}</a>
                             <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
                             <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
                         </div>

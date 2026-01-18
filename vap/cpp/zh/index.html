@@ -164,7 +164,7 @@
         },
         "datePublished": "2026-01-18",
         "dateModified": "2026-01-18",
-        "version": "0.1.0",
+        "version": "1.0.0",
         "url": "https://veritaschain.org/vap/cpp/zh/"
     }
     </script>
@@ -176,9 +176,9 @@
     <div class="pt-12 lg:pt-0 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 border-b border-teal-500/30">
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex items-center justify-center gap-3 flex-wrap">
-                <i class="fas fa-flask text-teal-400"></i>
-                <span class="text-teal-200 font-medium">CPP状态: <span class="text-teal-400 font-bold">草案 v0.1</span></span>
-                <span class="text-teal-200/70 text-sm">— 包含ACE（认证捕获扩展）。欢迎反馈。</span>
+                <i class="fas fa-certificate text-teal-400"></i>
+                <span class="text-teal-200 font-medium">CPP状态: <span class="text-teal-400 font-bold">v1.0 发布候选</span></span>
+                <span class="text-teal-200/70 text-sm">— Verify, Don't Trust. 需要外部第三方验证。</span>
             </div>
         </div>
     </div>
@@ -228,16 +228,21 @@
                 <div class="mt-6 text-gray-400 text-sm leading-relaxed">
                     <p><strong class="text-amber-400">CPP不是内容认证系统。</strong></p>
                     <p><strong class="text-teal-400">CPP是创建可由第三方独立审计的可验证捕获记录的框架。</strong></p>
+                    <p class="mt-2"><strong class="text-cyan-400">"Verify, Don't Trust." — 外部RFC 3161 TSA锚定确保独立可验证性。</strong></p>
                 </div>
             </div>
             
             <!-- Hero CTAs -->
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="#event-model" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
-                    <i class="fas fa-stream mr-2"></i>
-                    查看事件模型
+                <a href="https://github.com/veritaschain/cpp-spec" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fab fa-github mr-2"></i>
+                    CPP规范
                 </a>
-                <a href="#ace" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                <a href="#architecture" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-layer-group mr-2"></i>
+                    三层架构
+                </a>
+                <a href="#ace" class="inline-flex items-center bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
                     <i class="fas fa-fingerprint mr-2"></i>
                     ACE扩展
                 </a>
@@ -608,26 +613,26 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │  <span class="text-cyan-400 font-bold">第三层: 外部可验证性</span>                                          │
 │  ┌───────────────────────────────────────────────────────────┐  │
-│  │  RFC 3161 TSA / 区块链 / SCITT                            │  │
+│  │  RFC 3161 TSA（必需）                                     │  │
 │  │  • 独立第三方时间戳                                        │  │
-│  │  • 时间T存在的加密证明                                     │  │
-│  │  • 去中心化验证能力                                        │  │
+│  │  • 验证URL: 50年以上保留                                  │  │
+│  │  • SLA: 99.95%可用性                                      │  │
 │  └───────────────────────────────────────────────────────────┘  │
 ├─────────────────────────────────────────────────────────────────┤
 │  <span class="text-teal-400 font-bold">第二层: 集合完整性</span>                                             │
 │  ┌───────────────────────────────────────────────────────────┐  │
-│  │  RFC 6962 默克尔树                                         │  │
-│  │  • 批量级完整性证明                                        │  │
+│  │  RFC 6962 默克尔树 + 完整性不变量                          │  │
+│  │  • XOR哈希删除检测                                         │  │
+│  │  • 事件数验证                                              │  │
 │  │  • 高效验证 O(log n)                                       │  │
-│  │  • 删除检测                                                │  │
 │  └───────────────────────────────────────────────────────────┘  │
 ├─────────────────────────────────────────────────────────────────┤
 │  <span class="text-blue-400 font-bold">第一层: 事件完整性</span>                                             │
 │  ┌───────────────────────────────────────────────────────────┐  │
 │  │  SHA-256 哈希 + Ed25519 签名                               │  │
+│  │  • 无排除列表（全字段签名）                                │  │
 │  │  • 单事件内容完整性                                        │  │
 │  │  • 真实性验证                                              │  │
-│  │  • PrevHash链接（可选）                                    │  │
 │  └───────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
                 </div>
@@ -718,7 +723,7 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">合规级别</h2>
-                <p class="text-gray-400 text-lg">针对不同用例的分级合规</p>
+                <p class="text-gray-400 text-lg">分级合规 — 完整性不变量在所有级别都是必需的</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
@@ -736,24 +741,24 @@
                     <ul class="space-y-3 text-gray-300 text-sm">
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>CAPTURE事件记录（必须）</span>
+                            <span>完整性不变量（必需）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>SHA-256哈希计算（必须）</span>
+                            <span>SHA-256 + Ed25519（必须）</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>Ed25519数字签名（必须）</span>
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">TSA：可选</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-amber-600 mt-1"></i>
-                            <span>每周外部锚定（必须）</span>
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">ACE：可选</span>
                         </li>
                     </ul>
                     <div class="mt-6 pt-4 border-t border-gray-700">
                         <p class="text-gray-400 text-xs">用途：个人档案</p>
-                        <p class="text-gray-400 text-xs">保留期：至少1年（应该）</p>
+                        <p class="text-amber-400 text-xs font-medium">仅自我验证</p>
                     </div>
                 </div>
                 
@@ -771,7 +776,7 @@
                     <ul class="space-y-3 text-gray-300 text-sm">
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>所有铜牌要求</span>
+                            <span>完整性不变量（必需）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-gray-300 mt-1"></i>
@@ -779,16 +784,16 @@
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>RFC 6962默克尔树（必须）</span>
+                            <span>验证URL（必须）</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fas fa-check text-gray-300 mt-1"></i>
-                            <span>删除检测（必须）</span>
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">ACE：可选</span>
                         </li>
                     </ul>
                     <div class="mt-6 pt-4 border-t border-gray-700">
                         <p class="text-gray-400 text-xs">用途：长期记忆保存</p>
-                        <p class="text-gray-400 text-xs">保留期：至少10年（应该）</p>
+                        <p class="text-gray-300 text-xs font-medium">第三方可验证</p>
                     </div>
                 </div>
                 
@@ -806,26 +811,34 @@
                     <ul class="space-y-3 text-gray-300 text-sm">
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>所有银牌要求</span>
+                            <span>完整性不变量（必需）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>每次捕获TSA（必须）</span>
+                            <span>每次捕获RFC 3161 TSA（必须）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>ACE支持（必须）</span>
+                            <span>ACE支持（必需）</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
-                            <span>完整证据链（必须）</span>
+                            <span>验证URL（必须）</span>
                         </li>
                     </ul>
                     <div class="mt-6 pt-4 border-t border-gray-700">
                         <p class="text-gray-400 text-xs">用途：法庭证据</p>
-                        <p class="text-gray-400 text-xs">保留期：永久（必须）</p>
+                        <p class="text-yellow-400 text-xs font-medium">证据级可验证</p>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Conformance Note -->
+            <div class="mt-8 bg-gradient-to-r from-amber-900/20 to-yellow-900/20 rounded-xl p-6 border border-amber-500/30 max-w-3xl mx-auto">
+                <p class="text-center text-amber-300">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <strong>关键原则：</strong>外部第三方验证（RFC 3161 TSA）是区分"溯源可用"和单纯自我证明的关键。
+                </p>
             </div>
         </div>
     </section>
@@ -865,7 +878,7 @@
      │  <span class="text-blue-400 font-bold">VCP</span>    │ │  <span class="text-purple-400 font-bold">CAP</span>    │          │  <span class="text-teal-400 font-bold">CPP</span>    │         │  <span class="text-amber-400 font-bold">DVP</span>    │ │   ...   │
      │金融     │ │内容/    │          │捕获     │         │汽车     │ │         │
      │配置文件 │ │创意     │          │溯源     │         │配置文件 │ │         │
-     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v0.1</span>    │         │ <span class="text-amber-300">(草案)</span>  │ │         │
+     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v1.0</span>    │         │ <span class="text-amber-300">(草案)</span>  │ │         │
      └─────────┘ └─────────┘          └─────────┘         └─────────┘ └─────────┘
 
                       <span class="text-gray-500">领域特定的协议实现</span>
@@ -882,29 +895,37 @@
                 <p class="text-gray-400 text-lg">加入CPP的开发，塑造捕获溯源的未来</p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
-                <a href="/vap/zh/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
-                    <div class="w-16 h-16 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-layer-group text-3xl text-cyan-400"></i>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="https://github.com/veritaschain/cpp-spec" target="_blank" rel="noopener noreferrer" class="bg-gray-800 rounded-xl p-6 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-github text-2xl text-teal-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">查看VAP框架</h3>
-                    <p class="text-gray-400 text-sm">了解CPP所扩展的父框架</p>
+                    <h3 class="text-lg font-bold text-white mb-2">CPP规范</h3>
+                    <p class="text-gray-400 text-sm">GitHub上的完整技术规范</p>
                 </a>
                 
-                <a href="/vap/cap/zh/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
-                    <div class="w-16 h-16 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-palette text-3xl text-purple-400"></i>
+                <a href="/vap/zh/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-layer-group text-2xl text-cyan-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">CAP（内容配置文件）</h3>
-                    <p class="text-gray-400 text-sm">查看创意AI工作流程的相关配置文件</p>
+                    <h3 class="text-lg font-bold text-white mb-2">VAP框架</h3>
+                    <p class="text-gray-400 text-sm">父框架概述</p>
                 </a>
                 
-                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-8 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
-                    <div class="w-16 h-16 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-handshake text-3xl text-teal-400"></i>
+                <a href="/vap/cap/zh/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-palette text-2xl text-purple-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">参与CPP开发</h3>
-                    <p class="text-gray-400 text-sm">面向设备制造商、应用开发者和记者</p>
+                    <h3 class="text-lg font-bold text-white mb-2">CAP配置文件</h3>
+                    <p class="text-gray-400 text-sm">内容/创意AI</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-amber-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-amber-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-handshake text-2xl text-amber-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">参与开发</h3>
+                    <p class="text-gray-400 text-sm">为CPP标准做贡献</p>
                 </a>
             </div>
         </div>
@@ -937,7 +958,7 @@
                 授权
             </p>
             <p class="text-gray-600 text-xs mt-2">
-                CPP规范 v0.1.0 — 最后更新: 2026-01-18
+                CPP规范 v1.0.0 发布候选 — 最后更新: 2026-01-18
             </p>
         </div>
     </section>
