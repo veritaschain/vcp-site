@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPP - キャプチャ来歴プロファイル | あなたの瞬間を、検証可能に封印</title>
+    <meta name="description" content="CPP（Capture Provenance Profile）は、メディアキャプチャの来歴を証明するVAPプロファイルです。AI生成コンテンツの時代において、キャプチャイベントがいつ、どこで、誰によって行われたかを暗号学的に証明するフレームワーク。">
+    <meta name="keywords" content="CPP, キャプチャ来歴プロファイル, メディア来歴, 写真検証, ディープフェイク対策, キャプチャ証拠, VeriCapture, VeritasChain, VAP">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="CPP - キャプチャ来歴プロファイル | あなたの瞬間を、検証可能に封印">
+    <meta property="og:description" content="コンテンツの真正性ではなく、キャプチャイベントを証明する。CPPは検証可能なメディアキャプチャ記録を確立するVAPプロファイルです。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/cpp/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CPP - キャプチャ来歴プロファイル | あなたの瞬間を、検証可能に封印">
+    <meta name="twitter:description" content="コンテンツの真正性ではなく、キャプチャイベントを証明する。CPPは検証可能なメディアキャプチャ記録を確立します。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/cpp/ja/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/cpp/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/cpp/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/cpp/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/cpp/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cpp-teal': '#14b8a6',
+                        'cpp-cyan': '#06b6d4',
+                        'cpp-sky': '#0ea5e9',
+                        'cpp-dark': '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #134e4a 50%, #0f172a 100%);
+        }
+        .cpp-gradient {
+            background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            line-height: 1.6;
+        }
+        @media (min-width: 640px) {
+            .code-block pre {
+                font-size: 0.75rem;
+            }
+        }
+        .architecture-diagram {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: #94a3b8;
+            white-space: pre;
+            overflow-x: auto;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .architecture-diagram {
+                font-size: 0.7rem;
+                padding: 1.5rem;
+            }
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(20, 184, 166, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .layer-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+        .layer-card:hover {
+            border-color: rgba(20, 184, 166, 0.6);
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "CPP - キャプチャ来歴プロファイル",
+        "description": "CPPは、メディアキャプチャの来歴を証明するVAPプロファイルであり、キャプチャイベントがいつ、どこで、誰によって行われたかを暗号学的に証明するフレームワークを提供します。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2026-01-18",
+        "dateModified": "2026-01-18",
+        "version": "0.1.0",
+        "url": "https://veritaschain.org/vap/cpp/ja/"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div class="pt-12 lg:pt-0 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 border-b border-teal-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-center gap-3 flex-wrap">
+                <i class="fas fa-flask text-teal-400"></i>
+                <span class="text-teal-200 font-medium">CPPステータス: <span class="text-teal-400 font-bold">ドラフト v0.1</span></span>
+                <span class="text-teal-200/70 text-sm">— ACE（認証付きキャプチャ拡張）を含む。フィードバック歓迎。</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Profile Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-camera text-teal-400"></i>
+                    <span class="text-teal-300 text-sm font-semibold tracking-wide">VAPプロファイル: キャプチャ来歴</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-4">
+                <span class="text-white">CPP</span>
+                <span class="text-teal-400"> - キャプチャ来歴プロファイル</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-center text-gray-300 mb-6">
+                メディアキャプチャの証拠基盤
+            </p>
+            
+            <!-- Tagline -->
+            <div class="text-center mb-8">
+                <p class="text-xl text-teal-400 font-semibold italic">
+                    「あなたの瞬間を、検証可能に封印」
+                </p>
+                <p class="text-lg text-gray-400 mt-2">
+                    — コンテンツの真実ではなく、キャプチャイベントを証明する
+                </p>
+            </div>
+            
+            <!-- Hero Quote -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    <span class="text-teal-400 font-bold text-2xl">「</span>
+                    AI生成画像がキャプチャされたメディアと区別がつかなくなる中、キャプチャイベントが<strong class="text-white">いつ</strong>、<strong class="text-white">どこで</strong>、<strong class="text-white">誰によって</strong>行われたかを証明する能力は、個人アーカイブ、法的証拠、歴史的文書にとって極めて重要になります。
+                    <span class="text-teal-400 font-bold text-2xl">」</span>
+                </p>
+                <div class="mt-6 text-gray-400 text-sm leading-relaxed">
+                    <p><strong class="text-amber-400">CPPはコンテンツ認証システムではありません。</strong></p>
+                    <p><strong class="text-teal-400">CPPは第三者が独立して監査できる検証可能なキャプチャ記録を作成するフレームワークです。</strong></p>
+                </div>
+            </div>
+            
+            <!-- Hero CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#event-model" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-stream mr-2"></i>
+                    イベントモデルを見る
+                </a>
+                <a href="#ace" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-fingerprint mr-2"></i>
+                    ACE拡張
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-8 py-4 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-handshake mr-2"></i>
+                    開発に参加
+                </a>
+            </div>
+            
+            <!-- Implementation Profiles -->
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <div class="inline-flex items-center gap-4 bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border border-blue-500/50 rounded-xl px-6 py-4">
+                    <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-briefcase text-blue-400 text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold">VeriCapture（B2B）</p>
+                        <p class="text-blue-300 text-sm">法的・報道向け証拠グレードキャプチャ</p>
+                    </div>
+                </div>
+                <div class="inline-flex items-center gap-4 bg-gradient-to-r from-teal-900/60 to-cyan-900/60 border border-teal-500/50 rounded-xl px-6 py-4">
+                    <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-heart text-teal-400 text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold">VeriCapture Moments（B2C）</p>
+                        <p class="text-teal-300 text-sm">未来に残せる家族の思い出</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What CPP Proves Section -->
+    <section id="what-cpp-proves" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">CPPが証明すること・しないこと</h2>
+                <p class="text-gray-400 text-lg">客観的なキャプチャデータと主観的解釈の明確な区別</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- CPP PROVES -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle text-teal-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-teal-400">CPPが証明すること</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>タイムスタンプTにキャプチャイベントが発生した</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>メディアファイルが封印以降変更されていない</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>キャプチャデバイスが位置Lを報告した</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>封印されたメディアがシーケンスから削除されていない</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>認証試行が行われた（オプション）</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- CPP DOES NOT PROVE -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-times-circle text-red-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-red-400">CPPが証明しないこと</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>コンテンツが「真実」または「本物」である</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>描かれたシーンが実際に起きた</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>撮影者の身元</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>コンテンツに演出や改ざんがない</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>認証された人物が本人である</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Key Distinction -->
+            <div class="mt-12 bg-gradient-to-r from-teal-900/40 to-cyan-900/40 rounded-xl p-6 border border-teal-500/30 max-w-3xl mx-auto">
+                <p class="text-center text-lg text-white">
+                    <i class="fas fa-lightbulb text-amber-400 mr-2"></i>
+                    <strong>設計哲学：</strong>「キャプチャイベントが発生したことを証明する。真実を主張するのではない。」
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">ターゲットユースケース</h2>
+                <p class="text-gray-400 text-lg">優先度別のCPP適用範囲</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Priority A -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">優先度A</span>
+                        <span class="text-red-400 font-medium">最重要</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-gavel text-red-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">法的証拠</p>
+                                <p class="text-gray-400 text-sm">裁判で使用可能なキャプチャ記録</p>
+                                <p class="text-red-300 text-xs mt-1">要件: RFC 3161 TSA、証拠連鎖</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-newspaper text-red-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">ニュース／ジャーナリズム</p>
+                                <p class="text-gray-400 text-sm">メディアのソース検証</p>
+                                <p class="text-red-300 text-xs mt-1">要件: 削除検出、タイムスタンプ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Priority B -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">優先度B</span>
+                        <span class="text-yellow-400 font-medium">高</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-users text-yellow-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">個人アーカイブ</p>
+                                <p class="text-gray-400 text-sm">来歴付き家族の思い出</p>
+                                <p class="text-yellow-300 text-xs mt-1">要件: 長期検証、使いやすさ</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-file-invoice-dollar text-yellow-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">保険請求</p>
+                                <p class="text-gray-400 text-sm">損害文書化</p>
+                                <p class="text-yellow-300 text-xs mt-1">要件: 位置証明、タイムスタンプ証明</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Priority C -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">優先度C</span>
+                        <span class="text-blue-400 font-medium">中</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-flask text-blue-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">学術研究</p>
+                                <p class="text-gray-400 text-sm">フィールドデータ収集</p>
+                                <p class="text-blue-300 text-xs mt-1">要件: 整合性、再現性</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-building text-blue-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">不動産</p>
+                                <p class="text-gray-400 text-sm">物件文書化</p>
+                                <p class="text-blue-300 text-xs mt-1">要件: 日付証明、完全性</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Model Section -->
+    <section id="event-model" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">CPPイベントモデル</h2>
+                <p class="text-gray-400 text-lg">メディアキャプチャライフサイクルのコアイベント</p>
+            </div>
+            
+            <!-- Event Flow -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-stream text-teal-400 mr-2"></i>
+                    CPPイベントライフサイクル
+                </h3>
+                
+                <div class="architecture-diagram mx-auto max-w-4xl overflow-x-auto">
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       <span class="text-teal-400 font-bold">CPPイベントライフサイクル</span>                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  [ユーザーアクション]                                                    │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐             │
+│  │ <span class="text-blue-400">CAPTURE</span> │───▶│  <span class="text-teal-400">SEAL</span>   │───▶│  <span class="text-yellow-400">SHARE</span>  │───▶│ <span class="text-cyan-400">VERIFY</span>  │             │
+│  │ (撮影)  │    │ (封印)  │    │(共有/任意)│    │(検証/任意)│            │
+│  └─────────┘    └─────────┘    └─────────┘    └─────────┘             │
+│       │              │                                                  │
+│       ▼              ▼                                                  │
+│  ローカルハッシュ  外部アンカー                                          │
+│  計算            (RFC 3161 TSA)                                         │
+│                                                                         │
+│  [オプション: 認証付きキャプチャ拡張]                                     │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────────┐                                                        │
+│  │ <span class="text-purple-400">CAPTURE_ATT</span> │  (生体認証試行を記録)                                  │
+│  └─────────────┘                                                        │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Event Type Cards -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- CAPTURE -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-camera text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">CAPTURE</h3>
+                            <p class="text-blue-400 text-sm">メディアキャプチャ開始</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        デバイスID、メディアハッシュ、タイムスタンプと共にキャプチャイベントを記録。
+                    </p>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">必須フィールド:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• DeviceID, MediaHash, Timestamp</li>
+                            <li>• MediaType, MediaFormat</li>
+                            <li>• Location（オプション）</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- SEAL -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-stamp text-teal-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">SEAL</h3>
+                            <p class="text-teal-400 text-sm">暗号封印の適用</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        外部タイムスタンプアンカーと共に暗号封印を適用。
+                    </p>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">必須フィールド:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• EventHash, Signature, AnchorProof</li>
+                            <li>• MerkleRoot, MerkleProof</li>
+                            <li>• TSA Response（RFC 3161）</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- SHARE -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-share-alt text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">SHARE</h3>
+                            <p class="text-yellow-400 text-sm">メディア共有（オプション）</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        受信者向け検証リンク付きで共有を記録。
+                    </p>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">必須フィールド:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• RecipientHash（オプション）</li>
+                            <li>• ShareMethod: LINK, EXPORT, AIRDROP, MESSAGE</li>
+                            <li>• VerificationURL</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- VERIFY -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-cyan-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-double text-cyan-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">VERIFY</h3>
+                            <p class="text-cyan-400 text-sm">第三者検証（オプション）</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        第三者がキャプチャを検証した時を記録。
+                    </p>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">必須フィールド:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• VerifierID</li>
+                            <li>• VerificationResult</li>
+                            <li>• VerificationTimestamp</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three-Layer Architecture Section -->
+    <section id="architecture" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">三層整合性アーキテクチャ</h2>
+                <p class="text-gray-400 text-lg">検証可能なキャプチャ記録のための暗号基盤</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│  <span class="text-cyan-400 font-bold">レイヤー3: 外部検証可能性</span>                                      │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  RFC 3161 TSA / ブロックチェーン / SCITT                  │  │
+│  │  • 独立した第三者タイムスタンプ                           │  │
+│  │  • 時刻Tでの存在の暗号証明                               │  │
+│  │  • 分散型検証機能                                        │  │
+│  └───────────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────────┤
+│  <span class="text-teal-400 font-bold">レイヤー2: コレクション整合性</span>                                    │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  RFC 6962 マークルツリー                                  │  │
+│  │  • バッチレベル完全性証明                                 │  │
+│  │  • 効率的な検証 O(log n)                                  │  │
+│  │  • 削除検出                                               │  │
+│  └───────────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────────┤
+│  <span class="text-blue-400 font-bold">レイヤー1: イベント整合性</span>                                        │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  SHA-256 ハッシュ + Ed25519 署名                          │  │
+│  │  • イベント単位のコンテンツ整合性                         │  │
+│  │  • 真正性検証                                             │  │
+│  │  • PrevHashリンク（オプション）                           │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACE Extension Section -->
+    <section id="ace" class="py-20 bg-gradient-to-b from-gray-800 to-purple-900/20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 bg-purple-900/50 border border-purple-500/50 px-4 py-2 rounded-full mb-6">
+                    <i class="fas fa-fingerprint text-purple-400"></i>
+                    <span class="text-purple-300 font-semibold">CPP拡張</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">ACE - 認証付きキャプチャ拡張</h2>
+                <p class="text-xl text-purple-400 font-semibold">キャプチャ時の生体認証</p>
+                <p class="text-gray-400 text-lg mt-2">「キャプチャが行われた時、誰がデバイスを持っていたか？」</p>
+            </div>
+            
+            <!-- Critical Distinction -->
+            <div class="bg-gray-900/80 rounded-xl p-8 border border-purple-500/30 mb-12 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-4">
+                    <i class="fas fa-exclamation-circle text-amber-400 mr-2"></i>
+                    重要な区別
+                </h3>
+                <p class="text-lg text-gray-300 mb-4">
+                    <strong class="text-purple-400">ACEは認証試行が行われたことを証明します。</strong>
+                    <br>
+                    <strong class="text-red-400">ACEは身元を検証しません。</strong>
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <h4 class="text-purple-400 font-semibold mb-2">ACEが証明すること</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>キャプチャ時に生体認証が試行された</li>
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>認証結果（成功/失敗/スコア）</li>
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>強制の可能性（異常パターン）</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <h4 class="text-red-400 font-semibold mb-2">ACEが証明しないこと</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>その人物が主張通りの人物である</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>法的身元</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>強制がないこと</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zero-Knowledge Approach -->
+            <div class="bg-gradient-to-r from-purple-900/40 to-indigo-900/40 rounded-xl p-8 border border-purple-500/30 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-4 text-center">
+                    <i class="fas fa-user-shield text-purple-400 mr-2"></i>
+                    ゼロ知識プライバシーアプローチ
+                </h3>
+                <p class="text-lg text-center text-purple-300 mb-6 italic">
+                    「認証が試行されたことを証明する。生体データは保存しない。」
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">ACEが保存するもの</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>使用された認証方法</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>認証結果（成功/失敗）</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>試行時間</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>デバイス認証チェーン</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">ACEが保存しないもの</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>顔のジオメトリ</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>指紋データ</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>生体テンプレート</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>生体生データ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conformance Levels Section -->
+    <section id="conformance" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">適合レベル</h2>
+                <p class="text-gray-400 text-lg">異なるユースケース向けの段階的コンプライアンス</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Bronze -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-amber-700/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-amber-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-600">ブロンズ</h3>
+                            <p class="text-gray-400 text-sm">趣味・アーリーアダプター</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>CAPTUREイベント記録（MUST）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>SHA-256ハッシュ計算（MUST）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>Ed25519デジタル署名（MUST）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>週次外部アンカリング（MUST）</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">用途: 個人アーカイブ</p>
+                        <p class="text-gray-400 text-xs">保持期間: 最低1年（SHOULD）</p>
+                    </div>
+                </div>
+                
+                <!-- Silver -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-gray-400/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-gray-600/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-gray-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-300">シルバー</h3>
+                            <p class="text-gray-400 text-sm">家族・プロシューマー</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>全ブロンズ要件</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>日次RFC 3161 TSA（MUST）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>RFC 6962マークルツリー（MUST）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>削除検出（MUST）</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">用途: 長期思い出保存</p>
+                        <p class="text-gray-400 text-xs">保持期間: 最低10年（SHOULD）</p>
+                    </div>
+                </div>
+                
+                <!-- Gold -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-yellow-400">ゴールド</h3>
+                            <p class="text-gray-400 text-sm">法的・報道・企業</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>全シルバー要件</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>キャプチャ毎TSA（MUST）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>ACEサポート（MUST）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>完全な証拠連鎖（MUST）</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">用途: 裁判証拠</p>
+                        <p class="text-gray-400 text-xs">保持期間: 永久（MUST）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VAP/VSO Relationship Section -->
+    <section id="vap-relationship" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">VAPフレームワーク内での位置付け</h2>
+                <p class="text-gray-400 text-lg">フレームワーク階層におけるCPPの位置</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌────────────────────────────────────────────────────────────────────────────┐
+│                                                                            │
+│   <span class="text-cyan-400 font-bold">VAP (検証可能AI来歴フレームワーク)</span>                                    │
+│   <span class="text-gray-400">AI監査証跡のためのクロスドメインメタフレームワーク</span>                         │
+│                                                                            │
+└────────────────────────────────────────────┬───────────────────────────────┘
+                                             │
+                                             │ 定義・維持
+                                             │
+┌────────────────────────────────────────────▼───────────────────────────────┐
+│                                                                            │
+│   <span class="text-emerald-400 font-bold">VSO (VeritasChain Standards Organization)</span>                              │
+│   <span class="text-gray-400">独立した標準化団体（東京、日本）</span>                                         │
+│                                                                            │
+└────────────────────────────────────────────┬───────────────────────────────┘
+                                             │
+                                             │ ドメインプロファイルを発行
+                                             │
+          ┌──────────┬───────────────────────┼───────────────────┬──────────┐
+          │          │                       │                   │          │
+          ▼          ▼                       ▼                   ▼          ▼
+     ┌─────────┐ ┌─────────┐          ┌─────────┐         ┌─────────┐ ┌─────────┐
+     │  <span class="text-blue-400 font-bold">VCP</span>    │ │  <span class="text-purple-400 font-bold">CAP</span>    │          │  <span class="text-teal-400 font-bold">CPP</span>    │         │  <span class="text-amber-400 font-bold">DVP</span>    │ │   ...   │
+     │金融     │ │コンテンツ │          │キャプチャ│         │自動車   │ │         │
+     │プロファイル│ │/クリエイティブ│       │来歴     │        │プロファイル│ │         │
+     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v0.1</span>    │         │ <span class="text-amber-300">(草案)</span>  │ │         │
+     └─────────┘ └─────────┘          └─────────┘         └─────────┘ └─────────┘
+
+                      <span class="text-gray-500">ドメイン固有のプロトコル実装</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="py-20 bg-gradient-to-br from-teal-900/30 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">参加する</h2>
+                <p class="text-gray-400 text-lg">CPPの開発に参加し、キャプチャ来歴の未来を形作りましょう</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <a href="/vap/ja/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-layer-group text-3xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">VAPフレームワークを見る</h3>
+                    <p class="text-gray-400 text-sm">CPPが拡張する親フレームワークを理解する</p>
+                </a>
+                
+                <a href="/vap/cap/ja/" class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-palette text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">CAP（コンテンツプロファイル）</h3>
+                    <p class="text-gray-400 text-sm">クリエイティブAIワークフロー向けの関連プロファイルを見る</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-8 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
+                    <div class="w-16 h-16 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-handshake text-3xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">CPP開発に参加</h3>
+                    <p class="text-gray-400 text-sm">デバイスメーカー、アプリ開発者、ジャーナリスト向け</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Quote -->
+    <section class="py-16 bg-gray-900 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <blockquote class="text-xl text-gray-300 italic mb-6">
+                「AI生成画像の時代において、瞬間がキャプチャされたことを証明する能力は<br>
+                — 作成されたのではなく — かけがえのないものになります。」
+            </blockquote>
+            <p class="text-gray-500">— VeritasChain Standards Organization</p>
+            
+            <blockquote class="text-lg text-teal-400 italic mt-8 font-semibold">
+                「あなたの瞬間を、検証可能に封印」
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- License Footer -->
+    <section class="py-8 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+                <i class="fab fa-creative-commons mr-1"></i>
+                本著作物は 
+                <a href="https://creativecommons.org/licenses/by/4.0/" class="text-teal-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                    CC BY 4.0 International
+                </a>
+                の下でライセンスされています
+            </p>
+            <p class="text-gray-600 text-xs mt-2">
+                CPP仕様 v0.1.0 — 最終更新: 2026-01-18
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer lang="ja"></vcp-footer>
+</body>
+</html>
