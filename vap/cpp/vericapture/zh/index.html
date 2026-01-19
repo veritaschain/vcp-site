@@ -870,8 +870,351 @@
         </div>
     </section>
 
+    <!-- 3-Layer Verification Architecture Section -->
+    <section id="verification-architecture" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/50 mb-6">
+                    <i class="fas fa-layer-group text-cyan-400"></i>
+                    <span class="text-cyan-300 text-sm font-semibold">验证架构</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">三层篡改检测</h2>
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+                    VeriCapture实现了一个综合验证模型,在多个层面检测篡改。
+                </p>
+            </div>
+            
+            <div class="space-y-8">
+                <!-- Layer 1: Asset Integrity -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-cyan-500/30">
+                    <div class="flex items-start gap-6">
+                        <div class="w-20 h-20 bg-cyan-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-3xl font-bold text-cyan-400">1</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2">第一层: 资产完整性</h3>
+                            <p class="text-gray-400 mb-4">
+                                验证图像文件自拍摄以来未被修改。
+                            </p>
+                            <div class="bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                <p class="text-gray-300">图像数据 → <span class="text-cyan-400">SHA-256</span> → 计算的哈希</p>
+                                <p class="text-gray-300 mt-2">proof.assetHash → <span class="text-teal-400">比较</span> → <span class="text-green-400">通过</span> / <span class="text-red-400">失败</span></p>
+                            </div>
+                            <p class="text-gray-500 text-sm mt-3">
+                                <i class="fas fa-search mr-1"></i>
+                                <strong>检测:</strong> 图像修改、裁剪、滤镜、压缩变化
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Layer 2: Event Integrity -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-blue-500/30">
+                    <div class="flex items-start gap-6">
+                        <div class="w-20 h-20 bg-blue-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-3xl font-bold text-blue-400">2</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2">第二层: 事件完整性</h3>
+                            <p class="text-gray-400 mb-4">
+                                验证事件元数据(时间戳、设备信息、设置)未被篡改。
+                            </p>
+                            <div class="bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                <p class="text-gray-300">rawEvent (Base64) → 解码 → <span class="text-cyan-400">SHA-256</span> → 计算的哈希</p>
+                                <p class="text-gray-300 mt-2">proof.eventHash → <span class="text-teal-400">比较</span></p>
+                                <p class="text-gray-300 mt-2">proof.signature → <span class="text-purple-400">ES256验证</span> → 签名有效?</p>
+                            </div>
+                            <p class="text-gray-500 text-sm mt-3">
+                                <i class="fas fa-search mr-1"></i>
+                                <strong>检测:</strong> 元数据篡改、时间戳伪造、上下文变更
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Layer 3: External Anchoring -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-purple-500/30">
+                    <div class="flex items-start gap-6">
+                        <div class="w-20 h-20 bg-purple-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-3xl font-bold text-purple-400">3</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2">第三层: 外部锚定</h3>
+                            <p class="text-gray-400 mb-4">
+                                通过第三方时间戳机构验证证据在声称的时间存在。
+                            </p>
+                            <div class="bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                <p class="text-gray-300">proof.eventHash → <span class="text-amber-400">Merkle证明</span> → 重新计算的根</p>
+                                <p class="text-gray-300 mt-2">proof.merkleRoot → <span class="text-teal-400">比较</span></p>
+                                <p class="text-gray-300 mt-2">proof.tsaResponse → <span class="text-green-400">RFC 3161验证</span> → 时间戳有效?</p>
+                            </div>
+                            <p class="text-gray-500 text-sm mt-3">
+                                <i class="fas fa-search mr-1"></i>
+                                <strong>检测:</strong> 回溯拍摄、证据伪造、时间戳操纵
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chain Integrity Verification Section -->
+    <section id="chain-integrity" class="py-20 bg-gradient-to-b from-gray-900 via-indigo-900/20 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-violet-500/20 border border-indigo-500/50 mb-6">
+                    <i class="fas fa-link text-indigo-400"></i>
+                    <span class="text-indigo-300 text-sm font-semibold">链完整性</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">哈希链验证</h2>
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+                    每个拍摄事件都与前一个事件加密链接,形成一个不可破坏的链,可检测任何插入、删除或修改。
+                </p>
+            </div>
+            
+            <!-- Chain Visualization -->
+            <div class="bg-gray-800/80 backdrop-blur rounded-xl p-8 border border-indigo-500/30 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-project-diagram text-indigo-400 mr-2"></i>
+                    哈希链架构
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <div class="flex items-center gap-4 min-w-max py-4">
+                        <!-- Genesis -->
+                        <div class="bg-gray-700 rounded-lg p-4 text-center border-2 border-dashed border-gray-500">
+                            <p class="text-gray-400 text-sm">起始</p>
+                            <p class="text-white font-mono text-xs mt-1">"GENESIS"</p>
+                        </div>
+                        
+                        <i class="fas fa-arrow-right text-indigo-400"></i>
+                        
+                        <!-- Event 1 -->
+                        <div class="bg-indigo-900/30 rounded-lg p-4 border border-indigo-500/50">
+                            <p class="text-indigo-300 text-sm font-semibold">事件₁</p>
+                            <p class="text-gray-400 text-xs mt-1">prevHash: <span class="text-white font-mono">GENESIS</span></p>
+                            <p class="text-gray-400 text-xs">eventHash: <span class="text-cyan-400 font-mono">hash₁</span></p>
+                        </div>
+                        
+                        <i class="fas fa-arrow-right text-indigo-400"></i>
+                        
+                        <!-- Event 2 -->
+                        <div class="bg-indigo-900/30 rounded-lg p-4 border border-indigo-500/50">
+                            <p class="text-indigo-300 text-sm font-semibold">事件₂</p>
+                            <p class="text-gray-400 text-xs mt-1">prevHash: <span class="text-cyan-400 font-mono">hash₁</span></p>
+                            <p class="text-gray-400 text-xs">eventHash: <span class="text-blue-400 font-mono">hash₂</span></p>
+                        </div>
+                        
+                        <i class="fas fa-arrow-right text-indigo-400"></i>
+                        
+                        <!-- Event 3 -->
+                        <div class="bg-indigo-900/30 rounded-lg p-4 border border-indigo-500/50">
+                            <p class="text-indigo-300 text-sm font-semibold">事件₃</p>
+                            <p class="text-gray-400 text-xs mt-1">prevHash: <span class="text-blue-400 font-mono">hash₂</span></p>
+                            <p class="text-gray-400 text-xs">eventHash: <span class="text-purple-400 font-mono">hash₃</span></p>
+                        </div>
+                        
+                        <i class="fas fa-arrow-right text-indigo-400"></i>
+                        
+                        <div class="text-gray-500">...</div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-gray-900/50 rounded-lg p-4">
+                    <p class="text-gray-300 text-sm">
+                        <i class="fas fa-shield-alt text-indigo-400 mr-2"></i>
+                        <strong class="text-white">验证规则:</strong> 对于每个事件[n],验证 <code class="bg-gray-700 px-2 py-1 rounded text-cyan-400">event[n].prevHash == event[n-1].eventHash</code>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Error Detection Table -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-exclamation-triangle text-amber-400 mr-2"></i>
+                    可检测的完整性问题
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-600">
+                                <th class="text-left py-3 px-4 text-gray-400 font-medium">错误类型</th>
+                                <th class="text-left py-3 px-4 text-gray-400 font-medium">检测方法</th>
+                                <th class="text-left py-3 px-4 text-gray-400 font-medium">含义</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-red-400 bg-gray-700 px-2 py-1 rounded text-xs">PREV_HASH_MISMATCH</code></td>
+                                <td class="py-3 px-4 text-gray-300">比较prevHash与前一个eventHash</td>
+                                <td class="py-3 px-4 text-gray-400">链断裂 — 可能存在插入/删除</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-red-400 bg-gray-700 px-2 py-1 rounded text-xs">EVENT_HASH_MISMATCH</code></td>
+                                <td class="py-3 px-4 text-gray-300">从规范JSON重新计算哈希</td>
+                                <td class="py-3 px-4 text-gray-400">事件内容在创建后被修改</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-red-400 bg-gray-700 px-2 py-1 rounded text-xs">SIGNATURE_INVALID</code></td>
+                                <td class="py-3 px-4 text-gray-300">ES256签名验证</td>
+                                <td class="py-3 px-4 text-gray-400">伪造事件或签名损坏</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-amber-400 bg-gray-700 px-2 py-1 rounded text-xs">TOMBSTONE_TARGET_MISMATCH</code></td>
+                                <td class="py-3 px-4 text-gray-300">比较Tombstone目标与实际事件</td>
+                                <td class="py-3 px-4 text-gray-400">Tombstone指向不同版本的事件</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-amber-400 bg-gray-700 px-2 py-1 rounded text-xs">ORPHANED_TOMBSTONE</code></td>
+                                <td class="py-3 px-4 text-gray-300">查找Tombstone目标事件ID</td>
+                                <td class="py-3 px-4 text-gray-400">目标事件被非法删除</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tombstone System Section -->
+    <section id="tombstone" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-rose-500/20 to-pink-500/20 border border-rose-500/50 mb-6">
+                    <i class="fas fa-file-signature text-rose-400"></i>
+                    <span class="text-rose-300 text-sm font-semibold">事件无效化</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Tombstone系统</h2>
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+                    <em>"删除 ≠ 从未发生。删除 = 记录删除的发生。"</em><br>
+                    VeriCapture的Tombstone系统确保即使无效化的事件也会留下不可变的审计追踪。
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <!-- What is a Tombstone -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-rose-500/30">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                        <i class="fas fa-question-circle text-rose-400 mr-2"></i>
+                        什么是Tombstone?
+                    </h3>
+                    <p class="text-gray-300 mb-4">
+                        <strong class="text-white">Tombstone</strong>是一个加密签名的记录,它将事件标记为无效,同时保留完整的审计追踪。它本身就是一个区块链链接的事件。
+                    </p>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-rose-400 mr-2 mt-1"></i>
+                            <span>原始事件保留在链中(只读)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-rose-400 mr-2 mt-1"></i>
+                            <span>Tombstone记录谁、何时、为什么</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-rose-400 mr-2 mt-1"></i>
+                            <span>通过PrevHash链接进行加密绑定</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-rose-400 mr-2 mt-1"></i>
+                            <span>媒体可以删除,但证据历史持久保存</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Invalidation Reasons -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                        <i class="fas fa-list-ul text-gray-400 mr-2"></i>
+                        支持的无效化原因
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">用户隐私请求</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">USER_PRIVACY_REQUEST</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">意外拍摄</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">USER_ACCIDENTAL_CAPTURE</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">不当内容</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">USER_CONTENT_INAPPROPRIATE</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">法院命令</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">LEGAL_COURT_ORDER</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">GDPR删除请求</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">LEGAL_GDPR_ERASURE</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2">
+                            <span class="text-gray-300">完整性受损</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">SYSTEM_INTEGRITY_COMPROMISED</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delete Options -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-trash-alt text-gray-400 mr-2"></i>
+                    用户删除选项
+                </h3>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Option 1: Purge Media -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-teal-500/30">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-teal-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-image text-teal-400"></i>
+                            </div>
+                            <h4 class="text-white font-bold">仅删除照片</h4>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">
+                            删除图像文件,同时保留加密证据。事件仍可验证;仅删除视觉内容。
+                        </p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-teal-400"><i class="fas fa-check mr-1"></i>媒体: 已删除</span>
+                            <span class="text-green-400"><i class="fas fa-check mr-1"></i>证据: 保留</span>
+                            <span class="text-green-400"><i class="fas fa-check mr-1"></i>链: 完整</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Option 2: Invalidate -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-rose-500/30">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-rose-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-ban text-rose-400"></i>
+                            </div>
+                            <h4 class="text-white font-bold">无效化证据</h4>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">
+                            创建Tombstone记录,将事件标记为无效。原始事件保持只读;链中记录无效化。
+                        </p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-amber-400"><i class="fas fa-minus mr-1"></i>媒体: 可选</span>
+                            <span class="text-rose-400"><i class="fas fa-times mr-1"></i>证据: 无效化</span>
+                            <span class="text-green-400"><i class="fas fa-check mr-1"></i>链: 扩展</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-amber-900/20 border border-amber-500/30 rounded-lg p-4">
+                    <p class="text-amber-300 text-sm">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <strong>重要:</strong> 事件的完全删除被有意禁止。这确保即使在"消除证据"的压力下,审计追踪也能保持防篡改状态。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Self-Signing Model Limitations -->
-    <section class="py-20 bg-gray-800">
+    <section class="py-20 bg-gray-900">
         <div class="max-w-5xl mx-auto px-4">
             <div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-8">
                 <div class="text-center mb-8">

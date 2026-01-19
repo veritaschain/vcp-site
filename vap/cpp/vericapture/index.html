@@ -870,6 +870,385 @@
         </div>
     </section>
 
+    <!-- 3-Layer Verification Architecture Section -->
+    <section id="verification-architecture" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/50 mb-6">
+                    <i class="fas fa-layer-group text-cyan-400"></i>
+                    <span class="text-cyan-300 text-sm font-semibold">VERIFICATION ARCHITECTURE</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">3-Layer Tampering Detection</h2>
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+                    VeriCapture implements a comprehensive verification model that detects tampering at multiple levels.
+                </p>
+            </div>
+            
+            <div class="space-y-8">
+                <!-- Layer 1: Asset Integrity -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-cyan-500/30">
+                    <div class="flex items-start gap-6">
+                        <div class="w-20 h-20 bg-cyan-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-3xl font-bold text-cyan-400">1</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2">Layer 1: Asset Integrity</h3>
+                            <p class="text-gray-400 mb-4">
+                                Verifies the image file has not been modified since capture.
+                            </p>
+                            <div class="bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                <p class="text-gray-300">Image Data → <span class="text-cyan-400">SHA-256</span> → Computed Hash</p>
+                                <p class="text-gray-300 mt-2">proof.assetHash → <span class="text-teal-400">COMPARE</span> → <span class="text-green-400">PASS</span> / <span class="text-red-400">FAIL</span></p>
+                            </div>
+                            <p class="text-gray-500 text-sm mt-3">
+                                <i class="fas fa-search mr-1"></i>
+                                <strong>Detects:</strong> Image modification, cropping, filters, compression changes
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Layer 2: Event Integrity -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-blue-500/30">
+                    <div class="flex items-start gap-6">
+                        <div class="w-20 h-20 bg-blue-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-3xl font-bold text-blue-400">2</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2">Layer 2: Event Integrity</h3>
+                            <p class="text-gray-400 mb-4">
+                                Verifies the event metadata (timestamp, device info, settings) has not been altered.
+                            </p>
+                            <div class="bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                <p class="text-gray-300">rawEvent (Base64) → Decode → <span class="text-cyan-400">SHA-256</span> → Computed Hash</p>
+                                <p class="text-gray-300 mt-2">proof.eventHash → <span class="text-teal-400">COMPARE</span></p>
+                                <p class="text-gray-300 mt-2">proof.signature → <span class="text-purple-400">ES256 Verify</span> → Valid Signature?</p>
+                            </div>
+                            <p class="text-gray-500 text-sm mt-3">
+                                <i class="fas fa-search mr-1"></i>
+                                <strong>Detects:</strong> Metadata tampering, timestamp falsification, context changes
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Layer 3: External Anchoring -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-purple-500/30">
+                    <div class="flex items-start gap-6">
+                        <div class="w-20 h-20 bg-purple-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-3xl font-bold text-purple-400">3</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2">Layer 3: External Anchoring</h3>
+                            <p class="text-gray-400 mb-4">
+                                Verifies the proof existed at the claimed time via third-party Time Stamp Authority.
+                            </p>
+                            <div class="bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                <p class="text-gray-300">proof.eventHash → <span class="text-amber-400">Merkle Proof</span> → Recomputed Root</p>
+                                <p class="text-gray-300 mt-2">proof.merkleRoot → <span class="text-teal-400">COMPARE</span></p>
+                                <p class="text-gray-300 mt-2">proof.tsaResponse → <span class="text-green-400">RFC 3161 Verify</span> → Valid Timestamp?</p>
+                            </div>
+                            <p class="text-gray-500 text-sm mt-3">
+                                <i class="fas fa-search mr-1"></i>
+                                <strong>Detects:</strong> Backdated captures, proof fabrication, timestamp manipulation
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chain Integrity Verification Section -->
+    <section id="chain-integrity" class="py-20 bg-gradient-to-b from-gray-900 via-indigo-900/20 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-violet-500/20 border border-indigo-500/50 mb-6">
+                    <i class="fas fa-link text-indigo-400"></i>
+                    <span class="text-indigo-300 text-sm font-semibold">CHAIN INTEGRITY</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Hash Chain Verification</h2>
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+                    Every capture event is cryptographically linked to the previous one, creating an unbreakable chain that detects any insertion, deletion, or modification.
+                </p>
+            </div>
+            
+            <!-- Chain Visualization -->
+            <div class="bg-gray-800/80 backdrop-blur rounded-xl p-8 border border-indigo-500/30 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-project-diagram text-indigo-400 mr-2"></i>
+                    Hash Chain Architecture
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <div class="flex items-center gap-4 min-w-max py-4">
+                        <!-- Genesis -->
+                        <div class="bg-gray-700 rounded-lg p-4 text-center border-2 border-dashed border-gray-500">
+                            <p class="text-gray-400 text-sm">Genesis</p>
+                            <p class="text-white font-mono text-xs mt-1">"GENESIS"</p>
+                        </div>
+                        
+                        <i class="fas fa-arrow-right text-indigo-400"></i>
+                        
+                        <!-- Event 1 -->
+                        <div class="bg-indigo-900/30 rounded-lg p-4 border border-indigo-500/50">
+                            <p class="text-indigo-300 text-sm font-semibold">Event₁</p>
+                            <p class="text-gray-400 text-xs mt-1">prevHash: <span class="text-white font-mono">GENESIS</span></p>
+                            <p class="text-gray-400 text-xs">eventHash: <span class="text-cyan-400 font-mono">hash₁</span></p>
+                        </div>
+                        
+                        <i class="fas fa-arrow-right text-indigo-400"></i>
+                        
+                        <!-- Event 2 -->
+                        <div class="bg-indigo-900/30 rounded-lg p-4 border border-indigo-500/50">
+                            <p class="text-indigo-300 text-sm font-semibold">Event₂</p>
+                            <p class="text-gray-400 text-xs mt-1">prevHash: <span class="text-cyan-400 font-mono">hash₁</span></p>
+                            <p class="text-gray-400 text-xs">eventHash: <span class="text-blue-400 font-mono">hash₂</span></p>
+                        </div>
+                        
+                        <i class="fas fa-arrow-right text-indigo-400"></i>
+                        
+                        <!-- Event 3 -->
+                        <div class="bg-indigo-900/30 rounded-lg p-4 border border-indigo-500/50">
+                            <p class="text-indigo-300 text-sm font-semibold">Event₃</p>
+                            <p class="text-gray-400 text-xs mt-1">prevHash: <span class="text-blue-400 font-mono">hash₂</span></p>
+                            <p class="text-gray-400 text-xs">eventHash: <span class="text-purple-400 font-mono">hash₃</span></p>
+                        </div>
+                        
+                        <i class="fas fa-arrow-right text-indigo-400"></i>
+                        
+                        <div class="text-gray-500">...</div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-gray-900/50 rounded-lg p-4">
+                    <p class="text-gray-300 text-sm">
+                        <i class="fas fa-shield-alt text-indigo-400 mr-2"></i>
+                        <strong class="text-white">Verification Rule:</strong> For each event[n], verify that <code class="bg-gray-700 px-2 py-1 rounded text-cyan-400">event[n].prevHash == event[n-1].eventHash</code>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Verification Capabilities -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- Event Hash Recomputation -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="w-12 h-12 bg-cyan-900/30 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-hashtag text-cyan-400 text-xl"></i>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">Event Hash Verification</h4>
+                    <p class="text-gray-400 text-sm">
+                        Each event's content is re-hashed using SHA-256 and compared with the stored eventHash to detect any modification.
+                    </p>
+                </div>
+                
+                <!-- Chain Linkage -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="w-12 h-12 bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-link text-indigo-400 text-xl"></i>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">Chain Linkage Check</h4>
+                    <p class="text-gray-400 text-sm">
+                        Verifies that each event's prevHash correctly references the previous event's eventHash, detecting insertions or deletions.
+                    </p>
+                </div>
+                
+                <!-- Tombstone Validation -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="w-12 h-12 bg-purple-900/30 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-tombstone text-purple-400 text-xl"></i>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">Tombstone Validation</h4>
+                    <p class="text-gray-400 text-sm">
+                        Checks that all tombstone records correctly reference their target events, detecting orphaned or invalid invalidations.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Error Detection Table -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-exclamation-triangle text-amber-400 mr-2"></i>
+                    Detectable Integrity Issues
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-600">
+                                <th class="text-left py-3 px-4 text-gray-400 font-medium">Error Type</th>
+                                <th class="text-left py-3 px-4 text-gray-400 font-medium">Detection Method</th>
+                                <th class="text-left py-3 px-4 text-gray-400 font-medium">Implication</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-red-400 bg-gray-700 px-2 py-1 rounded text-xs">PREV_HASH_MISMATCH</code></td>
+                                <td class="py-3 px-4 text-gray-300">Compare prevHash with previous eventHash</td>
+                                <td class="py-3 px-4 text-gray-400">Chain break — possible insertion/deletion</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-red-400 bg-gray-700 px-2 py-1 rounded text-xs">EVENT_HASH_MISMATCH</code></td>
+                                <td class="py-3 px-4 text-gray-300">Recompute hash from canonical JSON</td>
+                                <td class="py-3 px-4 text-gray-400">Event content modified after creation</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-red-400 bg-gray-700 px-2 py-1 rounded text-xs">SIGNATURE_INVALID</code></td>
+                                <td class="py-3 px-4 text-gray-300">ES256 signature verification</td>
+                                <td class="py-3 px-4 text-gray-400">Forged event or corrupted signature</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-amber-400 bg-gray-700 px-2 py-1 rounded text-xs">TOMBSTONE_TARGET_MISMATCH</code></td>
+                                <td class="py-3 px-4 text-gray-300">Compare tombstone target with actual event</td>
+                                <td class="py-3 px-4 text-gray-400">Tombstone points to different event version</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4"><code class="text-amber-400 bg-gray-700 px-2 py-1 rounded text-xs">ORPHANED_TOMBSTONE</code></td>
+                                <td class="py-3 px-4 text-gray-300">Look up tombstone target event ID</td>
+                                <td class="py-3 px-4 text-gray-400">Target event was illegally deleted</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tombstone System Section -->
+    <section id="tombstone" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-rose-500/20 to-pink-500/20 border border-rose-500/50 mb-6">
+                    <i class="fas fa-file-signature text-rose-400"></i>
+                    <span class="text-rose-300 text-sm font-semibold">EVENT INVALIDATION</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Tombstone System</h2>
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+                    <em>"Delete ≠ Never happened. Delete = Record that deletion occurred."</em><br>
+                    VeriCapture's tombstone system ensures even invalidated events leave an immutable audit trail.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <!-- What is a Tombstone -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-rose-500/30">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                        <i class="fas fa-question-circle text-rose-400 mr-2"></i>
+                        What is a Tombstone?
+                    </h3>
+                    <p class="text-gray-300 mb-4">
+                        A <strong class="text-white">Tombstone</strong> is a cryptographically signed record that marks an event as invalidated while preserving the complete audit trail. It is itself a blockchain-linked event.
+                    </p>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-rose-400 mr-2 mt-1"></i>
+                            <span>Original event remains in the chain (read-only)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-rose-400 mr-2 mt-1"></i>
+                            <span>Tombstone records who, when, and why</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-rose-400 mr-2 mt-1"></i>
+                            <span>Cryptographically bound via PrevHash linkage</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-rose-400 mr-2 mt-1"></i>
+                            <span>Media can be deleted, but proof history persists</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Invalidation Reasons -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                        <i class="fas fa-list-ul text-gray-400 mr-2"></i>
+                        Supported Invalidation Reasons
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">User Privacy Request</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">USER_PRIVACY_REQUEST</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">Accidental Capture</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">USER_ACCIDENTAL_CAPTURE</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">Inappropriate Content</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">USER_CONTENT_INAPPROPRIATE</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">Legal Court Order</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">LEGAL_COURT_ORDER</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                            <span class="text-gray-300">GDPR Erasure Request</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">LEGAL_GDPR_ERASURE</code>
+                        </div>
+                        <div class="flex items-center justify-between py-2">
+                            <span class="text-gray-300">Integrity Compromised</span>
+                            <code class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-400">SYSTEM_INTEGRITY_COMPROMISED</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delete Options -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-trash-alt text-gray-400 mr-2"></i>
+                    User Delete Options
+                </h3>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Option 1: Purge Media -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-teal-500/30">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-teal-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-image text-teal-400"></i>
+                            </div>
+                            <h4 class="text-white font-bold">Delete Photo Only</h4>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Deletes the image file while preserving the cryptographic proof. The event remains verifiable; only the visual content is removed.
+                        </p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-teal-400"><i class="fas fa-check mr-1"></i>Media: Deleted</span>
+                            <span class="text-green-400"><i class="fas fa-check mr-1"></i>Proof: Preserved</span>
+                            <span class="text-green-400"><i class="fas fa-check mr-1"></i>Chain: Intact</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Option 2: Invalidate -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-rose-500/30">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-rose-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-ban text-rose-400"></i>
+                            </div>
+                            <h4 class="text-white font-bold">Invalidate Proof</h4>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">
+                            Creates a Tombstone record marking the event as invalidated. Original event remains read-only; the chain records the invalidation.
+                        </p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-amber-400"><i class="fas fa-minus mr-1"></i>Media: Optional</span>
+                            <span class="text-rose-400"><i class="fas fa-times mr-1"></i>Proof: Invalidated</span>
+                            <span class="text-green-400"><i class="fas fa-check mr-1"></i>Chain: Extended</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-amber-900/20 border border-amber-500/30 rounded-lg p-4">
+                    <p class="text-amber-300 text-sm">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <strong>Important:</strong> Complete deletion of events is intentionally forbidden. This ensures the audit trail remains tamper-evident even under pressure to "make evidence disappear."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Self-Signing Model Limitations -->
     <section class="py-20 bg-gray-800">
         <div class="max-w-5xl mx-auto px-4">
