@@ -175,6 +175,9 @@
                 <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 mb-6 shadow-2xl">
                     <i class="fas fa-link text-4xl text-white"></i>
                 </div>
+                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-semibold">
+                    <i class="fas fa-tag mr-1"></i>v1.1 Production Ready
+                </span>
             </div>
             
             <!-- Title -->
@@ -326,8 +329,54 @@
                 <span class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-full text-sm font-semibold mb-4 inline-block">
                     <i class="fas fa-cogs mr-2"></i>ARCHITECTURE
                 </span>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">How VCP Works — In One Diagram</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto">VCP is not a blockchain. It's a lightweight, high-performance "cryptographic evidence layer" designed for financial systems.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">How VCP Works — Three-Layer Architecture</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">VCP v1.1 introduces a clear three-layer architecture for integrity and security, ensuring "Verify, Don't Trust."</p>
+            </div>
+            
+            <!-- Three-Layer Architecture Diagram -->
+            <div class="bg-slate-800/50 rounded-2xl p-6 mb-12 border border-slate-700">
+                <div class="space-y-4">
+                    <!-- Layer 3 -->
+                    <div class="bg-gradient-to-r from-purple-900/40 to-purple-800/20 rounded-xl p-5 border border-purple-600/30">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="px-2 py-1 bg-purple-600 text-white text-xs font-bold rounded">LAYER 3</span>
+                            <h4 class="font-bold text-white">External Verifiability</h4>
+                            <span class="ml-auto text-purple-400 text-sm"><i class="fas fa-check-circle mr-1"></i>REQUIRED</span>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-2">Third-party verification without trusting the producer</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded">Digital Signature (Ed25519)</span>
+                            <span class="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded">Dual Timestamp</span>
+                            <span class="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded">External Anchor (Blockchain/TSA)</span>
+                        </div>
+                    </div>
+                    <!-- Layer 2 -->
+                    <div class="bg-gradient-to-r from-blue-900/40 to-blue-800/20 rounded-xl p-5 border border-blue-600/30">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded">LAYER 2</span>
+                            <h4 class="font-bold text-white">Collection Integrity</h4>
+                            <span class="ml-auto text-blue-400 text-sm"><i class="fas fa-check-circle mr-1"></i>REQUIRED</span>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-2">Prove completeness of event batches (no omissions)</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded">Merkle Tree (RFC 6962)</span>
+                            <span class="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded">Merkle Root</span>
+                            <span class="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded">Audit Path</span>
+                        </div>
+                    </div>
+                    <!-- Layer 1 -->
+                    <div class="bg-gradient-to-r from-emerald-900/40 to-emerald-800/20 rounded-xl p-5 border border-emerald-600/30">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="px-2 py-1 bg-emerald-600 text-white text-xs font-bold rounded">LAYER 1</span>
+                            <h4 class="font-bold text-white">Event Integrity</h4>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-2">Individual event completeness</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded"><i class="fas fa-check text-emerald-400 mr-1"></i>EventHash (REQUIRED)</span>
+                            <span class="px-2 py-1 bg-slate-700 text-slate-400 text-xs rounded"><i class="fas fa-minus text-gray-400 mr-1"></i>PrevHash (OPTIONAL)</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- Technical Components Grid -->
@@ -335,11 +384,11 @@
                 <div class="bg-slate-800/80 rounded-xl p-6 border border-blue-800/30 hover:border-blue-600/50 transition">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 rounded-lg bg-blue-600 flex items-center justify-center">
-                            <i class="fas fa-link text-white text-xl"></i>
+                            <i class="fas fa-anchor text-white text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-white">Hash Chain</h3>
+                        <h3 class="text-lg font-bold text-white">External Anchor</h3>
                     </div>
-                    <p class="text-slate-300 text-sm">Events are cryptographically linked in sequence. Each event contains the hash of the previous event.</p>
+                    <p class="text-slate-300 text-sm">Merkle Roots are anchored to external timestamping services (Blockchain, RFC 3161 TSA) for third-party verifiability.</p>
                 </div>
                 
                 <div class="bg-slate-800/80 rounded-xl p-6 border border-purple-800/30 hover:border-purple-600/50 transition">
@@ -466,7 +515,7 @@
             <div class="mt-8 text-center">
                 <p class="text-slate-400 text-sm">
                     <i class="fas fa-link text-blue-400 mr-2"></i>
-                    Each event includes <strong class="text-white">Hash</strong>, <strong class="text-white">PrevHash</strong>, and <strong class="text-white">Signature</strong> — all linked by <strong class="text-white">TraceID</strong>
+                    Each event includes <strong class="text-white">EventHash</strong>, <strong class="text-white">Merkle Proof</strong>, and <strong class="text-white">Signature</strong> — all linked by <strong class="text-white">TraceID</strong> and externally anchored
                 </p>
             </div>
         </div>
@@ -605,7 +654,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-white">VCP-CORE</h3>
                     </div>
-                    <p class="text-slate-400 text-sm">Standard header, event ID, timestamps, hash chains, and digital signatures.</p>
+                    <p class="text-slate-400 text-sm">Three-layer architecture: Event integrity, Collection integrity (Merkle), External verifiability.</p>
                 </div>
                 
                 <div class="module-card bg-slate-800 rounded-xl p-6 border border-emerald-700/30 transition-all cursor-pointer">
@@ -656,6 +705,16 @@
                         <h3 class="text-lg font-bold text-white">VCP-RECOVERY</h3>
                     </div>
                     <p class="text-slate-400 text-sm">Chain disruption recovery, failure detection, gap identification.</p>
+                </div>
+                
+                <div class="module-card bg-slate-800 rounded-xl p-6 border border-cyan-700/30 transition-all cursor-pointer">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-600 flex items-center justify-center">
+                            <i class="fas fa-exchange-alt text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">VCP-XREF <span class="text-xs text-cyan-400 ml-1">NEW</span></h3>
+                    </div>
+                    <p class="text-slate-400 text-sm">Cross-reference & Dual Logging for multi-party verification and dispute prevention.</p>
                 </div>
             </div>
         </div>
@@ -748,6 +807,10 @@
                             <i class="fas fa-check text-purple-400 mt-1"></i>
                             <span>Hardware HSM signatures</span>
                         </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-purple-400 mt-1"></i>
+                            <span>External Anchor (10 min)</span>
+                        </li>
                     </ul>
                 </div>
                 
@@ -774,6 +837,10 @@
                         <li class="flex items-start gap-2">
                             <i class="fas fa-check text-yellow-400 mt-1"></i>
                             <span>Cloud-native deployment</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>External Anchor (1 hour)</span>
                         </li>
                     </ul>
                 </div>
@@ -802,7 +869,24 @@
                             <i class="fas fa-check text-gray-400 mt-1"></i>
                             <span>MT4/MT5 compatible</span>
                         </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-400 mt-1"></i>
+                            <span>External Anchor (24 hours)</span>
+                        </li>
                     </ul>
+                </div>
+            </div>
+            
+            <!-- v1.1 Key Change Notice -->
+            <div class="mt-8 bg-blue-900/20 rounded-xl p-6 border border-blue-700/30">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-2xl text-blue-400"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">v1.1 Key Change: External Anchor Required for All Tiers</h4>
+                        <p class="text-slate-400 text-sm">As of v1.1, External Anchoring is <strong class="text-white">mandatory</strong> for all tiers to ensure "Verify, Don't Trust" principle. Silver tier can use lightweight options like OpenTimestamps or FreeTSA. Hash chains (PrevHash) are now <strong class="text-white">optional</strong>—Merkle trees provide equivalent integrity guarantees.</p>
+                    </div>
                 </div>
             </div>
             
@@ -852,7 +936,17 @@
                 
                 <div class="faq-item bg-slate-900/50 rounded-xl p-6">
                     <h3 class="text-lg font-bold text-white mb-3">Is VCP a blockchain?</h3>
-                    <p class="text-slate-400">No. VCP is a <strong class="text-white">lightweight cryptographic audit layer</strong>—not a distributed ledger. It uses hash chains and Merkle trees for integrity, but doesn't require consensus or mining. This makes it fast enough for HFT.</p>
+                    <p class="text-slate-400">No. VCP is a <strong class="text-white">lightweight cryptographic audit layer</strong>—not a distributed ledger. It uses Merkle trees and external anchoring for integrity, but doesn't require consensus or mining. This makes it fast enough for HFT.</p>
+                </div>
+                
+                <div class="faq-item bg-slate-900/50 rounded-xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-3">What is Dual Logging (VCP-XREF)?</h3>
+                    <p class="text-slate-400"><strong class="text-white">VCP-XREF</strong> enables independent VCP event streams from multiple parties (e.g., trader + broker) that can be cross-referenced to detect discrepancies. Unless both parties collude, manipulation by one party is detectable by the other.</p>
+                </div>
+                
+                <div class="faq-item bg-slate-900/50 rounded-xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-3">What are Completeness Guarantees?</h3>
+                    <p class="text-slate-400">v1.1 introduces <strong class="text-white">Completeness Guarantees</strong>—third parties can cryptographically verify not only that events were not altered, but that <strong class="text-white">no required events were omitted</strong> (omission/split-view attacks). This is achieved through mandatory Merkle Tree construction and external anchoring.</p>
                 </div>
             </div>
         </div>
