@@ -1692,17 +1692,75 @@
     // ============================================================
     document.addEventListener('DOMContentLoaded', () => {
         // Initialize language
-        const savedLang = localStorage.getItem('vericheck-lang') || 
-                         navigator.language.split('-')[0] || 'en';
+        const savedLang = localStorage.getItem('vericheck-lang');
         const langSelect = document.getElementById('langSelect');
         
-        // Map browser language to supported language
-        let initLang = 'en';
-        if (translations[savedLang]) {
-            initLang = savedLang;
-        } else if (savedLang === 'zh') {
-            initLang = 'zh-Hans';
+        // Detect browser language and map to supported language
+        function detectBrowserLanguage() {
+            const browserLang = navigator.language || navigator.userLanguage || 'en';
+            const langCode = browserLang.toLowerCase();
+            
+            // Direct matches first
+            const directMatches = {
+                'en': 'en',
+                'en-us': 'en',
+                'en-gb': 'en',
+                'ja': 'ja',
+                'ja-jp': 'ja',
+                'ko': 'ko',
+                'ko-kr': 'ko',
+                'de': 'de',
+                'de-de': 'de',
+                'de-at': 'de',
+                'de-ch': 'de',
+                'fr': 'fr',
+                'fr-fr': 'fr',
+                'fr-ca': 'fr',
+                'fr-be': 'fr',
+                'fr-ch': 'fr',
+                'es': 'es',
+                'es-es': 'es',
+                'es-mx': 'es',
+                'es-ar': 'es',
+                'pt': 'pt',
+                'pt-br': 'pt',
+                'pt-pt': 'pt',
+                'ar': 'ar',
+                'ar-sa': 'ar',
+                'ar-ae': 'ar',
+                'ar-eg': 'ar',
+                // Chinese - Simplified
+                'zh': 'zh-Hans',
+                'zh-cn': 'zh-Hans',
+                'zh-sg': 'zh-Hans',
+                'zh-hans': 'zh-Hans',
+                'zh-hans-cn': 'zh-Hans',
+                'zh-hans-sg': 'zh-Hans',
+                // Chinese - Traditional
+                'zh-tw': 'zh-Hant',
+                'zh-hk': 'zh-Hant',
+                'zh-mo': 'zh-Hant',
+                'zh-hant': 'zh-Hant',
+                'zh-hant-tw': 'zh-Hant',
+                'zh-hant-hk': 'zh-Hant'
+            };
+            
+            // Check direct match
+            if (directMatches[langCode]) {
+                return directMatches[langCode];
+            }
+            
+            // Check prefix match (e.g., 'en-au' -> 'en')
+            const prefix = langCode.split('-')[0];
+            if (directMatches[prefix]) {
+                return directMatches[prefix];
+            }
+            
+            // Default to English
+            return 'en';
         }
+        
+        const initLang = savedLang || detectBrowserLanguage();
         
         langSelect.value = initLang;
         setLanguage(initLang);
