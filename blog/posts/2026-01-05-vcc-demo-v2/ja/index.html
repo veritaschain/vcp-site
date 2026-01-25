@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCC Demo v2.0リリース：改ざん検出、ライブシミュレーター、多言語対応 - VeritasChain Blog</title>
+    <meta name="description" content="ブラウザベースの暗号監査証跡デモの大型アップデート。改ざん検出の可視化、マークルツリーエクスプローラー、ライブ取引シミュレーター、4言語対応などの新機能。">
+    <meta name="keywords" content="VCC Demo, VCP v1.1, 暗号, JavaScript, フィンテック, オープンソース, マークルツリー, 改ざん検出, 監査証跡">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/ja/">
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/">
+    
+    <meta property="og:title" content="VCC Demo v2.0リリース：改ざん検出、ライブシミュレーター、多言語対応">
+    <meta property="og:description" content="ブラウザベースの暗号監査証跡デモの大型アップデート。改ざん検出の可視化、マークルツリーエクスプローラー、4言語対応。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="article:published_time" content="2026-01-05T00:00:00Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="VCC Demo v2.0リリース">
+    <meta name="twitter:description" content="ブラウザベースの暗号監査証跡デモ。改ざん検出、マークルツリー可視化、ライブ取引シミュレーター搭載。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <link rel="icon" type="image/png" href="/assets/img/logo.png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XTK1LJKRGV');</script>
+    <style>
+        body{font-family:'Noto Sans JP','Inter',sans-serif;}
+        .gradient-text{background:linear-gradient(135deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .prose{max-width:none;}
+        .prose h2{color:#e2e8f0;font-size:1.75rem;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(148,163,184,.2);}
+        .prose h3{color:#cbd5e1;font-size:1.25rem;font-weight:600;margin-top:2rem;margin-bottom:.75rem;}
+        .prose p{color:#94a3b8;line-height:1.8;margin-bottom:1.25rem;}
+        .prose ul,.prose ol{color:#94a3b8;margin-bottom:1.25rem;padding-left:1.5rem;}
+        .prose li{margin-bottom:.5rem;line-height:1.7;}
+        .prose strong{color:#e2e8f0;}
+        .prose a{color:#60a5fa;text-decoration:underline;}
+        .prose a:hover{color:#93c5fd;}
+        .prose blockquote{border-left:4px solid #3b82f6;padding-left:1rem;margin:1.5rem 0;color:#94a3b8;font-style:italic;background:rgba(59,130,246,.05);padding:1rem;border-radius:0 .5rem .5rem 0;}
+        .prose code{background:rgba(59,130,246,.1);color:#60a5fa;padding:.125rem .375rem;border-radius:.25rem;font-size:.875rem;}
+        .prose table{width:100%;border-collapse:collapse;margin:1.5rem 0;}
+        .prose th,.prose td{border:1px solid rgba(148,163,184,.2);padding:.75rem;text-align:left;}
+        .prose th{background:rgba(59,130,246,.1);color:#e2e8f0;font-weight:600;}
+        .prose td{color:#94a3b8;}
+        .prose hr{border-color:rgba(148,163,184,.2);margin:2rem 0;}
+        .info-box{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:.5rem;padding:1.25rem;margin:1.5rem 0;}
+        .success-box{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:.5rem;padding:1.25rem;margin:1.5rem 0;}
+        .warning-box{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:.5rem;padding:1.25rem;margin:1.5rem 0;}
+        .feature-card{background:rgba(30,41,59,.8);border:1px solid rgba(59,130,246,.2);border-radius:.75rem;padding:1.5rem;margin:1rem 0;}
+        .cta-button{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:white;padding:.75rem 1.5rem;border-radius:.5rem;font-weight:600;text-decoration:none;transition:all .3s ease;}
+        .cta-button:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(59,130,246,.3);color:white;}
+    </style>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "VCC Demo v2.0リリース：改ざん検出、ライブシミュレーター、多言語対応",
+        "description": "ブラウザベースの暗号監査証跡デモの大型アップデート。改ざん検出の可視化、マークルツリーエクスプローラー、ライブ取引シミュレーター、4言語対応などの新機能。",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "author": {"@type": "Organization", "name": "VeritasChain Standards Organization", "url": "https://veritaschain.org/"},
+        "publisher": {"@type": "Organization", "name": "VeritasChain Standards Organization", "logo": {"@type": "ImageObject", "url": "https://veritaschain.org/assets/img/logo.png"}},
+        "datePublished": "2026-01-05T00:00:00Z",
+        "dateModified": "2026-01-05T00:00:00Z",
+        "mainEntityOfPage": {"@type": "WebPage", "@id": "https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/ja/"},
+        "keywords": ["VCC Demo", "VCP v1.1", "暗号", "JavaScript", "フィンテック", "オープンソース", "マークルツリー"],
+        "inLanguage": "ja"
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://veritaschain.org/"},
+            {"@type": "ListItem", "position": 2, "name": "ブログ", "item": "https://veritaschain.org/blog/ja/"},
+            {"@type": "ListItem", "position": 3, "name": "VCC Demo v2.0リリース", "item": "https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/ja/"}
+        ]
+    }
+    </script>
+</head>
+<body class="bg-[#0f172a] text-gray-100 min-h-screen">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+    
+    <main class="pt-20">
+        <!-- Article Header -->
+        <div class="bg-gradient-to-b from-[#1e293b] to-[#0f172a] py-16">
+            <div class="max-w-4xl mx-auto px-4">
+                <div class="flex items-center gap-3 mb-6 flex-wrap">
+                    <a href="/blog/ja/" class="text-blue-400 hover:text-blue-300 transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>ブログに戻る
+                    </a>
+                    <span class="text-gray-500">|</span>
+                    <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-medium">
+                        <i class="fas fa-bullhorn mr-1"></i>お知らせ
+                    </span>
+                    <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-medium">
+                        <i class="fas fa-code mr-1"></i>オープンソース
+                    </span>
+                </div>
+                
+                <h1 class="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+                    VCC Demo v2.0リリース：<span class="gradient-text">改ざん検出、ライブシミュレーター、多言語対応</span>
+                </h1>
+                
+                <p class="text-xl text-gray-400 mb-8 leading-relaxed">
+                    ブラウザベースのVCP v1.1リファレンス実装の大型アップデート。暗号検証をより視覚的、インタラクティブに、そしてグローバルな視聴者にアクセスしやすくします。
+                </p>
+                
+                <div class="flex items-center gap-6 text-gray-500 text-sm flex-wrap mb-6">
+                    <span><i class="far fa-calendar mr-2"></i>2026年1月5日</span>
+                    <span><i class="far fa-clock mr-2"></i>8分で読めます</span>
+                    <span><i class="fas fa-user mr-2"></i>VeritasChain Standards Organization</span>
+                </div>
+                
+                <a href="https://veritaschain.org/vcc/demo/" target="_blank" class="cta-button">
+                    <i class="fas fa-external-link-alt"></i> VCC Demo v2.0を試す
+                </a>
+            </div>
+        </div>
+        
+        <!-- Article Content -->
+        <div class="max-w-4xl mx-auto px-4 py-12">
+            <article class="prose">
+                
+                <h2>v2.0の新機能</h2>
+                
+                <div class="feature-card">
+                    <h3 style="margin-top:0;color:#ef4444;"><i class="fas fa-circle mr-2" style="font-size:.75rem;"></i>改ざん検出デモ</h3>
+                    <p style="margin-bottom:.75rem;">最もリクエストの多かった機能：<strong>データがアンカーされた後に誰かが変更しようとした場合に何が起こるかを確認できます。</strong></p>
+                    <p style="margin-bottom:.75rem;">これが「検証せよ、信頼するな」の核心です：</p>
+                    <ol style="margin-bottom:.75rem;">
+                        <li>アンカー済みのイベントを選択</li>
+                        <li>「改ざんをシミュレート」をクリックして価格フィールドを変更</li>
+                        <li>改ざんされたデータに対して検証を実行</li>
+                        <li>詳細な説明とともに<strong>失敗</strong>するのを確認</li>
+                    </ol>
+                    <p style="margin-bottom:0;">デモでは、元のハッシュと改ざんされたハッシュの比較、改ざんされたハッシュが同じマークルルートに到達できない理由、データの完全性に対する意味を表示します。</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 style="margin-top:0;color:#22c55e;"><i class="fas fa-tree mr-2"></i>インタラクティブなマークルツリー可視化</h3>
+                    <p style="margin-bottom:.75rem;">マークルツリーが実際にどのように見えるか気になったことはありませんか？今すぐ確認できます。</p>
+                    <p style="margin-bottom:.75rem;">新しい<strong>マークルツリー</strong>タブは、完全なツリー構造をインタラクティブなSVGとして描画します：</p>
+                    <ul style="margin-bottom:0;">
+                        <li>任意のリーフノードをクリックして監査パスをハイライト</li>
+                        <li>リーフ→ルートへのパスをトレース</li>
+                        <li>各レベルでの兄弟ハッシュを確認</li>
+                        <li>証明がO(log n)である理由を理解</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 style="margin-top:0;color:#3b82f6;"><i class="fas fa-chart-line mr-2"></i>ライブ取引シミュレーター</h3>
+                    <p style="margin-bottom:.75rem;">新しい<strong>シミュレーター</strong>タブは、リアルタイムデータでデモに命を吹き込みます：</p>
+                    <ul style="margin-bottom:0;">
+                        <li>XAUUSD、EURUSD、BTCUSD、USDJPYのシミュレート価格フィード</li>
+                        <li>自動イベント生成（1秒に1回）</li>
+                        <li>10イベントごとの自動アンカリング（設定可能）</li>
+                        <li>イベント数とアンカー数がリアルタイムで増加するのを確認</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 style="margin-top:0;color:#a855f7;"><i class="fas fa-globe mr-2"></i>多言語対応</h3>
+                    <p style="margin-bottom:.75rem;">VCC Demoが<strong>4言語</strong>に対応しました：</p>
+                    <table style="margin-bottom:0;">
+                        <thead>
+                            <tr>
+                                <th>言語</th>
+                                <th>コード</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>English</td><td>EN</td></tr>
+                            <tr><td>日本語</td><td>JA</td></tr>
+                            <tr><td>中文</td><td>ZH</td></tr>
+                            <tr><td>Español</td><td>ES</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3><i class="fas fa-moon mr-2"></i>ダークモード</h3>
+                <p>目に優しい。ワンクリックでライトテーマとダークテーマを切り替え。マークルツリーの可視化を含むUI全体が好みに合わせて適応します。</p>
+                
+                <h3><i class="fas fa-file-export mr-2"></i>強化されたエクスポートオプション</h3>
+                <ul>
+                    <li><strong>JSONエクスポート：</strong>すべてのイベント、個別のアンカー、または検証証明書をエクスポート</li>
+                    <li><strong>PDF証明書：</strong>イベントの詳細、ハッシュ、証明データを含む公式風の検証証明書をダウンロード</li>
+                    <li><strong>QRコード：</strong>任意の証明書のQRコードを生成—検証リンクの共有に最適</li>
+                </ul>
+                
+                <h3><i class="fas fa-search mr-2"></i>検索とフィルター</h3>
+                <p>ついに！探しているものを見つけられます：</p>
+                <ul>
+                    <li>トレースID、シンボル、イベントIDで検索</li>
+                    <li>イベントタイプでフィルター（SIG、ORD、ACK、EXEなど）</li>
+                    <li>ステータスでフィルター（PENDING、ANCHORED）</li>
+                    <li>フィルター結果をエクスポート</li>
+                </ul>
+                
+                <hr>
+                
+                <h2>機能比較：v1.0 vs v2.0</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>機能</th>
+                            <th>v1.0</th>
+                            <th>v2.0</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>イベント作成</td><td>✅</td><td>✅</td></tr>
+                        <tr><td>マークルアンカリング</td><td>✅</td><td>✅</td></tr>
+                        <tr><td>証明書検証</td><td>✅</td><td>✅</td></tr>
+                        <tr><td>改ざん検出デモ</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>ツリー可視化</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>ライブシミュレーター</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>多言語対応</td><td>❌</td><td>✅ (4)</td></tr>
+                        <tr><td>ダークモード</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>JSONエクスポート</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>PDFエクスポート</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>QRコード</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>検索/フィルター</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>ファイルサイズ</td><td>42KB</td><td>99KB</td></tr>
+                    </tbody>
+                </table>
+                
+                <hr>
+                
+                <h2>技術ノート</h2>
+                
+                <div class="info-box">
+                    <p style="margin:0;"><strong><i class="fas fa-laptop-code mr-2"></i>100%クライアントサイド：</strong>すべてがブラウザ内で完全に動作します。サーバー不要、サインアップ不要、データはIndexedDBに永続化、すべての暗号処理はWeb Crypto API経由、単一HTMLファイルでのデプロイ。</p>
+                </div>
+                
+                <p><strong>ブラウザサポート：</strong> Chrome 90+、Firefox 88+、Safari 14+、Edge 90+</p>
+                
+                <hr>
+                
+                <h2>今すぐ試す</h2>
+                
+                <div class="success-box">
+                    <p style="margin-bottom:1rem;"><strong><i class="fas fa-rocket mr-2"></i>始め方：</strong></p>
+                    <ol style="margin-bottom:1rem;">
+                        <li>イベントを作成</li>
+                        <li>アンカーする</li>
+                        <li>改ざんデモを試す</li>
+                        <li>マークルツリーを探索</li>
+                        <li>ダークモードと日本語に切り替え</li>
+                    </ol>
+                    <p style="margin-bottom:1rem;">すべてがブラウザ内で行われます。データはあなたのものです。</p>
+                    <a href="https://veritaschain.org/vcc/demo/" target="_blank" class="cta-button">
+                        <i class="fas fa-external-link-alt"></i> VCC Demo v2.0を起動
+                    </a>
+                </div>
+                
+                <hr>
+                
+                <h2>リソース</h2>
+                
+                <ul>
+                    <li><strong>ライブデモ：</strong> <a href="https://veritaschain.org/vcc/demo/" target="_blank">veritaschain.org/vcc/demo</a></li>
+                    <li><strong>VCP仕様：</strong> <a href="https://github.com/veritaschain/vcp-spec" target="_blank">github.com/veritaschain/vcp-spec</a></li>
+                    <li><strong>GitHub：</strong> <a href="https://github.com/veritaschain" target="_blank">github.com/veritaschain</a></li>
+                    <li><strong>ウェブサイト：</strong> <a href="https://veritaschain.org" target="_blank">veritaschain.org</a></li>
+                </ul>
+                
+                <hr>
+                
+                <div class="warning-box">
+                    <p style="margin:0;"><strong><i class="fas fa-info-circle mr-2"></i>免責事項：</strong> VCC Demoは教育目的のリファレンス実装です。VC-Certifiedではなく、VeritasChain Standards Organization（VSO）による推奨を構成するものではありません。</p>
+                </div>
+                
+                <blockquote>
+                    <p style="margin:0;">「信じてください」の時代は終わりました。「自分で検証する」時代が始まりました。</p>
+                </blockquote>
+                
+            </article>
+            
+            <!-- Article Footer -->
+            <div style="margin-top: 3rem; padding: 1.5rem; background: rgba(30, 41, 59, 0.5); border: 1px solid #334155; border-radius: 12px;">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">
+                            <i class="fab fa-creative-commons mr-1" style="color: #60a5fa;"></i>
+                            <i class="fab fa-creative-commons-by mr-2" style="color: #60a5fa;"></i>
+                            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="color: #60a5fa; text-decoration: underline;">CC BY 4.0 International</a>でライセンス
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/ja/&text=VCC Demo v2.0リリース - 改ざん検出、ライブシミュレーター、多言語対応" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2026-01-05-vcc-demo-v2/ja/" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="https://github.com/veritaschain" target="_blank" class="text-gray-400 hover:text-gray-300 transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="mt-12 pt-8 border-t border-gray-700">
+                <a href="/blog/ja/" class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>すべての記事に戻る
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 4rem 2rem; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="color: #f1f5f9; font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">
+                VCC Demo v2.0を体験
+            </h2>
+            <p style="color: #94a3b8; font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem;">
+                暗号検証を実際に体験。サインアップ不要—すべてがブラウザで動作します。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <a href="https://veritaschain.org/vcc/demo/" class="btn btn-primary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fas fa-play"></i> デモを試す
+                </a>
+                <a href="/blog/ja/" class="btn btn-secondary" style="padding: 1rem 2rem;">
+                    <i class="fas fa-arrow-left"></i> ブログに戻る
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="ja"></vcp-footer>
+</body>
+</html>
