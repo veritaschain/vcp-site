@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EU AI法と暗号監査証跡：「信じてください」ログではもう通用しない理由 - VeritasChain Blog</title>
+    <meta name="description" content="EU AI法のログ記録規定の詳細分析と、暗号監査証跡が高リスクAIシステムに対して防御可能なコンプライアンスを提供する理由。">
+    <meta name="keywords" content="EU AI法, 暗号監査, 第12条, コンプライアンス, ログ記録, ハッシュチェーン, マークルツリー, eIDAS, GDPR, 高リスクAI">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="EU AI法と暗号監査証跡：「信じてください」ログではもう通用しない理由">
+    <meta property="og:description" content="EU AI法のログ記録規定の詳細分析と、暗号監査証跡が防御可能なコンプライアンスを提供する理由。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain Blog">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="article:published_time" content="2025-12-25T00:00:00Z">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Technical">
+    <meta property="article:tag" content="EU AI法">
+    <meta property="article:tag" content="コンプライアンス">
+    <meta property="article:tag" content="暗号監査">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="EU AI法と暗号監査証跡">
+    <meta name="twitter:description" content="「信じてください」ログではEU AI法コンプライアンスに対応できなくなった理由。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/ja/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', sans-serif; }
+        
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+        }
+        
+        .article-content { background: #0f172a; padding: 4rem 2rem; }
+        
+        .prose {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+        
+        .prose h2 {
+            color: #f1f5f9;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .prose h3 {
+            color: #e2e8f0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .prose p { margin-bottom: 1.5rem; }
+        
+        .prose a {
+            color: #60a5fa;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        
+        .prose a:hover { color: #93c5fd; }
+        
+        .prose strong { color: #f1f5f9; font-weight: 600; }
+        .prose em { font-style: italic; color: #94a3b8; }
+        
+        .prose blockquote {
+            border-left: 4px solid #8b5cf6;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: #94a3b8;
+            font-style: italic;
+            background: rgba(139, 92, 246, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .prose code {
+            background: rgba(30, 41, 59, 0.8);
+            color: #a5b4fc;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+        
+        .prose pre {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .prose pre code {
+            background: transparent;
+            padding: 0;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .prose ul, .prose ol { margin: 1.5rem 0; padding-left: 2rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .prose th {
+            background: rgba(30, 41, 59, 0.8);
+            color: #f1f5f9;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        
+        .prose td {
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(139, 92, 246, 0.15);
+        }
+        
+        .prose tr:nth-child(even) { background: rgba(30, 41, 59, 0.3); }
+        
+        .prose hr {
+            border: none;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            margin: 3rem 0;
+        }
+        
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+        }
+        
+        .toc {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .toc h4 { color: #f1f5f9; font-weight: 700; margin-bottom: 1rem; font-size: 1rem; }
+        .toc ul { list-style: none; padding: 0; margin: 0; }
+        .toc li { margin-bottom: 0.5rem; }
+        .toc a { color: #94a3b8; text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
+        .toc a:hover { color: #a78bfa; }
+        
+        .share-buttons { display: flex; gap: 0.75rem; margin-top: 2rem; }
+        
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.8);
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+        
+        .share-btn:hover { background: #8b5cf6; color: white; }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            margin-bottom: 2rem;
+        }
+        
+        .back-link:hover { color: #a78bfa; }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box h4 { color: #a78bfa; font-weight: 600; margin-bottom: 0.75rem; }
+
+        .deadline-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .deadline-box h4 { color: #f87171; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem; }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "EU AI法と暗号監査証跡：「信じてください」ログではもう通用しない理由",
+        "description": "EU AI法のログ記録規定の詳細分析と、暗号監査証跡が高リスクAIシステムに対して防御可能なコンプライアンスを提供する理由。",
+        "author": { "@type": "Organization", "name": "VeritasChain Standards Organization" },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": { "@type": "ImageObject", "url": "https://veritaschain.org/assets/img/logo.png" }
+        },
+        "datePublished": "2025-12-25",
+        "dateModified": "2025-12-25",
+        "mainEntityOfPage": "https://veritaschain.org/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/ja/",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "inLanguage": "ja"
+    }
+    </script>
+</head>
+<body>
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Article Hero -->
+    <section class="article-hero">
+        <div style="position: relative; z-index: 1; max-width: 800px; margin: 0 auto;">
+            <a href="/blog/ja/" class="back-link">
+                <i class="fas fa-arrow-left"></i> ブログに戻る
+            </a>
+            
+            <span class="category-badge">
+                <i class="fas fa-code"></i> Technical
+            </span>
+            
+            <h1 style="color: #f8fafc; font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin: 1rem 0 1.5rem;">
+                EU AI法と暗号監査証跡：「信じてください」ログではもう通用しない理由
+            </h1>
+            
+            <p style="color: #94a3b8; font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem;">
+                EU AI法のログ記録規定の詳細分析と、暗号監査証跡が高リスクAIシステムに対して防御可能なコンプライアンスを提供する理由。
+            </p>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-calendar"></i> 2025年12月25日
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-clock"></i> 25分で読めます
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-building"></i> VeritasChain Standards Organization
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="article-content">
+        <div class="prose">
+            
+            <!-- Deadline Alert -->
+            <div class="deadline-box">
+                <h4><i class="fas fa-exclamation-triangle"></i> コンプライアンス期限</h4>
+                <p style="color: #fbbf24; font-size: 1.1rem; margin: 0;">高リスクAIシステムの規定は<strong>2026年8月2日</strong>から適用開始</p>
+            </div>
+            
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h4><i class="fas fa-list" style="margin-right: 0.5rem; color: #a78bfa;"></i> 目次</h4>
+                <ul>
+                    <li><a href="#introduction">はじめに：証明可能な信頼への規制要求</a></li>
+                    <li><a href="#article-12">第12条：コアログ記録義務</a></li>
+                    <li><a href="#article-19">第19条：保持期間と金融セクター規定</a></li>
+                    <li><a href="#article-73">第73条：証拠保全と法的リスク</a></li>
+                    <li><a href="#article-15">第15条：サイバーセキュリティと改ざん耐性</a></li>
+                    <li><a href="#gap-analysis">ギャップ分析：最小コンプライアンス vs 防御可能なコンプライアンス</a></li>
+                    <li><a href="#architecture">暗号監査証跡の技術アーキテクチャ</a></li>
+                    <li><a href="#gdpr">GDPR互換性：暗号シュレッディングソリューション</a></li>
+                    <li><a href="#eidas">eIDAS適格タイムスタンプの活用</a></li>
+                    <li><a href="#roadmap">実装ロードマップ</a></li>
+                    <li><a href="#conclusion">結論：「検証せよ、信頼するな」の時代</a></li>
+                </ul>
+            </div>
+            
+            <h2 id="introduction">はじめに：証明可能な信頼への規制要求</h2>
+            
+            <p>2024年7月12日、EU AI法（規則(EU) 2024/1689）が欧州連合官報に公示され、2024年8月1日に発効しました。高リスクAIシステムに対する義務は<strong>2026年8月2日</strong>から適用されます。</p>
+            
+            <p>この規制が金融業界、特にアルゴリズム取引やAI駆動の意思決定システムに与える影響は甚大です。しかし、多くの事業者が見落としている重要な点があります：EU AI法は、ログの<em>存在</em>だけでなく、その<strong>証拠としての信頼性</strong>を暗黙的に要求しています。</p>
+            
+            <p>この記事では、EU AI法のログ記録規定の詳細分析を行い、従来の「変更可能なデータベースログ」が規制コンプライアンスに不十分になりつつある理由を説明し、暗号監査証跡が提供する技術的優位性を示します。</p>
+            
+            <hr>
+            
+            <h2 id="article-12">第12条：コアログ記録義務</h2>
+            
+            <p>第12条はEU AI法の下でのコアログ記録義務を構成します。</p>
+            
+            <h3>第12条(1) - 基本義務</h3>
+            
+            <blockquote>
+                「高リスクAIシステムは、システムの存続期間を通じてイベント（ログ）の自動記録を技術的に可能にしなければならない。」
+            </blockquote>
+            
+            <p>これは<strong>設計時の要件</strong>です。単に「ログを保持する」だけでなく、「ログを自動的に記録する技術的能力を持つ」ことを要求しています。ログ記録機能を持たないシステムは、そもそもEU市場に投入できません。</p>
+            
+            <h3>第12条が規定していないもの</h3>
+            
+            <p>極めて重要なのは、第12条が<strong>規定していない</strong>ものです：</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>未規定の要素</th>
+                        <th>含意</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ログ形式</td>
+                        <td>JSON、バイナリ、構造化/非構造化—提供者の選択</td>
+                    </tr>
+                    <tr>
+                        <td>ストレージアーキテクチャ</td>
+                        <td>ローカル、クラウド、分散—義務なし</td>
+                    </tr>
+                    <tr>
+                        <td>完全性保護メカニズム</td>
+                        <td>チェックサム、署名、ハッシュチェーンの要件なし</td>
+                    </tr>
+                    <tr>
+                        <td>第三者検証可能性</td>
+                        <td>外部監査可能性の明示的要件なし</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>暗号アプローチの互換性</h3>
+            
+            <p>第12条は暗号ログ記録を<strong>禁止していません</strong>。そして他の規定と組み合わせると、暗号アプローチは<strong>事実上有利</strong>になります：</p>
+            
+            <div class="highlight-box">
+                <ul>
+                    <li><strong>第12条(1)「存続期間を通じた記録」</strong> → ハッシュチェーンが時間的連続性を証明</li>
+                    <li><strong>第12条(3)(d)「検証者の識別」</strong> → デジタル署名が否認防止を提供</li>
+                    <li><strong>第12条(2)「適切なトレーサビリティ」</strong> → マークルツリーが効率的な部分検証を可能に</li>
+                </ul>
+            </div>
+            
+            <hr>
+            
+            <h2 id="article-19">第19条：保持期間と金融セクター規定</h2>
+            
+            <p>第19条は金融機関に対する重要な規定を含む保持要件を定めています：</p>
+            
+            <blockquote>
+                「...ログは、高リスクAIシステムの意図された目的に適した期間、少なくとも6ヶ月間保持されなければならない...」
+            </blockquote>
+            
+            <h3>金融セクター規定</h3>
+            
+            <p>第19条(2)は、金融規制に基づく既存の記録保持義務が直接適用されることを定めています：</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>規制</th>
+                        <th>保持期間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>MiFID II 第16条(6)</td>
+                        <td>5年</td>
+                    </tr>
+                    <tr>
+                        <td>MAR 第16条(1)</td>
+                        <td>5年</td>
+                    </tr>
+                    <tr>
+                        <td>EMIR</td>
+                        <td>5年以上</td>
+                    </tr>
+                    <tr>
+                        <td>国内規制</td>
+                        <td>5-10年</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>完全性の問題</h3>
+            
+            <p>6ヶ月から10年に及ぶ保持期間にわたって、<strong>ログの完全性をどう証明するか</strong>が実際の課題となります：</p>
+            
+            <div class="highlight-box">
+                <h4>保持期間の課題</h4>
+                <p><strong>従来のアプローチ：</strong>「信じてください」</p>
+                <p><strong>暗号アプローチ：</strong>数学的証明</p>
+            </div>
+            
+            <hr>
+            
+            <h2 id="article-73">第73条：証拠保全と法的リスク</h2>
+            
+            <p>第73条はEU AI法の下で<strong>最も厳格な時間制約</strong>を課しています。</p>
+            
+            <h3>報告期限</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>インシデントタイプ</th>
+                        <th>期限</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>標準的な重大インシデント</td>
+                        <td><strong>15日</strong></td>
+                    </tr>
+                    <tr>
+                        <td>死亡または重傷の疑い</td>
+                        <td><strong>10日</strong></td>
+                    </tr>
+                    <tr>
+                        <td>広範なインフラ障害</td>
+                        <td><strong>2日</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>証拠保全禁止</h3>
+            
+            <p>第73条(6)には決定的な規定があります：</p>
+            
+            <blockquote>
+                「提供者は所轄官庁と協力しなければならず、<strong>インシデント原因のその後の評価に影響を与える可能性のある方法で関係するAIシステムを変更する</strong>調査を行ってはならない...」
+            </blockquote>
+            
+            <p>これは明らかに<strong>証拠改ざん</strong>を禁止しています。問題は、「変更可能なログ」では、この規定に<strong>意図せず</strong>違反するリスクがあることです。</p>
+            
+            <h3>第99条に基づく制裁</h3>
+            
+            <p>第73条の違反、特に「誤解を招く、不正確または不完全な情報」の提供は、以下の制裁の対象となります：</p>
+            
+            <div class="deadline-box" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);">
+                <h4 style="color: #f87171;">最大1,500万ユーロまたは全世界年間売上高の3%</h4>
+                <p style="color: #94a3b8; margin: 0;">いずれか高い方</p>
+            </div>
+            
+            <hr>
+            
+            <h2 id="article-15">第15条：サイバーセキュリティと改ざん耐性</h2>
+            
+            <p>第15条は正確性、堅牢性、サイバーセキュリティ要件を規定しています：</p>
+            
+            <blockquote>
+                「高リスクAIシステムは、システムの脆弱性を悪用して使用、出力、性能を変更しようとする不正な第三者による試みに対して耐性を持たなければならない。」
+            </blockquote>
+            
+            <h3>暗号対策へのマッピング</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>第15条(5)の脅威</th>
+                        <th>暗号対策</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>不正な出力変更</td>
+                        <td>暗号署名、ハッシュチェーン</td>
+                    </tr>
+                    <tr>
+                        <td>データポイズニング</td>
+                        <td>トレーニングデータの暗号出所証明</td>
+                    </tr>
+                    <tr>
+                        <td>モデルポイズニング</td>
+                        <td>モデル重みのハッシュコミットメント</td>
+                    </tr>
+                    <tr>
+                        <td>敵対的攻撃</td>
+                        <td>タイムスタンプ付き入出力ログ</td>
+                    </tr>
+                    <tr>
+                        <td>不正変更</td>
+                        <td>帰属のためのデジタル署名</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <hr>
+            
+            <h2 id="gap-analysis">ギャップ分析：最小コンプライアンス vs 防御可能なコンプライアンス</h2>
+            
+            <p>EU AI法は<strong>最小義務</strong>を規定していますが、最小コンプライアンスは必ずしも<strong>最適な戦略</strong>ではありません。</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>側面</th>
+                        <th>最小コンプライアンス</th>
+                        <th>防御可能なコンプライアンス</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>第12条</strong></td>
+                        <td>変更可能なDBログ</td>
+                        <td>ハッシュチェーンログ</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第19条</strong></td>
+                        <td>6ヶ月保持</td>
+                        <td>暗号タイムスタンプ付き長期保持</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第73条</strong></td>
+                        <td>事後対応</td>
+                        <td>改ざん検出可能な即時証拠</td>
+                    </tr>
+                    <tr>
+                        <td><strong>附属書IV</strong></td>
+                        <td>手書き署名</td>
+                        <td>Ed25519デジタル署名</td>
+                    </tr>
+                    <tr>
+                        <td><strong>適合性評価</strong></td>
+                        <td>自己宣言</td>
+                        <td>第三者検証可能な証拠</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="highlight-box">
+                <h4>防御可能なコンプライアンスの利点</h4>
+                <ul>
+                    <li>数学的に検証可能な完全性</li>
+                    <li>独立した第三者検証</li>
+                    <li>規制当局との信頼構築</li>
+                    <li>訴訟における証拠価値の向上</li>
+                    <li>競争優位性（「暗号的に検証可能」）</li>
+                    <li>保険料の最適化</li>
+                </ul>
+            </div>
+            
+            <hr>
+            
+            <h2 id="architecture">暗号監査証跡の技術アーキテクチャ</h2>
+            
+            <p>EU AI法準拠の暗号監査証跡は以下の要素で構成されます：</p>
+            
+            <h3>コアコンポーネント</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>レイヤー</th>
+                        <th>機能</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>イベントレイヤー</strong></td>
+                        <td>タイムスタンプ、アクターID、アクションタイプを含む構造化イベント</td>
+                    </tr>
+                    <tr>
+                        <td><strong>チェーンレイヤー</strong></td>
+                        <td>改ざん検出のためのSHA-256ハッシュリンク</td>
+                    </tr>
+                    <tr>
+                        <td><strong>署名レイヤー</strong></td>
+                        <td>否認防止のためのEd25519署名</td>
+                    </tr>
+                    <tr>
+                        <td><strong>アンカーレイヤー</strong></td>
+                        <td>外部タイムスタンプ付きマークルルート</td>
+                    </tr>
+                    <tr>
+                        <td><strong>検証レイヤー</strong></td>
+                        <td>独立した完全性検証ツール</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>EU AI法向けの主要イベントタイプ</h3>
+            
+            <ul>
+                <li><strong>システム操作：</strong> SYSTEM_START, SYSTEM_STOP, CONFIG_CHANGE</li>
+                <li><strong>AI操作：</strong> INFERENCE_REQUEST, INFERENCE_RESPONSE, MODEL_UPDATE</li>
+                <li><strong>人間による監視（第14条）：</strong> HUMAN_OVERRIDE, HUMAN_VERIFICATION, STOP_BUTTON_ACTIVATED</li>
+                <li><strong>PMM（第72条）：</strong> PERFORMANCE_METRIC, ANOMALY_DETECTED, CORRECTIVE_ACTION</li>
+                <li><strong>インシデント（第73条）：</strong> INCIDENT_DETECTED, INCIDENT_REPORTED</li>
+            </ul>
+            
+            <hr>
+            
+            <h2 id="gdpr">GDPR互換性：暗号シュレッディングソリューション</h2>
+            
+            <p>EU AI法第19条の保持義務とGDPR第17条の消去権の間には緊張が存在します。</p>
+            
+            <div class="highlight-box">
+                <h4>規制上の緊張</h4>
+                <p><strong>EU AI法：</strong>「ログを6ヶ月から10年間保持」</p>
+                <p><strong>GDPR：</strong>「要求に応じて個人データを削除」</p>
+            </div>
+            
+            <h3>解決策：アーキテクチャの分離</h3>
+            
+            <ol>
+                <li><strong>監査完全性レイヤー（不変）</strong>
+                    <ul>
+                        <li>ハッシュチェーン、マークルルート、タイムスタンプ</li>
+                        <li>個人データを含まない</li>
+                    </ul>
+                </li>
+                <li><strong>個人データレイヤー（削除可能）</strong>
+                    <ul>
+                        <li>対象者ごとのキーで暗号化された個人データ</li>
+                        <li>暗号シュレッディング可能（キー破棄 = データ破棄）</li>
+                    </ul>
+                </li>
+            </ol>
+            
+            <p>消去要求を受けた場合、暗号化キーを破棄します。暗号化されたデータは永久に回復不能になりますが、監査証跡（ハッシュのみを含む）は無傷のまま残ります。</p>
+            
+            <hr>
+            
+            <h2 id="eidas">eIDAS適格タイムスタンプの活用</h2>
+            
+            <p>eIDAS規則に基づく適格タイムスタンプはEU全域で法的効力を持ちます：</p>
+            
+            <blockquote>
+                「適格電子タイムスタンプは、それが示す日時の正確性と、日時が結び付けられたデータの完全性の推定を享受するものとする。」
+                <br><em>— eIDAS第41条(2)</em>
+            </blockquote>
+            
+            <h3>統合のメリット</h3>
+            
+            <ul>
+                <li>附属書IV「日付付きおよび署名済み」要件を満たす</li>
+                <li>10年間の保持期間を通じた完全性を証明</li>
+                <li>第73条調査における証拠価値</li>
+                <li>越境法的効力（EU27）</li>
+            </ul>
+            
+            <hr>
+            
+            <h2 id="roadmap">実装ロードマップ：2026年8月に向けた準備</h2>
+            
+            <h3>フェーズ1：基盤（現在 → 2025年第2四半期）</h3>
+            <ul>
+                <li>ハッシュチェーンイベントログの実装</li>
+                <li>Ed25519署名インフラの構築</li>
+                <li>技術文書にアーキテクチャを記載</li>
+                <li>GDPR互換性の設計（暗号シュレッディングレイヤー）</li>
+            </ul>
+            
+            <h3>フェーズ2：検証強化（2025年第2四半期 → 2025年第4四半期）</h3>
+            <ul>
+                <li>マークルツリー集約の実装</li>
+                <li>eIDAS適格タイムスタンプの統合</li>
+                <li>当局報告テンプレートの準備</li>
+                <li>PMM（市場投入後モニタリング）統合</li>
+            </ul>
+            
+            <h3>フェーズ3：堅牢化（2025年第4四半期 → 2026年8月）</h3>
+            <ul>
+                <li>適合性評価のドライラン</li>
+                <li>暗号管理の第三者監査</li>
+                <li>インシデント対応手順の検証</li>
+                <li>CEN-CENELEC整合規格への準備</li>
+            </ul>
+            
+            <hr>
+            
+            <h2 id="conclusion">結論：「検証せよ、信頼するな」の時代</h2>
+            
+            <p>EU AI法は暗号監査証跡を<strong>明示的に義務付けてはいません</strong>。しかし、規定の組み合わせが暗号アプローチを<strong>事実上の標準</strong>にするプレッシャーを生み出しています：</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>条項</th>
+                        <th>要件</th>
+                        <th>暗号ソリューション</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>第12条(1)</td>
+                        <td>存続期間ログ記録</td>
+                        <td>ハッシュチェーンが連続性を証明</td>
+                    </tr>
+                    <tr>
+                        <td>第15条(5)</td>
+                        <td>改ざん耐性</td>
+                        <td>暗号完全性検証</td>
+                    </tr>
+                    <tr>
+                        <td>第73条(6)</td>
+                        <td>証拠保全</td>
+                        <td>不変ログによる自動保全</td>
+                    </tr>
+                    <tr>
+                        <td>第18条(1)</td>
+                        <td>10年間保持</td>
+                        <td>タイムスタンプが長期完全性を証明</td>
+                    </tr>
+                    <tr>
+                        <td>附属書IV(2)(g)</td>
+                        <td>日付付きおよび署名済み</td>
+                        <td>Ed25519 + eIDAS適格タイムスタンプ</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="highlight-box" style="text-align: center; border-color: rgba(139, 92, 246, 0.5);">
+                <h4 style="font-size: 1.5rem; color: #f1f5f9;">「信じてください」はもう通用しません。</h4>
+                <p style="font-size: 1.1rem; color: #a78bfa; margin-bottom: 0.5rem;">規制当局、監査人、市場は<strong>検証可能な証拠</strong>を求めています。</p>
+                <p style="font-size: 1.25rem; color: #f1f5f9; font-weight: 700; margin: 0;"><em>検証せよ、信頼するな。</em></p>
+            </div>
+            
+            <p style="text-align: center; margin-top: 2rem;"><strong>2026年8月は思っているより近いです。</strong></p>
+            
+            <hr>
+            
+            <h3>参考リンク</h3>
+            
+            <ul>
+                <li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank">EU AI法公式テキスト（EUR-Lex）</a></li>
+                <li><a href="https://www.cencenelec.eu/areas-of-work/cen-cenelec-topics/artificial-intelligence/" target="_blank">CEN-CENELEC JTC 21 AI標準化</a></li>
+                <li><a href="https://veritaschain.org/specification/" target="_blank">VeritasChainプロトコル仕様</a></li>
+                <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">IETFドラフト：VCP (draft-kamimura-scitt-vcp)</a></li>
+                <li><a href="https://github.com/veritaschain" target="_blank">GitHub: VeritasChain</a></li>
+            </ul>
+            
+            <hr>
+            
+            <p><em>この記事はVeritasChain Standards Organization (VSO)が技術教育目的で提供するものであり、法的助言を構成するものではありません。特定の規制コンプライアンス事項については、資格を持つ専門家にご相談ください。</em></p>
+            
+            <p><em>連絡先：<a href="mailto:technical@veritaschain.org">technical@veritaschain.org</a></em></p>
+            
+            <!-- Share Buttons -->
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(139, 92, 246, 0.2);">
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">この記事を共有：</p>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/ja/&text=EU%20AI法と暗号監査証跡" target="_blank" class="share-btn" title="Twitterで共有">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2025-12-25-eu-ai-act-cryptographic-audit/ja/" target="_blank" class="share-btn" title="LinkedInで共有">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/veritaschain" target="_blank" class="share-btn" title="GitHubで見る">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </article>
+
+    <!-- Related Posts / CTA -->
+    <section style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 4rem 2rem; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="color: #f1f5f9; font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">
+                VCPについてもっと知りたいですか？
+            </h2>
+            <p style="color: #94a3b8; font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                完全な仕様を探索するか、ライブエクスプローラーを試すか、GitHubでの議論に参加してください。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <a href="https://github.com/VeritasChain/vcp-spec" class="btn btn-primary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fas fa-book"></i> 仕様を読む
+                </a>
+                <a href="https://veritaschain.org/explorer/app/" class="btn btn-secondary" style="padding: 1rem 2rem;" target="_blank">
+                    <i class="fas fa-search"></i> エクスプローラーを試す
+                </a>
+                <a href="/blog/ja/" class="btn btn-secondary" style="padding: 1rem 2rem;">
+                    <i class="fas fa-arrow-left"></i> ブログに戻る
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <vcp-footer theme="dark" lang="ja"></vcp-footer>
+</body>
+</html>
