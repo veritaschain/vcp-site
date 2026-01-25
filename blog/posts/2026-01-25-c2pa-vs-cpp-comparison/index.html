@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C2PA vs CPP: Why Content Provenance Needs a New Approach for the Forensic Era | VeritasChain Blog</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="How the Content Provenance Protocol addresses fundamental limitations in existing media authenticity standards. Comprehensive technical comparison of C2PA and CPP.">
+    <meta name="keywords" content="C2PA, CPP, Content Provenance, VAP Framework, VeriCapture, media authenticity, digital forensics, cryptographic verification">
+    <meta name="author" content="VeritasChain Standards Organization">
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="C2PA vs CPP: Why Content Provenance Needs a New Approach for the Forensic Era">
+    <meta property="og:description" content="How the Content Provenance Protocol addresses fundamental limitations in existing media authenticity standards">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="C2PA vs CPP: Content Provenance for the Forensic Era">
+    <meta name="twitter:description" content="Technical comparison of C2PA and CPP protocols for media authenticity">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Article Meta -->
+    <meta property="article:published_time" content="2026-01-25">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Technical Analysis">
+    <meta property="article:tag" content="C2PA">
+    <meta property="article:tag" content="CPP">
+    <meta property="article:tag" content="VAP">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        
+        .article-container { max-width: 900px; margin: 0 auto; }
+        
+        .article-content { color: #cbd5e1; line-height: 1.8; }
+        
+        .article-content h2 {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3b82f6;
+        }
+        
+        .article-content h3 {
+            color: #e2e8f0;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-content h4 {
+            color: #cbd5e1;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .article-content p { margin-bottom: 1.25rem; }
+        
+        .article-content ul, .article-content ol {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+        }
+        
+        .article-content li { margin-bottom: 0.5rem; }
+        
+        .article-content a { color: #60a5fa; text-decoration: underline; }
+        .article-content a:hover { color: #93c5fd; }
+        
+        .article-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            color: #94a3b8;
+            font-style: italic;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .article-content code {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        .article-content pre {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .article-content pre code {
+            background: transparent;
+            padding: 0;
+            color: #e2e8f0;
+        }
+        
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .article-content th {
+            background: rgba(59, 130, 246, 0.2);
+            color: #f1f5f9;
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #334155;
+        }
+        
+        .article-content td {
+            padding: 0.75rem;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+        }
+        
+        .article-content tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
+        
+        .comparison-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .cpp-advantage {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .c2pa-advantage {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-finding {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .toc-container {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .toc-container h3 { color: #f1f5f9; font-size: 1.1rem; margin-bottom: 1rem; }
+        .toc-container ol { color: #94a3b8; padding-left: 1.5rem; }
+        .toc-container li { margin-bottom: 0.5rem; }
+        .toc-container a { color: #60a5fa; text-decoration: none; }
+        .toc-container a:hover { text-decoration: underline; }
+        
+        .protocol-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-c2pa {
+            background: rgba(168, 85, 247, 0.2);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        
+        .badge-cpp {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+    </style>
+</head>
+<body class="text-gray-300">
+    <!-- Header -->
+    <header style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #1e293b; position: sticky; top: 0; z-index: 100;">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <nav class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-link text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">VeritasChain</span>
+                </a>
+                <div class="flex items-center gap-6">
+                    <a href="/blog/" class="text-blue-400 hover:text-blue-300 transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Blog
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article Header -->
+    <section style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%); padding: 4rem 1rem;">
+        <div class="article-container">
+            <div class="flex items-center gap-3 mb-4">
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem;">
+                    <i class="fas fa-code-compare mr-1"></i> Technical Deep Dive
+                </span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem;">
+                    <i class="fas fa-globe mr-1"></i> EN
+                </span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                C2PA vs CPP: Why Content Provenance Needs a New Approach for the Forensic Era
+            </h1>
+            
+            <p class="text-xl text-gray-300 mb-6">
+                How the Content Provenance Protocol addresses fundamental limitations in existing media authenticity standards
+            </p>
+            
+            <div class="flex flex-wrap items-center gap-4 text-gray-400">
+                <span><i class="far fa-calendar mr-2"></i>January 25, 2026</span>
+                <span><i class="far fa-clock mr-2"></i>25 min read</span>
+                <span><i class="far fa-building mr-2"></i>VSO Technical Committee</span>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 mt-6">
+                <span class="protocol-badge badge-c2pa">C2PA</span>
+                <span class="protocol-badge badge-cpp">CPP</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">VAP Framework</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">VeriCapture</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <main style="padding: 3rem 1rem;">
+        <div class="article-container">
+            <article class="article-content">
+                
+                <!-- Executive Summary -->
+                <div class="comparison-box">
+                    <h3 style="color: #60a5fa; margin-top: 0;"><i class="fas fa-balance-scale mr-2"></i>Executive Summary</h3>
+                    <p>The Coalition for Content Provenance and Authenticity (C2PA) has emerged as the dominant standard for digital media provenance, backed by industry giants including Adobe, Microsoft, Google, and Sony. With over 6,000 Content Authenticity Initiative members and ISO standardization underway, C2PA represents the current state-of-the-art in content authenticity.</p>
+                    <p>However, as we move into an era where AI-generated content becomes indistinguishable from captured reality, and where legal and regulatory frameworks increasingly demand cryptographic proof of media origin, C2PA's architectural limitations become apparent. The <strong>Content Provenance Protocol (CPP)</strong>, developed within the Verifiable AI Provenance (VAP) Framework, addresses these gaps through mathematically provable completeness guarantees, privacy-preserving verification, and forensic-grade evidence chains.</p>
+                    <p style="margin-bottom: 0;">This article provides a comprehensive technical comparison of both protocols. Our goal is not to position CPP as a replacement for C2PA, but to articulate how these protocols serve <strong>complementary purposes</strong>—and why certain applications demand the stronger guarantees that CPP provides.</p>
+                </div>
+
+                <!-- Table of Contents -->
+                <div class="toc-container">
+                    <h3><i class="fas fa-list mr-2"></i>Table of Contents</h3>
+                    <ol>
+                        <li><a href="#trust-crisis">The Trust Crisis in Digital Media</a></li>
+                        <li><a href="#c2pa-examined">C2PA: The Industry Standard Examined</a></li>
+                        <li><a href="#cpp-design">CPP: Forensic-Grade Provenance by Design</a></li>
+                        <li><a href="#architecture">Architectural Philosophy: Where the Protocols Diverge</a></li>
+                        <li><a href="#cryptographic">Cryptographic Foundations Compared</a></li>
+                        <li><a href="#completeness">The Completeness Problem: C2PA's Achilles Heel</a></li>
+                        <li><a href="#privacy">Privacy Architectures: Opposing Approaches</a></li>
+                        <li><a href="#metadata">The Metadata Stripping Challenge</a></li>
+                        <li><a href="#use-cases">Use Case Alignment</a></li>
+                        <li><a href="#conclusion">Conclusion: Choosing the Right Protocol</a></li>
+                    </ol>
+                </div>
+
+                <!-- Section 1: Trust Crisis -->
+                <h2 id="trust-crisis">1. The Trust Crisis in Digital Media</h2>
+                
+                <p>We stand at an inflection point in the history of digital media. The same AI technologies that enable remarkable creative possibilities have fundamentally undermined our ability to trust what we see. Deepfakes can place words in the mouths of world leaders. AI-generated images win photography competitions. Synthetic voices clone individuals with mere seconds of training data.</p>
+                
+                <p>Consider these scenarios:</p>
+                
+                <ul>
+                    <li>A journalist captures photos of human rights abuses. An authoritarian government claims the images are AI-generated. <strong>Can the journalist prove, cryptographically, that these images were captured at a specific time and place?</strong></li>
+                    <li>An insurance company receives a claim with photographic evidence. The claimant has 50 photos, but the adjuster suspects some unfavorable images were deleted. <strong>Can the company verify that no images are missing from the collection?</strong></li>
+                    <li>A financial regulator audits a trading firm. The firm provides decision logs, but the regulator needs mathematical proof that no decisions were omitted. <strong>Can the audit trail detect tampering that occurred after the fact?</strong></li>
+                </ul>
+                
+                <div class="key-finding">
+                    <p style="margin-bottom: 0;"><strong>C2PA was not designed to answer these questions. The Content Provenance Protocol was.</strong></p>
+                </div>
+
+                <!-- Section 2: C2PA Examined -->
+                <h2 id="c2pa-examined">2. C2PA: The Industry Standard Examined</h2>
+                
+                <h3>2.1 Technical Architecture</h3>
+                
+                <p>C2PA builds on a mature technical foundation:</p>
+                
+                <ul>
+                    <li><strong>Container Format:</strong> JUMBF (ISO 19566-5) provides structural foundation</li>
+                    <li><strong>Signature Mechanism:</strong> COSE Sign1_Tagged structures (ES256, ES384, EdDSA, PS256)</li>
+                    <li><strong>Trust Infrastructure:</strong> X.509 certificate chains validated against C2PA Trust Lists</li>
+                    <li><strong>Hashing:</strong> SHA-256/384/512 with optional RFC 3161 timestamping</li>
+                </ul>
+                
+                <h3>2.2 Ecosystem Adoption</h3>
+                
+                <div class="c2pa-advantage">
+                    <h4 style="color: #c084fc; margin-top: 0;"><i class="fas fa-industry mr-2"></i>C2PA has achieved remarkable adoption:</h4>
+                    <ul>
+                        <li><strong>Hardware:</strong> Sony, Nikon, Leica, Canon implementing capture-time signing</li>
+                        <li><strong>Software:</strong> Adobe Creative Cloud, Microsoft Office support</li>
+                        <li><strong>Platforms:</strong> LinkedIn, Meta implementing Content Credentials display</li>
+                        <li><strong>AI Labeling:</strong> OpenAI, Google, Adobe attach credentials to AI content</li>
+                        <li><strong>Members:</strong> 6,000+ Content Authenticity Initiative members</li>
+                    </ul>
+                </div>
+                
+                <h3>2.3 Acknowledged Limitations</h3>
+                
+                <p>C2PA's specification documents acknowledge several limitations:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Limitation</th>
+                            <th>Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Provenance ≠ Truth</strong></td>
+                            <td>Does not verify factual accuracy, only that someone signed it</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Metadata Stripping</strong></td>
+                            <td>95%+ of images lose manifests on social platforms</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Self-Attestation</strong></td>
+                            <td>Creators sign their own claims; no independent verification</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Trust List Centralization</strong></td>
+                            <td>Access gated by consortium members</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Exclusion Lists</strong></td>
+                            <td>Some modifications don't invalidate authenticity</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 3: CPP Design -->
+                <h2 id="cpp-design">3. CPP: Forensic-Grade Provenance by Design</h2>
+                
+                <p>The Content Provenance Protocol (CPP) emerged from the Verifiable AI Provenance (VAP) Framework. CPP specifically addresses: <em>Can we cryptographically prove that media was actually captured at a specific moment, and that no captures have been omitted?</em></p>
+                
+                <h3>3.1 Core Innovations</h3>
+                
+                <div class="cpp-advantage">
+                    <h4 style="color: #4ade80; margin-top: 0;"><i class="fas fa-shield-alt mr-2"></i>CPP introduces six architectural innovations absent from C2PA:</h4>
+                    
+                    <p><strong>1. External Third-Party Verification (RFC 3161 TSA Mandatory)</strong></p>
+                    <pre><code>C2PA Model: Creator signs → "Trust me" → NO INDEPENDENT CHECK
+CPP Model:  Creator signs → TSA countersigns → INDEPENDENT THIRD-PARTY</code></pre>
+                    
+                    <p><strong>2. Completeness Invariant (Omission Detection)</strong></p>
+                    <p>Using XOR hash sums, verification fails if any image is removed:</p>
+                    <pre><code>Stored:   H(E₁) ⊕ H(E₂) ⊕ H(E₃) ⊕ H(E₄)
+Missing:  H(E₁) ⊕ H(E₂) ⊕ H(E₄)
+Result:   Mismatch → VIOLATION DETECTED</code></pre>
+                    
+                    <p><strong>3. Verification URL Architecture</strong></p>
+                    <p>Permanent URLs survive platform processing with 99.95% availability, 50+ year retention.</p>
+                    
+                    <p><strong>4. Privacy by Design</strong></p>
+                    <p>Location OFF by default. Zero-knowledge ACE proves human authentication without storing biometric data.</p>
+                    
+                    <p><strong>5. No Exclusion Lists</strong></p>
+                    <p>Any modification invalidates the cryptographic proof.</p>
+                    
+                    <p style="margin-bottom: 0;"><strong>6. Clear UI Guidelines</strong></p>
+                    <p style="margin-bottom: 0;">Mandates "Provenance Available" not "Verified" to prevent user misconception.</p>
+                </div>
+                
+                <h3>3.2 Three-Layer Architecture</h3>
+                
+                <pre><code>┌────────────────────────────────────────────────────────────┐
+│ Layer 3: External Verifiability (RFC 3161 TSA)            │
+│   → Independent third-party timestamp                      │
+├────────────────────────────────────────────────────────────┤
+│ Layer 2: Collection Integrity (Merkle + Completeness)     │
+│   → Deletion detection via XOR hash sum                    │
+├────────────────────────────────────────────────────────────┤
+│ Layer 1: Event Integrity (SHA-256 + Ed25519)              │
+│   → Individual event tamper-evidence                       │
+└────────────────────────────────────────────────────────────┘</code></pre>
+
+                <!-- Section 4: Architecture -->
+                <h2 id="architecture">4. Architectural Philosophy: Where the Protocols Diverge</h2>
+                
+                <h3>4.1 Different Questions, Different Answers</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dimension</th>
+                            <th class="protocol-badge badge-c2pa">C2PA</th>
+                            <th class="protocol-badge badge-cpp">CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Primary Question</strong></td>
+                            <td>What happened to this content?</td>
+                            <td>Was this actually captured?</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Threat Model</strong></td>
+                            <td>Content modification</td>
+                            <td>Omission, backdating, false claims</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Trust Basis</strong></td>
+                            <td>Signer reputation</td>
+                            <td>Cryptographic proof</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Verification</strong></td>
+                            <td>Certificate chain</td>
+                            <td>Independent third-party</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Completeness</strong></td>
+                            <td>Individual files</td>
+                            <td>Collections and sessions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Target Context</strong></td>
+                            <td>Content distribution</td>
+                            <td>Legal/regulatory proof</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>Neither model is inherently superior. They address different requirements.</p>
+
+                <!-- Section 5: Cryptographic -->
+                <h2 id="cryptographic">5. Cryptographic Foundations Compared</h2>
+                
+                <h3>5.1 Signature Algorithms</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Protocol</th>
+                            <th>Primary</th>
+                            <th>Post-Quantum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="protocol-badge badge-c2pa">C2PA</span></td>
+                            <td>ES256 (ECDSA P-256)</td>
+                            <td>Not specified</td>
+                        </tr>
+                        <tr>
+                            <td><span class="protocol-badge badge-cpp">CPP</span></td>
+                            <td>Ed25519 (~30× faster)</td>
+                            <td>ML-DSA, FALCON planned</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>5.2 Timestamp Precision</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CPP Tier</th>
+                            <th>Precision</th>
+                            <th>Anchor Interval</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Platinum</strong></td>
+                            <td>PTPv2 &lt;1μs</td>
+                            <td>10 minutes</td>
+                            <td>High-frequency trading</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gold</strong></td>
+                            <td>NTP &lt;1ms</td>
+                            <td>1 hour</td>
+                            <td>Institutional</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Silver</strong></td>
+                            <td>Best-effort</td>
+                            <td>24 hours</td>
+                            <td>General capture</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 6: Completeness -->
+                <h2 id="completeness">6. The Completeness Problem: C2PA's Achilles Heel</h2>
+                
+                <h3>6.1 Understanding Omission Attacks</h3>
+                
+                <p>Imagine: A building inspector photographs 100 code violations. Later, facing pressure, they delete 20 photos showing the most serious violations. The remaining 80 photos have valid C2PA signatures.</p>
+                
+                <div class="key-finding">
+                    <p><strong>Can anyone prove photos are missing?</strong></p>
+                    <ul>
+                        <li><span class="protocol-badge badge-c2pa">C2PA</span>: <strong>No.</strong> Each manifest is independent.</li>
+                        <li><span class="protocol-badge badge-cpp">CPP</span>: <strong>Yes.</strong> The Completeness Invariant immediately reveals the mismatch.</li>
+                    </ul>
+                </div>
+                
+                <h3>6.2 Why This Matters</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>C2PA</th>
+                            <th>CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Selective evidence deletion</td>
+                            <td>❌ Undetectable</td>
+                            <td>✅ Detected</td>
+                        </tr>
+                        <tr>
+                            <td>Cherry-picked documentation</td>
+                            <td>❌ Undetectable</td>
+                            <td>✅ Detected</td>
+                        </tr>
+                        <tr>
+                            <td>Partial disclosure</td>
+                            <td>❌ Undetectable</td>
+                            <td>✅ Detected</td>
+                        </tr>
+                        <tr>
+                            <td>Manufactured gaps</td>
+                            <td>❌ Undetectable</td>
+                            <td>✅ Detected</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 7: Privacy -->
+                <h2 id="privacy">7. Privacy Architectures: Opposing Approaches</h2>
+                
+                <h3>7.1 Comparison</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>C2PA</th>
+                            <th>CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Default location</td>
+                            <td>Implementation-dependent</td>
+                            <td><strong>Off</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Biometric data</td>
+                            <td>Not addressed</td>
+                            <td><strong>Never stored</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Identity exposure</td>
+                            <td>Certificate-based (exposed)</td>
+                            <td>DID-based (controllable)</td>
+                        </tr>
+                        <tr>
+                            <td>Data deletion</td>
+                            <td>Complex</td>
+                            <td><strong>Crypto-shredding</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Processing location</td>
+                            <td>Implementation-dependent</td>
+                            <td><strong>Edge-first</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>For at-risk users—journalists in hostile environments, activists documenting abuses, whistleblowers—CPP's privacy architecture provides meaningful protection.</p>
+
+                <!-- Section 8: Metadata -->
+                <h2 id="metadata">8. The Metadata Stripping Challenge</h2>
+                
+                <p>Social platforms routinely strip metadata during upload. C2PA estimates <strong>95%+ of images lose their manifests</strong>.</p>
+                
+                <h3>8.1 CPP's Solution: Verification URLs + Perceptual Hashing</h3>
+                
+                <pre><code>https://verify.veritaschain.org/cpp/CPP-2026-ABC123XYZ</code></pre>
+                
+                <p>Combined with pHash (perceptual hashing), verification remains possible even when all metadata is stripped:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transformation</th>
+                            <th>pHash Survival</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>JPEG compression</td><td>✓</td></tr>
+                        <tr><td>Resizing</td><td>✓</td></tr>
+                        <tr><td>Minor color adjustment</td><td>✓</td></tr>
+                        <tr><td>Platform processing</td><td>✓</td></tr>
+                        <tr><td>Screenshots</td><td>Partial</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 9: Use Cases -->
+                <h2 id="use-cases">9. Use Case Alignment</h2>
+                
+                <div class="c2pa-advantage">
+                    <h3 style="color: #c084fc; margin-top: 0;"><i class="fas fa-check-circle mr-2"></i>Choose C2PA when:</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li>Broad platform compatibility is essential</li>
+                        <li>Edit history documentation is the primary requirement</li>
+                        <li>Existing tools and workflows must be preserved</li>
+                        <li>AI content labeling is the use case</li>
+                        <li>Rapid deployment with ecosystem support is needed</li>
+                    </ul>
+                </div>
+                
+                <div class="cpp-advantage">
+                    <h3 style="color: #4ade80; margin-top: 0;"><i class="fas fa-shield-alt mr-2"></i>Choose CPP when:</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li>Completeness proofs are required</li>
+                        <li>Legal admissibility is a concern</li>
+                        <li>Privacy-preserving identity is necessary</li>
+                        <li>Adversarial contexts are anticipated</li>
+                        <li>Regulatory compliance demands forensic-grade audit trails</li>
+                        <li>Timestamp precision matters</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-box">
+                    <h3 style="color: #60a5fa; margin-top: 0;"><i class="fas fa-handshake mr-2"></i>Consider both when:</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li>Internal verification requires CPP guarantees</li>
+                        <li>External distribution requires C2PA compatibility</li>
+                        <li>Different stakeholders have different trust requirements</li>
+                        <li>Workflows span capture through publication</li>
+                    </ul>
+                </div>
+
+                <!-- Section 10: Conclusion -->
+                <h2 id="conclusion">10. Conclusion: Choosing the Right Protocol</h2>
+                
+                <h3>Summary Comparison</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Capability</th>
+                            <th>C2PA</th>
+                            <th>CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Omission attack detection</td>
+                            <td>❌ Not addressed</td>
+                            <td>✅ Completeness Invariant</td>
+                        </tr>
+                        <tr>
+                            <td>Screenshot survival</td>
+                            <td>⚠️ Limited</td>
+                            <td>✅ Verification URL + pHash</td>
+                        </tr>
+                        <tr>
+                            <td>Microsecond timestamps</td>
+                            <td>❌ Millisecond typical</td>
+                            <td>✅ IEEE 1588 PTP</td>
+                        </tr>
+                        <tr>
+                            <td>Post-quantum readiness</td>
+                            <td>❌ Not specified</td>
+                            <td>✅ ML-DSA migration path</td>
+                        </tr>
+                        <tr>
+                            <td>Human presence proof</td>
+                            <td>❌ Device only</td>
+                            <td>✅ ACE Extension</td>
+                        </tr>
+                        <tr>
+                            <td>Privacy-by-design</td>
+                            <td>⚠️ Optional</td>
+                            <td>✅ Architectural principle</td>
+                        </tr>
+                        <tr>
+                            <td>Ecosystem maturity</td>
+                            <td>✅ Extensive</td>
+                            <td>⚠️ Emerging</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="key-finding" style="margin-top: 2rem;">
+                    <h3 style="color: #fbbf24; margin-top: 0;"><i class="fas fa-lightbulb mr-2"></i>The Fundamental Question</h3>
+                    <p>C2PA provides <em>sufficient</em> provenance for media distribution—answering "who created this and was it modified?"</p>
+                    <p>CPP provides <em>forensic-grade</em> provenance for high-stakes scenarios—answering "can we mathematically prove nothing was deleted, when exactly this was captured, and that a human was present?"</p>
+                    <p style="margin-bottom: 0;"><strong>The future of digital trust is not a single standard, but a spectrum of guarantees matched to the stakes involved.</strong></p>
+                </div>
+
+            </article>
+
+            <!-- Resources Section -->
+            <div style="background: rgba(30, 41, 59, 0.8); border: 1px solid #334155; border-radius: 0.75rem; padding: 2rem; margin-top: 3rem;">
+                <h3 style="color: #f1f5f9; margin-bottom: 1.5rem;"><i class="fas fa-book mr-2"></i>Specification References</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <h4 style="color: #c084fc; margin-bottom: 0.5rem;">C2PA</h4>
+                        <a href="https://c2pa.org/specifications/" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">Specification v2.3</a>
+                        <a href="https://cawg.io/" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">CAWG (Creator Assertions)</a>
+                    </div>
+                    <div>
+                        <h4 style="color: #4ade80; margin-bottom: 0.5rem;">CPP/VAP</h4>
+                        <a href="https://github.com/veritaschain/cpp-spec" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">CPP Specification v1.0</a>
+                        <a href="https://github.com/veritaschain/vap-spec" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VAP Framework v1.2</a>
+                    </div>
+                    <div>
+                        <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">Implementation</h4>
+                        <a href="https://veritaschain.org/vap/cpp/vericapture" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCapture (iOS)</a>
+                        <a href="https://veritaschain.org/vap/cpp/vericheck" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCheck (Web)</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #334155;">
+                <a href="/blog/" style="color: #60a5fa; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Blog
+                </a>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/&text=C2PA%20vs%20CPP%3A%20Why%20Content%20Provenance%20Needs%20a%20New%20Approach" target="_blank" style="color: #60a5fa; font-size: 1.5rem;">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/" target="_blank" style="color: #60a5fa; font-size: 1.5rem;">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: rgba(15, 23, 42, 0.95); border-top: 1px solid #1e293b; padding: 2rem 1rem; margin-top: 4rem;">
+        <div class="max-w-6xl mx-auto text-center">
+            <p style="color: #64748b; margin-bottom: 0.5rem;">
+                © 2026 VeritasChain Standards Organization. Licensed under CC BY 4.0.
+            </p>
+            <p style="color: #3b82f6; font-weight: 600;">
+                Verify, Don't Trust.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
