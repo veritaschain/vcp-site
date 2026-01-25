@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4つの検証済みインシデント、7億ドルの規制罰金、そしてアルゴリズム説明責任のアーキテクチャ | VeritasChain Blog</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="シティグループ、ジェーン・ストリート、日本のフラッシュクラッシュ、ワルシャワの取引停止が暗号学的監査標準の緊急性を明らかにし、VCP v1.1が技術的解決策である理由">
+    <meta name="keywords" content="VCP v1.1, Citigroup, Jane Street, SEBI, FCA, algorithmic trading, flash crash, audit trails, cryptographic verification, MiFID II, EU AI Act">
+    <meta name="author" content="VeritasChain Standards Organization">
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-25-four-incidents-700m-penalties-vcp/ja/">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="4つの検証済みインシデント、7億ドルの規制罰金、そしてアルゴリズム説明責任のアーキテクチャ">
+    <meta property="og:description" content="暗号学的監査標準の緊急性とVCP v1.1ソリューション">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-25-four-incidents-700m-penalties-vcp/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Four Verified Incidents, $700M Penalties: VCP v1.1 Solution">
+    <meta name="twitter:description" content="How Citigroup, Jane Street, Japan Flash Crash, and Warsaw reveal the need for cryptographic audit standards">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Article Meta -->
+    <meta property="article:published_time" content="2026-01-25">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Case Analysis">
+    <meta property="article:tag" content="VCP v1.1">
+    <meta property="article:tag" content="Citigroup">
+    <meta property="article:tag" content="Jane Street">
+    <meta property="article:tag" content="SEBI">
+    <meta property="article:tag" content="FCA">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .article-content {
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+        
+        .article-content h2 {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3b82f6;
+        }
+        
+        .article-content h3 {
+            color: #e2e8f0;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-content h4 {
+            color: #cbd5e1;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .article-content p {
+            margin-bottom: 1.25rem;
+        }
+        
+        .article-content ul, .article-content ol {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+        }
+        
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .article-content a {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+        
+        .article-content a:hover {
+            color: #93c5fd;
+        }
+        
+        .article-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: #94a3b8;
+            font-style: italic;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .article-content code {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        .article-content pre {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .article-content pre code {
+            background: transparent;
+            padding: 0;
+            color: #e2e8f0;
+        }
+        
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .article-content th {
+            background: rgba(59, 130, 246, 0.2);
+            color: #f1f5f9;
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #334155;
+        }
+        
+        .article-content td {
+            padding: 0.75rem;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+        }
+        
+        .article-content tr:nth-child(even) {
+            background: rgba(30, 41, 59, 0.5);
+        }
+        
+        .key-finding {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .incident-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .vcp-solution {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .stat-highlight {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+            color: #fca5a5;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .toc-container {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .toc-container h3 {
+            color: #f1f5f9;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .toc-container ol {
+            color: #94a3b8;
+            padding-left: 1.5rem;
+        }
+        
+        .toc-container li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc-container a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+        
+        .toc-container a:hover {
+            text-decoration: underline;
+        }
+        
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .badge-high {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .badge-medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+    </style>
+</head>
+<body class="text-gray-300">
+    <!-- Header -->
+    <header style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #1e293b; position: sticky; top: 0; z-index: 100;">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <nav class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-link text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">VeritasChain</span>
+                </a>
+                <div class="flex items-center gap-6">
+                    <a href="/blog/ja/" class="text-blue-400 hover:text-blue-300 transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>ブログに戻る
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article Header -->
+    <section style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); padding: 4rem 1rem;">
+        <div class="article-container">
+            <div class="flex items-center gap-3 mb-4">
+                <span style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem;">
+                    <i class="fas fa-search mr-1"></i> ケース分析
+                </span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem;">
+                    <i class="fas fa-globe mr-1"></i> JA
+                </span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                4つの検証済みインシデント、7億ドルの規制罰金、そしてアルゴリズム説明責任のアーキテクチャ
+            </h1>
+            
+            <p class="text-xl text-gray-300 mb-6">
+                シティグループ、ジェーン・ストリート、日本のフラッシュクラッシュ、ワルシャワの取引停止が暗号学的監査標準の緊急性を明らかにし、VCP v1.1が技術的解決策である理由
+            </p>
+            
+            <div class="flex flex-wrap items-center gap-4 text-gray-400">
+                <span><i class="far fa-calendar mr-2"></i>2026年1月25日</span>
+                <span><i class="far fa-clock mr-2"></i>約50分</span>
+                <span><i class="far fa-building mr-2"></i>VeritasChain Standards Organization</span>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 mt-6">
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">VCP v1.1</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">Citigroup</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">Jane Street</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">SEBI</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">FCA</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <main style="padding: 3rem 1rem;">
+        <div class="article-container">
+            <article class="article-content">
+                
+                <!-- Executive Summary -->
+                <div class="key-finding">
+                    <h3 style="color: #fca5a5; margin-top: 0;"><i class="fas fa-exclamation-triangle mr-2"></i>エグゼクティブサマリー</h3>
+                    <p>Between May 2022 and April 2025, four major algorithmic trading incidents resulted in over <span class="stat-highlight">$700 million in combined regulatory penalties</span>, triggered trading halts across multiple continents, and exposed fundamental weaknesses in how financial markets audit automated decision-making systems.</p>
+                    
+                    <p><strong>Key Findings:</strong></p>
+                    <ol>
+                        <li><strong>All four incidents share a common pattern</strong>: the audited party controlled the audit evidence, creating asymmetric information that sophisticated actors exploited</li>
+                        <li><strong>Traditional compliance systems failed despite extensive warning mechanisms</strong>: Citigroup's system generated 711 warnings that were overridden in a single pop-up window</li>
+                        <li><strong>Cross-market manipulation requires cross-party verification</strong>: Jane Street's alleged strategy exploited the absence of coordinated audit trails between cash and derivatives markets</li>
+                        <li><strong>Systemic stress amplifies algorithmic feedback loops</strong>: Both the Japan crash and Warsaw halt demonstrated how algorithmic trading can transform market stress into cascade failures</li>
+                        <li><strong>VCP v1.1's mandatory external anchoring addresses the root cause</strong>: Producer-independent verification eliminates the "audited party controls evidence" paradox</li>
+                    </ol>
+                    
+                    <p style="margin-bottom: 0;"><strong>Methodology Note:</strong> This analysis explicitly excludes the "SIMONE AI" incident reported in certain publications, which our fact-checking process identified as April Fools' satire. All incidents analyzed herein are verified through primary regulatory sources.</p>
+                </div>
+
+                <!-- Table of Contents -->
+                <div class="toc-container">
+                    <h3><i class="fas fa-list mr-2"></i>目次</h3>
+                    <ol>
+                        <li><a href="#introduction">はじめに：アルゴリズム説明責任の危機</a></li>
+                        <li><a href="#methodology">ファクトチェック方法論</a></li>
+                        <li><a href="#citigroup">インシデント分析：シティグループ欧州フラッシュクラッシュ</a></li>
+                        <li><a href="#jane-street">インシデント分析：ジェーン・ストリートSEBI執行</a></li>
+                        <li><a href="#japan-crash">インシデント分析：2024年8月日本市場クラッシュ</a></li>
+                        <li><a href="#warsaw">インシデント分析：ワルシャワ証券取引所取引停止</a></li>
+                        <li><a href="#common-thread">共通する糸：生産者が管理する証拠</a></li>
+                        <li><a href="#vcp-architecture">VCP v1.1技術アーキテクチャ</a></li>
+                        <li><a href="#vcp-mapping">インシデント別VCPマッピング</a></li>
+                        <li><a href="#regulatory-framework">規制フレームワーク分析</a></li>
+                        <li><a href="#implementation">実装ロードマップ</a></li>
+                        <li><a href="#conclusion">結論：信頼から検証へ</a></li>
+                    </ol>
+                </div>
+
+                <!-- Introduction -->
+                <h2 id="introduction">1. Introduction: The Algorithmic Accountability Crisis</h2>
+                
+                <h3>The Scale of the Problem</h3>
+                
+                <p>Modern financial markets operate at speeds that fundamentally exceed human cognitive capabilities. A high-frequency trading algorithm can submit, modify, and cancel thousands of orders per second. A market-making system can update quotes every 25 microseconds. An AI-driven strategy can process millions of data points before generating a single trading decision.</p>
+                
+                <p>This operational velocity creates what we term the <strong>accountability gap</strong>: the interval between when algorithmic decisions occur and when human oversight can meaningfully evaluate them. In traditional markets, this gap was measured in hours or days. In algorithmic markets, this gap has collapsed to milliseconds—while the evidentiary requirements for post-incident investigation have become exponentially more complex.</p>
+                
+                <p>The four incidents analyzed in this report collectively demonstrate that:</p>
+                
+                <ul>
+                    <li><span class="stat-highlight">$444 billion</span> in erroneous orders can be submitted in minutes (Citigroup)</li>
+                    <li><span class="stat-highlight">$566 million</span> in alleged manipulation profits can accumulate over 18 derivative expiry dates (Jane Street)</li>
+                    <li><span class="stat-highlight">12.4%</span> of market capitalization can evaporate in a single trading session (Japan)</li>
+                    <li><span class="stat-highlight">300%</span> order volume surges can overwhelm exchange systems (Warsaw)</li>
+                </ul>
+
+                <h3>The Verification Imperative</h3>
+                
+                <p>Traditional financial compliance operates on a "trust, then verify" model:</p>
+                
+                <ol>
+                    <li>Trading firms implement logging systems according to regulatory requirements</li>
+                    <li>Regulators assume logs are complete and accurate</li>
+                    <li>Periodic audits sample log accuracy</li>
+                    <li>Discrepancies trigger investigations</li>
+                </ol>
+                
+                <p>This model fails catastrophically when:</p>
+                
+                <ul>
+                    <li><strong>Logs can be modified</strong> before audits occur</li>
+                    <li><strong>Completeness cannot be proven</strong> (absence of evidence is not evidence of absence)</li>
+                    <li><strong>Timing cannot be verified</strong> (microsecond-level causation requires authoritative timestamps)</li>
+                    <li><strong>Cross-party reconciliation is impossible</strong> (adversarial parties present conflicting accounts)</li>
+                </ul>
+                
+                <div class="vcp-solution">
+                    <h4 style="color: #4ade80; margin-top: 0;"><i class="fas fa-check-circle mr-2"></i>VCP v1.1 inverts this model to "verify, don't trust":</h4>
+                    <ol>
+                        <li>Trading systems produce cryptographically bound logs with hash chains</li>
+                        <li>Logs are batched into Merkle trees with signed tree heads</li>
+                        <li>Merkle roots are anchored to external systems beyond producer control</li>
+                        <li>Third parties can verify log integrity without trusting producers</li>
+                    </ol>
+                </div>
+
+                <!-- Methodology -->
+                <h2 id="methodology">2. Fact-Checking Methodology</h2>
+                
+                <h3>Source Hierarchy</h3>
+                
+                <p>This analysis employs a rigorous source hierarchy to ensure factual accuracy:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Source Type</th>
+                            <th>Confidence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tier 1</strong></td>
+                            <td>Official regulatory enforcement orders, exchange statements, government publications</td>
+                            <td>Highest</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tier 2</strong></td>
+                            <td>Bloomberg, Reuters, CNBC, Financial Times, Oxford Law Blogs</td>
+                            <td>High</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tier 3</strong></td>
+                            <td>Secondary aggregators, industry analysts, professional commentary</td>
+                            <td>Medium</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>Confidence Ratings:</strong></p>
+                <ul>
+                    <li><span class="verification-badge badge-high"><i class="fas fa-check"></i> HIGH (95-100%)</span>: Verified against primary regulatory documents</li>
+                    <li><span class="verification-badge badge-medium"><i class="fas fa-exclamation"></i> MEDIUM (70-94%)</span>: Verified against multiple financial news sources</li>
+                </ul>
+
+                <!-- Citigroup Incident -->
+                <h2 id="citigroup">3. Incident Analysis: Citigroup European Flash Crash</h2>
+                
+                <div class="incident-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin: 0; color: #60a5fa;">Citigroup Flash Crash</h3>
+                        <span class="verification-badge badge-high"><i class="fas fa-check-circle"></i> HIGH Confidence</span>
+                    </div>
+                    <table>
+                        <tr><td><strong>Date</strong></td><td>May 2, 2022</td></tr>
+                        <tr><td><strong>Location</strong></td><td>London (Citigroup Global Markets Limited)</td></tr>
+                        <tr><td><strong>Impact</strong></td><td>OMX Stockholm 30 dropped 8% in 5 minutes; €300 billion in temporary market cap loss</td></tr>
+                        <tr><td><strong>Total Penalties</strong></td><td><span class="stat-highlight">~$92 million</span> (FCA £27.8M + PRA £33.9M + BaFin €13M + SIX CHF 500K)</td></tr>
+                    </table>
+                </div>
+                
+                <h3>Verified Facts</h3>
+                
+                <p>On May 2, 2022, a trader on Citigroup's Delta 1 desk intended to sell a basket of 349 stocks worth approximately <strong>$58 million</strong>. Due to a data entry error, the trader entered "58 million" in the quantity field rather than the notional value field, creating an order worth <strong>$444 billion</strong>—approximately 7,655 times the intended size.</p>
+                
+                <p><em>Primary Source: FCA Final Notice, May 22, 2024; PRA Final Notice, May 22, 2024</em></p>
+                
+                <p>Citigroup's pre-trade risk controls blocked <strong>$255 billion</strong> of the erroneous order through hard blocks. However, the remaining <strong>$189 billion</strong> was sent to algorithmic execution systems. Before the trader cancelled the error approximately <strong>15 minutes</strong> later, <strong>$1.4 billion</strong> in actual trades had executed.</p>
+                
+                <h3>The 711 Warning Messages</h3>
+                
+                <div class="warning-box">
+                    <h4 style="color: #fbbf24; margin-top: 0;"><i class="fas fa-exclamation-triangle mr-2"></i>Critical Control Failure</h4>
+                    <p>The trader received <strong>711 warning messages</strong> before the erroneous orders were submitted:</p>
+                    <ul>
+                        <li><strong>65 hard blocks</strong>: Automatically stopped $248 billion of orders</li>
+                        <li><strong>646 soft blocks</strong>: Presented in a single pop-up window where only 18 lines were visible without scrolling</li>
+                    </ul>
+                    <p style="margin-bottom: 0;">The FCA noted that soft block warnings were "presented in a manner that did not adequately draw attention to the risks" and "allowed traders to override multiple warnings simultaneously."</p>
+                </div>
+                
+                <h3>Regulatory Findings</h3>
+                
+                <p><strong>FCA Violations:</strong></p>
+                <ul>
+                    <li>Principle 3: Failure to organize and control affairs responsibly with adequate risk management</li>
+                    <li>SYSC 6.1.1R: Failure to establish effective systems and controls</li>
+                </ul>
+                
+                <p><strong>Key Finding:</strong> The PRA noted that CGML had received supervisory feedback about trading system controls between April 2018 and May 2022—<strong>four years of warnings</strong> that were not adequately addressed.</p>
+                
+                <h3>Audit Trail Failure Analysis</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Failure</th>
+                            <th>VCP v1.1 Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Warning aggregation without context</td>
+                            <td>VCP-GOV events capture individual acknowledgment timestamps, display duration, scroll position</td>
+                        </tr>
+                        <tr>
+                            <td>No real-time external verification</td>
+                            <td>Mandatory external anchoring creates producer-independent timestamps at key decision points</td>
+                        </tr>
+                        <tr>
+                            <td>Control parameter drift</td>
+                            <td>VCP-GOV.PAR events with hash chains create tamper-evident parameter modification records</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Jane Street Incident -->
+                <h2 id="jane-street">4. Incident Analysis: Jane Street SEBI Enforcement</h2>
+                
+                <div class="incident-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin: 0; color: #60a5fa;">Jane Street SEBI Enforcement</h3>
+                        <span class="verification-badge badge-high"><i class="fas fa-check-circle"></i> HIGH Confidence</span>
+                    </div>
+                    <table>
+                        <tr><td><strong>Date</strong></td><td>July 3, 2025 (interim order)</td></tr>
+                        <tr><td><strong>Location</strong></td><td>India (NSE, BSE)</td></tr>
+                        <tr><td><strong>Period</strong></td><td>January 2023 – March 2025 (18 derivative expiry dates)</td></tr>
+                        <tr><td><strong>Asset Freeze</strong></td><td><span class="stat-highlight">₹4,843.57 crore (~$566 million)</span></td></tr>
+                        <tr><td><strong>Status</strong></td><td>Appeal pending; next hearing February 25, 2026</td></tr>
+                    </table>
+                </div>
+                
+                <h3>Verified Facts</h3>
+                
+                <p>On July 3, 2025, SEBI issued a <strong>105-page interim order</strong> against Jane Street Group, alleging coordinated market manipulation across 18 derivative expiry dates involving Bank Nifty and Nifty indices.</p>
+                
+                <p>SEBI alleged Jane Street employed an <strong>"expiry-day trap"</strong> strategy:</p>
+                
+                <ol>
+                    <li><strong>Morning Phase:</strong> Aggressive buying of Bank Nifty constituent stocks (e.g., ₹4,370 crore on January 17, 2024), inflating the index by 1-1.3%</li>
+                    <li><strong>Simultaneous Options Positioning:</strong> Building massive bearish options positions with delta-equivalent exposure <strong>7.3x larger</strong> than the cash market position</li>
+                    <li><strong>Afternoon Reversal:</strong> Selling the cash positions, causing index decline at expiry</li>
+                    <li><strong>Profit Extraction:</strong> Options settle at manipulated lower price</li>
+                </ol>
+                
+                <p>This represents the <strong>largest asset freeze in SEBI's history</strong> for a market manipulation case.</p>
+                
+                <h3>Audit Trail Failure Analysis</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Failure</th>
+                            <th>VCP v1.1 Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cross-segment opacity</td>
+                            <td>VCP-XREF enables dual-party logging with SharedRefKey linking events across markets</td>
+                        </tr>
+                        <tr>
+                            <td>Beneficial ownership fragmentation</td>
+                            <td><code>beneficialOwner_commitment</code> enables cryptographic proof of ownership relationships</td>
+                        </tr>
+                        <tr>
+                            <td>Intent versus legitimate trading</td>
+                            <td>VCP-GOV.SIG captures <code>decision_factors</code> and <code>model_state</code> contemporaneously</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Japan Crash -->
+                <h2 id="japan-crash">5. Incident Analysis: Japan August 2024 Market Crash</h2>
+                
+                <div class="incident-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin: 0; color: #60a5fa;">Japan Market Crash</h3>
+                        <span class="verification-badge badge-medium"><i class="fas fa-exclamation"></i> MEDIUM Confidence</span>
+                    </div>
+                    <table>
+                        <tr><td><strong>Date</strong></td><td>August 5, 2024</td></tr>
+                        <tr><td><strong>Location</strong></td><td>Tokyo Stock Exchange</td></tr>
+                        <tr><td><strong>Impact</strong></td><td>Nikkei 225 dropped <span class="stat-highlight">12.4%</span> (4,451 points)—largest single-day point decline in history</td></tr>
+                        <tr><td><strong>Attribution</strong></td><td>Yen carry trade unwinding, amplified by algorithmic trading</td></tr>
+                    </table>
+                </div>
+                
+                <h3>Verified Facts (HIGH Confidence)</h3>
+                
+                <ul>
+                    <li>Nikkei 225 closed at <strong>31,458.42</strong>, down 4,451.28 points (-12.4%)</li>
+                    <li>Combined with August 2 decline of 5.8%, two-day drop totaled <strong>18.2%</strong></li>
+                    <li>Circuit breakers triggered on Nikkei 225 and TOPIX futures</li>
+                    <li>BOJ raised policy rate on July 31, 2024—second rate hike in 17 years</li>
+                </ul>
+                
+                <p><strong>Primary Cause:</strong> The Bank for International Settlements Bulletin No. 90 identifies leveraged carry trade unwinding as the primary cause, with an estimated <strong>¥40 trillion ($250 billion)</strong> in carry trade positions unwound.</p>
+                
+                <p><strong>Limitation:</strong> This crash was primarily driven by macroeconomic factors rather than algorithmic control failures. VCP would significantly improve forensic reconstruction but could not have prevented the underlying trigger.</p>
+
+                <!-- Warsaw Halt -->
+                <h2 id="warsaw">6. Incident Analysis: Warsaw Stock Exchange Trading Halt</h2>
+                
+                <div class="incident-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin: 0; color: #60a5fa;">Warsaw Trading Halt</h3>
+                        <span class="verification-badge badge-medium"><i class="fas fa-exclamation"></i> MEDIUM Confidence</span>
+                    </div>
+                    <table>
+                        <tr><td><strong>Date</strong></td><td>April 7, 2025</td></tr>
+                        <tr><td><strong>Location</strong></td><td>Warsaw Stock Exchange (GPW)</td></tr>
+                        <tr><td><strong>Duration</strong></td><td>75 minutes (15:15 – 16:30 local time)</td></tr>
+                        <tr><td><strong>Cause</strong></td><td>Record order volume from algorithmic trading systems</td></tr>
+                    </table>
+                </div>
+                
+                <h3>GPW Official Statement</h3>
+                
+                <blockquote>
+                    "The temporary suspension of the session on April 7, 2025 was due to the record number of broker's orders placed since the opening of the trading session... The number of placed and modified orders was unusually high, intensified by the activity of algorithmic trading strategies."
+                </blockquote>
+                
+                <p><strong>Order Volume:</strong> <span class="stat-highlight">300% above average</span> compared to typical trading days, <strong>40% higher</strong> than the previous trading day.</p>
+                
+                <p>Following this incident, GPW announced it is "reviewing regulations for algorithmic trading" and ESMA published findings from its coordinated supervisory action on MiFID II pre-trade controls.</p>
+
+                <!-- Common Thread -->
+                <h2 id="common-thread">7. The Common Thread: Producer-Controlled Evidence</h2>
+                
+                <div class="key-finding">
+                    <h3 style="color: #fca5a5; margin-top: 0;"><i class="fas fa-link mr-2"></i>The Fundamental Problem</h3>
+                    <p>Across all four verified incidents, a single architectural flaw enabled or amplified the damage: <strong>the audited party controlled the audit evidence</strong>.</p>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Incident</th>
+                            <th>Producer</th>
+                            <th>Evidence Controlled</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Citigroup</td>
+                            <td>Citigroup</td>
+                            <td>Warning acknowledgments, parameter changes, order flow</td>
+                        </tr>
+                        <tr>
+                            <td>Jane Street</td>
+                            <td>Jane Street entities</td>
+                            <td>Trading intent, coordination evidence, beneficial ownership</td>
+                        </tr>
+                        <tr>
+                            <td>Japan Crash</td>
+                            <td>Multiple HFT firms, exchanges</td>
+                            <td>Order flow during stress, capacity utilization</td>
+                        </tr>
+                        <tr>
+                            <td>Warsaw GPW</td>
+                            <td>GPW, algorithmic traders</td>
+                            <td>Order submission patterns, system stress indicators</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>The Aviation Parallel</h3>
+                
+                <p>The aviation industry confronted an analogous problem in the mid-20th century. After crashes where pilot testimony conflicted with physical evidence, regulators mandated flight data recorders (FDRs) that:</p>
+                
+                <ul>
+                    <li>Could not be modified by pilots</li>
+                    <li>Were physically protected from crash damage</li>
+                    <li>Provided independent verification of actual events</li>
+                </ul>
+                
+                <p><strong>The critical innovation was not that FDRs recorded data—pilots already kept logs. The innovation was that pilots could not modify the recordings.</strong></p>
+                
+                <p>Financial markets have no equivalent. VCP v1.1 is designed to be the flight recorder for algorithmic trading.</p>
+
+                <!-- VCP Architecture -->
+                <h2 id="vcp-architecture">8. VCP v1.1 Technical Architecture</h2>
+                
+                <h3>Design Principles</h3>
+                
+                <ol>
+                    <li><strong>Producer Independence:</strong> Evidence integrity verifiable without trusting the producer</li>
+                    <li><strong>Cryptographic Completeness:</strong> Collections are provably complete via Merkle trees</li>
+                    <li><strong>Temporal Precision:</strong> Microsecond/nanosecond timestamps with PTPv2 synchronization</li>
+                    <li><strong>Crypto-Agility:</strong> Algorithm identifiers for post-quantum migration</li>
+                    <li><strong>Regulatory Alignment:</strong> Direct mapping to MiFID II, EU AI Act, SEC CAT requirements</li>
+                </ol>
+                
+                <h3>Three-Layer Architecture</h3>
+                
+                <div class="vcp-solution">
+                    <h4 style="color: #4ade80; margin-top: 0;"><i class="fas fa-layer-group mr-2"></i>Layer 1: Event Integrity</h4>
+                    <p>Every VCP v1.1 event contains: <code>protocolVersion</code>, <code>eventID</code> (UUIDv7), <code>traceID</code>, <code>eventType</code>, <code>timestamp</code>, <code>hashAlgo</code>, <code>eventHash</code>, optional <code>prevHash</code> and <code>signature</code>.</p>
+                    <p style="margin-bottom: 0;">Hash chains create tamper-evident history—modification of any event breaks the chain.</p>
+                </div>
+                
+                <div class="vcp-solution">
+                    <h4 style="color: #4ade80; margin-top: 0;"><i class="fas fa-sitemap mr-2"></i>Layer 2: Collection Integrity</h4>
+                    <p>RFC 6962-compliant Merkle tree construction with Signed Tree Heads (STH) committing to exact event counts.</p>
+                    <p style="margin-bottom: 0;">Inclusion proofs (O(log n)) demonstrate specific events are in committed batches. Consistency proofs verify earlier batches are not modified.</p>
+                </div>
+                
+                <div class="vcp-solution">
+                    <h4 style="color: #4ade80; margin-top: 0;"><i class="fas fa-anchor mr-2"></i>Layer 3: External Verifiability</h4>
+                    <p><strong>VCP v1.1 REQUIRES external anchoring</strong> to systems beyond producer control. This is the critical difference from traditional logging.</p>
+                    <table style="margin-top: 1rem;">
+                        <tr><th>Tier</th><th>Interval</th><th>Method</th><th>Target</th></tr>
+                        <tr><td>Platinum</td><td>10 minutes</td><td>Blockchain mandatory</td><td>HFT, exchanges</td></tr>
+                        <tr><td>Gold</td><td>1 hour</td><td>Blockchain or TSA</td><td>Institutional</td></tr>
+                        <tr><td>Silver</td><td>24 hours</td><td>TSA acceptable</td><td>Retail, prop firms</td></tr>
+                    </table>
+                </div>
+
+                <!-- VCP Mapping -->
+                <h2 id="vcp-mapping">9. Incident-by-Incident VCP Mapping</h2>
+                
+                <h3>Citigroup Flash Crash: VCP Technical Response</h3>
+                
+                <p><strong>Prevention Potential: HIGHEST</strong></p>
+                
+                <pre><code>{
+  "eventType": "GOV.ALERT_ACK",
+  "alertID": "uuid-warning-001",
+  "acknowledgmentType": "BULK_DISMISS",
+  "alertsInBatch": 646,
+  "displayDuration_ms": 2340,
+  "scrollPosition": 0.03,
+  "visibleAlerts": 18,
+  "timestamp": "2022-05-02T08:51:23.456789Z",
+  "prevHash": "abc123...",
+  "eventHash": "def456..."
+}</code></pre>
+                
+                <p>This single event would provide forensic evidence that 646 warnings were bulk-dismissed with only 18 visible and 2.3 seconds of display time—dramatically different from individual review.</p>
+                
+                <h3>Jane Street SEBI: Cross-Market Correlation</h3>
+                
+                <p><strong>Detection Potential: STRONG</strong></p>
+                
+                <pre><code>// Cash market event (NSE)
+{
+  "eventType": "TRADE.EXE",
+  "correlationID": "expiry-2024-01-17-strategy-alpha",
+  "side": "BUY",
+  "notional_INR": 437000000000,
+  "beneficialOwner_commitment": "hash(JSI-Investments-Mauritius)",
+  "linkedDerivativeRef": "opts-banknifty-2024-01-17"
+}
+
+// Derivatives market event (NSE F&O)
+{
+  "eventType": "TRADE.EXE",
+  "correlationID": "expiry-2024-01-17-strategy-alpha",
+  "instrumentType": "INDEX_OPTION",
+  "direction": "BEARISH",
+  "deltaEquivalent_INR": 3190100000000,
+  "beneficialOwner_commitment": "hash(JSI-Investments-Mauritius)"
+}</code></pre>
+                
+                <p>The <code>correlationID</code> and matching <code>beneficialOwner_commitment</code> would immediately reveal the relationship between cash buying and options positioning.</p>
+
+                <!-- Regulatory Framework -->
+                <h2 id="regulatory-framework">10. Regulatory Framework Analysis</h2>
+                
+                <h3>MiFID II Article 17 Requirements</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Requirement</th>
+                            <th>VCP v1.1 Mapping</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Resilient trading systems</td>
+                            <td>VCP-RISK monitoring and external anchoring</td>
+                        </tr>
+                        <tr>
+                            <td>Appropriate trading thresholds</td>
+                            <td>VCP-GOV.PAR parameter tracking</td>
+                        </tr>
+                        <tr>
+                            <td>Prevention of market disorder</td>
+                            <td>VCP-TRADE order lifecycle with anomaly detection</td>
+                        </tr>
+                        <tr>
+                            <td>Algorithm testing before deployment</td>
+                            <td>VCP-GOV.MOD deployment events</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>EU AI Act Article 12</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Article 12 Requirement</th>
+                            <th>VCP v1.1 Mapping</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Automatic event recording</td>
+                            <td>VCP-CORE mandatory fields</td>
+                        </tr>
+                        <tr>
+                            <td>Recording period identification</td>
+                            <td>STH timestamp range</td>
+                        </tr>
+                        <tr>
+                            <td>Input data logging</td>
+                            <td>VCP-AI prompt_components, decision_factors</td>
+                        </tr>
+                        <tr>
+                            <td>Human oversight identification</td>
+                            <td>VCP-GOV verifier_accountID_hash</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>The EU AI Act delay to 2027 creates a <strong>compliance gap</strong> that VCP can fill through voluntary adoption before mandatory requirements take effect.</p>
+
+                <!-- Implementation -->
+                <h2 id="implementation">11. Implementation Roadmap</h2>
+                
+                <h3>Compliance Tier Selection</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Environment</th>
+                            <th>Recommended Tier</th>
+                            <th>Key Requirements</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Retail prop firms, MT4/MT5</td>
+                            <td>Silver</td>
+                            <td>NTP sync, 24-hour anchoring</td>
+                        </tr>
+                        <tr>
+                            <td>Institutional asset managers</td>
+                            <td>Gold</td>
+                            <td>NTP sync, 1-hour anchoring</td>
+                        </tr>
+                        <tr>
+                            <td>HFT firms, exchanges</td>
+                            <td>Platinum</td>
+                            <td>PTPv2 sync, 10-minute anchoring</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Implementation Phases</h3>
+                
+                <ol>
+                    <li><strong>Phase 1: Assessment (Weeks 1-2)</strong> — Gap analysis, tier selection, anchoring service evaluation</li>
+                    <li><strong>Phase 2: Parallel Deployment (Weeks 3-6)</strong> — Deploy VCP sidecar, verify event capture</li>
+                    <li><strong>Phase 3: Collection Integrity (Weeks 7-10)</strong> — Enable Merkle batching, STH generation</li>
+                    <li><strong>Phase 4: External Anchoring (Weeks 11-14)</strong> — Configure and verify anchoring automation</li>
+                    <li><strong>Phase 5: Certification (Weeks 15-18)</strong> — Run conformance tests, security assessment</li>
+                </ol>
+
+                <!-- Conclusion -->
+                <h2 id="conclusion">12. Conclusion: From Trust to Verification</h2>
+                
+                <h3>The Pattern Exposed</h3>
+                
+                <p>The four verified incidents—Citigroup's flash crash, Jane Street's alleged manipulation, Japan's market crash, and Warsaw's trading halt—collectively demonstrate that traditional compliance frameworks cannot adequately address the speed, complexity, and opacity of modern algorithmic trading.</p>
+                
+                <p>Each incident shares a common architectural flaw: <strong>the audited party controlled the audit evidence</strong>.</p>
+                
+                <h3>The Solution Architecture</h3>
+                
+                <p>VCP v1.1 addresses this fundamental flaw through three layers of cryptographic verification:</p>
+                
+                <ol>
+                    <li><strong>Event Integrity</strong> ensures individual events cannot be modified</li>
+                    <li><strong>Collection Integrity</strong> ensures batches are provably complete</li>
+                    <li><strong>External Verifiability</strong> ensures evidence can be verified without trusting producers</li>
+                </ol>
+                
+                <p>The mandatory external anchoring requirement is the critical innovation: <strong>producers cannot control what they cannot modify, and they cannot modify what is anchored to external systems</strong>.</p>
+                
+                <h3>The Business Case</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Implementation</th>
+                            <th>Annual Operations</th>
+                            <th>ROI Threshold</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Silver</td>
+                            <td>$50K-150K</td>
+                            <td>$20K-50K</td>
+                            <td>Avoidance of single regulatory investigation</td>
+                        </tr>
+                        <tr>
+                            <td>Gold</td>
+                            <td>$150K-500K</td>
+                            <td>$50K-150K</td>
+                            <td>Avoidance of moderate enforcement action</td>
+                        </tr>
+                        <tr>
+                            <td>Platinum</td>
+                            <td>$500K-2M</td>
+                            <td>$150K-500K</td>
+                            <td>Avoidance of major market disruption liability</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="key-finding" style="margin-top: 2rem;">
+                    <h3 style="color: #fca5a5; margin-top: 0;"><i class="fas fa-gavel mr-2"></i>The Call to Action</h3>
+                    <p>The aviation industry transformed accident investigation—and ultimately safety—by mandating flight data recorders that pilots could not modify. Financial markets face the same inflection point.</p>
+                    <p style="margin-bottom: 0; font-size: 1.1rem;"><strong>The question is no longer whether cryptographic audit trails will become standard practice. The question is whether individual firms will adopt them before or after their next incident.</strong></p>
+                </div>
+
+                <!-- Penalty Summary -->
+                <h2>Appendix: Regulatory Penalty Summary</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Entity</th>
+                            <th>Regulator</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Citigroup Global Markets Limited</td>
+                            <td>FCA</td>
+                            <td>£27,766,200</td>
+                            <td>May 2024</td>
+                        </tr>
+                        <tr>
+                            <td>Citigroup Global Markets Limited</td>
+                            <td>PRA</td>
+                            <td>£33,880,000</td>
+                            <td>May 2024</td>
+                        </tr>
+                        <tr>
+                            <td>Citigroup Global Markets Europe AG</td>
+                            <td>BaFin</td>
+                            <td>€12,975,000</td>
+                            <td>June 2024</td>
+                        </tr>
+                        <tr>
+                            <td>Citigroup</td>
+                            <td>SIX</td>
+                            <td>CHF 500,000</td>
+                            <td>March 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Jane Street Group</td>
+                            <td>SEBI</td>
+                            <td>₹4,843.57 crore (frozen)</td>
+                            <td>July 2025</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>Total Verified Penalties:</strong> ~$92 million (Citigroup) + $566 million frozen (Jane Street) = <span class="stat-highlight">$658+ million</span></p>
+
+            </article>
+
+            <!-- Resources Section -->
+            <div style="background: rgba(30, 41, 59, 0.8); border: 1px solid #334155; border-radius: 0.75rem; padding: 2rem; margin-top: 3rem;">
+                <h3 style="color: #f1f5f9; margin-bottom: 1.5rem;"><i class="fas fa-book mr-2"></i>リソース</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <a href="https://github.com/veritaschain/vcp-spec/tree/main/spec/v1.1" target="_blank" style="display: flex; align-items: center; gap: 0.75rem; color: #60a5fa; text-decoration: none;">
+                        <i class="fab fa-github text-2xl"></i>
+                        <span>VCP v1.1仕様</span>
+                    </a>
+                    <a href="https://veritaschain.org/v1-1/" target="_blank" style="display: flex; align-items: center; gap: 0.75rem; color: #60a5fa; text-decoration: none;">
+                        <i class="fas fa-file-alt text-2xl"></i>
+                        <span>VCP v1.1ドキュメント</span>
+                    </a>
+                    <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank" style="display: flex; align-items: center; gap: 0.75rem; color: #60a5fa; text-decoration: none;">
+                        <i class="fas fa-globe text-2xl"></i>
+                        <span>IETF SCITT Draft</span>
+                    </a>
+                    <a href="mailto:technical@veritaschain.org" style="display: flex; align-items: center; gap: 0.75rem; color: #60a5fa; text-decoration: none;">
+                        <i class="fas fa-envelope text-2xl"></i>
+                        <span>技術に関するお問い合わせ</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #334155;">
+                <a href="/blog/ja/" style="color: #60a5fa; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-arrow-left"></i>
+                    ブログに戻る
+                </a>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2026-01-25-four-incidents-700m-penalties-vcp/&text=Four%20Verified%20Incidents%2C%20%24700M%20in%20Penalties%3A%20Architecture%20of%20Algorithmic%20Accountability" target="_blank" style="color: #60a5fa; font-size: 1.5rem;">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2026-01-25-four-incidents-700m-penalties-vcp/" target="_blank" style="color: #60a5fa; font-size: 1.5rem;">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: rgba(15, 23, 42, 0.95); border-top: 1px solid #1e293b; padding: 2rem 1rem; margin-top: 4rem;">
+        <div class="max-w-6xl mx-auto text-center">
+            <p style="color: #64748b; margin-bottom: 0.5rem;">
+                © 2026 VeritasChain Standards Organization. CC BY 4.0ライセンス。
+            </p>
+            <p style="color: #3b82f6; font-weight: 600;">
+                Verify, Don't Trust.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

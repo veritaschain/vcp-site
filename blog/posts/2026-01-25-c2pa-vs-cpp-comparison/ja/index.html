@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C2PA vs CPP：フォレンジック時代に求められるコンテンツ来歴の新アプローチ | VeritasChain Blog</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Content Provenance Protocol（CPP）が既存のメディア真正性標準の根本的な限界にどう対処するか。C2PAとCPPの包括的な技術比較。">
+    <meta name="keywords" content="C2PA, CPP, コンテンツ来歴, VAP Framework, VeriCapture, メディア真正性, デジタルフォレンジック, 暗号学的検証">
+    <meta name="author" content="VeritasChain Standards Organization">
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/ja/">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="C2PA vs CPP：フォレンジック時代に求められるコンテンツ来歴の新アプローチ">
+    <meta property="og:description" content="Content Provenance Protocolが既存のメディア真正性標準の根本的な限界にどう対処するか">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="C2PA vs CPP：フォレンジック時代のコンテンツ来歴">
+    <meta name="twitter:description" content="メディア真正性のためのC2PAとCPPプロトコルの技術比較">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Article Meta -->
+    <meta property="article:published_time" content="2026-01-25">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Technical Analysis">
+    <meta property="article:tag" content="C2PA">
+    <meta property="article:tag" content="CPP">
+    <meta property="article:tag" content="VAP">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans JP', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        
+        .article-container { max-width: 900px; margin: 0 auto; }
+        
+        .article-content { color: #cbd5e1; line-height: 1.9; }
+        
+        .article-content h2 {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3b82f6;
+        }
+        
+        .article-content h3 {
+            color: #e2e8f0;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-content h4 {
+            color: #cbd5e1;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .article-content p { margin-bottom: 1.25rem; }
+        
+        .article-content ul, .article-content ol {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+        }
+        
+        .article-content li { margin-bottom: 0.5rem; }
+        
+        .article-content a { color: #60a5fa; text-decoration: underline; }
+        .article-content a:hover { color: #93c5fd; }
+        
+        .article-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            color: #94a3b8;
+            font-style: italic;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .article-content code {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        .article-content pre {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .article-content pre code {
+            background: transparent;
+            padding: 0;
+            color: #e2e8f0;
+        }
+        
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .article-content th {
+            background: rgba(59, 130, 246, 0.2);
+            color: #f1f5f9;
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #334155;
+        }
+        
+        .article-content td {
+            padding: 0.75rem;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+        }
+        
+        .article-content tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
+        
+        .comparison-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .cpp-advantage {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .c2pa-advantage {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-finding {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .toc-container {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .toc-container h3 { color: #f1f5f9; font-size: 1.1rem; margin-bottom: 1rem; }
+        .toc-container ol { color: #94a3b8; padding-left: 1.5rem; }
+        .toc-container li { margin-bottom: 0.5rem; }
+        .toc-container a { color: #60a5fa; text-decoration: none; }
+        .toc-container a:hover { text-decoration: underline; }
+        
+        .protocol-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-c2pa {
+            background: rgba(168, 85, 247, 0.2);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        
+        .badge-cpp {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+    </style>
+</head>
+<body class="text-gray-300">
+    <!-- Header -->
+    <header style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #1e293b; position: sticky; top: 0; z-index: 100;">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <nav class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-link text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">VeritasChain</span>
+                </a>
+                <div class="flex items-center gap-6">
+                    <a href="/blog/ja/" class="text-blue-400 hover:text-blue-300 transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>ブログに戻る
+                    </a>
+                    <a href="/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/" class="text-gray-400 hover:text-gray-300 transition-colors text-sm">
+                        EN
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article Header -->
+    <section style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%); padding: 4rem 1rem;">
+        <div class="article-container">
+            <div class="flex items-center gap-3 mb-4">
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem;">
+                    <i class="fas fa-code-compare mr-1"></i> 技術詳解
+                </span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem;">
+                    <i class="fas fa-globe mr-1"></i> JA
+                </span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                C2PA vs CPP：フォレンジック時代に求められるコンテンツ来歴の新アプローチ
+            </h1>
+            
+            <p class="text-xl text-gray-300 mb-6">
+                Content Provenance Protocolが既存のメディア真正性標準の根本的な限界にどう対処するか
+            </p>
+            
+            <div class="flex flex-wrap items-center gap-4 text-gray-400">
+                <span><i class="far fa-calendar mr-2"></i>2026年1月25日</span>
+                <span><i class="far fa-clock mr-2"></i>約25分</span>
+                <span><i class="far fa-building mr-2"></i>VSO技術委員会</span>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 mt-6">
+                <span class="protocol-badge badge-c2pa">C2PA</span>
+                <span class="protocol-badge badge-cpp">CPP</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">VAP Framework</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">VeriCapture</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <main style="padding: 3rem 1rem;">
+        <div class="article-container">
+            <article class="article-content">
+                
+                <!-- Executive Summary -->
+                <div class="comparison-box">
+                    <h3 style="color: #60a5fa; margin-top: 0;"><i class="fas fa-balance-scale mr-2"></i>エグゼクティブサマリー</h3>
+                    <p>Coalition for Content Provenance and Authenticity（C2PA）は、Adobe、Microsoft、Google、Sonyなどの業界大手に支えられ、デジタルメディア来歴の支配的な標準として台頭してきました。6,000を超えるContent Authenticity Initiativeメンバーと進行中のISO標準化により、C2PAはコンテンツ真正性における現在の最先端技術を代表しています。</p>
+                    <p>しかし、AI生成コンテンツが撮影された現実と見分けがつかなくなり、法的・規制的フレームワークがメディア起源の暗号学的証明をますます求めるようになるにつれ、C2PAのアーキテクチャ上の限界が明らかになってきます。Verifiable AI Provenance（VAP）Framework内で開発された<strong>Content Provenance Protocol（CPP）</strong>は、数学的に証明可能な完全性保証、プライバシー保護検証、フォレンジック品質の証拠チェーンを通じてこれらのギャップに対処します。</p>
+                    <p style="margin-bottom: 0;">本記事では両プロトコルの包括的な技術比較を提供します。私たちの目標はCPPをC2PAの代替として位置付けることではなく、これらのプロトコルが<strong>相補的な目的</strong>にどう役立つか—そしてなぜ特定のアプリケーションにはCPPが提供するより強力な保証が必要なのかを明確にすることです。</p>
+                </div>
+
+                <!-- Table of Contents -->
+                <div class="toc-container">
+                    <h3><i class="fas fa-list mr-2"></i>目次</h3>
+                    <ol>
+                        <li><a href="#trust-crisis">デジタルメディアにおける信頼の危機</a></li>
+                        <li><a href="#c2pa-examined">C2PA：業界標準の検証</a></li>
+                        <li><a href="#cpp-design">CPP：設計によるフォレンジック品質の来歴</a></li>
+                        <li><a href="#architecture">アーキテクチャ思想：プロトコルが分岐する箇所</a></li>
+                        <li><a href="#cryptographic">暗号学的基盤の比較</a></li>
+                        <li><a href="#completeness">完全性問題：C2PAのアキレス腱</a></li>
+                        <li><a href="#privacy">プライバシーアーキテクチャ：対照的なアプローチ</a></li>
+                        <li><a href="#metadata">メタデータ除去の課題</a></li>
+                        <li><a href="#use-cases">ユースケースの適合性</a></li>
+                        <li><a href="#conclusion">結論：適切なプロトコルの選択</a></li>
+                    </ol>
+                </div>
+
+                <!-- Section 1: Trust Crisis -->
+                <h2 id="trust-crisis">1. デジタルメディアにおける信頼の危機</h2>
+                
+                <p>私たちはデジタルメディアの歴史における転換点に立っています。驚くべき創造的可能性を実現するのと同じAI技術が、私たちが見るものを信頼する能力を根本的に損なっています。ディープフェイクは世界のリーダーの口に言葉を置くことができます。AI生成画像が写真コンテストで優勝します。合成音声はわずか数秒のトレーニングデータで個人を複製します。</p>
+                
+                <p>以下のシナリオを考えてみてください：</p>
+                
+                <ul>
+                    <li>ジャーナリストが人権侵害の写真を撮影します。権威主義政府はその画像がAI生成であると主張します。<strong>ジャーナリストはこれらの画像が特定の時刻と場所で撮影されたことを暗号学的に証明できるでしょうか？</strong></li>
+                    <li>保険会社が写真証拠付きの請求を受け取ります。請求者は50枚の写真を持っていますが、調査員は不利な画像が削除されたのではないかと疑っています。<strong>会社はコレクションから画像が欠落していないことを検証できるでしょうか？</strong></li>
+                    <li>金融規制当局がトレーディング会社を監査します。会社は意思決定ログを提供しますが、規制当局は決定が省略されていないことの数学的証明を必要としています。<strong>監査証跡は事後の改ざんを検出できるでしょうか？</strong></li>
+                </ul>
+                
+                <div class="key-finding">
+                    <p style="margin-bottom: 0;"><strong>C2PAはこれらの質問に答えるよう設計されていません。Content Provenance Protocolは設計されています。</strong></p>
+                </div>
+
+                <!-- Section 2: C2PA Examined -->
+                <h2 id="c2pa-examined">2. C2PA：業界標準の検証</h2>
+                
+                <h3>2.1 技術アーキテクチャ</h3>
+                
+                <p>C2PAは成熟した技術基盤の上に構築されています：</p>
+                
+                <ul>
+                    <li><strong>コンテナフォーマット：</strong> JUMBF（ISO 19566-5）が構造的基盤を提供</li>
+                    <li><strong>署名メカニズム：</strong> COSE Sign1_Tagged構造（ES256、ES384、EdDSA、PS256）</li>
+                    <li><strong>トラストインフラストラクチャ：</strong> C2PA Trust Listsに対して検証されるX.509証明書チェーン</li>
+                    <li><strong>ハッシュ：</strong> オプションのRFC 3161タイムスタンプ付きSHA-256/384/512</li>
+                </ul>
+                
+                <h3>2.2 エコシステムの採用</h3>
+                
+                <div class="c2pa-advantage">
+                    <h4 style="color: #c084fc; margin-top: 0;"><i class="fas fa-industry mr-2"></i>C2PAは顕著な採用を達成しています：</h4>
+                    <ul>
+                        <li><strong>ハードウェア：</strong> Sony、Nikon、Leica、Canonが撮影時署名を実装</li>
+                        <li><strong>ソフトウェア：</strong> Adobe Creative Cloud、Microsoft Officeがサポート</li>
+                        <li><strong>プラットフォーム：</strong> LinkedIn、MetaがContent Credentials表示を実装</li>
+                        <li><strong>AIラベリング：</strong> OpenAI、Google、AdobeがAIコンテンツにクレデンシャルを添付</li>
+                        <li><strong>メンバー：</strong> 6,000以上のContent Authenticity Initiativeメンバー</li>
+                    </ul>
+                </div>
+                
+                <h3>2.3 認識されている限界</h3>
+                
+                <p>C2PAの仕様書はいくつかの限界を認めています：</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>限界</th>
+                            <th>影響</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>来歴 ≠ 真実</strong></td>
+                            <td>事実の正確性ではなく、誰かが署名したことのみを検証</td>
+                        </tr>
+                        <tr>
+                            <td><strong>メタデータ除去</strong></td>
+                            <td>95%以上の画像がソーシャルプラットフォームでマニフェストを失う</td>
+                        </tr>
+                        <tr>
+                            <td><strong>自己証明</strong></td>
+                            <td>作成者が自分の主張に署名；独立した検証なし</td>
+                        </tr>
+                        <tr>
+                            <td><strong>トラストリストの集中化</strong></td>
+                            <td>コンソーシアムメンバーによってアクセスが制限される</td>
+                        </tr>
+                        <tr>
+                            <td><strong>除外リスト</strong></td>
+                            <td>一部の変更は真正性を無効にしない</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 3: CPP Design -->
+                <h2 id="cpp-design">3. CPP：設計によるフォレンジック品質の来歴</h2>
+                
+                <p>Content Provenance Protocol（CPP）はVerifiable AI Provenance（VAP）Frameworkから生まれました。CPPは具体的に以下に対処します：<em>メディアが特定の瞬間に実際に撮影され、キャプチャが省略されていないことを暗号学的に証明できるか？</em></p>
+                
+                <h3>3.1 コアイノベーション</h3>
+                
+                <div class="cpp-advantage">
+                    <h4 style="color: #4ade80; margin-top: 0;"><i class="fas fa-shield-alt mr-2"></i>CPPはC2PAにない6つのアーキテクチャ革新を導入：</h4>
+                    
+                    <p><strong>1. 外部第三者検証（RFC 3161 TSA必須）</strong></p>
+                    <pre><code>C2PAモデル: 作成者が署名 → 「私を信じて」 → 独立チェックなし
+CPPモデル:  作成者が署名 → TSAが副署名 → 独立した第三者</code></pre>
+                    
+                    <p><strong>2. 完全性不変量（省略検出）</strong></p>
+                    <p>XORハッシュサムを使用し、画像が削除されると検証が失敗：</p>
+                    <pre><code>保存:   H(E₁) ⊕ H(E₂) ⊕ H(E₃) ⊕ H(E₄)
+欠落:   H(E₁) ⊕ H(E₂) ⊕ H(E₄)
+結果:   不一致 → 違反を検出</code></pre>
+                    
+                    <p><strong>3. 検証URLアーキテクチャ</strong></p>
+                    <p>永続URLがプラットフォーム処理を生き残り、99.95%の可用性、50年以上の保持。</p>
+                    
+                    <p><strong>4. 設計によるプライバシー</strong></p>
+                    <p>位置情報はデフォルトでOFF。ゼロ知識ACEは生体データを保存せずに人間の認証を証明。</p>
+                    
+                    <p><strong>5. 除外リストなし</strong></p>
+                    <p>いかなる変更も暗号学的証明を無効にする。</p>
+                    
+                    <p style="margin-bottom: 0;"><strong>6. 明確なUIガイドライン</strong></p>
+                    <p style="margin-bottom: 0;">ユーザーの誤解を防ぐため、「Verified」ではなく「Provenance Available」を義務付け。</p>
+                </div>
+                
+                <h3>3.2 三層アーキテクチャ</h3>
+                
+                <pre><code>┌────────────────────────────────────────────────────────────┐
+│ レイヤー3: 外部検証可能性（RFC 3161 TSA）                   │
+│   → 独立した第三者タイムスタンプ                            │
+├────────────────────────────────────────────────────────────┤
+│ レイヤー2: コレクション完全性（Merkle + 完全性）            │
+│   → XORハッシュサムによる削除検出                           │
+├────────────────────────────────────────────────────────────┤
+│ レイヤー1: イベント完全性（SHA-256 + Ed25519）              │
+│   → 個別イベントの改ざん証拠                                │
+└────────────────────────────────────────────────────────────┘</code></pre>
+
+                <!-- Section 4: Architecture -->
+                <h2 id="architecture">4. アーキテクチャ思想：プロトコルが分岐する箇所</h2>
+                
+                <h3>4.1 異なる質問、異なる回答</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>観点</th>
+                            <th class="protocol-badge badge-c2pa">C2PA</th>
+                            <th class="protocol-badge badge-cpp">CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>主要な質問</strong></td>
+                            <td>このコンテンツに何が起きたか？</td>
+                            <td>これは実際に撮影されたか？</td>
+                        </tr>
+                        <tr>
+                            <td><strong>脅威モデル</strong></td>
+                            <td>コンテンツの改変</td>
+                            <td>省略、遡及日付、虚偽の主張</td>
+                        </tr>
+                        <tr>
+                            <td><strong>信頼の基盤</strong></td>
+                            <td>署名者の評判</td>
+                            <td>暗号学的証明</td>
+                        </tr>
+                        <tr>
+                            <td><strong>検証</strong></td>
+                            <td>証明書チェーン</td>
+                            <td>独立した第三者</td>
+                        </tr>
+                        <tr>
+                            <td><strong>完全性</strong></td>
+                            <td>個別ファイル</td>
+                            <td>コレクションとセッション</td>
+                        </tr>
+                        <tr>
+                            <td><strong>対象コンテキスト</strong></td>
+                            <td>コンテンツ配信</td>
+                            <td>法的/規制上の証明</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>どちらのモデルも本質的に優れているわけではありません。それぞれ異なる要件に対処しています。</p>
+
+                <!-- Section 5: Cryptographic -->
+                <h2 id="cryptographic">5. 暗号学的基盤の比較</h2>
+                
+                <h3>5.1 署名アルゴリズム</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>プロトコル</th>
+                            <th>主要</th>
+                            <th>ポスト量子</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="protocol-badge badge-c2pa">C2PA</span></td>
+                            <td>ES256（ECDSA P-256）</td>
+                            <td>未指定</td>
+                        </tr>
+                        <tr>
+                            <td><span class="protocol-badge badge-cpp">CPP</span></td>
+                            <td>Ed25519（約30倍高速）</td>
+                            <td>ML-DSA、FALCON計画</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>5.2 タイムスタンプ精度</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CPPティア</th>
+                            <th>精度</th>
+                            <th>アンカー間隔</th>
+                            <th>ユースケース</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Platinum</strong></td>
+                            <td>PTPv2 &lt;1μs</td>
+                            <td>10分</td>
+                            <td>高頻度取引</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gold</strong></td>
+                            <td>NTP &lt;1ms</td>
+                            <td>1時間</td>
+                            <td>機関投資家</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Silver</strong></td>
+                            <td>ベストエフォート</td>
+                            <td>24時間</td>
+                            <td>一般撮影</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 6: Completeness -->
+                <h2 id="completeness">6. 完全性問題：C2PAのアキレス腱</h2>
+                
+                <h3>6.1 省略攻撃の理解</h3>
+                
+                <p>想像してください：建築検査官が100件のコード違反を撮影します。後に圧力を受け、最も深刻な違反を示す20枚の写真を削除します。残りの80枚の写真には有効なC2PA署名があります。</p>
+                
+                <div class="key-finding">
+                    <p><strong>誰かが写真が欠落していることを証明できるか？</strong></p>
+                    <ul>
+                        <li><span class="protocol-badge badge-c2pa">C2PA</span>：<strong>いいえ。</strong>各マニフェストは独立している。</li>
+                        <li><span class="protocol-badge badge-cpp">CPP</span>：<strong>はい。</strong>完全性不変量が即座に不一致を明らかにする。</li>
+                    </ul>
+                </div>
+                
+                <h3>6.2 なぜこれが重要か</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>シナリオ</th>
+                            <th>C2PA</th>
+                            <th>CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>選択的な証拠削除</td>
+                            <td>❌ 検出不可</td>
+                            <td>✅ 検出可能</td>
+                        </tr>
+                        <tr>
+                            <td>恣意的なドキュメンテーション</td>
+                            <td>❌ 検出不可</td>
+                            <td>✅ 検出可能</td>
+                        </tr>
+                        <tr>
+                            <td>部分的な開示</td>
+                            <td>❌ 検出不可</td>
+                            <td>✅ 検出可能</td>
+                        </tr>
+                        <tr>
+                            <td>人為的なギャップ</td>
+                            <td>❌ 検出不可</td>
+                            <td>✅ 検出可能</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 7: Privacy -->
+                <h2 id="privacy">7. プライバシーアーキテクチャ：対照的なアプローチ</h2>
+                
+                <h3>7.1 比較</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>側面</th>
+                            <th>C2PA</th>
+                            <th>CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>デフォルトの位置情報</td>
+                            <td>実装依存</td>
+                            <td><strong>オフ</strong></td>
+                        </tr>
+                        <tr>
+                            <td>生体データ</td>
+                            <td>未対応</td>
+                            <td><strong>保存しない</strong></td>
+                        </tr>
+                        <tr>
+                            <td>アイデンティティの露出</td>
+                            <td>証明書ベース（露出）</td>
+                            <td>DIDベース（制御可能）</td>
+                        </tr>
+                        <tr>
+                            <td>データ削除</td>
+                            <td>複雑</td>
+                            <td><strong>暗号シュレッディング</strong></td>
+                        </tr>
+                        <tr>
+                            <td>処理場所</td>
+                            <td>実装依存</td>
+                            <td><strong>エッジファースト</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>リスクにさらされているユーザー—敵対的な環境のジャーナリスト、虐待を記録する活動家、内部告発者—にとって、CPPのプライバシーアーキテクチャは意味のある保護を提供します。</p>
+
+                <!-- Section 8: Metadata -->
+                <h2 id="metadata">8. メタデータ除去の課題</h2>
+                
+                <p>ソーシャルプラットフォームはアップロード時に定期的にメタデータを除去します。C2PAは<strong>95%以上の画像がマニフェストを失う</strong>と推定しています。</p>
+                
+                <h3>8.1 CPPのソリューション：検証URL + 知覚ハッシュ</h3>
+                
+                <pre><code>https://verify.veritaschain.org/cpp/CPP-2026-ABC123XYZ</code></pre>
+                
+                <p>pHash（知覚ハッシュ）と組み合わせることで、すべてのメタデータが除去されても検証が可能：</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>変換</th>
+                            <th>pHash耐性</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>JPEG圧縮</td><td>✓</td></tr>
+                        <tr><td>リサイズ</td><td>✓</td></tr>
+                        <tr><td>軽微な色調整</td><td>✓</td></tr>
+                        <tr><td>プラットフォーム処理</td><td>✓</td></tr>
+                        <tr><td>スクリーンショット</td><td>部分的</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 9: Use Cases -->
+                <h2 id="use-cases">9. ユースケースの適合性</h2>
+                
+                <div class="c2pa-advantage">
+                    <h3 style="color: #c084fc; margin-top: 0;"><i class="fas fa-check-circle mr-2"></i>C2PAを選択すべき場合：</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li>広範なプラットフォーム互換性が不可欠</li>
+                        <li>編集履歴のドキュメンテーションが主要要件</li>
+                        <li>既存のツールとワークフローを維持する必要がある</li>
+                        <li>AIコンテンツラベリングがユースケース</li>
+                        <li>エコシステムサポート付きの迅速な展開が必要</li>
+                    </ul>
+                </div>
+                
+                <div class="cpp-advantage">
+                    <h3 style="color: #4ade80; margin-top: 0;"><i class="fas fa-shield-alt mr-2"></i>CPPを選択すべき場合：</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li>完全性証明が必要</li>
+                        <li>法的証拠能力が懸念事項</li>
+                        <li>プライバシー保護アイデンティティが必要</li>
+                        <li>敵対的なコンテキストが予想される</li>
+                        <li>規制コンプライアンスがフォレンジック品質の監査証跡を要求</li>
+                        <li>タイムスタンプ精度が重要</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-box">
+                    <h3 style="color: #60a5fa; margin-top: 0;"><i class="fas fa-handshake mr-2"></i>両方を検討すべき場合：</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li>内部検証にCPP保証が必要</li>
+                        <li>外部配信にC2PA互換性が必要</li>
+                        <li>異なるステークホルダーが異なる信頼要件を持つ</li>
+                        <li>ワークフローが撮影から公開まで及ぶ</li>
+                    </ul>
+                </div>
+
+                <!-- Section 10: Conclusion -->
+                <h2 id="conclusion">10. 結論：適切なプロトコルの選択</h2>
+                
+                <h3>比較サマリー</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>機能</th>
+                            <th>C2PA</th>
+                            <th>CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>省略攻撃の検出</td>
+                            <td>❌ 未対応</td>
+                            <td>✅ 完全性不変量</td>
+                        </tr>
+                        <tr>
+                            <td>スクリーンショット耐性</td>
+                            <td>⚠️ 限定的</td>
+                            <td>✅ 検証URL + pHash</td>
+                        </tr>
+                        <tr>
+                            <td>マイクロ秒タイムスタンプ</td>
+                            <td>❌ ミリ秒が一般的</td>
+                            <td>✅ IEEE 1588 PTP</td>
+                        </tr>
+                        <tr>
+                            <td>ポスト量子対応</td>
+                            <td>❌ 未指定</td>
+                            <td>✅ ML-DSA移行パス</td>
+                        </tr>
+                        <tr>
+                            <td>人間の存在証明</td>
+                            <td>❌ デバイスのみ</td>
+                            <td>✅ ACE Extension</td>
+                        </tr>
+                        <tr>
+                            <td>設計によるプライバシー</td>
+                            <td>⚠️ オプション</td>
+                            <td>✅ アーキテクチャ原則</td>
+                        </tr>
+                        <tr>
+                            <td>エコシステム成熟度</td>
+                            <td>✅ 広範</td>
+                            <td>⚠️ 新興</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="key-finding" style="margin-top: 2rem;">
+                    <h3 style="color: #fbbf24; margin-top: 0;"><i class="fas fa-lightbulb mr-2"></i>根本的な問い</h3>
+                    <p>C2PAはメディア配信のための<em>十分な</em>来歴を提供します—「誰がこれを作成し、変更されたか？」に答えます。</p>
+                    <p>CPPは高リスクシナリオのための<em>フォレンジック品質</em>の来歴を提供します—「何も削除されていないこと、これが正確にいつ撮影されたか、人間がいたことを数学的に証明できるか？」に答えます。</p>
+                    <p style="margin-bottom: 0;"><strong>デジタル信頼の未来は単一の標準ではなく、関係するリスクに合わせた保証のスペクトラムです。</strong></p>
+                </div>
+
+            </article>
+
+            <!-- Resources Section -->
+            <div style="background: rgba(30, 41, 59, 0.8); border: 1px solid #334155; border-radius: 0.75rem; padding: 2rem; margin-top: 3rem;">
+                <h3 style="color: #f1f5f9; margin-bottom: 1.5rem;"><i class="fas fa-book mr-2"></i>仕様リファレンス</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <h4 style="color: #c084fc; margin-bottom: 0.5rem;">C2PA</h4>
+                        <a href="https://c2pa.org/specifications/" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">仕様 v2.3</a>
+                        <a href="https://cawg.io/" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">CAWG（Creator Assertions）</a>
+                    </div>
+                    <div>
+                        <h4 style="color: #4ade80; margin-bottom: 0.5rem;">CPP/VAP</h4>
+                        <a href="https://github.com/veritaschain/cpp-spec" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">CPP仕様 v1.0</a>
+                        <a href="https://github.com/veritaschain/vap-spec" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VAP Framework v1.2</a>
+                    </div>
+                    <div>
+                        <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">実装</h4>
+                        <a href="https://veritaschain.org/vap/cpp/vericapture" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCapture（iOS）</a>
+                        <a href="https://veritaschain.org/vap/cpp/vericheck" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCheck（Web）</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #334155;">
+                <a href="/blog/ja/" style="color: #60a5fa; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-arrow-left"></i>
+                    ブログに戻る
+                </a>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/" style="color: #94a3b8; text-decoration: none;">EN</a>
+                    <span style="color: #475569;">|</span>
+                    <span style="color: #60a5fa;">JA</span>
+                    <span style="color: #475569;">|</span>
+                    <a href="/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/zh/" style="color: #94a3b8; text-decoration: none;">ZH</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: rgba(15, 23, 42, 0.95); border-top: 1px solid #1e293b; padding: 2rem 1rem; margin-top: 4rem;">
+        <div class="max-w-6xl mx-auto text-center">
+            <p style="color: #64748b; margin-bottom: 0.5rem;">
+                © 2026 VeritasChain Standards Organization. CC BY 4.0ライセンス。
+            </p>
+            <p style="color: #3b82f6; font-weight: 600;">
+                Verify, Don't Trust.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

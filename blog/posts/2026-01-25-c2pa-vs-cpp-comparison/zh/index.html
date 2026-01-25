@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C2PA vs CPP：为什么内容溯源需要面向取证时代的新方法 | VeritasChain Blog</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Content Provenance Protocol（CPP）如何解决现有媒体真实性标准的根本局限性。C2PA与CPP的全面技术比较。">
+    <meta name="keywords" content="C2PA, CPP, 内容溯源, VAP Framework, VeriCapture, 媒体真实性, 数字取证, 密码学验证">
+    <meta name="author" content="VeritasChain Standards Organization">
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/zh/">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="C2PA vs CPP：为什么内容溯源需要面向取证时代的新方法">
+    <meta property="og:description" content="Content Provenance Protocol如何解决现有媒体真实性标准的根本局限性">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/zh/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="C2PA vs CPP：取证时代的内容溯源">
+    <meta name="twitter:description" content="媒体真实性C2PA和CPP协议的技术比较">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Article Meta -->
+    <meta property="article:published_time" content="2026-01-25">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Technical Analysis">
+    <meta property="article:tag" content="C2PA">
+    <meta property="article:tag" content="CPP">
+    <meta property="article:tag" content="VAP">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        
+        .article-container { max-width: 900px; margin: 0 auto; }
+        
+        .article-content { color: #cbd5e1; line-height: 1.9; }
+        
+        .article-content h2 {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3b82f6;
+        }
+        
+        .article-content h3 {
+            color: #e2e8f0;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-content h4 {
+            color: #cbd5e1;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .article-content p { margin-bottom: 1.25rem; }
+        
+        .article-content ul, .article-content ol {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+        }
+        
+        .article-content li { margin-bottom: 0.5rem; }
+        
+        .article-content a { color: #60a5fa; text-decoration: underline; }
+        .article-content a:hover { color: #93c5fd; }
+        
+        .article-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            color: #94a3b8;
+            font-style: italic;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .article-content code {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        
+        .article-content pre {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .article-content pre code {
+            background: transparent;
+            padding: 0;
+            color: #e2e8f0;
+        }
+        
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .article-content th {
+            background: rgba(59, 130, 246, 0.2);
+            color: #f1f5f9;
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #334155;
+        }
+        
+        .article-content td {
+            padding: 0.75rem;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+        }
+        
+        .article-content tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
+        
+        .comparison-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .cpp-advantage {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .c2pa-advantage {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-finding {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .toc-container {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .toc-container h3 { color: #f1f5f9; font-size: 1.1rem; margin-bottom: 1rem; }
+        .toc-container ol { color: #94a3b8; padding-left: 1.5rem; }
+        .toc-container li { margin-bottom: 0.5rem; }
+        .toc-container a { color: #60a5fa; text-decoration: none; }
+        .toc-container a:hover { text-decoration: underline; }
+        
+        .protocol-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-c2pa {
+            background: rgba(168, 85, 247, 0.2);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        
+        .badge-cpp {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+    </style>
+</head>
+<body class="text-gray-300">
+    <!-- Header -->
+    <header style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #1e293b; position: sticky; top: 0; z-index: 100;">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <nav class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-link text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">VeritasChain</span>
+                </a>
+                <div class="flex items-center gap-6">
+                    <a href="/blog/zh/" class="text-blue-400 hover:text-blue-300 transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>返回博客
+                    </a>
+                    <a href="/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/" class="text-gray-400 hover:text-gray-300 transition-colors text-sm">
+                        EN
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article Header -->
+    <section style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%); padding: 4rem 1rem;">
+        <div class="article-container">
+            <div class="flex items-center gap-3 mb-4">
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem;">
+                    <i class="fas fa-code-compare mr-1"></i> 技术深度解析
+                </span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem;">
+                    <i class="fas fa-globe mr-1"></i> ZH
+                </span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                C2PA vs CPP：为什么内容溯源需要面向取证时代的新方法
+            </h1>
+            
+            <p class="text-xl text-gray-300 mb-6">
+                Content Provenance Protocol如何解决现有媒体真实性标准的根本局限性
+            </p>
+            
+            <div class="flex flex-wrap items-center gap-4 text-gray-400">
+                <span><i class="far fa-calendar mr-2"></i>2026年1月25日</span>
+                <span><i class="far fa-clock mr-2"></i>约25分钟</span>
+                <span><i class="far fa-building mr-2"></i>VSO技术委员会</span>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 mt-6">
+                <span class="protocol-badge badge-c2pa">C2PA</span>
+                <span class="protocol-badge badge-cpp">CPP</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">VAP Framework</span>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.85rem;">VeriCapture</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <main style="padding: 3rem 1rem;">
+        <div class="article-container">
+            <article class="article-content">
+                
+                <!-- Executive Summary -->
+                <div class="comparison-box">
+                    <h3 style="color: #60a5fa; margin-top: 0;"><i class="fas fa-balance-scale mr-2"></i>执行摘要</h3>
+                    <p>内容溯源和真实性联盟（C2PA）已成为数字媒体溯源的主导标准，得到Adobe、Microsoft、Google和Sony等行业巨头的支持。凭借超过6,000名Content Authenticity Initiative成员和正在进行的ISO标准化，C2PA代表了内容真实性领域的当前最先进技术。</p>
+                    <p>然而，随着AI生成内容变得与捕获的现实难以区分，法律和监管框架越来越要求媒体来源的密码学证明，C2PA的架构局限性变得明显。在Verifiable AI Provenance（VAP）Framework内开发的<strong>Content Provenance Protocol（CPP）</strong>通过数学上可证明的完整性保证、隐私保护验证和取证级证据链来解决这些差距。</p>
+                    <p style="margin-bottom: 0;">本文提供两种协议的全面技术比较。我们的目标不是将CPP定位为C2PA的替代品，而是阐明这些协议如何服务于<strong>互补目的</strong>——以及为什么某些应用需要CPP提供的更强保证。</p>
+                </div>
+
+                <!-- Table of Contents -->
+                <div class="toc-container">
+                    <h3><i class="fas fa-list mr-2"></i>目录</h3>
+                    <ol>
+                        <li><a href="#trust-crisis">数字媒体的信任危机</a></li>
+                        <li><a href="#c2pa-examined">C2PA：行业标准的审视</a></li>
+                        <li><a href="#cpp-design">CPP：设计上的取证级溯源</a></li>
+                        <li><a href="#architecture">架构哲学：协议分歧之处</a></li>
+                        <li><a href="#cryptographic">密码学基础比较</a></li>
+                        <li><a href="#completeness">完整性问题：C2PA的阿喀琉斯之踵</a></li>
+                        <li><a href="#privacy">隐私架构：对立的方法</a></li>
+                        <li><a href="#metadata">元数据剥离挑战</a></li>
+                        <li><a href="#use-cases">用例对齐</a></li>
+                        <li><a href="#conclusion">结论：选择正确的协议</a></li>
+                    </ol>
+                </div>
+
+                <!-- Section 1: Trust Crisis -->
+                <h2 id="trust-crisis">1. 数字媒体的信任危机</h2>
+                
+                <p>我们正处于数字媒体历史的转折点。同样的AI技术在实现非凡创意可能性的同时，从根本上破坏了我们信任所见之物的能力。深度伪造可以将言语放入世界领导人口中。AI生成的图像在摄影比赛中获胜。合成语音仅用几秒钟的训练数据就能克隆个人。</p>
+                
+                <p>考虑以下场景：</p>
+                
+                <ul>
+                    <li>一名记者拍摄了人权侵犯的照片。一个威权政府声称这些图像是AI生成的。<strong>记者能否从密码学上证明这些图像是在特定时间和地点拍摄的？</strong></li>
+                    <li>一家保险公司收到带有照片证据的索赔。索赔人有50张照片，但理算员怀疑一些不利的图像被删除了。<strong>公司能否验证集合中没有遗漏图像？</strong></li>
+                    <li>金融监管机构审计一家交易公司。公司提供决策日志，但监管机构需要数学证明没有遗漏任何决策。<strong>审计追踪能否检测事后发生的篡改？</strong></li>
+                </ul>
+                
+                <div class="key-finding">
+                    <p style="margin-bottom: 0;"><strong>C2PA并非旨在回答这些问题。Content Provenance Protocol是专为此设计的。</strong></p>
+                </div>
+
+                <!-- Section 2: C2PA Examined -->
+                <h2 id="c2pa-examined">2. C2PA：行业标准的审视</h2>
+                
+                <h3>2.1 技术架构</h3>
+                
+                <p>C2PA建立在成熟的技术基础之上：</p>
+                
+                <ul>
+                    <li><strong>容器格式：</strong> JUMBF（ISO 19566-5）提供结构基础</li>
+                    <li><strong>签名机制：</strong> COSE Sign1_Tagged结构（ES256、ES384、EdDSA、PS256）</li>
+                    <li><strong>信任基础设施：</strong> 针对C2PA Trust Lists验证的X.509证书链</li>
+                    <li><strong>哈希：</strong> SHA-256/384/512，可选RFC 3161时间戳</li>
+                </ul>
+                
+                <h3>2.2 生态系统采用</h3>
+                
+                <div class="c2pa-advantage">
+                    <h4 style="color: #c084fc; margin-top: 0;"><i class="fas fa-industry mr-2"></i>C2PA已实现显著采用：</h4>
+                    <ul>
+                        <li><strong>硬件：</strong> Sony、Nikon、Leica、Canon实施拍摄时签名</li>
+                        <li><strong>软件：</strong> Adobe Creative Cloud、Microsoft Office支持</li>
+                        <li><strong>平台：</strong> LinkedIn、Meta实施Content Credentials显示</li>
+                        <li><strong>AI标签：</strong> OpenAI、Google、Adobe为AI内容附加凭证</li>
+                        <li><strong>成员：</strong> 6,000+Content Authenticity Initiative成员</li>
+                    </ul>
+                </div>
+                
+                <h3>2.3 已知局限性</h3>
+                
+                <p>C2PA的规范文档承认了几个局限性：</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>局限性</th>
+                            <th>影响</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>溯源 ≠ 真相</strong></td>
+                            <td>不验证事实准确性，只验证有人签名</td>
+                        </tr>
+                        <tr>
+                            <td><strong>元数据剥离</strong></td>
+                            <td>95%以上的图像在社交平台上丢失清单</td>
+                        </tr>
+                        <tr>
+                            <td><strong>自我证明</strong></td>
+                            <td>创作者签署自己的声明；没有独立验证</td>
+                        </tr>
+                        <tr>
+                            <td><strong>信任列表集中化</strong></td>
+                            <td>访问由联盟成员控制</td>
+                        </tr>
+                        <tr>
+                            <td><strong>排除列表</strong></td>
+                            <td>某些修改不会使真实性失效</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 3: CPP Design -->
+                <h2 id="cpp-design">3. CPP：设计上的取证级溯源</h2>
+                
+                <p>Content Provenance Protocol（CPP）源于Verifiable AI Provenance（VAP）Framework。CPP专门解决：<em>我们能否从密码学上证明媒体确实是在特定时刻拍摄的，且没有遗漏任何捕获？</em></p>
+                
+                <h3>3.1 核心创新</h3>
+                
+                <div class="cpp-advantage">
+                    <h4 style="color: #4ade80; margin-top: 0;"><i class="fas fa-shield-alt mr-2"></i>CPP引入了C2PA所缺少的六项架构创新：</h4>
+                    
+                    <p><strong>1. 外部第三方验证（RFC 3161 TSA强制）</strong></p>
+                    <pre><code>C2PA模型: 创作者签名 → "相信我" → 无独立检查
+CPP模型:  创作者签名 → TSA副签 → 独立第三方</code></pre>
+                    
+                    <p><strong>2. 完整性不变量（遗漏检测）</strong></p>
+                    <p>使用XOR哈希和，如果任何图像被删除，验证将失败：</p>
+                    <pre><code>存储:   H(E₁) ⊕ H(E₂) ⊕ H(E₃) ⊕ H(E₄)
+缺失:   H(E₁) ⊕ H(E₂) ⊕ H(E₄)
+结果:   不匹配 → 检测到违规</code></pre>
+                    
+                    <p><strong>3. 验证URL架构</strong></p>
+                    <p>永久URL在平台处理中存活，99.95%可用性，50年以上保留。</p>
+                    
+                    <p><strong>4. 隐私优先设计</strong></p>
+                    <p>位置默认关闭。零知识ACE在不存储生物特征数据的情况下证明人类身份验证。</p>
+                    
+                    <p><strong>5. 无排除列表</strong></p>
+                    <p>任何修改都会使密码学证明失效。</p>
+                    
+                    <p style="margin-bottom: 0;"><strong>6. 明确的UI指南</strong></p>
+                    <p style="margin-bottom: 0;">强制使用"Provenance Available"而非"Verified"，以防止用户误解。</p>
+                </div>
+                
+                <h3>3.2 三层架构</h3>
+                
+                <pre><code>┌────────────────────────────────────────────────────────────┐
+│ 第3层: 外部可验证性（RFC 3161 TSA）                         │
+│   → 独立第三方时间戳                                        │
+├────────────────────────────────────────────────────────────┤
+│ 第2层: 集合完整性（Merkle + 完整性）                        │
+│   → 通过XOR哈希和进行删除检测                               │
+├────────────────────────────────────────────────────────────┤
+│ 第1层: 事件完整性（SHA-256 + Ed25519）                      │
+│   → 单个事件的防篡改证据                                    │
+└────────────────────────────────────────────────────────────┘</code></pre>
+
+                <!-- Section 4: Architecture -->
+                <h2 id="architecture">4. 架构哲学：协议分歧之处</h2>
+                
+                <h3>4.1 不同的问题，不同的答案</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>维度</th>
+                            <th class="protocol-badge badge-c2pa">C2PA</th>
+                            <th class="protocol-badge badge-cpp">CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>主要问题</strong></td>
+                            <td>这个内容发生了什么？</td>
+                            <td>这是真实拍摄的吗？</td>
+                        </tr>
+                        <tr>
+                            <td><strong>威胁模型</strong></td>
+                            <td>内容修改</td>
+                            <td>遗漏、倒填日期、虚假声明</td>
+                        </tr>
+                        <tr>
+                            <td><strong>信任基础</strong></td>
+                            <td>签名者声誉</td>
+                            <td>密码学证明</td>
+                        </tr>
+                        <tr>
+                            <td><strong>验证</strong></td>
+                            <td>证书链</td>
+                            <td>独立第三方</td>
+                        </tr>
+                        <tr>
+                            <td><strong>完整性</strong></td>
+                            <td>单个文件</td>
+                            <td>集合和会话</td>
+                        </tr>
+                        <tr>
+                            <td><strong>目标场景</strong></td>
+                            <td>内容分发</td>
+                            <td>法律/监管证明</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>两种模型本质上都不优越。它们解决不同的需求。</p>
+
+                <!-- Section 5: Cryptographic -->
+                <h2 id="cryptographic">5. 密码学基础比较</h2>
+                
+                <h3>5.1 签名算法</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>协议</th>
+                            <th>主要</th>
+                            <th>后量子</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="protocol-badge badge-c2pa">C2PA</span></td>
+                            <td>ES256（ECDSA P-256）</td>
+                            <td>未指定</td>
+                        </tr>
+                        <tr>
+                            <td><span class="protocol-badge badge-cpp">CPP</span></td>
+                            <td>Ed25519（约快30倍）</td>
+                            <td>ML-DSA、FALCON计划中</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>5.2 时间戳精度</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CPP层级</th>
+                            <th>精度</th>
+                            <th>锚定间隔</th>
+                            <th>用例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Platinum</strong></td>
+                            <td>PTPv2 &lt;1μs</td>
+                            <td>10分钟</td>
+                            <td>高频交易</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gold</strong></td>
+                            <td>NTP &lt;1ms</td>
+                            <td>1小时</td>
+                            <td>机构级</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Silver</strong></td>
+                            <td>尽力而为</td>
+                            <td>24小时</td>
+                            <td>一般拍摄</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 6: Completeness -->
+                <h2 id="completeness">6. 完整性问题：C2PA的阿喀琉斯之踵</h2>
+                
+                <h3>6.1 理解遗漏攻击</h3>
+                
+                <p>想象一下：一名建筑检查员拍摄了100处代码违规。后来，在压力下，他们删除了显示最严重违规的20张照片。剩余的80张照片具有有效的C2PA签名。</p>
+                
+                <div class="key-finding">
+                    <p><strong>有人能证明照片缺失吗？</strong></p>
+                    <ul>
+                        <li><span class="protocol-badge badge-c2pa">C2PA</span>：<strong>不能。</strong>每个清单是独立的。</li>
+                        <li><span class="protocol-badge badge-cpp">CPP</span>：<strong>能。</strong>完整性不变量立即揭示不匹配。</li>
+                    </ul>
+                </div>
+                
+                <h3>6.2 为什么这很重要</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>场景</th>
+                            <th>C2PA</th>
+                            <th>CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>选择性证据删除</td>
+                            <td>❌ 无法检测</td>
+                            <td>✅ 可检测</td>
+                        </tr>
+                        <tr>
+                            <td>挑选性文档记录</td>
+                            <td>❌ 无法检测</td>
+                            <td>✅ 可检测</td>
+                        </tr>
+                        <tr>
+                            <td>部分披露</td>
+                            <td>❌ 无法检测</td>
+                            <td>✅ 可检测</td>
+                        </tr>
+                        <tr>
+                            <td>人为制造的间隙</td>
+                            <td>❌ 无法检测</td>
+                            <td>✅ 可检测</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 7: Privacy -->
+                <h2 id="privacy">7. 隐私架构：对立的方法</h2>
+                
+                <h3>7.1 比较</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>方面</th>
+                            <th>C2PA</th>
+                            <th>CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>默认位置</td>
+                            <td>实现相关</td>
+                            <td><strong>关闭</strong></td>
+                        </tr>
+                        <tr>
+                            <td>生物特征数据</td>
+                            <td>未处理</td>
+                            <td><strong>从不存储</strong></td>
+                        </tr>
+                        <tr>
+                            <td>身份暴露</td>
+                            <td>基于证书（暴露）</td>
+                            <td>基于DID（可控）</td>
+                        </tr>
+                        <tr>
+                            <td>数据删除</td>
+                            <td>复杂</td>
+                            <td><strong>加密粉碎</strong></td>
+                        </tr>
+                        <tr>
+                            <td>处理位置</td>
+                            <td>实现相关</td>
+                            <td><strong>边缘优先</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>对于处于风险中的用户——敌对环境中的记者、记录侵权行为的活动人士、举报人——CPP的隐私架构提供了有意义的保护。</p>
+
+                <!-- Section 8: Metadata -->
+                <h2 id="metadata">8. 元数据剥离挑战</h2>
+                
+                <p>社交平台在上传时定期剥离元数据。C2PA估计<strong>95%以上的图像丢失其清单</strong>。</p>
+                
+                <h3>8.1 CPP的解决方案：验证URL + 感知哈希</h3>
+                
+                <pre><code>https://verify.veritaschain.org/cpp/CPP-2026-ABC123XYZ</code></pre>
+                
+                <p>结合pHash（感知哈希），即使所有元数据被剥离，验证仍然可能：</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>转换</th>
+                            <th>pHash存活</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>JPEG压缩</td><td>✓</td></tr>
+                        <tr><td>调整大小</td><td>✓</td></tr>
+                        <tr><td>轻微颜色调整</td><td>✓</td></tr>
+                        <tr><td>平台处理</td><td>✓</td></tr>
+                        <tr><td>截图</td><td>部分</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Section 9: Use Cases -->
+                <h2 id="use-cases">9. 用例对齐</h2>
+                
+                <div class="c2pa-advantage">
+                    <h3 style="color: #c084fc; margin-top: 0;"><i class="fas fa-check-circle mr-2"></i>选择C2PA当：</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li>广泛的平台兼容性是必需的</li>
+                        <li>编辑历史文档是主要需求</li>
+                        <li>必须保留现有工具和工作流</li>
+                        <li>AI内容标签是用例</li>
+                        <li>需要带有生态系统支持的快速部署</li>
+                    </ul>
+                </div>
+                
+                <div class="cpp-advantage">
+                    <h3 style="color: #4ade80; margin-top: 0;"><i class="fas fa-shield-alt mr-2"></i>选择CPP当：</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li>需要完整性证明</li>
+                        <li>法律可采纳性是关注点</li>
+                        <li>需要隐私保护身份</li>
+                        <li>预期对抗性环境</li>
+                        <li>监管合规要求取证级审计追踪</li>
+                        <li>时间戳精度很重要</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-box">
+                    <h3 style="color: #60a5fa; margin-top: 0;"><i class="fas fa-handshake mr-2"></i>考虑两者当：</h3>
+                    <ul style="margin-bottom: 0;">
+                        <li>内部验证需要CPP保证</li>
+                        <li>外部分发需要C2PA兼容性</li>
+                        <li>不同利益相关者有不同的信任要求</li>
+                        <li>工作流从拍摄延伸到发布</li>
+                    </ul>
+                </div>
+
+                <!-- Section 10: Conclusion -->
+                <h2 id="conclusion">10. 结论：选择正确的协议</h2>
+                
+                <h3>比较摘要</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>能力</th>
+                            <th>C2PA</th>
+                            <th>CPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>遗漏攻击检测</td>
+                            <td>❌ 未处理</td>
+                            <td>✅ 完整性不变量</td>
+                        </tr>
+                        <tr>
+                            <td>截图存活</td>
+                            <td>⚠️ 有限</td>
+                            <td>✅ 验证URL + pHash</td>
+                        </tr>
+                        <tr>
+                            <td>微秒时间戳</td>
+                            <td>❌ 毫秒级典型</td>
+                            <td>✅ IEEE 1588 PTP</td>
+                        </tr>
+                        <tr>
+                            <td>后量子就绪</td>
+                            <td>❌ 未指定</td>
+                            <td>✅ ML-DSA迁移路径</td>
+                        </tr>
+                        <tr>
+                            <td>人类存在证明</td>
+                            <td>❌ 仅设备</td>
+                            <td>✅ ACE Extension</td>
+                        </tr>
+                        <tr>
+                            <td>隐私优先设计</td>
+                            <td>⚠️ 可选</td>
+                            <td>✅ 架构原则</td>
+                        </tr>
+                        <tr>
+                            <td>生态系统成熟度</td>
+                            <td>✅ 广泛</td>
+                            <td>⚠️ 新兴</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="key-finding" style="margin-top: 2rem;">
+                    <h3 style="color: #fbbf24; margin-top: 0;"><i class="fas fa-lightbulb mr-2"></i>根本问题</h3>
+                    <p>C2PA为媒体分发提供<em>足够的</em>溯源——回答"谁创建了这个，是否被修改？"</p>
+                    <p>CPP为高风险场景提供<em>取证级</em>溯源——回答"我们能从数学上证明没有任何内容被删除、这是何时确切拍摄的、以及是否有人在场吗？"</p>
+                    <p style="margin-bottom: 0;"><strong>数字信任的未来不是单一标准，而是与所涉风险相匹配的保证谱系。</strong></p>
+                </div>
+
+            </article>
+
+            <!-- Resources Section -->
+            <div style="background: rgba(30, 41, 59, 0.8); border: 1px solid #334155; border-radius: 0.75rem; padding: 2rem; margin-top: 3rem;">
+                <h3 style="color: #f1f5f9; margin-bottom: 1.5rem;"><i class="fas fa-book mr-2"></i>规范参考</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <h4 style="color: #c084fc; margin-bottom: 0.5rem;">C2PA</h4>
+                        <a href="https://c2pa.org/specifications/" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">规范 v2.3</a>
+                        <a href="https://cawg.io/" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">CAWG（Creator Assertions）</a>
+                    </div>
+                    <div>
+                        <h4 style="color: #4ade80; margin-bottom: 0.5rem;">CPP/VAP</h4>
+                        <a href="https://github.com/veritaschain/cpp-spec" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">CPP规范 v1.0</a>
+                        <a href="https://github.com/veritaschain/vap-spec" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VAP Framework v1.2</a>
+                    </div>
+                    <div>
+                        <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">实现</h4>
+                        <a href="https://veritaschain.org/vap/cpp/vericapture" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCapture（iOS）</a>
+                        <a href="https://veritaschain.org/vap/cpp/vericheck" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCheck（Web）</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #334155;">
+                <a href="/blog/zh/" style="color: #60a5fa; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-arrow-left"></i>
+                    返回博客
+                </a>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/" style="color: #94a3b8; text-decoration: none;">EN</a>
+                    <span style="color: #475569;">|</span>
+                    <a href="/blog/posts/2026-01-25-c2pa-vs-cpp-comparison/ja/" style="color: #94a3b8; text-decoration: none;">JA</a>
+                    <span style="color: #475569;">|</span>
+                    <span style="color: #60a5fa;">ZH</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: rgba(15, 23, 42, 0.95); border-top: 1px solid #1e293b; padding: 2rem 1rem; margin-top: 4rem;">
+        <div class="max-w-6xl mx-auto text-center">
+            <p style="color: #64748b; margin-bottom: 0.5rem;">
+                © 2026 VeritasChain Standards Organization. CC BY 4.0许可。
+            </p>
+            <p style="color: #3b82f6; font-weight: 600;">
+                Verify, Don't Trust.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
