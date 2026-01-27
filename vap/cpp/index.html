@@ -1,2255 +1,1471 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VeraCheck - CPP Evidence Verification</title>
-    <meta name="description" content="Verify cryptographic evidence captured with VeriCapture. CPP-compliant provenance verification.">
-    <meta name="author" content="VeritasChain Standards Organization">
-    <link rel="canonical" href="https://veritaschain.org/vap/cpp/veracheck">
+    <title>CPP - Capture Provenance Profile | Your Moments, Verifiably Sealed</title>
+    <meta name="description" content="CPP (Capture Provenance Profile) is a VAP profile for media capture provenance. A framework for cryptographically proving when, where, and by whom a capture event occurred in an age of AI-generated content.">
+    <meta name="keywords" content="CPP, Capture Provenance Profile, media provenance, photo verification, deepfake protection, capture evidence, VeraSnap, VeritasChain, VAP">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="VeraCheck - Evidence Verification">
-    <meta property="og:description" content="Verify cryptographic provenance of media captured with VeriCapture">
+    <meta property="og:title" content="CPP - Capture Provenance Profile | Your Moments, Verifiably Sealed">
+    <meta property="og:description" content="Not to authenticate content, but to prove capture events. CPP is the VAP profile for establishing verifiable media capture records.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://veritaschain.org/vap/cpp/veracheck">
+    <meta property="og:url" content="https://veritaschain.org/vap/cpp/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CPP - Capture Provenance Profile | Your Moments, Verifiably Sealed">
+    <meta name="twitter:description" content="Not to authenticate content, but to prove capture events. CPP establishes verifiable media capture records.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/cpp/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/cpp/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/cpp/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/cpp/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/cpp/" />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cpp-teal': '#14b8a6',
+                        'cpp-cyan': '#06b6d4',
+                        'cpp-sky': '#0ea5e9',
+                        'cpp-dark': '#0f172a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     
     <style>
-        :root {
-            --primary: #1a365d;
-            --primary-light: #2c5282;
-            --accent: #3182ce;
-            --success: #38a169;
-            --warning: #d69e2e;
-            --error: #e53e3e;
-            --bg: #f7fafc;
-            --card-bg: #ffffff;
-            --text: #1a202c;
-            --text-muted: #718096;
-            --border: #e2e8f0;
-            --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #134e4a 50%, #0f172a 100%);
         }
-        
-        [data-theme="dark"] {
-            --primary: #90cdf4;
-            --primary-light: #63b3ed;
-            --accent: #4299e1;
-            --bg: #1a202c;
-            --card-bg: #2d3748;
-            --text: #f7fafc;
-            --text-muted: #a0aec0;
-            --border: #4a5568;
+        .cpp-gradient {
+            background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        [dir="rtl"] {
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            margin-bottom: 30px;
-        }
-        
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-        
-        header p {
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .beta-banner {
-            background: linear-gradient(135deg, rgba(214, 158, 46, 0.15) 0%, rgba(214, 158, 46, 0.05) 100%);
-            border: 1px solid var(--warning);
-            border-radius: var(--radius);
-            padding: 15px 20px;
-            margin: 0 auto 20px;
-            max-width: 900px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .beta-badge {
-            background: var(--warning);
-            color: #000;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            flex-shrink: 0;
-        }
-        
-        .beta-banner p {
-            margin: 0;
-            font-size: 0.9rem;
-            flex: 1;
-        }
-        
-        .beta-banner a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-        
-        .beta-banner a:hover {
-            text-decoration: underline;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        select, button {
-            padding: 8px 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--card-bg);
-            color: var(--text);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        select:hover, button:hover {
-            border-color: var(--accent);
-        }
-        
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 30px;
-            margin-bottom: 20px;
-        }
-        
-        .card h2 {
-            font-size: 1.25rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .upload-zone {
-            border: 2px dashed var(--border);
-            border-radius: var(--radius);
-            padding: 60px 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .upload-zone:hover, .upload-zone.dragover {
-            border-color: var(--accent);
-            background: rgba(49, 130, 206, 0.05);
-        }
-        
-        .upload-zone .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-        
-        .upload-zone input {
-            display: none;
-        }
-        
-        .tab-nav {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 0;
-        }
-        
-        .tab-btn {
-            padding: 12px 24px;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.2s;
-        }
-        
-        .tab-btn:hover {
-            color: var(--text);
-        }
-        
-        .tab-btn.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .json-textarea {
-            width: 100%;
-            min-height: 300px;
-            padding: 15px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-            font-size: 13px;
-            line-height: 1.5;
-            resize: vertical;
-            transition: border-color 0.2s;
-        }
-        
-        .json-textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        
-        .json-textarea::placeholder {
-            color: var(--text-muted);
-        }
-        
-        .paste-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .btn-secondary {
-            background: var(--bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            background: var(--card-bg);
-        }
-        
-        .paste-actions .btn-primary {
-            margin-top: 0;
-            margin-left: auto;
-        }
-        
-        [dir="rtl"] .paste-actions .btn-primary {
-            margin-left: 0;
-            margin-right: auto;
-        }
-        
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 15px;
-        }
-        
-        .btn-primary:hover {
-            background: var(--primary-light);
-        }
-        
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .results {
-            display: none;
-        }
-        
-        .results.visible {
-            display: block;
-        }
-        
-        .result-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            background: var(--bg);
-        }
-        
-        .result-item.pass {
-            border-left: 4px solid var(--success);
-        }
-        
-        .result-item.fail {
-            border-left: 4px solid var(--error);
-        }
-        
-        .result-item.warn {
-            border-left: 4px solid var(--warning);
-        }
-        
-        .result-item.info {
-            border-left: 4px solid var(--accent);
-        }
-        
-        .result-icon {
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-        
-        .result-content h4 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
-        
-        .result-content p {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-        
-        .summary {
-            padding: 20px;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .summary.valid {
-            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1) 0%, rgba(56, 161, 105, 0.05) 100%);
-            border: 1px solid var(--success);
-        }
-        
-        .summary.invalid {
-            background: linear-gradient(135deg, rgba(229, 62, 62, 0.1) 0%, rgba(229, 62, 62, 0.05) 100%);
-            border: 1px solid var(--error);
-        }
-        
-        .summary h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .disclaimer {
-            background: rgba(49, 130, 206, 0.1);
-            border: 1px solid var(--accent);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-        
-        .disclaimer .icon {
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-        
-        .details-toggle {
-            cursor: pointer;
-            color: var(--accent);
-            font-size: 0.875rem;
-            margin-top: 10px;
-            display: inline-block;
-        }
-        
-        .details-content {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background: var(--bg);
-            border-radius: 8px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 0.75rem;
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
             overflow-x: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
         }
-        
-        .details-content.visible {
-            display: block;
-        }
-        
-        .metadata {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .metadata-item {
-            padding: 15px;
-            background: var(--bg);
-            border-radius: 8px;
-        }
-        
-        .metadata-item label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .metadata-item .value {
-            font-weight: 600;
-            margin-top: 5px;
-            word-break: break-all;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .loading.visible {
-            display: block;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-        
-        .contribute-section {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 25px;
-            margin: 0 auto 25px;
-            max-width: 600px;
-            box-shadow: var(--shadow);
-        }
-        
-        .contribute-section h3 {
-            color: var(--text);
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-        
-        .contribute-section p {
-            margin-bottom: 15px;
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
             line-height: 1.6;
         }
-        
-        .contribute-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .contribute-links a {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-        }
-        
-        .contribute-links a:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        
-        .footer-divider {
-            width: 60px;
-            height: 1px;
-            background: var(--border);
-            margin: 25px auto;
-        }
-        
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        
-        footer a:hover {
-            text-decoration: underline;
-        }
-        
-        .layer-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-left: 8px;
-        }
-        
-        .layer-badge.layer1 { background: #e6fffa; color: #234e52; }
-        .layer-badge.layer2 { background: #fefcbf; color: #744210; }
-        .layer-badge.layer3 { background: #fed7e2; color: #702459; }
-        
-        .conformance-level {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        
-        .conformance-level.bronze { background: #cd7f32; color: white; }
-        .conformance-level.silver { background: #c0c0c0; color: #333; }
-        .conformance-level.gold { background: #ffd700; color: #333; }
-        
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.75rem;
+        @media (min-width: 640px) {
+            .code-block pre {
+                font-size: 0.75rem;
             }
-            
-            .card {
-                padding: 20px;
+        }
+        .architecture-diagram {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: #94a3b8;
+            white-space: pre;
+            overflow-x: auto;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .architecture-diagram {
+                font-size: 0.7rem;
+                padding: 1.5rem;
             }
-            
-            .upload-zone {
-                padding: 40px 20px;
-            }
-            
-            .controls {
-                justify-content: center;
-            }
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(20, 184, 166, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .layer-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+        .layer-card:hover {
+            border-color: rgba(20, 184, 166, 0.6);
         }
     </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "CPP - Capture Provenance Profile",
+        "description": "CPP is a VAP profile for media capture provenance, providing a framework for cryptographically proving when, where, and by whom a capture event occurred.",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2026-01-18",
+        "dateModified": "2026-01-18",
+        "version": "1.0.0",
+        "url": "https://veritaschain.org/vap/cpp/"
+    }
+    </script>
 </head>
-<body>
-    <header>
-        <h1>🔍 VeraCheck</h1>
-        <p data-i18n="header.subtitle">Verify cryptographic provenance of evidence captured with VeriCapture</p>
-    </header>
-    
-    <div class="beta-banner">
-        <span class="beta-badge">BETA</span>
-        <p>
-            <span data-i18n="beta.message">This is a beta web version. For full verification features, please use the iOS app.</span>
-            <a href="https://veritaschain.org/vap/cpp/vericapture" target="_blank" data-i18n="beta.downloadApp">Download VeriCapture →</a>
-        </p>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div class="pt-12 lg:pt-0 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 border-b border-teal-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-center gap-3 flex-wrap">
+                <i class="fas fa-certificate text-teal-400"></i>
+                <span class="text-teal-200 font-medium">CPP Status: <span class="text-teal-400 font-bold">v1.0 Release Candidate</span></span>
+                <span class="text-teal-200/70 text-sm">— Verify, Don't Trust. External third-party verification required.</span>
+            </div>
+        </div>
     </div>
-    
-    <div class="container">
-        <div class="controls">
-            <select id="langSelect" aria-label="Language">
-                <option value="en">English</option>
-                <option value="ja">日本語</option>
-                <option value="zh-Hans">简体中文</option>
-                <option value="zh-Hant">繁體中文</option>
-                <option value="ko">한국어</option>
-                <option value="de">Deutsch</option>
-                <option value="fr">Français</option>
-                <option value="es">Español</option>
-                <option value="pt">Português</option>
-                <option value="ar">العربية</option>
-            </select>
-            <button id="themeToggle" aria-label="Toggle theme">🌙</button>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22%2314b8a6%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
         </div>
         
-        <div class="card">
-            <h2>📁 <span data-i18n="upload.title">Upload Verification Pack</span></h2>
-            
-            <!-- Tab Navigation -->
-            <div class="tab-nav">
-                <button class="tab-btn active" data-tab="file" data-i18n="tab.file">File Upload</button>
-                <button class="tab-btn" data-tab="paste" data-i18n="tab.paste">Paste JSON</button>
-            </div>
-            
-            <!-- File Upload Tab -->
-            <div class="tab-content active" id="tab-file">
-                <div class="upload-zone" id="uploadZone">
-                    <div class="icon">📄</div>
-                    <p data-i18n="upload.instruction">Drag & drop your .veripack or .json file here</p>
-                    <p style="color: var(--text-muted); margin-top: 10px;" data-i18n="upload.or">or</p>
-                    <button class="btn-primary" data-i18n="upload.browse">Browse Files</button>
-                    <input type="file" id="fileInput" accept=".json,.veripack">
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Profile Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-camera text-teal-400"></i>
+                    <span class="text-teal-300 text-sm font-semibold tracking-wide">VAP PROFILE: CAPTURE PROVENANCE</span>
                 </div>
             </div>
             
-            <!-- Paste JSON Tab -->
-            <div class="tab-content" id="tab-paste">
-                <textarea 
-                    id="jsonInput" 
-                    class="json-textarea" 
-                    placeholder="Paste your verification pack JSON here..."
-                    data-i18n-placeholder="paste.placeholder"
-                    spellcheck="false"
-                ></textarea>
-                <div class="paste-actions">
-                    <button class="btn-secondary" id="pasteBtn" data-i18n="paste.pasteClipboard">📋 Paste from Clipboard</button>
-                    <button class="btn-secondary" id="clearBtn" data-i18n="paste.clear">Clear</button>
-                    <button class="btn-primary" id="verifyJsonBtn" data-i18n="paste.verify">Verify JSON</button>
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-4">
+                <span class="text-white">CPP</span>
+                <span class="text-teal-400"> - Capture Provenance Profile</span>
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-center text-gray-300 mb-6">
+                The Evidentiary Foundation for Media Capture
+            </p>
+            
+            <!-- Tagline -->
+            <div class="text-center mb-8">
+                <p class="text-xl text-teal-400 font-semibold italic">
+                    "Your moments, verifiably sealed."
+                </p>
+                <p class="text-lg text-gray-400 mt-2">
+                    — Proving capture events, not content truth
+                </p>
+            </div>
+            
+            <!-- Hero Quote -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    <span class="text-teal-400 font-bold text-2xl">"</span>
+                    As AI-generated imagery becomes indistinguishable from captured media, the ability to prove <strong class="text-white">when</strong>, <strong class="text-white">where</strong>, and <strong class="text-white">by whom</strong> a capture event occurred becomes critical for personal archives, legal evidence, and historical documentation.
+                    <span class="text-teal-400 font-bold text-2xl">"</span>
+                </p>
+                <div class="mt-6 text-gray-400 text-sm leading-relaxed">
+                    <p><strong class="text-amber-400">CPP is NOT a content authentication system.</strong></p>
+                    <p><strong class="text-teal-400">CPP IS a framework for creating verifiable capture records that third parties can independently audit.</strong></p>
+                    <p class="mt-2"><strong class="text-cyan-400">"Verify, Don't Trust." — External RFC 3161 TSA anchoring ensures independent verifiability.</strong></p>
                 </div>
             </div>
             
-            <p style="margin-top: 15px; font-size: 0.875rem; color: var(--text-muted);" data-i18n="upload.privacy">
-                All verification is performed locally in your browser. No data is sent to any server.
+            <!-- Hero CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://github.com/veritaschain/cpp-spec" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fab fa-github mr-2"></i>
+                    CPP Specification
+                </a>
+                <a href="#architecture" class="inline-flex items-center bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-layer-group mr-2"></i>
+                    Three-Layer Architecture
+                </a>
+                <a href="#ace" class="inline-flex items-center bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-fingerprint mr-2"></i>
+                    ACE Extension
+                </a>
+                <a href="mailto:standards@veritaschain.org" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-teal-400 font-bold px-8 py-4 rounded-lg transition-all border border-teal-400/50">
+                    <i class="fas fa-handshake mr-2"></i>
+                    Join Development
+                </a>
+            </div>
+            
+            <!-- Implementation Profiles -->
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <div class="inline-flex items-center gap-4 bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border border-blue-500/50 rounded-xl px-6 py-4">
+                    <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-briefcase text-blue-400 text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold">VeraSnap (B2B)</p>
+                        <p class="text-blue-300 text-sm">Evidence-grade capture for legal & journalism</p>
+                    </div>
+                </div>
+                <div class="inline-flex items-center gap-4 bg-gradient-to-r from-teal-900/60 to-cyan-900/60 border border-teal-500/50 rounded-xl px-6 py-4">
+                    <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-heart text-teal-400 text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold">VeraSnap Moments (B2C)</p>
+                        <p class="text-teal-300 text-sm">Future-proof family memories</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What CPP Proves Section -->
+    <section id="what-cpp-proves" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">What CPP Proves and Does NOT Prove</h2>
+                <p class="text-gray-400 text-lg">Clear distinction between objective capture data and subjective interpretation</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- CPP PROVES -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle text-teal-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-teal-400">CPP PROVES</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>A capture event occurred at timestamp T</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>The media file has not been modified since sealing</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>The capture device reported location L</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>No sealed media was deleted from the sequence</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-teal-400 mt-1"></i>
+                            <span>An authentication attempt occurred (optional)</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- CPP DOES NOT PROVE -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-times-circle text-red-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-red-400">CPP DOES NOT PROVE</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The content is "true" or "authentic"</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The scene depicted actually happened</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The photographer's identity</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The content is free of staging or manipulation</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>The authenticated person is who they claim to be</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Key Distinction -->
+            <div class="mt-12 bg-gradient-to-r from-teal-900/40 to-cyan-900/40 rounded-xl p-6 border border-teal-500/30 max-w-3xl mx-auto">
+                <p class="text-center text-lg text-white">
+                    <i class="fas fa-lightbulb text-amber-400 mr-2"></i>
+                    <strong>Design Philosophy:</strong> "We prove capture events occurred. We do not claim they depict truth."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Target Use Cases</h2>
+                <p class="text-gray-400 text-lg">CPP application scope by priority</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Priority A -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-red-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">Priority A</span>
+                        <span class="text-red-400 font-medium">Critical</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-gavel text-red-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Legal Evidence</p>
+                                <p class="text-gray-400 text-sm">Court-admissible capture records</p>
+                                <p class="text-red-300 text-xs mt-1">Key: RFC 3161 TSA, chain of custody</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-newspaper text-red-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">News / Journalism</p>
+                                <p class="text-gray-400 text-sm">Source verification for media</p>
+                                <p class="text-red-300 text-xs mt-1">Key: Deletion detection, timestamping</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Priority B -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">Priority B</span>
+                        <span class="text-yellow-400 font-medium">High</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-users text-yellow-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Personal Archives</p>
+                                <p class="text-gray-400 text-sm">Family memories with provenance</p>
+                                <p class="text-yellow-300 text-xs mt-1">Key: Long-term verification, ease of use</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-file-invoice-dollar text-yellow-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Insurance Claims</p>
+                                <p class="text-gray-400 text-sm">Damage documentation</p>
+                                <p class="text-yellow-300 text-xs mt-1">Key: Location proof, timestamp proof</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Priority C -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">Priority C</span>
+                        <span class="text-blue-400 font-medium">Medium</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-flask text-blue-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Academic Research</p>
+                                <p class="text-gray-400 text-sm">Field data collection</p>
+                                <p class="text-blue-300 text-xs mt-1">Key: Integrity, reproducibility</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="text-3xl"><i class="fas fa-building text-blue-400"></i></div>
+                            <div>
+                                <p class="text-white font-semibold">Real Estate</p>
+                                <p class="text-gray-400 text-sm">Property documentation</p>
+                                <p class="text-blue-300 text-xs mt-1">Key: Date proof, completeness</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Threat Model Section -->
+    <section id="threats" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Threat Model</h2>
+                <p class="text-gray-400 text-lg">What CPP addresses and what it doesn't</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Threats Addressed -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-teal-500/50">
+                    <h3 class="text-xl font-bold text-teal-400 mb-6">
+                        <i class="fas fa-shield-alt mr-2"></i>
+                        Threats CPP Addresses
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Backdating</p>
+                            <p class="text-gray-400 text-sm">Claiming capture occurred at an earlier time</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Mitigation: RFC 3161 TSA external timestamp</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Tampering</p>
+                            <p class="text-gray-400 text-sm">Modifying media after capture</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Mitigation: SHA-256 hash chain, digital signature</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Cherry-Picking</p>
+                            <p class="text-gray-400 text-sm">Deleting unfavorable captures</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Mitigation: Merkle tree deletion detection</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Fabrication</p>
+                            <p class="text-gray-400 text-sm">Claiming AI-generated content was captured</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Mitigation: Capture event attestation</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Threats NOT Addressed -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-red-500/30">
+                    <h3 class="text-xl font-bold text-red-400 mb-6">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Threats CPP Does NOT Address
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Scene Staging</p>
+                            <p class="text-gray-400 text-sm">Content truth outside scope</p>
+                            <p class="text-gray-500 text-xs mt-1">Alternative: Human judgment, investigation</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Device Compromise</p>
+                            <p class="text-gray-400 text-sm">Hardware security out of scope</p>
+                            <p class="text-gray-500 text-xs mt-1">Alternative: TEE/Secure Enclave (future)</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Identity Fraud</p>
+                            <p class="text-gray-400 text-sm">Identity verification not claimed</p>
+                            <p class="text-gray-500 text-xs mt-1">Alternative: External KYC services</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <p class="text-white font-semibold">Network Interception</p>
+                            <p class="text-gray-400 text-sm">Transport security out of scope</p>
+                            <p class="text-gray-500 text-xs mt-1">Alternative: TLS, certificate pinning</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Model Section -->
+    <section id="event-model" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">CPP Event Model</h2>
+                <p class="text-gray-400 text-lg">Core events in the media capture lifecycle</p>
+            </div>
+            
+            <!-- Event Flow -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-stream text-teal-400 mr-2"></i>
+                    CPP Event Lifecycle
+                </h3>
+                
+                <div class="architecture-diagram mx-auto max-w-4xl overflow-x-auto">
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       <span class="text-teal-400 font-bold">CPP Event Lifecycle</span>                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  [User Action]                                                          │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐             │
+│  │ <span class="text-blue-400">CAPTURE</span> │───▶│  <span class="text-teal-400">SEAL</span>   │───▶│  <span class="text-yellow-400">SHARE</span>  │───▶│ <span class="text-cyan-400">VERIFY</span>  │             │
+│  │         │    │         │    │(optional)│    │(optional)│            │
+│  └─────────┘    └─────────┘    └─────────┘    └─────────┘             │
+│       │              │                                                  │
+│       │              │                                                  │
+│       ▼              ▼                                                  │
+│  Local Hash    External Anchor                                          │
+│  Computed      (RFC 3161 TSA)                                           │
+│                                                                         │
+│  [Optional: Attested Capture Extension]                                 │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────────┐                                                        │
+│  │ <span class="text-purple-400">CAPTURE_ATT</span> │  (Biometric attestation attempt recorded)              │
+│  └─────────────┘                                                        │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Event Type Cards -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- CAPTURE -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-camera text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">CAPTURE</h3>
+                            <p class="text-blue-400 text-sm">Media Capture Initiated</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Records the capture event with device ID, media hash, and timestamp.
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">Required Fields:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• DeviceID, MediaHash, Timestamp</li>
+                            <li>• MediaType, MediaFormat</li>
+                            <li>• Location (OPTIONAL)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- SEAL -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-stamp text-teal-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">SEAL</h3>
+                            <p class="text-teal-400 text-sm">Cryptographic Seal Applied</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Applies cryptographic seal with external timestamp anchor.
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">Required Fields:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• EventHash, Signature, AnchorProof</li>
+                            <li>• MerkleRoot, MerkleProof</li>
+                            <li>• TSA Response (RFC 3161)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- SHARE -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-share-alt text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">SHARE</h3>
+                            <p class="text-yellow-400 text-sm">Media Shared (Optional)</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Records sharing with verification link for recipients.
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">Required Fields:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• RecipientHash (optional)</li>
+                            <li>• ShareMethod: LINK, EXPORT, AIRDROP, MESSAGE</li>
+                            <li>• VerificationURL</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- VERIFY -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-cyan-500/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-double text-cyan-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">VERIFY</h3>
+                            <p class="text-cyan-400 text-sm">Third-Party Verification (Optional)</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Records when third parties verify the capture.
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <p class="text-teal-400 text-sm font-medium mb-2">Required Fields:</p>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• VerifierID</li>
+                            <li>• VerificationResult</li>
+                            <li>• VerificationTimestamp</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three-Layer Architecture Section -->
+    <section id="architecture" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Three-Layer Integrity Architecture</h2>
+                <p class="text-gray-400 text-lg">Cryptographic foundation for verifiable capture records</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│  <span class="text-cyan-400 font-bold">Layer 3: External Verifiability</span>                                │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  RFC 3161 TSA / Blockchain / SCITT                        │  │
+│  │  • Independent third-party timestamp                      │  │
+│  │  • Cryptographic proof of existence at time T             │  │
+│  │  • Decentralized verification capability                  │  │
+│  └───────────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────────┤
+│  <span class="text-teal-400 font-bold">Layer 2: Collection Integrity</span>                                   │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  RFC 6962 Merkle Tree                                     │  │
+│  │  • Batch-level completeness proof                         │  │
+│  │  • Efficient verification O(log n)                        │  │
+│  │  • Deletion detection                                     │  │
+│  └───────────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────────┤
+│  <span class="text-blue-400 font-bold">Layer 1: Event Integrity</span>                                        │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  SHA-256 Hash + Ed25519 Signature                         │  │
+│  │  • Per-event content integrity                            │  │
+│  │  • Authenticity verification                              │  │
+│  │  • PrevHash linking (OPTIONAL)                            │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Layer Cards -->
+            <div class="grid md:grid-cols-3 gap-6 mt-12">
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-xl font-bold text-blue-400">1</span>
+                        </div>
+                        <h3 class="text-white font-bold">Event Integrity</h3>
+                    </div>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><i class="fas fa-link text-blue-400 mr-2"></i>SHA-256 hash chain</li>
+                        <li><i class="fas fa-signature text-blue-400 mr-2"></i>Ed25519 signature</li>
+                        <li><i class="fas fa-ban text-blue-400 mr-2"></i>NO exclusion lists</li>
+                    </ul>
+                </div>
+                
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-teal-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-xl font-bold text-teal-400">2</span>
+                        </div>
+                        <h3 class="text-white font-bold">Collection Integrity</h3>
+                    </div>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><i class="fas fa-tree text-teal-400 mr-2"></i>RFC 6962 Merkle tree</li>
+                        <li><i class="fas fa-calculator text-teal-400 mr-2"></i>Completeness Invariant (XOR)</li>
+                        <li><i class="fas fa-search text-teal-400 mr-2"></i>Deletion detection</li>
+                    </ul>
+                </div>
+                
+                <div class="layer-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-cyan-900/50 rounded-lg flex items-center justify-center">
+                            <span class="text-xl font-bold text-cyan-400">3</span>
+                        </div>
+                        <h3 class="text-white font-bold">External Verifiability</h3>
+                    </div>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><i class="fas fa-anchor text-cyan-400 mr-2"></i>RFC 3161 TSA (REQUIRED)</li>
+                        <li><i class="fas fa-link text-cyan-400 mr-2"></i>Verification URL</li>
+                        <li><i class="fas fa-globe text-cyan-400 mr-2"></i>50+ year retention</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Completeness Invariant Section -->
+            <div class="mt-16 bg-gray-900 rounded-xl p-8 border border-teal-500/30">
+                <h3 class="text-2xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-calculator text-teal-400 mr-2"></i>
+                    Completeness Invariant (CI)
+                </h3>
+                <p class="text-gray-400 text-center mb-8">XOR-based deletion detection — the core innovation for proving nothing was removed</p>
+                
+                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                    <div class="code-block">
+                        <pre><span class="text-teal-400">// Completeness Invariant Structure</span>
+CI = {
+  expected_count: n,                           <span class="text-gray-500">// Number of events</span>
+  hash_sum: H(E1) ⊕ H(E2) ⊕ ... ⊕ H(En),      <span class="text-gray-500">// XOR of all event hashes</span>
+  first_timestamp: T1,                         <span class="text-gray-500">// Earliest event</span>
+  last_timestamp: Tn                           <span class="text-gray-500">// Latest event</span>
+}
+
+<span class="text-cyan-400">// Verification Algorithm</span>
+if len(events) != expected_count:
+    return <span class="text-red-400">VIOLATION</span>
+if XOR(H(events)) != hash_sum:
+    return <span class="text-red-400">VIOLATION</span>
+return <span class="text-green-400">VALID</span></pre>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800/50 rounded-lg p-4">
+                        <h4 class="text-teal-400 font-semibold mb-2"><i class="fas fa-shield-alt mr-2"></i>Why XOR?</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• Order-independent: A ⊕ B = B ⊕ A</li>
+                            <li>• Cannot fake removal without original hash</li>
+                            <li>• Constant-size regardless of event count</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800/50 rounded-lg p-4">
+                        <h4 class="text-cyan-400 font-semibold mb-2"><i class="fas fa-check-double mr-2"></i>Detection Capability</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li>• Single event deletion: Detected</li>
+                            <li>• Multiple event deletion: Detected</li>
+                            <li>• Event modification: Detected</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Verification URL Section -->
+            <div class="mt-8 bg-gradient-to-r from-cyan-900/30 to-teal-900/30 rounded-xl p-8 border border-cyan-500/30">
+                <h3 class="text-xl font-bold text-white mb-4 text-center">
+                    <i class="fas fa-link text-cyan-400 mr-2"></i>
+                    Verification URL Architecture
+                </h3>
+                <p class="text-gray-400 text-center mb-6">Survives metadata stripping — verification always accessible</p>
+                
+                <div class="bg-gray-900 rounded-lg p-4 text-center">
+                    <code class="text-cyan-400 text-lg font-mono">https://verify.veritaschain.org/cpp/{verification_code}</code>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-4 mt-6 text-center">
+                    <div>
+                        <p class="text-white font-semibold">SLA</p>
+                        <p class="text-cyan-400">99.95% availability</p>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold">Retention</p>
+                        <p class="text-cyan-400">50+ years</p>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold">Recovery</p>
+                        <p class="text-cyan-400">pHash matching</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACE Extension Section -->
+    <section id="ace" class="py-20 bg-gradient-to-b from-gray-900 to-purple-900/20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 bg-purple-900/50 border border-purple-500/50 px-4 py-2 rounded-full mb-6">
+                    <i class="fas fa-fingerprint text-purple-400"></i>
+                    <span class="text-purple-300 font-semibold">CPP Extension</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">ACE - Attested Capture Extension</h2>
+                <p class="text-xl text-purple-400 font-semibold">Biometric Attestation at Capture Time</p>
+                <p class="text-gray-400 text-lg mt-2">"Who was holding the device when the capture occurred?"</p>
+            </div>
+            
+            <!-- Critical Distinction -->
+            <div class="bg-gray-900/80 rounded-xl p-8 border border-purple-500/30 mb-12 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-4">
+                    <i class="fas fa-exclamation-circle text-amber-400 mr-2"></i>
+                    Critical Distinction
+                </h3>
+                <p class="text-lg text-gray-300 mb-4">
+                    <strong class="text-purple-400">ACE proves an authentication attempt occurred.</strong>
+                    <br>
+                    <strong class="text-red-400">ACE does NOT verify identity.</strong>
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <h4 class="text-purple-400 font-semibold mb-2">ACE PROVES</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>Biometric auth was attempted at capture time</li>
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>Auth result (success/failure/score)</li>
+                            <li><i class="fas fa-check text-purple-400 mr-2"></i>Potential duress (unusual patterns)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <h4 class="text-red-400 font-semibold mb-2">ACE DOES NOT PROVE</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>The person is who they claim to be</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Legal identity</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Absence of coercion</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Attestation Results -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-list-ul text-purple-400 mr-2"></i>
+                    Attestation Results
+                </h3>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-gray-900 rounded-lg p-4 border border-green-500/30">
+                        <p class="text-green-400 font-bold">SUCCESS</p>
+                        <p class="text-gray-400 text-sm">Biometric matched enrolled profile</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-4 border border-red-500/30">
+                        <p class="text-red-400 font-bold">FAILURE</p>
+                        <p class="text-gray-400 text-sm">Biometric did not match</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-4 border border-yellow-500/30">
+                        <p class="text-yellow-400 font-bold">TIMEOUT</p>
+                        <p class="text-gray-400 text-sm">Auth timed out</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-4 border border-orange-500/30">
+                        <p class="text-orange-400 font-bold">CANCELLED</p>
+                        <p class="text-gray-400 text-sm">User cancelled auth</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-4 border border-gray-500/30">
+                        <p class="text-gray-400 font-bold">NOT_ENROLLED</p>
+                        <p class="text-gray-400 text-sm">No biometric enrolled on device</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-purple-900/30 rounded-lg p-4 border border-purple-500/30">
+                    <p class="text-purple-300 text-sm text-center">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <strong>Key Design:</strong> Capture proceeds regardless of auth result. Auth failure is recorded, not blocking.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Zero-Knowledge Approach -->
+            <div class="mt-12 bg-gradient-to-r from-purple-900/40 to-indigo-900/40 rounded-xl p-8 border border-purple-500/30 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-4 text-center">
+                    <i class="fas fa-user-shield text-purple-400 mr-2"></i>
+                    Zero-Knowledge Privacy Approach
+                </h3>
+                <p class="text-lg text-center text-purple-300 mb-6 italic">
+                    "We prove authentication was attempted. We store no biometric data."
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">What ACE Stores</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Auth method used</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Auth result (success/failure)</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Attempt duration</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Device attestation chain</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">What ACE Does NOT Store</h4>
+                        <ul class="text-gray-400 text-sm space-y-1">
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Facial geometry</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Fingerprint data</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Biometric templates</li>
+                            <li><i class="fas fa-times text-red-400 mr-2"></i>Any biometric raw data</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conformance Levels Section -->
+    <section id="conformance" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Conformance Levels</h2>
+                <p class="text-gray-400 text-lg">Tiered compliance for different use cases — Completeness Invariant REQUIRED at all levels</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Bronze -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-amber-700/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-amber-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-600">Bronze</h3>
+                            <p class="text-gray-400 text-sm">Hobbyists, Early Adopters</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>Completeness Invariant (REQUIRED)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-amber-600 mt-1"></i>
+                            <span>SHA-256 + Ed25519 (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">TSA: Optional</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">ACE: Optional</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">Use: Personal archives</p>
+                        <p class="text-amber-400 text-xs font-medium">Self-verifiable only</p>
+                    </div>
+                </div>
+                
+                <!-- Silver -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-gray-400/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-gray-600/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-gray-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-300">Silver</h3>
+                            <p class="text-gray-400 text-sm">Families, Prosumers</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>Completeness Invariant (REQUIRED)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>Daily RFC 3161 TSA (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-gray-300 mt-1"></i>
+                            <span>Verification URL (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-minus text-gray-500 mt-1"></i>
+                            <span class="text-gray-500">ACE: Optional</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">Use: Long-term memories</p>
+                        <p class="text-gray-300 text-xs font-medium">Third-party verifiable</p>
+                    </div>
+                </div>
+                
+                <!-- Gold -->
+                <div class="bg-gray-900 rounded-xl p-8 border-2 border-yellow-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-medal text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-yellow-400">Gold</h3>
+                            <p class="text-gray-400 text-sm">Legal, Journalism, Enterprise</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>Completeness Invariant (REQUIRED)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>Per-capture RFC 3161 TSA (MUST)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>ACE support (REQUIRED)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-yellow-400 mt-1"></i>
+                            <span>Verification URL (MUST)</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">Use: Court evidence</p>
+                        <p class="text-yellow-400 text-xs font-medium">Evidence-grade verifiable</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Conformance Note -->
+            <div class="mt-8 bg-gradient-to-r from-amber-900/20 to-yellow-900/20 rounded-xl p-6 border border-amber-500/30 max-w-3xl mx-auto">
+                <p class="text-center text-amber-300">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <strong>Key Principle:</strong> External third-party verification (RFC 3161 TSA) is what distinguishes "Provenance Available" from mere self-attestation.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Implementation Profiles Section -->
+    <section id="profiles" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Implementation Profiles</h2>
+                <p class="text-gray-400 text-lg">B2B vs B2C positioning</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- VeraSnap B2B -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-blue-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-14 h-14 bg-blue-900/50 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-briefcase text-blue-400 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">VeraSnap</h3>
+                            <p class="text-blue-400 text-sm">B2B Evidence Tool</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4 italic">"Verifiable evidence generation"</p>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Target:</strong> Legal professionals, journalists, insurers</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Conformance:</strong> Gold (mandatory)</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Location:</strong> ON by default</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">ACE:</strong> Mandatory</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">TSA:</strong> Per-capture</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Export:</strong> Evidence Pack (PDF + JSON + Proofs)</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i><strong class="text-white">Pricing:</strong> Enterprise license</li>
+                    </ul>
+                </div>
+                
+                <!-- VeraSnap Moments B2C -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-teal-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-14 h-14 bg-teal-900/50 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-heart text-teal-400 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">VeraSnap Moments</h3>
+                            <p class="text-teal-400 text-sm">B2C Consumer Application</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4 italic">"Your moments, verifiably sealed"</p>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Target:</strong> Families, travelers, memory keepers</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Conformance:</strong> Silver (default), Gold (optional)</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Location:</strong> OFF by default (privacy-first)</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">ACE:</strong> Optional with clear explanation</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">TSA:</strong> Daily batch (upgradable)</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Export:</strong> Share link + QR</li>
+                        <li><i class="fas fa-check text-teal-400 mr-2"></i><strong class="text-white">Pricing:</strong> Freemium / Perpetual verification</li>
+                    </ul>
+                    
+                    <!-- Pricing Philosophy -->
+                    <div class="mt-6 bg-teal-900/30 rounded-lg p-4 border border-teal-500/30">
+                        <p class="text-teal-300 text-sm">
+                            <i class="fas fa-heart mr-2"></i>
+                            <strong>Kindness in pricing:</strong> Perpetual verification links never expire, even if subscription ends.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- C2PA Integration Section -->
+    <section id="c2pa" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">C2PA Integration</h2>
+                <p class="text-gray-400 text-lg">Complementary positioning with Content Credentials</p>
+            </div>
+            
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700 max-w-4xl mx-auto">
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[500px]">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-gray-400 font-semibold">Aspect</th>
+                                <th class="px-4 py-3 text-left text-blue-400 font-semibold">C2PA</th>
+                                <th class="px-4 py-3 text-left text-teal-400 font-semibold">CPP</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Question Answered</td>
+                                <td class="px-4 py-4 text-gray-300">"Is this content authentic?"</td>
+                                <td class="px-4 py-4 text-gray-300">"Was this media captured?"</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Focus</td>
+                                <td class="px-4 py-4 text-gray-300">Content provenance</td>
+                                <td class="px-4 py-4 text-gray-300">Capture event provenance</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Scope</td>
+                                <td class="px-4 py-4 text-gray-300">Individual assets</td>
+                                <td class="px-4 py-4 text-gray-300">Sequential capture records</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Deletion Detection</td>
+                                <td class="px-4 py-4 text-gray-300">Per-asset only</td>
+                                <td class="px-4 py-4 text-gray-300">Sequence-level</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Metaphor</td>
+                                <td class="px-4 py-4 text-gray-300">Content passport</td>
+                                <td class="px-4 py-4 text-teal-400 font-medium">Capture flight recorder</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-6 bg-gradient-to-r from-blue-900/30 to-teal-900/30 rounded-lg p-4 border border-gray-600">
+                    <p class="text-center text-gray-300">
+                        <i class="fas fa-handshake text-white mr-2"></i>
+                        <strong>Integration:</strong> CPP can embed C2PA manifests while providing additional sequence-level guarantees.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VeraSnap Implementation Section -->
+    <section id="verasnap" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 bg-teal-900/30 border border-teal-500/50 px-4 py-2 rounded-full mb-6">
+                    <i class="fas fa-mobile-alt text-teal-400"></i>
+                    <span class="text-teal-300 text-sm font-semibold">CPP IMPLEMENTATION</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">VeraSnap</h2>
+                <p class="text-gray-400 text-lg">Evidence Generation Tool — CPP v1.0 Compliant iOS Application</p>
+            </div>
+            
+            <div class="max-w-5xl mx-auto">
+                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-teal-500/30 overflow-hidden">
+                    <div class="grid lg:grid-cols-2 gap-0">
+                        <!-- Left: App Info -->
+                        <div class="p-8 lg:p-10">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-shield-alt text-white text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">VeraSnap</h3>
+                                    <p class="text-teal-400 text-sm font-medium">Evidence Generation Tool</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                VeraSnap is NOT a camera app. It's a professional evidence generation tool that cryptographically records capture events and data provenance in a tamper-evident manner.
+                            </p>
+                            
+                            <!-- Key Features -->
+                            <div class="space-y-3 mb-8">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle text-teal-400"></i>
+                                    <span class="text-gray-300">RFC 3161 Timestamp Authority support</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle text-teal-400"></i>
+                                    <span class="text-gray-300">ACE biometric authentication attestation</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle text-teal-400"></i>
+                                    <span class="text-gray-300">Third-party independent verification</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle text-teal-400"></i>
+                                    <span class="text-gray-300">Verification Pack export for audit</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Use Cases -->
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                <span class="px-3 py-1 bg-blue-900/50 text-blue-300 rounded-full text-xs font-medium">Legal Evidence</span>
+                                <span class="px-3 py-1 bg-purple-900/50 text-purple-300 rounded-full text-xs font-medium">Journalism</span>
+                                <span class="px-3 py-1 bg-amber-900/50 text-amber-300 rounded-full text-xs font-medium">Insurance</span>
+                                <span class="px-3 py-1 bg-emerald-900/50 text-emerald-300 rounded-full text-xs font-medium">Construction</span>
+                            </div>
+                            
+                            <!-- CTA -->
+                            <a href="/vap/cpp/verasnap/" class="inline-flex items-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-6 py-3 rounded-lg transition-all">
+                                <span>Learn More</span>
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                        
+                        <!-- Right: App Preview -->
+                        <div class="bg-gradient-to-br from-teal-900/20 to-cyan-900/20 p-8 lg:p-10 flex items-center justify-center border-t lg:border-t-0 lg:border-l border-teal-500/20">
+                            <div class="text-center">
+                                <img src="/vap/cpp/verasnap/docs/VeraSnap.png" 
+                                     alt="VeraSnap iOS App" 
+                                     class="max-w-[200px] mx-auto mb-6 drop-shadow-2xl"
+                                     loading="lazy">
+                                <div class="inline-flex items-center gap-2 bg-gray-800/80 px-4 py-2 rounded-full">
+                                    <i class="fab fa-app-store-ios text-teal-400"></i>
+                                    <span class="text-gray-300 text-sm">iOS 17.0+ • Utilities</span>
+                                </div>
+                                <p class="text-gray-500 text-xs mt-4">
+                                    "Verify, Don't Trust."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom Notice -->
+                    <div class="bg-amber-900/20 border-t border-amber-500/30 px-8 py-4">
+                        <p class="text-amber-300 text-sm text-center">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <strong>Important:</strong> VeraSnap records capture events — it does NOT verify content truth or legitimacy.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VAP/VSO Relationship Section -->
+    <section id="vap-relationship" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Position within VAP Framework</h2>
+                <p class="text-gray-400 text-lg">CPP's position in the framework hierarchy</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="architecture-diagram">
+┌────────────────────────────────────────────────────────────────────────────┐
+│                                                                            │
+│   <span class="text-cyan-400 font-bold">VAP (Verifiable AI Provenance Framework)</span>                                │
+│   <span class="text-gray-400">Cross-domain meta-framework for AI audit trails</span>                            │
+│                                                                            │
+└────────────────────────────────────────────┬───────────────────────────────┘
+                                             │
+                                             │ defines & maintains
+                                             │
+┌────────────────────────────────────────────▼───────────────────────────────┐
+│                                                                            │
+│   <span class="text-emerald-400 font-bold">VSO (VeritasChain Standards Organization)</span>                              │
+│   <span class="text-gray-400">Independent standards body (Tokyo, Japan)</span>                                  │
+│                                                                            │
+└────────────────────────────────────────────┬───────────────────────────────┘
+                                             │
+                                             │ publishes domain profiles
+                                             │
+          ┌──────────┬───────────────────────┼───────────────────┬──────────┐
+          │          │                       │                   │          │
+          ▼          ▼                       ▼                   ▼          ▼
+     ┌─────────┐ ┌─────────┐          ┌─────────┐         ┌─────────┐ ┌─────────┐
+     │  <span class="text-blue-400 font-bold">VCP</span>    │ │  <span class="text-purple-400 font-bold">CAP</span>    │          │  <span class="text-teal-400 font-bold">CPP</span>    │         │  <span class="text-amber-400 font-bold">DVP</span>    │ │   ...   │
+     │Finance  │ │Content/ │          │Capture  │         │Automotive│ │         │
+     │Profile  │ │Creative │          │Provenance│        │ Profile  │ │         │
+     │ <span class="text-blue-300">v1.1</span>    │ │ <span class="text-purple-300">v0.2</span>    │          │ <span class="text-teal-300">v1.0</span>    │         │ <span class="text-amber-300">(draft)</span> │ │         │
+     └─────────┘ └─────────┘          └─────────┘         └─────────┘ └─────────┘
+
+                      <span class="text-gray-500">Domain-specific protocol implementations</span>
+                </div>
+            </div>
+            
+            <!-- Comparison Table -->
+            <div class="mt-12 bg-gray-800 rounded-xl p-8 border border-gray-700 max-w-5xl mx-auto">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-exchange-alt text-teal-400 mr-2"></i>
+                    Profile Comparison
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[700px]">
+                        <thead class="bg-gray-900">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-gray-400 font-semibold">Aspect</th>
+                                <th class="px-4 py-3 text-left text-blue-400 font-semibold">VCP (Finance)</th>
+                                <th class="px-4 py-3 text-left text-purple-400 font-semibold">CAP (Content)</th>
+                                <th class="px-4 py-3 text-left text-teal-400 font-semibold">CPP (Capture)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Subject</td>
+                                <td class="px-4 py-4 text-gray-300">Trading decisions</td>
+                                <td class="px-4 py-4 text-gray-300">AI generation decisions</td>
+                                <td class="px-4 py-4 text-gray-300">Media capture events</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Actor</td>
+                                <td class="px-4 py-4 text-gray-300">Algorithm/Trader</td>
+                                <td class="px-4 py-4 text-gray-300">AI Model/Creator</td>
+                                <td class="px-4 py-4 text-gray-300">Device/Photographer</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Industries</td>
+                                <td class="px-4 py-4 text-gray-300">Finance, Trading</td>
+                                <td class="px-4 py-4 text-gray-300">Games, Film, AI Platforms</td>
+                                <td class="px-4 py-4 text-gray-300">Personal, Legal, News</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Core Events</td>
+                                <td class="px-4 py-4 text-gray-300">SIG/ORD/EXE/CXL</td>
+                                <td class="px-4 py-4 text-gray-300">INGEST/TRAIN/GEN/EXPORT</td>
+                                <td class="px-4 py-4 text-gray-300">CAPTURE/SEAL/SHARE/VERIFY</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Time Precision</td>
+                                <td class="px-4 py-4 text-gray-300">Nanosecond–Millisecond</td>
+                                <td class="px-4 py-4 text-gray-300">Second–Minute</td>
+                                <td class="px-4 py-4 text-gray-300">Millisecond–Second</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="py-20 bg-gradient-to-br from-teal-900/30 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Get Involved</h2>
+                <p class="text-gray-400 text-lg">Join the development of CPP and shape the future of capture provenance</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="https://github.com/veritaschain/cpp-spec" target="_blank" rel="noopener noreferrer" class="bg-gray-800 rounded-xl p-6 border border-teal-500/50 hover:border-teal-400 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-teal-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-github text-2xl text-teal-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">CPP Specification</h3>
+                    <p class="text-gray-400 text-sm">Full technical spec on GitHub</p>
+                </a>
+                
+                <a href="/vap/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-layer-group text-2xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">VAP Framework</h3>
+                    <p class="text-gray-400 text-sm">Parent framework overview</p>
+                </a>
+                
+                <a href="/vap/cap/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-palette text-2xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">CAP Profile</h3>
+                    <p class="text-gray-400 text-sm">Content/Creative AI workflows</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-amber-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-amber-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-handshake text-2xl text-amber-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Join Development</h3>
+                    <p class="text-gray-400 text-sm">Contribute to CPP standard</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Quote -->
+    <section class="py-16 bg-gray-900 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <blockquote class="text-xl text-gray-300 italic mb-6">
+                "In an age of AI-generated imagery, proving that a moment was captured — not created — becomes invaluable."
+            </blockquote>
+            <p class="text-gray-500">— VeritasChain Standards Organization</p>
+            
+            <blockquote class="text-lg text-teal-400 italic mt-8 font-semibold">
+                "Your moments, verifiably sealed."
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- License Footer -->
+    <section class="py-8 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+                <i class="fab fa-creative-commons mr-1"></i>
+                This work is licensed under 
+                <a href="https://creativecommons.org/licenses/by/4.0/" class="text-teal-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                    CC BY 4.0 International
+                </a>
+            </p>
+            <p class="text-gray-600 text-xs mt-2">
+                CPP Specification v1.0.0 Release Candidate — Last Updated: 2026-01-18
             </p>
         </div>
-        
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p data-i18n="loading.verifying">Verifying evidence...</p>
-        </div>
-        
-        <div class="results" id="results">
-            <div class="summary" id="summary">
-                <h3 id="summaryTitle"></h3>
-                <p id="summaryText"></p>
-            </div>
-            
-            <div class="card">
-                <h2>ℹ️ <span data-i18n="info.title">Capture Information</span></h2>
-                <div class="metadata" id="metadata"></div>
-                
-                <span class="details-toggle" id="detailsToggle" data-i18n="info.showRaw">Show raw data ▼</span>
-                <pre class="details-content" id="rawData"></pre>
-            </div>
-            
-            <div class="card">
-                <h2>🔐 <span data-i18n="verification.title">Verification Results</span></h2>
-                <div id="verificationResults"></div>
-            </div>
-            
-            <div class="disclaimer">
-                <span class="icon">ℹ️</span>
-                <div>
-                    <strong data-i18n="disclaimer.title">Important Notice</strong>
-                    <p data-i18n="disclaimer.text">This shows capture provenance data. It does NOT verify content truthfulness. Provenance proves when and by what device this media was captured, not whether the captured content is authentic or unmanipulated.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <footer>
-        <div class="contribute-section">
-            <h3 data-i18n="contribute.title">🤝 Contributions Welcome</h3>
-            <p data-i18n="contribute.message">VeraCheck is open source. We welcome contributions, bug reports, and feature requests from the community.</p>
-            <div class="contribute-links">
-                <a href="https://github.com/veritaschain/veracheck" target="_blank">
-                    <span>GitHub</span>
-                </a>
-                <a href="mailto:developers@veritaschain.org">
-                    <span data-i18n="contribute.contact">Contact Us</span>
-                </a>
-            </div>
-        </div>
-        
-        <div class="footer-divider"></div>
-        
-        <p>
-            <span data-i18n="footer.poweredBy">Powered by</span>
-            <a href="https://veritaschain.org/vap/cpp" target="_blank">Content Provenance Protocol (CPP)</a>
-        </p>
-        <p style="margin-top: 10px;">
-            <a href="https://veritaschain.org/vap/cpp/vericapture" target="_blank">VeriCapture App</a> •
-            <a href="https://github.com/veritaschain/cpp-spec" target="_blank">CPP Specification</a> •
-            <a href="https://github.com/veritaschain/vap-spec" target="_blank">VAP Framework</a>
-        </p>
-        <p style="margin-top: 15px; font-size: 0.75rem;">
-            © 2026 VeritasChain Standards Organization. 
-            <span data-i18n="footer.license">Licensed under CC BY 4.0</span>
-        </p>
-    </footer>
+    </section>
 
-    <script>
-    // ============================================================
-    // Internationalization (i18n)
-    // ============================================================
-    const translations = {
-        en: {
-            "header.subtitle": "Verify cryptographic provenance of evidence captured with VeriCapture",
-            "upload.title": "Upload Verification Pack",
-            "tab.file": "File Upload",
-            "tab.paste": "Paste JSON",
-            "upload.instruction": "Drag & drop your .veripack or .json file here",
-            "upload.or": "or",
-            "upload.browse": "Browse Files",
-            "upload.privacy": "All verification is performed locally in your browser. No data is sent to any server.",
-            "paste.placeholder": "Paste your verification pack JSON here...",
-            "paste.pasteClipboard": "📋 Paste from Clipboard",
-            "paste.clear": "Clear",
-            "paste.verify": "Verify JSON",
-            "paste.invalid": "Invalid JSON format. Please check your input.",
-            "loading.verifying": "Verifying evidence...",
-            "info.title": "Capture Information",
-            "info.showRaw": "Show raw data ▼",
-            "info.hideRaw": "Hide raw data ▲",
-            "verification.title": "Verification Results",
-            "disclaimer.title": "Important Notice",
-            "disclaimer.text": "This shows capture provenance data. It does NOT verify content truthfulness. Provenance proves when and by what device this media was captured, not whether the captured content is authentic or unmanipulated.",
-            "footer.poweredBy": "Powered by",
-            "footer.license": "Licensed under CC BY 4.0",
-            "beta.message": "This is a beta web version. For full verification features, please use the iOS app.",
-            "beta.downloadApp": "Download VeriCapture →",
-            "contribute.title": "🤝 Contributions Welcome",
-            "contribute.message": "VeraCheck is open source. We welcome contributions, bug reports, and feature requests from the community.",
-            "contribute.contact": "Contact Us",
-            "summary.valid.title": "ℹ️ Provenance Available",
-            "summary.valid.text": "This evidence has valid cryptographic provenance records.",
-            "summary.invalid.title": "⚠️ Verification Failed",
-            "summary.invalid.text": "Some verification checks did not pass. See details below.",
-            "result.signature.title": "Event Signature",
-            "result.signature.pass": "Digital signature is valid (ES256/P-256)",
-            "result.signature.fail": "Digital signature verification failed",
-            "result.hash.title": "Content Hash",
-            "result.hash.pass": "SHA-256 hash matches event record",
-            "result.hash.fail": "Hash mismatch detected",
-            "result.chain.title": "Hash Chain",
-            "result.chain.pass": "Hash chain integrity verified",
-            "result.chain.fail": "Hash chain broken - tampering detected",
-            "result.merkle.title": "Merkle Proof",
-            "result.merkle.pass": "Merkle audit path verified",
-            "result.merkle.fail": "Merkle proof verification failed",
-            "result.merkle.na": "No Merkle proof included",
-            "result.tsa.title": "RFC 3161 Timestamp",
-            "result.tsa.pass": "External timestamp anchor verified",
-            "result.tsa.fail": "Timestamp verification failed",
-            "result.tsa.na": "No external timestamp (Bronze level)",
-            "result.completeness.title": "Completeness Invariant",
-            "result.completeness.pass": "No missing events detected (XOR hash sum valid)",
-            "result.completeness.fail": "Completeness violation - events may be missing",
-            "result.completeness.na": "Single event - no collection integrity check",
-            "meta.verificationCode": "Verification Code",
-            "meta.captureTime": "Capture Time",
-            "meta.device": "Device",
-            "meta.appVersion": "App Version",
-            "meta.eventType": "Event Type",
-            "meta.conformanceLevel": "Conformance Level",
-            "meta.mediaType": "Media Type",
-            "meta.assetType": "Asset Type",
-            "meta.fileSize": "File Size",
-            "meta.eventCount": "Event Count",
-            "meta.flashMode": "Flash Mode",
-            "meta.resolution": "Resolution",
-            "meta.iso": "ISO",
-            "meta.humanAttestation": "Human Attestation",
-            "meta.location": "Location",
-            "meta.signatureAlgo": "Signature Algorithm",
-            "meta.location.private": "Location private",
-            "layer1": "Layer 1",
-            "layer2": "Layer 2",
-            "layer3": "Layer 3"
-        },
-        ja: {
-            "header.subtitle": "VeriCaptureで撮影された証拠の暗号学的来歴を検証",
-            "upload.title": "検証パックをアップロード",
-            "tab.file": "ファイルアップロード",
-            "tab.paste": "JSONを貼り付け",
-            "upload.instruction": ".veripack または .json ファイルをここにドラッグ＆ドロップ",
-            "upload.or": "または",
-            "upload.browse": "ファイルを選択",
-            "upload.privacy": "すべての検証はブラウザ内でローカルに実行されます。データはサーバーに送信されません。",
-            "paste.placeholder": "検証パックのJSONをここに貼り付けてください...",
-            "paste.pasteClipboard": "📋 クリップボードから貼り付け",
-            "paste.clear": "クリア",
-            "paste.verify": "JSONを検証",
-            "paste.invalid": "無効なJSON形式です。入力を確認してください。",
-            "loading.verifying": "証拠を検証中...",
-            "info.title": "撮影情報",
-            "info.showRaw": "生データを表示 ▼",
-            "info.hideRaw": "生データを非表示 ▲",
-            "verification.title": "検証結果",
-            "disclaimer.title": "重要な注意事項",
-            "disclaimer.text": "これは撮影来歴データを表示しています。コンテンツの真実性を検証するものではありません。来歴は、このメディアがいつ、どのデバイスで撮影されたかを証明しますが、撮影されたコンテンツが本物か、改変されていないかを証明するものではありません。",
-            "footer.poweredBy": "提供",
-            "footer.license": "CC BY 4.0 ライセンス",
-            "beta.message": "これはベータ版のWeb版です。完全な検証機能をご利用いただくには、iOSアプリをご使用ください。",
-            "beta.downloadApp": "VeriCaptureをダウンロード →",
-            "contribute.title": "🤝 開発への参加を歓迎します",
-            "contribute.message": "VeraCheckはオープンソースです。コミュニティからの貢献、バグ報告、機能リクエストを歓迎します。",
-            "contribute.contact": "お問い合わせ",
-            "summary.valid.title": "ℹ️ 来歴情報あり",
-            "summary.valid.text": "この証拠には有効な暗号学的来歴記録があります。",
-            "summary.invalid.title": "⚠️ 検証失敗",
-            "summary.invalid.text": "一部の検証チェックに合格しませんでした。詳細は以下をご覧ください。",
-            "result.signature.title": "イベント署名",
-            "result.signature.pass": "デジタル署名は有効です（ES256/P-256）",
-            "result.signature.fail": "デジタル署名の検証に失敗しました",
-            "result.hash.title": "コンテンツハッシュ",
-            "result.hash.pass": "SHA-256ハッシュがイベント記録と一致",
-            "result.hash.fail": "ハッシュの不一致を検出",
-            "result.chain.title": "ハッシュチェーン",
-            "result.chain.pass": "ハッシュチェーンの整合性を検証",
-            "result.chain.fail": "ハッシュチェーンが破損 - 改ざんを検出",
-            "result.merkle.title": "Merkle証明",
-            "result.merkle.pass": "Merkle監査パスを検証",
-            "result.merkle.fail": "Merkle証明の検証に失敗",
-            "result.merkle.na": "Merkle証明が含まれていません",
-            "result.tsa.title": "RFC 3161 タイムスタンプ",
-            "result.tsa.pass": "外部タイムスタンプアンカーを検証",
-            "result.tsa.fail": "タイムスタンプの検証に失敗",
-            "result.tsa.na": "外部タイムスタンプなし（Bronzeレベル）",
-            "result.completeness.title": "完全性不変条件",
-            "result.completeness.pass": "イベントの欠落なし（XORハッシュ和が有効）",
-            "result.completeness.fail": "完全性違反 - イベントが欠落している可能性",
-            "result.completeness.na": "単一イベント - コレクション整合性チェック不要",
-            "meta.verificationCode": "検証コード",
-            "meta.captureTime": "撮影日時",
-            "meta.device": "デバイス",
-            "meta.appVersion": "アプリバージョン",
-            "meta.eventType": "イベントタイプ",
-            "meta.conformanceLevel": "適合レベル",
-            "meta.mediaType": "メディアタイプ",
-            "meta.assetType": "アセットタイプ",
-            "meta.fileSize": "ファイルサイズ",
-            "meta.eventCount": "イベント数",
-            "meta.flashMode": "フラッシュモード",
-            "meta.resolution": "解像度",
-            "meta.iso": "ISO感度",
-            "meta.humanAttestation": "本人確認",
-            "meta.location": "位置情報",
-            "meta.signatureAlgo": "署名アルゴリズム",
-            "meta.location.private": "位置情報非公開",
-            "layer1": "レイヤー1",
-            "layer2": "レイヤー2",
-            "layer3": "レイヤー3"
-        },
-        "zh-Hans": {
-            "header.subtitle": "验证使用VeriCapture拍摄的证据的加密来源",
-            "upload.title": "上传验证包",
-            "tab.file": "文件上传",
-            "tab.paste": "粘贴JSON",
-            "upload.instruction": "将 .veripack 或 .json 文件拖放到此处",
-            "upload.or": "或",
-            "upload.browse": "浏览文件",
-            "upload.privacy": "所有验证均在浏览器本地进行。不会向服务器发送任何数据。",
-            "paste.placeholder": "在此粘贴验证包JSON...",
-            "paste.pasteClipboard": "📋 从剪贴板粘贴",
-            "paste.clear": "清除",
-            "paste.verify": "验证JSON",
-            "paste.invalid": "无效的JSON格式。请检查您的输入。",
-            "loading.verifying": "正在验证证据...",
-            "info.title": "拍摄信息",
-            "info.showRaw": "显示原始数据 ▼",
-            "info.hideRaw": "隐藏原始数据 ▲",
-            "verification.title": "验证结果",
-            "disclaimer.title": "重要提示",
-            "disclaimer.text": "这显示的是拍摄来源数据。它不验证内容的真实性。来源证明此媒体是何时、由哪个设备拍摄的，而不是证明拍摄的内容是否真实或未经篡改。",
-            "footer.poweredBy": "技术支持",
-            "footer.license": "基于 CC BY 4.0 许可",
-            "beta.message": "这是Beta测试版Web版本。如需完整验证功能，请使用iOS应用。",
-            "beta.downloadApp": "下载 VeriCapture →",
-            "contribute.title": "🤝 欢迎参与开发",
-            "contribute.message": "VeraCheck是开源项目。我们欢迎社区的贡献、错误报告和功能请求。",
-            "contribute.contact": "联系我们",
-            "summary.valid.title": "ℹ️ 来源信息可用",
-            "summary.valid.text": "此证据具有有效的加密来源记录。",
-            "summary.invalid.title": "⚠️ 验证失败",
-            "summary.invalid.text": "部分验证检查未通过。详情请见下方。",
-            "result.signature.title": "事件签名",
-            "result.signature.pass": "数字签名有效（ES256/P-256）",
-            "result.signature.fail": "数字签名验证失败",
-            "result.hash.title": "内容哈希",
-            "result.hash.pass": "SHA-256哈希与事件记录匹配",
-            "result.hash.fail": "检测到哈希不匹配",
-            "result.chain.title": "哈希链",
-            "result.chain.pass": "哈希链完整性已验证",
-            "result.chain.fail": "哈希链断裂 - 检测到篡改",
-            "result.merkle.title": "Merkle证明",
-            "result.merkle.pass": "Merkle审计路径已验证",
-            "result.merkle.fail": "Merkle证明验证失败",
-            "result.merkle.na": "未包含Merkle证明",
-            "result.tsa.title": "RFC 3161 时间戳",
-            "result.tsa.pass": "外部时间戳锚点已验证",
-            "result.tsa.fail": "时间戳验证失败",
-            "result.tsa.na": "无外部时间戳（Bronze级别）",
-            "result.completeness.title": "完整性不变量",
-            "result.completeness.pass": "未检测到缺失事件（XOR哈希和有效）",
-            "result.completeness.fail": "完整性违规 - 可能存在缺失事件",
-            "result.completeness.na": "单一事件 - 无需集合完整性检查",
-            "meta.verificationCode": "验证码",
-            "meta.captureTime": "拍摄时间",
-            "meta.device": "设备",
-            "meta.appVersion": "应用版本",
-            "meta.eventType": "事件类型",
-            "meta.conformanceLevel": "合规级别",
-            "meta.mediaType": "媒体类型",
-            "meta.assetType": "资产类型",
-            "meta.fileSize": "文件大小",
-            "meta.eventCount": "事件数量",
-            "meta.flashMode": "闪光灯模式",
-            "meta.resolution": "分辨率",
-            "meta.iso": "ISO",
-            "meta.humanAttestation": "人员认证",
-            "meta.location": "位置",
-            "meta.signatureAlgo": "签名算法",
-            "meta.location.private": "位置已隐私保护",
-            "layer1": "第1层",
-            "layer2": "第2层",
-            "layer3": "第3层"
-        },
-        "zh-Hant": {
-            "header.subtitle": "驗證使用VeriCapture拍攝的證據的加密來源",
-            "upload.title": "上傳驗證包",
-            "tab.file": "檔案上傳",
-            "tab.paste": "貼上JSON",
-            "upload.instruction": "將 .veripack 或 .json 檔案拖放到此處",
-            "upload.or": "或",
-            "upload.browse": "瀏覽檔案",
-            "upload.privacy": "所有驗證均在瀏覽器本地進行。不會向伺服器發送任何資料。",
-            "paste.placeholder": "在此貼上驗證包JSON...",
-            "paste.pasteClipboard": "📋 從剪貼簿貼上",
-            "paste.clear": "清除",
-            "paste.verify": "驗證JSON",
-            "paste.invalid": "無效的JSON格式。請檢查您的輸入。",
-            "loading.verifying": "正在驗證證據...",
-            "info.title": "拍攝資訊",
-            "info.showRaw": "顯示原始資料 ▼",
-            "info.hideRaw": "隱藏原始資料 ▲",
-            "verification.title": "驗證結果",
-            "disclaimer.title": "重要提示",
-            "disclaimer.text": "這顯示的是拍攝來源資料。它不驗證內容的真實性。來源證明此媒體是何時、由哪個裝置拍攝的，而不是證明拍攝的內容是否真實或未經篡改。",
-            "footer.poweredBy": "技術支援",
-            "footer.license": "基於 CC BY 4.0 授權",
-            "beta.message": "這是Beta測試版Web版本。如需完整驗證功能，請使用iOS應用程式。",
-            "beta.downloadApp": "下載 VeriCapture →",
-            "contribute.title": "🤝 歡迎參與開發",
-            "contribute.message": "VeraCheck是開源專案。我們歡迎社群的貢獻、錯誤回報和功能請求。",
-            "contribute.contact": "聯絡我們",
-            "summary.valid.title": "ℹ️ 來源資訊可用",
-            "summary.valid.text": "此證據具有有效的加密來源記錄。",
-            "summary.invalid.title": "⚠️ 驗證失敗",
-            "summary.invalid.text": "部分驗證檢查未通過。詳情請見下方。",
-            "result.signature.title": "事件簽名",
-            "result.signature.pass": "數位簽名有效（ES256/P-256）",
-            "result.signature.fail": "數位簽名驗證失敗",
-            "result.hash.title": "內容雜湊",
-            "result.hash.pass": "SHA-256雜湊與事件記錄匹配",
-            "result.hash.fail": "偵測到雜湊不匹配",
-            "result.chain.title": "雜湊鏈",
-            "result.chain.pass": "雜湊鏈完整性已驗證",
-            "result.chain.fail": "雜湊鏈斷裂 - 偵測到篡改",
-            "result.merkle.title": "Merkle證明",
-            "result.merkle.pass": "Merkle審計路徑已驗證",
-            "result.merkle.fail": "Merkle證明驗證失敗",
-            "result.merkle.na": "未包含Merkle證明",
-            "result.tsa.title": "RFC 3161 時間戳記",
-            "result.tsa.pass": "外部時間戳記錨點已驗證",
-            "result.tsa.fail": "時間戳記驗證失敗",
-            "result.tsa.na": "無外部時間戳記（Bronze級別）",
-            "result.completeness.title": "完整性不變量",
-            "result.completeness.pass": "未偵測到缺失事件（XOR雜湊和有效）",
-            "result.completeness.fail": "完整性違規 - 可能存在缺失事件",
-            "result.completeness.na": "單一事件 - 無需集合完整性檢查",
-            "meta.verificationCode": "驗證碼",
-            "meta.captureTime": "拍攝時間",
-            "meta.device": "裝置",
-            "meta.appVersion": "應用程式版本",
-            "meta.eventType": "事件類型",
-            "meta.conformanceLevel": "合規級別",
-            "meta.mediaType": "媒體類型",
-            "meta.assetType": "資產類型",
-            "meta.fileSize": "檔案大小",
-            "meta.eventCount": "事件數量",
-            "meta.flashMode": "閃光燈模式",
-            "meta.resolution": "解析度",
-            "meta.iso": "ISO",
-            "meta.humanAttestation": "人員認證",
-            "meta.location": "位置",
-            "meta.signatureAlgo": "簽名演算法",
-            "meta.location.private": "位置已隱私保護",
-            "layer1": "第1層",
-            "layer2": "第2層",
-            "layer3": "第3層"
-        },
-        ko: {
-            "header.subtitle": "VeriCapture로 촬영된 증거의 암호화 출처 검증",
-            "upload.title": "검증 패키지 업로드",
-            "tab.file": "파일 업로드",
-            "tab.paste": "JSON 붙여넣기",
-            "upload.instruction": ".veripack 또는 .json 파일을 여기에 드래그 앤 드롭",
-            "upload.or": "또는",
-            "upload.browse": "파일 찾아보기",
-            "upload.privacy": "모든 검증은 브라우저에서 로컬로 수행됩니다. 서버로 데이터가 전송되지 않습니다.",
-            "paste.placeholder": "여기에 검증 패키지 JSON을 붙여넣으세요...",
-            "paste.pasteClipboard": "📋 클립보드에서 붙여넣기",
-            "paste.clear": "지우기",
-            "paste.verify": "JSON 검증",
-            "paste.invalid": "잘못된 JSON 형식입니다. 입력을 확인하세요.",
-            "loading.verifying": "증거 검증 중...",
-            "info.title": "촬영 정보",
-            "info.showRaw": "원시 데이터 표시 ▼",
-            "info.hideRaw": "원시 데이터 숨기기 ▲",
-            "verification.title": "검증 결과",
-            "disclaimer.title": "중요 공지",
-            "disclaimer.text": "이것은 촬영 출처 데이터를 표시합니다. 콘텐츠의 진실성을 검증하는 것이 아닙니다. 출처는 이 미디어가 언제, 어떤 장치로 촬영되었는지를 증명하며, 촬영된 콘텐츠가 진본인지 또는 조작되지 않았는지를 증명하는 것이 아닙니다.",
-            "footer.poweredBy": "제공",
-            "footer.license": "CC BY 4.0 라이선스",
-            "beta.message": "이것은 베타 웹 버전입니다. 전체 검증 기능을 사용하려면 iOS 앱을 사용하세요.",
-            "beta.downloadApp": "VeriCapture 다운로드 →",
-            "contribute.title": "🤝 개발 참여를 환영합니다",
-            "contribute.message": "VeraCheck는 오픈 소스입니다. 커뮤니티의 기여, 버그 리포트, 기능 요청을 환영합니다。",
-            "contribute.contact": "문의하기",
-            "summary.valid.title": "ℹ️ 출처 정보 확인됨",
-            "summary.valid.text": "이 증거에는 유효한 암호화 출처 기록이 있습니다.",
-            "summary.invalid.title": "⚠️ 검증 실패",
-            "summary.invalid.text": "일부 검증 확인에 통과하지 못했습니다. 아래 세부 정보를 참조하세요.",
-            "result.signature.title": "이벤트 서명",
-            "result.signature.pass": "디지털 서명 유효 (ES256/P-256)",
-            "result.signature.fail": "디지털 서명 검증 실패",
-            "result.hash.title": "콘텐츠 해시",
-            "result.hash.pass": "SHA-256 해시가 이벤트 기록과 일치",
-            "result.hash.fail": "해시 불일치 감지",
-            "result.chain.title": "해시 체인",
-            "result.chain.pass": "해시 체인 무결성 검증됨",
-            "result.chain.fail": "해시 체인 손상 - 변조 감지",
-            "result.merkle.title": "Merkle 증명",
-            "result.merkle.pass": "Merkle 감사 경로 검증됨",
-            "result.merkle.fail": "Merkle 증명 검증 실패",
-            "result.merkle.na": "Merkle 증명이 포함되지 않음",
-            "result.tsa.title": "RFC 3161 타임스탬프",
-            "result.tsa.pass": "외부 타임스탬프 앵커 검증됨",
-            "result.tsa.fail": "타임스탬프 검증 실패",
-            "result.tsa.na": "외부 타임스탬프 없음 (Bronze 레벨)",
-            "result.completeness.title": "완전성 불변량",
-            "result.completeness.pass": "누락된 이벤트 없음 (XOR 해시 합계 유효)",
-            "result.completeness.fail": "완전성 위반 - 이벤트가 누락되었을 수 있음",
-            "result.completeness.na": "단일 이벤트 - 컬렉션 무결성 확인 불필요",
-            "meta.verificationCode": "검증 코드",
-            "meta.captureTime": "촬영 시간",
-            "meta.device": "장치",
-            "meta.appVersion": "앱 버전",
-            "meta.eventType": "이벤트 유형",
-            "meta.conformanceLevel": "적합성 수준",
-            "meta.mediaType": "미디어 유형",
-            "meta.assetType": "자산 유형",
-            "meta.fileSize": "파일 크기",
-            "meta.eventCount": "이벤트 수",
-            "meta.flashMode": "플래시 모드",
-            "meta.resolution": "해상도",
-            "meta.iso": "ISO",
-            "meta.humanAttestation": "본인 인증",
-            "meta.location": "위치",
-            "meta.signatureAlgo": "서명 알고리즘",
-            "meta.location.private": "위치 비공개",
-            "layer1": "레이어 1",
-            "layer2": "레이어 2",
-            "layer3": "레이어 3"
-        },
-        de: {
-            "header.subtitle": "Kryptographische Herkunft von mit VeriCapture aufgenommenen Beweisen überprüfen",
-            "upload.title": "Verifizierungspaket hochladen",
-            "tab.file": "Datei hochladen",
-            "tab.paste": "JSON einfügen",
-            "upload.instruction": "Ziehen Sie Ihre .veripack- oder .json-Datei hierher",
-            "upload.or": "oder",
-            "upload.browse": "Dateien durchsuchen",
-            "upload.privacy": "Alle Überprüfungen werden lokal in Ihrem Browser durchgeführt. Es werden keine Daten an Server gesendet.",
-            "paste.placeholder": "Fügen Sie hier Ihr Verifizierungspaket-JSON ein...",
-            "paste.pasteClipboard": "📋 Aus Zwischenablage einfügen",
-            "paste.clear": "Löschen",
-            "paste.verify": "JSON überprüfen",
-            "paste.invalid": "Ungültiges JSON-Format. Bitte überprüfen Sie Ihre Eingabe.",
-            "loading.verifying": "Beweise werden überprüft...",
-            "info.title": "Aufnahmeinformationen",
-            "info.showRaw": "Rohdaten anzeigen ▼",
-            "info.hideRaw": "Rohdaten ausblenden ▲",
-            "verification.title": "Überprüfungsergebnisse",
-            "disclaimer.title": "Wichtiger Hinweis",
-            "disclaimer.text": "Dies zeigt Aufnahme-Herkunftsdaten an. Es überprüft NICHT die Wahrhaftigkeit des Inhalts. Herkunft beweist, wann und mit welchem Gerät diese Medien aufgenommen wurden, nicht ob der aufgenommene Inhalt authentisch oder unmanipuliert ist.",
-            "footer.poweredBy": "Bereitgestellt von",
-            "footer.license": "Lizenziert unter CC BY 4.0",
-            "beta.message": "Dies ist eine Beta-Webversion. Für vollständige Verifizierungsfunktionen verwenden Sie bitte die iOS-App.",
-            "beta.downloadApp": "VeriCapture herunterladen →",
-            "contribute.title": "🤝 Beiträge willkommen",
-            "contribute.message": "VeraCheck ist Open Source. Wir begrüßen Beiträge, Fehlermeldungen und Funktionswünsche aus der Community.",
-            "contribute.contact": "Kontakt",
-            "summary.valid.title": "ℹ️ Herkunft verfügbar",
-            "summary.valid.text": "Dieser Beweis hat gültige kryptographische Herkunftsaufzeichnungen.",
-            "summary.invalid.title": "⚠️ Überprüfung fehlgeschlagen",
-            "summary.invalid.text": "Einige Überprüfungen wurden nicht bestanden. Siehe Details unten.",
-            "result.signature.title": "Ereignissignatur",
-            "result.signature.pass": "Digitale Signatur ist gültig (ES256/P-256)",
-            "result.signature.fail": "Digitale Signaturüberprüfung fehlgeschlagen",
-            "result.hash.title": "Inhalts-Hash",
-            "result.hash.pass": "SHA-256-Hash stimmt mit Ereignisaufzeichnung überein",
-            "result.hash.fail": "Hash-Nichtübereinstimmung erkannt",
-            "result.chain.title": "Hash-Kette",
-            "result.chain.pass": "Hash-Ketten-Integrität überprüft",
-            "result.chain.fail": "Hash-Kette unterbrochen - Manipulation erkannt",
-            "result.merkle.title": "Merkle-Beweis",
-            "result.merkle.pass": "Merkle-Audit-Pfad überprüft",
-            "result.merkle.fail": "Merkle-Beweis-Überprüfung fehlgeschlagen",
-            "result.merkle.na": "Kein Merkle-Beweis enthalten",
-            "result.tsa.title": "RFC 3161 Zeitstempel",
-            "result.tsa.pass": "Externer Zeitstempel-Anker überprüft",
-            "result.tsa.fail": "Zeitstempelüberprüfung fehlgeschlagen",
-            "result.tsa.na": "Kein externer Zeitstempel (Bronze-Stufe)",
-            "result.completeness.title": "Vollständigkeitsinvariante",
-            "result.completeness.pass": "Keine fehlenden Ereignisse erkannt (XOR-Hash-Summe gültig)",
-            "result.completeness.fail": "Vollständigkeitsverletzung - Ereignisse könnten fehlen",
-            "result.completeness.na": "Einzelereignis - keine Sammlungsintegritätsprüfung",
-            "meta.verificationCode": "Verifizierungscode",
-            "meta.captureTime": "Aufnahmezeit",
-            "meta.device": "Gerät",
-            "meta.appVersion": "App-Version",
-            "meta.eventType": "Ereignistyp",
-            "meta.conformanceLevel": "Konformitätsstufe",
-            "meta.mediaType": "Medientyp",
-            "meta.assetType": "Asset-Typ",
-            "meta.fileSize": "Dateigröße",
-            "meta.eventCount": "Ereignisanzahl",
-            "meta.flashMode": "Blitzmodus",
-            "meta.resolution": "Auflösung",
-            "meta.iso": "ISO",
-            "meta.humanAttestation": "Personenauthentifizierung",
-            "meta.location": "Standort",
-            "meta.signatureAlgo": "Signaturalgorithmus",
-            "meta.location.private": "Standort privat",
-            "layer1": "Schicht 1",
-            "layer2": "Schicht 2",
-            "layer3": "Schicht 3"
-        },
-        fr: {
-            "header.subtitle": "Vérifier la provenance cryptographique des preuves capturées avec VeriCapture",
-            "upload.title": "Télécharger le paquet de vérification",
-            "tab.file": "Télécharger un fichier",
-            "tab.paste": "Coller JSON",
-            "upload.instruction": "Glissez-déposez votre fichier .veripack ou .json ici",
-            "upload.or": "ou",
-            "upload.browse": "Parcourir les fichiers",
-            "upload.privacy": "Toutes les vérifications sont effectuées localement dans votre navigateur. Aucune donnée n'est envoyée à un serveur.",
-            "paste.placeholder": "Collez votre JSON de paquet de vérification ici...",
-            "paste.pasteClipboard": "📋 Coller depuis le presse-papiers",
-            "paste.clear": "Effacer",
-            "paste.verify": "Vérifier JSON",
-            "paste.invalid": "Format JSON invalide. Veuillez vérifier votre saisie.",
-            "loading.verifying": "Vérification des preuves...",
-            "info.title": "Informations de capture",
-            "info.showRaw": "Afficher les données brutes ▼",
-            "info.hideRaw": "Masquer les données brutes ▲",
-            "verification.title": "Résultats de vérification",
-            "disclaimer.title": "Avis important",
-            "disclaimer.text": "Ceci affiche les données de provenance de capture. Cela NE vérifie PAS la véracité du contenu. La provenance prouve quand et par quel appareil ce média a été capturé, pas si le contenu capturé est authentique ou non manipulé.",
-            "footer.poweredBy": "Propulsé par",
-            "footer.license": "Sous licence CC BY 4.0",
-            "beta.message": "Ceci est une version web bêta. Pour les fonctionnalités de vérification complètes, veuillez utiliser l'application iOS.",
-            "beta.downloadApp": "Télécharger VeriCapture →",
-            "contribute.title": "🤝 Contributions bienvenues",
-            "contribute.message": "VeraCheck est open source. Nous accueillons les contributions, rapports de bugs et demandes de fonctionnalités de la communauté.",
-            "contribute.contact": "Nous contacter",
-            "summary.valid.title": "ℹ️ Provenance disponible",
-            "summary.valid.text": "Cette preuve possède des enregistrements de provenance cryptographique valides.",
-            "summary.invalid.title": "⚠️ Échec de la vérification",
-            "summary.invalid.text": "Certaines vérifications n'ont pas réussi. Voir les détails ci-dessous.",
-            "result.signature.title": "Signature d'événement",
-            "result.signature.pass": "Signature numérique valide (ES256/P-256)",
-            "result.signature.fail": "Échec de la vérification de signature numérique",
-            "result.hash.title": "Hash du contenu",
-            "result.hash.pass": "Le hash SHA-256 correspond à l'enregistrement d'événement",
-            "result.hash.fail": "Discordance de hash détectée",
-            "result.chain.title": "Chaîne de hash",
-            "result.chain.pass": "Intégrité de la chaîne de hash vérifiée",
-            "result.chain.fail": "Chaîne de hash rompue - falsification détectée",
-            "result.merkle.title": "Preuve Merkle",
-            "result.merkle.pass": "Chemin d'audit Merkle vérifié",
-            "result.merkle.fail": "Échec de la vérification de preuve Merkle",
-            "result.merkle.na": "Aucune preuve Merkle incluse",
-            "result.tsa.title": "Horodatage RFC 3161",
-            "result.tsa.pass": "Ancrage d'horodatage externe vérifié",
-            "result.tsa.fail": "Échec de la vérification d'horodatage",
-            "result.tsa.na": "Pas d'horodatage externe (niveau Bronze)",
-            "result.completeness.title": "Invariant de complétude",
-            "result.completeness.pass": "Aucun événement manquant détecté (somme XOR hash valide)",
-            "result.completeness.fail": "Violation de complétude - des événements peuvent manquer",
-            "result.completeness.na": "Événement unique - pas de vérification d'intégrité de collection",
-            "meta.verificationCode": "Code de vérification",
-            "meta.captureTime": "Heure de capture",
-            "meta.device": "Appareil",
-            "meta.appVersion": "Version de l'app",
-            "meta.eventType": "Type d'événement",
-            "meta.conformanceLevel": "Niveau de conformité",
-            "meta.mediaType": "Type de média",
-            "meta.assetType": "Type d'actif",
-            "meta.fileSize": "Taille du fichier",
-            "meta.eventCount": "Nombre d'événements",
-            "meta.flashMode": "Mode flash",
-            "meta.resolution": "Résolution",
-            "meta.iso": "ISO",
-            "meta.humanAttestation": "Attestation humaine",
-            "meta.location": "Emplacement",
-            "meta.signatureAlgo": "Algorithme de signature",
-            "meta.location.private": "Emplacement privé",
-            "layer1": "Couche 1",
-            "layer2": "Couche 2",
-            "layer3": "Couche 3"
-        },
-        es: {
-            "header.subtitle": "Verificar la procedencia criptográfica de evidencia capturada con VeriCapture",
-            "upload.title": "Subir paquete de verificación",
-            "tab.file": "Subir archivo",
-            "tab.paste": "Pegar JSON",
-            "upload.instruction": "Arrastra y suelta tu archivo .veripack o .json aquí",
-            "upload.or": "o",
-            "upload.browse": "Buscar archivos",
-            "upload.privacy": "Toda la verificación se realiza localmente en tu navegador. No se envía ningún dato a ningún servidor.",
-            "paste.placeholder": "Pega tu JSON de paquete de verificación aquí...",
-            "paste.pasteClipboard": "📋 Pegar desde portapapeles",
-            "paste.clear": "Borrar",
-            "paste.verify": "Verificar JSON",
-            "paste.invalid": "Formato JSON inválido. Por favor verifica tu entrada.",
-            "loading.verifying": "Verificando evidencia...",
-            "info.title": "Información de captura",
-            "info.showRaw": "Mostrar datos sin procesar ▼",
-            "info.hideRaw": "Ocultar datos sin procesar ▲",
-            "verification.title": "Resultados de verificación",
-            "disclaimer.title": "Aviso importante",
-            "disclaimer.text": "Esto muestra datos de procedencia de captura. NO verifica la veracidad del contenido. La procedencia demuestra cuándo y con qué dispositivo se capturó este medio, no si el contenido capturado es auténtico o no manipulado.",
-            "footer.poweredBy": "Desarrollado por",
-            "footer.license": "Licenciado bajo CC BY 4.0",
-            "beta.message": "Esta es una versión web beta. Para funciones de verificación completas, utiliza la aplicación iOS.",
-            "beta.downloadApp": "Descargar VeriCapture →",
-            "contribute.title": "🤝 Contribuciones bienvenidas",
-            "contribute.message": "VeraCheck es código abierto. Damos la bienvenida a contribuciones, informes de errores y solicitudes de funciones de la comunidad.",
-            "contribute.contact": "Contáctanos",
-            "summary.valid.title": "ℹ️ Procedencia disponible",
-            "summary.valid.text": "Esta evidencia tiene registros de procedencia criptográfica válidos.",
-            "summary.invalid.title": "⚠️ Verificación fallida",
-            "summary.invalid.text": "Algunas verificaciones no pasaron. Ver detalles a continuación.",
-            "result.signature.title": "Firma de evento",
-            "result.signature.pass": "Firma digital válida (ES256/P-256)",
-            "result.signature.fail": "Verificación de firma digital fallida",
-            "result.hash.title": "Hash de contenido",
-            "result.hash.pass": "El hash SHA-256 coincide con el registro del evento",
-            "result.hash.fail": "Se detectó discrepancia de hash",
-            "result.chain.title": "Cadena de hash",
-            "result.chain.pass": "Integridad de cadena de hash verificada",
-            "result.chain.fail": "Cadena de hash rota - manipulación detectada",
-            "result.merkle.title": "Prueba Merkle",
-            "result.merkle.pass": "Ruta de auditoría Merkle verificada",
-            "result.merkle.fail": "Verificación de prueba Merkle fallida",
-            "result.merkle.na": "Sin prueba Merkle incluida",
-            "result.tsa.title": "Marca de tiempo RFC 3161",
-            "result.tsa.pass": "Anclaje de marca de tiempo externa verificado",
-            "result.tsa.fail": "Verificación de marca de tiempo fallida",
-            "result.tsa.na": "Sin marca de tiempo externa (nivel Bronze)",
-            "result.completeness.title": "Invariante de completitud",
-            "result.completeness.pass": "No se detectaron eventos faltantes (suma hash XOR válida)",
-            "result.completeness.fail": "Violación de completitud - pueden faltar eventos",
-            "result.completeness.na": "Evento único - sin verificación de integridad de colección",
-            "meta.verificationCode": "Código de verificación",
-            "meta.captureTime": "Hora de captura",
-            "meta.device": "Dispositivo",
-            "meta.appVersion": "Versión de la app",
-            "meta.eventType": "Tipo de evento",
-            "meta.conformanceLevel": "Nivel de conformidad",
-            "meta.mediaType": "Tipo de medio",
-            "meta.assetType": "Tipo de activo",
-            "meta.fileSize": "Tamaño del archivo",
-            "meta.eventCount": "Cantidad de eventos",
-            "meta.flashMode": "Modo de flash",
-            "meta.resolution": "Resolución",
-            "meta.iso": "ISO",
-            "meta.humanAttestation": "Atestación humana",
-            "meta.location": "Ubicación",
-            "meta.signatureAlgo": "Algoritmo de firma",
-            "meta.location.private": "Ubicación privada",
-            "layer1": "Capa 1",
-            "layer2": "Capa 2",
-            "layer3": "Capa 3"
-        },
-        pt: {
-            "header.subtitle": "Verificar a procedência criptográfica de evidências capturadas com VeriCapture",
-            "upload.title": "Carregar pacote de verificação",
-            "tab.file": "Carregar arquivo",
-            "tab.paste": "Colar JSON",
-            "upload.instruction": "Arraste e solte seu arquivo .veripack ou .json aqui",
-            "upload.or": "ou",
-            "upload.browse": "Procurar arquivos",
-            "upload.privacy": "Toda a verificação é realizada localmente no seu navegador. Nenhum dado é enviado a qualquer servidor.",
-            "paste.placeholder": "Cole seu JSON de pacote de verificação aqui...",
-            "paste.pasteClipboard": "📋 Colar da área de transferência",
-            "paste.clear": "Limpar",
-            "paste.verify": "Verificar JSON",
-            "paste.invalid": "Formato JSON inválido. Por favor verifique sua entrada.",
-            "loading.verifying": "Verificando evidência...",
-            "info.title": "Informações de captura",
-            "info.showRaw": "Mostrar dados brutos ▼",
-            "info.hideRaw": "Ocultar dados brutos ▲",
-            "verification.title": "Resultados da verificação",
-            "disclaimer.title": "Aviso importante",
-            "disclaimer.text": "Isto mostra dados de procedência de captura. NÃO verifica a veracidade do conteúdo. Procedência prova quando e por qual dispositivo esta mídia foi capturada, não se o conteúdo capturado é autêntico ou não manipulado.",
-            "footer.poweredBy": "Desenvolvido por",
-            "footer.license": "Licenciado sob CC BY 4.0",
-            "beta.message": "Esta é uma versão web beta. Para recursos completos de verificação, use o aplicativo iOS.",
-            "beta.downloadApp": "Baixar VeriCapture →",
-            "contribute.title": "🤝 Contribuições são bem-vindas",
-            "contribute.message": "VeraCheck é código aberto. Aceitamos contribuições, relatórios de bugs e solicitações de recursos da comunidade.",
-            "contribute.contact": "Fale conosco",
-            "summary.valid.title": "ℹ️ Procedência disponível",
-            "summary.valid.text": "Esta evidência possui registros de procedência criptográfica válidos.",
-            "summary.invalid.title": "⚠️ Verificação falhou",
-            "summary.invalid.text": "Algumas verificações não passaram. Veja detalhes abaixo.",
-            "result.signature.title": "Assinatura do evento",
-            "result.signature.pass": "Assinatura digital válida (ES256/P-256)",
-            "result.signature.fail": "Verificação de assinatura digital falhou",
-            "result.hash.title": "Hash do conteúdo",
-            "result.hash.pass": "Hash SHA-256 corresponde ao registro do evento",
-            "result.hash.fail": "Incompatibilidade de hash detectada",
-            "result.chain.title": "Cadeia de hash",
-            "result.chain.pass": "Integridade da cadeia de hash verificada",
-            "result.chain.fail": "Cadeia de hash quebrada - adulteração detectada",
-            "result.merkle.title": "Prova Merkle",
-            "result.merkle.pass": "Caminho de auditoria Merkle verificado",
-            "result.merkle.fail": "Verificação de prova Merkle falhou",
-            "result.merkle.na": "Sem prova Merkle incluída",
-            "result.tsa.title": "Carimbo de tempo RFC 3161",
-            "result.tsa.pass": "Âncora de carimbo de tempo externo verificada",
-            "result.tsa.fail": "Verificação de carimbo de tempo falhou",
-            "result.tsa.na": "Sem carimbo de tempo externo (nível Bronze)",
-            "result.completeness.title": "Invariante de completude",
-            "result.completeness.pass": "Nenhum evento ausente detectado (soma hash XOR válida)",
-            "result.completeness.fail": "Violação de completude - eventos podem estar faltando",
-            "result.completeness.na": "Evento único - sem verificação de integridade de coleção",
-            "meta.verificationCode": "Código de verificação",
-            "meta.captureTime": "Hora da captura",
-            "meta.device": "Dispositivo",
-            "meta.appVersion": "Versão do app",
-            "meta.eventType": "Tipo de evento",
-            "meta.conformanceLevel": "Nível de conformidade",
-            "meta.mediaType": "Tipo de mídia",
-            "meta.assetType": "Tipo de ativo",
-            "meta.fileSize": "Tamanho do arquivo",
-            "meta.eventCount": "Quantidade de eventos",
-            "meta.flashMode": "Modo de flash",
-            "meta.resolution": "Resolução",
-            "meta.iso": "ISO",
-            "meta.humanAttestation": "Atestação humana",
-            "meta.location": "Localização",
-            "meta.signatureAlgo": "Algoritmo de assinatura",
-            "meta.location.private": "Localização privada",
-            "layer1": "Camada 1",
-            "layer2": "Camada 2",
-            "layer3": "Camada 3"
-        },
-        ar: {
-            "header.subtitle": "التحقق من مصدر التشفير للأدلة الملتقطة باستخدام VeriCapture",
-            "upload.title": "تحميل حزمة التحقق",
-            "tab.file": "تحميل ملف",
-            "tab.paste": "لصق JSON",
-            "upload.instruction": "اسحب وأفلت ملف .veripack أو .json هنا",
-            "upload.or": "أو",
-            "upload.browse": "تصفح الملفات",
-            "upload.privacy": "يتم إجراء جميع عمليات التحقق محليًا في متصفحك. لا يتم إرسال أي بيانات إلى أي خادم.",
-            "paste.placeholder": "الصق JSON حزمة التحقق هنا...",
-            "paste.pasteClipboard": "📋 لصق من الحافظة",
-            "paste.clear": "مسح",
-            "paste.verify": "تحقق من JSON",
-            "paste.invalid": "تنسيق JSON غير صالح. يرجى التحقق من الإدخال.",
-            "loading.verifying": "جارٍ التحقق من الأدلة...",
-            "info.title": "معلومات الالتقاط",
-            "info.showRaw": "عرض البيانات الخام ▼",
-            "info.hideRaw": "إخفاء البيانات الخام ▲",
-            "verification.title": "نتائج التحقق",
-            "disclaimer.title": "ملاحظة مهمة",
-            "disclaimer.text": "هذا يعرض بيانات مصدر الالتقاط. لا يتحقق من صحة المحتوى. المصدر يثبت متى وبأي جهاز تم التقاط هذه الوسائط، وليس ما إذا كان المحتوى الملتقط أصليًا أو غير معدل.",
-            "footer.poweredBy": "مدعوم من",
-            "footer.license": "مرخص بموجب CC BY 4.0",
-            "beta.message": "هذه نسخة ويب تجريبية. للحصول على ميزات التحقق الكاملة، يرجى استخدام تطبيق iOS.",
-            "beta.downloadApp": "تحميل VeriCapture ←",
-            "contribute.title": "🤝 نرحب بالمساهمات",
-            "contribute.message": "VeraCheck مفتوح المصدر. نرحب بالمساهمات وتقارير الأخطاء وطلبات الميزات من المجتمع.",
-            "contribute.contact": "اتصل بنا",
-            "summary.valid.title": "ℹ️ المصدر متاح",
-            "summary.valid.text": "هذا الدليل يحتوي على سجلات مصدر تشفير صالحة.",
-            "summary.invalid.title": "⚠️ فشل التحقق",
-            "summary.invalid.text": "لم تنجح بعض فحوصات التحقق. انظر التفاصيل أدناه.",
-            "result.signature.title": "توقيع الحدث",
-            "result.signature.pass": "التوقيع الرقمي صالح (ES256/P-256)",
-            "result.signature.fail": "فشل التحقق من التوقيع الرقمي",
-            "result.hash.title": "تجزئة المحتوى",
-            "result.hash.pass": "تجزئة SHA-256 تطابق سجل الحدث",
-            "result.hash.fail": "تم اكتشاف عدم تطابق في التجزئة",
-            "result.chain.title": "سلسلة التجزئة",
-            "result.chain.pass": "تم التحقق من سلامة سلسلة التجزئة",
-            "result.chain.fail": "سلسلة التجزئة مكسورة - تم اكتشاف تلاعب",
-            "result.merkle.title": "إثبات Merkle",
-            "result.merkle.pass": "تم التحقق من مسار تدقيق Merkle",
-            "result.merkle.fail": "فشل التحقق من إثبات Merkle",
-            "result.merkle.na": "لا يوجد إثبات Merkle مضمن",
-            "result.tsa.title": "طابع زمني RFC 3161",
-            "result.tsa.pass": "تم التحقق من مرساة الطابع الزمني الخارجي",
-            "result.tsa.fail": "فشل التحقق من الطابع الزمني",
-            "result.tsa.na": "لا يوجد طابع زمني خارجي (مستوى Bronze)",
-            "result.completeness.title": "ثابت الاكتمال",
-            "result.completeness.pass": "لم يتم اكتشاف أحداث مفقودة (مجموع تجزئة XOR صالح)",
-            "result.completeness.fail": "انتهاك الاكتمال - قد تكون هناك أحداث مفقودة",
-            "result.completeness.na": "حدث واحد - لا حاجة لفحص سلامة المجموعة",
-            "meta.verificationCode": "رمز التحقق",
-            "meta.captureTime": "وقت الالتقاط",
-            "meta.device": "الجهاز",
-            "meta.appVersion": "إصدار التطبيق",
-            "meta.eventType": "نوع الحدث",
-            "meta.conformanceLevel": "مستوى المطابقة",
-            "meta.mediaType": "نوع الوسائط",
-            "meta.assetType": "نوع الأصل",
-            "meta.fileSize": "حجم الملف",
-            "meta.eventCount": "عدد الأحداث",
-            "meta.flashMode": "وضع الفلاش",
-            "meta.resolution": "الدقة",
-            "meta.iso": "ISO",
-            "meta.humanAttestation": "شهادة بشرية",
-            "meta.location": "الموقع",
-            "meta.signatureAlgo": "خوارزمية التوقيع",
-            "meta.location.private": "الموقع خاص",
-            "layer1": "الطبقة 1",
-            "layer2": "الطبقة 2",
-            "layer3": "الطبقة 3"
-        }
-    };
-
-    let currentLang = 'en';
-    
-    function t(key) {
-        return translations[currentLang]?.[key] || translations['en'][key] || key;
-    }
-    
-    function setLanguage(lang) {
-        currentLang = lang;
-        document.documentElement.lang = lang;
-        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-        
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            el.textContent = t(el.dataset.i18n);
-        });
-        
-        // Update placeholders
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-            el.placeholder = t(el.dataset['i18nPlaceholder']);
-        });
-        
-        localStorage.setItem('veracheck-lang', lang);
-    }
-
-    // ============================================================
-    // Theme Management
-    // ============================================================
-    function setTheme(theme) {
-        document.documentElement.dataset.theme = theme;
-        document.getElementById('themeToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
-        localStorage.setItem('veracheck-theme', theme);
-    }
-
-    // ============================================================
-    // Cryptographic Utilities
-    // ============================================================
-    async function sha256(data) {
-        const encoder = new TextEncoder();
-        const dataBuffer = typeof data === 'string' ? encoder.encode(data) : data;
-        const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
-        return Array.from(new Uint8Array(hashBuffer))
-            .map(b => b.toString(16).padStart(2, '0'))
-            .join('');
-    }
-
-    function base64ToArrayBuffer(base64) {
-        const binaryString = atob(base64);
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-        }
-        return bytes.buffer;
-    }
-
-    function hexToArrayBuffer(hex) {
-        const bytes = new Uint8Array(hex.length / 2);
-        for (let i = 0; i < hex.length; i += 2) {
-            bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
-        }
-        return bytes.buffer;
-    }
-
-    // JSON Canonicalization (RFC 8785 simplified)
-    function canonicalize(obj) {
-        if (obj === null || typeof obj !== 'object') {
-            return JSON.stringify(obj);
-        }
-        if (Array.isArray(obj)) {
-            return '[' + obj.map(canonicalize).join(',') + ']';
-        }
-        const keys = Object.keys(obj).sort();
-        const pairs = keys.map(key => JSON.stringify(key) + ':' + canonicalize(obj[key]));
-        return '{' + pairs.join(',') + '}';
-    }
-
-    // Verify ECDSA P-256 signature (ES256)
-    async function verifyES256Signature(publicKeyBase64, signatureBase64, data) {
-        try {
-            const publicKeyDer = base64ToArrayBuffer(publicKeyBase64);
-            const signature = base64ToArrayBuffer(signatureBase64);
-            const encoder = new TextEncoder();
-            const dataBytes = encoder.encode(typeof data === 'string' ? data : canonicalize(data));
-            
-            const cryptoKey = await crypto.subtle.importKey(
-                'spki',
-                publicKeyDer,
-                { name: 'ECDSA', namedCurve: 'P-256' },
-                false,
-                ['verify']
-            );
-            
-            return await crypto.subtle.verify(
-                { name: 'ECDSA', hash: 'SHA-256' },
-                cryptoKey,
-                signature,
-                dataBytes
-            );
-        } catch (e) {
-            console.error('Signature verification error:', e);
-            return false;
-        }
-    }
-
-    // Merkle proof verification
-    function verifyMerkleProof(leafHash, auditPath, directions, expectedRoot) {
-        let currentHash = leafHash.replace('sha256:', '');
-        
-        for (let i = 0; i < auditPath.length; i++) {
-            const siblingHash = auditPath[i].replace('sha256:', '');
-            const direction = directions[i];
-            
-            // Combine hashes based on direction (RFC 6962)
-            const combined = direction === 'L' 
-                ? siblingHash + currentHash 
-                : currentHash + siblingHash;
-            
-            // Would need to hash - simplified for demo
-            currentHash = combined; // Placeholder
-        }
-        
-        return true; // Simplified - full implementation would compare with expectedRoot
-    }
-
-    // ============================================================
-    // Verification Logic
-    // ============================================================
-    async function verifyPack(pack) {
-        const results = [];
-        let allValid = true;
-        
-        // Support both CPP 1.0 format and VeriCapture TDS format
-        // CPP 1.0: capture_event, seal_event
-        // VeriCapture TDS: Single CPPEvent with eventType: INGEST/EXPORT
-        
-        const captureEvent = pack.capture_event || pack.captureEvent || pack;
-        const sealEvent = pack.seal_event || pack.sealEvent;
-        const merkleProof = pack.merkle_proof || pack.merkleProof;
-        const externalAnchor = pack.external_anchor || pack.externalAnchor || 
-                              (sealEvent?.payload?.external_anchor) ||
-                              pack.anchor;
-        
-        // Detect format
-        const isVeriCaptureTDS = captureEvent?.eventType && 
-                                 ['INGEST', 'EXPORT', 'TOMBSTONE'].includes(captureEvent.eventType);
-        const isCPP10 = captureEvent?.cpp_version || captureEvent?.event_type?.startsWith('CPP_');
-        
-        // Layer 1: Event Signature Verification
-        if (captureEvent) {
-            // VeriCapture TDS format: signature is direct field
-            // CPP 1.0 format: signature is object with algorithm, public_key, value
-            const signature = captureEvent.signature;
-            const signAlgo = captureEvent.signAlgo || captureEvent.sign_algo || 
-                            signature?.algorithm || 'ES256';
-            
-            if (signature) {
-                try {
-                    let isValid = false;
-                    
-                    if (isVeriCaptureTDS) {
-                        // VeriCapture TDS: signature is Base64 ES256
-                        // For browser verification, we check structure validity
-                        const hasEventHash = !!captureEvent.eventHash;
-                        const hasValidSignature = typeof signature === 'string' && signature.length > 20;
-                        isValid = hasEventHash && hasValidSignature;
-                    } else if (signature.value && signature.public_key) {
-                        // CPP 1.0 format
-                        const eventWithoutSig = { ...captureEvent };
-                        delete eventWithoutSig.signature;
-                        
-                        isValid = await verifyES256Signature(
-                            signature.public_key,
-                            signature.value,
-                            eventWithoutSig
-                        );
-                    } else {
-                        // Assume valid if signature exists
-                        isValid = true;
-                    }
-                    
-                    results.push({
-                        layer: 1,
-                        type: 'signature',
-                        status: isValid ? 'pass' : 'fail',
-                        title: t('result.signature.title'),
-                        message: isValid ? t('result.signature.pass') : t('result.signature.fail')
-                    });
-                    
-                    if (!isValid) allValid = false;
-                } catch (e) {
-                    results.push({
-                        layer: 1,
-                        type: 'signature',
-                        status: 'fail',
-                        title: t('result.signature.title'),
-                        message: t('result.signature.fail')
-                    });
-                    allValid = false;
-                }
-            } else {
-                results.push({
-                    layer: 1,
-                    type: 'signature',
-                    status: 'warn',
-                    title: t('result.signature.title'),
-                    message: 'No signature found'
-                });
-            }
-        }
-        
-        // Layer 1: Hash Verification
-        // VeriCapture TDS: asset.assetHash
-        // CPP 1.0: payload.media_hash
-        const assetHash = captureEvent?.asset?.assetHash || 
-                         captureEvent?.payload?.media_hash ||
-                         captureEvent?.eventHash;
-        if (assetHash) {
-            results.push({
-                layer: 1,
-                type: 'hash',
-                status: 'pass',
-                title: t('result.hash.title'),
-                message: t('result.hash.pass')
-            });
-        }
-        
-        // Layer 2: Chain Integrity
-        const prevHash = captureEvent?.prevHash || captureEvent?.prev_hash;
-        if (prevHash) {
-            const isGenesis = prevHash === 'GENESIS' || 
-                             prevHash === 'sha256:0000000000000000000000000000000000000000000000000000000000000000';
-            results.push({
-                layer: 2,
-                type: 'chain',
-                status: 'pass',
-                title: t('result.chain.title'),
-                message: isGenesis ? 
-                    t('result.chain.pass') + ' (Genesis)' : 
-                    t('result.chain.pass')
-            });
-        }
-        
-        // Layer 2: Merkle Proof
-        if (merkleProof && merkleProof.audit_path && merkleProof.audit_path.length > 0) {
-            const merkleValid = verifyMerkleProof(
-                merkleProof.leaf_hash,
-                merkleProof.audit_path,
-                merkleProof.directions,
-                sealEvent?.payload?.merkle_root
-            );
-            
-            results.push({
-                layer: 2,
-                type: 'merkle',
-                status: merkleValid ? 'pass' : 'fail',
-                title: t('result.merkle.title'),
-                message: merkleValid ? t('result.merkle.pass') : t('result.merkle.fail')
-            });
-            
-            if (!merkleValid) allValid = false;
-        } else {
-            results.push({
-                layer: 2,
-                type: 'merkle',
-                status: 'info',
-                title: t('result.merkle.title'),
-                message: t('result.merkle.na')
-            });
-        }
-        
-        // Layer 2: Completeness Invariant
-        const ci = pack.completeness_invariant || 
-                   sealEvent?.payload?.completeness_invariant;
-        if (ci) {
-            results.push({
-                layer: 2,
-                type: 'completeness',
-                status: 'pass',
-                title: t('result.completeness.title'),
-                message: t('result.completeness.pass')
-            });
-        } else {
-            results.push({
-                layer: 2,
-                type: 'completeness',
-                status: 'info',
-                title: t('result.completeness.title'),
-                message: t('result.completeness.na')
-            });
-        }
-        
-        // Layer 3: TSA Timestamp
-        if (externalAnchor && (externalAnchor.timestamp_token || externalAnchor.tsaResponse)) {
-            results.push({
-                layer: 3,
-                type: 'tsa',
-                status: 'pass',
-                title: t('result.tsa.title'),
-                message: t('result.tsa.pass')
-            });
-        } else {
-            results.push({
-                layer: 3,
-                type: 'tsa',
-                status: 'info',
-                title: t('result.tsa.title'),
-                message: t('result.tsa.na')
-            });
-        }
-        
-        return { results, allValid };
-    }
-
-    function extractMetadata(pack) {
-        // Support both CPP 1.0 format and VeriCapture TDS format
-        const captureEvent = pack.capture_event || pack.captureEvent || pack;
-        const sealEvent = pack.seal_event || pack.sealEvent;
-        
-        const metadata = {};
-        
-        // Verification Code
-        if (pack.verification_code) {
-            metadata.verificationCode = pack.verification_code;
-        } else if (captureEvent?.eventId) {
-            metadata.verificationCode = captureEvent.eventId;
-        }
-        
-        // Capture Time
-        const timestamp = captureEvent?.timestamp;
-        if (timestamp) {
-            metadata.captureTime = new Date(timestamp).toLocaleString(currentLang);
-        }
-        
-        // Device - VeriCapture TDS format
-        const captureContext = captureEvent?.captureContext;
-        if (captureContext) {
-            metadata.device = captureContext.deviceModel || 'Unknown Device';
-            if (captureContext.osVersion) {
-                metadata.device += ` (${captureContext.osVersion})`;
-            }
-        } else {
-            // CPP 1.0 format
-            const device = captureEvent?.payload?.capture_device;
-            if (device && device.manufacturer && device.model) {
-                metadata.device = `${device.manufacturer} ${device.model}`;
-            }
-        }
-        
-        // App Version (VeriCapture TDS)
-        if (captureContext?.appVersion) {
-            metadata.appVersion = captureContext.appVersion;
-        }
-        
-        // Event Type (VeriCapture TDS)
-        if (captureEvent?.eventType) {
-            metadata.eventType = captureEvent.eventType;
-        }
-        
-        // Conformance Level
-        const ci = pack.completeness_invariant || 
-                   sealEvent?.payload?.completeness_invariant;
-        const tsa = pack.external_anchor || 
-                    sealEvent?.payload?.external_anchor ||
-                    pack.anchor;
-        
-        // Check for Human Attestation (ACE) for Gold level
-        const humanAttestation = captureContext?.humanAttestation;
-        
-        if (humanAttestation && tsa) {
-            metadata.conformanceLevel = 'Gold';
-        } else if (tsa && (tsa.timestamp_token || tsa.tsaResponse)) {
-            metadata.conformanceLevel = 'Silver';
-        } else {
-            metadata.conformanceLevel = 'Bronze';
-        }
-        
-        // Media Type - VeriCapture TDS: asset.mimeType, CPP 1.0: payload.media_type
-        const mediaType = captureEvent?.asset?.mimeType || 
-                         captureEvent?.payload?.media_type;
-        if (mediaType) {
-            metadata.mediaType = mediaType;
-        }
-        
-        // Asset Type (IMAGE/VIDEO) - VeriCapture TDS
-        if (captureEvent?.asset?.assetType) {
-            metadata.assetType = captureEvent.asset.assetType;
-        }
-        
-        // File Size - VeriCapture TDS
-        if (captureEvent?.asset?.assetSize) {
-            const sizeBytes = captureEvent.asset.assetSize;
-            if (sizeBytes > 1024 * 1024) {
-                metadata.fileSize = (sizeBytes / (1024 * 1024)).toFixed(2) + ' MB';
-            } else if (sizeBytes > 1024) {
-                metadata.fileSize = (sizeBytes / 1024).toFixed(2) + ' KB';
-            } else {
-                metadata.fileSize = sizeBytes + ' bytes';
-            }
-        }
-        
-        // Event Count
-        const eventCount = sealEvent?.payload?.event_count || 
-                          ci?.expected_count;
-        if (eventCount) {
-            metadata.eventCount = eventCount;
-        }
-        
-        // Camera Settings - VeriCapture TDS
-        const cameraSettings = captureEvent?.cameraSettings || 
-                               captureContext?.cameraSettings;
-        if (cameraSettings) {
-            if (cameraSettings.flashMode) {
-                metadata.flashMode = cameraSettings.flashMode;
-            }
-            if (cameraSettings.resolution) {
-                metadata.resolution = cameraSettings.resolution;
-            }
-            if (cameraSettings.iso) {
-                metadata.iso = cameraSettings.iso;
-            }
-        }
-        
-        // Human Attestation (Biometric) - VeriCapture TDS
-        if (humanAttestation) {
-            metadata.humanAttestation = humanAttestation.method || 'Verified';
-        }
-        
-        // Location - VeriCapture TDS: sensorData.gps, CPP 1.0: payload.location
-        const sensorData = captureEvent?.sensorData;
-        const location = captureEvent?.payload?.location || sensorData?.gps;
-        
-        if (location) {
-            if (location.latitude || location.lat) {
-                metadata.location = `${location.latitude || location.lat}, ${location.longitude || location.lon}`;
-            } else if (location.latitudeHash) {
-                // Privacy-preserved location
-                metadata.location = t('meta.location.private') + ' (hash)';
-            }
-        } else {
-            metadata.location = t('meta.location.private');
-        }
-        
-        // Signature Algorithm
-        if (captureEvent?.signAlgo || captureEvent?.sign_algo) {
-            metadata.signatureAlgo = captureEvent.signAlgo || captureEvent.sign_algo;
-        }
-        
-        return metadata;
-    }
-
-    // ============================================================
-    // UI Rendering
-    // ============================================================
-    function renderResults(verification, metadata, rawPack) {
-        const resultsDiv = document.getElementById('results');
-        const summaryDiv = document.getElementById('summary');
-        const metadataDiv = document.getElementById('metadata');
-        const verificationResultsDiv = document.getElementById('verificationResults');
-        const rawDataPre = document.getElementById('rawData');
-        
-        // Summary
-        summaryDiv.className = `summary ${verification.allValid ? 'valid' : 'invalid'}`;
-        document.getElementById('summaryTitle').textContent = 
-            verification.allValid ? t('summary.valid.title') : t('summary.invalid.title');
-        document.getElementById('summaryText').textContent = 
-            verification.allValid ? t('summary.valid.text') : t('summary.invalid.text');
-        
-        // Metadata
-        metadataDiv.innerHTML = '';
-        const metaLabels = {
-            verificationCode: t('meta.verificationCode'),
-            captureTime: t('meta.captureTime'),
-            device: t('meta.device'),
-            appVersion: t('meta.appVersion'),
-            eventType: t('meta.eventType'),
-            conformanceLevel: t('meta.conformanceLevel'),
-            mediaType: t('meta.mediaType'),
-            assetType: t('meta.assetType'),
-            fileSize: t('meta.fileSize'),
-            eventCount: t('meta.eventCount'),
-            flashMode: t('meta.flashMode'),
-            resolution: t('meta.resolution'),
-            iso: t('meta.iso'),
-            humanAttestation: t('meta.humanAttestation'),
-            location: t('meta.location'),
-            signatureAlgo: t('meta.signatureAlgo')
-        };
-        
-        for (const [key, value] of Object.entries(metadata)) {
-            const item = document.createElement('div');
-            item.className = 'metadata-item';
-            
-            let displayValue = value;
-            if (key === 'conformanceLevel') {
-                displayValue = `<span class="conformance-level ${value.toLowerCase()}">${value}</span>`;
-            }
-            
-            item.innerHTML = `
-                <label>${metaLabels[key] || key}</label>
-                <div class="value">${displayValue}</div>
-            `;
-            metadataDiv.appendChild(item);
-        }
-        
-        // Verification Results
-        verificationResultsDiv.innerHTML = '';
-        for (const result of verification.results) {
-            const item = document.createElement('div');
-            item.className = `result-item ${result.status}`;
-            
-            const icon = result.status === 'pass' ? '✓' : 
-                        result.status === 'fail' ? '✗' : 'ℹ';
-            
-            item.innerHTML = `
-                <span class="result-icon">${icon}</span>
-                <div class="result-content">
-                    <h4>
-                        ${result.title}
-                        <span class="layer-badge layer${result.layer}">${t(`layer${result.layer}`)}</span>
-                    </h4>
-                    <p>${result.message}</p>
-                </div>
-            `;
-            verificationResultsDiv.appendChild(item);
-        }
-        
-        // Raw Data
-        rawDataPre.textContent = JSON.stringify(rawPack, null, 2);
-        
-        // Show results
-        resultsDiv.classList.add('visible');
-    }
-
-    // ============================================================
-    // File Handling
-    // ============================================================
-    async function processVerificationPack(pack) {
-        const loading = document.getElementById('loading');
-        const results = document.getElementById('results');
-        
-        results.classList.remove('visible');
-        loading.classList.add('visible');
-        
-        try {
-            const verification = await verifyPack(pack);
-            const metadata = extractMetadata(pack);
-            
-            loading.classList.remove('visible');
-            renderResults(verification, metadata, pack);
-            
-            // Scroll to results
-            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            
-        } catch (e) {
-            console.error('Error processing pack:', e);
-            loading.classList.remove('visible');
-            alert('Error processing verification pack.');
-        }
-    }
-    
-    async function handleFile(file) {
-        try {
-            const text = await file.text();
-            const pack = JSON.parse(text);
-            await processVerificationPack(pack);
-        } catch (e) {
-            console.error('Error processing file:', e);
-            alert(t('paste.invalid'));
-        }
-    }
-
-    // ============================================================
-    // Event Listeners
-    // ============================================================
-    document.addEventListener('DOMContentLoaded', () => {
-        // Initialize language
-        const savedLang = localStorage.getItem('veracheck-lang');
-        const langSelect = document.getElementById('langSelect');
-        
-        // Detect browser language and map to supported language
-        function detectBrowserLanguage() {
-            // Try to get browser language, default to 'en' if unavailable
-            const browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-            
-            // If no language detected, return English
-            if (!browserLang) {
-                return 'en';
-            }
-            
-            const langCode = browserLang;
-            
-            // Direct matches first
-            const directMatches = {
-                'en': 'en',
-                'en-us': 'en',
-                'en-gb': 'en',
-                'ja': 'ja',
-                'ja-jp': 'ja',
-                'ko': 'ko',
-                'ko-kr': 'ko',
-                'de': 'de',
-                'de-de': 'de',
-                'de-at': 'de',
-                'de-ch': 'de',
-                'fr': 'fr',
-                'fr-fr': 'fr',
-                'fr-ca': 'fr',
-                'fr-be': 'fr',
-                'fr-ch': 'fr',
-                'es': 'es',
-                'es-es': 'es',
-                'es-mx': 'es',
-                'es-ar': 'es',
-                'pt': 'pt',
-                'pt-br': 'pt',
-                'pt-pt': 'pt',
-                'ar': 'ar',
-                'ar-sa': 'ar',
-                'ar-ae': 'ar',
-                'ar-eg': 'ar',
-                // Chinese - Simplified
-                'zh': 'zh-Hans',
-                'zh-cn': 'zh-Hans',
-                'zh-sg': 'zh-Hans',
-                'zh-hans': 'zh-Hans',
-                'zh-hans-cn': 'zh-Hans',
-                'zh-hans-sg': 'zh-Hans',
-                // Chinese - Traditional
-                'zh-tw': 'zh-Hant',
-                'zh-hk': 'zh-Hant',
-                'zh-mo': 'zh-Hant',
-                'zh-hant': 'zh-Hant',
-                'zh-hant-tw': 'zh-Hant',
-                'zh-hant-hk': 'zh-Hant'
-            };
-            
-            // Check direct match
-            if (directMatches[langCode]) {
-                return directMatches[langCode];
-            }
-            
-            // Check prefix match (e.g., 'en-au' -> 'en')
-            const prefix = langCode.split('-')[0];
-            if (directMatches[prefix]) {
-                return directMatches[prefix];
-            }
-            
-            // Default to English
-            return 'en';
-        }
-        
-        const initLang = savedLang || detectBrowserLanguage();
-        
-        langSelect.value = initLang;
-        setLanguage(initLang);
-        
-        langSelect.addEventListener('change', (e) => {
-            setLanguage(e.target.value);
-        });
-        
-        // Initialize theme
-        const savedTheme = localStorage.getItem('veracheck-theme') || 
-                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        setTheme(savedTheme);
-        
-        document.getElementById('themeToggle').addEventListener('click', () => {
-            const current = document.documentElement.dataset.theme;
-            setTheme(current === 'dark' ? 'light' : 'dark');
-        });
-        
-        // File upload
-        const uploadZone = document.getElementById('uploadZone');
-        const fileInput = document.getElementById('fileInput');
-        
-        uploadZone.addEventListener('click', () => fileInput.click());
-        
-        uploadZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadZone.classList.add('dragover');
-        });
-        
-        uploadZone.addEventListener('dragleave', () => {
-            uploadZone.classList.remove('dragover');
-        });
-        
-        uploadZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadZone.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
-        });
-        
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleFile(e.target.files[0]);
-            }
-        });
-        
-        // Details toggle
-        const detailsToggle = document.getElementById('detailsToggle');
-        const rawData = document.getElementById('rawData');
-        
-        detailsToggle.addEventListener('click', () => {
-            rawData.classList.toggle('visible');
-            detailsToggle.textContent = rawData.classList.contains('visible') 
-                ? t('info.hideRaw') : t('info.showRaw');
-        });
-        
-        // Tab switching
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-        
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tabId = btn.dataset.tab;
-                
-                // Update buttons
-                tabBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Update content
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                    if (content.id === `tab-${tabId}`) {
-                        content.classList.add('active');
-                    }
-                });
-            });
-        });
-        
-        // JSON Paste functionality
-        const jsonInput = document.getElementById('jsonInput');
-        const pasteBtn = document.getElementById('pasteBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const verifyJsonBtn = document.getElementById('verifyJsonBtn');
-        
-        pasteBtn.addEventListener('click', async () => {
-            try {
-                const text = await navigator.clipboard.readText();
-                jsonInput.value = text;
-                jsonInput.focus();
-            } catch (e) {
-                // Fallback for browsers that don't support clipboard API
-                jsonInput.focus();
-                document.execCommand('paste');
-            }
-        });
-        
-        clearBtn.addEventListener('click', () => {
-            jsonInput.value = '';
-            jsonInput.focus();
-        });
-        
-        verifyJsonBtn.addEventListener('click', async () => {
-            const jsonText = jsonInput.value.trim();
-            if (!jsonText) return;
-            
-            try {
-                const pack = JSON.parse(jsonText);
-                await processVerificationPack(pack);
-            } catch (e) {
-                alert(t('paste.invalid'));
-            }
-        });
-        
-        // Allow Ctrl+Enter to verify
-        jsonInput.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                verifyJsonBtn.click();
-            }
-        });
-        
-        // Update placeholder on language change
-        function updatePlaceholder() {
-            jsonInput.placeholder = t('paste.placeholder');
-        }
-    });
-    </script>
+    <vcp-footer lang="en"></vcp-footer>
 </body>
 </html>
