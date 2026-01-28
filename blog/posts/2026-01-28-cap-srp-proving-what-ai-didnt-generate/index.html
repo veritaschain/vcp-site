@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAP-SRP: Proving What AI Didn't Generate — The Missing Layer in AI Content Authenticity | VeritasChain Blog</title>
+    <meta name="description" content="A technical deep-dive into Safe Refusal Provenance and the future of AI accountability. How CAP-SRP addresses the critical gap in proving what AI refused to create.">
+    <meta name="keywords" content="CAP-SRP, VAP, AI refusal, content authenticity, SCITT, C2PA, EU AI Act, cryptographic audit trails, Grok crisis, NCII, CSAM, AI safety">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="VeritasChain Standards Organization">
+    <meta name="article:published_time" content="2026-01-28">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/">
+    <meta property="og:title" content="CAP-SRP: Proving What AI Didn't Generate — The Missing Layer in AI Content Authenticity">
+    <meta property="og:description" content="A technical deep-dive into Safe Refusal Provenance and the future of AI accountability. How CAP-SRP addresses the critical gap in proving what AI refused to create.">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:published_time" content="2026-01-28">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CAP-SRP: Proving What AI Didn't Generate">
+    <meta name="twitter:description" content="A technical deep-dive into Safe Refusal Provenance. How CAP-SRP addresses the critical gap in proving what AI refused to create.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/img/logo.png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "CAP-SRP: Proving What AI Didn't Generate — The Missing Layer in AI Content Authenticity",
+        "description": "A technical deep-dive into Safe Refusal Provenance and the future of AI accountability.",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2026-01-28",
+        "dateModified": "2026-01-28",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/"
+        },
+        "inLanguage": "en-US"
+    }
+    </script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234f46e5' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        .prose { max-width: 75ch; }
+        .prose h2 { font-size: 1.75rem; font-weight: 700; color: #1e293b; margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+        .prose h3 { font-size: 1.375rem; font-weight: 600; color: #334155; margin-top: 2rem; margin-bottom: 0.75rem; }
+        .prose p { color: #475569; line-height: 1.8; margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        .prose li { color: #475569; line-height: 1.7; margin-bottom: 0.5rem; }
+        .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; background: #f1f5f9; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #7c3aed; }
+        .prose pre { background: #1e293b; border-radius: 0.5rem; padding: 1.25rem; overflow-x: auto; margin-bottom: 1.5rem; }
+        .prose pre code { background: none; padding: 0; color: #e2e8f0; font-size: 0.8125rem; }
+        .prose blockquote { border-left: 4px solid #ef4444; padding-left: 1.5rem; margin: 1.5rem 0; font-style: italic; color: #64748b; background: #fef2f2; padding: 1rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; }
+        .key-point { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0; }
+        .key-point p { color: #1e40af; margin-bottom: 0; }
+        .crisis-box { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 2px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0; }
+        .crisis-box h4 { color: #991b1b; margin-top: 0; }
+        .solution-box { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #22c55e; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0; }
+        .solution-box h4 { color: #166534; margin-top: 0; }
+        .warning-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0; }
+        .warning-box p { color: #92400e; margin-bottom: 0; }
+        .architecture-diagram { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; text-align: center; }
+        .architecture-diagram pre { background: none; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #1e293b; text-align: left; margin: 0; padding: 0; overflow-x: auto; }
+        .framework-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin: 1.5rem 0; }
+        .framework-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; transition: all 0.2s ease; }
+        .framework-card:hover { border-color: #3b82f6; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
+        .framework-card h5 { font-size: 1rem; font-weight: 600; color: #1e293b; margin-bottom: 0.5rem; }
+        .framework-card p { font-size: 0.875rem; color: #64748b; margin-bottom: 0; line-height: 1.6; }
+        .data-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; }
+        .data-table th { background: #1e293b; color: white; padding: 0.75rem 1rem; text-align: left; font-weight: 600; }
+        .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; color: #475569; }
+        .data-table tr:nth-child(even) { background: #f8fafc; }
+        .tier-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+        .tier-silver { background: #e2e8f0; color: #475569; }
+        .tier-gold { background: #fef3c7; color: #92400e; }
+        .tier-platinum { background: #dbeafe; color: #1e40af; }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+        .tag-cloud span { background: #f1f5f9; color: #475569; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+        .toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .toc h4 { margin-top: 0; color: #1e293b; }
+        .toc ul { list-style: none; padding-left: 0; margin-bottom: 0; }
+        .toc li { padding: 0.25rem 0; }
+        .toc a { color: #3b82f6; text-decoration: none; font-size: 0.875rem; }
+        .toc a:hover { text-decoration: underline; }
+        .cta-box { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center; }
+        .cta-box h4 { color: white; margin-top: 0; font-size: 1.25rem; }
+        .cta-box p { color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; }
+        .cta-box a { display: inline-block; background: white; color: #4f46e5; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .cta-box a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+        .reference-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #3b82f6; text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
+        .reference-link:hover { color: #1d4ed8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <!-- Header -->
+    <div id="vcp-header"></div>
+
+    <!-- Article Hero -->
+    <section class="article-hero py-16 md:py-24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+            <!-- Breadcrumb -->
+            <nav class="mb-6">
+                <ol class="flex items-center space-x-2 text-sm text-slate-400">
+                    <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+                    <li><i class="fas fa-chevron-right text-xs"></i></li>
+                    <li><a href="/blog/" class="hover:text-white transition-colors">Blog</a></li>
+                    <li><i class="fas fa-chevron-right text-xs"></i></li>
+                    <li class="text-slate-300">Technical Deep Dive</li>
+                </ol>
+            </nav>
+            
+            <!-- Category & Tags -->
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-medium">
+                    <i class="fas fa-code mr-1"></i> Technical Deep Dive
+                </span>
+                <span class="px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm font-medium">
+                    AI Safety
+                </span>
+                <span class="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-medium">
+                    EU AI Act
+                </span>
+            </div>
+            
+            <!-- Title -->
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+                CAP-SRP: Proving What AI Didn't Generate — The Missing Layer in AI Content Authenticity
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
+                A technical deep-dive into Safe Refusal Provenance and the future of AI accountability. When 35 U.S. state attorneys general demanded proof that xAI's safeguards were working, the company faced an impossible challenge: their refusals left no cryptographic trace.
+            </p>
+            
+            <!-- Meta Info -->
+            <div class="flex flex-wrap items-center gap-6 text-sm text-slate-400">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-building"></i>
+                    <span>VeritasChain Standards Organization</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-calendar"></i>
+                    <span>January 28, 2026</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-clock"></i>
+                    <span>50 min read</span>
+                </div>
+            </div>
+            
+            <!-- Language Switcher -->
+            <div class="mt-6 flex items-center gap-3">
+                <span class="text-slate-400 text-sm">Language:</span>
+                <span class="text-white text-sm font-medium">EN</span>
+                <span class="text-slate-600">|</span>
+                <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/" class="text-slate-400 hover:text-white transition-colors text-sm">日本語</a>
+                <span class="text-slate-600">|</span>
+                <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/" class="text-slate-400 hover:text-white transition-colors text-sm">中文</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="py-12 md:py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="prose prose-lg max-w-none">
+                
+                <!-- Table of Contents -->
+                <div class="toc">
+                    <h4><i class="fas fa-list mr-2"></i>Table of Contents</h4>
+                    <ul>
+                        <li><a href="#executive-summary">Executive Summary</a></li>
+                        <li><a href="#accountability-gap">The Accountability Gap</a></li>
+                        <li><a href="#regulatory-landscape">Regulatory Landscape</a></li>
+                        <li><a href="#competitive-standards">Competitive Standards Analysis</a></li>
+                        <li><a href="#watermarking-limitations">Watermarking Limitations</a></li>
+                        <li><a href="#scitt-foundation">IETF SCITT Foundation</a></li>
+                        <li><a href="#cap-srp-architecture">CAP-SRP Technical Architecture</a></li>
+                        <li><a href="#cryptographic-mechanisms">Cryptographic Mechanisms</a></li>
+                        <li><a href="#privacy-preserving">Privacy-Preserving Verification</a></li>
+                        <li><a href="#conclusion">Conclusion</a></li>
+                    </ul>
+                </div>
+
+                <!-- Executive Summary -->
+                <h2 id="executive-summary"><i class="fas fa-file-alt mr-2 text-blue-600"></i>Executive Summary</h2>
+                
+                <div class="crisis-box">
+                    <h4><i class="fas fa-exclamation-triangle mr-2"></i>The xAI/Grok Crisis (January 2026)</h4>
+                    <p>Over <strong>6,700 non-consensual sexual images per hour</strong> were generated before safeguards were circumvented. 12+ jurisdictions launched investigations. 35 U.S. state attorneys general demanded proof of safety measures.</p>
+                    <p class="mb-0"><strong>The critical gap:</strong> xAI's refusals left no cryptographic trace. Claims of "safety filters" became legally unverifiable assertions.</p>
+                </div>
+
+                <p>While existing standards like C2PA excellently prove what AI <em>created</em>, nothing in the current landscape proves what AI <em>refused to create</em>.</p>
+
+                <div class="solution-box">
+                    <h4><i class="fas fa-shield-alt mr-2"></i>CAP-SRP Solution</h4>
+                    <p><strong>Content Authenticity Protocol - Safe Refusal Provenance</strong> addresses this fundamental gap by treating refusals as first-class cryptographically provable events.</p>
+                </div>
+
+                <!-- The Accountability Gap -->
+                <h2 id="accountability-gap"><i class="fas fa-exclamation-circle mr-2 text-red-600"></i>The Accountability Gap</h2>
+
+                <h3>The Positive-Attestation Problem</h3>
+                
+                <p>Current content authenticity standards share a fundamental architectural limitation: they only support <strong>positive attestations</strong>—cryptographic proof that something <em>exists</em> or <em>happened</em>.</p>
+
+                <div class="architecture-diagram">
+                    <pre>
+C2PA Architecture:
+  ┌────────────────────────────────────────────────┐
+  │              C2PA Manifest                      │
+  │  ┌─────────────────────────────────────────┐   │
+  │  │ Claim Generator: Adobe Firefly           │   │
+  │  │ Claim Signature: COSE_Sign1 + X.509      │   │
+  │  │ Assertions: Actions, ingredients, meta   │   │
+  │  │ Hard Binding: SHA-256 hash of asset      │   │
+  │  └─────────────────────────────────────────┘   │
+  │                      │                          │
+  │                      ▼                          │
+  │  ┌─────────────────────────────────────────┐   │
+  │  │     JUMBF Container (in JPEG/PNG/MP4)    │   │
+  │  └─────────────────────────────────────────┘   │
+  └────────────────────────────────────────────────┘
+
+What C2PA CAN prove:   "This asset was created by [Entity] at [Time]" ✓
+What C2PA CANNOT prove: "Request [X] was denied at [Time] for [Reason]" ✗
+                    </pre>
+                </div>
+
+                <p>There is no "null manifest" in C2PA. There is no "refusal receipt." The specification contains no provision for events where no asset was created.</p>
+
+                <h3>The Regulatory Verification Problem</h3>
+                
+                <p>The EU AI Act Article 12 requires high-risk AI systems to enable "automatic recording of events (logs) over the lifetime of the system." When regulators ask "did your system refuse to generate harmful content?", the AI provider currently has three possible responses:</p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Response</th>
+                            <th>Status</th>
+                            <th>Problem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>"We have internal logs"</td>
+                            <td><span style="color: #ef4444;">❌ Unverifiable</span></td>
+                            <td>Could be fabricated, altered, or selectively retained</td>
+                        </tr>
+                        <tr>
+                            <td>"Our filters are effective"</td>
+                            <td><span style="color: #f59e0b;">⚠️ Trust-based</span></td>
+                            <td>A claim without evidence</td>
+                        </tr>
+                        <tr>
+                            <td>"Here's our cryptographic proof"</td>
+                            <td><span style="color: #22c55e;">✓ Verifiable</span></td>
+                            <td><strong>Currently impossible</strong> — CAP-SRP enables this</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Regulatory Landscape -->
+                <h2 id="regulatory-landscape"><i class="fas fa-landmark mr-2 text-blue-600"></i>Regulatory Landscape</h2>
+
+                <h3>EU AI Act: The August 2026 Deadline</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Requirement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>February 2, 2025</td>
+                            <td>Prohibited AI practices banned</td>
+                        </tr>
+                        <tr>
+                            <td>August 2, 2025</td>
+                            <td>GPAI model requirements apply</td>
+                        </tr>
+                        <tr>
+                            <td><strong>August 2, 2026</strong></td>
+                            <td><strong>High-risk AI system requirements (Article 12 logging)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>August 2, 2027</td>
+                            <td>Full Act enforcement</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Article 12: Record-Keeping</strong> states that high-risk AI systems "shall technically allow for the automatic recording of events (logs) over the lifetime of the system." The emerging <strong>ISO/IEC DIS 24970:2025</strong> standard provides implementation guidance requiring comprehensive logging frameworks and traceability.</p>
+
+                <h3>California AI Transparency Act</h3>
+                <ul>
+                    <li><strong>Effective:</strong> August 2, 2026 (aligning with EU AI Act)</li>
+                    <li><strong>Scope:</strong> Providers with >1 million monthly California users</li>
+                    <li><strong>Penalties:</strong> Up to <strong>$5,000 per violation per day</strong></li>
+                </ul>
+
+                <!-- Competitive Standards -->
+                <h2 id="competitive-standards"><i class="fas fa-balance-scale mr-2 text-blue-600"></i>Competitive Standards Analysis</h2>
+
+                <div class="framework-grid">
+                    <div class="framework-card">
+                        <h5><i class="fas fa-certificate text-blue-600 mr-2"></i>C2PA v2.2</h5>
+                        <p><strong>5,000+ members</strong>, 200+ steering committee members. Excellent for content provenance. Major implementations: Adobe Firefly, DALL-E 3, Google Imagen, Leica cameras.</p>
+                        <p style="color: #ef4444; margin-top: 0.5rem;"><strong>Limitation:</strong> No provision for refusal events</p>
+                    </div>
+                    <div class="framework-card">
+                        <h5><i class="fas fa-water text-green-600 mr-2"></i>Google SynthID</h5>
+                        <p>Most sophisticated watermarking technology. Published in <em>Nature</em> (October 2024). Tested with ~20 million Gemini users.</p>
+                        <p style="color: #ef4444; margin-top: 0.5rem;"><strong>Limitation:</strong> "Not designed against motivated adversaries"</p>
+                    </div>
+                </div>
+
+                <!-- Watermarking Limitations -->
+                <h2 id="watermarking-limitations"><i class="fas fa-times-circle mr-2 text-red-600"></i>Technical Limitations of Watermarking</h2>
+
+                <div class="warning-box">
+                    <p><i class="fas fa-exclamation-triangle mr-2"></i><strong>DeMark Attack (January 22, 2026):</strong> MIT/Stanford researchers published "DeMark: A Query-Free Black-Box Attack on Deepfake Watermarking Defenses" (arXiv:2601.16473). Detection accuracy dropped from <strong>100% to 32.9%</strong> across eight state-of-the-art watermarking schemes.</p>
+                </div>
+
+                <h3>The Fundamental Problem</h3>
+                <p>Watermarking operates at the <strong>content layer</strong>. A missing watermark could mean:</p>
+                <ul>
+                    <li>Human-created content</li>
+                    <li>AI refused to create</li>
+                    <li>Watermark stripped after creation</li>
+                    <li>Non-compliant AI system</li>
+                </ul>
+
+                <div class="key-point">
+                    <p><i class="fas fa-lightbulb mr-2"></i><strong>CAP-SRP Alternative:</strong> Instead of marking content (content layer), CAP-SRP records system <em>decisions</em> (system layer). This captures the complete decision space, including refusals.</p>
+                </div>
+
+                <!-- SCITT Foundation -->
+                <h2 id="scitt-foundation"><i class="fas fa-sitemap mr-2 text-blue-600"></i>IETF SCITT: The Foundation</h2>
+
+                <p>The IETF <strong>Supply Chain Integrity, Transparency and Trust (SCITT)</strong> Working Group provides the foundation. The core architecture draft (<strong>draft-ietf-scitt-architecture-22</strong>) reached the RFC Editor Queue in late 2025.</p>
+
+                <div class="architecture-diagram">
+                    <pre>
+SCITT Architecture:
+┌───────────────┐      ┌─────────────────────┐      ┌──────────────┐
+│    Issuer     │      │  Transparency       │      │   Verifier   │
+│               │──────│  Service            │──────│              │
+│ Creates       │      │                     │      │ Validates    │
+│ Signed        │      │ ┌─────────────────┐ │      │ Receipts     │
+│ Statement     │      │ │ Append-Only Log │ │      │              │
+└───────────────┘      │ │ (Merkle Tree)   │ │      └──────────────┘
+                       │ └─────────────────┘ │
+                       │                     │
+                       │ Issues Receipt      │
+                       │ with Inclusion      │
+                       │ Proof               │
+                       └─────────────────────┘
+
+Security Properties:
+  ✓ Append-Only:      Statements cannot be modified, deleted, or reordered
+  ✓ Non-Equivocation: No forks—everyone sees the same ordered collection
+  ✓ Replayability:    Any authorized actor can verify each registration
+                    </pre>
+                </div>
+
+                <p><strong>draft-kamimura-scitt-refusal-events-00</strong> (January 10, 2026) creates the framework for logging AI refusal events to transparency logs.</p>
+
+                <!-- CAP-SRP Architecture -->
+                <h2 id="cap-srp-architecture"><i class="fas fa-project-diagram mr-2 text-blue-600"></i>CAP-SRP Technical Architecture</h2>
+
+                <h3>The VAP Framework Hierarchy</h3>
+                
+                <div class="architecture-diagram">
+                    <pre>
+┌─────────────────────────────────────────────────────┐
+│                VAP Framework v1.1                   │
+│         (Verifiable AI Provenance)                  │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │
+│  │    VCP      │  │    CAP      │  │    DVP      │ │
+│  │ Financial   │  │  Creative   │  │  Driving    │ │
+│  │  Trading    │  │     AI      │  │  Vehicles   │ │
+│  └─────────────┘  └─────────────┘  └─────────────┘ │
+│                          │                          │
+│                          ▼                          │
+│                   ┌─────────────┐                   │
+│                   │    SRP      │                   │
+│                   │   (Safe     │                   │
+│                   │   Refusal   │                   │
+│                   │ Provenance) │                   │
+│                   └─────────────┘                   │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+                    </pre>
+                </div>
+
+                <h3>The Completeness Invariant</h3>
+                
+                <p>The core innovation of CAP-SRP:</p>
+                
+                <pre><code>∀ time_window T:
+  COUNT(GEN_ATTEMPT) = COUNT(GEN) + COUNT(GEN_DENY) + COUNT(GEN_ERROR)</code></pre>
+
+                <p>In plain terms: <strong>Every generation attempt MUST have a recorded outcome.</strong></p>
+
+                <p>This invariant enables two critical detections:</p>
+                <ul>
+                    <li><strong>Hidden Results:</strong> If <code>unmatched_attempts > 0</code>, the system is hiding generation results</li>
+                    <li><strong>Fabricated Refusals:</strong> If <code>orphan_outcomes > 0</code>, the system is fabricating refusal records</li>
+                </ul>
+
+                <h3>Event Types</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Event Type</th>
+                            <th>Description</th>
+                            <th>Timing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>GEN_ATTEMPT</code></td>
+                            <td>A generation request was received</td>
+                            <td><strong>BEFORE</strong> safety evaluation</td>
+                        </tr>
+                        <tr>
+                            <td><code>GEN</code></td>
+                            <td>Content was successfully generated</td>
+                            <td>After safety evaluation</td>
+                        </tr>
+                        <tr>
+                            <td><code>GEN_DENY</code></td>
+                            <td>Generation was refused by safety system</td>
+                            <td>After safety evaluation</td>
+                        </tr>
+                        <tr>
+                            <td><code>GEN_ERROR</code></td>
+                            <td>Generation failed due to system error</td>
+                            <td>After safety evaluation</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Risk Category Taxonomy</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>CSAM_RISK</code></td>
+                            <td>Child Safety</td>
+                            <td>Potential CSAM generation</td>
+                        </tr>
+                        <tr>
+                            <td><code>NCII_RISK</code></td>
+                            <td>Non-Consensual Imagery</td>
+                            <td>Intimate imagery without consent</td>
+                        </tr>
+                        <tr>
+                            <td><code>MINOR_SEXUALIZATION</code></td>
+                            <td>Minor Protection</td>
+                            <td>Sexualized content involving minors</td>
+                        </tr>
+                        <tr>
+                            <td><code>REAL_PERSON_DEEPFAKE</code></td>
+                            <td>Identity Protection</td>
+                            <td>Non-consensual use of real person likeness</td>
+                        </tr>
+                        <tr>
+                            <td><code>VIOLENCE_GRAPHIC</code></td>
+                            <td>Violence</td>
+                            <td>Graphic violence content</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Cryptographic Mechanisms -->
+                <h2 id="cryptographic-mechanisms"><i class="fas fa-lock mr-2 text-blue-600"></i>Cryptographic Mechanisms</h2>
+
+                <h3>Merkle Tree Architecture (RFC 9162)</h3>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Inclusion Proof Size</td>
+                            <td>O(log n)</td>
+                        </tr>
+                        <tr>
+                            <td>Proof for 80M entries</td>
+                            <td>~3 KB</td>
+                        </tr>
+                        <tr>
+                            <td>Full hash chain alternative</td>
+                            <td>~800 MB</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Signature Scheme: Ed25519</h3>
+                <ul>
+                    <li><strong>Deterministic signatures:</strong> Prevents key leakage from poor RNG</li>
+                    <li><strong>Complete addition law:</strong> Eliminates special-case vulnerabilities</li>
+                    <li><strong>Side-channel resistance:</strong> Designed against timing attacks</li>
+                    <li><strong>Wide adoption:</strong> Signal, OpenSSH (default since 5.7+), blockchain systems</li>
+                </ul>
+
+                <h3>Post-Quantum Migration Path</h3>
+                <p><strong>NIST FIPS 204</strong> (August 2024) standardized <strong>ML-DSA</strong> (formerly Dilithium). CAP-SRP supports hybrid signatures for maximum assurance:</p>
+
+                <pre><code>signature = {
+  "ed25519": sign_ed25519(message),
+  "ml_dsa_65": sign_ml_dsa_65(message),
+  "binding": hash(ed25519_sig || ml_dsa_sig)
+}</code></pre>
+
+                <h3>Compliance Tiers</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Requirements</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="tier-badge tier-silver">Silver</span></td>
+                            <td>Local logging, TSA anchoring, daily batch</td>
+                            <td>Startups, lower-risk applications</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tier-badge tier-gold">Gold</span></td>
+                            <td>Real-time logging, TSA + multi-log, hourly</td>
+                            <td>Enterprise, regulated industries</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tier-badge tier-platinum">Platinum</span></td>
+                            <td>Real-time, TSA + blockchain, continuous, HSM</td>
+                            <td>Critical infrastructure, highest assurance</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Privacy-Preserving -->
+                <h2 id="privacy-preserving"><i class="fas fa-user-shield mr-2 text-blue-600"></i>Privacy-Preserving Verification</h2>
+
+                <h3>The Prompt Privacy Problem</h3>
+                <p>Refusal logging creates a tension: to verify a refusal was legitimate, you might need to see what was refused. But prompts may contain personal information, proprietary business data, or evidence of criminal intent.</p>
+
+                <div class="key-point">
+                    <p><i class="fas fa-key mr-2"></i><strong>CAP-SRP Principle:</strong> Log decisions, not content.</p>
+                </div>
+
+                <p><strong>What IS logged:</strong></p>
+                <ul>
+                    <li><code>prompt_hash = SHA-256(prompt)</code> — Verifiable</li>
+                    <li><code>risk_category = "NCII_RISK"</code> — Categorical</li>
+                    <li><code>risk_score = 0.94</code> — Confidence</li>
+                    <li><code>policy_version = "2026-01-15"</code> — Policy reference</li>
+                </ul>
+
+                <p><strong>What is NOT logged:</strong></p>
+                <ul>
+                    <li>Raw prompt text — Privacy violation</li>
+                    <li>User identity (beyond hash) — Privacy violation</li>
+                    <li>Detailed content analysis — May reveal prompt content</li>
+                </ul>
+
+                <h3>Optional zk-STARK Integration</h3>
+                <p>For scenarios requiring stronger privacy guarantees, CAP-SRP defines optional zk-STARK integration that can prove a refusal was legitimate without revealing the actual prompt.</p>
+
+                <!-- Conclusion -->
+                <h2 id="conclusion"><i class="fas fa-flag-checkered mr-2 text-blue-600"></i>Conclusion: From Trust-Based to Verification-Based Governance</h2>
+
+                <div class="architecture-diagram">
+                    <pre>
+Trust-Based Model (Current):
+  AI Provider: "Our safety filters work"
+  Regulator: "Prove it"
+  AI Provider: "...trust us?"
+
+Verification-Based Model (CAP-SRP):
+  AI Provider: "Here are cryptographic receipts for every refusal"
+  Regulator: [Verifies Merkle proofs, checks completeness invariant]
+  Regulator: "Verified. Compliance confirmed."
+                    </pre>
+                </div>
+
+                <h3>The Convergence of Pressures</h3>
+                
+                <div class="framework-grid">
+                    <div class="framework-card">
+                        <h5><i class="fas fa-gavel text-indigo-600 mr-2"></i>Regulatory Mandates</h5>
+                        <p>EU AI Act Article 12 (August 2026), California AI Transparency Act, State AG enforcement actions</p>
+                    </div>
+                    <div class="framework-card">
+                        <h5><i class="fas fa-times-circle text-red-600 mr-2"></i>Technical Limitations</h5>
+                        <p>DeMark attack reduces watermark detection to 32.9%. Metadata stripping affects 95% of web images.</p>
+                    </div>
+                    <div class="framework-card">
+                        <h5><i class="fas fa-trophy text-yellow-600 mr-2"></i>Market Differentiation</h5>
+                        <p>"Responsible AI" positioning increasingly valuable. Enterprise customers demanding audit capabilities.</p>
+                    </div>
+                </div>
+
+                <h3>Tags</h3>
+                <div class="tag-cloud">
+                    <span><i class="fas fa-hashtag mr-1"></i>CAP-SRP</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>VAP</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>AI Safety</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>SCITT</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>C2PA</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>EU AI Act</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>Cryptographic Audit</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>Refusal Provenance</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>Content Authenticity</span>
+                </div>
+
+                <!-- CTA Box -->
+                <div class="cta-box">
+                    <h4><i class="fas fa-rocket mr-2"></i>Explore CAP-SRP Specification</h4>
+                    <p>The regulatory deadlines are fixed. The technical solutions exist. The question is no longer "if" but "when."</p>
+                    <a href="https://github.com/veritaschain/cap-spec" target="_blank" rel="noopener">
+                        <i class="fab fa-github mr-2"></i>View CAP Specification
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="py-12 bg-white border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <h2 class="text-2xl font-bold text-slate-800 mb-8">Related Posts</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <a href="/blog/posts/2026-01-27-verification-imperative-eu-regulatory-convergence/" class="block p-6 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+                    <span class="text-sm text-indigo-600 font-medium">Regulatory Analysis</span>
+                    <h3 class="text-lg font-semibold text-slate-800 mt-2 mb-2">The Verification Imperative: How Three EU Regulatory Frameworks Converged</h3>
+                    <p class="text-slate-600 text-sm">Why mathematical verification is replacing procedural trust in algorithmic trading.</p>
+                </a>
+                <a href="/blog/posts/2026-01-26-north-korean-ai-spy-interview-vap-solution/" class="block p-6 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+                    <span class="text-sm text-red-600 font-medium">Cybersecurity</span>
+                    <h3 class="text-lg font-semibold text-slate-800 mt-2 mb-2">The North Korean AI Spy Interview Crisis</h3>
+                    <p class="text-slate-600 text-sm">How VAP's "Verify, Don't Trust" principle can rebuild hiring security.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="vcp-footer"></div>
+
+    <!-- Scripts -->
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+</body>
+</html>

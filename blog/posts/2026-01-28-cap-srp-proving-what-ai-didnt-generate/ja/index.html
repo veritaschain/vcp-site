@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAP-SRP：AIが生成しなかったものを証明する — AIコンテンツ真正性の欠落レイヤー | VeritasChainブログ</title>
+    <meta name="description" content="安全な拒否来歴（Safe Refusal Provenance）とAIアカウンタビリティの未来に関する技術的深掘り。CAP-SRPがAIが生成を拒否したことを証明する重要なギャップにどう対処するか。">
+    <meta name="keywords" content="CAP-SRP, VAP, AI拒否, コンテンツ真正性, SCITT, C2PA, EU AI Act, 暗号学的監査証跡, Grok危機, NCII, CSAM, AI安全性">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="VeritasChain Standards Organization">
+    <meta name="article:published_time" content="2026-01-28">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/">
+    <meta property="og:title" content="CAP-SRP：AIが生成しなかったものを証明する — AIコンテンツ真正性の欠落レイヤー">
+    <meta property="og:description" content="安全な拒否来歴とAIアカウンタビリティの未来に関する技術的深掘り。">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CAP-SRP：AIが生成しなかったものを証明する">
+    <meta name="twitter:description" content="安全な拒否来歴とAIアカウンタビリティの未来に関する技術的深掘り。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/img/logo.png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "CAP-SRP：AIが生成しなかったものを証明する — AIコンテンツ真正性の欠落レイヤー",
+        "description": "安全な拒否来歴とAIアカウンタビリティの未来に関する技術的深掘り。",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "author": {"@type": "Organization", "name": "VeritasChain Standards Organization"},
+        "publisher": {"@type": "Organization", "name": "VeritasChain Standards Organization", "logo": {"@type": "ImageObject", "url": "https://veritaschain.org/assets/img/logo.png"}},
+        "datePublished": "2026-01-28",
+        "dateModified": "2026-01-28",
+        "inLanguage": "ja"
+    }
+    </script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', sans-serif; }
+        .article-hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%); position: relative; overflow: hidden; }
+        .article-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234f46e5' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.5; }
+        .prose { max-width: 75ch; }
+        .prose h2 { font-size: 1.75rem; font-weight: 700; color: #1e293b; margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+        .prose h3 { font-size: 1.375rem; font-weight: 600; color: #334155; margin-top: 2rem; margin-bottom: 0.75rem; }
+        .prose p { color: #475569; line-height: 1.8; margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        .prose li { color: #475569; line-height: 1.7; margin-bottom: 0.5rem; }
+        .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; background: #f1f5f9; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #7c3aed; }
+        .prose pre { background: #1e293b; border-radius: 0.5rem; padding: 1.25rem; overflow-x: auto; margin-bottom: 1.5rem; }
+        .prose pre code { background: none; padding: 0; color: #e2e8f0; font-size: 0.8125rem; }
+        .key-point { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #3b82f6; padding: 1.25rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0; }
+        .key-point p { color: #1e40af; margin-bottom: 0; }
+        .crisis-box { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 2px solid #ef4444; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0; }
+        .crisis-box h4 { color: #991b1b; margin-top: 0; }
+        .solution-box { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #22c55e; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0; }
+        .solution-box h4 { color: #166534; margin-top: 0; }
+        .warning-box { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; padding: 1.25rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0; }
+        .warning-box p { color: #92400e; margin-bottom: 0; }
+        .data-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; }
+        .data-table th { background: #1e293b; color: white; padding: 0.75rem 1rem; text-align: left; font-weight: 600; }
+        .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; color: #475569; }
+        .data-table tr:nth-child(even) { background: #f8fafc; }
+        .framework-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin: 1.5rem 0; }
+        .framework-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; transition: all 0.2s ease; }
+        .framework-card:hover { border-color: #3b82f6; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
+        .framework-card h5 { font-size: 1rem; font-weight: 600; color: #1e293b; margin-bottom: 0.5rem; }
+        .framework-card p { font-size: 0.875rem; color: #64748b; margin-bottom: 0; line-height: 1.6; }
+        .tier-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+        .tier-silver { background: #e2e8f0; color: #475569; }
+        .tier-gold { background: #fef3c7; color: #92400e; }
+        .tier-platinum { background: #dbeafe; color: #1e40af; }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+        .tag-cloud span { background: #f1f5f9; color: #475569; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+        .toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .toc h4 { margin-top: 0; color: #1e293b; }
+        .toc ul { list-style: none; padding-left: 0; margin-bottom: 0; }
+        .toc li { padding: 0.25rem 0; }
+        .toc a { color: #3b82f6; text-decoration: none; font-size: 0.875rem; }
+        .toc a:hover { text-decoration: underline; }
+        .cta-box { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); padding: 2rem; border-radius: 1rem; margin: 2rem 0; text-align: center; }
+        .cta-box h4 { color: white; margin-top: 0; font-size: 1.25rem; }
+        .cta-box p { color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; }
+        .cta-box a { display: inline-block; background: white; color: #4f46e5; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; transition: transform 0.2s ease; }
+        .cta-box a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <!-- Header -->
+    <div id="vcp-header"></div>
+
+    <!-- Article Hero -->
+    <section class="article-hero py-16 md:py-24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+            <!-- Breadcrumb -->
+            <nav class="mb-6">
+                <ol class="flex items-center space-x-2 text-sm text-slate-400">
+                    <li><a href="/ja/" class="hover:text-white transition-colors">ホーム</a></li>
+                    <li><i class="fas fa-chevron-right text-xs"></i></li>
+                    <li><a href="/blog/ja/" class="hover:text-white transition-colors">ブログ</a></li>
+                    <li><i class="fas fa-chevron-right text-xs"></i></li>
+                    <li class="text-slate-300">技術解説</li>
+                </ol>
+            </nav>
+            
+            <!-- Category & Tags -->
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-medium">
+                    <i class="fas fa-code mr-1"></i> 技術解説
+                </span>
+                <span class="px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm font-medium">
+                    AI安全性
+                </span>
+                <span class="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-medium">
+                    EU AI Act
+                </span>
+            </div>
+            
+            <!-- Title -->
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+                CAP-SRP：AIが生成しなかったものを証明する — AIコンテンツ真正性の欠落レイヤー
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
+                安全な拒否来歴（Safe Refusal Provenance）とAIアカウンタビリティの未来に関する技術的深掘り。35の米国州司法長官がxAIのセーフガードの証拠を要求したとき、同社は不可能な課題に直面しました：拒否は暗号学的な痕跡を残していなかったのです。
+            </p>
+            
+            <!-- Meta Info -->
+            <div class="flex flex-wrap items-center gap-6 text-sm text-slate-400">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-building"></i>
+                    <span>VeritasChain Standards Organization</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-calendar"></i>
+                    <span>2026年1月28日</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-clock"></i>
+                    <span>読了時間 50分</span>
+                </div>
+            </div>
+            
+            <!-- Language Switcher -->
+            <div class="mt-6 flex items-center gap-3">
+                <span class="text-slate-400 text-sm">言語：</span>
+                <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/" class="text-slate-400 hover:text-white transition-colors text-sm">EN</a>
+                <span class="text-slate-600">|</span>
+                <span class="text-white text-sm font-medium">日本語</span>
+                <span class="text-slate-600">|</span>
+                <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/" class="text-slate-400 hover:text-white transition-colors text-sm">中文</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="py-12 md:py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="prose prose-lg max-w-none">
+                
+                <!-- Table of Contents -->
+                <div class="toc">
+                    <h4><i class="fas fa-list mr-2"></i>目次</h4>
+                    <ul>
+                        <li><a href="#executive-summary">エグゼクティブサマリー</a></li>
+                        <li><a href="#accountability-gap">アカウンタビリティギャップ</a></li>
+                        <li><a href="#regulatory-landscape">規制環境</a></li>
+                        <li><a href="#cap-srp-architecture">CAP-SRP技術アーキテクチャ</a></li>
+                        <li><a href="#cryptographic-mechanisms">暗号学的メカニズム</a></li>
+                        <li><a href="#conclusion">結論</a></li>
+                    </ul>
+                </div>
+
+                <!-- Executive Summary -->
+                <h2 id="executive-summary"><i class="fas fa-file-alt mr-2 text-blue-600"></i>エグゼクティブサマリー</h2>
+                
+                <div class="crisis-box">
+                    <h4><i class="fas fa-exclamation-triangle mr-2"></i>xAI/Grok危機（2026年1月）</h4>
+                    <p>セーフガードが回避される前に、<strong>1時間あたり6,700件以上の非同意性的画像</strong>が生成されました。12以上の管轄区域が調査を開始。35の米国州司法長官が安全対策の証拠を要求しました。</p>
+                    <p class="mb-0"><strong>重大なギャップ：</strong>xAIの拒否は暗号学的な痕跡を残していませんでした。「安全フィルター」の主張は法的に検証不可能な主張となりました。</p>
+                </div>
+
+                <p>C2PAのような既存の標準は、AIが<em>作成した</em>ものを証明する点で優れていますが、現在の環境では、AIが<em>作成を拒否した</em>ものを証明するものは何もありません。</p>
+
+                <div class="solution-box">
+                    <h4><i class="fas fa-shield-alt mr-2"></i>CAP-SRPソリューション</h4>
+                    <p><strong>Content Authenticity Protocol - Safe Refusal Provenance（コンテンツ真正性プロトコル - 安全な拒否来歴）</strong>は、拒否を暗号学的に証明可能なファーストクラスのイベントとして扱うことで、この根本的なギャップに対処します。</p>
+                </div>
+
+                <!-- The Accountability Gap -->
+                <h2 id="accountability-gap"><i class="fas fa-exclamation-circle mr-2 text-red-600"></i>アカウンタビリティギャップ</h2>
+
+                <h3>正の証明問題</h3>
+                
+                <p>現在のコンテンツ真正性標準は、基本的なアーキテクチャ上の制限を共有しています：<strong>正の証明</strong>のみをサポートしています——何かが<em>存在する</em>または<em>発生した</em>ことの暗号学的証明です。</p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>対応</th>
+                            <th>ステータス</th>
+                            <th>問題</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>「内部ログがあります」</td>
+                            <td><span style="color: #ef4444;">❌ 検証不可</span></td>
+                            <td>捏造、改ざん、選択的保持の可能性</td>
+                        </tr>
+                        <tr>
+                            <td>「フィルターは効果的です」</td>
+                            <td><span style="color: #f59e0b;">⚠️ 信頼ベース</span></td>
+                            <td>証拠のない主張</td>
+                        </tr>
+                        <tr>
+                            <td>「暗号学的証拠があります」</td>
+                            <td><span style="color: #22c55e;">✓ 検証可能</span></td>
+                            <td><strong>現在は不可能</strong> — CAP-SRPがこれを可能に</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Regulatory Landscape -->
+                <h2 id="regulatory-landscape"><i class="fas fa-landmark mr-2 text-blue-600"></i>規制環境</h2>
+
+                <h3>EU AI Act：2026年8月の期限</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>日付</th>
+                            <th>要件</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025年2月2日</td>
+                            <td>禁止されたAI慣行の禁止</td>
+                        </tr>
+                        <tr>
+                            <td>2025年8月2日</td>
+                            <td>GPAIモデル要件の適用</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2026年8月2日</strong></td>
+                            <td><strong>高リスクAIシステム要件（第12条ロギング）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>2027年8月2日</td>
+                            <td>完全施行</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="warning-box">
+                    <p><i class="fas fa-exclamation-triangle mr-2"></i><strong>DeMark攻撃（2026年1月22日）：</strong>MIT/スタンフォードの研究者が「DeMark: A Query-Free Black-Box Attack on Deepfake Watermarking Defenses」を発表。8つの最先端ウォーターマーキングスキームで検出精度が<strong>100%から32.9%</strong>に低下しました。</p>
+                </div>
+
+                <!-- CAP-SRP Architecture -->
+                <h2 id="cap-srp-architecture"><i class="fas fa-project-diagram mr-2 text-blue-600"></i>CAP-SRP技術アーキテクチャ</h2>
+
+                <h3>完全性不変条件</h3>
+                
+                <p>CAP-SRPのコアイノベーション：</p>
+                
+                <pre><code>∀ time_window T:
+  COUNT(GEN_ATTEMPT) = COUNT(GEN) + COUNT(GEN_DENY) + COUNT(GEN_ERROR)</code></pre>
+
+                <p>平易に言えば：<strong>すべての生成試行には記録された結果が必要です。</strong></p>
+
+                <h3>イベントタイプ</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>イベントタイプ</th>
+                            <th>説明</th>
+                            <th>タイミング</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>GEN_ATTEMPT</code></td>
+                            <td>生成リクエストが受信された</td>
+                            <td>安全性評価<strong>前</strong></td>
+                        </tr>
+                        <tr>
+                            <td><code>GEN</code></td>
+                            <td>コンテンツが正常に生成された</td>
+                            <td>安全性評価後</td>
+                        </tr>
+                        <tr>
+                            <td><code>GEN_DENY</code></td>
+                            <td>安全システムにより生成が拒否された</td>
+                            <td>安全性評価後</td>
+                        </tr>
+                        <tr>
+                            <td><code>GEN_ERROR</code></td>
+                            <td>システムエラーにより生成が失敗した</td>
+                            <td>安全性評価後</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>リスクカテゴリ分類</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>コード</th>
+                            <th>カテゴリ</th>
+                            <th>説明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>CSAM_RISK</code></td>
+                            <td>児童安全</td>
+                            <td>CSAMの生成リスク</td>
+                        </tr>
+                        <tr>
+                            <td><code>NCII_RISK</code></td>
+                            <td>非同意画像</td>
+                            <td>同意のない親密な画像</td>
+                        </tr>
+                        <tr>
+                            <td><code>MINOR_SEXUALIZATION</code></td>
+                            <td>未成年者保護</td>
+                            <td>未成年者を含む性的コンテンツ</td>
+                        </tr>
+                        <tr>
+                            <td><code>REAL_PERSON_DEEPFAKE</code></td>
+                            <td>身元保護</td>
+                            <td>実在の人物の非同意使用</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Cryptographic Mechanisms -->
+                <h2 id="cryptographic-mechanisms"><i class="fas fa-lock mr-2 text-blue-600"></i>暗号学的メカニズム</h2>
+
+                <h3>コンプライアンスティア</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ティア</th>
+                            <th>要件</th>
+                            <th>ユースケース</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="tier-badge tier-silver">Silver</span></td>
+                            <td>ローカルロギング、TSAアンカリング、日次バッチ</td>
+                            <td>スタートアップ、低リスクアプリケーション</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tier-badge tier-gold">Gold</span></td>
+                            <td>リアルタイムロギング、TSA + マルチログ、時間単位</td>
+                            <td>企業、規制産業</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tier-badge tier-platinum">Platinum</span></td>
+                            <td>リアルタイム、TSA + ブロックチェーン、継続的、HSM</td>
+                            <td>重要インフラ、最高保証</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="key-point">
+                    <p><i class="fas fa-key mr-2"></i><strong>CAP-SRP原則：</strong>コンテンツではなく、決定を記録する。プロンプトテキストではなくハッシュを記録し、プライバシーを保護しながら検証可能性を維持します。</p>
+                </div>
+
+                <!-- Conclusion -->
+                <h2 id="conclusion"><i class="fas fa-flag-checkered mr-2 text-blue-600"></i>結論：信頼ベースから検証ベースのガバナンスへ</h2>
+
+                <div class="framework-grid">
+                    <div class="framework-card">
+                        <h5><i class="fas fa-gavel text-indigo-600 mr-2"></i>規制上の義務</h5>
+                        <p>EU AI Act第12条（2026年8月）、カリフォルニアAI透明性法、州司法長官の執行措置</p>
+                    </div>
+                    <div class="framework-card">
+                        <h5><i class="fas fa-times-circle text-red-600 mr-2"></i>技術的限界</h5>
+                        <p>DeMark攻撃により透かし検出が32.9%に低下。メタデータ除去はウェブ画像の95%に影響。</p>
+                    </div>
+                    <div class="framework-card">
+                        <h5><i class="fas fa-trophy text-yellow-600 mr-2"></i>市場差別化</h5>
+                        <p>「責任あるAI」のポジショニングがますます価値を持つ。企業顧客が監査能力を要求。</p>
+                    </div>
+                </div>
+
+                <h3>タグ</h3>
+                <div class="tag-cloud">
+                    <span><i class="fas fa-hashtag mr-1"></i>CAP-SRP</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>VAP</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>AI安全性</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>SCITT</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>C2PA</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>EU AI Act</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>暗号学的監査</span>
+                    <span><i class="fas fa-hashtag mr-1"></i>拒否来歴</span>
+                </div>
+
+                <!-- CTA Box -->
+                <div class="cta-box">
+                    <h4><i class="fas fa-rocket mr-2"></i>CAP-SRP仕様を確認</h4>
+                    <p>規制の期限は固定されています。技術的なソリューションは存在します。問題は「いつ」です。</p>
+                    <a href="https://github.com/veritaschain/cap-spec" target="_blank" rel="noopener">
+                        <i class="fab fa-github mr-2"></i>CAP仕様を見る
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="py-12 bg-white border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <h2 class="text-2xl font-bold text-slate-800 mb-8">関連記事</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <a href="/blog/posts/2026-01-27-verification-imperative-eu-regulatory-convergence/ja/" class="block p-6 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+                    <span class="text-sm text-indigo-600 font-medium">規制分析</span>
+                    <h3 class="text-lg font-semibold text-slate-800 mt-2 mb-2">検証の必然性：3つのEU規制フレームワークの収斂</h3>
+                    <p class="text-slate-600 text-sm">数学的検証がアルゴリズム取引における手続き的信頼に取って代わる理由。</p>
+                </a>
+                <a href="/blog/posts/2026-01-26-north-korean-ai-spy-interview-vap-solution/ja/" class="block p-6 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+                    <span class="text-sm text-red-600 font-medium">サイバーセキュリティ</span>
+                    <h3 class="text-lg font-semibold text-slate-800 mt-2 mb-2">北朝鮮AIスパイ面接危機</h3>
+                    <p class="text-slate-600 text-sm">VAPの「検証せよ、信頼するな」原則が採用セキュリティを再構築する方法。</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="vcp-footer"></div>
+
+    <!-- Scripts -->
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+</body>
+</html>
