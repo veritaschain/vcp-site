@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAP-SRP - Safe Refusal Provenance | Cryptographic Proof of AI Content Refusals</title>
+    <meta name="description" content="CAP-SRP (Safe Refusal Provenance) is the world's first open standard for cryptographically proving that AI systems refused to generate harmful content. Part of the CAP specification for content and creative AI.">
+    <meta name="keywords" content="CAP-SRP, Safe Refusal Provenance, AI content moderation, cryptographic audit, GEN_DENY, deepfake prevention, NCII protection, EU AI Act, TAKE IT DOWN Act">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="CAP-SRP - Safe Refusal Provenance | Cryptographic Proof of AI Content Refusals">
+    <meta property="og:description" content="The world's first open standard for cryptographically proving that AI systems refused to generate harmful content. C2PA proves 'this was generated'; CAP-SRP proves 'this was blocked'.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/cap/srp/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CAP-SRP - Safe Refusal Provenance | Cryptographic Proof of AI Content Refusals">
+    <meta name="twitter:description" content="The world's first open standard for cryptographically proving that AI systems refused to generate harmful content.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/cap/srp/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/cap/srp/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/cap/srp/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/cap/srp/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/cap/srp/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'srp-green': '#10b981',
+                        'srp-emerald': '#059669',
+                        'srp-teal': '#14b8a6',
+                        'cap-purple': '#a855f7',
+                        'cap-violet': '#8b5cf6',
+                        'cap-dark': '#1a202c',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #1a202c 0%, #064e3b 50%, #1a202c 100%);
+        }
+        .srp-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            line-height: 1.6;
+        }
+        @media (min-width: 640px) {
+            .code-block pre {
+                font-size: 0.75rem;
+            }
+        }
+        .architecture-diagram {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: #94a3b8;
+            white-space: pre;
+            overflow-x: auto;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .architecture-diagram {
+                font-size: 0.7rem;
+                padding: 1.5rem;
+            }
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+            border: 1px solid rgba(16, 185, 129, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .glow-green {
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "CAP-SRP - Safe Refusal Provenance",
+        "description": "CAP-SRP is the world's first open standard for cryptographically proving that AI systems refused to generate harmful content.",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2026-01-28",
+        "dateModified": "2026-01-28",
+        "version": "1.0.0",
+        "url": "https://veritaschain.org/vap/cap/srp/"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="en" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div class="pt-12 lg:pt-0 bg-gradient-to-r from-emerald-900/50 to-green-900/50 border-b border-emerald-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-center gap-3 flex-wrap">
+                <i class="fas fa-check-circle text-emerald-400"></i>
+                <span class="text-emerald-200 font-medium">CAP-SRP Status: <span class="text-emerald-400 font-bold">Official Release v1.0</span></span>
+                <span class="text-emerald-200/70 text-sm">— The world's first standard for proving AI content refusals</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%2310b981%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%2310b981%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22%2310b981%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Profile Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-shield-alt text-emerald-400"></i>
+                    <span class="text-emerald-300 text-sm font-semibold tracking-wide">CAP EXTENSION: SAFE REFUSAL PROVENANCE</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-4">
+                <span class="text-white">CAP-SRP</span>
+                <span class="text-emerald-400"> v1.0</span>
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-center text-gray-300 mb-6">
+                Safe Refusal Provenance
+            </p>
+            
+            <!-- Core Innovation -->
+            <div class="max-w-3xl mx-auto text-center mb-8">
+                <div class="bg-gray-800/80 backdrop-blur border border-emerald-500/30 rounded-xl p-6 glow-green">
+                    <p class="text-xl text-gray-300 mb-4">
+                        <span class="text-emerald-400 font-bold">Core Innovation:</span>
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-gray-900/50 rounded-lg p-4">
+                            <p class="text-purple-400 font-semibold">C2PA proves:</p>
+                            <p class="text-white text-lg">"This content was generated"</p>
+                        </div>
+                        <div class="bg-emerald-900/30 rounded-lg p-4 border border-emerald-500/30">
+                            <p class="text-emerald-400 font-semibold">CAP-SRP proves:</p>
+                            <p class="text-white text-lg">"This request was blocked"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Quote -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    <span class="text-emerald-400 font-bold text-2xl">"</span>
+                    When AI providers claim "we blocked millions of harmful requests," no independent party can verify this claim. The January 2026 Grok incident exposed this structural failure: xAI's system produced thousands of NCII while claiming moderation was in place. <strong class="text-white">CAP-SRP provides the cryptographic infrastructure for verification-based AI accountability.</strong>
+                    <span class="text-emerald-400 font-bold text-2xl">"</span>
+                </p>
+            </div>
+            
+            <!-- Hero CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#completeness-invariant" class="inline-flex items-center bg-emerald-500 hover:bg-emerald-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-balance-scale mr-2"></i>
+                    Completeness Invariant
+                </a>
+                <a href="#event-model" class="inline-flex items-center bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-stream mr-2"></i>
+                    Event Model
+                </a>
+                <a href="/vap/cap/" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-emerald-400 font-bold px-8 py-4 rounded-lg transition-all border border-emerald-400/50">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Back to CAP
+                </a>
+            </div>
+            
+            <!-- Specification Link -->
+            <div class="mt-10 flex justify-center">
+                <a href="https://github.com/veritaschain/cap-spec/blob/main/docs/CAP-SRP-Specification-v1.0.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-4 bg-gradient-to-r from-emerald-900/60 to-green-900/60 hover:from-emerald-800/70 hover:to-green-800/70 border border-emerald-500/50 hover:border-emerald-400 rounded-xl px-8 py-5 transition-all group">
+                    <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-file-alt text-emerald-300 text-2xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold text-lg group-hover:text-emerald-200 transition-colors">CAP-SRP Specification v1.0</p>
+                        <p class="text-emerald-300 text-sm">VSO-CAP-SRP-SPEC-001 — Full Technical Specification</p>
+                    </div>
+                    <i class="fas fa-external-link-alt text-emerald-400 group-hover:text-emerald-300 transition-all ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement Section -->
+    <section id="problem" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">The Negative Proof Problem</h2>
+                <p class="text-gray-400 text-lg">Why traditional logging fails for AI safety verification</p>
+            </div>
+            
+            <!-- Problem Illustration -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-gray-900 rounded-xl p-8 border border-red-500/30">
+                    <h3 class="text-xl font-bold text-red-400 mb-6">
+                        <i class="fas fa-times-circle mr-2"></i>
+                        Traditional Logging
+                    </h3>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-green-400 mt-1"></i>
+                            <span>Can record what <strong class="text-white">was</strong> generated</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>Cannot prove what was <strong class="text-white">NOT</strong> generated</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>No verification of refusal claims</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>Vulnerable to selective logging</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-8 border border-emerald-500/30 glow-green">
+                    <h3 class="text-xl font-bold text-emerald-400 mb-6">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        With CAP-SRP
+                    </h3>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>Cryptographic proof of <strong class="text-white">every</strong> request</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>Verifiable refusal records (GEN_DENY)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>Completeness Invariant verification</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>External anchoring for tamper-evidence</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Threat Model -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-shield-virus text-red-400 mr-2"></i>
+                    Threat Model: Adversarial AI Providers
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[700px]">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-red-400 font-semibold">Threat</th>
+                                <th class="px-4 py-3 text-left text-gray-400 font-semibold">Description</th>
+                                <th class="px-4 py-3 text-left text-emerald-400 font-semibold">CAP-SRP Mitigation</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Selective Logging</td>
+                                <td class="px-4 py-4 text-gray-400">Logging only favorable outcomes</td>
+                                <td class="px-4 py-4 text-emerald-300">Completeness Invariant</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Log Modification</td>
+                                <td class="px-4 py-4 text-gray-400">Altering historical records</td>
+                                <td class="px-4 py-4 text-emerald-300">Hash chain integrity</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Backdating</td>
+                                <td class="px-4 py-4 text-gray-400">Creating records with false timestamps</td>
+                                <td class="px-4 py-4 text-emerald-300">External anchoring (RFC 3161/SCITT)</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Split-View</td>
+                                <td class="px-4 py-4 text-gray-400">Showing different logs to different parties</td>
+                                <td class="px-4 py-4 text-emerald-300">Merkle proofs</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">Fabrication</td>
+                                <td class="px-4 py-4 text-gray-400">Creating false refusal records</td>
+                                <td class="px-4 py-4 text-emerald-300">Attempt-outcome pairing</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Model Section -->
+    <section id="event-model" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">SRP Event Model</h2>
+                <p class="text-gray-400 text-lg">Core event types for proving AI content decisions</p>
+            </div>
+            
+            <!-- Event Flow Diagram -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-sitemap text-emerald-400 mr-2"></i>
+                    SRP Event Lifecycle
+                </h3>
+                
+                <div class="architecture-diagram mx-auto max-w-4xl overflow-x-auto">
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       <span class="text-emerald-400 font-bold">SRP Event Lifecycle</span>                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  User Request                                                           │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────────────┐                                                    │
+│  │  <span class="text-cyan-400">GEN_ATTEMPT</span>    │ ◄─── MUST be logged FIRST (before safety check)    │
+│  └────────┬────────┘                                                    │
+│           │                                                             │
+│           ▼                                                             │
+│  ┌─────────────────┐                                                    │
+│  │  Safety Check   │                                                    │
+│  │  ├─ CSAM_RISK   │                                                    │
+│  │  ├─ NCII_RISK   │                                                    │
+│  │  ├─ VIOLENCE    │                                                    │
+│  │  └─ Policy      │                                                    │
+│  └────────┬────────┘                                                    │
+│           │                                                             │
+│      ┌────┴────┬─────────────┐                                          │
+│      │         │             │                                          │
+│      ▼         ▼             ▼                                          │
+│  ┌───────┐ ┌────────┐ ┌───────────┐                                     │
+│  │  <span class="text-yellow-400">GEN</span>  │ │<span class="text-red-400">GEN_DENY</span>│ │ <span class="text-orange-400">GEN_ERROR</span> │                                     │
+│  │(pass) │ │(block) │ │ (failure) │                                     │
+│  └───────┘ └────────┘ └───────────┘                                     │
+│                                                                         │
+│  <span class="text-emerald-400 font-bold">INVARIANT: count(GEN_ATTEMPT) == count(GEN) + count(GEN_DENY)</span>          │
+│            <span class="text-emerald-400 font-bold">+ count(GEN_ERROR)</span>                                            │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Event Type Cards -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- GEN_ATTEMPT -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-cyan-500/50 card-hover">
+                    <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-arrow-circle-right text-cyan-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GEN_ATTEMPT</h3>
+                    <p class="text-cyan-400 text-sm mb-3">Request Received</p>
+                    <p class="text-gray-400 text-sm">
+                        Logged BEFORE any safety evaluation. Records that a generation request arrived.
+                    </p>
+                </div>
+                
+                <!-- GEN -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-yellow-500/50 card-hover">
+                    <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-check text-yellow-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GEN</h3>
+                    <p class="text-yellow-400 text-sm mb-3">Generation Succeeded</p>
+                    <p class="text-gray-400 text-sm">
+                        Content was generated and delivered to the user.
+                    </p>
+                </div>
+                
+                <!-- GEN_DENY -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-red-500/50 card-hover">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-ban text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GEN_DENY</h3>
+                    <p class="text-red-400 text-sm mb-3">Generation Refused</p>
+                    <p class="text-gray-400 text-sm">
+                        Request was blocked due to policy violation detection.
+                    </p>
+                </div>
+                
+                <!-- GEN_ERROR -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-orange-500/50 card-hover">
+                    <div class="w-12 h-12 bg-orange-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-orange-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GEN_ERROR</h3>
+                    <p class="text-orange-400 text-sm mb-3">System Failure</p>
+                    <p class="text-gray-400 text-sm">
+                        Generation failed due to system error (not policy-related).
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Timing Requirements -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-clock text-emerald-400 mr-2"></i>
+                    Timing Requirements
+                </h3>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <p class="text-emerald-400 font-mono text-2xl font-bold">100ms</p>
+                        <p class="text-gray-400 text-sm mt-2">Request → GEN_ATTEMPT</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-emerald-400 font-mono text-2xl font-bold">60s</p>
+                        <p class="text-gray-400 text-sm mt-2">GEN_ATTEMPT → Outcome</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-emerald-400 font-mono text-2xl font-bold">1s</p>
+                        <p class="text-gray-400 text-sm mt-2">Outcome event logging</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-red-900/20 border border-red-500/30 rounded-lg p-4">
+                    <p class="text-red-400 font-semibold mb-2">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Critical Requirement: Pre-Evaluation Logging
+                    </p>
+                    <p class="text-gray-300 text-sm">
+                        GEN_ATTEMPT MUST be logged BEFORE any safety evaluation begins. This prevents selective logging where only "safe" requests are recorded.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Completeness Invariant Section -->
+    <section id="completeness-invariant" class="py-20 bg-gradient-to-b from-gray-800 to-emerald-900/20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Completeness Invariant</h2>
+                <p class="text-gray-400 text-lg">The mathematical core of CAP-SRP</p>
+            </div>
+            
+            <!-- Invariant Formula -->
+            <div class="max-w-4xl mx-auto bg-gray-900 rounded-xl p-8 border border-emerald-500/50 glow-green mb-12">
+                <div class="text-center mb-6">
+                    <p class="text-emerald-400 font-mono text-xl md:text-2xl font-bold">
+                        ∑ GEN_ATTEMPT = ∑ GEN + ∑ GEN_DENY + ∑ GEN_ERROR
+                    </p>
+                </div>
+                <p class="text-gray-300 text-center">
+                    For any time window, the count of attempts MUST exactly equal the count of all outcomes.
+                </p>
+            </div>
+            
+            <!-- Violation Detection -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-gray-800 rounded-xl p-6 border border-red-500/30">
+                    <h4 class="text-red-400 font-semibold mb-3">Attempts > Outcomes</h4>
+                    <p class="text-gray-400 text-sm mb-2">Unmatched attempts detected</p>
+                    <p class="text-white text-sm font-medium">→ System is hiding results</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-yellow-500/30">
+                    <h4 class="text-yellow-400 font-semibold mb-3">Outcomes > Attempts</h4>
+                    <p class="text-gray-400 text-sm mb-2">Orphan outcomes detected</p>
+                    <p class="text-white text-sm font-medium">→ System fabricated refusals</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-orange-500/30">
+                    <h4 class="text-orange-400 font-semibold mb-3">Duplicate Outcomes</h4>
+                    <p class="text-gray-400 text-sm mb-2">Multiple outcomes per attempt</p>
+                    <p class="text-white text-sm font-medium">→ Data integrity failure</p>
+                </div>
+            </div>
+            
+            <!-- Verification Algorithm -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6">
+                    <i class="fas fa-code text-emerald-400 mr-2"></i>
+                    Verification Algorithm (O(n) complexity)
+                </h3>
+                
+                <div class="code-block">
+                    <pre><span class="text-purple-400">def</span> <span class="text-yellow-400">verify_completeness</span>(events: List[dict], time_window: Tuple) -> Result:
+    <span class="text-gray-500">"""
+    Verify Completeness Invariant for events within a time window.
+    Returns: Result with status, unmatched attempts, orphan outcomes
+    """</span>
+    filtered = [e <span class="text-purple-400">for</span> e <span class="text-purple-400">in</span> events 
+                <span class="text-purple-400">if</span> time_window[<span class="text-cyan-400">0</span>] <= e[<span class="text-green-400">"Timestamp"</span>] <= time_window[<span class="text-cyan-400">1</span>]]
+    
+    attempts = {e[<span class="text-green-400">"EventID"</span>]: e 
+                <span class="text-purple-400">for</span> e <span class="text-purple-400">in</span> filtered 
+                <span class="text-purple-400">if</span> e[<span class="text-green-400">"EventType"</span>] == <span class="text-green-400">"GEN_ATTEMPT"</span>}
+    
+    outcomes = [e <span class="text-purple-400">for</span> e <span class="text-purple-400">in</span> filtered 
+                <span class="text-purple-400">if</span> e[<span class="text-green-400">"EventType"</span>] <span class="text-purple-400">in</span> [<span class="text-green-400">"GEN"</span>, <span class="text-green-400">"GEN_DENY"</span>, <span class="text-green-400">"GEN_ERROR"</span>]]
+    
+    matched_attempts = <span class="text-yellow-400">set</span>()
+    orphan_outcomes = []
+    
+    <span class="text-purple-400">for</span> outcome <span class="text-purple-400">in</span> outcomes:
+        attempt_id = outcome.get(<span class="text-green-400">"AttemptID"</span>)
+        <span class="text-purple-400">if</span> attempt_id <span class="text-purple-400">in</span> attempts:
+            <span class="text-purple-400">if</span> attempt_id <span class="text-purple-400">in</span> matched_attempts:
+                <span class="text-purple-400">return</span> Result(valid=<span class="text-cyan-400">False</span>, error=<span class="text-green-400">"DUPLICATE_OUTCOME"</span>)
+            matched_attempts.add(attempt_id)
+        <span class="text-purple-400">else</span>:
+            orphan_outcomes.append(outcome[<span class="text-green-400">"EventID"</span>])
+    
+    unmatched_attempts = <span class="text-yellow-400">set</span>(attempts.keys()) - matched_attempts
+    
+    <span class="text-purple-400">return</span> Result(
+        valid=(<span class="text-yellow-400">len</span>(unmatched_attempts) == <span class="text-cyan-400">0</span> <span class="text-purple-400">and</span> <span class="text-yellow-400">len</span>(orphan_outcomes) == <span class="text-cyan-400">0</span>),
+        unmatched_attempts=<span class="text-yellow-400">list</span>(unmatched_attempts),
+        orphan_outcomes=orphan_outcomes
+    )</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Categories Section -->
+    <section id="risk-categories" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Risk Categories</h2>
+                <p class="text-gray-400 text-lg">Standardized classification for GEN_DENY events</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-900 rounded-xl p-6 border border-red-500/50">
+                    <p class="text-red-500 font-bold mb-2">CSAM_RISK</p>
+                    <p class="text-gray-400 text-sm">Child sexual abuse material risk</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-red-500/50">
+                    <p class="text-red-500 font-bold mb-2">NCII_RISK</p>
+                    <p class="text-gray-400 text-sm">Non-consensual intimate imagery</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-red-400/50">
+                    <p class="text-red-400 font-bold mb-2">MINOR_SEXUALIZATION</p>
+                    <p class="text-gray-400 text-sm">Content sexualizing minors</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-pink-500/50">
+                    <p class="text-pink-400 font-bold mb-2">REAL_PERSON_DEEPFAKE</p>
+                    <p class="text-gray-400 text-sm">Unauthorized realistic depiction</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-orange-500/50">
+                    <p class="text-orange-400 font-bold mb-2">VIOLENCE_EXTREME</p>
+                    <p class="text-gray-400 text-sm">Graphic violence, gore, torture</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-purple-500/50">
+                    <p class="text-purple-400 font-bold mb-2">HATE_CONTENT</p>
+                    <p class="text-gray-400 text-sm">Discriminatory content</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-600">
+                    <p class="text-gray-400 font-bold mb-2">TERRORIST_CONTENT</p>
+                    <p class="text-gray-500 text-sm">Terrorism-related content</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-600">
+                    <p class="text-gray-400 font-bold mb-2">SELF_HARM_PROMOTION</p>
+                    <p class="text-gray-500 text-sm">Self-harm encouragement</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-blue-500/50">
+                    <p class="text-blue-400 font-bold mb-2">COPYRIGHT_VIOLATION</p>
+                    <p class="text-gray-400 text-sm">Clear IP infringement</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conformance Levels Section -->
+    <section id="conformance" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Conformance Levels</h2>
+                <p class="text-gray-400 text-lg">Graduated adoption for different organizational needs</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Bronze -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-amber-600/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-award text-amber-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-500">Bronze</h3>
+                            <p class="text-gray-400 text-sm">SMEs, Early Adopters</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i>Event logging (INGEST, TRAIN, GEN, EXPORT)</li>
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i>SHA-256 hash chain</li>
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i>Ed25519 digital signatures</li>
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i>6-month retention</li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">Voluntary transparency</p>
+                    </div>
+                </div>
+                
+                <!-- Silver -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-gray-400/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-gray-600/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-award text-gray-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-300">Silver</h3>
+                            <p class="text-gray-400 text-sm">Enterprise, VLOPs</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>All Bronze + SRP Extension</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>GEN_ATTEMPT & GEN_DENY events</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>Completeness Invariant</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>Daily external anchoring</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>Evidence Pack generation</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>2-year retention</li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">EU AI Act Article 12</p>
+                    </div>
+                </div>
+                
+                <!-- Gold -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-yellow-500/50 glow-green">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-award text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-yellow-400">Gold</h3>
+                            <p class="text-gray-400 text-sm">Regulated Industries</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>All Silver requirements</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>Hourly external anchoring</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>HSM key management</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>SCITT transparency service</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>Real-time audit API</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>5-year retention</li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">DSA Article 37 audits</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regulatory Alignment Section -->
+    <section id="regulatory" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Regulatory Compliance Mapping</h2>
+                <p class="text-gray-400 text-lg">How CAP-SRP addresses global AI regulations</p>
+            </div>
+            
+            <div class="overflow-x-auto bg-gray-900 rounded-xl border border-gray-700">
+                <table class="w-full min-w-[800px]">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-emerald-400 font-semibold">Regulation</th>
+                            <th class="px-6 py-4 text-left text-gray-400 font-semibold">Jurisdiction</th>
+                            <th class="px-6 py-4 text-left text-gray-400 font-semibold">Effective</th>
+                            <th class="px-6 py-4 text-left text-emerald-400 font-semibold">CAP-SRP Implementation</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        <tr>
+                            <td class="px-6 py-4 text-white font-medium">EU AI Act Article 12</td>
+                            <td class="px-6 py-4 text-gray-400">EU</td>
+                            <td class="px-6 py-4 text-gray-400">Aug 2026</td>
+                            <td class="px-6 py-4 text-gray-300">Automatic logging, risk identification, 6-month retention</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 text-white font-medium">Digital Services Act (DSA)</td>
+                            <td class="px-6 py-4 text-gray-400">EU</td>
+                            <td class="px-6 py-4 text-gray-400">In force</td>
+                            <td class="px-6 py-4 text-gray-300">Article 37 audits, GEN_DENY statistics</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 text-white font-medium">Colorado AI Act (SB24-205)</td>
+                            <td class="px-6 py-4 text-gray-400">USA (CO)</td>
+                            <td class="px-6 py-4 text-gray-400">Feb 2026</td>
+                            <td class="px-6 py-4 text-gray-300">Impact assessments, 3-year retention</td>
+                        </tr>
+                        <tr class="bg-emerald-900/20">
+                            <td class="px-6 py-4 text-white font-medium">TAKE IT DOWN Act</td>
+                            <td class="px-6 py-4 text-emerald-400">USA (Fed)</td>
+                            <td class="px-6 py-4 text-emerald-400">May 2026</td>
+                            <td class="px-6 py-4 text-emerald-300">NCII evidence, 48-hour response proof, GEN_DENY</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 text-white font-medium">UK Online Safety Act</td>
+                            <td class="px-6 py-4 text-gray-400">UK</td>
+                            <td class="px-6 py-4 text-gray-400">In force</td>
+                            <td class="px-6 py-4 text-gray-300">Gold level for Category 1 services</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section id="integration" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Integration with Standards</h2>
+                <p class="text-gray-400 text-lg">CAP-SRP complements existing transparency infrastructure</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- C2PA Integration -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-purple-500/30">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-certificate text-purple-400 mr-2"></i>
+                        C2PA Integration
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-3 py-2 text-left text-gray-400 text-sm">Aspect</th>
+                                    <th class="px-3 py-2 text-left text-purple-400 text-sm">C2PA</th>
+                                    <th class="px-3 py-2 text-left text-emerald-400 text-sm">CAP-SRP</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr>
+                                    <td class="px-3 py-2 text-gray-400">Question</td>
+                                    <td class="px-3 py-2 text-gray-300">"Is this authentic?"</td>
+                                    <td class="px-3 py-2 text-gray-300">"What did AI decide?"</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-gray-400">Focus</td>
+                                    <td class="px-3 py-2 text-gray-300">Content provenance</td>
+                                    <td class="px-3 py-2 text-gray-300">System accountability</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-gray-400">Metaphor</td>
+                                    <td class="px-3 py-2 text-gray-300">Content passport</td>
+                                    <td class="px-3 py-2 text-gray-300">System flight recorder</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- SCITT Integration -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-cyan-500/30">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-link text-cyan-400 mr-2"></i>
+                        SCITT Integration
+                    </h3>
+                    <p class="text-gray-300 mb-4">
+                        CAP-SRP integrates with IETF SCITT (Supply Chain Integrity, Transparency, and Trust) as a domain-specific profile.
+                    </p>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><i class="fas fa-arrow-right text-cyan-400 mr-2"></i>CAP Event → SCITT Signed Statement</li>
+                        <li><i class="fas fa-arrow-right text-cyan-400 mr-2"></i>Event Chain → Append-Only Log</li>
+                        <li><i class="fas fa-arrow-right text-cyan-400 mr-2"></i>Merkle Proof → COSE Receipt</li>
+                        <li><i class="fas fa-arrow-right text-cyan-400 mr-2"></i>External Anchor → Transparency Service</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="py-20 bg-gradient-to-br from-emerald-900/30 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Get Started with CAP-SRP</h2>
+                <p class="text-gray-400 text-lg">Implement cryptographic accountability for your AI content systems</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="https://github.com/veritaschain/cap-spec" target="_blank" rel="noopener noreferrer" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-emerald-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-emerald-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-github text-2xl text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GitHub Repository</h3>
+                    <p class="text-gray-400 text-sm">Specification, schemas, examples</p>
+                </a>
+                
+                <a href="/vap/cap/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-palette text-2xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">CAP Framework</h3>
+                    <p class="text-gray-400 text-sm">Parent profile for creative AI</p>
+                </a>
+                
+                <a href="/vap/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-layer-group text-2xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">VAP Framework</h3>
+                    <p class="text-gray-400 text-sm">Cross-domain AI provenance</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-6 border border-emerald-500/50 hover:border-emerald-400 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-emerald-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-handshake text-2xl text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Contact Us</h3>
+                    <p class="text-gray-400 text-sm">Join the development</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Quote -->
+    <section class="py-16 bg-gray-900 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <blockquote class="text-xl text-gray-300 italic mb-6">
+                "The fundamental question is not 'Can AI systems detect harmful content?'<br>
+                but rather 'Can third parties verify that claimed detections actually occurred?'"
+            </blockquote>
+            <p class="text-gray-500">— CAP-SRP Specification v1.0</p>
+            
+            <blockquote class="text-lg text-emerald-400 italic mt-8 font-semibold">
+                "Verify, Don't Trust"
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- License Footer -->
+    <section class="py-8 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+                <i class="fab fa-creative-commons mr-1"></i>
+                This work is licensed under 
+                <a href="https://creativecommons.org/licenses/by/4.0/" class="text-emerald-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                    CC BY 4.0 International
+                </a>
+            </p>
+            <p class="text-gray-600 text-xs mt-2">
+                CAP-SRP Specification v1.0.0 — Released: 2026-01-28
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer lang="en"></vcp-footer>
+</body>
+</html>

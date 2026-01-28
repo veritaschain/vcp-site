@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAP-SRP - 安全拒否証明 | AIコンテンツ拒否の暗号学的証明</title>
+    <meta name="description" content="CAP-SRP（Safe Refusal Provenance）は、AIシステムが有害コンテンツの生成を拒否したことを暗号学的に証明する世界初のオープン標準です。コンテンツ・クリエイティブAI向けCAP仕様の一部。">
+    <meta name="keywords" content="CAP-SRP, 安全拒否証明, AIコンテンツモデレーション, 暗号監査, GEN_DENY, ディープフェイク防止, NCII保護, EU AI Act, TAKE IT DOWN Act">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="CAP-SRP - 安全拒否証明 | AIコンテンツ拒否の暗号学的証明">
+    <meta property="og:description" content="AIシステムが有害コンテンツの生成を拒否したことを暗号学的に証明する世界初のオープン標準。C2PAは「これが生成された」を証明し、CAP-SRPは「これがブロックされた」を証明します。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/vap/cap/srp/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VeritasChain">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CAP-SRP - 安全拒否証明 | AIコンテンツ拒否の暗号学的証明">
+    <meta name="twitter:description" content="AIシステムが有害コンテンツの生成を拒否したことを暗号学的に証明する世界初のオープン標準。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="canonical" href="https://veritaschain.org/vap/cap/srp/ja/" />
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/vap/cap/srp/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vap/cap/srp/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vap/cap/srp/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vap/cap/srp/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="192x192">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png" sizes="180x180">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'srp-green': '#10b981',
+                        'srp-emerald': '#059669',
+                        'srp-teal': '#14b8a6',
+                        'cap-purple': '#a855f7',
+                        'cap-violet': '#8b5cf6',
+                        'cap-dark': '#1a202c',
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', system-ui, sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(135deg, #1a202c 0%, #064e3b 50%, #1a202c 100%);
+        }
+        .srp-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            line-height: 1.6;
+        }
+        @media (min-width: 640px) {
+            .code-block pre {
+                font-size: 0.75rem;
+            }
+        }
+        .architecture-diagram {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: #94a3b8;
+            white-space: pre;
+            overflow-x: auto;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .architecture-diagram {
+                font-size: 0.7rem;
+                padding: 1.5rem;
+            }
+        }
+        .status-badge {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+            border: 1px solid rgba(16, 185, 129, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .glow-green {
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "CAP-SRP - 安全拒否証明",
+        "description": "CAP-SRPは、AIシステムが有害コンテンツの生成を拒否したことを暗号学的に証明する世界初のオープン標準です。",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2026-01-28",
+        "dateModified": "2026-01-28",
+        "version": "1.0.0",
+        "url": "https://veritaschain.org/vap/cap/srp/ja/",
+        "inLanguage": "ja"
+    }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100" style="padding-top: 70px;">
+    <vcp-header theme="dark" lang="ja" available-langs="en,ja,zh"></vcp-header>
+
+    <!-- Status Banner -->
+    <div class="pt-12 lg:pt-0 bg-gradient-to-r from-emerald-900/50 to-green-900/50 border-b border-emerald-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-center gap-3 flex-wrap">
+                <i class="fas fa-check-circle text-emerald-400"></i>
+                <span class="text-emerald-200 font-medium">CAP-SRP ステータス: <span class="text-emerald-400 font-bold">正式リリース v1.0</span></span>
+                <span class="text-emerald-200/70 text-sm">— AIコンテンツ拒否を証明する世界初の標準</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%2310b981%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%2310b981%22 stroke-width=%220.5%22/><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22%2310b981%22 stroke-width=%220.5%22/></svg>'); background-size: 200px 200px;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 py-20">
+            <!-- Profile Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="status-badge inline-flex items-center gap-2 px-4 py-2 rounded-full">
+                    <i class="fas fa-shield-alt text-emerald-400"></i>
+                    <span class="text-emerald-300 text-sm font-semibold tracking-wide">CAP拡張: 安全拒否証明</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-4">
+                <span class="text-white">CAP-SRP</span>
+                <span class="text-emerald-400"> v1.0</span>
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-center text-gray-300 mb-6">
+                Safe Refusal Provenance（安全拒否証明）
+            </p>
+            
+            <!-- Core Innovation -->
+            <div class="max-w-3xl mx-auto text-center mb-8">
+                <div class="bg-gray-800/80 backdrop-blur border border-emerald-500/30 rounded-xl p-6 glow-green">
+                    <p class="text-xl text-gray-300 mb-4">
+                        <span class="text-emerald-400 font-bold">核心的イノベーション:</span>
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-gray-900/50 rounded-lg p-4">
+                            <p class="text-purple-400 font-semibold">C2PAが証明するのは:</p>
+                            <p class="text-white text-lg">「このコンテンツは生成された」</p>
+                        </div>
+                        <div class="bg-emerald-900/30 rounded-lg p-4 border border-emerald-500/30">
+                            <p class="text-emerald-400 font-semibold">CAP-SRPが証明するのは:</p>
+                            <p class="text-white text-lg">「このリクエストはブロックされた」</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Quote -->
+            <div class="max-w-4xl mx-auto bg-gray-800/50 backdrop-blur border border-gray-700 rounded-xl p-8 mb-10">
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    <span class="text-emerald-400 font-bold text-2xl">「</span>
+                    AIプロバイダーが「何百万件もの有害リクエストをブロックした」と主張しても、第三者がその主張を検証できる仕組みは存在しませんでした。2026年1月のGrok事件でこの構造的欠陥が露呈しました：xAIのシステムがモデレーション機能を備えていると主張しながら、何千もの非同意の親密画像（NCII）を生成していました。<strong class="text-white">CAP-SRPは検証ベースのAI説明責任のための暗号基盤を提供します。</strong>
+                    <span class="text-emerald-400 font-bold text-2xl">」</span>
+                </p>
+            </div>
+            
+            <!-- Hero CTAs -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#completeness-invariant" class="inline-flex items-center bg-emerald-500 hover:bg-emerald-400 text-gray-900 font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-balance-scale mr-2"></i>
+                    完全性不変条件
+                </a>
+                <a href="#event-model" class="inline-flex items-center bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
+                    <i class="fas fa-stream mr-2"></i>
+                    イベントモデル
+                </a>
+                <a href="/vap/cap/ja/" class="inline-flex items-center bg-transparent hover:bg-gray-700 text-emerald-400 font-bold px-8 py-4 rounded-lg transition-all border border-emerald-400/50">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    CAPに戻る
+                </a>
+            </div>
+            
+            <!-- Specification Link -->
+            <div class="mt-10 flex justify-center">
+                <a href="https://github.com/veritaschain/cap-spec/blob/main/docs/CAP-SRP-Specification-v1.0.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-4 bg-gradient-to-r from-emerald-900/60 to-green-900/60 hover:from-emerald-800/70 hover:to-green-800/70 border border-emerald-500/50 hover:border-emerald-400 rounded-xl px-8 py-5 transition-all group">
+                    <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-file-alt text-emerald-300 text-2xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white font-bold text-lg group-hover:text-emerald-200 transition-colors">CAP-SRP 仕様書 v1.0</p>
+                        <p class="text-emerald-300 text-sm">VSO-CAP-SRP-SPEC-001 — 完全技術仕様</p>
+                    </div>
+                    <i class="fas fa-external-link-alt text-emerald-400 group-hover:text-emerald-300 transition-all ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement Section -->
+    <section id="problem" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">否定証明問題</h2>
+                <p class="text-gray-400 text-lg">従来のログがAI安全検証に失敗する理由</p>
+            </div>
+            
+            <!-- Problem Illustration -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-gray-900 rounded-xl p-8 border border-red-500/30">
+                    <h3 class="text-xl font-bold text-red-400 mb-6">
+                        <i class="fas fa-times-circle mr-2"></i>
+                        従来のログ
+                    </h3>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-green-400 mt-1"></i>
+                            <span>何が生成<strong class="text-white">された</strong>かは記録できる</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>何が生成<strong class="text-white">されなかった</strong>かは証明できない</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>拒否主張の検証ができない</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-times text-red-400 mt-1"></i>
+                            <span>選択的ログに対して脆弱</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-8 border border-emerald-500/30 glow-green">
+                    <h3 class="text-xl font-bold text-emerald-400 mb-6">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        CAP-SRP導入後
+                    </h3>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span><strong class="text-white">すべての</strong>リクエストの暗号学的証明</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>検証可能な拒否記録（GEN_DENY）</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>完全性不変条件による検証</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-emerald-400 mt-1"></i>
+                            <span>外部アンカリングによる改ざん証拠</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Threat Model -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-shield-virus text-red-400 mr-2"></i>
+                    脅威モデル：敵対的AIプロバイダー
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[700px]">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-red-400 font-semibold">脅威</th>
+                                <th class="px-4 py-3 text-left text-gray-400 font-semibold">説明</th>
+                                <th class="px-4 py-3 text-left text-emerald-400 font-semibold">CAP-SRP対策</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">選択的ログ</td>
+                                <td class="px-4 py-4 text-gray-400">有利な結果のみをログに残す</td>
+                                <td class="px-4 py-4 text-emerald-300">完全性不変条件</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">ログ改ざん</td>
+                                <td class="px-4 py-4 text-gray-400">過去の記録を書き換える</td>
+                                <td class="px-4 py-4 text-emerald-300">ハッシュチェーン整合性</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">バックデート</td>
+                                <td class="px-4 py-4 text-gray-400">偽のタイムスタンプで記録を作成</td>
+                                <td class="px-4 py-4 text-emerald-300">外部アンカリング（RFC 3161/SCITT）</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">スプリットビュー</td>
+                                <td class="px-4 py-4 text-gray-400">異なる相手に異なるログを見せる</td>
+                                <td class="px-4 py-4 text-emerald-300">マークル証明</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 text-white font-medium">捏造</td>
+                                <td class="px-4 py-4 text-gray-400">虚偽の拒否記録を作成</td>
+                                <td class="px-4 py-4 text-emerald-300">試行-結果ペアリング</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Model Section -->
+    <section id="event-model" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">SRPイベントモデル</h2>
+                <p class="text-gray-400 text-lg">AIコンテンツ決定を証明するための中核イベントタイプ</p>
+            </div>
+            
+            <!-- Event Flow Diagram -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 mb-12">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-sitemap text-emerald-400 mr-2"></i>
+                    SRPイベントライフサイクル
+                </h3>
+                
+                <div class="architecture-diagram mx-auto max-w-4xl overflow-x-auto">
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       <span class="text-emerald-400 font-bold">SRPイベントライフサイクル</span>                           │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ユーザーリクエスト                                                      │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ┌─────────────────┐                                                    │
+│  │  <span class="text-cyan-400">GEN_ATTEMPT</span>    │ ◄─── 最初に記録必須（安全評価前）                 │
+│  └────────┬────────┘                                                    │
+│           │                                                             │
+│           ▼                                                             │
+│  ┌─────────────────┐                                                    │
+│  │  安全性チェック  │                                                    │
+│  │  ├─ CSAM_RISK   │                                                    │
+│  │  ├─ NCII_RISK   │                                                    │
+│  │  ├─ VIOLENCE    │                                                    │
+│  │  └─ Policy      │                                                    │
+│  └────────┬────────┘                                                    │
+│           │                                                             │
+│      ┌────┴────┬─────────────┐                                          │
+│      │         │             │                                          │
+│      ▼         ▼             ▼                                          │
+│  ┌───────┐ ┌────────┐ ┌───────────┐                                     │
+│  │  <span class="text-yellow-400">GEN</span>  │ │<span class="text-red-400">GEN_DENY</span>│ │ <span class="text-orange-400">GEN_ERROR</span> │                                     │
+│  │(許可) │ │(拒否)  │ │ (エラー)  │                                     │
+│  └───────┘ └────────┘ └───────────┘                                     │
+│                                                                         │
+│  <span class="text-emerald-400 font-bold">不変条件: count(GEN_ATTEMPT) == count(GEN) + count(GEN_DENY)</span>          │
+│            <span class="text-emerald-400 font-bold">+ count(GEN_ERROR)</span>                                            │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                </div>
+            </div>
+            
+            <!-- Event Type Cards -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- GEN_ATTEMPT -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-cyan-500/50 card-hover">
+                    <div class="w-12 h-12 bg-cyan-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-arrow-circle-right text-cyan-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GEN_ATTEMPT</h3>
+                    <p class="text-cyan-400 text-sm mb-3">リクエスト受信</p>
+                    <p class="text-gray-400 text-sm">
+                        安全評価の前にログ記録。生成リクエストが到着したことを記録。
+                    </p>
+                </div>
+                
+                <!-- GEN -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-yellow-500/50 card-hover">
+                    <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-check text-yellow-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GEN</h3>
+                    <p class="text-yellow-400 text-sm mb-3">生成成功</p>
+                    <p class="text-gray-400 text-sm">
+                        コンテンツが生成され、ユーザーに配信された。
+                    </p>
+                </div>
+                
+                <!-- GEN_DENY -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-red-500/50 card-hover">
+                    <div class="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-ban text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GEN_DENY</h3>
+                    <p class="text-red-400 text-sm mb-3">生成拒否</p>
+                    <p class="text-gray-400 text-sm">
+                        ポリシー違反検出によりリクエストがブロックされた。
+                    </p>
+                </div>
+                
+                <!-- GEN_ERROR -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-orange-500/50 card-hover">
+                    <div class="w-12 h-12 bg-orange-900/50 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-orange-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GEN_ERROR</h3>
+                    <p class="text-orange-400 text-sm mb-3">システム障害</p>
+                    <p class="text-gray-400 text-sm">
+                        システムエラーにより生成失敗（ポリシー関連ではない）。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Timing Requirements -->
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-clock text-emerald-400 mr-2"></i>
+                    タイミング要件
+                </h3>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <p class="text-emerald-400 font-mono text-2xl font-bold">100ms</p>
+                        <p class="text-gray-400 text-sm mt-2">リクエスト → GEN_ATTEMPT</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-emerald-400 font-mono text-2xl font-bold">60秒</p>
+                        <p class="text-gray-400 text-sm mt-2">GEN_ATTEMPT → 結果</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-emerald-400 font-mono text-2xl font-bold">1秒</p>
+                        <p class="text-gray-400 text-sm mt-2">結果イベントのログ記録</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-red-900/20 border border-red-500/30 rounded-lg p-4">
+                    <p class="text-red-400 font-semibold mb-2">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        重要要件：評価前ログ記録
+                    </p>
+                    <p class="text-gray-300 text-sm">
+                        GEN_ATTEMPTは安全評価が始まる前にログ記録される必要があります。これにより「安全な」リクエストのみが記録される選択的ログを防ぎます。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Completeness Invariant Section -->
+    <section id="completeness-invariant" class="py-20 bg-gradient-to-b from-gray-800 to-emerald-900/20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">完全性不変条件</h2>
+                <p class="text-gray-400 text-lg">CAP-SRPの数学的核心</p>
+            </div>
+            
+            <!-- Invariant Formula -->
+            <div class="max-w-4xl mx-auto bg-gray-900 rounded-xl p-8 border border-emerald-500/50 glow-green mb-12">
+                <div class="text-center mb-6">
+                    <p class="text-emerald-400 font-mono text-xl md:text-2xl font-bold">
+                        ∑ GEN_ATTEMPT = ∑ GEN + ∑ GEN_DENY + ∑ GEN_ERROR
+                    </p>
+                </div>
+                <p class="text-gray-300 text-center">
+                    任意の時間枠において、試行回数と全結果の合計が完全に一致しなければなりません。
+                </p>
+            </div>
+            
+            <!-- Violation Detection -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-gray-800 rounded-xl p-6 border border-red-500/30">
+                    <h4 class="text-red-400 font-semibold mb-3">試行数 > 結果数</h4>
+                    <p class="text-gray-400 text-sm mb-2">マッチしない試行を検出</p>
+                    <p class="text-white text-sm font-medium">→ システムが結果を隠蔽</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-yellow-500/30">
+                    <h4 class="text-yellow-400 font-semibold mb-3">結果数 > 試行数</h4>
+                    <p class="text-gray-400 text-sm mb-2">孤立した結果を検出</p>
+                    <p class="text-white text-sm font-medium">→ システムが拒否を捏造</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border border-orange-500/30">
+                    <h4 class="text-orange-400 font-semibold mb-3">重複結果</h4>
+                    <p class="text-gray-400 text-sm mb-2">試行ごとに複数の結果</p>
+                    <p class="text-white text-sm font-medium">→ データ整合性の障害</p>
+                </div>
+            </div>
+            
+            <!-- Verification Algorithm -->
+            <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-xl font-bold text-white mb-6">
+                    <i class="fas fa-code text-emerald-400 mr-2"></i>
+                    検証アルゴリズム（O(n)計算量）
+                </h3>
+                
+                <div class="code-block">
+                    <pre><span class="text-purple-400">def</span> <span class="text-yellow-400">verify_completeness</span>(events: List[dict], time_window: Tuple) -> Result:
+    <span class="text-gray-500">"""
+    時間枠内のイベントに対して完全性不変条件を検証。
+    戻り値: ステータス、マッチしない試行、孤立結果を含むResult
+    """</span>
+    filtered = [e <span class="text-purple-400">for</span> e <span class="text-purple-400">in</span> events 
+                <span class="text-purple-400">if</span> time_window[<span class="text-cyan-400">0</span>] <= e[<span class="text-green-400">"Timestamp"</span>] <= time_window[<span class="text-cyan-400">1</span>]]
+    
+    attempts = {e[<span class="text-green-400">"EventID"</span>]: e 
+                <span class="text-purple-400">for</span> e <span class="text-purple-400">in</span> filtered 
+                <span class="text-purple-400">if</span> e[<span class="text-green-400">"EventType"</span>] == <span class="text-green-400">"GEN_ATTEMPT"</span>}
+    
+    outcomes = [e <span class="text-purple-400">for</span> e <span class="text-purple-400">in</span> filtered 
+                <span class="text-purple-400">if</span> e[<span class="text-green-400">"EventType"</span>] <span class="text-purple-400">in</span> [<span class="text-green-400">"GEN"</span>, <span class="text-green-400">"GEN_DENY"</span>, <span class="text-green-400">"GEN_ERROR"</span>]]
+    
+    matched_attempts = <span class="text-yellow-400">set</span>()
+    orphan_outcomes = []
+    
+    <span class="text-purple-400">for</span> outcome <span class="text-purple-400">in</span> outcomes:
+        attempt_id = outcome.get(<span class="text-green-400">"AttemptID"</span>)
+        <span class="text-purple-400">if</span> attempt_id <span class="text-purple-400">in</span> attempts:
+            <span class="text-purple-400">if</span> attempt_id <span class="text-purple-400">in</span> matched_attempts:
+                <span class="text-purple-400">return</span> Result(valid=<span class="text-cyan-400">False</span>, error=<span class="text-green-400">"DUPLICATE_OUTCOME"</span>)
+            matched_attempts.add(attempt_id)
+        <span class="text-purple-400">else</span>:
+            orphan_outcomes.append(outcome[<span class="text-green-400">"EventID"</span>])
+    
+    unmatched_attempts = <span class="text-yellow-400">set</span>(attempts.keys()) - matched_attempts
+    
+    <span class="text-purple-400">return</span> Result(
+        valid=(<span class="text-yellow-400">len</span>(unmatched_attempts) == <span class="text-cyan-400">0</span> <span class="text-purple-400">and</span> <span class="text-yellow-400">len</span>(orphan_outcomes) == <span class="text-cyan-400">0</span>),
+        unmatched_attempts=<span class="text-yellow-400">list</span>(unmatched_attempts),
+        orphan_outcomes=orphan_outcomes
+    )</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Categories Section -->
+    <section id="risk-categories" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">リスクカテゴリ</h2>
+                <p class="text-gray-400 text-lg">GEN_DENYイベント用の標準化された分類</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-900 rounded-xl p-6 border border-red-500/50">
+                    <p class="text-red-500 font-bold mb-2">CSAM_RISK</p>
+                    <p class="text-gray-400 text-sm">児童性的虐待素材リスク</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-red-500/50">
+                    <p class="text-red-500 font-bold mb-2">NCII_RISK</p>
+                    <p class="text-gray-400 text-sm">非同意の親密画像</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-red-400/50">
+                    <p class="text-red-400 font-bold mb-2">MINOR_SEXUALIZATION</p>
+                    <p class="text-gray-400 text-sm">未成年の性的表現</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-pink-500/50">
+                    <p class="text-pink-400 font-bold mb-2">REAL_PERSON_DEEPFAKE</p>
+                    <p class="text-gray-400 text-sm">無許可のリアルな人物描写</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-orange-500/50">
+                    <p class="text-orange-400 font-bold mb-2">VIOLENCE_EXTREME</p>
+                    <p class="text-gray-400 text-sm">過激な暴力、ゴア、拷問</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-purple-500/50">
+                    <p class="text-purple-400 font-bold mb-2">HATE_CONTENT</p>
+                    <p class="text-gray-400 text-sm">差別的コンテンツ</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-600">
+                    <p class="text-gray-400 font-bold mb-2">TERRORIST_CONTENT</p>
+                    <p class="text-gray-500 text-sm">テロ関連コンテンツ</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-600">
+                    <p class="text-gray-400 font-bold mb-2">SELF_HARM_PROMOTION</p>
+                    <p class="text-gray-500 text-sm">自傷行為の助長</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-blue-500/50">
+                    <p class="text-blue-400 font-bold mb-2">COPYRIGHT_VIOLATION</p>
+                    <p class="text-gray-400 text-sm">明確な知的財産権侵害</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conformance Levels Section -->
+    <section id="conformance" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">適合レベル</h2>
+                <p class="text-gray-400 text-lg">組織のニーズに応じた段階的導入</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Bronze -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-amber-600/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-amber-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-award text-amber-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-500">ブロンズ</h3>
+                            <p class="text-gray-400 text-sm">中小企業、アーリーアダプター</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i>イベントログ（INGEST, TRAIN, GEN, EXPORT）</li>
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i>SHA-256ハッシュチェーン</li>
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i>Ed25519デジタル署名</li>
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i>6ヶ月保存</li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">自主的な透明性確保</p>
+                    </div>
+                </div>
+                
+                <!-- Silver -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-gray-400/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-gray-600/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-award text-gray-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-300">シルバー</h3>
+                            <p class="text-gray-400 text-sm">企業、VLOP</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>全ブロンズ + SRP拡張</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>GEN_ATTEMPT & GEN_DENYイベント</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>完全性不変条件</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>日次外部アンカリング</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>エビデンスパック生成</li>
+                        <li><i class="fas fa-check text-gray-300 mr-2"></i>2年間保存</li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">EU AI Act 第12条</p>
+                    </div>
+                </div>
+                
+                <!-- Gold -->
+                <div class="bg-gray-800 rounded-xl p-8 border-2 border-yellow-500/50 glow-green">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-award text-yellow-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-yellow-400">ゴールド</h3>
+                            <p class="text-gray-400 text-sm">規制対象産業</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-gray-300 text-sm">
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>全シルバー要件</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>時間単位の外部アンカリング</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>HSM鍵管理</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>SCITT透明性サービス</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>リアルタイム監査API</li>
+                        <li><i class="fas fa-check text-yellow-400 mr-2"></i>5年間保存</li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-gray-400 text-xs">DSA 第37条監査</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regulatory Alignment Section -->
+    <section id="regulatory" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">規制コンプライアンスマッピング</h2>
+                <p class="text-gray-400 text-lg">CAP-SRPがグローバルAI規制にどう対応するか</p>
+            </div>
+            
+            <div class="overflow-x-auto bg-gray-900 rounded-xl border border-gray-700">
+                <table class="w-full min-w-[800px]">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-emerald-400 font-semibold">規制</th>
+                            <th class="px-6 py-4 text-left text-gray-400 font-semibold">管轄</th>
+                            <th class="px-6 py-4 text-left text-gray-400 font-semibold">施行</th>
+                            <th class="px-6 py-4 text-left text-emerald-400 font-semibold">CAP-SRP実装</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        <tr>
+                            <td class="px-6 py-4 text-white font-medium">EU AI Act 第12条</td>
+                            <td class="px-6 py-4 text-gray-400">EU</td>
+                            <td class="px-6 py-4 text-gray-400">2026年8月</td>
+                            <td class="px-6 py-4 text-gray-300">自動ログ、リスク識別、6ヶ月保存</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 text-white font-medium">デジタルサービス法（DSA）</td>
+                            <td class="px-6 py-4 text-gray-400">EU</td>
+                            <td class="px-6 py-4 text-gray-400">施行中</td>
+                            <td class="px-6 py-4 text-gray-300">第37条監査、GEN_DENY統計</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 text-white font-medium">コロラド州AI法（SB24-205）</td>
+                            <td class="px-6 py-4 text-gray-400">米国（CO）</td>
+                            <td class="px-6 py-4 text-gray-400">2026年2月</td>
+                            <td class="px-6 py-4 text-gray-300">影響評価、3年間保存</td>
+                        </tr>
+                        <tr class="bg-emerald-900/20">
+                            <td class="px-6 py-4 text-white font-medium">TAKE IT DOWN法</td>
+                            <td class="px-6 py-4 text-emerald-400">米国（連邦）</td>
+                            <td class="px-6 py-4 text-emerald-400">2026年5月</td>
+                            <td class="px-6 py-4 text-emerald-300">NCII証拠、48時間対応証明、GEN_DENY</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 text-white font-medium">UK オンライン安全法</td>
+                            <td class="px-6 py-4 text-gray-400">英国</td>
+                            <td class="px-6 py-4 text-gray-400">施行中</td>
+                            <td class="px-6 py-4 text-gray-300">カテゴリ1サービスはゴールドレベル</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section id="integration" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">標準との統合</h2>
+                <p class="text-gray-400 text-lg">CAP-SRPは既存の透明性インフラを補完します</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- C2PA Integration -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-purple-500/30">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-certificate text-purple-400 mr-2"></i>
+                        C2PA統合
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-3 py-2 text-left text-gray-400 text-sm">観点</th>
+                                    <th class="px-3 py-2 text-left text-purple-400 text-sm">C2PA</th>
+                                    <th class="px-3 py-2 text-left text-emerald-400 text-sm">CAP-SRP</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr>
+                                    <td class="px-3 py-2 text-gray-400">問い</td>
+                                    <td class="px-3 py-2 text-gray-300">「これは本物か？」</td>
+                                    <td class="px-3 py-2 text-gray-300">「AIは何を決定した？」</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-gray-400">焦点</td>
+                                    <td class="px-3 py-2 text-gray-300">コンテンツの来歴</td>
+                                    <td class="px-3 py-2 text-gray-300">システムの説明責任</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-gray-400">比喩</td>
+                                    <td class="px-3 py-2 text-gray-300">コンテンツのパスポート</td>
+                                    <td class="px-3 py-2 text-gray-300">システムのフライトレコーダー</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- SCITT Integration -->
+                <div class="bg-gray-800 rounded-xl p-8 border border-cyan-500/30">
+                    <h3 class="text-xl font-bold text-white mb-4">
+                        <i class="fas fa-link text-cyan-400 mr-2"></i>
+                        SCITT統合
+                    </h3>
+                    <p class="text-gray-300 mb-4">
+                        CAP-SRPはIETF SCITT（サプライチェーン整合性・透明性・信頼）とドメイン固有プロファイルとして統合されます。
+                    </p>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><i class="fas fa-arrow-right text-cyan-400 mr-2"></i>CAPイベント → SCITT署名付きステートメント</li>
+                        <li><i class="fas fa-arrow-right text-cyan-400 mr-2"></i>イベントチェーン → 追記専用ログ</li>
+                        <li><i class="fas fa-arrow-right text-cyan-400 mr-2"></i>マークル証明 → COSEレシート</li>
+                        <li><i class="fas fa-arrow-right text-cyan-400 mr-2"></i>外部アンカー → 透明性サービス</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="py-20 bg-gradient-to-br from-emerald-900/30 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">CAP-SRPを始める</h2>
+                <p class="text-gray-400 text-lg">AIコンテンツシステムに暗号学的説明責任を実装</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="https://github.com/veritaschain/cap-spec" target="_blank" rel="noopener noreferrer" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-emerald-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-emerald-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-github text-2xl text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">GitHubリポジトリ</h3>
+                    <p class="text-gray-400 text-sm">仕様書、スキーマ、サンプル</p>
+                </a>
+                
+                <a href="/vap/cap/ja/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-palette text-2xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">CAPフレームワーク</h3>
+                    <p class="text-gray-400 text-sm">クリエイティブAI向け親プロファイル</p>
+                </a>
+                
+                <a href="/vap/ja/" class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-500 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-cyan-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-layer-group text-2xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">VAPフレームワーク</h3>
+                    <p class="text-gray-400 text-sm">クロスドメインAI来歴</p>
+                </a>
+                
+                <a href="mailto:standards@veritaschain.org" class="bg-gray-800 rounded-xl p-6 border border-emerald-500/50 hover:border-emerald-400 transition-all card-hover text-center">
+                    <div class="w-14 h-14 bg-emerald-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-handshake text-2xl text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">お問い合わせ</h3>
+                    <p class="text-gray-400 text-sm">開発に参加する</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Quote -->
+    <section class="py-16 bg-gray-900 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <blockquote class="text-xl text-gray-300 italic mb-6">
+                「根本的な問題は『AIシステムは有害コンテンツを検出できるか？』ではなく、<br>
+                『主張された検出が実際に行われたことを第三者が検証できるか？』である。」
+            </blockquote>
+            <p class="text-gray-500">— CAP-SRP 仕様書 v1.0</p>
+            
+            <blockquote class="text-lg text-emerald-400 italic mt-8 font-semibold">
+                「信頼するな、検証せよ」
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- License Footer -->
+    <section class="py-8 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+                <i class="fab fa-creative-commons mr-1"></i>
+                本作品は 
+                <a href="https://creativecommons.org/licenses/by/4.0/" class="text-emerald-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                    CC BY 4.0 International
+                </a> の下でライセンスされています
+            </p>
+            <p class="text-gray-600 text-xs mt-2">
+                CAP-SRP 仕様書 v1.0.0 — リリース日: 2026-01-28
+            </p>
+        </div>
+    </section>
+
+    <vcp-footer lang="ja"></vcp-footer>
+</body>
+</html>
