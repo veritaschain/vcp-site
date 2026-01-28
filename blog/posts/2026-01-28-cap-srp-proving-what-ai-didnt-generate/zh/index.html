@@ -3,741 +3,656 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAP-SRP：证明AI未生成的内容——AI内容真实性的缺失层 | VeritasChain</title>
-    <meta name="description" content="为什么现有框架无法回答最关键的问题，以及IETF SCITT如何实现可验证的拒绝证明。">
-    <meta name="keywords" content="CAP-SRP, C2PA, AI真实性, EU AI Act, SCITT, 可验证拒绝, VeritasChain">
-    <meta name="author" content="VeritasChain Protocol">
+    <title>CAP-SRP：证明AI未生成的内容——AI内容真实性的缺失层 - VeritasChain Blog</title>
+    <meta name="description" content="对安全拒绝证明（Safe Refusal Provenance）和AI问责制未来的技术深度分析。CAP-SRP如何解决证明AI拒绝生成内容的关键空白。">
+    <meta name="keywords" content="CAP-SRP, VAP, AI拒绝, 内容真实性, SCITT, C2PA, EU AI Act, 密码学审计追踪, xAI Grok, AI安全">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
     
     <!-- Open Graph -->
     <meta property="og:title" content="CAP-SRP：证明AI未生成的内容——AI内容真实性的缺失层">
-    <meta property="og:description" content="为什么现有框架无法回答最关键的问题，以及IETF SCITT如何实现可验证的拒绝证明。">
+    <meta property="og:description" content="对安全拒绝证明和AI问责制未来的技术深度分析。">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/">
     <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
-    <meta property="og:site_name" content="VeritasChain Protocol">
-    <meta property="article:published_time" content="2026-01-28">
-    <meta property="article:author" content="VeritasChain Protocol">
+    <meta property="og:site_name" content="VeritasChain Blog">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2026-01-28T00:00:00Z">
+    <meta property="article:author" content="VeritasChain Standards Organization">
     <meta property="article:section" content="技术分析">
-    <meta property="article:tag" content="C2PA">
     <meta property="article:tag" content="EU AI Act">
-    <meta property="article:tag" content="SCITT">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="CAP-SRP：证明AI未生成的内容——AI内容真实性的缺失层">
-    <meta name="twitter:description" content="为什么现有框架无法回答最关键的问题，以及IETF SCITT如何实现可验证的拒绝证明。">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="CAP-SRP：证明AI未生成的内容">
+    <meta name="twitter:description" content="对安全拒绝证明和AI问责制未来的技术深度分析。">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
     
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/">
+    <!-- Language Alternates -->
     <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/">
     <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/">
-    <link rel="alternate" hreflang="zh" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/">
     
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3B82F6',
-                        secondary: '#1E40AF',
-                        dark: '#0f172a',
-                        light: '#f8fafc'
-                    }
-                }
-            }
-        }
-    </script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
     <style>
-        .gradient-text {
-            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
         }
-        .article-content h2 {
+        
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+        }
+        
+        .article-content {
+            background: #0f172a;
+            padding: 4rem 2rem;
+        }
+        
+        .prose {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .prose h2 {
+            color: #f1f5f9;
             font-size: 1.75rem;
             font-weight: 700;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            color: #1e293b;
-            border-bottom: 2px solid #e2e8f0;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
         }
-        .article-content h3 {
+        
+        .prose h3 {
+            color: #e2e8f0;
             font-size: 1.35rem;
             font-weight: 600;
             margin-top: 2rem;
-            margin-bottom: 0.75rem;
-            color: #334155;
+            margin-bottom: 1rem;
         }
-        .article-content h4 {
-            font-size: 1.125rem;
+        
+        .prose p { margin-bottom: 1.5rem; }
+        
+        .prose a {
+            color: #60a5fa;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        
+        .prose a:hover { color: #93c5fd; }
+        
+        .prose strong {
+            color: #f1f5f9;
             font-weight: 600;
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #475569;
         }
-        .article-content p {
-            margin-bottom: 1.25rem;
-            line-height: 1.8;
-        }
-        .article-content ul, .article-content ol {
-            margin-bottom: 1.25rem;
-            padding-left: 1.5rem;
-        }
-        .article-content li {
-            margin-bottom: 0.5rem;
-            line-height: 1.7;
-        }
-        .article-content blockquote {
-            border-left: 4px solid #3B82F6;
-            padding-left: 1.5rem;
-            margin: 1.5rem 0;
-            font-style: italic;
-            color: #64748b;
-            background: #f8fafc;
-            padding: 1rem 1.5rem;
-            border-radius: 0 0.5rem 0.5rem 0;
-        }
-        .article-content code {
-            background: #f1f5f9;
-            padding: 0.125rem 0.375rem;
+        
+        .prose code {
+            background: rgba(30, 41, 59, 0.8);
+            color: #60a5fa;
+            padding: 0.2rem 0.4rem;
             border-radius: 0.25rem;
-            font-size: 0.9em;
-            color: #1e40af;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
         }
-        .article-content pre {
-            background: #1e293b;
-            padding: 1.5rem;
+        
+        .prose pre {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(59, 130, 246, 0.2);
             border-radius: 0.5rem;
+            padding: 1.5rem;
             overflow-x: auto;
             margin: 1.5rem 0;
         }
-        .article-content pre code {
-            background: transparent;
-            color: #e2e8f0;
+        
+        .prose pre code {
+            background: none;
             padding: 0;
+            color: #e2e8f0;
         }
-        .article-content a {
-            color: #3B82F6;
-            text-decoration: underline;
+        
+        .prose ul, .prose ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
         }
-        .article-content a:hover {
-            color: #1E40AF;
+        
+        .prose li {
+            margin-bottom: 0.5rem;
         }
+        
+        .prose blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: #94a3b8;
+            font-style: italic;
+        }
+        
         .key-point {
-            background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
-            border: 1px solid #bfdbfe;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 0.75rem;
-            padding: 1.25rem;
-            margin: 1.5rem 0;
+            padding: 1.5rem;
+            margin: 2rem 0;
         }
+        
         .key-point-title {
-            font-weight: 600;
-            color: #1e40af;
-            margin-bottom: 0.5rem;
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
+        
         .warning-box {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
             border-radius: 0.75rem;
-            padding: 1.25rem;
-            margin: 1.5rem 0;
+            padding: 1.5rem;
+            margin: 2rem 0;
         }
-        .warning-box-title {
-            font-weight: 600;
-            color: #92400e;
-            margin-bottom: 0.5rem;
+        
+        .warning-title {
+            color: #f59e0b;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .regulation-table {
+        
+        .crisis-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.1) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .crisis-title {
+            color: #f87171;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .solution-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .solution-title {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .data-table {
             width: 100%;
             border-collapse: collapse;
             margin: 1.5rem 0;
             font-size: 0.95rem;
         }
-        .regulation-table th {
-            background: #1e40af;
-            color: white;
+        
+        .data-table th {
+            background: rgba(30, 41, 59, 0.8);
+            color: #f1f5f9;
             padding: 0.75rem 1rem;
             text-align: left;
-            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
-        .regulation-table td {
+        
+        .data-table td {
             padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #cbd5e1;
         }
-        .regulation-table tr:nth-child(even) {
-            background: #f8fafc;
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(30, 41, 59, 0.3);
         }
-        .regulation-table tr:hover {
-            background: #eff6ff;
+        
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 2rem;
         }
-        .timeline-item {
-            position: relative;
-            padding-left: 2rem;
-            padding-bottom: 1.5rem;
-            border-left: 2px solid #3B82F6;
+        
+        .tag {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
-        .timeline-item:last-child {
-            border-left: 2px solid transparent;
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
         }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -0.5rem;
-            top: 0;
-            width: 1rem;
-            height: 1rem;
-            background: #3B82F6;
-            border-radius: 50%;
-        }
-        .crisis-highlight {
-            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-            border: 1px solid #fecaca;
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            margin: 1.5rem 0;
-        }
+        
+        .back-link:hover { color: #93c5fd; }
     </style>
-</head>
-<body class="bg-light">
-    <!-- Navigation -->
-    <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="/zh/" class="text-xl font-bold gradient-text">VeritasChain Protocol</a>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="/zh/" class="text-gray-600 hover:text-primary transition-colors">首页</a>
-                    <a href="/vap/zh/" class="text-gray-600 hover:text-primary transition-colors">VAP</a>
-                    <a href="/vap/cpp/zh/" class="text-gray-600 hover:text-primary transition-colors">CPP</a>
-                    <a href="/blog/zh/" class="text-primary font-medium">博客</a>
-                    <div class="flex items-center space-x-2 ml-4 pl-4 border-l">
-                        <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/" class="text-xs px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 transition-colors">EN</a>
-                        <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/" class="text-xs px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 transition-colors">JA</a>
-                        <span class="text-xs px-2 py-1 rounded bg-primary text-white">ZH</span>
-                    </div>
-                </div>
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <div class="px-4 py-2 space-y-2">
-                <a href="/zh/" class="block py-2 text-gray-600 hover:text-primary">首页</a>
-                <a href="/vap/zh/" class="block py-2 text-gray-600 hover:text-primary">VAP</a>
-                <a href="/vap/cpp/zh/" class="block py-2 text-gray-600 hover:text-primary">CPP</a>
-                <a href="/blog/zh/" class="block py-2 text-primary font-medium">博客</a>
-                <div class="flex items-center space-x-2 py-2 border-t mt-2">
-                    <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/" class="text-xs px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 transition-colors">EN</a>
-                    <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/" class="text-xs px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 transition-colors">JA</a>
-                    <span class="text-xs px-2 py-1 rounded bg-primary text-white">ZH</span>
-                </div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Article Header -->
-    <header class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white py-16 md:py-24">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center gap-2 text-blue-300 text-sm mb-4">
-                <a href="/blog/zh/" class="hover:text-white transition-colors">博客</a>
-                <span>/</span>
-                <span>技术分析</span>
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "CAP-SRP：证明AI未生成的内容——AI内容真实性的缺失层",
+    "description": "对安全拒绝证明和AI问责制未来的技术深度分析。",
+    "image": "https://veritaschain.org/assets/OGP.png",
+    "author": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://veritaschain.org/assets/img/logo.png"
+        }
+    },
+    "datePublished": "2026-01-28T00:00:00Z",
+    "dateModified": "2026-01-28T00:00:00Z",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/"
+    },
+    "inLanguage": "zh-CN"
+}
+    </script>
+</head>
+<body style="background: #0f172a; min-height: 100vh;">
+    
+    <!-- VCP Header -->
+    <vcp-header></vcp-header>
+    
+    <!-- Article Hero -->
+    <section class="article-hero">
+        <div style="max-width: 800px; margin: 0 auto; position: relative; z-index: 1;">
+            <a href="/blog/zh/" class="back-link" style="margin-bottom: 2rem; display: inline-flex;">
+                <i class="fas fa-arrow-left"></i> 返回博客
+            </a>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;">
+                <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.375rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500;">
+                    <i class="fas fa-code"></i> 技术分析
+                </span>
+                <span style="background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 0.375rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500;">
+                    AI安全
+                </span>
             </div>
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: #f1f5f9; line-height: 1.2; margin-bottom: 1.5rem;">
                 CAP-SRP：证明AI未生成的内容——AI内容真实性的缺失层
             </h1>
-            <p class="text-xl text-blue-200 mb-8 leading-relaxed">
-                为什么现有框架无法回答最关键的问题，以及IETF SCITT如何实现可验证的拒绝证明
+            
+            <p style="font-size: 1.25rem; color: #94a3b8; line-height: 1.6; margin-bottom: 2rem;">
+                对安全拒绝证明（Safe Refusal Provenance）和AI问责制未来的技术深度分析。当美国35位州检察长要求xAI证明其安全措施正在运作时，该公司面临一个不可能的挑战：他们的拒绝没有留下任何密码学痕迹。
             </p>
-            <div class="flex flex-wrap items-center gap-4 text-sm text-blue-200">
-                <span class="flex items-center gap-2">
-                    <i class="far fa-calendar-alt"></i>
-                    2026年1月28日
-                </span>
-                <span class="flex items-center gap-2">
-                    <i class="far fa-clock"></i>
-                    40分钟阅读
-                </span>
-                <span class="flex items-center gap-2">
-                    <i class="far fa-folder"></i>
-                    技术分析
-                </span>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
+                <span><i class="far fa-calendar"></i> 2026年1月28日</span>
+                <span><i class="far fa-clock"></i> 40分钟阅读</span>
+                <span><i class="far fa-user"></i> VeritasChain Standards Organization</span>
             </div>
-            <div class="flex flex-wrap gap-2 mt-4">
-                <span class="px-3 py-1 bg-blue-800/50 rounded-full text-xs">C2PA</span>
-                <span class="px-3 py-1 bg-blue-800/50 rounded-full text-xs">EU AI Act</span>
-                <span class="px-3 py-1 bg-blue-800/50 rounded-full text-xs">SCITT</span>
+            
+            <!-- Language Selector -->
+            <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
+                <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/" style="background: rgba(59, 130, 246, 0.1); color: #94a3b8; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.2);">EN</a>
+                <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/" style="background: rgba(59, 130, 246, 0.1); color: #94a3b8; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.2);">JA</a>
+                <a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/" style="background: rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.5);">ZH</a>
             </div>
         </div>
-    </header>
-
+    </section>
+    
     <!-- Article Content -->
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <article class="bg-white rounded-2xl shadow-lg p-6 md:p-10 article-content">
+    <article class="article-content">
+        <div class="prose">
             
-            <!-- Executive Summary -->
             <div class="key-point">
                 <div class="key-point-title">
-                    <i class="fas fa-file-alt"></i>
-                    执行摘要
+                    <i class="fas fa-bullseye"></i> 执行摘要
                 </div>
-                <p class="mb-0">
-                    2026年1月的xAI/Grok危机暴露了AI内容真实性的关键空白：<strong>现有标准只能证明AI创建了什么，却无法证明AI拒绝创建什么</strong>。
-                    本文分析了为什么这一空白的存在，介绍了CAP-SRP（内容真实性协议-安全拒绝来源）作为解决方案，
-                    以及组织如何在2026年8月EU AI Act合规截止日期之前准备实施。
+                <p style="margin-bottom: 0;">
+                    2026年1月的xAI/Grok危机暴露了AI内容真实性的关键空白：<strong>现有标准只能证明AI创建了什么，却无法证明AI拒绝创建什么</strong>。CAP-SRP（内容真实性协议-安全拒绝来源）通过基于IETF SCITT的密码学可验证拒绝事件来解决这一空白。随着EU AI Act第12条合规要求将于2026年8月2日生效，这已不再是理论问题——而是监管义务。
                 </p>
             </div>
-
-            <h2>2026年1月：一次危机揭示了缺失的架构层</h2>
             
-            <div class="crisis-highlight">
-                <h4 class="font-semibold text-red-800 mb-2">xAI/Grok图像危机（2026年1月）</h4>
-                <p class="mb-0 text-red-900">
-                    当用户在Grok聊天机器人上传播"绕过安全防护技术"时，一场安全危机迅速升级。
-                    在三天的时间跨度内，曾被安全护栏阻止的图像生成请求开始产生有害输出。
-                    更糟的是——xAI无法提供任何可独立验证的记录来证明安全系统曾经正常运行。
-                </p>
+            <h2><i class="fas fa-exclamation-triangle" style="color: #f87171; margin-right: 0.5rem;"></i> I. 改变一切的危机</h2>
+            
+            <div class="crisis-box">
+                <div class="crisis-title">
+                    <i class="fas fa-bolt"></i> xAI/Grok图像生成危机（2026年1月）
+                </div>
+                <p>2026年1月，用户发现了绕过Grok安全过滤器的技术，导致有害图像大规模生成。几天之内：</p>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>12个以上司法管辖区</strong>启动调查</li>
+                    <li><strong>美国35位州检察长</strong>要求提供安全措施的证据</li>
+                    <li>xAI无法提供<strong>密码学证据</strong>证明安全系统一直在运作</li>
+                </ul>
             </div>
-
-            <p>
-                这一事件不仅仅是个别失误，它揭示了整个AI治理堆栈中的架构空白：
-            </p>
-
-            <blockquote>
-                <p class="mb-0">
-                    <strong>"唯一比安全系统失败更糟糕的，是无法证明它曾经工作过。"</strong>
-                </p>
-            </blockquote>
-
-            <h3>为什么C2PA和现有标准无法解决这个问题</h3>
-
-            <p>
-                以C2PA（内容来源和真实性联盟）为代表的现有标准为<strong>已创建的内容</strong>建立了良好的出处证明机制。
-                然而，它们在设计上只关注"正向路径"——当内容被成功生成时附加元数据。
-            </p>
-
-            <table class="regulation-table">
+            
+            <p>根本问题：xAI关于"安全过滤器"的声称是<strong>法律上无法验证的主张</strong>。他们的拒绝没有留下密码学痕迹。</p>
+            
+            <h3>正向证明问题</h3>
+            
+            <p>当前的内容真实性标准存在一个根本性的架构限制：它们只支持<strong>正向证明</strong>——证明某物<em>存在</em>或<em>发生</em>的密码学证明。</p>
+            
+            <table class="data-table">
                 <thead>
                     <tr>
-                        <th>能力</th>
-                        <th>C2PA</th>
-                        <th>CAP-SRP</th>
+                        <th>标准</th>
+                        <th>能证明创建</th>
+                        <th>能证明拒绝</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>证明AI生成了特定内容</td>
-                        <td>✅ 支持</td>
-                        <td>✅ 支持</td>
+                        <td>C2PA v2.2</td>
+                        <td style="color: #22c55e;">✓ 是</td>
+                        <td style="color: #ef4444;">✗ 否</td>
                     </tr>
                     <tr>
-                        <td>证明AI拒绝生成特定请求</td>
-                        <td>❌ 不支持</td>
-                        <td>✅ 支持</td>
+                        <td>Google SynthID</td>
+                        <td style="color: #22c55e;">✓ 是（水印）</td>
+                        <td style="color: #ef4444;">✗ 否</td>
                     </tr>
                     <tr>
-                        <td>验证安全系统正常运行的证明</td>
-                        <td>❌ 不支持</td>
-                        <td>✅ 支持</td>
+                        <td>内部日志</td>
+                        <td style="color: #f59e0b;">⚠ 不可验证</td>
+                        <td style="color: #f59e0b;">⚠ 不可验证</td>
                     </tr>
                     <tr>
-                        <td>检测安全绕过尝试的时间窗口</td>
-                        <td>❌ 不支持</td>
-                        <td>✅ 支持</td>
-                    </tr>
-                    <tr>
-                        <td>提供独立可验证的拒绝证明</td>
-                        <td>❌ 不支持</td>
-                        <td>✅ 支持</td>
+                        <td><strong>CAP-SRP</strong></td>
+                        <td style="color: #22c55e;">✓ 是</td>
+                        <td style="color: #22c55e;"><strong>✓ 是</strong></td>
                     </tr>
                 </tbody>
             </table>
-
-            <div class="key-point">
-                <div class="key-point-title">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    关键洞察：完整性缺口
-                </div>
-                <p class="mb-0">
-                    当监管机构询问"你的安全系统在过去24小时内是否正常运行？"时，仅有C2PA风格的证明意味着：
-                    <br>• <strong>您只能展示已生成的内容</strong>
-                    <br>• <strong>您无法证明被拒绝请求的存在</strong>
-                    <br>• <strong>您无法证明安全系统正在主动工作</strong>
-                </p>
-            </div>
-
-            <h2>CAP-SRP：安全拒绝来源协议</h2>
-
-            <p>
-                CAP-SRP（内容真实性协议-安全拒绝来源）是专门为填补这一空白而设计的扩展协议。
-                它建立在IETF SCITT（供应链完整性、透明度和信任）架构之上，为AI系统的安全拒绝行为创建密码学可验证的证明。
-            </p>
-
-            <h3>核心设计原则</h3>
-
-            <h4>原则1：完整性保证</h4>
-            <p>
-                每个生成尝试必须有记录的结果——<strong>生成、拒绝或错误</strong>。
-                没有请求可以"消失"而不留下密码学证据。
-            </p>
-
-            <pre><code>enum GenerationOutcome {
-    GENERATED,     // 内容已创建
-    DENIED,        // 安全系统拒绝请求
-    ERROR,         // 系统错误阻止处理
-    TIMEOUT        // 请求超时未完成
-}</code></pre>
-
-            <h4>原则2：时序锚定</h4>
-            <p>
-                关键创新是<strong>事件在安全评估之前被记录</strong>。这意味着即使安全系统被绕过，
-                原始请求的存在证明仍然存在于透明度日志中。
-            </p>
-
-            <div class="timeline-item">
-                <strong>T₀：请求接收</strong>
-                <p class="text-gray-600 mb-0">请求被记录到SCITT透明度日志（不可变）</p>
-            </div>
-            <div class="timeline-item">
-                <strong>T₁：安全评估</strong>
-                <p class="text-gray-600 mb-0">安全系统评估请求并做出决定</p>
-            </div>
-            <div class="timeline-item">
-                <strong>T₂：结果记录</strong>
-                <p class="text-gray-600 mb-0">决定（生成/拒绝/错误）被记录，与T₀事件关联</p>
-            </div>
-            <div class="timeline-item">
-                <strong>T₃：外部锚定</strong>
-                <p class="text-gray-600 mb-0">批次根哈希通过TSA或区块链进行外部验证</p>
-            </div>
-
-            <h4>原则3：隐私保护</h4>
-            <p>
-                CAP-SRP不要求存储原始提示词内容。相反，它使用：
-            </p>
-
+            
+            <h2><i class="fas fa-gavel" style="color: #a78bfa; margin-right: 0.5rem;"></i> II. 监管环境</h2>
+            
+            <h3>EU AI Act：2026年8月截止日期</h3>
+            
+            <p><strong>第12条（记录保存）</strong>要求高风险AI系统"在技术上允许在系统的整个生命周期内自动记录事件（日志）"。</p>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>里程碑</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025年2月2日</td>
+                        <td>禁止的AI实践被禁止</td>
+                    </tr>
+                    <tr>
+                        <td>2025年8月2日</td>
+                        <td>GPAI模型要求适用</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026年8月2日</strong></td>
+                        <td><strong>高风险AI系统要求（第12条日志记录）</strong></td>
+                    </tr>
+                    <tr>
+                        <td>2027年8月2日</td>
+                        <td>完整法案执行</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>加州AI透明法</h3>
             <ul>
-                <li><strong>提示词哈希</strong>：SHA-256哈希而非原始文本</li>
-                <li><strong>风险类别</strong>：安全拒绝的分类（如CSAM、暴力、仇恨言论）而非具体内容</li>
-                <li><strong>密码学碎片化</strong>：支持GDPR删除权的密钥销毁机制</li>
-                <li><strong>可选zk-STARK集成</strong>：允许证明拒绝存在而不暴露任何请求细节</li>
+                <li><strong>生效：</strong>2026年8月2日（与EU AI Act同步）</li>
+                <li><strong>适用范围：</strong>在加州拥有超过100万月活用户的提供商</li>
+                <li><strong>处罚：</strong>每次违规<strong>每天最高5,000美元</strong></li>
             </ul>
-
-            <h3>技术架构</h3>
-
-            <p>CAP-SRP利用IETF SCITT架构提供以下核心能力：</p>
-
-            <h4>1. 追加式透明度日志</h4>
-            <p>
-                基于RFC 6962 Merkle树实现的透明度日志确保：
-            </p>
-            <ul>
-                <li>事件一旦记录就无法删除或修改</li>
-                <li>任何第三方都可以验证日志的一致性</li>
-                <li>包含证明允许高效验证特定事件的存在</li>
-            </ul>
-
-            <pre><code>// SCITT语句结构（简化）
-{
-    "statement_type": "refusal_event",
-    "issuer": "xai.com/grok",
-    "timestamp": "2026-01-15T14:30:00Z",
-    "subject": {
-        "request_hash": "sha256:a1b2c3d4...",
-        "outcome": "DENIED",
-        "risk_category": "VIOLENCE",
-        "safety_model_version": "grok-safety-v2.3"
-    },
-    "signature": "ed25519:..."
-}</code></pre>
-
-            <h4>2. 数字签名</h4>
-            <p>
-                使用Ed25519签名（具有向后量子迁移路径）确保：
-            </p>
-            <ul>
-                <li>事件确实来自声称的AI系统</li>
-                <li>事件内容在签名后未被篡改</li>
-                <li>签名可以被任何第三方独立验证</li>
-            </ul>
-
-            <h4>3. 外部锚定</h4>
-            <p>
-                批次根哈希通过以下方式进行外部验证：
-            </p>
-            <ul>
-                <li><strong>RFC 3161时间戳机构（TSA）</strong>：提供法律认可的时间证明</li>
-                <li><strong>OpenTimestamps</strong>：利用比特币区块链的分布式时间锚定</li>
-                <li><strong>多重锚定</strong>：同时使用多种方式增强可靠性</li>
-            </ul>
-
-            <h2>监管背景：为什么2026年8月是关键截止日期</h2>
-
+            
             <div class="warning-box">
-                <div class="warning-box-title">
-                    <i class="fas fa-gavel"></i>
-                    监管时间线
+                <div class="warning-title">
+                    <i class="fas fa-clock"></i> 合规时间表
                 </div>
-                <p class="mb-0">
-                    <strong>EU AI Act第12条</strong>要求高风险AI系统保持"自动生成的日志"，
-                    这些日志必须"允许追溯与其预期目的相关的系统运行"。
-                    <strong>高风险条款于2026年8月2日生效。</strong>
+                <p style="margin-bottom: 0;">
+                    组织只有<strong>不到7个月</strong>的时间来实施能够向监管机构展示安全系统有效性的可验证日志记录系统。
                 </p>
             </div>
-
-            <h3>法规如何要求可验证的拒绝证明</h3>
-
-            <table class="regulation-table">
+            
+            <h2><i class="fas fa-shield-alt" style="color: #10b981; margin-right: 0.5rem;"></i> III. CAP-SRP解决方案架构</h2>
+            
+            <div class="solution-box">
+                <div class="solution-title">
+                    <i class="fas fa-check-circle"></i> 内容真实性协议 - 安全拒绝来源
+                </div>
+                <p style="margin-bottom: 0;">
+                    CAP-SRP将拒绝视为<strong>一等公民的密码学可证明事件</strong>。基于IETF SCITT（供应链完整性、透明度和信任），它提供具有Merkle树验证的追加式透明度日志。
+                </p>
+            </div>
+            
+            <h3>完整性不变量</h3>
+            
+            <p>CAP-SRP的核心创新是<strong>完整性保证</strong>：</p>
+            
+            <pre><code>∀ time_window T:
+  COUNT(GEN_ATTEMPT) = COUNT(GEN) + COUNT(GEN_DENY) + COUNT(GEN_ERROR)</code></pre>
+            
+            <p>简单地说：<strong>每个生成尝试必须有记录的结果</strong>。</p>
+            
+            <h3>事件类型</h3>
+            
+            <table class="data-table">
                 <thead>
                     <tr>
-                        <th>法规</th>
-                        <th>条款</th>
-                        <th>要求</th>
-                        <th>CAP-SRP映射</th>
+                        <th>事件类型</th>
+                        <th>描述</th>
+                        <th>时机</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>EU AI Act</td>
-                        <td>第12条</td>
-                        <td>自动日志记录与追溯能力</td>
-                        <td>SCITT透明度日志</td>
+                        <td><code>GEN_ATTEMPT</code></td>
+                        <td>收到生成请求</td>
+                        <td>安全评估<strong>之前</strong></td>
                     </tr>
                     <tr>
-                        <td>EU AI Act</td>
-                        <td>第72-73条</td>
-                        <td>上市后监控与事件报告</td>
-                        <td>拒绝事件追踪</td>
+                        <td><code>GEN</code></td>
+                        <td>内容成功生成</td>
+                        <td>安全评估之后</td>
                     </tr>
                     <tr>
-                        <td>加州AI透明法</td>
-                        <td>SB 942</td>
-                        <td>生成内容披露</td>
-                        <td>生成/拒绝完整记录</td>
+                        <td><code>GEN_DENY</code></td>
+                        <td>生成被安全系统拒绝</td>
+                        <td>安全评估之后</td>
                     </tr>
                     <tr>
-                        <td>ESMA AI指南</td>
-                        <td>ESMA35-335435667-5924</td>
-                        <td>投资服务中AI使用的文档记录</td>
-                        <td>事件完整性保证</td>
+                        <td><code>GEN_ERROR</code></td>
+                        <td>因系统错误生成失败</td>
+                        <td>安全评估之后</td>
                     </tr>
                 </tbody>
             </table>
-
-            <h3>"证明安全系统工作"的问题</h3>
-
-            <p>
-                考虑以下监管场景：
-            </p>
-
-            <blockquote>
-                <p class="mb-0">
-                    "请提供证据证明贵公司的AI安全系统在2026年1月1日至15日期间正常运行，
-                    并且所有被归类为有害的生成请求都被正确拒绝。"
-                </p>
-            </blockquote>
-
-            <p>
-                <strong>没有CAP-SRP</strong>：组织只能提供内部日志，这些日志可能被篡改、删除或简单地不存在。
-                无法提供独立可验证的证据证明安全系统确实在工作。
-            </p>
-
-            <p>
-                <strong>有CAP-SRP</strong>：组织可以提供：
-            </p>
-
+            
+            <h3>IETF SCITT基础</h3>
+            
+            <p>CAP-SRP利用<strong>IETF SCITT</strong>（draft-ietf-scitt-architecture）作为其透明度日志基础设施：</p>
+            
             <ul>
-                <li>SCITT透明度日志中所有拒绝事件的密码学证明</li>
-                <li>外部时间戳证明事件发生在声称的时间</li>
-                <li>一致性证明显示日志未被篡改</li>
-                <li>包含证明允许监管机构验证特定事件</li>
+                <li><strong>追加式日志：</strong>语句不能被修改、删除或重新排序</li>
+                <li><strong>Merkle树验证：</strong>O(log n)的包含证明</li>
+                <li><strong>非分叉性：</strong>没有分叉——所有人看到相同的有序集合</li>
+                <li><strong>可重放性：</strong>任何授权方都可以验证每次注册</li>
             </ul>
-
-            <h2>实施路线图</h2>
-
-            <h3>阶段1：评估（4-6周）</h3>
+            
+            <h2><i class="fas fa-lock" style="color: #3b82f6; margin-right: 0.5rem;"></i> IV. 密码学机制</h2>
+            
+            <h3>数字签名：Ed25519</h3>
+            
+            <p>CAP-SRP使用Ed25519进行数字签名，并提供向ML-DSA（NIST FIPS 204）的后量子迁移路径：</p>
+            
             <ul>
-                <li>审计现有AI生成系统的日志能力</li>
-                <li>识别所有生成端点和安全检查点</li>
-                <li>评估当前拒绝事件的可追溯性</li>
-                <li>映射数据保留和隐私要求</li>
+                <li><strong>确定性签名：</strong>防止因不良RNG导致的密钥泄露</li>
+                <li><strong>侧信道抵抗：</strong>针对时序攻击的设计</li>
+                <li><strong>广泛采用：</strong>Signal、OpenSSH、区块链系统</li>
             </ul>
-
-            <h3>阶段2：基础设施（6-8周）</h3>
+            
+            <h3>外部锚定</h3>
+            
+            <p>批次根哈希在外部锚定以进行独立验证：</p>
+            
             <ul>
-                <li>部署SCITT兼容的透明度日志基础设施</li>
-                <li>集成Ed25519签名到生成管道</li>
-                <li>建立与TSA/OpenTimestamps的外部锚定</li>
-                <li>实施隐私保护的哈希和分类系统</li>
+                <li><strong>RFC 3161时间戳机构（TSA）：</strong>法律认可的时间证明</li>
+                <li><strong>OpenTimestamps：</strong>比特币区块链锚定</li>
+                <li><strong>多重锚定：</strong>通过冗余增强可靠性</li>
             </ul>
-
-            <h3>阶段3：集成（4-6周）</h3>
-            <ul>
-                <li>修改AI生成管道以记录所有结果</li>
-                <li>实施"先记录后评估"的时序流程</li>
-                <li>建立监控和警报系统</li>
-                <li>进行端到端验证测试</li>
-            </ul>
-
-            <h3>阶段4：验证（持续）</h3>
-            <ul>
-                <li>定期审计日志完整性</li>
-                <li>独立第三方验证</li>
-                <li>监管报告能力测试</li>
-                <li>持续改进和更新</li>
-            </ul>
-
-            <h2>从"信任我们的安全系统"到"验证我们的安全系统"</h2>
-
-            <p>
-                xAI/Grok危机是一个警钟，但也是一个机会。它清楚地表明，AI治理需要从基于信任的模型
-                转向基于验证的模型。CAP-SRP提供了实现这一转变的技术基础。
-            </p>
-
+            
+            <h2><i class="fas fa-user-shield" style="color: #8b5cf6; margin-right: 0.5rem;"></i> V. 隐私保护验证</h2>
+            
+            <h3>提示词隐私问题</h3>
+            
+            <p>拒绝日志记录会产生紧张关系：要验证拒绝是否合理，可能需要查看被拒绝的内容。但提示词可能包含个人信息、专有商业数据或犯罪意图的证据。</p>
+            
             <div class="key-point">
                 <div class="key-point-title">
-                    <i class="fas fa-shield-alt"></i>
-                    核心价值主张
+                    <i class="fas fa-key"></i> CAP-SRP原则：记录决策，不记录内容
                 </div>
-                <p class="mb-2">
-                    <strong>对于AI提供商</strong>：可证明的安全合规，减少监管风险，建立用户信任
-                </p>
-                <p class="mb-2">
-                    <strong>对于监管机构</strong>：独立可验证的证据，高效的审计流程，可追溯的事件链
-                </p>
-                <p class="mb-0">
-                    <strong>对于用户</strong>：透明的安全运营，可验证的保护承诺，问责制保障
+                <p style="margin-bottom: 0;">
+                    <strong>记录的内容：</strong>prompt_hash（SHA-256）、risk_category、risk_score、policy_version<br>
+                    <strong>不记录的内容：</strong>原始提示词文本、用户身份、详细内容分析
                 </p>
             </div>
-
-            <h3>立即行动</h3>
-
-            <p>
-                距离EU AI Act高风险条款生效还有不到7个月。组织现在需要：
-            </p>
-
-            <ol>
-                <li><strong>评估当前状态</strong>：了解现有拒绝事件的可追溯性</li>
-                <li><strong>规划基础设施</strong>：为SCITT部署做准备</li>
-                <li><strong>试点实施</strong>：在低风险环境中测试CAP-SRP</li>
-                <li><strong>参与标准制定</strong>：加入IETF SCITT工作组</li>
-            </ol>
-
-            <h2>资源</h2>
-
-            <h3>技术资源</h3>
+            
+            <h3>GDPR合规：密码学碎片化</h3>
+            
+            <p>CAP-SRP通过<strong>密码学碎片化</strong>支持GDPR的"被遗忘权"：</p>
+            
             <ul>
-                <li><a href="https://github.com/veritaschain/vap-framework" target="_blank">VAP框架参考实现</a></li>
-                <li><a href="https://github.com/veritaschain/cap-spec" target="_blank">CAP-SRP扩展规范</a></li>
-                <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-refusal-events/" target="_blank">IETF草案：SCITT中的拒绝事件</a></li>
+                <li>个人数据在静态时使用每个主体的密钥加密</li>
+                <li>密钥销毁使数据在密码学上不可恢复</li>
+                <li>审计完整性得以保留——非个人数据仍可验证</li>
+                <li>密钥销毁作为可审计事件记录</li>
             </ul>
-
-            <h3>法规参考</h3>
-            <ul>
-                <li><a href="http://data.europa.eu/eli/reg/2024/1689/oj" target="_blank">EU AI Act全文</a></li>
-                <li><a href="https://www.esma.europa.eu/sites/default/files/2024-05/ESMA35-335435667-5924__Public_Statement_on_AI_and_investment_services.pdf" target="_blank">ESMA AI指南</a></li>
-            </ul>
-
-            <hr class="my-8">
-
-            <p class="text-sm text-gray-500">
-                本分析由VeritasChain Protocol团队发布。我们致力于通过密码学可验证的审计追踪，
-                为AI治理建立信任基础。
+            
+            <h2><i class="fas fa-flag-checkered" style="color: #10b981; margin-right: 0.5rem;"></i> VI. 结论：从信任到验证</h2>
+            
+            <p>xAI/Grok危机表明，基于信任的AI安全声明已不再足够。监管机构、用户和公众要求<strong>可验证的证据</strong>。</p>
+            
+            <blockquote>
+                <strong>基于信任的模型：</strong>"我们的安全过滤器正在工作" → "请证明" → "...相信我们？"<br><br>
+                <strong>基于验证的模型：</strong>"这是每次拒绝的密码学收据" → [验证Merkle证明] → "已验证。确认合规。"
+            </blockquote>
+            
+            <p>CAP-SRP为这一范式转变提供了技术基础。随着EU AI Act 2026年8月2日截止日期的临近，组织必须立即开始实施。</p>
+            
+            <div class="key-point">
+                <div class="key-point-title">
+                    <i class="fas fa-link"></i> 资源
+                </div>
+                <ul style="margin-bottom: 0;">
+                    <li><a href="https://github.com/veritaschain/vap-framework" target="_blank">VAP Framework参考实现</a></li>
+                    <li><a href="https://github.com/veritaschain/cap-spec" target="_blank">CAP-SRP扩展规范</a></li>
+                    <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-refusal-events/" target="_blank">IETF草案：SCITT中的拒绝事件</a></li>
+                </ul>
+            </div>
+            
+            <hr style="border-color: rgba(59, 130, 246, 0.2); margin: 3rem 0;">
+            
+            <p style="color: #64748b; font-size: 0.95rem;">
+                <strong>文档ID：</strong>VSO-BLOG-TECH-2026-003<br>
+                <strong>发布日期：</strong>2026年1月28日<br>
+                <strong>作者：</strong>VeritasChain Standards Organization<br>
+                <strong>许可证：</strong><a href="https://creativecommons.org/licenses/by/4.0/" style="color: #60a5fa;">CC BY 4.0</a>
             </p>
-
-        </article>
-
-        <!-- Author & Share -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 mt-8">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                        VP
-                    </div>
-                    <div>
-                        <p class="font-semibold">VeritasChain Protocol</p>
-                        <p class="text-sm text-gray-500">技术分析团队</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-sm text-gray-500">分享：</span>
-                    <a href="https://twitter.com/intent/tweet?url=https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/&text=CAP-SRP：证明AI未生成的内容——AI内容真实性的缺失层" target="_blank" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-colors">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://veritaschain.org/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/" target="_blank" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-colors">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                </div>
+            
+            <div class="tag-cloud">
+                <span class="tag">#CAP-SRP</span>
+                <span class="tag">#EUAIAct</span>
+                <span class="tag">#AI安全</span>
+                <span class="tag">#SCITT</span>
+                <span class="tag">#密码学审计</span>
+                <span class="tag">#拒绝证明</span>
+                <span class="tag">#VeritasChain</span>
             </div>
+            
         </div>
-
-        <!-- Navigation -->
-        <div class="flex justify-between items-center mt-8">
-            <a href="/blog/zh/" class="inline-flex items-center gap-2 text-primary hover:text-secondary transition-colors">
-                <i class="fas fa-arrow-left"></i>
-                返回博客列表
-            </a>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-gray-300 py-12 mt-16">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <h4 class="text-white font-semibold mb-4">VeritasChain Protocol</h4>
-                    <p class="text-sm">通过密码学可验证的审计追踪为数字信任建立基础。</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-semibold mb-4">协议</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="/vap/zh/" class="hover:text-white transition-colors">VAP框架</a></li>
-                        <li><a href="/vap/cpp/zh/" class="hover:text-white transition-colors">CPP规范</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-semibold mb-4">资源</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="/blog/zh/" class="hover:text-white transition-colors">博客</a></li>
-                        <li><a href="https://github.com/veritaschain" class="hover:text-white transition-colors">GitHub</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-semibold mb-4">语言</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/" class="hover:text-white transition-colors">English</a></li>
-                        <li><a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/ja/" class="hover:text-white transition-colors">日本語</a></li>
-                        <li><a href="/blog/posts/2026-01-28-cap-srp-proving-what-ai-didnt-generate/zh/" class="text-white">中文</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-slate-800 mt-8 pt-8 text-sm text-center">
-                <p>&copy; 2026 VeritasChain Protocol. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-    </script>
+    </article>
+    
+    <!-- VCP Footer -->
+    <vcp-footer></vcp-footer>
+    
 </body>
 </html>
