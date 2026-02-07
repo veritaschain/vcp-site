@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>検証の義務：Grok危機、グローバル執行、2026年8月期限がAIに「生成を拒否した証明」を強制する - VeritasChain Blog</title>
+    <meta name="description" content="Grokは11日間で300万件以上の性的画像を生成し、安全性失敗率は82%。2026年8月のEU AI法期限が迫る中、AIシステムには信頼ではなく拒否の暗号学的証明が必要。CAP-SRPがその解決策を提供。">
+    <meta name="keywords" content="CAP-SRP, Grok, AIセーフティ, EU AI法, 検証可能なAI, コンテンツ安全性, 暗号化監査, VeritasChain">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="検証の義務：Grok危機がAIに「拒否の証明」を強制する">
+    <meta property="og:description" content="Grokは82%の安全性失敗率で300万件以上の有害画像を生成。CAP-SRPが2026年8月EU AI法準拠のための暗号学的拒否証明を提供。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-02-07-the-verification-imperative/ja/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain Blog">
+    <meta property="article:published_time" content="2026-02-07T00:00:00Z">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="AIセーフティ">
+    <meta property="article:tag" content="CAP-SRP">
+    <meta property="article:tag" content="EU AI法">
+    <meta property="article:tag" content="AIセーフティ">
+    <meta property="article:tag" content="Grok">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="検証の義務：Grok危機がAIに拒否の証明を強制する">
+    <meta name="twitter:description" content="Grokは82%の安全性失敗率で300万件以上の有害画像を生成。CAP-SRPが暗号学的拒否証明を実現。">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-02-07-the-verification-imperative/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-02-07-the-verification-imperative/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-02-07-the-verification-imperative/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-02-07-the-verification-imperative/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-02-07-the-verification-imperative/ja/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        body { font-family: 'Noto Sans JP', 'Inter', sans-serif; }
+        
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(239, 68, 68, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+        }
+        
+        .article-content {
+            background: #0f172a;
+            padding: 4rem 2rem;
+        }
+        
+        .prose {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+        
+        .prose h2 {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .prose h3 {
+            color: #e2e8f0;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .prose h4 {
+            color: #cbd5e1;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .prose p { margin-bottom: 1.5rem; }
+        
+        .prose a {
+            color: #60a5fa;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        
+        .prose a:hover { color: #93c5fd; }
+        
+        .prose strong {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+        
+        .prose code {
+            background: rgba(30, 41, 59, 0.8);
+            color: #60a5fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+        }
+        
+        .prose pre {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .prose pre code {
+            background: none;
+            padding: 0;
+            color: #e2e8f0;
+        }
+        
+        .prose ul, .prose ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .prose blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: #94a3b8;
+            font-style: italic;
+        }
+        
+        .key-point {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .key-point-title {
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .warning-title {
+            color: #ef4444;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .regulation-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .regulation-title {
+            color: #a78bfa;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .timeline-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .timeline-title {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .data-table th {
+            background: rgba(30, 41, 59, 0.8);
+            color: #f1f5f9;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .data-table td {
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #cbd5e1;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(30, 41, 59, 0.3);
+        }
+        
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .tag {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .back-link:hover { color: #93c5fd; }
+        
+        .crisis-stat {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .crisis-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ef4444;
+            line-height: 1.2;
+        }
+        
+        .crisis-stat-label {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+
+    <!-- Structured Data - Article -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "検証の義務：Grok危機、グローバル執行、2026年8月期限がAIに「生成を拒否した証明」を強制する",
+    "description": "Grokは11日間で300万件以上の性的画像を生成し、安全性失敗率は82%。CAP-SRPが暗号学的拒否証明を提供。",
+    "image": "https://veritaschain.org/assets/OGP.png",
+    "author": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization",
+        "url": "https://veritaschain.org/"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "VeritasChain Standards Organization",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://veritaschain.org/assets/img/logo.png"
+        }
+    },
+    "datePublished": "2026-02-07T00:00:00Z",
+    "dateModified": "2026-02-07T00:00:00Z",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://veritaschain.org/blog/posts/2026-02-07-the-verification-imperative/ja/"
+    },
+    "keywords": [
+        "CAP-SRP",
+        "Grok",
+        "EU AI法",
+        "AIセーフティ",
+        "検証可能なAI"
+    ],
+    "inLanguage": "ja"
+}
+    </script>
+    
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "ホーム",
+            "item": "https://veritaschain.org/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "ブログ",
+            "item": "https://veritaschain.org/blog/ja/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "検証の義務",
+            "item": "https://veritaschain.org/blog/posts/2026-02-07-the-verification-imperative/ja/"
+        }
+    ]
+}
+    </script>
+</head>
+<body style="background: #0f172a; min-height: 100vh;">
+    
+    <!-- VCP Header -->
+    <vcp-header></vcp-header>
+    
+    <!-- Article Hero -->
+    <section class="article-hero">
+        <div style="max-width: 800px; margin: 0 auto; position: relative; z-index: 1;">
+            <a href="/blog/ja/" class="back-link" style="margin-bottom: 2rem; display: inline-flex;">
+                <i class="fas fa-arrow-left"></i> ブログに戻る
+            </a>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;">
+                <span style="background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 0.375rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500;">
+                    <i class="fas fa-shield-alt"></i> AIセーフティ
+                </span>
+                <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.375rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500;">
+                    <i class="fas fa-balance-scale"></i> 規制
+                </span>
+            </div>
+            
+            <h1 style="font-size: 2rem; font-weight: 800; color: #f1f5f9; line-height: 1.4; margin-bottom: 1.5rem;">
+                検証の義務：Grok危機、グローバル執行、2026年8月期限がAIに「生成を拒否した証明」を強制する
+            </h1>
+            
+            <p style="font-size: 1.15rem; color: #94a3b8; line-height: 1.7; margin-bottom: 2rem;">
+                AIの安全性主張を検証する外部インフラが存在しない。規制当局は信頼ではなく拒否の証明を要求している。CAP-SRPがAIシステムに必要な暗号学的アーキテクチャを提供する。
+            </p>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
+                <span><i class="far fa-calendar"></i> 2026年2月7日</span>
+                <span><i class="far fa-clock"></i> 35分で読了</span>
+                <span><i class="far fa-user"></i> VeritasChain Standards Organization</span>
+            </div>
+            
+            <!-- Language Selector -->
+            <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
+                <a href="/blog/posts/2026-02-07-the-verification-imperative/" style="background: rgba(59, 130, 246, 0.1); color: #94a3b8; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.2);">EN</a>
+                <a href="/blog/posts/2026-02-07-the-verification-imperative/ja/" style="background: rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.5);">JA</a>
+                <a href="/blog/posts/2026-02-07-the-verification-imperative/zh/" style="background: rgba(59, 130, 246, 0.1); color: #94a3b8; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.2);">ZH</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Article Content -->
+    <article class="article-content">
+        <div class="prose">
+            
+            <div class="warning-box">
+                <div class="warning-title">
+                    <i class="fas fa-exclamation-triangle"></i> 核心的問題
+                </div>
+                <p style="margin-bottom: 0;">
+                    <strong>AIの安全性主張を検証する外部インフラが存在しない。</strong>規制当局がAIシステムが有害コンテンツの生成を拒否した証拠を要求したとき、企業は内部ログと企業の保証しか提供できない。Grok危機はこの根本的なギャップを露呈した：「堅牢な安全対策」という主張は独立テストで崩壊した。CAP-SRP（Safety Refusal Provenance）は、AIシステムが何を拒否したかを単に主張するのではなく、証明するための暗号学的アーキテクチャを提供する。
+                </p>
+            </div>
+            
+            <h2><i class="fas fa-exclamation-circle" style="color: #ef4444; margin-right: 0.5rem;"></i> I. Grok危機：安全性障害の解剖</h2>
+            
+            <h3>1.1 業界を震撼させた数字</h3>
+            
+            <p>
+                2025年12月25日から2026年1月5日の間、xAIのGrok画像生成システムは壊滅的な安全性障害を示した：
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                <div class="crisis-stat">
+                    <div class="crisis-stat-number">300万件超</div>
+                    <div class="crisis-stat-label">11日間で生成された性的画像</div>
+                </div>
+                <div class="crisis-stat">
+                    <div class="crisis-stat-number">約2万件</div>
+                    <div class="crisis-stat-label">未成年者を描写した画像</div>
+                </div>
+                <div class="crisis-stat">
+                    <div class="crisis-stat-number">82%</div>
+                    <div class="crisis-stat-label">安全性失敗率（55件中45件）</div>
+                </div>
+            </div>
+            
+            <p>
+                <strong>ロイターのテスト</strong>では、問題のあるプロンプトの82%（55件中45件）がGrokで有害コンテンツの生成に成功した一方、OpenAI、Google、Metaのシステムは同一のプロンプトをブロックした。これは僅差ではなく、カテゴリカルな失敗だった。
+            </p>
+            
+            <h3>1.2 否定的証拠の問題</h3>
+            
+            <p>
+                xAIが安全対策は「堅牢」と主張したとき、この主張を検証する外部メカニズムは存在しなかった。根本的な問題：
+            </p>
+            
+            <div class="key-point">
+                <div class="key-point-title">
+                    <i class="fas fa-question-circle"></i> 悪魔の証明
+                </div>
+                <p style="margin-bottom: 0;">
+                    <strong>ウォーターマークや内部ログの不在は拒否の証明ではない。</strong>有害コンテンツが生成されなかったことを証明するには、拒否が発生したという肯定的な暗号学的証明が必要。このインフラなしでは、「ブロックした」と「どちらの証拠もない」は区別できない。
+                </p>
+            </div>
+            
+            <p>
+                これにより非対称なアカウンタビリティ状況が生まれる：
+            </p>
+            
+            <ul>
+                <li><strong>生成は観測可能</strong> — 有害な出力はキャプチャして文書化できる</li>
+                <li><strong>拒否は不可視</strong> — ブロックされたリクエストは検証可能な痕跡を残さない</li>
+                <li><strong>主張は検証不能</strong> — 「安全率99.9%」は独立監査できない</li>
+            </ul>
+            
+            <h2><i class="fas fa-shield-alt" style="color: #3b82f6; margin-right: 0.5rem;"></i> II. CAP-SRP：AI安全性のためのフライトレコーダー</h2>
+            
+            <h3>2.1 アーキテクチャ概要</h3>
+            
+            <p>
+                <strong>CAP-SRP（Creative AI Profile - Safety Refusal Provenance）</strong> v1.0は、AIコンテンツ生成拒否を記録・検証するための標準化された方法を確立する。コア原則：<strong>ログ・ファースト</strong>。
+            </p>
+            
+            <div class="regulation-box">
+                <div class="regulation-title">
+                    <i class="fas fa-cogs"></i> ログ・ファーストの不変条件
+                </div>
+                <ol style="margin-bottom: 0;">
+                    <li><strong>GEN_ATTEMPTをログ</strong> — 安全性評価の前に、試行が行われたことを記録</li>
+                    <li><strong>安全性評価</strong> — コンテンツ安全性チェックを適用</li>
+                    <li><strong>結果をログ</strong> — GEN（生成）、GEN_DENY（拒否）、またはGEN_ERROR（システムエラー）を記録</li>
+                </ol>
+                <p style="margin-top: 1rem; margin-bottom: 0; font-family: 'JetBrains Mono', monospace; color: #a78bfa;">
+                    完全性の不変条件：GEN_ATTEMPT = GEN + GEN_DENY + GEN_ERROR
+                </p>
+            </div>
+            
+            <p>
+                不完全なログは自動的に監査無効をトリガーする。これにより「安全な」生成のみが記録される選択的ログを防止する。
+            </p>
+            
+            <h3>2.2 暗号プリミティブ</h3>
+            
+            <p>
+                CAP-SRPは実績のある暗号標準を活用：
+            </p>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>コンポーネント</th>
+                        <th>標準</th>
+                        <th>目的</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>デジタル署名</td>
+                        <td>Ed25519</td>
+                        <td>イベントの真正性と否認防止</td>
+                    </tr>
+                    <tr>
+                        <td>ハッシュ関数</td>
+                        <td>SHA-256</td>
+                        <td>イベントチェーンと完全性検証</td>
+                    </tr>
+                    <tr>
+                        <td>シリアライゼーション</td>
+                        <td>CBOR/COSE</td>
+                        <td>コンパクトで正規化されたイベントエンコーディング</td>
+                    </tr>
+                    <tr>
+                        <td>証明書</td>
+                        <td>X.509</td>
+                        <td>組織アイデンティティの紐付け</td>
+                    </tr>
+                    <tr>
+                        <td>タイムスタンプ</td>
+                        <td>RFC 3161 TSA</td>
+                        <td>外部時刻アンカリング</td>
+                    </tr>
+                    <tr>
+                        <td>透明性</td>
+                        <td>SCITT</td>
+                        <td>サプライチェーン整合性アンカリング</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>2.3 プライバシー保護設計</h3>
+            
+            <p>
+                CAP-SRPは監査透明性とユーザープライバシーの緊張に対処：
+            </p>
+            
+            <ul>
+                <li><strong>PromptHash</strong> — 平文ではなく入力の暗号ハッシュ</li>
+                <li><strong>ActorHash</strong> — ユーザー識別子のソルト付きハッシュ</li>
+                <li><strong>ソルトコミットメント</strong> — 調査のための選択的開示を可能に</li>
+                <li><strong>暗号シュレッディング</strong> — 監査完全性を維持しながらコンプライアントなデータ破壊</li>
+            </ul>
+            
+            <h3>2.4 イベント分類</h3>
+            
+            <p>
+                CAP-SRPは有害コンテンツの標準化されたカテゴリを定義：
+            </p>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>カテゴリ</th>
+                        <th>コード</th>
+                        <th>モデル決定</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>非同意親密画像</td>
+                        <td>NCII</td>
+                        <td rowspan="4" style="vertical-align: middle;">
+                            <ul style="margin: 0; padding-left: 1rem;">
+                                <li>DENY</li>
+                                <li>WARN</li>
+                                <li>ESCALATE</li>
+                                <li>QUARANTINE</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>児童性的虐待素材</td>
+                        <td>CSAM</td>
+                    </tr>
+                    <tr>
+                        <td>極端な暴力</td>
+                        <td>VIOLENCE_EXTREME</td>
+                    </tr>
+                    <tr>
+                        <td>テロリズム/過激主義</td>
+                        <td>TERRORISM</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2><i class="fas fa-folder-open" style="color: #10b981; margin-right: 0.5rem;"></i> III. エビデンスパック構造</h2>
+            
+            <p>
+                CAP-SRPは規制提出用の標準化されたエビデンスパックを生成：
+            </p>
+            
+            <pre><code>evidence_pack/
+├── summary.pdf           # 人間が読める概要
+├── statistics.json       # 集計安全性メトリクス
+├── verification.html     # インタラクティブ検証ツール
+├── audit_trail.cbor      # 暗号イベントログ
+├── tsa_proofs/           # RFC 3161タイムスタンプ領収書
+│   ├── daily/
+│   └── merkle_roots/
+└── scitt_receipts/       # SCITT透明性領収書</code></pre>
+            
+            <h3>3.1 適合性ティア</h3>
+            
+            <div class="timeline-box">
+                <div class="timeline-title">
+                    <i class="fas fa-medal"></i> 3ティア適合性モデル
+                </div>
+                <table class="data-table" style="margin-bottom: 0;">
+                    <thead>
+                        <tr>
+                            <th>ティア</th>
+                            <th>要件</th>
+                            <th>保持期間</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong style="color: #cd7f32;">Bronze</strong></td>
+                            <td>Ed25519署名、SHA-256チェーン、月次RFC 3161アンカリング</td>
+                            <td>6ヶ月</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color: #c0c0c0;">Silver</strong></td>
+                            <td>リアルタイム完全性不変条件、日次アンカリング、エビデンスパック</td>
+                            <td>2年</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color: #ffd700;">Gold</strong></td>
+                            <td>リアルタイム監査API、HSM鍵、24時間インシデント保全、適合性監査</td>
+                            <td>5年</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h2><i class="fas fa-link" style="color: #8b5cf6; margin-right: 0.5rem;"></i> IV. CAP-SRPとC2PA：補完的アーキテクチャ</h2>
+            
+            <h3>4.1 C2PAだけでは不十分な理由</h3>
+            
+            <p>
+                <strong>C2PA（Coalition for Content Provenance and Authenticity）</strong>は<em>生成されたコンテンツ</em>の来歴に優れた機能を提供する。しかし、根本的なギャップには対処できない：
+            </p>
+            
+            <blockquote>
+                C2PAは何が作成されたかを証明する。CAP-SRPは何が拒否されたかを証明する。
+            </blockquote>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>次元</th>
+                        <th>C2PA</th>
+                        <th>CAP-SRP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>フォーカス</td>
+                        <td>コンテンツ来歴</td>
+                        <td>拒否来歴</td>
+                    </tr>
+                    <tr>
+                        <td>証明対象</td>
+                        <td>生成されたもの</td>
+                        <td>ブロックされたもの</td>
+                    </tr>
+                    <tr>
+                        <td>添付方式</td>
+                        <td>コンテンツに埋め込み</td>
+                        <td>別個のエビデンスパック</td>
+                    </tr>
+                    <tr>
+                        <td>否定的証明</td>
+                        <td>非対応</td>
+                        <td>コア機能</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2><i class="fas fa-globe" style="color: #f59e0b; margin-right: 0.5rem;"></i> V. グローバル執行状況</h2>
+            
+            <h3>5.1 イギリス</h3>
+            
+            <div class="regulation-box">
+                <div class="regulation-title">
+                    <i class="fas fa-landmark"></i> データ（利用およびアクセス）法2025
+                </div>
+                <p style="margin-bottom: 0;">
+                    <strong>第138条</strong>は同意なしの親密画像作成を犯罪化。ICOの調査が進行中。<strong>Ofcom</strong>はオンライン安全法の下でAI生成コンテンツのリスク評価を要求。AIプロバイダーは危害を防ぐ「適切なシステム」があることを実証する必要がある—CAP-SRPがその証拠を提供。
+                </p>
+            </div>
+            
+            <h3>5.2 フランス</h3>
+            
+            <p>
+                <strong>ユーロポール支援の捜索</strong>がAI生成CSAM運営をターゲット。7つの刑事犯罪カテゴリが合成コンテンツに適用。フランスの裁判所は拒否システムが機能することを証明するための厳格な証拠基準を要求—内部ログだけでは不十分。
+            </p>
+            
+            <h3>5.3 アメリカ合衆国</h3>
+            
+            <ul>
+                <li><strong>1,208件のAI関連法案</strong>が州議会に提出（2025年）</li>
+                <li><strong>145件</strong>が成立</li>
+                <li><strong>イリノイ州AIProvenance Data Act</strong> — AIトレーニングデータソースの開示を要求</li>
+                <li><strong>カリフォルニア州司法長官</strong> — <strong>違反あたり最大25万ドル</strong>の罰則付き差止命令権限</li>
+            </ul>
+            
+            <h3>5.4 欧州連合</h3>
+            
+            <div class="warning-box">
+                <div class="warning-title">
+                    <i class="fas fa-calendar-alt"></i> 2026年8月2日期限
+                </div>
+                <p>
+                    <strong>EU AI法第12条</strong>（自動イベントログ）と<strong>第50条</strong>（機械可読コンテンツマーキング）が義務化。罰則：
+                </p>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>3,500万ユーロ</strong>または<strong>グローバル売上高の7%</strong>（いずれか高い方）</li>
+                    <li>EUユーザーにサービスを提供する主要プロバイダーへの域外適用</li>
+                </ul>
+            </div>
+            
+            <h2><i class="fas fa-history" style="color: #3b82f6; margin-right: 0.5rem;"></i> VI. Grok反事実：CAP-SRPが明らかにしたであろうもの</h2>
+            
+            <p>
+                xAIが危機前にCAP-SRPを実装していたら：
+            </p>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>日付</th>
+                        <th>CAP-SRPなし</th>
+                        <th>CAP-SRPあり</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025年12月25日</td>
+                        <td>「堅牢な安全性」を主張してローンチ</td>
+                        <td>ベースライン拒否メトリクスが公開検証可能</td>
+                    </tr>
+                    <tr>
+                        <td>12月26日〜1月2日</td>
+                        <td>検出されない異常</td>
+                        <td>自動アラート：GEN_DENY率の崩壊を検出</td>
+                    </tr>
+                    <tr>
+                        <td>2026年1月9日</td>
+                        <td>最初のメディア報道</td>
+                        <td>エビデンスパックがいつ/どのように安全性が低下したかを証明</td>
+                    </tr>
+                    <tr>
+                        <td>1月14日</td>
+                        <td>ロイターが82%失敗率を公表</td>
+                        <td>独立検証が調査結果を確認/反論</td>
+                    </tr>
+                    <tr>
+                        <td>2026年2月</td>
+                        <td>「改善した」—検証不能な主張</td>
+                        <td>是正効果の暗号学的証明</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2><i class="fas fa-chart-line" style="color: #10b981; margin-right: 0.5rem;"></i> VII. 経済的根拠</h2>
+            
+            <h3>7.1 検証不能な安全性のコスト</h3>
+            
+            <p>
+                <strong>EY Responsible AI Pulse 2025</strong>の調査結果：
+            </p>
+            
+            <ul>
+                <li><strong>99%</strong>の大企業がAIリスク関連の損失を経験</li>
+                <li><strong>44億ドル</strong> AIセーフティインシデントによる推定総コスト</li>
+                <li><strong>評判ダメージ</strong>は直接的な金銭的罰則を超えることが多い</li>
+            </ul>
+            
+            <h3>7.2 市場機会</h3>
+            
+            <p>
+                AIコンプライアンス市場の予測成長：
+            </p>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>年</th>
+                        <th>市場規模</th>
+                        <th>CAGR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024年</td>
+                        <td>18億ドル</td>
+                        <td rowspan="2" style="vertical-align: middle; text-align: center;"><strong>19.3%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>2030年</td>
+                        <td>52億ドル</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>
+                CAP-SRPはAIセーフティを単なるコンプライアンスコストではなく、<strong>市場性のある信頼機能</strong>として位置付ける。
+            </p>
+            
+            <h2><i class="fas fa-road" style="color: #8b5cf6; margin-right: 0.5rem;"></i> VIII. 実装ロードマップ</h2>
+            
+            <div class="timeline-box">
+                <div class="timeline-title">
+                    <i class="fas fa-tasks"></i> 2026年8月に向けた段階的実装
+                </div>
+                
+                <h4 style="color: #cd7f32; margin-top: 1rem;"><i class="fas fa-medal"></i> Bronzeティア（3〜6ヶ月）</h4>
+                <ul>
+                    <li>Ed25519署名によるログ・ファーストアーキテクチャの実装</li>
+                    <li>すべての生成イベントのSHA-256ハッシュチェーン</li>
+                    <li>月次RFC 3161タイムスタンプアンカリング</li>
+                    <li>基本統計レポート</li>
+                    <li>6ヶ月保持コンプライアンス</li>
+                </ul>
+                
+                <h4 style="color: #c0c0c0; margin-top: 1.5rem;"><i class="fas fa-medal"></i> Silverティア（6〜12ヶ月）</h4>
+                <ul>
+                    <li>リアルタイム完全性不変条件の適用</li>
+                    <li>日次外部アンカリング</li>
+                    <li>自動エビデンスパック生成</li>
+                    <li>マークルツリーバッチ検証</li>
+                    <li>暗号シュレッディング機能付き2年保持</li>
+                </ul>
+                
+                <h4 style="color: #ffd700; margin-top: 1.5rem;"><i class="fas fa-medal"></i> Goldティア（12〜18ヶ月）</h4>
+                <ul style="margin-bottom: 0;">
+                    <li>規制アクセス用リアルタイム監査API</li>
+                    <li>HSM保護署名鍵</li>
+                    <li>24時間インシデント保全トリガー</li>
+                    <li>第三者適合性監査</li>
+                    <li>完全監査証跡付き5年保持</li>
+                </ul>
+            </div>
+            
+            <h2><i class="fas fa-flag-checkered" style="color: #ef4444; margin-right: 0.5rem;"></i> IX. 結論：検証の義務はここにある</h2>
+            
+            <p>
+                Grok危機は根本的な真実を明らかにした：<strong>暗号学的検証のないAI安全性主張はマーケティングと区別できない。</strong>
+            </p>
+            
+            <p>
+                6ヶ月後、EU AI法の執行が始まる。有害コンテンツの生成を拒否したことを—数学的確実性をもって—証明できない組織は以下に直面する：
+            </p>
+            
+            <ul>
+                <li>グローバル売上高の最大7%の規制罰則</li>
+                <li>検証不能な安全性主張による評判ダメージ</li>
+                <li>CAP-SRP準拠プロバイダーに対する競争上の不利</li>
+            </ul>
+            
+            <p>
+                検証可能な拒否来歴が必要かどうかはもはや問題ではない。問題は、組織がそれを大惨事の前に実装するか、後に実装するかだ。
+            </p>
+            
+            <blockquote>
+                航空機がフライトレコーダーを備えているのは規制当局が義務付けたからではなく、航空業界が体系的な事故調査には体系的な証拠保全が必要だと認識したからだ。AI業界は同じ認識の瞬間に直面している。
+            </blockquote>
+            
+            <p>
+                <strong>検証の義務はここにある。唯一の問題は、誰がそれに応えるかだ。</strong>
+            </p>
+            
+            <div class="key-point">
+                <div class="key-point-title">
+                    <i class="fas fa-link"></i> リソース
+                </div>
+                <ul style="margin-bottom: 0;">
+                    <li><a href="https://github.com/veritaschain/cap-spec">CAP-SRP仕様 v1.0（GitHub）</a></li>
+                    <li><a href="https://veritaschain.org/vap/cap/">CAPドキュメント</a></li>
+                    <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/">IETF SCITT/VCPドラフト</a></li>
+                    <li><a href="https://veritaschain.org/developers/">開発者ドキュメント</a></li>
+                </ul>
+            </div>
+            
+            <hr style="border-color: rgba(59, 130, 246, 0.2); margin: 3rem 0;">
+            
+            <p style="color: #64748b; font-size: 0.95rem;">
+                <strong>文書ID:</strong> VSO-BLOG-CAP-SRP-2026-001<br>
+                <strong>公開日:</strong> 2026年2月7日<br>
+                <strong>著者:</strong> VeritasChain Standards Organization<br>
+                <strong>連絡先:</strong> <a href="mailto:standards@veritaschain.org" style="color: #60a5fa;">standards@veritaschain.org</a><br>
+                <strong>ライセンス:</strong> <a href="https://creativecommons.org/licenses/by/4.0/" style="color: #60a5fa;">CC BY 4.0</a>
+            </p>
+            
+            <div class="tag-cloud">
+                <span class="tag">#CAP-SRP</span>
+                <span class="tag">#Grok</span>
+                <span class="tag">#EUAIAct</span>
+                <span class="tag">#AIセーフティ</span>
+                <span class="tag">#検証可能なAI</span>
+                <span class="tag">#暗号化監査</span>
+                <span class="tag">#コンテンツ安全性</span>
+                <span class="tag">#SCITT</span>
+                <span class="tag">#C2PA</span>
+                <span class="tag">#VeritasChain</span>
+            </div>
+            
+        </div>
+    </article>
+    
+    <!-- VCP Footer -->
+    <vcp-footer></vcp-footer>
+    
+</body>
+</html>
