@@ -105,6 +105,7 @@ class VCPHeader extends HTMLElement {
                 legal: 'Legal',
                 privacy: 'Privacy Policy',
                 terms: 'Terms of Use',
+                commercialLaw: 'Specified Commercial Transactions Act',
                 impressum: 'Impressum',
                 mediaPress: 'Media & Press',
                 blog: 'Blog',
@@ -165,6 +166,7 @@ class VCPHeader extends HTMLElement {
                 legal: '法務情報',
                 privacy: '個人情報保護方針',
                 terms: '利用規約',
+                commercialLaw: '特定商取引法に基づく表示',
                 impressum: 'インプリント',
                 mediaPress: 'メディア',
                 blog: 'ブログ',
@@ -225,6 +227,7 @@ class VCPHeader extends HTMLElement {
                 legal: '法律信息',
                 privacy: '隐私政策',
                 terms: '服务条款',
+                commercialLaw: '特定商业交易法信息',
                 impressum: '出版信息',
                 mediaPress: '媒体与新闻',
                 blog: '博客',
@@ -373,6 +376,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/legal/" class="dropdown-item">${t.legal}</a>
                             <a href="/privacy/" class="dropdown-item">${t.privacy}</a>
                             <a href="/terms/" class="dropdown-item">${t.terms}</a>
+                            <a href="/law/" class="dropdown-item">${t.commercialLaw}</a>
                             <a href="/impressum/" class="dropdown-item">${t.impressum}</a>
                             <a href="/media/" class="dropdown-item">${t.mediaPress}</a>
                             <a href="/blog/" class="dropdown-item">${t.blog}</a>
