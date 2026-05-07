@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCP v1.2 — Public Review Draft Coming Soon: An Implementer's Preview - VeritasChain Blog</title>
+    <meta name="description" content="VCP v1.2 adds EU AI Act Articles 12/19/26/72, ESMA Algorithmic Trading Supervisory Briefing, and ESMA Q&As vocabulary. No event format breaks. All v1.0/v1.1 anchors remain valid.">
+    <meta name="keywords" content="VCP, VCP v1.2, EU AI Act, MiFID II, RTS 6, ESMA, post-quantum cryptography, implementation, VeritasChain">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="author" content="VeritasChain Standards Organization">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="VCP v1.2 — Public Review Draft Coming Soon: An Implementer's Preview">
+    <meta property="og:description" content="VCP v1.2 adds EU AI Act and ESMA vocabulary. Vocabulary extension, not protocol revision. All v1.0/v1.1 anchors remain valid.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-05-07-vcp-v1-2-prd-implementer-preview/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta property="og:site_name" content="VeritasChain Blog">
+    <meta property="article:published_time" content="2026-05-07T00:00:00Z">
+    <meta property="article:author" content="VeritasChain Standards Organization">
+    <meta property="article:section" content="Technical">
+    <meta property="article:tag" content="VCP v1.2">
+    <meta property="article:tag" content="EU AI Act">
+    <meta property="article:tag" content="MiFID II">
+    <meta property="article:tag" content="Post-Quantum Cryptography">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:title" content="VCP v1.2 — Public Review Draft Coming Soon">
+    <meta name="twitter:description" content="What's changing, what's not, and what you can prepare today.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    
+    <!-- Language Alternates -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/blog/posts/2026-05-07-vcp-v1-2-prd-implementer-preview/">
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/blog/posts/2026-05-07-vcp-v1-2-prd-implementer-preview/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/blog/posts/2026-05-07-vcp-v1-2-prd-implementer-preview/zh/">
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/blog/posts/2026-05-07-vcp-v1-2-prd-implementer-preview/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-05-07-vcp-v1-2-prd-implementer-preview/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+    
+    <style>
+        .article-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+        }
+        
+        .article-content {
+            background: #0f172a;
+            padding: 4rem 2rem;
+        }
+        
+        .prose {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+        
+        .prose h2 {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #8b5cf6;
+        }
+        
+        .prose h3 {
+            color: #e2e8f0;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+        }
+        
+        .prose p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .prose strong {
+            color: #f1f5f9;
+        }
+        
+        .prose ul, .prose ol {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .prose li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .prose code {
+            background: #1e293b;
+            color: #a78bfa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .prose pre {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .prose pre code {
+            background: none;
+            padding: 0;
+            color: #e2e8f0;
+        }
+        
+        .prose a {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+        
+        .prose a:hover {
+            color: #93c5fd;
+        }
+        
+        .prose blockquote {
+            border-left: 4px solid #8b5cf6;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #94a3b8;
+        }
+        
+        .key-stat {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .key-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #8b5cf6;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-top: 0.25rem;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid #8b5cf6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .highlight-box-title {
+            color: #a78bfa;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .takeaway-box {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #22c55e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .takeaway-box-title {
+            color: #4ade80;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .warning-box-title {
+            color: #fbbf24;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .profile-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .profile-table th {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 2px solid #8b5cf6;
+        }
+        
+        .profile-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #334155;
+            color: #cbd5e1;
+        }
+        
+        .profile-table tr:hover td {
+            background: #1e293b;
+        }
+        
+        .toc {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+        }
+        
+        .toc-title {
+            color: #f1f5f9;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .toc-list li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc-list a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .toc-list a:hover {
+            color: #a78bfa;
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .cta-title {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-btn-primary {
+            background: #fff;
+            color: #8b5cf6;
+        }
+        
+        .cta-btn-primary:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+        
+        .cta-btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+        
+        .cta-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .language-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .language-selector a {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .language-selector a.active {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .language-selector a:not(.active) {
+            background: #1e293b;
+            color: #94a3b8;
+            border: 1px solid #334155;
+        }
+        
+        .language-selector a:not(.active):hover {
+            background: #334155;
+            color: #f1f5f9;
+        }
+        
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "VCP v1.2 — Public Review Draft Coming Soon: An Implementer's Preview",
+        "description": "VCP v1.2 adds EU AI Act Articles 12/19/26/72, ESMA Algorithmic Trading Supervisory Briefing, and ESMA Q&As vocabulary. No event format breaks. All v1.0/v1.1 anchors remain valid.",
+        "image": "https://veritaschain.org/assets/OGP.png",
+        "author": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "VeritasChain Standards Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://veritaschain.org/assets/img/logo.png"
+            }
+        },
+        "datePublished": "2026-05-07",
+        "dateModified": "2026-05-07",
+        "keywords": ["VCP", "VCP v1.2", "EU AI Act", "MiFID II", "RTS 6", "ESMA", "post-quantum cryptography"]
+    }
+    </script>
+</head>
+<body style="background: #0f172a; min-height: 100vh;">
+    
+    <!-- VCP Header -->
+    <vcp-header></vcp-header>
+    
+    <!-- Article Hero -->
+    <section class="article-hero">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <div style="margin-bottom: 1rem;">
+                <a href="/blog/" style="color: #94a3b8; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Blog
+                </a>
+            </div>
+            
+            <div class="version-badge">
+                <i class="fas fa-code-branch"></i> VCP v1.2 PRD
+            </div>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                <span style="background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">
+                    <i class="fas fa-code"></i> Technical
+                </span>
+                <span style="background: #1e293b; color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; border: 1px solid #334155;">
+                    EU AI Act
+                </span>
+                <span style="background: #1e293b; color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; border: 1px solid #334155;">
+                    MiFID II
+                </span>
+                <span style="background: #1e293b; color: #60a5fa; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; border: 1px solid #334155;">
+                    Post-Quantum
+                </span>
+            </div>
+            
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: #f1f5f9; line-height: 1.2; margin-bottom: 1.5rem;">
+                VCP v1.2 — Public Review Draft Coming Soon: An Implementer's Preview
+            </h1>
+            
+            <p style="font-size: 1.25rem; color: #94a3b8; line-height: 1.7; margin-bottom: 2rem;">
+                What's changing, what's not, and what you can prepare today. VCP v1.2 is a vocabulary extension of v1.1 — the cryptographic substrate is unchanged, no event format breaks, and all v1.0/v1.1 anchors remain valid under v1.2 verification tools.
+            </p>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem; color: #64748b; font-size: 0.875rem;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-calendar"></i> May 7, 2026
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-clock"></i> 21 min read
+                </span>
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="far fa-building"></i> VeritasChain Standards Organization
+                </span>
+            </div>
+            
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <a href="/blog/posts/2026-05-07-vcp-v1-2-prd-implementer-preview/" class="active">English</a>
+                <a href="/blog/posts/2026-05-07-vcp-v1-2-prd-implementer-preview/ja/">日本語</a>
+                <a href="/blog/posts/2026-05-07-vcp-v1-2-prd-implementer-preview/zh/">中文</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Article Content -->
+    <article class="article-content">
+        <div class="prose">
+            
+            <!-- Key Stats -->
+            <div class="key-stat">
+                <div class="key-stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">45</div>
+                        <div class="stat-label">Day Review Period</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">New CORE Fields</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Regulatory Profiles</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Breaking Changes</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Key Takeaways -->
+            <div class="takeaway-box">
+                <div class="takeaway-box-title"><i class="fas fa-check-circle"></i> Five Things to Know Before Going Further</div>
+                <ol style="margin: 0; padding-left: 1.5rem;">
+                    <li><strong>VCP v1.2 is a vocabulary extension of v1.1.</strong> The cryptographic substrate — COSE_Sign1, RFC 6962 Merkle, RFC 8785 JCS, RFC 3161 / eIDAS / SCITT external anchoring — is unchanged. No event format breaks.</li>
+                    <li><strong>All v1.0 and v1.1 anchors remain valid under v1.2 verification tools.</strong> Re-issuance, re-signing, and re-anchoring of historical events are not required.</li>
+                    <li><strong>All new v1.2 fields enter at status OPTIONAL in v1.2.0.</strong> The promotion ratchet to SHOULD and MUST is published in advance with target versions.</li>
+                    <li><strong>The two v1.1 hard deadlines remain unchanged.</strong> Policy Identification mandatory by 25 March 2026 (already in force) and Silver-tier external anchoring mandatory by 25 June 2026.</li>
+                    <li><strong>This is a pre-publication announcement.</strong> The PRD will open in the coming days at <code>github.com/veritaschain/vcp-spec</code>. Public Review will run for 45 days.</li>
+                </ol>
+            </div>
+            
+            <!-- Table of Contents -->
+            <div class="toc">
+                <div class="toc-title">
+                    <i class="fas fa-list"></i> Table of Contents
+                </div>
+                <ol class="toc-list">
+                    <li><a href="#what-v12-is">What v1.2 is — and what it is not</a></li>
+                    <li><a href="#schema-changes">Schema-level changes: a tour at the byte level</a></li>
+                    <li><a href="#regulatory-profile">The Regulatory Profile selector</a></li>
+                    <li><a href="#clock-evidence">ClockEvidence structure</a></li>
+                    <li><a href="#evidence-channels">The new evidence channels</a></li>
+                    <li><a href="#pqc-path">The post-quantum signature path</a></li>
+                    <li><a href="#reb">The Regulatory Evidence Bundle</a></li>
+                    <li><a href="#migration">Migration: v1.1 to v1.2</a></li>
+                    <li><a href="#honest-scoping">Honest scoping: what VCP v1.2 still does not do</a></li>
+                    <li><a href="#public-review">How to engage with Public Review</a></li>
+                </ol>
+            </div>
+            
+            <!-- Section 1: What v1.2 Is -->
+            <h2 id="what-v12-is"><i class="fas fa-info-circle" style="color: #8b5cf6; margin-right: 0.5rem;"></i> What v1.2 is — and what it is not</h2>
+            
+            <p>VCP v1.1 (specification dated 30 December 2025, public release 1 January 2026) repositioned the protocol from "tamper-evidence" to "third-party verifiability + completeness guarantees." Three commitments anchor it: a three-layer architecture (Event / Collection / External Integrity), all-tier external anchoring, and mandatory Policy Identification. Those commitments are inherited unchanged in v1.2.</p>
+            
+            <div class="highlight-box">
+                <div class="highlight-box-title"><i class="fas fa-bullseye"></i> What v1.2 Adds (In One Sentence)</div>
+                <p style="margin: 0;"><strong>The vocabulary that EU AI Act Articles 12 / 19 / 26 / 72, ESMA's February 2026 Algorithmic Trading Supervisory Briefing, and ESMA Q&As 2825 / 2826 expect to see in an audit trail.</strong> It does not introduce a new cryptographic primitive. It does not break any existing event. It does not move any deadline.</p>
+            </div>
+            
+            <p>To put a finer edge on this: a v1.1 event passing through a v1.2 verifier still verifies. A v1.2 event missing the new optional fields still verifies. The only category of v1.2 event that requires special handling is one carrying an <code>ed25519+mldsa65</code> hybrid signature — and even that is positioned as MAY in v1.2.0.</p>
+            
+            <!-- Section 2: Schema Changes -->
+            <h2 id="schema-changes"><i class="fas fa-code" style="color: #8b5cf6; margin-right: 0.5rem;"></i> Schema-level changes: a tour at the byte level</h2>
+            
+            <h3>The CORE Module</h3>
+            
+            <p>CORE is the only module REQUIRED in every conformant deployment. The v1.2 extension adds <strong>five fields</strong> on top of the v1.1 schema, all optional at v1.2.0:</p>
+            
+            <ul>
+                <li><code>regulatory_profile</code> — Declares the rule-book against which the deployment intends to be readable</li>
+                <li><code>agent_id</code> — Broadly applicable to any AI agent; technical identifier, does not imply legal autonomy classification</li>
+                <li><code>reference_database_id</code> — Conditional Article 12(3)(b)</li>
+                <li><code>use_session_start</code> — Conditional Article 12(3)(a) start</li>
+                <li><code>use_session_end</code> — Conditional Article 12(3)(a) end</li>
+            </ul>
+            
+            <p>A minimal v1.2.0 event indistinguishable in semantics from a v1.1 event:</p>
+            
+            <pre><code>{
+  "vcp_version": "1.2",
+  "event_id":    "0196a98b-4980-7abc-8123-4567890def01",
+  "event_type":  "trade.order",
+  "issuer_id":   "did:web:example-firm.eu",
+  "policy_id":   "example-policy-2026-01",
+  "issued_at":   "2026-05-07T09:00:00.000Z",
+  "payload_hash":"a1b2…",
+  "hash_alg":    "sha-256",
+  "sig_alg":     "ed25519",
+  "signature":   "MEUCI…",
+  "external_anchor": {
+    "anchor_type":  "RFC3161",
+    "anchor_value": "MIICk…",
+    "anchor_time":  "2026-05-07T09:00:05Z"
+  }
+}</code></pre>
+            
+            <p><strong>Existing v1.1 emitters that simply update the <code>vcp_version</code> constant from <code>"1.1"</code> to <code>"1.2"</code> produce conformant v1.2.0 events at the <code>regulatory_profile = NONE</code> profile.</strong> No further code change is required for the simplest migration path.</p>
+            
+            <!-- Section 3: Regulatory Profile -->
+            <h2 id="regulatory-profile"><i class="fas fa-balance-scale" style="color: #8b5cf6; margin-right: 0.5rem;"></i> The Regulatory Profile selector</h2>
+            
+            <p>The Regulatory Profile is the central operational addition of v1.2. It declares the rule-book against which the deployment intends to be readable.</p>
+            
+            <table class="profile-table">
+                <tr>
+                    <th>Value</th>
+                    <th>Meaning</th>
+                    <th>Triggered Obligations</th>
+                </tr>
+                <tr>
+                    <td><code>NONE</code></td>
+                    <td>No specific regulatory mapping</td>
+                    <td>v1.1 baseline only</td>
+                </tr>
+                <tr>
+                    <td><code>AI_ACT_HRAI</code></td>
+                    <td>High-risk AI per Reg (EU) 2024/1689</td>
+                    <td>Art. 12(1)–(2) MUST; Art. 12(3) conditional; PMM Manifest SHOULD; ClockEvidence SHOULD</td>
+                </tr>
+                <tr>
+                    <td><code>MIFID_ALGO</code></td>
+                    <td>Algorithmic trading per MiFID II Art. 4(1)(39)</td>
+                    <td>RTS 6 GOV fields MUST; PTCSnapshot SHOULD; <strong>ClockEvidence MUST</strong></td>
+                </tr>
+                <tr>
+                    <td><code>MIFID_HFT</code></td>
+                    <td>High-frequency algorithmic trading</td>
+                    <td>All MIFID_ALGO plus: Platinum tier MUST; PTPv2 ClockEvidence MUST</td>
+                </tr>
+                <tr>
+                    <td><code>MIXED_FINANCIAL_AI</code></td>
+                    <td>Both AI Act high-risk and MiFID applicable</td>
+                    <td>Union of the above</td>
+                </tr>
+            </table>
+            
+            <p><strong>Provisional values (not for production attestations):</strong> <code>US_BD_RECORDS</code>, <code>FINRA_MARGIN</code>, <code>CFTC_DCM</code>, <code>EIOPA_INSURANCE_AI</code>, <code>JFSA_AI_DP</code>. These may be renamed, merged, or withdrawn before GA.</p>
+            
+            <!-- Section 4: ClockEvidence -->
+            <h2 id="clock-evidence"><i class="fas fa-clock" style="color: #8b5cf6; margin-right: 0.5rem;"></i> ClockEvidence structure</h2>
+            
+            <p>The <code>clock_evidence</code> object is the operationalisation of ESMA Q&A 2825 (1 April 2026) and the timestamping expectations of Commission Delegated Regulation (EU) 2025/1155, Annex IV.</p>
+            
+            <pre><code>{
+  "clock_evidence": {
+    "utc_source":     "PTP-grandmaster:dc1",
+    "offset_us":      12.4,
+    "max_error_us":   38.0,
+    "holdover_state": "LOCKED",
+    "sync_method":    "PTPv2_LOCKED",
+    "last_sync_at":   "2026-05-07T08:59:55Z",
+    "clock_state":    "NOMINAL",
+    "attestation_ref":"https://example-firm.eu/clock/2026-05-07.json"
+  }
+}</code></pre>
+            
+            <p><strong>Tier obligations:</strong></p>
+            <ul>
+                <li><strong>Silver:</strong> SHOULD (raised from MAY in the internal draft after review)</li>
+                <li><strong>Gold:</strong> SHOULD; MUST when <code>regulatory_profile = MIFID_ALGO</code></li>
+                <li><strong>Platinum:</strong> MUST; MUST under any <code>MIFID_*</code> profile</li>
+            </ul>
+            
+            <!-- Section 5: Evidence Channels -->
+            <h2 id="evidence-channels"><i class="fas fa-stream" style="color: #8b5cf6; margin-right: 0.5rem;"></i> The new evidence channels</h2>
+            
+            <p>Five evidence channels are where the operational difference between v1.1 and v1.2 actually shows up at audit time:</p>
+            
+            <h3>1. gov.change_event</h3>
+            <p>Operationalises the ESMA Supervisory Briefing's six-category material-change taxonomy. Emitted <strong>before</strong> a change takes effect in production. Categories: <code>logic_change</code>, <code>execution_behavior</code>, <code>risk_control_change</code>, <code>external_dependency_change</code>, <code>adaptive_retraining</code>, <code>scope_change</code>.</p>
+            
+            <h3>2. trade.ptc_snapshot and trade.ptc_breach</h3>
+            <p>Article 13 of RTS 6 requires investment firms engaged in algorithmic trading to maintain pre-trade controls. <code>ptc_snapshot</code> records the state of controls; <code>ptc_breach</code> records what happened when a control fired.</p>
+            
+            <h3>3. gov.provider_dependency</h3>
+            <p>Records the operator's diligence on third-party dependencies. <code>dependency_kind</code>: <code>MARKET_DATA</code>, <code>EXECUTION_ALGO</code>, <code>RISK_ENGINE</code>, <code>MODEL_HOSTING</code>, <code>CLOUD_INFRA</code>, <code>MCP_TOOL_PROVIDER</code>.</p>
+            
+            <h3>4. gov.pmm_manifest</h3>
+            <p>Article 72 of the AI Act requires post-market monitoring of high-risk AI systems. The PMM Manifest is a pointer-and-hash bundle letting a supervisor verify what evidence the operator believed they had at the time of review.</p>
+            
+            <h3>5. recovery.* event types</h3>
+            <p>Five standardised recovery events: <code>recovery.policy</code>, <code>recovery.outage_public_notice</code>, <code>recovery.outage_ctp_notice</code>, <code>recovery.clock_degraded</code>, <code>recovery.data_feed_switch</code>, <code>recovery.model_retrained</code>, <code>recovery.integrity_test</code>.</p>
+            
+            <!-- Section 6: PQC Path -->
+            <h2 id="pqc-path"><i class="fas fa-shield-alt" style="color: #8b5cf6; margin-right: 0.5rem;"></i> The post-quantum signature path</h2>
+            
+            <p>The cryptographic addition in v1.2 is the reservation of <code>ed25519+mldsa65</code> as the canonical hybrid SignAlgo identifier. The wire format follows <code>draft-ietf-lamps-pq-composite-sigs-06</code>: classical Ed25519 (RFC 8032) and ML-DSA-65 (FIPS 204 Level 3).</p>
+            
+            <table class="profile-table">
+                <tr>
+                    <th>Version</th>
+                    <th>Verify Hybrid</th>
+                    <th>Emit Hybrid</th>
+                </tr>
+                <tr>
+                    <td>v1.2.0 (this PRD)</td>
+                    <td>MAY at all tiers</td>
+                    <td>MAY at all tiers; registry reserves <code>ed25519+mldsa65</code></td>
+                </tr>
+                <tr>
+                    <td>v1.2.1 (target Q1 2027)</td>
+                    <td>MUST at Platinum, SHOULD at Gold</td>
+                    <td>SHOULD at Platinum, MAY at Gold and Silver</td>
+                </tr>
+                <tr>
+                    <td>v1.3.0</td>
+                    <td>MUST at Platinum, MUST at Gold</td>
+                    <td>MUST at Platinum, SHOULD at Gold</td>
+                </tr>
+            </table>
+            
+            <p><strong>What this means for implementers today:</strong></p>
+            <ul>
+                <li>v1.2.0: continue emitting <code>sig_alg: "ed25519"</code>. Verify is unchanged.</li>
+                <li>Provision dual-stack issuer keys in your SCITT issuer-keys endpoint.</li>
+                <li>Begin tracking ML-DSA-65 library availability in your stack.</li>
+                <li>Plan hardware. ML-DSA-65 signatures are ~3.3 KB.</li>
+            </ul>
+            
+            <!-- Section 7: REB -->
+            <h2 id="reb"><i class="fas fa-archive" style="color: #8b5cf6; margin-right: 0.5rem;"></i> The Regulatory Evidence Bundle</h2>
+            
+            <p>The structural innovation of v1.2 is the <strong>Regulatory Evidence Bundle (REB)</strong> — a packaging contract that lets an operator deliver, on demand, a self-contained set of artefacts that an auditor or supervisor can verify independently.</p>
+            
+            <div class="highlight-box">
+                <div class="highlight-box-title"><i class="fas fa-check-double"></i> Three Normative Rules Govern the REB</div>
+                <ul style="margin: 0; padding-left: 1.5rem;">
+                    <li><strong>Reproducibility.</strong> Two independent assemblers, given the same period, scope, and source ledger, MUST produce the same content hash.</li>
+                    <li><strong>Profile-specific minima.</strong> Each Regulatory Profile carries a minimum-component set.</li>
+                    <li><strong>Signing.</strong> The REB MUST be signed by the issuing operator and SHOULD be co-signed by the operator's compliance function.</li>
+                </ul>
+            </div>
+            
+            <!-- Section 8: Migration -->
+            <h2 id="migration"><i class="fas fa-route" style="color: #8b5cf6; margin-right: 0.5rem;"></i> Migration: v1.1 to v1.2</h2>
+            
+            <p>For most v1.1 deployments, migration to v1.2.0 is a single-line change.</p>
+            
+            <ol>
+                <li><strong>Step 1 — Bump the protocol version constant.</strong> Change <code>"vcp_version": "1.1"</code> to <code>"vcp_version": "1.2"</code>.</li>
+                <li><strong>Step 2 — Choose a Regulatory Profile.</strong> If you do not know which profile applies, set <code>regulatory_profile: "NONE"</code>.</li>
+                <li><strong>Step 3 — Populate <code>clock_evidence</code> if your tier or profile requires it.</strong></li>
+                <li><strong>Step 4 — Emit the new evidence channels as your operations require them.</strong></li>
+                <li><strong>Step 5 — Assemble REBs on demand.</strong></li>
+            </ol>
+            
+            <div class="warning-box">
+                <div class="warning-box-title"><i class="fas fa-exclamation-triangle"></i> What You Are NOT Required To Do</div>
+                <ul style="margin: 0; padding-left: 1.5rem;">
+                    <li>Re-issue, re-sign, or re-anchor v1.0 or v1.1 events. They remain valid under v1.2 verification tools.</li>
+                    <li>Migrate to hybrid signatures in v1.2.0. The reservation of <code>ed25519+mldsa65</code> is forward-positioning, not a v1.2.0 requirement.</li>
+                    <li>Adopt every Provisional Regulatory Profile. They are reserved for community comment and may change.</li>
+                </ul>
+            </div>
+            
+            <!-- Section 9: Honest Scoping -->
+            <h2 id="honest-scoping"><i class="fas fa-exclamation-circle" style="color: #f59e0b; margin-right: 0.5rem;"></i> Honest scoping: what VCP v1.2 still does not do</h2>
+            
+            <ul>
+                <li><strong>VCP v1.2 is not a harmonised standard.</strong> It is published under the auspices of VeritasChain Standards Organization. It does not confer presumption of conformity with the EU AI Act, with MiFID II, or with any other law.</li>
+                <li><strong>VCP v1.2 supports evidence generation, not compliance.</strong> An operator that emits VCP events without the underlying governance, risk management, human oversight, and post-market monitoring will produce trustworthy evidence that they are non-compliant.</li>
+                <li><strong>VCP is not a blockchain.</strong> It anchors externally to RFC 3161 / eIDAS-qualified TSAs or to SCITT Receipts. There is no token, no consensus protocol.</li>
+                <li><strong>The two v1.1 hard deadlines remain unchanged.</strong> Policy Identification mandatory by 25 March 2026, and Silver-tier external anchoring mandatory by 25 June 2026.</li>
+            </ul>
+            
+            <!-- Section 10: Public Review -->
+            <h2 id="public-review"><i class="fas fa-comments" style="color: #8b5cf6; margin-right: 0.5rem;"></i> How to engage with Public Review</h2>
+            
+            <p>Public Review opens with the PRD publication this week and runs for <strong>45 days</strong>.</p>
+            
+            <p><strong>Where to submit comments:</strong> GitHub Issues at <code>github.com/veritaschain/vcp-spec</code>, using the Public Review Comment template.</p>
+            
+            <p><strong>What we are looking for from implementers:</strong></p>
+            <ul>
+                <li>Does <code>clock_evidence</code> as defined cover what your time infrastructure actually produces?</li>
+                <li>Does <code>trade.ptc_snapshot</code> capture every pre-trade control your venue or jurisdiction requires?</li>
+                <li>Does the <code>gov.change_event</code> taxonomy cover every change you would actually emit one for?</li>
+                <li>Does the REB minimum-content matrix match what your supervisors actually request?</li>
+                <li>Does the <code>requirements.txt</code> install cleanly on your CI image?</li>
+            </ul>
+            
+            <p><strong>Security findings:</strong> Report privately to <code>security@veritaschain.org</code>. 90-day responsible-disclosure timeline.</p>
+            
+            <!-- CTA -->
+            <div class="cta-box">
+                <div class="cta-title">Engage with VCP v1.2 Public Review</div>
+                <div class="cta-buttons">
+                    <a href="https://github.com/veritaschain/vcp-spec" class="cta-btn cta-btn-primary" target="_blank">
+                        <i class="fab fa-github"></i> GitHub Repo
+                    </a>
+                    <a href="/vcp/" class="cta-btn cta-btn-secondary">
+                        <i class="fas fa-book"></i> VCP Specification
+                    </a>
+                    <a href="mailto:technical@veritaschain.org" class="cta-btn cta-btn-secondary">
+                        <i class="fas fa-envelope"></i> Contact Technical
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Resources -->
+            <h2><i class="fas fa-link" style="color: #8b5cf6; margin-right: 0.5rem;"></i> Resources</h2>
+            
+            <p><strong>Once the PRD opens (this week):</strong></p>
+            <ul>
+                <li>Specification and reference implementation: <code>github.com/veritaschain/vcp-spec</code></li>
+                <li>Specification document: <code>VCP-Specification-v1_2-PRD.md</code></li>
+                <li>JSON Schemas: <code>schemas/</code></li>
+                <li>Reference verifier: <code>tools/vcp_verify.py</code></li>
+                <li>Conformance test suite: <code>tests/silver/</code>, <code>tests/gold/</code></li>
+                <li>PQC reference vectors: <code>pqc-vectors/</code></li>
+            </ul>
+            
+            <p><strong>Regulatory references cited:</strong></p>
+            <ul>
+                <li>Regulation (EU) 2024/1689 (AI Act), Articles 12, 19, 26, 72</li>
+                <li>Directive 2014/65/EU (MiFID II), Article 4(1)(39)</li>
+                <li>Commission Delegated Regulation (EU) 2017/589 (RTS 6)</li>
+                <li>Commission Delegated Regulation (EU) 2025/1155 (RTS 25 successor), Annex IV</li>
+                <li>ESMA Supervisory Briefing on Algorithmic Trading, 26 February 2026</li>
+                <li>ESMA Q&A 2825 and Q&A 2826, 1 April 2026</li>
+            </ul>
+            
+            <!-- Document Info -->
+            <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #334155; color: #64748b; font-size: 0.875rem;">
+                <p><strong>Document ID:</strong> VSO-BLOG-VCP-V12-PRD-2026-001</p>
+                <p><strong>Version:</strong> 1.0</p>
+                <p><strong>Published:</strong> May 7, 2026</p>
+                <p><strong>Organization:</strong> VeritasChain Standards Organization · Tokyo, Japan</p>
+                <p><strong>Contact:</strong> <a href="mailto:info@veritaschain.org">info@veritaschain.org</a> | <a href="mailto:standards@veritaschain.org">standards@veritaschain.org</a> | <a href="mailto:technical@veritaschain.org">technical@veritaschain.org</a></p>
+                <p><strong>License:</strong> <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0 International</a></p>
+                <p style="margin-top: 1rem; font-style: italic;">"Verify, Don't Trust"</p>
+                <p>Member, Japan FinTech Association · D-U-N-S: 698368529</p>
+            </div>
+        </div>
+    </article>
+    
+    <!-- VCP Footer -->
+    <vcp-footer></vcp-footer>
+    
+    <script>
+        // Smooth scroll for TOC links
+        document.querySelectorAll('.toc-list a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
