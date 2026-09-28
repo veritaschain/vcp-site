@@ -250,7 +250,7 @@
             <div class="info-box">
                 <h4 class="text-blue-400 font-semibold mb-3"><i class="fas fa-bullhorn mr-2"></i>Executive Summary</h4>
                 <p class="text-slate-300 mb-0">
-                    VCP v1.1 introduces a three-layer cryptographic architecture that provides <strong>completeness guarantees</strong>—enabling third parties to verify that no required events were omitted. With <strong>mandatory external anchoring</strong> across all compliance tiers and <strong>VCP-XREF cross-referencing</strong> for multi-jurisdictional mapping, organizations can now demonstrate verifiable compliance with EU AI Act Article 12, DORA Article 17, MiFID II RTS 25, and emerging prEN ISO/IEC 24970 standards.
+                    VCP v1.1 introduces a three-layer cryptographic architecture that provides <strong>verifiable completeness</strong>—enabling third parties to verify, at anchor (batch) granularity, that no logged events were omitted. With <strong>mandatory external anchoring</strong> across all compliance tiers and <strong>VCP-XREF cross-referencing</strong> for multi-jurisdictional mapping, organizations can now produce verifiable evidence relevant to EU AI Act Article 12, DORA Article 17, MiFID II RTS 25, and emerging prEN ISO/IEC 24970 standards.
                 </p>
             </div>
 
@@ -260,7 +260,7 @@
                 <nav class="grid md:grid-cols-2 gap-x-6">
                     <a href="#regulatory-landscape" class="toc-link">I. The Multi-Jurisdictional Regulatory Landscape</a>
                     <a href="#three-layer-architecture" class="toc-link">II. VCP v1.1 Three-Layer Architecture</a>
-                    <a href="#completeness-guarantees" class="toc-link">III. Completeness Guarantees Explained</a>
+                    <a href="#completeness-guarantees" class="toc-link">III. Verifiable Completeness Explained</a>
                     <a href="#external-anchoring" class="toc-link">IV. Mandatory External Anchoring</a>
                     <a href="#vcp-xref" class="toc-link">V. VCP-XREF Cross-Referencing</a>
                     <a href="#regulatory-mapping" class="toc-link">VI. Regulatory Requirements Mapping</a>
@@ -358,7 +358,7 @@
             <h2 id="three-layer-architecture">II. VCP v1.1 Three-Layer Architecture</h2>
 
             <p>
-                VCP v1.1 implements a three-layer cryptographic architecture designed to provide <strong>verifiable completeness</strong>—ensuring that third parties can independently confirm that all required events are present and unmodified.
+                VCP v1.1 implements a three-layer cryptographic architecture designed to provide <strong>verifiable completeness</strong>—enabling third parties to independently verify, at anchor (batch) granularity, that logged events are present and unmodified.
             </p>
 
             <div class="diagram-box">
@@ -410,7 +410,7 @@ Mandatory Fields:
 ├── EventID: UUIDv7 (RFC 9562) - time-ordered unique identifier
 ├── TraceID: UUID - correlation across distributed systems
 ├── Timestamp: ISO 8601 + Unix epoch (microsecond precision)
-└── AccountID: Pseudonymized identifier (GDPR compliant)</code></pre>
+└── AccountID: Pseudonymized identifier (supports GDPR data minimisation)</code></pre>
             </div>
 
             <h3>Layer 2: Collection Integrity</h3>
@@ -452,16 +452,16 @@ Signature: Ed25519(MerkleRoot || Timestamp || PolicyID)</code></pre>
             </div>
 
             <!-- Section III: Completeness Guarantees -->
-            <h2 id="completeness-guarantees">III. Completeness Guarantees Explained</h2>
+            <h2 id="completeness-guarantees">III. Verifiable Completeness Explained</h2>
 
             <p>
-                The fundamental innovation in VCP v1.1 is the introduction of <strong>cryptographic completeness guarantees</strong>. Unlike traditional logging systems where completeness is asserted by the operator, VCP v1.1 enables third parties to mathematically verify that no events have been omitted.
+                The fundamental innovation in VCP v1.1 is the introduction of <strong>cryptographically verifiable completeness</strong>. Unlike traditional logging systems where completeness is asserted by the operator, VCP v1.1 enables third parties to mathematically verify that no logged events have been omitted from anchored batches.
             </p>
 
             <div class="warning-box">
                 <h4 class="text-yellow-400 font-semibold mb-3"><i class="fas fa-exclamation-triangle mr-2"></i>The Completeness Problem</h4>
                 <p class="text-slate-300 mb-0">
-                    Traditional audit logs can prove that recorded events are unmodified, but they <strong>cannot prove that all events were recorded</strong>. An operator could selectively omit problematic events while maintaining a valid hash chain. VCP v1.1's completeness guarantees solve this through external anchoring and cross-referencing.
+                    Traditional audit logs can prove that recorded events are unmodified, but they <strong>cannot prove that all events were recorded</strong>. An operator could selectively omit problematic events while maintaining a valid hash chain. VCP v1.1's verifiable completeness addresses this through external anchoring and cross-referencing.
                 </p>
             </div>
 
@@ -471,11 +471,11 @@ Signature: Ed25519(MerkleRoot || Timestamp || PolicyID)</code></pre>
                 <li><strong>Sequence Numbering</strong>: Each event receives a monotonically increasing sequence number within its domain</li>
                 <li><strong>Batch Commitment</strong>: Events are batched at regular intervals with Merkle roots computed and anchored</li>
                 <li><strong>Gap Detection</strong>: Missing sequence numbers are detectable by any verifier</li>
-                <li><strong>External Witness</strong>: Anchored roots prove that the batch existed at a specific time</li>
+                <li><strong>External Witness</strong>: Anchored roots make it verifiable that the batch existed at a specific time</li>
             </ol>
 
             <div class="success-box">
-                <h4 class="text-green-400 font-semibold mb-3"><i class="fas fa-check-circle mr-2"></i>Verification Guarantee</h4>
+                <h4 class="text-green-400 font-semibold mb-3"><i class="fas fa-check-circle mr-2"></i>Verification Properties</h4>
                 <p class="text-slate-300 mb-0">
                     A third-party verifier can confirm: (1) All events in a batch are present via Merkle inclusion proofs, (2) No gaps exist in sequence numbers, (3) The batch was anchored before a specific time via external timestamp, (4) Events cannot be added retroactively without invalidating the anchor.
                 </p>
@@ -485,7 +485,7 @@ Signature: Ed25519(MerkleRoot || Timestamp || PolicyID)</code></pre>
             <h2 id="external-anchoring">IV. Mandatory External Anchoring</h2>
 
             <p>
-                VCP v1.1 makes external anchoring <strong>mandatory for all compliance tiers</strong>. This is a significant change from v1.0 where external anchoring was optional. The rationale is clear: without external anchoring, completeness guarantees rely on trust in the operator.
+                VCP v1.1 makes external anchoring <strong>mandatory for all compliance tiers</strong>. This is a significant change from v1.0 where external anchoring was optional. The rationale is clear: without external anchoring, completeness claims rely on trust in the operator.
             </p>
 
             <h3>Anchoring Frequency by Tier</h3>
@@ -496,7 +496,7 @@ Signature: Ed25519(MerkleRoot || Timestamp || PolicyID)</code></pre>
                         <th>Tier</th>
                         <th>Anchoring Frequency</th>
                         <th>External Services</th>
-                        <th>Completeness Guarantee</th>
+                        <th>Completeness Granularity</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -612,7 +612,7 @@ VCP-XREF Structure:
             <!-- Section VI: Regulatory Mapping -->
             <h2 id="regulatory-mapping">VI. Regulatory Requirements Mapping</h2>
 
-            <h3>EU AI Act Article 12 Compliance</h3>
+            <h3>EU AI Act Article 12 Mapping</h3>
 
             <table>
                 <thead>
@@ -662,7 +662,7 @@ VCP-XREF Structure:
                     <tr>
                         <th>VCP Tier</th>
                         <th>Accuracy Requirement</th>
-                        <th>RTS 25 Compliance</th>
+                        <th>RTS 25 Mapping</th>
                         <th>Synchronization Method</th>
                     </tr>
                 </thead>
@@ -676,7 +676,7 @@ VCP-XREF Structure:
                     <tr>
                         <td><span class="tier-badge tier-gold">Gold</span></td>
                         <td>±1 millisecond</td>
-                        <td>Compliant (Member)</td>
+                        <td>Matches (Member)</td>
                         <td>IEEE 1588 PTP</td>
                     </tr>
                     <tr>

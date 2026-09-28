@@ -791,7 +791,7 @@
             
             <h3>Three-Layer Architecture</h3>
             
-            <p>VCP v1.1 implements integrity guarantees across three distinct layers:</p>
+            <p>VCP v1.1 implements integrity verification across three distinct layers:</p>
             
             <h4>Layer 1 (L1) - Event-Level Integrity</h4>
             
@@ -837,11 +837,11 @@
                 <li><strong>Multi-anchor strategy</strong>: Platinum tier requires multiple independent anchors</li>
             </ul>
             
-            <p>External anchoring establishes a tamper-evident timestamp that cannot be manipulated even by the system operator. The anchor creates an irrefutable proof that specific events existed at a specific time.</p>
+            <p>External anchoring establishes a tamper-evident timestamp whose manipulation, even by the system operator, is detectable. The anchor creates independently verifiable evidence that specific events existed at a specific time.</p>
             
-            <h3>VCP v1.1 Completeness Guarantees</h3>
+            <h3>VCP v1.1 Verifiable Completeness</h3>
             
-            <p>VCP v1.0 provided tamper detection—the ability to identify if events had been modified. VCP v1.1 extends this with completeness guarantees—the ability to detect if events are <em>missing</em>.</p>
+            <p>VCP v1.0 provided tamper detection—the ability to identify if events had been modified. VCP v1.1 extends this with verifiable completeness—the ability to detect, at anchor (batch) granularity, if events are <em>missing</em>.</p>
             
             <h4>New Threat Models Addressed:</h4>
             
@@ -896,7 +896,7 @@ REQ-ML-03: Each log server maintains an independent Merkle tree</code></pre>
 REQ-GS-02: Roots are signed with Ed25519: "server_id, timestamp, root_hash"
 REQ-GS-03: Root inconsistency detection triggers immediate ALERT generation</code></pre>
             
-            <p>The gossip protocol prevents split-view attacks where different parties are shown different versions of the event history. By requiring consistent roots across all log servers, VCP ensures a single authoritative view of events.</p>
+            <p>The gossip protocol makes split-view attacks—where different parties are shown different versions of the event history—detectable. By requiring consistent roots across all log servers, VCP makes divergent views of events detectable.</p>
             
             <h3>Module Structure</h3>
             
@@ -1002,10 +1002,10 @@ REQ-GS-03: Root inconsistency detection triggers immediate ALERT generation</cod
                         <td>Exchanges, HFT firms</td>
                     </tr>
                     <tr>
-                        <td><strong>RTS 25 compliance</strong></td>
+                        <td><strong>RTS 25 mapping</strong></td>
                         <td>Non-HFT</td>
                         <td>Non-HFT</td>
-                        <td>HFT-compliant (100μs)</td>
+                        <td>HFT threshold (100μs)</td>
                     </tr>
                 </tbody>
             </table>
@@ -1219,7 +1219,7 @@ REQ-GS-03: Root inconsistency detection triggers immediate ALERT generation</cod
                 <tbody>
                     <tr>
                         <td><strong>Standardization status</strong></td>
-                        <td>Implementation-ready, ISO/TC 68 proposal submitted</td>
+                        <td>Implementation-ready; IETF individual Internet-Draft</td>
                         <td>IETF draft stage</td>
                     </tr>
                     <tr>
@@ -1275,13 +1275,13 @@ REQ-GS-03: Root inconsistency detection triggers immediate ALERT generation</cod
                     </tr>
                     <tr>
                         <td><strong>ISO standardization</strong></td>
-                        <td>TC 68 (financial services)</td>
+                        <td>Not submitted</td>
                         <td>Fast-track in progress</td>
                     </tr>
                 </tbody>
             </table>
             
-            <p>C2PA and VCP address different regulatory requirements. C2PA focuses on content provenance—proving that images and media are authentic and unmanipulated. VCP focuses on behavioral provenance—proving that AI trading decisions occurred as recorded. Organizations subject to both Article 12 (logging) and Article 50 (content labeling) requirements may need both standards.</p>
+            <p>C2PA and VCP address different regulatory requirements. C2PA focuses on content provenance—proving that images and media are authentic and unmanipulated. VCP focuses on behavioral provenance—making it verifiable that AI trading decisions occurred as recorded. Organizations subject to both Article 12 (logging) and Article 50 (content labeling) requirements may need both standards.</p>
             
             <h3>ISO/IEC 42001 (AI Management System)</h3>
             
@@ -1420,7 +1420,7 @@ REQ-GS-03: Root inconsistency detection triggers immediate ALERT generation</cod
                 <tbody>
                     <tr>
                         <td><strong>2025</strong></td>
-                        <td>ISO/TC 68 NWIP submission complete; proposals submitted to 67+ regulatory authorities across 50+ jurisdictions</td>
+                        <td>Proposals submitted to 67+ regulatory authorities across 50+ jurisdictions</td>
                     </tr>
                     <tr>
                         <td><strong>2026</strong></td>
@@ -1500,7 +1500,7 @@ REQ-GS-03: Root inconsistency detection triggers immediate ALERT generation</cod
             <p>Organizations that implement VCP before regulatory enforcement begins will benefit from:</p>
             
             <ol>
-                <li><strong>Compliance certainty</strong>: Proven infrastructure when authorities begin oversight</li>
+                <li><strong>Regulatory readiness</strong>: Tested infrastructure when authorities begin oversight</li>
                 <li><strong>Operational maturity</strong>: Time to resolve implementation issues before penalties apply</li>
                 <li><strong>Competitive positioning</strong>: Ability to demonstrate transparency to counterparties and clients</li>
                 <li><strong>Standard-setting influence</strong>: Opportunity to contribute to emerging harmonized standards</li>
@@ -1515,18 +1515,18 @@ REQ-GS-03: Root inconsistency detection triggers immediate ALERT generation</cod
             
             <p>The EU AI Act represents a fundamental shift in how regulators approach AI governance. The traditional model—where organizations self-reported compliance and regulators conducted periodic audits—is inadequate for AI systems operating at algorithmic speeds with opaque decision processes.</p>
             
-            <p>The new paradigm requires <strong>verification rather than trust</strong>. It's not enough to claim that your AI system makes fair decisions; you must provide cryptographic proof that specific decisions were made, when they were made, and what factors influenced them.</p>
+            <p>The new paradigm requires <strong>verification rather than trust</strong>. It's not enough to claim that your AI system makes fair decisions; you must provide verifiable cryptographic evidence that specific decisions were made, when they were made, and what factors influenced them.</p>
             
             <p>VCP v1.1 implements this paradigm shift for algorithmic trading. By combining:</p>
             <ul>
                 <li><strong>Hash chains</strong> that make tampering detectable</li>
                 <li><strong>Merkle trees</strong> that enable efficient verification</li>
-                <li><strong>External anchors</strong> that establish irrefutable timestamps</li>
-                <li><strong>Completeness guarantees</strong> that detect hidden events</li>
-                <li><strong>Multi-log replication</strong> that prevent selective omission</li>
+                <li><strong>External anchors</strong> that establish independently verifiable timestamps</li>
+                <li><strong>Verifiable completeness</strong> that makes hidden events detectable</li>
+                <li><strong>Multi-log replication</strong> that makes selective omission detectable</li>
             </ul>
             
-            <p>VCP provides the technical foundation for <strong>mathematically provable transparency</strong>.</p>
+            <p>VCP provides the technical foundation for <strong>mathematically verifiable transparency</strong>.</p>
             
             <div class="highlight-box success">
                 <h4><i class="fas fa-lightbulb"></i> The Bottom Line</h4>

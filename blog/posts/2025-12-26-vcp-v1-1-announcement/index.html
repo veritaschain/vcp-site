@@ -573,19 +573,19 @@
             
             <p>This created a gap in VCP's core principle of <strong>"Verify, Don't Trust."</strong></p>
             
-            <p>Here's the problem: A Merkle Tree is only as trustworthy as its root. If the Merkle Root is never externally anchored, the log producer could theoretically reconstruct the entire tree after the fact. Without external anchoring, the "immutability" guarantee relied on trusting the producer—exactly what VCP was designed to eliminate.</p>
+            <p>Here's the problem: A Merkle Tree is only as trustworthy as its root. If the Merkle Root is never externally anchored, the log producer could theoretically reconstruct the entire tree after the fact. Without external anchoring, tamper-evidence relied on trusting the producer—exactly what VCP was designed to eliminate.</p>
             
             <h3>The Solution: Mandatory External Anchoring</h3>
             
             <p>v1.1 resolves this by making External Anchoring <strong>REQUIRED for all tiers</strong>, with tier-appropriate frequencies and lightweight options for Silver tier implementations.</p>
             
-            <p>This isn't about adding burden—it's about ensuring that even the simplest VCP deployment provides what regulators and auditors actually need: <strong>externally verifiable proof of integrity</strong>.</p>
+            <p>This isn't about adding burden—it's about ensuring that even the simplest VCP deployment provides what regulators and auditors actually need: <strong>externally verifiable evidence of integrity</strong>.</p>
             
             <hr>
             
             <h2 id="three-layer">The Three-Layer Architecture</h2>
             
-            <p>One of the most significant changes in v1.1 is the introduction of a clear <strong>three-layer architecture</strong> for integrity and security. This structure clarifies how different cryptographic mechanisms work together and where each layer's guarantees originate.</p>
+            <p>One of the most significant changes in v1.1 is the introduction of a clear <strong>three-layer architecture</strong> for integrity and security. This structure clarifies how different cryptographic mechanisms work together and where each layer's integrity properties originate.</p>
             
             <div class="layer-diagram">┌─────────────────────────────────────────────────────────────────────┐
 │                                                                     │
@@ -604,7 +604,7 @@
 │                                                                     │
 │  LAYER 2: Collection Integrity    ← Core for external verifiability│
 │  ────────────────────────────────                                   │
-│  Purpose: Prove completeness of event batches                       │
+│  Purpose: Verify completeness of event batches                      │
 │                                                                     │
 │  Components:                                                        │
 │  ├─ Merkle Tree (RFC 6962): REQUIRED                               │
@@ -625,11 +625,11 @@
             
             <h3>Why This Structure Matters</h3>
             
-            <p><strong>Layer 1 (Event Integrity)</strong> ensures each individual event is complete and unmodified. The EventHash provides a fingerprint of the event's contents.</p>
+            <p><strong>Layer 1 (Event Integrity)</strong> makes any modification of an individual event detectable. The EventHash provides a fingerprint of the event's contents.</p>
             
-            <p><strong>Layer 2 (Collection Integrity)</strong> proves that a batch of events is complete—no events were added, removed, or reordered after the fact. The Merkle Tree structure enables efficient verification of any single event's inclusion in the batch.</p>
+            <p><strong>Layer 2 (Collection Integrity)</strong> makes the completeness of a batch of events verifiable—events added, removed, or reordered after the fact become detectable. The Merkle Tree structure enables efficient verification of any single event's inclusion in the batch.</p>
             
-            <p><strong>Layer 3 (External Verifiability)</strong> is where VCP delivers its core value proposition. By anchoring the Merkle Root to an external, immutable target (blockchain, RFC 3161 TSA, or attested database), we create proof that <strong>cannot be retroactively modified by the log producer</strong>.</p>
+            <p><strong>Layer 3 (External Verifiability)</strong> is where VCP delivers its core value proposition. By anchoring the Merkle Root to an external, immutable target (blockchain, RFC 3161 TSA, or attested database), we create evidence that <strong>the log producer cannot retroactively modify without detection</strong>.</p>
             
             <p>This is what makes "Verify, Don't Trust" possible. A third party can independently verify the integrity of your audit trail without trusting you.</p>
             
@@ -665,7 +665,7 @@
             <p>In v1.1, we've made PrevHash <strong>OPTIONAL</strong> because:</p>
             
             <ol>
-                <li><strong>Merkle Tree + External Anchor</strong> provides the essential guarantee of external verifiability</li>
+                <li><strong>Merkle Tree + External Anchor</strong> provides the essential basis for external verifiability</li>
                 <li><strong>Hash chains complement but don't replace</strong> external anchoring</li>
                 <li><strong>Simplifying Silver tier</strong> implementations reduces adoption barriers</li>
             </ol>
@@ -964,7 +964,7 @@ Examples:
             
             <p>VCP v1.1 strengthens our commitment to the principle of <strong>"Verify, Don't Trust."</strong></p>
             
-            <p>By making External Anchoring mandatory for all tiers, we ensure that every VCP deployment—from a developer's MT5 backtesting environment to a high-frequency trading firm's production systems—provides the same fundamental guarantee:</p>
+            <p>By making External Anchoring mandatory for all tiers, we ensure that every VCP deployment—from a developer's MT5 backtesting environment to a high-frequency trading firm's production systems—provides the same fundamental property:</p>
             
             <div class="highlight-box" style="text-align: center; border-color: rgba(59, 130, 246, 0.5);">
                 <p style="font-size: 1.25rem; color: #f1f5f9; font-weight: 700; margin: 0;"><strong>A third party can verify the integrity of your audit trail without trusting you.</strong></p>

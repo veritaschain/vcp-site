@@ -244,7 +244,7 @@
                     <a href="#anchoring" class="toc-link">8. Mandatory External Anchoring</a>
                     <a href="#policy" class="toc-link">9. Policy Identification & Tiers</a>
                     <a href="#xref" class="toc-link">10. VCP-XREF: Cross-Party Verification</a>
-                    <a href="#completeness" class="toc-link">11. Completeness Guarantees</a>
+                    <a href="#completeness" class="toc-link">11. Verifiable Completeness</a>
                     <a href="#mapping" class="toc-link">12. Regulatory Mapping</a>
                     <a href="#implementation" class="toc-link">13. Implementation Guidance</a>
                     <a href="#sidecar" class="toc-link">14. Sidecar Architecture</a>
@@ -337,14 +337,14 @@
                 
                 <p>This is the fundamental problem VCP exists to solve.</p>
 
-                <h3>2.4 How VCP v1.1 Would Have Helped</h3>
+                <h3>2.4 What VCP v1.1 Records Would Have Made Auditable</h3>
                 
                 <p>Had the trading systems been VCP v1.1 compliant:</p>
                 
                 <ul>
-                    <li><strong>Immutable Event Records</strong>: Every order and decision cryptographically hashed and signed with Ed25519</li>
+                    <li><strong>Tamper-Evident Event Records</strong>: Every order and decision cryptographically hashed and signed with Ed25519</li>
                     <li><strong>Externally Verifiable Timestamps</strong>: Mandatory external anchoring provides independent temporal evidence</li>
-                    <li><strong>Completeness Guarantees</strong>: Merkle tree construction creates cryptographic commitment to entire batch</li>
+                    <li><strong>Verifiable Completeness</strong>: Merkle tree construction creates cryptographic commitment to entire batch</li>
                     <li><strong>Cross-Party Verification</strong>: VCP-XREF creates independent records at both trading firm and broker levels</li>
                 </ul>
 
@@ -410,7 +410,7 @@
                         <tr><td>Centralized collection</td><td>✅</td><td>❌ (Distributed)</td></tr>
                         <tr><td>Cross-venue aggregation</td><td>✅</td><td>⚠️ (Via VCP-XREF)</td></tr>
                         <tr><td>Tamper evidence</td><td>❌</td><td>✅</td></tr>
-                        <tr><td>Completeness proof</td><td>❌</td><td>✅</td></tr>
+                        <tr><td>Completeness verification</td><td>❌</td><td>✅</td></tr>
                         <tr><td>Pre-submission verification</td><td>❌</td><td>✅</td></tr>
                         <tr><td>Cryptographic timestamps</td><td>❌</td><td>✅</td></tr>
                     </tbody>
@@ -482,9 +482,9 @@
                 
                 <p>VCP is built on a single foundational principle: <strong>"Verify, Don't Trust."</strong></p>
                 
-                <p>In a VCP-compliant system, <strong>no single party is trusted</strong>. Instead, cryptographic mechanisms ensure that:</p>
+                <p>In a VCP-compliant system, <strong>no single party is trusted</strong>. Instead, cryptographic mechanisms make the following verifiable:</p>
                 <ol>
-                    <li>Individual events cannot be modified after creation</li>
+                    <li>Any modification of individual events after creation is detectable</li>
                     <li>Events cannot be omitted from batches without detection</li>
                     <li>Timestamps are externally verified</li>
                     <li>Cross-party discrepancies are detectable</li>
@@ -518,14 +518,14 @@
                 </div>
 
                 <h3>Layer 1: Event Integrity</h3>
-                <p><strong>Purpose:</strong> Ensure individual events cannot be modified after creation.</p>
+                <p><strong>Purpose:</strong> Make any modification of individual events after creation detectable.</p>
                 <ul>
                     <li><strong>Required:</strong> EventHash (SHA-256 hash of canonicalized event)</li>
                     <li><strong>Optional:</strong> PrevHash (hash of previous event, creating a hash chain)</li>
                 </ul>
 
                 <h3>Layer 2: Collection Integrity</h3>
-                <p><strong>Purpose:</strong> Prove that event batches are complete—no events were omitted.</p>
+                <p><strong>Purpose:</strong> Make the completeness of event batches verifiable—omitted events are detectable.</p>
                 <ul>
                     <li><strong>Required:</strong> Merkle Tree (RFC 6962 compliant)</li>
                     <li><strong>Required:</strong> Merkle Root (single hash representing entire batch)</li>
@@ -620,11 +620,11 @@
             │   Verification  │
             └─────────────────┘</code></pre>
 
-                <p><strong>The Guarantee:</strong> Unless both parties collude (and compromise each other's external anchors), manipulation by one party is detectable by the other.</p>
+                <p><strong>The Result:</strong> Unless both parties collude (and compromise each other's external anchors), manipulation by one party is detectable by the other.</p>
 
-                <h2 id="completeness">11. Completeness Guarantees: Preventing Omission Attacks</h2>
+                <h2 id="completeness">11. Verifiable Completeness: Detecting Omission Attacks</h2>
                 
-                <p>VCP v1.1 provides <strong>batch-level completeness guarantees</strong> through:</p>
+                <p>VCP v1.1 makes <strong>completeness verifiable at batch (anchor) granularity</strong> through:</p>
                 <ol>
                     <li><strong>Merkle Tree Construction:</strong> All events contribute to a single root hash</li>
                     <li><strong>External Anchoring:</strong> The root hash is timestamped by a third party</li>
@@ -642,7 +642,7 @@
                         <tr><td>Clock synchronization (RTS 25)</td><td>ClockSyncStatus field + tier-specific requirements</td></tr>
                         <tr><td>Order record keeping</td><td>VCP-TRADE payload schema</td></tr>
                         <tr><td>Algorithm identification</td><td>PolicyIdentification with PolicyID</td></tr>
-                        <tr><td>Audit trail retention (7 years)</td><td>AnchorRecord provides long-term proof</td></tr>
+                        <tr><td>Audit trail retention (7 years)</td><td>AnchorRecord provides long-term verifiable evidence</td></tr>
                     </tbody>
                 </table>
 
@@ -730,7 +730,7 @@
                         <li><strong style="color: #f1f5f9;">Collection Integrity (Layer 2):</strong> No events can be omitted without detection</li>
                         <li><strong style="color: #f1f5f9;">External Verifiability (Layer 3):</strong> Third parties can verify without trusting the producer</li>
                         <li><strong style="color: #f1f5f9;">Cross-Party Verification (VCP-XREF):</strong> Disputes are resolved with cryptographic evidence</li>
-                        <li><strong style="color: #f1f5f9;">Privacy Preservation (VCP-PRIVACY):</strong> GDPR compliance without compromising audit integrity</li>
+                        <li><strong style="color: #f1f5f9;">Privacy Preservation (VCP-PRIVACY):</strong> GDPR erasure support without compromising audit integrity</li>
                         <li><strong style="color: #f1f5f9;">Future-Proofing (Crypto Agility):</strong> Migration path to post-quantum security</li>
                     </ul>
                 </div>

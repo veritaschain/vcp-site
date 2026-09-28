@@ -265,11 +265,11 @@
                     <li><strong>第四层：时间不对称</strong> — 印度和美国有10.5小时时差，跨市场套利无法执行</li>
                 </ul>
 
-                <h3>2.2 如果有VCP v1.1</h3>
+                <h3>2.2 VCP v1.1记录本可使哪些环节可审计</h3>
                 <ul>
-                    <li><strong>不可变事件记录</strong>：所有订单和决策使用Ed25519进行加密哈希和签名</li>
+                    <li><strong>可检测篡改的事件记录</strong>：所有订单和决策使用Ed25519进行加密哈希和签名</li>
                     <li><strong>外部可验证时间戳</strong>：强制外部锚定提供独立的时间证据</li>
-                    <li><strong>完整性保证</strong>：默克尔树构造创建对整个批次的加密承诺</li>
+                    <li><strong>完整性可验证性</strong>：默克尔树构造创建对整个批次的加密承诺</li>
                     <li><strong>跨方验证</strong>：VCP-XREF在交易公司和经纪商处创建独立记录</li>
                 </ul>
 
@@ -311,9 +311,9 @@
                 
                 <p>VCP建立在单一基本原则之上：<strong>"验证，而非信任"</strong></p>
                 
-                <p>在VCP合规系统中，<strong>不信任任何单一方</strong>。相反，加密机制确保：</p>
+                <p>在VCP合规系统中，<strong>不信任任何单一方</strong>。相反，加密机制使以下各项可验证：</p>
                 <ol>
-                    <li>单个事件在创建后无法修改</li>
+                    <li>单个事件创建后的任何修改都可被检测</li>
                     <li>事件无法在不被检测的情况下从批次中省略</li>
                     <li>时间戳经过外部验证</li>
                     <li>跨方差异可被检测</li>
@@ -326,14 +326,14 @@
                 </div>
 
                 <h3>第一层：事件完整性</h3>
-                <p><strong>目的：</strong>确保单个事件在创建后无法修改。</p>
+                <p><strong>目的：</strong>使单个事件创建后的任何修改都可被检测。</p>
                 <ul>
                     <li><strong>必需：</strong>EventHash（规范化事件的SHA-256哈希）</li>
                     <li><strong>可选：</strong>PrevHash（前一事件的哈希，用于创建哈希链）</li>
                 </ul>
 
                 <h3>第二层：集合完整性</h3>
-                <p><strong>目的：</strong>证明事件批次是完整的——无遗漏。</p>
+                <p><strong>目的：</strong>使事件批次的完整性可验证——遗漏可被检测。</p>
                 <ul>
                     <li><strong>必需：</strong>默克尔树（RFC 6962合规）</li>
                     <li><strong>必需：</strong>默克尔根（代表整个批次的单一哈希）</li>
@@ -368,7 +368,7 @@
                 
                 <p>VCP-XREF引入<strong>双重日志</strong>——各方维护的独立VCP流，可以交叉引用。</p>
                 
-                <p><strong>保证：</strong>除非双方串通（并且破坏彼此的外部锚点），否则一方的操纵可以被另一方检测到。</p>
+                <p><strong>结果：</strong>除非双方串通（并且破坏彼此的外部锚点），否则一方的操纵可以被另一方检测到。</p>
 
                 <h2>10. 监管映射</h2>
 
@@ -379,7 +379,7 @@
                         <tr><td>时钟同步（RTS 25）</td><td>ClockSyncStatus字段 + 层级特定要求</td></tr>
                         <tr><td>订单记录保存</td><td>VCP-TRADE有效载荷架构</td></tr>
                         <tr><td>算法识别</td><td>带PolicyID的PolicyIdentification</td></tr>
-                        <tr><td>审计追踪保留（7年）</td><td>AnchorRecord提供长期证明</td></tr>
+                        <tr><td>审计追踪保留（7年）</td><td>AnchorRecord提供长期可验证证据</td></tr>
                     </tbody>
                 </table>
 
@@ -394,7 +394,7 @@
                         <li><strong style="color: #f1f5f9;">集合完整性（第二层）：</strong>无法在不被检测的情况下省略事件</li>
                         <li><strong style="color: #f1f5f9;">外部可验证性（第三层）：</strong>第三方无需信任生产者即可验证</li>
                         <li><strong style="color: #f1f5f9;">跨方验证（VCP-XREF）：</strong>争议通过加密证据解决</li>
-                        <li><strong style="color: #f1f5f9;">隐私保护（VCP-PRIVACY）：</strong>在不损害审计完整性的情况下符合GDPR</li>
+                        <li><strong style="color: #f1f5f9;">隐私保护（VCP-PRIVACY）：</strong>在不损害审计完整性的情况下支持GDPR删除要求</li>
                         <li><strong style="color: #f1f5f9;">面向未来（加密敏捷性）：</strong>向后量子安全的迁移路径</li>
                     </ul>
                 </div>

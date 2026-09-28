@@ -331,7 +331,7 @@
                     <p><strong><i class="fas fa-eye mr-2"></i>Monitor Nodes:</strong> Third-party monitoring nodes continuously verify root update frequency, event volume correlation with market data, and cross-server consistency. Anomalies like "no orders recorded during high market activity" become detectable.</p>
                 </div>
                 
-                <p>Neither Microsoft Signing Transparency nor Trillian provides these guarantees. Trillian's documentation explicitly acknowledges that it "does not prevent split-view attacks (showing different trees to different users)" and requires external gossip protocols that aren't part of the core specification.</p>
+                <p>Neither Microsoft Signing Transparency nor Trillian provides these mechanisms. Trillian's documentation explicitly acknowledges that it "does not prevent split-view attacks (showing different trees to different users)" and requires external gossip protocols that aren't part of the core specification.</p>
                 
                 <h2>Time: The Dimension Generic Systems Ignore</h2>
                 
@@ -459,7 +459,7 @@
                 
                 <h2>Privacy: The GDPR Challenge Generic Systems Can't Handle</h2>
                 
-                <p>Here's a fundamental tension: audit trails need to be <strong>immutable</strong> to provide integrity guarantees, but <strong>GDPR Article 17</strong> grants individuals the right to erasure. How do you delete personal data from a system designed to make deletion impossible?</p>
+                <p>Here's a fundamental tension: audit trails need to be <strong>append-only</strong> to provide verifiable integrity, but <strong>GDPR Article 17</strong> grants individuals the right to erasure. How do you delete personal data from a system designed to make any deletion detectable?</p>
                 
                 <p><strong>Generic transparency logs have no answer.</strong> Certificate Transparency is explicitly public—certificates are meant to be visible to everyone. Software signing transparency similarly assumes public visibility of signatures.</p>
                 
@@ -474,7 +474,7 @@
                 
                 <p><strong>Pseudonymization:</strong> Account identifiers are pseudonymized by default. The log contains AccountID values that are meaningless without a separate key-mapping table.</p>
                 
-                <p><strong>Crypto-Shredding:</strong> Personal data fields are encrypted with per-subject keys. When an individual exercises their right to erasure, the encryption key is destroyed. The ciphertext remains in the immutable log (preserving integrity), but becomes cryptographically inaccessible (satisfying erasure requirements).</p>
+                <p><strong>Crypto-Shredding:</strong> Personal data fields are encrypted with per-subject keys. When an individual exercises their right to erasure, the encryption key is destroyed. The ciphertext remains in the append-only log (preserving integrity), but becomes cryptographically inaccessible (addressing erasure requests).</p>
                 
 <pre><code>{
   "Privacy": {
@@ -485,7 +485,7 @@
   }
 }</code></pre>
                 
-                <p>This approach has been validated with GDPR legal counsel as a compliant mechanism for balancing audit requirements against erasure rights.</p>
+                <p>This approach has been validated with GDPR legal counsel as a mechanism for balancing audit requirements against erasure rights.</p>
                 
                 <h2>Compliance Tiers: Meeting Organizations Where They Are</h2>
                 
@@ -541,10 +541,10 @@
                 <p><strong>RTS 25:</strong> ClockSyncStatus and TimestampPrecision fields directly document compliance with clock synchronization requirements.</p>
                 
                 <h3>SEC Rule 17a-4 (Electronic Records)</h3>
-                <p>The 2022 amendment permits an audit-trail alternative to WORM storage. VCP's hash chains and Merkle trees provide the tamper-evident audit trails the rule requires.</p>
+                <p>The 2022 amendment permits an audit-trail alternative to WORM storage. VCP's hash chains and Merkle trees provide tamper-evident audit trails relevant to this audit-trail alternative.</p>
                 
                 <h3>GDPR (Data Protection)</h3>
-                <p>Crypto-shredding patterns enable Article 17 compliance while maintaining audit trail integrity. Pseudonymization reduces exposure of personal data in logs.</p>
+                <p>Crypto-shredding patterns enable Article 17 erasure while maintaining audit trail integrity. Pseudonymization reduces exposure of personal data in logs.</p>
                 
                 <h2>Technical Comparison Summary</h2>
                 
@@ -637,7 +637,7 @@
                         </tr>
                         <tr>
                             <td><strong>SEC 17a-4</strong></td>
-                            <td>✅ Audit-trail compliant</td>
+                            <td>✅ Audit-trail alternative supported</td>
                             <td>⚠️ Partial</td>
                             <td>⚠️ Partial</td>
                         </tr>
@@ -657,7 +657,7 @@
                 <p>Generic transparency technologies—however sophisticated—cannot provide this. They weren't designed for trading workflows, they don't address the omission attack threat model, they lack precision timing infrastructure, and they have no regulatory compliance mappings.</p>
                 
                 <div class="success-box">
-                    <p style="margin:0;"><strong><i class="fas fa-check-circle mr-2"></i>Current Status:</strong> As of January 2026, VCP has been submitted to <strong>67 regulatory authorities across 50 jurisdictions</strong>. The IETF SCITT Working Group has accepted VCP as a financial domain profile. Production implementations are running on MT5 and cTrader platforms.</p>
+                    <p style="margin:0;"><strong><i class="fas fa-check-circle mr-2"></i>Current Status:</strong> As of January 2026, VCP has been submitted to <strong>67 regulatory authorities across 50 jurisdictions</strong>. VCP is published as an individual IETF Internet-Draft (draft-kamimura-scitt-vcp) proposing a SCITT financial domain profile; it has not been adopted by the SCITT Working Group. Integration work targets the MT5 and cTrader platforms.</p>
                 </div>
                 
                 <p>The question for trading firms isn't whether cryptographic audit trails will become standard—regulatory momentum makes that increasingly inevitable. The question is whether to adopt a purpose-built standard designed for the domain, or to attempt patchwork solutions using generic infrastructure.</p>

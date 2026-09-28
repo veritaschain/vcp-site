@@ -265,11 +265,11 @@
                     <li><strong>第4層：時間的非対称性</strong> — インドと米国には10.5時間の時差があり、クロスマーケット裁定が不可能</li>
                 </ul>
 
-                <h3>2.2 VCP v1.1があれば</h3>
+                <h3>2.2 VCP v1.1の記録が監査可能にし得たこと</h3>
                 <ul>
-                    <li><strong>不変イベント記録</strong>：すべての注文と決定がEd25519で暗号学的にハッシュ化・署名</li>
+                    <li><strong>改ざん検知可能なイベント記録</strong>：すべての注文と決定がEd25519で暗号学的にハッシュ化・署名</li>
                     <li><strong>外部検証可能タイムスタンプ</strong>：必須外部アンカリングが独立した時間証拠を提供</li>
-                    <li><strong>完全性保証</strong>：マークルツリー構築がバッチ全体への暗号学的コミットメントを作成</li>
+                    <li><strong>完全性の検証可能性</strong>：マークルツリー構築がバッチ全体への暗号学的コミットメントを作成</li>
                     <li><strong>クロスパーティ検証</strong>：VCP-XREFが取引会社とブローカー両方で独立した記録を作成</li>
                 </ul>
 
@@ -311,9 +311,9 @@
                 
                 <p>VCPは単一の基本原則に基づいて構築されています：<strong>「信頼するな、検証せよ」</strong></p>
                 
-                <p>VCP準拠システムでは、<strong>単一当事者は信頼されません</strong>。代わりに、暗号学的メカニズムが以下を保証します：</p>
+                <p>VCP準拠システムでは、<strong>単一当事者は信頼されません</strong>。代わりに、暗号学的メカニズムにより以下が検証可能になります：</p>
                 <ol>
-                    <li>個々のイベントは作成後に修正不可能</li>
+                    <li>個々のイベントの作成後の修正は検知可能</li>
                     <li>イベントは検出されずにバッチから省略不可能</li>
                     <li>タイムスタンプは外部検証済み</li>
                     <li>クロスパーティの不一致は検出可能</li>
@@ -326,14 +326,14 @@
                 </div>
 
                 <h3>第1層：イベント完全性</h3>
-                <p><strong>目的：</strong>個々のイベントが作成後に修正されないことを保証。</p>
+                <p><strong>目的：</strong>個々のイベントの作成後の修正を検知可能にする。</p>
                 <ul>
                     <li><strong>必須：</strong>EventHash（正規化されたイベントのSHA-256ハッシュ）</li>
                     <li><strong>オプション：</strong>PrevHash（ハッシュチェーン作成用の前イベントのハッシュ）</li>
                 </ul>
 
                 <h3>第2層：コレクション完全性</h3>
-                <p><strong>目的：</strong>イベントバッチが完全であることを証明—省略なし。</p>
+                <p><strong>目的：</strong>イベントバッチの完全性を検証可能にする—省略は検知可能。</p>
                 <ul>
                     <li><strong>必須：</strong>マークルツリー（RFC 6962準拠）</li>
                     <li><strong>必須：</strong>マークルルート（バッチ全体を表す単一ハッシュ）</li>
@@ -368,7 +368,7 @@
                 
                 <p>VCP-XREFは<strong>デュアルロギング</strong>を導入—各当事者が維持する独立したVCPストリームで、相互参照可能です。</p>
                 
-                <p><strong>保証：</strong>両当事者が共謀（かつ互いの外部アンカーを侵害）しない限り、一方による操作は他方によって検出可能です。</p>
+                <p><strong>結果：</strong>両当事者が共謀（かつ互いの外部アンカーを侵害）しない限り、一方による操作は他方によって検出可能です。</p>
 
                 <h2>10. 規制マッピング</h2>
 
@@ -379,7 +379,7 @@
                         <tr><td>クロック同期（RTS 25）</td><td>ClockSyncStatusフィールド + 層別要件</td></tr>
                         <tr><td>注文記録保持</td><td>VCP-TRADEペイロードスキーマ</td></tr>
                         <tr><td>アルゴリズム識別</td><td>PolicyIDを持つPolicyIdentification</td></tr>
-                        <tr><td>監査証跡保持（7年）</td><td>AnchorRecordが長期証明を提供</td></tr>
+                        <tr><td>監査証跡保持（7年）</td><td>AnchorRecordが長期的に検証可能な証拠を提供</td></tr>
                     </tbody>
                 </table>
 
@@ -394,7 +394,7 @@
                         <li><strong style="color: #f1f5f9;">コレクション完全性（第2層）：</strong>検出されずにイベントを省略不可能</li>
                         <li><strong style="color: #f1f5f9;">外部検証可能性（第3層）：</strong>第三者が作成者を信頼せずに検証可能</li>
                         <li><strong style="color: #f1f5f9;">クロスパーティ検証（VCP-XREF）：</strong>紛争が暗号学的証拠で解決</li>
-                        <li><strong style="color: #f1f5f9;">プライバシー保護（VCP-PRIVACY）：</strong>監査完全性を損なわずにGDPR準拠</li>
+                        <li><strong style="color: #f1f5f9;">プライバシー保護（VCP-PRIVACY）：</strong>監査完全性を損なわずにGDPR消去要求に対応</li>
                         <li><strong style="color: #f1f5f9;">将来対応（暗号アジリティ）：</strong>ポスト量子セキュリティへの移行パス</li>
                     </ul>
                 </div>

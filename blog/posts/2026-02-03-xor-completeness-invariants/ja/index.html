@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XOR完全性不変量：デジタル証拠の「欠落」問題を解決する - VeritasChain Blog</title>
-    <meta name="description" content="XOR完全性不変量が、存在するものだけでなく「存在すべきもの」を証明するというフォレンジックの根本的課題をどのように解決するかを技術的に深掘りします。Content Provenance Protocol (CPP)の一部としてVeraSnapに実装。">
-    <meta name="keywords" content="XOR完全性不変量, Content Provenance Protocol, CPP, VeraSnap, デジタルフォレンジック, 省略攻撃, 削除検出, RFC 3161, 暗号化アキュムレータ, コンテンツ真正性, C2PA">
+    <meta name="description" content="XOR完全性不変量が、存在するものだけでなく「存在すべきもの」を検証するというフォレンジックの根本的課題にどのように対処するかを技術的に深掘りします。Capture Provenance Profile (CPP)の一部としてVeraSnapに実装。">
+    <meta name="keywords" content="XOR完全性不変量, Capture Provenance Profile, CPP, VeraSnap, デジタルフォレンジック, 省略攻撃, 削除検出, RFC 3161, 暗号化アキュムレータ, コンテンツ真正性, C2PA">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     <meta name="author" content="VeritasChain Standards Organization">
@@ -21,7 +21,7 @@
     
     <!-- Open Graph -->
     <meta property="og:title" content="XOR完全性不変量：デジタル証拠の「欠落」問題を解決する">
-    <meta property="og:description" content="XOR完全性不変量が、存在するものだけでなく「存在すべきもの」を証明するというフォレンジックの根本的課題を解決する技術解説。">
+    <meta property="og:description" content="XOR完全性不変量が、存在するものだけでなく「存在すべきもの」を検証するというフォレンジックの根本的課題に対処する技術解説。">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-02-03-xor-completeness-invariants/ja/">
     <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
@@ -313,7 +313,7 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "XOR完全性不変量：デジタル証拠の「欠落」問題を解決する",
-    "description": "XOR完全性不変量が、存在するものだけでなく「存在すべきもの」を証明するというフォレンジックの根本的課題をどのように解決するかを技術的に深掘りします。",
+    "description": "XOR完全性不変量が、存在するものだけでなく「存在すべきもの」を検証するというフォレンジックの根本的課題にどのように対処するかを技術的に深掘りします。",
     "image": "https://veritaschain.org/assets/OGP.png",
     "author": {
         "@type": "Organization",
@@ -364,7 +364,7 @@
             </h1>
             
             <p style="font-size: 1.15rem; color: #94a3b8; line-height: 1.7; margin-bottom: 2rem;">
-                VeraSnapとContent Provenance Protocol (CPP)の技術詳解—XORベースのアキュムレータがデータセットの完全性を決定論的に検証し、デジタル証拠の選択的削除を検出する方法。
+                VeraSnapとCapture Provenance Profile (CPP)の技術詳解—XORベースのアキュムレータがデータセットの完全性を決定論的に検証し、デジタル証拠の選択的削除を検出する方法。
             </p>
             
             <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
@@ -391,7 +391,7 @@
                     <i class="fas fa-bullseye"></i> 要旨
                 </div>
                 <p style="margin-bottom: 0;">
-                    XOR完全性不変量は、デジタル証拠の選択的削除を検出するための暗号学的ブレークスルーです。存在するものだけでなく、<em>存在すべきもの</em>を証明するというフォレンジックの根本的課題を解決します。Content Provenance Protocol (CPP)の一部として<a href="https://veritaschain.org/vap/cpp/verasnap">VeraSnap</a>に実装されたこの数学的アプローチは、すべてのプルーフバンドルにわたる実行XORアキュムレータを維持することで、データセットが完全であることを決定論的に検証します。
+                    XOR完全性不変量は、デジタル証拠の選択的削除を検出するための暗号学的ブレークスルーです。存在するものだけでなく、<em>存在すべきもの</em>を検証するというフォレンジックの根本的課題に対処します。Capture Provenance Profile (CPP)の一部として<a href="https://veritaschain.org/vap/cpp/verasnap">VeraSnap</a>に実装されたこの数学的アプローチは、すべてのプルーフバンドルにわたる実行XORアキュムレータを維持することで、データセットが完全であることを決定論的に検証します。
                 </p>
             </div>
             
@@ -418,7 +418,7 @@
             <h3>1.2 従来の完全性メカニズムの限界</h3>
             
             <p>
-                <strong>ハッシュチェーン</strong>は、各ハッシュが前のハッシュを組み込む連続したハッシュ依存関係を作成し、改ざん防止ログを形成します。しかし、チェーンの先頭または中間からのセグメント全体の削除を検出することは根本的にできません。
+                <strong>ハッシュチェーン</strong>は、各ハッシュが前のハッシュを組み込む連続したハッシュ依存関係を作成し、改ざん検知可能なログを形成します。しかし、チェーンの先頭または中間からのセグメント全体の削除を検出することは根本的にできません。
             </p>
             
             <p>
@@ -530,7 +530,7 @@
                     <li>それらをXOR：<code>(E₁ ⊕ E₂ ⊕ E₃) ⊕ (E₁ ⊕ E₃) = E₂ ≠ 0</code></li>
                 </ul>
                 <p style="margin-top: 1rem; margin-bottom: 0; color: #10b981;">
-                    <strong>非ゼロの結果は、数学的に不完全性を証明します。</strong>
+                    <strong>非ゼロの結果により、不完全性が数学的に検出可能になります。</strong>
                 </p>
             </div>
             
@@ -545,7 +545,7 @@
             <h3>3.1 3層セキュリティモデル</h3>
             
             <p>
-                Content Provenance Protocolは、Verifiable AI Provenance (VAP) Framework v1.2の下で、包括的な3層セキュリティアーキテクチャ内にXOR完全性を位置付けています：
+                Capture Provenance Profileは、Verifiable AI Provenance (VAP) Framework v1.2の下で、包括的な3層セキュリティアーキテクチャ内にXOR完全性を位置付けています：
             </p>
             
             <div class="architecture-diagram">┌─────────────────────────────────────────────────────────────┐
@@ -571,12 +571,12 @@
             
             <h4>3.2.2 「不在は証拠である」</h4>
             <p>
-                プロトコルは明示的に削除検出をアーキテクチャに組み込んでいます。
+                仕様は明示的に削除検出をアーキテクチャに組み込んでいます。
             </p>
             
             <h4>3.2.3 「来歴 ≠ 真実」</h4>
             <p>
-                CPPは、プロトコルがコンテンツがいつ、どこで、どのデバイスでキャプチャされたかを証明することを明示的に認めていますが、コンテンツ自体が真実であることは証明しません。
+                CPPは、仕様が検証可能にするのはコンテンツがいつ、どこで、どのデバイスでキャプチャされたかであり、コンテンツ自体の真実性は証明しないと明示しています。
             </p>
             
             <h3>3.3 適合性レベル</h3>
@@ -621,7 +621,7 @@
             <h3>4.1 製品概要</h3>
             
             <p>
-                <a href="https://veritaschain.org/vap/cpp/verasnap">VeraSnap</a>は、2026年1月16日にVeritasChain Co., Ltd.（東京）によって発表され、Content Provenance Protocolの最初の本番実装を表しています。iOSアプリケーションは<a href="https://apps.apple.com/app/id6757994770">Apple App Store</a>で175カ国に配布され、10言語でローカライズされています。
+                <a href="https://veritaschain.org/vap/cpp/verasnap">VeraSnap</a>は、2026年1月16日にVeritasChain Co., Ltd.（東京）によって発表され、Capture Provenance Profileの最初の本番実装を表しています。iOSアプリケーションは<a href="https://apps.apple.com/app/id6757994770">Apple App Store</a>で175カ国に配布され、10言語でローカライズされています。
             </p>
             
             <div class="key-point">
@@ -692,7 +692,7 @@
             <h2><i class="fas fa-flag-checkered" style="color: #10b981; margin-right: 0.5rem;"></i> VII. 結論</h2>
             
             <p>
-                XOR完全性不変量は、既存のコンテンツ来歴技術が認めつつも対処していない問題を解決します：<strong>証拠が省略されていないことを証明する</strong>。XORの自己逆元性質の数学的エレガンスは、O(1)の空間計算量で決定論的な削除検出を可能にします—これはハッシュチェーン、マークル木、C2PAマニフェストが本質的に提供しない機能です。
+                XOR完全性不変量は、既存のコンテンツ来歴技術が認めつつも対処していない問題を解決します：<strong>証拠の省略を検出可能にする</strong>。XORの自己逆元性質の数学的エレガンスは、O(1)の空間計算量で決定論的な削除検出を可能にします—これはハッシュチェーン、マークル木、C2PAマニフェストが本質的に提供しない機能です。
             </p>
             
             <div class="key-point">

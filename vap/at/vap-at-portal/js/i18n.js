@@ -86,7 +86,7 @@ const i18n = {
         },
         registry: {
             title: "Public Registry",
-            subtitle: "Assessed entities with VAP-AT evaluations",
+            subtitle: "Illustrative sample entries only — the organizations, systems and CABs shown are fictional; no VAP-AT assessments are listed yet",
             search: "Search organizations...",
             all: "All",
             organization: "Organization",
@@ -138,10 +138,10 @@ const i18n = {
             },
             c3: {
                 name: "Sequence Fixation",
-                question: "Is chronological order immutably recorded?",
+                question: "Is chronological order recorded in an append-only, tamper-evident form?",
                 s0: "No sequence guarantee. Events may be reordered or backdated.",
                 s1: "Timestamps present but not cryptographically fixed. Order depends on system clock integrity.",
-                s2: "Immutable sequence. UUIDv7 or similar provides cryptographically fixed ordering."
+                s2: "Append-only, tamper-evident sequence. UUIDv7 or similar provides cryptographically fixed ordering."
             },
             c4: {
                 name: "Decision Provenance",
@@ -277,7 +277,7 @@ const i18n = {
         },
         registry: {
             title: "公開レジストリ",
-            subtitle: "VAP-AT評価を受けたエンティティ",
+            subtitle: "例示用のサンプルのみ — 表示されている組織・システム・CABは架空です。VAP-AT評価の掲載はまだありません",
             search: "組織を検索...",
             all: "すべて",
             organization: "組織",
@@ -329,10 +329,10 @@ const i18n = {
             },
             c3: {
                 name: "順序固定",
-                question: "時系列順序が不変に記録されていますか？",
+                question: "時系列順序が追記専用・改ざん検知可能な形で記録されていますか？",
                 s0: "順序保証なし。イベントは並べ替えやバックデートが可能。",
                 s1: "タイムスタンプはあるが暗号学的に固定されていない。順序はシステムクロックの整合性に依存。",
-                s2: "不変の順序。UUIDv7または同等の機能が暗号学的に固定された順序を提供。"
+                s2: "追記専用で改ざん検知可能な順序。UUIDv7または同等の機能が暗号学的に固定された順序を提供。"
             },
             c4: {
                 name: "意思決定来歴",
@@ -468,7 +468,7 @@ const i18n = {
         },
         registry: {
             title: "公开注册",
-            subtitle: "已完成VAP-AT评估的实体",
+            subtitle: "仅为示例样本 — 所示组织、系统和CAB均为虚构；目前尚无VAP-AT评估列表",
             search: "搜索组织...",
             all: "全部",
             organization: "组织",
@@ -520,10 +520,10 @@ const i18n = {
             },
             c3: {
                 name: "序列固定",
-                question: "时间顺序是否不可变地记录？",
+                question: "时间顺序是否以仅追加、可检测篡改的形式记录？",
                 s0: "无序列保证。事件可能被重新排序或回溯。",
                 s1: "有时间戳但未加密固定。顺序依赖系统时钟完整性。",
-                s2: "不可变序列。UUIDv7或类似机制提供加密固定的排序。"
+                s2: "仅追加、可检测篡改的序列。UUIDv7或类似机制提供加密固定的排序。"
             },
             c4: {
                 name: "决策溯源",
@@ -659,7 +659,7 @@ const i18n = {
         },
         registry: {
             title: "Registro Público",
-            subtitle: "Entidades con evaluaciones VAP-AT",
+            subtitle: "Solo entradas de muestra ilustrativas: las organizaciones, sistemas y CAB mostrados son ficticios; aún no hay evaluaciones VAP-AT publicadas",
             search: "Buscar organizaciones...",
             all: "Todos",
             organization: "Organización",
@@ -711,10 +711,10 @@ const i18n = {
             },
             c3: {
                 name: "Fijación de Secuencia",
-                question: "¿Se registra inmutablemente el orden cronológico?",
+                question: "¿Se registra el orden cronológico en un formato de solo anexión que permita detectar manipulaciones?",
                 s0: "Sin garantía de secuencia. Los eventos pueden reordenarse o antedatarse.",
                 s1: "Timestamps presentes pero no fijados criptográficamente. El orden depende de la integridad del reloj del sistema.",
-                s2: "Secuencia inmutable. UUIDv7 o similar proporciona ordenamiento fijado criptográficamente."
+                s2: "Secuencia de solo anexión en la que cualquier manipulación es detectable. UUIDv7 o similar proporciona ordenamiento fijado criptográficamente."
             },
             c4: {
                 name: "Procedencia de Decisiones",

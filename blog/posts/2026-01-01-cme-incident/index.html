@@ -331,7 +331,7 @@
             
             <p>The CME incident demonstrates why traditional logging isn't enough. When systems fail, logs can be lost, modified, incomplete, or disputed. <strong>We need logs that are cryptographically verifiable, externally anchored, and independently auditable.</strong></p>
             
-            <h2><i class="fas fa-shield-alt" style="color: #10b981; margin-right: 0.5rem;"></i>Introducing VCP v1.1: Cryptographic Proof for the Post-CME World</h2>
+            <h2><i class="fas fa-shield-alt" style="color: #10b981; margin-right: 0.5rem;"></i>Introducing VCP v1.1: Cryptographic Verifiability for the Post-CME World</h2>
             
             <h3>Why Version 1.1?</h3>
             
@@ -339,25 +339,25 @@
             
             <p><strong>VCP v1.1 strengthens the core promise: "Verify, Don't Trust."</strong></p>
             
-            <p>v1.1 eliminates the possibility of post-hoc modification by making external anchoring <strong>REQUIRED for all tiers</strong>, including Silver.</p>
+            <p>v1.1 makes post-hoc modification detectable by making external anchoring <strong>REQUIRED for all tiers</strong>, including Silver.</p>
             
             <h3>The Three-Layer Architecture</h3>
             
             <div class="layer-diagram">
 ┌─────────────────────────────────────────────────────────────────┐
-│  LAYER 3: External Verifiability       ← Third-party proof     │
+│  LAYER 3: External Verifiability       ← Third-party evidence  │
 │  ────────────────────────────────────                          │
 │  • External Anchor (Blockchain/TSA): REQUIRED                  │
 │  • Digital Signature: REQUIRED                                 │
 │  • Public Timestamp: REQUIRED                                  │
 ├─────────────────────────────────────────────────────────────────┤
-│  LAYER 2: Collection Integrity         ← Completeness proof    │
+│  LAYER 2: Collection Integrity         ← Completeness evidence │
 │  ────────────────────────────────────                          │
 │  • Merkle Tree (RFC 6962): REQUIRED                            │
 │  • Merkle Root: REQUIRED                                       │
 │  • Audit Path: REQUIRED                                        │
 ├─────────────────────────────────────────────────────────────────┤
-│  LAYER 1: Event Integrity              ← Individual proof      │
+│  LAYER 1: Event Integrity              ← Individual evidence   │
 │  ────────────────────────────────────                          │
 │  • EventHash (SHA-256): REQUIRED                               │
 │  • PrevHash (chain linking): OPTIONAL                          │
@@ -367,14 +367,14 @@
             <p>This architecture directly addresses the CME failures:</p>
             
             <ul>
-                <li><strong>Layer 1 (Event Integrity):</strong> Every trading event is individually hashed. In a CME-like scenario, this provides cryptographic proof of exactly which orders were in-flight when degradation began.</li>
-                <li><strong>Layer 2 (Collection Integrity):</strong> Events are batched into Merkle Trees, enabling proof that <strong>no events were omitted</strong>.</li>
-                <li><strong>Layer 3 (External Verifiability):</strong> Merkle Roots are anchored to external timestamping authorities. Even if internal systems were compromised, the external anchor proves what was recorded.</li>
+                <li><strong>Layer 1 (Event Integrity):</strong> Every trading event is individually hashed. In a CME-like scenario, this provides verifiable cryptographic evidence of exactly which orders were in-flight when degradation began.</li>
+                <li><strong>Layer 2 (Collection Integrity):</strong> Events are batched into Merkle Trees, enabling verification that <strong>no events were omitted</strong> from an anchored batch.</li>
+                <li><strong>Layer 3 (External Verifiability):</strong> Merkle Roots are anchored to external timestamping authorities. Even if internal systems were compromised, the external anchor makes what was recorded verifiable.</li>
             </ul>
             
-            <h3>Completeness Guarantees</h3>
+            <h3>Verifiable Completeness</h3>
             
-            <p>v1.1 introduces <strong>completeness guarantees</strong>. Third parties can cryptographically verify not only that events weren't altered, but that <strong>no required events were omitted</strong>.</p>
+            <p>v1.1 introduces <strong>verifiable completeness</strong>. Third parties can cryptographically verify not only that events weren't altered, but that <strong>no logged events were omitted from an anchored batch</strong>.</p>
             
             <p>If VCP had been in place during the CME incident, regulators could verify:</p>
             <ul>
@@ -384,7 +384,7 @@
                 <li>No events were deleted or hidden after the fact</li>
             </ul>
             
-            <h3>VCP-XREF: Dual Logging for Dispute Prevention</h3>
+            <h3>VCP-XREF: Dual Logging for Dispute Resolution</h3>
             
             <p>VCP-XREF enables <strong>dual logging</strong> between parties:</p>
             
@@ -409,7 +409,7 @@
             
             <p><strong>Unless both parties collude, omission or modification by one party is detectable by the other.</strong></p>
             
-            <p>With VCP-XREF, CyrusOne's alerts would be logged on their side, CME's receipt would be logged on theirs, and discrepancies would be automatically detected.</p>
+            <p>With VCP-XREF, CyrusOne's alerts would be logged on their side, CME's receipt would be logged on theirs, and discrepancies would be detectable through cross-reference verification.</p>
             
             <h2><i class="fas fa-road" style="color: #3b82f6; margin-right: 0.5rem;"></i>The Path Forward</h2>
             
@@ -465,10 +465,10 @@
             <div class="info-box">
                 <h4 style="color: #93c5fd; margin: 0 0 0.75rem 0;"><i class="fas fa-check-circle"></i> VCP: The Flight Recorder for AI Trading</h4>
                 <ul style="margin: 0; padding-left: 1.25rem;">
-                    <li><strong>Tamper-evident records</strong> that can't be altered after the fact</li>
+                    <li><strong>Tamper-evident records</strong> whose after-the-fact alteration is detectable</li>
                     <li><strong>External verification</strong> that doesn't depend on trusting the system</li>
-                    <li><strong>Completeness proofs</strong> that detect both modification and omission</li>
-                    <li><strong>Cross-party reconciliation</strong> that prevents counterparty disputes</li>
+                    <li><strong>Completeness verification</strong> that detects both modification and omission</li>
+                    <li><strong>Cross-party reconciliation</strong> that makes counterparty discrepancies detectable</li>
                 </ul>
             </div>
             
@@ -478,8 +478,8 @@
             
             <ol>
                 <li><strong>Three-Layer Architecture</strong> clearly separates event integrity, collection integrity, and external verifiability</li>
-                <li><strong>Mandatory External Anchoring</strong> ensures all tiers can be verified by third parties</li>
-                <li><strong>Completeness Guarantees</strong> enable detection of omitted events</li>
+                <li><strong>Mandatory External Anchoring</strong> makes all tiers verifiable by third parties</li>
+                <li><strong>Verifiable Completeness</strong> enables detection of omitted events</li>
                 <li><strong>VCP-XREF Dual Logging</strong> provides non-repudiable evidence across counterparties</li>
                 <li><strong>Policy Identification</strong> enables clear governance and accountability</li>
             </ol>
