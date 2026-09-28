@@ -94,6 +94,7 @@ class VCPHeader extends HTMLElement {
                 openApiSpec: 'OpenAPI Spec',
                 github: 'GitHub (vcp-explorer-api)',
                 vcpV11: 'VCP V1.1',
+                vcpV12: 'VCP v1.2 Spec (GitHub)',
                 vccDemo: 'VCC Demo',
                 overview: 'Overview',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
@@ -155,6 +156,7 @@ class VCPHeader extends HTMLElement {
                 openApiSpec: 'OpenAPI仕様',
                 github: 'GitHub (vcp-explorer-api)',
                 vcpV11: 'VCP V1.1',
+                vcpV12: 'VCP v1.2 仕様（GitHub）',
                 vccDemo: 'VCC Demo',
                 overview: '概要',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
@@ -216,6 +218,7 @@ class VCPHeader extends HTMLElement {
                 openApiSpec: 'OpenAPI规范',
                 github: 'GitHub (vcp-explorer-api)',
                 vcpV11: 'VCP V1.1',
+                vcpV12: 'VCP v1.2 规范（GitHub）',
                 vccDemo: 'VCC Demo',
                 overview: '概述',
                 aboutVso: 'VeritasChain Standards Organization (VSO)',
@@ -356,6 +359,7 @@ class VCPHeader extends HTMLElement {
                             <a href="https://veritaschain.github.io/vcp-explorer-api/" class="dropdown-item" target="_blank" rel="noopener">${t.explorerApi}</a>
                             <a href="https://raw.githubusercontent.com/veritaschain/vcp-explorer-api/main/openapi.yaml" class="dropdown-item" target="_blank" rel="noopener">${t.openApiSpec}</a>
                             <a href="https://github.com/veritaschain/vcp-explorer-api" class="dropdown-item" target="_blank" rel="noopener">${t.github}</a>
+                            <a href="https://github.com/veritaschain/vcp-spec/tree/main/spec/v1.2" class="dropdown-item" target="_blank" rel="noopener">${t.vcpV12}</a>
                             <a href="/v1-1/" class="dropdown-item">${t.vcpV11}</a>
                             <a href="/vcc/" class="dropdown-item">${t.vccDemo}</a>
                         </div>
