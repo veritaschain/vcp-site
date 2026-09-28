@@ -282,9 +282,9 @@ export const brokersPageEn = () => html`
                     </p>
                     
                     <div class="flex flex-wrap gap-4">
-                        <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/30">
+                        <a href="https://github.com/veritaschain/vcp-spec" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/30">
                             <i class="fas fa-file-alt"></i>
-                            Technical Specification (VCP v1.0)
+                            Technical Specification (VCP v1.2)
                         </a>
                         <a href="mailto:partners@veritaschain.org?subject=VCP%20PoC%20Inquiry%20-%20Institutional" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2">
                             <i class="fas fa-rocket"></i>
@@ -601,7 +601,7 @@ export const brokersPageEn = () => html`
                     <i class="fas fa-envelope mr-2"></i>
                     Inquire About PoC (Institutional)
                 </a>
-                <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-10 py-4 rounded-lg font-bold text-lg transition-all">
+                <a href="https://github.com/veritaschain/vcp-spec" target="_blank" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-10 py-4 rounded-lg font-bold text-lg transition-all">
                     <i class="fas fa-download mr-2"></i>
                     Download Whitepaper
                 </a>

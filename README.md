@@ -171,7 +171,7 @@ https://veritaschain.github.io/vcp-site/
 ### Standards Body Conventions
 
 - **"as-is" warranty disclaimer** (ISO/IEEE standard)
-- **Revision history** in footer (v1.0 → v1.1)
+- **Revision history** in footer (current: VCP v1.2)
 - **Module coverage** explicitly stated (CORE, TRADE, GOV, RISK, PRIVACY, RECOVERY)
 - **Technical precision** - Only guaranteed values stated
 
@@ -190,7 +190,7 @@ https://veritaschain.github.io/vcp-site/
 
 ## 📊 Version History
 
-### v1.0 (Released: 2025-01-20)
+### Website v1.0 (Released: 2025-01-20)
 
 - Initial release with trilingual support
 - Complete ISO/W3C/ETSI-grade presentation
@@ -200,7 +200,11 @@ https://veritaschain.github.io/vcp-site/
 - On-Chain Audit Proofs (ZK-based)
 - VC-Certified SVG badge
 
-### Next Update: v1.1 (Q2 2026)
+### Current specification: VCP v1.2 — Production Ready (GA 2026-07-06)
+
+- Specification: https://github.com/veritaschain/vcp-spec/tree/main/spec/v1.2
+- JSON Schema: https://veritaschain.org/schema/vcp-event-v1.2.json
+- Previous: v1.1 (2025-12-30), v1.0 (2025-11-25)
 
 ---
 

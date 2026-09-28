@@ -69,7 +69,7 @@ class VCPFooter extends HTMLElement {
                 organization: 'VeritasChain Standards Organization',
                 duns: 'D-U-N-S: 698368529',
                 address: 'Ebisu Office — 2-4-8 Ebisu-Nishi, Shibuya-ku, Tokyo 150-0021, Japan',
-                revision: 'VCP Specification v1.0 — Released 2025-01-20 | Next update: v1.1 (Q2 2026)'
+                revision: 'VCP Specification v1.2 — Production Ready (GA 2026-07-06)'
             },
             ja: {
                 copyright: '© 2025 - 2026 VeritasChain Inc. All rights reserved.',
@@ -79,17 +79,17 @@ class VCPFooter extends HTMLElement {
                 organization: 'VeritasChain Standards Organization',
                 duns: 'D-U-N-S: 698368529',
                 address: '恵比寿オフィス — 〒150-0021 東京都渋谷区恵比寿西2-4-8',
-                revision: 'VCP仕様 v1.0 — 2025年1月20日リリース | 次回更新: v1.1 (2026年第2四半期)'
+                revision: 'VCP仕様 v1.2 — 正式版（Production Ready、2026年7月6日 GA）'
             },
             zh: {
-                copyright: '© 2025 VeritasChain Inc. 保留所有权利。',
+                copyright: '© 2025 - 2026 VeritasChain Inc. 保留所有权利。',
                 independence: 'VSO独立运营，不提供交易服务。',
                 disclaimer1: 'VSO不认可或证明任何财务绩效声明。',
                 disclaimer2: '所有规范均按"原样"提供，不提供任何形式的保证。',
                 organization: 'VeritasChain Standards Organization',
                 duns: 'D-U-N-S: 698368529',
                 address: '惠比寿办公室 — 日本东京都涩谷区惠比寿西2-4-8 邮编150-0021',
-                revision: 'VCP规范 v1.0 — 2025年1月20日发布 | 下次更新: v1.1 (2026年第二季度)'
+                revision: 'VCP规范 v1.2 — 正式版（Production Ready，2026年7月6日 GA）'
             }
         };
     }
