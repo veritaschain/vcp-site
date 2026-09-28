@@ -190,7 +190,7 @@ https://veritaschain.github.io/vcp-site/
 
 ## 📊 Version History
 
-### v1.0 (Released: 2025-01-20)
+### Website v1.0 (Released: 2025-01-20)
 
 - Initial release with trilingual support
 - Complete ISO/W3C/ETSI-grade presentation
