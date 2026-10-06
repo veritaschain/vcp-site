@@ -1,6 +1,6 @@
 /**
  * VeritasChain Protocol (VCP) - Main JavaScript
- * © 2025 VeritasChain Inc.
+ * © 2025 VeritasChain Co., Ltd.
  */
 
 (function() {

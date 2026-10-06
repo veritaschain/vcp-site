@@ -22,8 +22,8 @@ export const brokersPageZh = () => html`
     <link rel="apple-touch-icon" href="/assets/img/logo.png">
     
     <!-- Primary Meta Tags -->
-    <title>机构经纪商VCP | 密码学证明最佳执行 | MiFID II合规</title>
-    <meta name="title" content="机构经纪商VCP | 密码学证明最佳执行 | MiFID II合规">
+    <title>机构经纪商VCP | 密码学证明最佳执行 | MiFID II相关审计轨迹</title>
+    <meta name="title" content="机构经纪商VCP | 密码学证明最佳执行 | MiFID II相关审计轨迹">
     <meta name="description" content="全球唯一能以密码学方式证明最佳执行的协议。符合MiFID II RTS 25/28和欧盟AI法案第12条的审计轨迹。为机构经纪商、ECN和审计公司提供无侵入式边车集成。">
     <meta name="keywords" content="最佳执行, MiFID II, RTS 25, RTS 28, 欧盟AI法案, 算法交易, 审计轨迹, 密码学证明, 机构经纪商, ECN, 合规, 监管科技, 交易透明度, VCP, VeritasChain">
     <meta name="author" content="VeritasChain Standards Organization (VSO)">
@@ -52,8 +52,8 @@ export const brokersPageZh = () => html`
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@VeritasChainOrg">
-    <meta name="twitter:creator" content="@VeritasChainOrg">
+    <meta name="twitter:site" content="@Veritas_chain">
+    <meta name="twitter:creator" content="@Veritas_chain">
     <meta name="twitter:title" content="机构经纪商VCP | 密码学证明最佳执行">
     <meta name="twitter:description" content="全球唯一能以密码学方式证明最佳执行的协议。符合MiFID II的审计轨迹，适用于机构尽职调查。">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
@@ -117,7 +117,7 @@ export const brokersPageZh = () => html`
                 "name": "什么是VCP（VeritasChain Protocol）？",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "VCP是全球唯一能以密码学方式证明算法交易最佳执行的协议。它创建符合MiFID II RTS 25/28和欧盟AI法案第12条的防篡改审计轨迹。"
+                    "text": "VCP是全球唯一能以密码学方式证明算法交易最佳执行的协议。它创建符合MiFID II RTS 25/28和欧盟AI法案第12条的可检测篡改审计轨迹。"
                 }
             },
             {
@@ -255,9 +255,9 @@ export const brokersPageZh = () => html`
                     </p>
                     
                     <div class="flex flex-wrap gap-4">
-                        <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/30">
+                        <a href="https://github.com/veritaschain/vcp-spec" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/30">
                             <i class="fas fa-file-alt"></i>
-                            查看技术规范 (VCP v1.0)
+                            查看技术规范 (VCP v1.1 / v1.2 RC1)
                         </a>
                         <a href="mailto:partners@veritaschain.org?subject=VCP%20PoC%E5%92%A8%E8%AF%A2%20-%20%E6%9C%BA%E6%9E%84%E5%AE%A2%E6%88%B7" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2">
                             <i class="fas fa-rocket"></i>
@@ -339,12 +339,12 @@ export const brokersPageZh = () => html`
                         <i class="fas fa-fingerprint text-3xl text-emerald-600"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-2">密码学最佳执行</h3>
-                    <p class="text-sm text-emerald-600 font-semibold mb-4">唯一能以密码学方式证明最佳执行的方法</p>
+                    <p class="text-sm text-emerald-600 font-semibold mb-4">使最佳执行可通过密码学方式验证的方法</p>
                     <p class="text-slate-600 leading-relaxed mb-4">
                         VCP将从下单到成交的所有事件通过哈希链串联，并使用Ed25519数字签名封存。
                     </p>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        这在数学上证明了滑点和拒单"并非人为操纵"。
+                        这使滑点和拒单决定在事后可通过密码学方式验证。
                     </p>
                     <div class="bg-emerald-50 p-4 rounded-lg">
                         <p class="text-sm text-emerald-800 font-medium">
@@ -463,7 +463,7 @@ export const brokersPageZh = () => html`
                             <div class="w-16 h-16 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <i class="fas fa-cube text-2xl text-slate-300"></i>
                             </div>
-                            <h4 class="text-white font-bold mb-2">不可变存储</h4>
+                            <h4 class="text-white font-bold mb-2">仅追加存储</h4>
                             <p class="text-slate-400 text-sm">审计日志<br/>区块链锚定</p>
                         </div>
                     </div>
@@ -479,7 +479,7 @@ export const brokersPageZh = () => html`
                 <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
                     机构应用场景
                 </h2>
-                <p class="text-slate-600">领先经纪商和ECN如何利用VCP</p>
+                <p class="text-slate-600">经纪商和ECN可以如何利用VCP</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-6">
@@ -505,7 +505,7 @@ export const brokersPageZh = () => html`
                         <h4 class="font-bold text-slate-900">监管合规自动化</h4>
                     </div>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        通过密码学保护的日志自动满足MiFID II RTS 25 / 欧盟AI法案第12条的记录保存义务。
+                        通过密码学保护的日志自动生成与MiFID II RTS 25 / 欧盟AI法案第12条记录保存义务相关的证据。
                     </p>
                 </div>
                 
@@ -538,7 +538,7 @@ export const brokersPageZh = () => html`
             </h2>
             
             <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-                VSO目前正在招募先驱合作伙伴（早期采用者）成为全球首批"VCP认证经纪商"。
+                VSO目前正在招募先驱合作伙伴（早期采用者）面向机构市场基础设施开展与MiFID对齐的VCP实施。
                 VCP实施可以从特定货币对和有限服务器配置的PoC开始。
             </p>
             
@@ -574,7 +574,7 @@ export const brokersPageZh = () => html`
                     <i class="fas fa-envelope mr-2"></i>
                     咨询PoC（机构客户）
                 </a>
-                <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-10 py-4 rounded-lg font-bold text-lg transition-all">
+                <a href="https://github.com/veritaschain/vcp-spec" target="_blank" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-10 py-4 rounded-lg font-bold text-lg transition-all">
                     <i class="fas fa-download mr-2"></i>
                     下载白皮书
                 </a>

@@ -1,6 +1,6 @@
 # VeritasChain Protocol (VCP) - Official Landing Page
 
-**Global audit standard for algorithmic and AI-driven trading**
+**Open audit-trail specification for algorithmic and AI-driven trading**
 
 Official website for VeritasChain Protocol (VCP) - An open standard for recording decision-making and execution results of algorithmic and AI-driven trading in a tamper-evident and verifiable format.
 
@@ -8,7 +8,7 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 
 ## 🌏 Live Site
 
-**Production:** https://veritaschain.github.io/vcp-site/
+**Production:** https://veritaschain.org/
 
 ### Available Pages
 
@@ -86,7 +86,7 @@ This is a **static website** that can be deployed to any static hosting service:
 ### GitHub Pages (Recommended)
 
 Already configured! The site is automatically deployed to:
-https://veritaschain.github.io/vcp-site/
+https://veritaschain.org/
 
 ### Other Hosting Options
 
@@ -102,7 +102,7 @@ https://veritaschain.github.io/vcp-site/
 
 ### Design & Standards Compliance
 
-- ✅ **ISO/W3C/ETSI-grade** presentation standards
+- ✅ Standards-document style presentation
 - ✅ **Responsive design** - Mobile, tablet, desktop optimized
 - ✅ **Dark theme** with professional color scheme
 - ✅ **Accessibility** features (ARIA labels, semantic HTML)
@@ -124,7 +124,7 @@ https://veritaschain.github.io/vcp-site/
 6. **Use Cases** - 6 application scenarios (HFT, CEX, DeFi, On-Chain Proofs)
 7. **Get Started** - Target-specific CTAs (Developers, Exchanges, Regulators)
 8. **VC-Certified** - Certification program details with SVG badge
-9. **Company Info** - VeritasChain Inc. structure
+9. **Company Info** - VeritasChain Co., Ltd. structure
 10. **Contact** - Contact information with standardization inquiry
 11. **Footer** - Disclaimers, revision history, independence statement
 
@@ -164,7 +164,7 @@ https://veritaschain.github.io/vcp-site/
 
 VCP produces evidence relevant to the regimes below. Conformance to VCP does not constitute compliance with any of them (VAP v1.2 §1.6).
 
-- **MiFID II RTS 25** (Delegated Regulation (EU) 2017/574: synchronisation of business clocks to UTC for trading venues and their members or participants)
+- **EU clock-synchronisation rules** (Commission Delegated Regulation (EU) 2025/1155, Articles 11–16 and Annex IV: synchronisation of business clocks to UTC for trading venues, their members or participants and other market infrastructure; it replaced MiFID II RTS 25 — Delegated Regulation (EU) 2017/574 — on 2 March 2026)
 - **EU AI Act** (Regulation (EU) 2024/1689; Annex III high-risk obligations apply from 2 December 2027)
 - **GDPR** (Data privacy)
 - **CAT Rule 613** (US SEC Consolidated Audit Trail)
@@ -181,9 +181,9 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 
 ## 🎯 Target Audiences
 
-1. **Developers** - Integrate VCP with open-source SDK
+1. **Developers** - Implement VCP from the open specification (SDK source code is not yet public)
 2. **Exchanges & Brokers** - Deploy as FIX protocol sidecar
-3. **Regulators** - Join international standardization initiative
+3. **Regulators** - Review the open specification
 4. **HFT Firms** - Platinum-tier compliance
 5. **Institutional Investors** - Gold-tier compliance
 6. **Retail Platforms** - Silver-tier transparency
@@ -192,17 +192,17 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 
 ## 📊 Version History
 
-### v1.0 (Released: 2025-01-20)
+### Website v1.0
 
 - Initial release with trilingual support
-- Complete ISO/W3C/ETSI-grade presentation
+- Standards-document style presentation
 - Technical accuracy (timestamp precision corrections)
 - Module coverage (CORE, TRADE, GOV, RISK, PRIVACY, RECOVERY)
 - "Why Now?" regulatory landscape explanation
 - On-Chain Audit Proofs (ZK-based)
 - VC-Certified SVG badge
 
-### Next Update: v1.1 (Q2 2026)
+### Next update: planned — no date set
 
 ---
 
@@ -212,13 +212,13 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 
 - **Email:** info@veritaschain.org
 - **GitHub:** https://github.com/VeritasChain/vcp-spec
-- **Support Portal:** https://support.veritaschain.org
+- **Support Portal:** https://veritaschain.org/support/
 
 ---
 
 ## 📄 License
 
-© 2025 VeritasChain Inc. All rights reserved.
+© 2025 VeritasChain Co., Ltd. All rights reserved.
 
 **Important Disclaimers:**
 
@@ -233,5 +233,5 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 This site is maintained by VeritasChain Standards Organization (VSO) as part of an international standardization initiative for auditability and AI governance.
 
 **Maintained by:** TOKACHI & Ayano
-**Created:** 2025-01
+**Created:** 2025
 **Status:** Production-Ready ✅

@@ -199,7 +199,7 @@ export const faqPageZh = () => html`
                         </p>
                         <p class="font-semibold text-gray-800">具体而言，我们验证以下内容在数学和密码学上是正确的：</p>
                         <ul class="list-disc list-inside space-y-2 ml-4">
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>交易数据<strong>不可篡改</strong>（防篡改）</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>交易数据<strong>可检测篡改</strong>（仅追加）</li>
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i>算法<strong>决策过程</strong>已被记录</li>
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i>时间同步和数值精度符合指定的<strong>层级要求</strong></li>
                         </ul>
@@ -238,7 +238,7 @@ export const faqPageZh = () => html`
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong>VSO 是中立的国际标准组织。</strong>
+                            <strong>VSO 是中立的标准组织。</strong>
                             颁发认证徽章仅表示系统
                             <strong class="highlight">符合透明度标准</strong>——这并非对该公司产品或服务的背书。
                         </p>
@@ -382,7 +382,7 @@ export const faqPageZh = () => html`
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
                             虽然 <strong>Silver 层级</strong>不要求原子钟精度（PTPv2），
-                            但它保证了<strong class="highlight">"欺诈不可逆"</strong>。
+                            但它使<strong class="highlight">"事后欺诈可被检测"</strong>。
                         </p>
                         <div class="grid gap-3 mt-4">
                             <div class="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded">
@@ -395,21 +395,21 @@ export const faqPageZh = () => html`
                             <div class="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded">
                                 <i class="fas fa-chain-broken text-blue-600 text-xl mt-1"></i>
                                 <div>
-                                    <h4 class="font-bold text-blue-900">防止事后篡改</h4>
+                                    <h4 class="font-bold text-blue-900">检测事后篡改</h4>
                                     <p class="text-sm text-gray-700">数据每 24 小时锚定到区块链。</p>
                                 </div>
                             </div>
                         </div>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>可防止的欺诈类型：</strong>
+                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>可检测的欺诈类型：</strong>
                             </p>
                             <ul class="text-sm text-gray-700 mt-2 space-y-1">
                                 <li>• "事后删除不利交易"</li>
                                 <li>• "用过去时间戳插入虚假数据"</li>
                             </ul>
                             <p class="text-sm text-gray-800 mt-2">
-                                这些典型欺诈行为<strong>即使对数据库管理员也是不可能的</strong>。
+                                这些典型欺诈行为<strong>即使由数据库管理员实施也可被检测</strong>。
                             </p>
                         </div>
                         <p class="mt-4 font-semibold text-green-700">
@@ -480,7 +480,7 @@ export const faqPageZh = () => html`
                             <strong>Silver 层级</strong>提供 VCP 合规的所有核心优势：
                         </p>
                         <ul class="list-disc list-inside space-y-1 ml-4">
-                            <li>具有密码学完整性的不可变审计记录</li>
+                            <li>具有密码学完整性的可检测篡改（仅追加）审计记录</li>
                             <li>UUID v7 时间排序事件日志</li>
                             <li>24 小时区块链锚定</li>
                             <li>防止事后数据篡改</li>
@@ -921,7 +921,7 @@ export const faqPageZh = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-handshake mr-2"></i>
-                            A. VSO 与全球监管、学术和技术机构合作，促进互操作性。
+                            A. VC-Certified 目前没有正式的国际认可。VSO 寻求与监管、学术和技术界对话，以促进互操作性。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">

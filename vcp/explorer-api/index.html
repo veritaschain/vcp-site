@@ -64,7 +64,7 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">Overview</h2>
-            <p>The VCP Explorer API provides event search, Merkle proof retrieval, and event certificate generation for the VeritasChain Protocol (VCP). It is fully aligned with <strong>VCP Specification v1.0</strong> and enables external parties (regulators, brokers, prop firms, auditors) to independently verify logged events.</p>
+            <p>The VCP Explorer API provides event search, Merkle proof retrieval, and event certificate generation for the VeritasChain Protocol (VCP). It was designed against <strong>VCP Specification v1.0</strong> (not yet updated for v1.1 or v1.2 RC1, which make external anchoring and Policy Identification mandatory) and is intended to enable external parties (regulators, brokers, prop firms, auditors) to independently verify logged events.</p>
             
             <div class="feature-grid">
                 <div class="feature-card">
@@ -103,7 +103,7 @@
                 <code>https://explorer.veritaschain.org/api/v1</code>
             </div>
             <div class="alert alert-warning">
-                <strong>Note:</strong> The Explorer API deployment is in progress. Until the live endpoint is available, this documentation serves as the implementation reference. Developers should not attempt to call these endpoints until deployment is announced.
+                <strong>Note:</strong> The Explorer API is not deployed (Planned — no date set). This documentation serves as an implementation reference; the endpoints below are not live.
             </div>
         </div>
     </section>
@@ -383,7 +383,7 @@ curl -H "X-VCP-API-Key: your_api_key" \
                     <span class="http-method get">GET</span>
                     <span class="endpoint-path">/v1/events/{event_id}/certificate</span>
                 </div>
-                <p class="endpoint-description">Generate a regulatory-grade certificate containing event data, Merkle proof, signature metadata, and verification results.</p>
+                <p class="endpoint-description">Generate a verification certificate containing event data, Merkle proof, signature metadata, and verification results.</p>
 
                 <h3 class="section-subtitle">Use Cases</h3>
                 <ul>
@@ -427,7 +427,7 @@ curl -H "X-VCP-API-Key: your_api_key" \
     "side": "BUY",
     "price": "2350.500"
   },
-  "certificate_url": "https://explorer.veritaschain.org/certificates/cert_01934e3a_7b2c_7f93.pdf (coming soon)"
+  "certificate_url": "https://explorer.veritaschain.org/certificates/cert_01934e3a_7b2c_7f93.pdf"
 }</code></pre>
                 </div>
             </div>
@@ -525,14 +525,14 @@ curl -H "X-VCP-API-Key: your_api_key" \
                         </tr>
                         <tr>
                             <td><span class="badge">100</span></td>
-                            <td><code>SNC</code></td>
-                            <td>Sync event</td>
+                            <td><code>REC</code></td>
+                            <td>Recovery</td>
                             <td>System</td>
                         </tr>
                         <tr>
                             <td><span class="badge">101</span></td>
-                            <td><code>REC</code></td>
-                            <td>Recovery event</td>
+                            <td><code>SNC</code></td>
+                            <td>Clock sync status</td>
                             <td>System</td>
                         </tr>
                     </tbody>
@@ -601,7 +601,7 @@ curl -H "X-VCP-API-Key: your_api_key" \
             </div>
 
             <div class="alert alert-success">
-                <strong>Why This Matters:</strong> This verification process makes any tampering with events after they are logged detectable. The blockchain anchor provides an additional layer of tamper-evidence, as the Merkle root is permanently recorded on Ethereum mainnet.
+                <strong>Why This Matters:</strong> This verification process makes tampering with events detectable once their Merkle root has been published or anchored. External anchoring of the root (to Ethereum) is planned and is not yet available in the Explorer.
             </div>
         </div>
     </section>
@@ -645,7 +645,7 @@ curl -H "X-VCP-API-Key: your_api_key" \
             </div>
 
             <div class="alert alert-info">
-                <strong>Certificate Format:</strong> Certificates are available in both JSON and PDF formats. PDF certificates include QR codes linking to online verification.
+                <strong>Certificate Format:</strong> Certificates are returned as JSON. PDF certificates with QR codes: Planned — no date set.
             </div>
         </div>
     </section>
@@ -736,7 +736,7 @@ curl -H "X-VCP-API-Key: your_api_key" \
                 <div class="feature-card">
                     <h3><i class="fas fa-certificate"></i> VeritasChain Certified (VC-Certified)</h3>
                     <p>Apply for VC-Certified status to make your system's transparency and VCP compliance independently verifiable.</p>
-                    <a href="https://veritaschain.org/certification" target="_blank" rel="noopener noreferrer" style="color: #1e40af; font-weight: 600;">
+                    <a href="https://veritaschain.org/certified/" target="_blank" rel="noopener noreferrer" style="color: #1e40af; font-weight: 600;">
                         Learn About Certification <i class="fas fa-external-link-alt"></i>
                     </a>
                 </div>

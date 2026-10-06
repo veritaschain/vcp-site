@@ -28,7 +28,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="CAP - 内容/创意AI配置文件 | 创意产业AI证据框架">
     <meta name="twitter:description" content="留下证据，而非障碍。CAP是用于加密记录内容和创意产业AI使用的VAP配置文件。">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -259,12 +259,12 @@
             <!-- Specification & PoC Links -->
             <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
                 <!-- Specification Link -->
-                <a href="https://github.com/veritaschain/cap-spec/blob/main/docs/CAP-Specification-v0.2.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-gray-800/80 hover:bg-gray-700 border border-purple-500/30 hover:border-purple-500/60 rounded-xl px-6 py-4 transition-all group">
+                <a href="https://github.com/veritaschain/cap-spec/blob/main/docs/CAP-Specification-v1.0.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-gray-800/80 hover:bg-gray-700 border border-purple-500/30 hover:border-purple-500/60 rounded-xl px-6 py-4 transition-all group">
                     <div class="w-10 h-10 bg-purple-900/50 rounded-lg flex items-center justify-center">
                         <i class="fas fa-file-alt text-purple-400 text-xl"></i>
                     </div>
                     <div class="text-left">
-                        <p class="text-white font-semibold group-hover:text-purple-300 transition-colors">CAP 规范 v0.2</p>
+                        <p class="text-white font-semibold group-hover:text-purple-300 transition-colors">CAP 规范 v1.0</p>
                         <p class="text-gray-400 text-sm">VSO-CAP-SPEC-001 — 完整技术规范</p>
                     </div>
                     <i class="fas fa-external-link-alt text-gray-500 group-hover:text-purple-400 transition-colors ml-2"></i>
@@ -324,8 +324,8 @@
                     
                     <!-- Content -->
                     <div class="flex-grow text-center md:text-left">
-                        <h3 class="text-2xl md:text-3xl font-bold text-teal-400 mb-2">VeriCapture</h3>
-                        <p class="text-gray-300 text-lg mb-3">符合CAP标准的证据捕获应用（iOS）— Verify, Don't Trust.</p>
+                        <h3 class="text-2xl md:text-3xl font-bold text-teal-400 mb-2">VeraSnap</h3>
+                        <p class="text-gray-300 text-lg mb-3">基于CPP（Capture Provenance Profile）的第一方证据捕获应用（iOS）— Verify, Don't Trust.</p>
                         <p class="text-gray-400 text-sm">使用SHA-256哈希、ES256数字签名和RFC 3161时间戳，以加密方式记录捕获事件的专业证据生成工具。</p>
                     </div>
                     
@@ -651,7 +651,7 @@
                         </tbody>
                     </table>
                 </div>
-                <p class="text-gray-400 text-sm mt-4 text-center">* SRP扩展（安全拒绝溯源）的一部分</p>
+                <p class="text-gray-400 text-sm mt-4 text-center">* SRP扩展（安全拒绝溯源）的一部分。本表为v0.2草案的注册表。CAP v1.0（§6.1、§12.1）定义七种事件类型：INGEST、TRAIN、GEN、GEN_ATTEMPT、GEN_DENY、GEN_ERROR 和 EXPORT，不含十六进制代码，也没有 AUDIT_ANCHOR 事件；WARN、ESCALATE、QUARANTINE 是 GEN_DENY 中 ModelDecision 的取值。GEN_ATTEMPT 和 GEN_DENY 在 Bronze 级为 SHOULD，在 Silver 和 Gold 级为 MUST。</p>
             </div>
             
             <!-- Event Type Cards -->
@@ -847,7 +847,7 @@
 │      │ (允许)  │          │ (拒绝)  │                                   │
 │      └─────────┘          └─────────┘                                   │
 │                                                                         │
-│  <span class="text-purple-400 font-bold">不变量: count(GEN_ATTEMPT) == count(GEN) + count(GEN_DENY)</span>            │
+│  <span class="text-purple-400 font-bold">count(GEN_ATTEMPT) == count(GEN) + count(GEN_DENY) + count(GEN_ERROR)</span>  │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
                 </div>
@@ -954,7 +954,7 @@
                     <p class="text-green-400 text-center font-mono text-lg">
                         对于每个<span class="text-cyan-400">GEN_ATTEMPT</span>事件，必须存在<span class="text-white">恰好一个</span>
                         具有匹配AttemptID的结果事件
-                        （<span class="text-yellow-400">GEN</span>、<span class="text-red-400">GEN_DENY</span>、<span class="text-orange-400">GEN_WARN</span>、<span class="text-cyan-300">GEN_ESCALATE</span>或<span class="text-purple-400">GEN_QUARANTINE</span>）。
+                        （<span class="text-yellow-400">GEN</span>、<span class="text-red-400">GEN_DENY</span>或<span class="text-orange-400">GEN_ERROR</span>）。
                     </p>
                 </div>
                 
@@ -1051,7 +1051,7 @@
                         <h4 class="text-white font-semibold mb-3">EU AI Act Art.12</h4>
                         <ul class="text-gray-400 text-sm space-y-2">
                             <li><i class="fas fa-check text-green-400 mr-2"></i>自动记录 (GEN_ATTEMPT + 结果)</li>
-                            <li><i class="fas fa-check text-green-400 mr-2"></i>终身保留 (哈希链 + 锚定)</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>在系统整个生命周期内记录事件 (哈希链 + 锚定)；日志保存期限见第19条和第26(6)条（至少六个月）</li>
                             <li><i class="fas fa-check text-green-400 mr-2"></i>人工监督记录 (HumanOverride)</li>
                         </ul>
                     </div>

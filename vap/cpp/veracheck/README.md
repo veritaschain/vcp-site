@@ -4,7 +4,7 @@
 [![CPP Version](https://img.shields.io/badge/CPP-v1.0-blue.svg)](https://github.com/veritaschain/cpp-spec)
 [![VAP Version](https://img.shields.io/badge/VAP-v1.2-green.svg)](https://github.com/veritaschain/vap-spec)
 
-Web-based verification tool for cryptographic evidence captured with [VeriCapture](https://veritaschain.org/vap/cpp/vericapture). Implements the **Capture Provenance Profile (CPP)** specification for cryptographic evidence verification.
+Web-based verification tool for cryptographic evidence captured with [VeraSnap](https://veritaschain.org/vap/cpp/verasnap/). Beta viewer for CPP verification packs (CPP v1.0 pack format and VeraSnap INGEST/EXPORT events). Signature, Merkle and RFC 3161 checks are not fully implemented in this web version.
 
 ## 🔍 Features
 
@@ -85,7 +85,7 @@ jobs:
 
 ## 📁 Verification Pack Format
 
-VeraCheck accepts `.veripack` or `.json` files following the CPP specification and VeriCapture TDS format:
+VeraCheck accepts `.veripack` or `.json` files following the CPP specification and VeraSnap TDS format:
 
 ```json
 {
@@ -133,7 +133,7 @@ This aligns with CPP UI Guidelines (Section 11):
 
 ## 🔗 Related Resources
 
-- **VeriCapture App**: [veritaschain.org/vap/cpp/vericapture](https://veritaschain.org/vap/cpp/vericapture)
+- **VeraSnap App**: [veritaschain.org/vap/cpp/verasnap/](https://veritaschain.org/vap/cpp/verasnap/)
 - **CPP Specification**: [github.com/veritaschain/cpp-spec](https://github.com/veritaschain/cpp-spec)
 - **VAP Framework**: [github.com/veritaschain/vap-spec](https://github.com/veritaschain/vap-spec)
 - **VCP Protocol**: [github.com/veritaschain/vcp-spec](https://github.com/veritaschain/vcp-spec)

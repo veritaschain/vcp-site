@@ -28,7 +28,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="CPP - Capture Provenance Profile | Your Moments, Verifiably Sealed">
     <meta name="twitter:description" content="Not to authenticate content, but to make capture events verifiable. CPP establishes verifiable media capture records.">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -269,7 +269,7 @@
                         <i class="fas fa-heart text-teal-400 text-xl"></i>
                     </div>
                     <div class="text-left">
-                        <p class="text-white font-bold">VeraSnap Moments (B2C)</p>
+                        <p class="text-white font-bold">VeraSnap Moments (B2C) — not released</p>
                         <p class="text-teal-300 text-sm">Future-proof family memories</p>
                     </div>
                 </div>
@@ -309,7 +309,7 @@
                         </li>
                         <li class="flex items-start gap-3">
                             <i class="fas fa-check text-teal-400 mt-1"></i>
-                            <span>No sealed media was deleted from the sequence</span>
+                            <span>Removal of an event from the chain after anchoring is detectable (not covered: events removed before anchoring, and captures never recorded)</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <i class="fas fa-check text-teal-400 mt-1"></i>
@@ -486,12 +486,12 @@
                         <div class="bg-gray-800 rounded-lg p-4">
                             <p class="text-white font-semibold">Cherry-Picking</p>
                             <p class="text-gray-400 text-sm">Deleting unfavorable captures</p>
-                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Detectable via: Merkle tree deletion detection</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Detectable after anchoring via: PrevHash event chain and TSA-anchored Merkle batches (events removed before anchoring, or never recorded, are not detectable)</p>
                         </div>
                         <div class="bg-gray-800 rounded-lg p-4">
                             <p class="text-white font-semibold">Fabrication</p>
                             <p class="text-gray-400 text-sm">Claiming AI-generated content was captured</p>
-                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Detectable via: Capture event attestation</p>
+                            <p class="text-teal-400 text-xs mt-1"><i class="fas fa-check mr-1"></i>Not established by CPP: a capture record shows that a device recorded a capture event; it does not show that the content is not AI-generated (CPP v1.4 depth analysis indicates screen likelihood only)</p>
                         </div>
                     </div>
                 </div>
@@ -534,7 +534,7 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">CPP Event Model</h2>
-                <p class="text-gray-400 text-lg">Core events in the media capture lifecycle</p>
+                <p class="text-gray-400 text-lg">CPP v1.0 event model (superseded). Since CPP v1.1 the specification's event types are INGEST, EXPORT and TOMBSTONE; CPP_SEAL was removed and replaced by batch anchoring.</p>
             </div>
             
             <!-- Event Flow -->
@@ -763,7 +763,7 @@
                     <i class="fas fa-calculator text-teal-400 mr-2"></i>
                     Completeness Invariant (CI)
                 </h3>
-                <p class="text-gray-400 text-center mb-8">XOR-based deletion detection — the core mechanism for making removal detectable</p>
+                <p class="text-gray-400 text-center mb-8">CPP v1.0 mechanism, removed in CPP v1.1 and shown here for reference only. Since v1.1, removal of an event is detectable through the PrevHash event chain and, after anchoring, against the TSA-anchored Merkle batch. The most recent events, if removed before they are anchored, and captures that were never recorded are not detectable.</p>
                 
                 <div class="bg-gray-800 rounded-lg p-6 mb-6">
                     <div class="code-block">
@@ -810,7 +810,7 @@ return <span class="text-green-400">VALID</span></pre>
                     <i class="fas fa-link text-cyan-400 mr-2"></i>
                     Verification URL Architecture
                 </h3>
-                <p class="text-gray-400 text-center mb-6">Survives metadata stripping — verification remains accessible</p>
+                <p class="text-gray-400 text-center mb-6">CPP v1.0 design; CPP v1.4 defines no verification URL. No verification service is currently operated at this address; the SLA and retention figures below are CPP v1.0 design targets, not a service commitment.</p>
                 
                 <div class="bg-gray-900 rounded-lg p-4 text-center">
                     <code class="text-cyan-400 text-lg font-mono">https://verify.veritaschain.org/cpp/{verification_code}</code>
@@ -955,7 +955,7 @@ return <span class="text-green-400">VALID</span></pre>
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Conformance Levels</h2>
-                <p class="text-gray-400 text-lg">Tiered conformance for different use cases — Completeness Invariant REQUIRED at all levels</p>
+                <p class="text-gray-400 text-lg">The Bronze / Silver / Gold levels shown below are from CPP v1.0–v1.1 and are superseded. CPP v1.4 (§8) defines five levels — CPP-BASIC, CPP-TIMESTAMPED, CPP-STANDARD, CPP-ENHANCED and CPP-FULL — and the XOR Completeness Invariant was removed in CPP v1.1. Since v1.1 the required signature algorithm is ES256 (ECDSA P-256); Ed25519 is optional.</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
@@ -1162,7 +1162,7 @@ return <span class="text-green-400">VALID</span></pre>
                         <tbody class="divide-y divide-gray-700">
                             <tr>
                                 <td class="px-4 py-4 text-white font-medium">Question Answered</td>
-                                <td class="px-4 py-4 text-gray-300">"Is this content authentic?"</td>
+                                <td class="px-4 py-4 text-gray-300">"How was this edited?"</td>
                                 <td class="px-4 py-4 text-gray-300">"Was this media captured?"</td>
                             </tr>
                             <tr>
@@ -1208,7 +1208,7 @@ return <span class="text-green-400">VALID</span></pre>
                     <span class="text-teal-300 text-sm font-semibold">CPP IMPLEMENTATION</span>
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">VeraSnap</h2>
-                <p class="text-gray-400 text-lg">Evidence Generation Tool — CPP v1.4 Compliant iOS Application</p>
+                <p class="text-gray-400 text-lg">Evidence Generation Tool — first-party implementation of CPP v1.4 by VeritasChain Co., Ltd. (iOS and Android; conformance self-declared)</p>
             </div>
             
             <div class="max-w-5xl mx-auto">
@@ -1377,7 +1377,7 @@ return <span class="text-green-400">VALID</span></pre>
                                 <td class="px-4 py-4 text-white font-medium">Core Events</td>
                                 <td class="px-4 py-4 text-gray-300">SIG/ORD/EXE/CXL</td>
                                 <td class="px-4 py-4 text-gray-300">INGEST/TRAIN/GEN/EXPORT</td>
-                                <td class="px-4 py-4 text-gray-300">CAPTURE/SEAL/SHARE/VERIFY</td>
+                                <td class="px-4 py-4 text-gray-300">INGEST/EXPORT/TOMBSTONE</td>
                             </tr>
                             <tr>
                                 <td class="px-4 py-4 text-white font-medium">Time Precision</td>

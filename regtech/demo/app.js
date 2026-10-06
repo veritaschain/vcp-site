@@ -465,7 +465,7 @@ Generated: ${new Date().toISOString()}
 Contents:
 - original.jsonl    : Original event chain (untampered)
 - tampered.jsonl    : Tampered event chain (if applicable)
-- verification.json : Detailed verification report
+- verification_report.json : Detailed verification report
 
 Verification Steps:
 1. Load original.jsonl and tampered.jsonl in any JSONL parser
@@ -477,7 +477,7 @@ Verification Steps:
 Hash Algorithm: SHA-256
 Canonicalization: JSON with sorted keys (alphabetical)
 
-Result: ${lastVerificationResult.valid ? 'VALID - Chain integrity verified' : 'TAMPERING DETECTED - See verification.json for details'}
+Result: ${lastVerificationResult.valid ? 'VALID - Chain integrity verified' : 'TAMPERING DETECTED - See verification_report.json for details'}
 
 For more information: https://veritaschain.org
 `;
