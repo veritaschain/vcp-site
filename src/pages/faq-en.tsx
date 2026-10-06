@@ -453,7 +453,7 @@ export const faqPageEn = () => html`
                                 <strong><i class="fas fa-code text-green-600 mr-2"></i>For Retail Brokers & Prop Firms:</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                We provide <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-mql-bridge</code>, 
+                                The <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-sidecar-guide</code> repository documents a sidecar integration for MT4/MT5 (with VCP v1.0 reference code), 
                                 which minimizes impact on existing environments while enabling certification.
                             </p>
                         </div>
@@ -747,7 +747,7 @@ export const faqPageEn = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-clock mr-2"></i>
-                            A. Most organizations complete the certification process within 2–6 weeks.
+                            A. The certification process is designed to be completed within 2–6 weeks.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">

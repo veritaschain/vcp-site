@@ -144,7 +144,7 @@ export const brokersPageEn = () => html`
                 "name": "What is VCP (VeritasChain Protocol)?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "VCP is the world's only protocol that cryptographically proves Best Execution in algorithmic trading. It creates tamper-evident audit trails compliant with MiFID II RTS 25/28 and EU AI Act Article 12."
+                    "text": "VCP is an open protocol that makes Best Execution in algorithmic trading cryptographically verifiable. It creates tamper-evident audit trails that produce evidence relevant to MiFID II RTS 25 and EU AI Act Article 12; conformance does not by itself constitute legal compliance."
                 }
             },
             {
@@ -157,10 +157,10 @@ export const brokersPageEn = () => html`
             },
             {
                 "@type": "Question",
-                "name": "Is VCP compliant with MiFID II regulations?",
+                "name": "How does VCP relate to MiFID II requirements?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. VCP's data model natively supports MiFID II RTS 25/27/28 and EU AI Act Article 12 requirements. PTP time synchronization and algorithm IDs are automatically recorded."
+                    "text": "VCP's data model records the information relevant to MiFID II RTS 25 and EU AI Act Article 12 requirements. PTP time synchronization and algorithm IDs are automatically recorded."
                 }
             }
         ]
@@ -354,9 +354,9 @@ export const brokersPageEn = () => html`
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
-                    Three Messages Only VCP Can Deliver
+                    Three Messages VCP Delivers
                 </h2>
-                <p class="text-slate-600">No one else in the world can say these three things.</p>
+                <p class="text-slate-600">What VCP offers brokers, in three points.</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">

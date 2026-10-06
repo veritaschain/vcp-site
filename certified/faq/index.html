@@ -356,7 +356,7 @@
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-shield-alt mr-2"></i>
-                            A. No, personal information is protected by the VCP-PRIVACY module.
+                            A. It should not, if the system is implemented as specified — but that depends on the implementation, not on the certificate.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
@@ -370,8 +370,8 @@
                                     <i class="fas fa-hashtag mr-2"></i>Hashing
                                 </h4>
                                 <p class="text-sm text-gray-700">
-                                    What's recorded on blockchain or audit logs are <strong>hash values (fingerprints)</strong> 
-                                    of data—not the original personal information.
+                                    The external anchor holds only a signed <strong>Merkle root (a fingerprint of the batch)</strong>, 
+                                    not the events. The audit log itself contains the events, in which the account identifier must be pseudonymized.
                                 </p>
                             </div>
                             <div class="border-l-4 border-purple-500 bg-purple-50 p-4 rounded">
@@ -380,8 +380,8 @@
                                 </h4>
                                 <p class="text-sm text-gray-700">
                                     Personal Identifiable Information (PII) is encrypted with unique per-user keys. 
-                                    For <strong>GDPR's "Right to be Forgotten,"</strong> destroying the decryption key 
-                                    makes the data <strong class="text-red-600">mathematically unrecoverable.</strong>
+                                    For an erasure request under <strong>GDPR Article 17</strong>, destroying the decryption key 
+                                    makes the encrypted data <strong class="text-red-600">unreadable in practice.</strong> Whether that amounts to erasure under the GDPR is a legal assessment for the controller (VCP v1.2 RC1 §3.2.2).
                                 </p>
                             </div>
                         </div>
@@ -413,8 +413,7 @@
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            In VCP-compliant systems, transaction <strong>hash values</strong> and 
-                            <strong>Merkle Roots</strong> are committed to an external anchor (depending on the tier: a public blockchain, an RFC 3161 timestamp authority, an attested database or a public timestamping service).
+                            In VCP-compliant systems, the signed <strong>Merkle Root</strong> of each batch of event hashes is committed to an external anchor (depending on the tier: a public blockchain, an RFC 3161 timestamp authority, an attested database or a public timestamping service).
                         </p>
                         <p>
                             This allows users to verify <strong class="highlight">"whether my trades were tampered with"</strong> 
@@ -533,8 +532,8 @@
                                 <strong><i class="fas fa-code text-green-600 mr-2"></i>For Retail Brokers & Prop Firms:</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                We provide <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-sidecar-guide</code>, 
-                                which minimizes impact on existing environments while enabling certification.
+                                VSO publishes <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-sidecar-guide</code> (written for VCP v1.0, Silver tier), 
+                                which describes an integration that minimizes impact on existing environments. Certification against v1.1 additionally requires external anchoring and Policy Identification.
                             </p>
                         </div>
                     </div>
@@ -763,14 +762,13 @@
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-check-circle mr-2"></i>
-                            A. Yes—because VCP implements "crypto-agility" at the specification level.
+                            A. No design can promise that. VCP is crypto-agile: the algorithm is identified in every record, so algorithms can be replaced.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            Modern cryptographic standards (including NIST's PQC program) are still in transition.
-                            Instead of committing to a single post-quantum algorithm prematurely, 
-                            <strong class="highlight">VCP reserves multiple options.</strong>
+                            NIST published the ML-DSA signature standard (FIPS 204) in August 2024.
+                            <strong class="highlight">VCP v1.2 RC1 lists the identifiers DILITHIUM2 (ML-DSA) and FALCON512 (FN-DSA) as EXPERIMENTAL; they are not a certification requirement.</strong>
                         </p>
                         <div class="grid md:grid-cols-2 gap-4 mt-4">
                             <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
@@ -780,25 +778,24 @@
                                 <ul class="space-y-1 text-sm text-gray-700">
                                     <li>• Ed25519</li>
                                     <li>• ECDSA</li>
-                                    <li>• RSA (for compatibility)</li>
+                                    <li>• RSA_2048 (deprecated)</li>
                                 </ul>
                             </div>
                             <div class="bg-purple-50 border border-purple-200 p-4 rounded-lg">
                                 <h4 class="font-bold text-purple-900 mb-2">
-                                    <i class="fas fa-rocket mr-2"></i>Future-ready reserved:
+                                    <i class="fas fa-rocket mr-2"></i>Experimental in v1.2 RC1:
                                 </h4>
                                 <ul class="space-y-1 text-sm text-gray-700">
-                                    <li>• Dilithium2</li>
-                                    <li>• Falcon</li>
-                                    <li>• Additional PQC algorithms as finalized by NIST</li>
+                                    <li>• DILITHIUM2 (ML-DSA, FIPS 204)</li>
+                                    <li>• FALCON512 (FN-DSA)</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 p-4 rounded-lg mt-4">
                             <p class="text-sm text-gray-800">
                                 <i class="fas fa-globe text-indigo-600 mr-2"></i>
-                                PQC remains an open issue for the <strong>entire cryptography community</strong>.
-                                VCP's design allows it to adopt final PQC standards with <strong>minimal friction.</strong>
+                                Migration of deployed systems and of already-signed records is a separate task; 
+                                VCP v1.2 RC1 gives non-normative guidance on hybrid (classical + post-quantum) signatures in <strong>Appendix E.</strong>
                             </p>
                         </div>
                         <p class="mt-4 font-semibold text-green-700">
@@ -824,7 +821,7 @@
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-rocket mr-2"></i>
-                            A. VCP is equipped with "Crypto Agility" and is already prepared.
+                            A. VCP is crypto-agile; post-quantum signatures are experimental in v1.2 RC1 and migration is not automatic.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
@@ -838,10 +835,9 @@
                                 <i class="fas fa-road mr-2"></i>Future Migration Path
                             </h4>
                             <p class="text-sm text-gray-700">
-                                When quantum computing threats become real, we will 
-                                <strong>seamlessly upgrade</strong> to NIST-standard algorithms like 
-                                <strong class="text-purple-700">Dilithium</strong>, 
-                                keeping the authenticity of records verifiable into the future.
+                                Appendix E of the specification gives non-normative guidance: during a transition period implementations may carry dual signatures, 
+                                Ed25519 plus a post-quantum signature (ML-DSA, identifier <strong class="text-purple-700">DILITHIUM2</strong>). 
+                                Records signed only with Ed25519 are not upgraded by a later change of algorithm.
                             </p>
                         </div>
                     </div>
@@ -863,7 +859,7 @@
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-check-circle mr-2"></i>
-                            A. Yes, support is built into the protocol.
+                            A. VCP-GOV records are relevant evidence where the Act applies; algorithmic trading is not itself listed as high-risk (Annex III), and the high-risk rules apply from 2 December 2027.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
@@ -1241,7 +1237,7 @@
                         <div class="info-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-700">
                                 <i class="fas fa-file-alt text-blue-500 mr-2"></i>
-                                Certification reports can serve as <strong>technical evidence</strong> in regulatory submissions.
+                                A certification report may be offered to an authority as <strong>supporting technical material</strong>; the scheme has no formal recognition by any authority.
                             </p>
                         </div>
                     </div>

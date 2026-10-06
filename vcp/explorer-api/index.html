@@ -69,15 +69,15 @@
             <div class="feature-grid">
                 <div class="feature-card">
                     <h3><i class="fas fa-lock"></i> Cryptographic Verification</h3>
-                    <p>RFC 6962-compliant Merkle proofs enable external verification without trusting the API. "Verify, Don't Trust" principle in action.</p>
+                    <p>Merkle proofs with RFC 6962 domain-separated hashing are designed to enable external verification without trusting the API. "Verify, Don't Trust" principle in action.</p>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-search"></i> Advanced Search</h3>
                     <p>Track complete transaction lifecycles with TraceID, filter by symbol, time range, event type, and algorithm ID.</p>
                 </div>
                 <div class="feature-card">
-                    <h3><i class="fas fa-certificate"></i> Regulatory Certificates</h3>
-                    <p>Generate audit-ready certificates containing event data, Merkle proofs, and cryptographic signatures for compliance.</p>
+                    <h3><i class="fas fa-certificate"></i> Event Certificates</h3>
+                    <p>Generate verification certificates containing event data, Merkle proofs, and cryptographic signatures.</p>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-cubes"></i> VCP Module Structure</h3>
@@ -500,6 +500,12 @@ curl -H "X-VCP-API-Key: your_api_key" \
                             <td>Trading</td>
                         </tr>
                         <tr>
+                            <td><span class="badge">9</span></td>
+                            <td><code>CLS</code></td>
+                            <td>Position closed</td>
+                            <td>Trading</td>
+                        </tr>
+                        <tr>
                             <td><span class="badge">20</span></td>
                             <td><code>ALG</code></td>
                             <td>Algorithm update</td>
@@ -509,7 +515,13 @@ curl -H "X-VCP-API-Key: your_api_key" \
                             <td><span class="badge">21</span></td>
                             <td><code>RSK</code></td>
                             <td>Risk parameter change</td>
-                            <td>Risk</td>
+                            <td>Governance</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge">22</span></td>
+                            <td><code>AUD</code></td>
+                            <td>Audit request</td>
+                            <td>Governance</td>
                         </tr>
                         <tr>
                             <td><span class="badge">98</span></td>
@@ -545,7 +557,7 @@ curl -H "X-VCP-API-Key: your_api_key" \
     <section class="section" style="background-color: #f9fafb;">
         <div class="container">
             <h2 class="section-title">Merkle Proof Verification Guide</h2>
-            <p>The VCP Explorer API follows RFC 6962 Certificate Transparency standard for Merkle tree proofs. This enables anyone to independently verify event authenticity without trusting the API.</p>
+            <p>The VCP Explorer API uses Merkle proofs with the domain-separated hashing of RFC 6962 (Certificate Transparency). This enables anyone to independently verify event authenticity without trusting the API.</p>
 
             <h3 class="section-subtitle">Verification Steps</h3>
             <div class="feature-grid">
@@ -572,29 +584,34 @@ curl -H "X-VCP-API-Key: your_api_key" \
                 <div class="code-header">
                     <span class="code-label">Python-like Pseudocode</span>
                 </div>
-                <pre><code>def verify_merkle_proof(event_hash: str, audit_path: list, expected_root: str) -> bool:
+                <pre><code>def verify_merkle_proof(event_hash: bytes, leaf_index: int, audit_path: list, expected_root: bytes) -> bool:
     """
-    Verify Merkle inclusion proof (RFC 6962).
+    Verify a Merkle inclusion proof with RFC 6962 domain separation
+    (VCP v1.1 section 6.2: leaf = SHA-256(0x00 || data), node = SHA-256(0x01 || left || right)).
+    
+    As written, this sketch is valid when the batch size (tree_size) is a power of two.
+    For other sizes the pairing follows the tree construction of VCP v1.1 section 6.2.1,
+    in which the last node of an odd level is hashed with itself.
     
     Args:
-        event_hash: SHA-256 hash of the event (leaf node)
-        audit_path: List of sibling hashes from leaf to root
-        expected_root: Expected Merkle root hash
+        event_hash: EventHash of the event (the leaf input), as bytes
+        leaf_index: Position of the event in the batch (from the proof)
+        audit_path: List of sibling hashes from leaf to root, as bytes
+        expected_root: Expected Merkle root hash, as bytes
     
     Returns:
         True if proof is valid, False otherwise
     """
-    current_hash = event_hash
+    index = leaf_index
+    current_hash = sha256(b"\x00" + event_hash)   # leaf prefix
     
     for sibling_hash in audit_path:
-        # Concatenate in sorted order (canonical)
-        if current_hash < sibling_hash:
-            combined = current_hash + sibling_hash
-        else:
-            combined = sibling_hash + current_hash
-        
-        # Hash the concatenation
-        current_hash = sha256(combined)
+        # Order is positional (left/right from the leaf index), never sorted
+        if index % 2 == 1:   # current node is a right child
+            current_hash = sha256(b"\x01" + sibling_hash + current_hash)
+        else:                # current node is a left child
+            current_hash = sha256(b"\x01" + current_hash + sibling_hash)
+        index //= 2
     
     # Compare computed root with expected root
     return current_hash == expected_root</code></pre>
@@ -627,8 +644,8 @@ curl -H "X-VCP-API-Key: your_api_key" \
             <h3 class="section-subtitle">When to Use Certificates</h3>
             <div class="feature-grid">
                 <div class="feature-card">
-                    <h3><i class="fas fa-gavel"></i> Regulatory Compliance</h3>
-                    <p>Submit to financial authorities as evidence of trading transparency and algorithmic governance.</p>
+                    <h3><i class="fas fa-gavel"></i> Regulatory Inquiries</h3>
+                    <p>A certificate could be provided to an authority as supporting technical material; no authority has accepted or recognised such certificates.</p>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-balance-scale"></i> Dispute Resolution</h3>
@@ -720,8 +737,8 @@ curl -H "X-VCP-API-Key: your_api_key" \
                     </a>
                 </div>
                 <div class="feature-card">
-                    <h3><i class="fas fa-check-circle"></i> Conformance Package v1.0</h3>
-                    <p>Testing tools and validation suite for VCP implementations.</p>
+                    <h3><i class="fas fa-check-circle"></i> Conformance Test Guide v1.0</h3>
+                    <p>Test procedures and checklists for VCP v1.0 implementations (a guide; no test tooling is published).</p>
                     <a href="https://github.com/veritaschain/vcp-conformance-guide" target="_blank" rel="noopener noreferrer" style="color: #1e40af; font-weight: 600;">
                         View Conformance Guide <i class="fas fa-external-link-alt"></i>
                     </a>
@@ -735,7 +752,7 @@ curl -H "X-VCP-API-Key: your_api_key" \
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-certificate"></i> VeritasChain Certified (VC-Certified)</h3>
-                    <p>Apply for VC-Certified status to make your system's transparency and VCP compliance independently verifiable.</p>
+                    <p>Apply for VC-Certified status: an accredited Conformity Assessment Body assesses your system's conformance to the VCP specification.</p>
                     <a href="https://veritaschain.org/certified/" target="_blank" rel="noopener noreferrer" style="color: #1e40af; font-weight: 600;">
                         Learn About Certification <i class="fas fa-external-link-alt"></i>
                     </a>

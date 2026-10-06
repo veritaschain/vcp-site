@@ -446,7 +446,7 @@ export const faqPage = () => html`
                                 <strong><i class="fas fa-code text-green-600 mr-2"></i>リテールブローカー・Prop Firm向け:</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-mql-bridge</code> を用意しており、
+                                <code class="bg-white px-2 py-1 rounded border text-green-700">vcp-sidecar-guide</code> リポジトリ（MT4/MT5向けサイドカー統合ガイド、VCP v1.0 参照コード付き）を公開しており、
                                 既存環境への影響を最小限に抑えながら認証を取得できます。
                             </p>
                         </div>
@@ -735,7 +735,7 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-clock mr-2"></i>
-                            A. ほとんどの組織は2〜6週間で認証プロセスを完了します。
+                            A. 認証プロセスは2〜6週間以内に完了するよう設計されています。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
