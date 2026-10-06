@@ -52,8 +52,8 @@ export const brokersPageJa = () => html`
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@VeritasChainOrg">
-    <meta name="twitter:creator" content="@VeritasChainOrg">
+    <meta name="twitter:site" content="@Veritas_chain">
+    <meta name="twitter:creator" content="@Veritas_chain">
     <meta name="twitter:title" content="機関投資家向けVCP | Best Executionを暗号学的に証明">
     <meta name="twitter:description" content="Best Executionを暗号学的に証明できる世界唯一のプロトコル。MiFID II関連の監査証跡の監査証跡を機関投資家向けデューデリジェンスに。">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">

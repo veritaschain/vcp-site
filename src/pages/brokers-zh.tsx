@@ -52,8 +52,8 @@ export const brokersPageZh = () => html`
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@VeritasChainOrg">
-    <meta name="twitter:creator" content="@VeritasChainOrg">
+    <meta name="twitter:site" content="@Veritas_chain">
+    <meta name="twitter:creator" content="@Veritas_chain">
     <meta name="twitter:title" content="机构经纪商VCP | 密码学证明最佳执行">
     <meta name="twitter:description" content="全球唯一能以密码学方式证明最佳执行的协议。符合MiFID II的审计轨迹，适用于机构尽职调查。">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">

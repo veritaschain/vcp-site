@@ -164,7 +164,7 @@ https://veritaschain.org/
 
 VCP produces evidence relevant to the regimes below. Conformance to VCP does not constitute compliance with any of them (VAP v1.2 §1.6).
 
-- **MiFID II RTS 25** (Delegated Regulation (EU) 2017/574: synchronisation of business clocks to UTC for trading venues and their members or participants)
+- **EU clock-synchronisation rules** (Commission Delegated Regulation (EU) 2025/1155, Articles 11–16 and Annex IV: synchronisation of business clocks to UTC for trading venues, their members or participants and other market infrastructure; it replaced MiFID II RTS 25 — Delegated Regulation (EU) 2017/574 — on 2 March 2026)
 - **EU AI Act** (Regulation (EU) 2024/1689; Annex III high-risk obligations apply from 2 December 2027)
 - **GDPR** (Data privacy)
 - **CAT Rule 613** (US SEC Consolidated Audit Trail)
