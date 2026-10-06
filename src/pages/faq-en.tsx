@@ -200,7 +200,7 @@ export const faqPageEn = () => html`
                         </p>
                         <p class="font-semibold text-gray-800">Specifically, we verify that the following are mathematically and cryptographically correct:</p>
                         <ul class="list-disc list-inside space-y-2 ml-4">
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Trading data is <strong>immutable</strong> (tamper-proof)</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Trading data is <strong>tamper-evident</strong> (append-only)</li>
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Algorithm <strong>decision-making processes</strong> are recorded</li>
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Time synchronization and numerical precision meet specified <strong>Tier requirements</strong></li>
                         </ul>
@@ -386,7 +386,7 @@ export const faqPageEn = () => html`
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
                             While <strong>Silver Tier</strong> doesn't require atomic-clock precision (PTPv2), 
-                            it guarantees <strong class="highlight">"Irreversibility of Fraud."</strong>
+                            it makes <strong class="highlight">"retroactive fraud detectable."</strong>
                         </p>
                         <div class="grid gap-3 mt-4">
                             <div class="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded">
@@ -399,21 +399,21 @@ export const faqPageEn = () => html`
                             <div class="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded">
                                 <i class="fas fa-chain-broken text-blue-600 text-xl mt-1"></i>
                                 <div>
-                                    <h4 class="font-bold text-blue-900">Retroactive Tampering Prevention</h4>
+                                    <h4 class="font-bold text-blue-900">Retroactive Tampering Detection</h4>
                                     <p class="text-sm text-gray-700">Data is anchored to blockchain every 24 hours.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>Fraud Types Prevented:</strong>
+                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>Fraud Types Made Detectable:</strong>
                             </p>
                             <ul class="text-sm text-gray-700 mt-2 space-y-1">
                                 <li>• "Deleting unfavorable trades after the fact"</li>
                                 <li>• "Inserting fake data with past timestamps"</li>
                             </ul>
                             <p class="text-sm text-gray-800 mt-2">
-                                These typical frauds become <strong>impossible even for database administrators.</strong>
+                                These typical frauds become <strong>detectable even when committed by database administrators.</strong>
                             </p>
                         </div>
                         <p class="mt-4 font-semibold text-green-700">
@@ -484,7 +484,7 @@ export const faqPageEn = () => html`
                             <strong>Silver Tier</strong> provides all the core benefits of VCP compliance:
                         </p>
                         <ul class="list-disc list-inside space-y-1 ml-4">
-                            <li>Immutable audit trails with cryptographic integrity</li>
+                            <li>Cryptographically tamper-evident logs</li>
                             <li>UUID v7 time-ordered event logging</li>
                             <li>24-hour blockchain anchoring</li>
                             <li>Protection against retroactive data manipulation</li>
@@ -637,7 +637,7 @@ export const faqPageEn = () => html`
                                 <strong><i class="fas fa-shield-alt text-blue-600 mr-2"></i>Compliance Support:</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                This strongly supports compliance with <strong>high-risk AI system</strong> requirements for 
+                                This produces evidence relevant to <strong>high-risk AI system</strong> requirements for 
                                 <strong class="highlight">transparency and record-keeping.</strong>
                             </p>
                         </div>
@@ -927,7 +927,7 @@ export const faqPageEn = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-handshake mr-2"></i>
-                            A. VSO collaborates with global regulatory, academic, and technical bodies to promote interoperability.
+                            A. VC-Certified currently has no formal international recognition. VSO seeks engagement with regulatory, academic, and technical communities to promote interoperability.
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">

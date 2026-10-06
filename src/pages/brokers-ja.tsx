@@ -22,8 +22,8 @@ export const brokersPageJa = () => html`
     <link rel="apple-touch-icon" href="/assets/img/logo.png">
     
     <!-- Primary Meta Tags -->
-    <title>機関投資家向けVCP | Best Executionを暗号学的に証明 | MiFID II準拠</title>
-    <meta name="title" content="機関投資家向けVCP | Best Executionを暗号学的に証明 | MiFID II準拠">
+    <title>機関投資家向けVCP | Best Executionを暗号学的に証明 | MiFID II関連の監査証跡</title>
+    <meta name="title" content="機関投資家向けVCP | Best Executionを暗号学的に証明 | MiFID II関連の監査証跡">
     <meta name="description" content="Best Executionを暗号学的に証明できる世界唯一のプロトコル。MiFID II RTS 25/28・EU AI Act第12条準拠の監査証跡。機関投資家向けブローカー・ECN・監査法人のためのサイドカー統合。">
     <meta name="keywords" content="Best Execution, MiFID II, RTS 25, RTS 28, EU AI Act, アルゴリズム取引, 監査証跡, 暗号学的証明, 機関投資家, ECN, コンプライアンス, レグテック, 取引透明性, VCP, VeritasChain, ブローカー">
     <meta name="author" content="VeritasChain Standards Organization (VSO)">
@@ -55,7 +55,7 @@ export const brokersPageJa = () => html`
     <meta name="twitter:site" content="@VeritasChainOrg">
     <meta name="twitter:creator" content="@VeritasChainOrg">
     <meta name="twitter:title" content="機関投資家向けVCP | Best Executionを暗号学的に証明">
-    <meta name="twitter:description" content="Best Executionを暗号学的に証明できる世界唯一のプロトコル。MiFID II準拠の監査証跡を機関投資家向けデューデリジェンスに。">
+    <meta name="twitter:description" content="Best Executionを暗号学的に証明できる世界唯一のプロトコル。MiFID II関連の監査証跡の監査証跡を機関投資家向けデューデリジェンスに。">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
     <meta name="twitter:image:alt" content="VeritasChain Protocol - 暗号学的なBest Execution検証">
     
@@ -117,7 +117,7 @@ export const brokersPageJa = () => html`
                 "name": "VCP（VeritasChain Protocol）とは何ですか？",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "VCPは、アルゴリズム取引におけるBest Executionを暗号学的に証明できる世界唯一のプロトコルです。MiFID II RTS 25/28およびEU AI Act第12条に準拠した改ざん不能な監査証跡を作成します。"
+                    "text": "VCPは、アルゴリズム取引におけるBest Executionを暗号学的に証明できる世界唯一のプロトコルです。MiFID II RTS 25/28およびEU AI Act第12条に準拠した改ざん検知可能な監査証跡を作成します。"
                 }
             },
             {
@@ -255,9 +255,9 @@ export const brokersPageJa = () => html`
                     </p>
                     
                     <div class="flex flex-wrap gap-4">
-                        <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/30">
+                        <a href="https://github.com/veritaschain/vcp-spec" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/30">
                             <i class="fas fa-file-alt"></i>
-                            技術仕様書 (VCP v1.0) を見る
+                            技術仕様書 (VCP v1.1 / v1.2 RC1) を見る
                         </a>
                         <a href="mailto:partners@veritaschain.org?subject=VCP%20PoC%E3%81%AE%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B%20-%20%E6%A9%9F%E9%96%A2%E6%8A%95%E8%B3%87%E5%AE%B6%E5%90%91%E3%81%91" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2">
                             <i class="fas fa-rocket"></i>
@@ -339,12 +339,12 @@ export const brokersPageJa = () => html`
                         <i class="fas fa-fingerprint text-3xl text-emerald-600"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-2">暗号学的Best Execution</h3>
-                    <p class="text-sm text-emerald-600 font-semibold mb-4">Best Executionを暗号学的に証明できる唯一の方法</p>
+                    <p class="text-sm text-emerald-600 font-semibold mb-4">Best Executionを暗号学的に検証可能にする方法</p>
                     <p class="text-slate-600 leading-relaxed mb-4">
                         VCPは、注文発生から約定までの全イベントをハッシュチェーンで連結し、Ed25519デジタル署名で封印します。
                     </p>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        これにより、スリッページや約定拒否が「作為的ではない」ことを数学的に証明できます。
+                        これにより、スリッページや約定拒否の判断を事後的に暗号学的に検証可能にします。
                     </p>
                     <div class="bg-emerald-50 p-4 rounded-lg">
                         <p class="text-sm text-emerald-800 font-medium">
@@ -457,13 +457,13 @@ export const brokersPageJa = () => html`
                         </svg>
                     </div>
                     
-                    <!-- Immutable Storage -->
+                    <!-- Append-Only Storage -->
                     <div class="flex-1">
                         <div class="bg-slate-700/50 border border-slate-600 rounded-xl p-6 text-center">
                             <div class="w-16 h-16 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <i class="fas fa-cube text-2xl text-slate-300"></i>
                             </div>
-                            <h4 class="text-white font-bold mb-2">Immutable Storage</h4>
+                            <h4 class="text-white font-bold mb-2">Append-Only Storage</h4>
                             <p class="text-slate-400 text-sm">監査ログ<br/>Blockchainアンカー</p>
                         </div>
                     </div>
@@ -479,7 +479,7 @@ export const brokersPageJa = () => html`
                 <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
                     機関投資家向けユースケース
                 </h2>
-                <p class="text-slate-600">大手ブローカー・ECNがVCPを活用する方法</p>
+                <p class="text-slate-600">ブローカー・ECNがVCPを活用できる方法</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-6">
@@ -505,7 +505,7 @@ export const brokersPageJa = () => html`
                         <h4 class="font-bold text-slate-900">規制コンプライアンス自動化</h4>
                     </div>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        MiFID II RTS 25 / EU AI Act 第12条の記録保持義務を、暗号学的に保護されたログで自動的に充足。
+                        MiFID II RTS 25 / EU AI Act 第12条の記録保持義務に関連する証拠を、暗号学的に保護されたログで自動的に生成。
                     </p>
                 </div>
                 
@@ -538,7 +538,7 @@ export const brokersPageJa = () => html`
             </h2>
             
             <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-                VSOでは現在、機関投資家向けマーケットインフラへの世界初のMiFID準拠VCP実装に向けた先行パートナーを募集しています。
+                VSOでは現在、機関投資家向けマーケットインフラへのMiFIDに整合したVCP実装に向けた先行パートナーを募集しています。
                 VCPの実装は、特定のアセットクラス・限定されたサーバー構成でのPoCから開始可能です。
             </p>
             
@@ -574,7 +574,7 @@ export const brokersPageJa = () => html`
                     <i class="fas fa-envelope mr-2"></i>
                     PoCについて問い合わせる（機関投資家向け）
                 </a>
-                <a href="https://github.com/VeritasChain/vcp-specification" target="_blank" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-10 py-4 rounded-lg font-bold text-lg transition-all">
+                <a href="https://github.com/veritaschain/vcp-spec" target="_blank" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-10 py-4 rounded-lg font-bold text-lg transition-all">
                     <i class="fas fa-download mr-2"></i>
                     ホワイトペーパーをダウンロード
                 </a>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Two Sigma Fraud: What Cryptographic Audit Trails Would Have Made Auditable — VCP v1.1 Technical Analysis - VeritasChain Blog</title>
+    <title>The Two Sigma Fraud: What Cryptographic Audit Trails Are Designed to Make Auditable — VCP v1.1 Technical Analysis - VeritasChain Blog</title>
     <meta name="description" content="A comprehensive technical analysis of how VCP v1.1's three-layer cryptographic architecture would have made the parameter changes behind the Two Sigma $165M fraud auditable from the moment they were recorded. Includes VCP-GOV model governance and regulatory compliance mapping.">
     <meta name="keywords" content="Two Sigma, VCP v1.1, cryptographic audit, algorithmic trading fraud, SEC, model governance, Merkle trees, VCP-GOV, compliance, hedge fund">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -20,7 +20,7 @@
     </script>
     
     <!-- Open Graph -->
-    <meta property="og:title" content="The Two Sigma Fraud: What Cryptographic Audit Trails Would Have Made Auditable">
+    <meta property="og:title" content="The Two Sigma Fraud: What Cryptographic Audit Trails Are Designed to Make Auditable">
     <meta property="og:description" content="VCP v1.1 technical analysis of what cryptographic records would have made auditable in the $165M Two Sigma case.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-30-vcp-two-sigma-technical-analysis/">
@@ -36,7 +36,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@veritaschain">
-    <meta name="twitter:title" content="The Two Sigma Fraud: What Cryptographic Audit Trails Would Have Made Auditable">
+    <meta name="twitter:title" content="The Two Sigma Fraud: What Cryptographic Audit Trails Are Designed to Make Auditable">
     <meta name="twitter:description" content="VCP v1.1 analysis: what cryptographic records would have made auditable in the $165M fraud.">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
     
@@ -344,7 +344,7 @@
     {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "The Two Sigma Fraud: What Cryptographic Audit Trails Would Have Made Auditable — VCP v1.1 Technical Analysis",
+        "headline": "The Two Sigma Fraud: What Cryptographic Audit Trails Are Designed to Make Auditable — VCP v1.1 Technical Analysis",
         "description": "Comprehensive technical analysis of what VCP v1.1 records would have made auditable in Two Sigma's $165M fraud.",
         "image": "https://veritaschain.org/assets/OGP.png",
         "author": {
@@ -396,7 +396,7 @@
             
             <!-- Title -->
             <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-                The Two Sigma Fraud: What Cryptographic Audit Trails Would Have Made Auditable
+                The Two Sigma Fraud: What Cryptographic Audit Trails Are Designed to Make Auditable
                 <span class="block text-2xl md:text-3xl text-red-400 mt-2">A Deep Dive into VCP v1.1's Technical Solutions</span>
             </h1>
             
@@ -421,6 +421,9 @@
 
     <!-- Article Content -->
     <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 6, 2026).</strong> This article was published on January 30, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 6, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
         <div class="prose">
             
             <!-- Key Stats -->
@@ -610,7 +613,7 @@
                     </tr>
                     <tr>
                         <td>Post-hoc investigation</td>
-                        <td><strong>Immediate anomaly detection</strong></td>
+                        <td><strong>Records auditable from the moment of recording</strong></td>
                     </tr>
                 </tbody>
             </table>
@@ -650,9 +653,9 @@
                 <li>The original parameter (0.85) is recorded in an event with hash <code>h_original</code></li>
                 <li>Wu attempts to modify the parameter to 0.02</li>
                 <li>This creates a new event with hash <code>h_modified</code> ≠ <code>h_original</code></li>
-                <li>The hash chain immediately shows a discrepancy</li>
+                <li>Both values remain in the signed record; the earlier one is not overwritten</li>
                 <li>Verification against the approved ModelHash fails</li>
-                <li><strong>Detection is immediate and automatic</strong></li>
+                <li><strong>The change is auditable from the moment it is recorded; noticing it still requires a review or an automated comparison outside VCP</strong></li>
             </ul>
 
             <!-- Part 5: Layer 2 -->
@@ -664,7 +667,7 @@
 
             <h3>RFC 6962 Merkle Trees</h3>
 
-            <p>VCP v1.1 addresses this through <strong>Merkle Trees</strong>. The critical property: <strong>completeness verification</strong>—if an event is omitted, the resulting Merkle Root will be different. Any auditor with the correct Root can verify whether a specific event was included.</p>
+            <p>No log can show an event that was never recorded. What VCP v1.1 adds through <strong>Merkle Trees</strong> and external anchoring is detection of omission after the fact: once a batch is anchored, removing an event from it changes the Merkle Root. Any auditor with the correct Root can verify whether a specific event was included.</p>
 
             <p><strong>Application to Two Sigma:</strong> If Wu deletes an event, any audit using the externally anchored Merkle Root will fail proof verification for the deleted event. <strong>The omission is cryptographically detectable.</strong></p>
 
@@ -697,7 +700,7 @@
 
             <h3>The ModelHash Field</h3>
 
-            <p>VCP-GOV's <code>ModelHash</code> field represents a SHA-256 hash of model code, configuration parameters, and hyperparameters. Any execution with a <code>ModelHash</code> not in the Approved Registry generates an <code>UnapprovedModelExecution</code> alert.</p>
+            <p>VCP-GOV's <code>ModelHash</code> field represents a SHA-256 hash of model code, configuration parameters, and hyperparameters. A reviewer or monitoring tool can compare the recorded <code>ModelHash</code> with the firm's list of approved model hashes; VCP records the hash and does not itself raise alerts.</p>
 
             <p><strong>How VCP-GOV records a change of this kind:</strong></p>
             <ol>
@@ -753,7 +756,7 @@
                     </tr>
                     <tr>
                         <td><strong>EU AI Act Art. 12</strong></td>
-                        <td>Tamper-evident automatic logging</td>
+                        <td>Automatic recording of events (logs) for high-risk AI systems</td>
                         <td>SHA-256 hash chains + Merkle Trees + external anchoring</td>
                     </tr>
                     <tr>
@@ -847,7 +850,7 @@
             
             <h4>VCP Specification and Documentation</h4>
             <ul>
-                <li><strong>VCP v1.1 Specification:</strong> <a href="https://veritaschain.org/vcp/">veritaschain.org/vcp/</a></li>
+                <li><strong>VCP v1.1 Specification:</strong> <a href="https://veritaschain.org/what-is-vcp/">veritaschain.org/vcp/</a></li>
                 <li><strong>IETF Draft:</strong> <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/">draft-kamimura-scitt-vcp</a></li>
                 <li><strong>GitHub:</strong> <a href="https://github.com/veritaschain">github.com/veritaschain</a></li>
             </ul>

@@ -233,6 +233,9 @@
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-6 pb-24">
         <article class="prose prose-lg prose-invert">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 6, 2026).</strong> This article was published on January 18, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Since publication, Regulation (EU) 2026/1744 has moved the application of the EU AI Act's high-risk rules to 2 December 2027 (Annex III systems) and 2 August 2028 (Annex I systems). Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 6, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
             
             <!-- Executive Summary -->
             <div class="info-box">
@@ -288,7 +291,7 @@
             </ul>
 
             <p>
-                The maximum timeframe for compliance is <strong>30 days</strong> from receipt of request.
+                The controller must act without undue delay and in any event within <strong>one month</strong> of receipt, extendable by two further months where necessary (Art. 12(3)).
             </p>
 
             <h3>1.2 MiFID II Article 16(7) — Record Retention</h3>
@@ -302,7 +305,7 @@
             </blockquote>
 
             <p>
-                Regulatory Technical Standard (RTS) 25 further specifies:
+                Related provisions specify the following (RTS 25, Delegated Regulation (EU) 2017/574, covers only clock synchronisation and timestamp granularity; retention comes from Article 16(7) of MiFID II and record integrity from Article 72 of Delegated Regulation (EU) 2017/565):
             </p>
             <ul>
                 <li><strong>Retention period</strong>: 5-7 years</li>
@@ -318,11 +321,11 @@
             </p>
 
             <blockquote>
-                "High-risk AI systems shall be designed and developed with capabilities enabling the automatic recording of events ('logs') while the high-risk AI systems is operating."
+                "High-risk AI systems shall technically allow for the automatic recording of events (logs) over the lifetime of the system."
             </blockquote>
 
             <p>
-                Algorithmic trading systems utilizing AI/ML components fall under this regulation, creating an additional layer of logging obligations that must be reconciled with GDPR.
+                Algorithmic trading is not listed as a high-risk use in Annex III, so Article 12 applies to a trading system only if it is high-risk on another basis; where it does apply, its logging obligations must also be reconciled with GDPR.
             </p>
 
             <h3>1.4 The Regulatory Conflict</h3>
@@ -341,7 +344,7 @@
                         <tr>
                             <td>GDPR Art. 17</td>
                             <td>Delete personal data</td>
-                            <td>30 days</td>
+                            <td>One month (extendable by two)</td>
                         </tr>
                         <tr>
                             <td>MiFID II Art. 16(7)</td>
@@ -350,7 +353,7 @@
                         </tr>
                         <tr>
                             <td>EU AI Act Art. 12</td>
-                            <td>Log all AI decisions</td>
+                            <td>Automatic recording of events (logs)</td>
                             <td>System lifetime</td>
                         </tr>
                     </tbody>
@@ -368,7 +371,7 @@
             <div class="feature-card">
                 <h4 class="text-slate-200 font-semibold mb-2">Approach 1: Legal Exemption Claims</h4>
                 <p class="text-slate-400 mb-2">
-                    GDPR Article 17(3)(e) provides an exemption for data necessary "for the establishment, exercise or defence of legal claims."
+                    GDPR Article 17(3)(b) excludes the right to erasure where processing is necessary for compliance with a legal obligation under Union or Member State law (such as MiFID II record retention), and Article 17(3)(e) where data is necessary "for the establishment, exercise or defence of legal claims."
                 </p>
                 <p class="text-red-400 text-sm mb-0">
                     <i class="fas fa-times-circle mr-1"></i> <strong>Limitations:</strong> Regulators interpret this exemption narrowly. Does not apply to all personal data elements. Creates ongoing legal risk and uncertainty.
@@ -472,7 +475,7 @@
             <div class="feature-card">
                 <h4 class="text-blue-400 font-semibold mb-2"><i class="fas fa-eraser mr-2"></i>Property 2: Erasure Equivalence</h4>
                 <p class="text-slate-400 mb-0">
-                    Under the assumption that AES-256 is secure, destruction of K<sub>s</sub> renders P computationally unrecoverable. This satisfies the EDPB definition of erasure.
+                    Under the assumption that AES-256 is secure, destruction of K<sub>s</sub> renders P computationally unrecoverable. Whether this amounts to erasure under GDPR Article 17 is a legal assessment; EDPB Guidelines 02/2025 note that encrypted data remains personal data.
                 </p>
             </div>
 
@@ -483,18 +486,18 @@
                 </p>
             </div>
 
-            <h3>3.4 EDPB Endorsement</h3>
+            <h3>3.4 EDPB Position</h3>
 
             <p>
-                The European Data Protection Board explicitly endorses this approach in Guidelines 02/2025:
+                The European Data Protection Board has not endorsed key destruction as erasure. Its Guidelines 02/2025 on processing of personal data through blockchain technologies (adopted 8 April 2025 for public consultation) take a more cautious position:
             </p>
 
-            <blockquote>
-                "Where personal data has been encrypted using state of the art encryption technology and the encryption key has been securely destroyed, the encrypted data may be considered to have been erased, provided that decryption is not computationally feasible."
-            </blockquote>
+            <p>
+                The EDPB recalls that encrypted personal data is still personal data, and notes that after deletion of the decryption key the encrypted data is unintelligible only for as long as the algorithm is not broken.
+            </p>
 
             <p>
-                This provides the regulatory foundation for crypto-shredding as a compliant erasure mechanism.
+                Whether crypto-shredding satisfies Article 17 in a given case is therefore a legal assessment for the controller and the supervisory authority; it is not settled by the technique or by VCP.
             </p>
 
             <!-- Section 4: VCP Implementation -->
@@ -784,7 +787,7 @@ GENERATE ──▶ STORE ──▶ USE ──▶ ROTATE ──▶ DESTROY
                         <td>Hash chain linkage</td>
                     </tr>
                     <tr>
-                        <td>Art. 12(4)</td>
+                        <td>Art. 19 / Art. 21(2)</td>
                         <td>Log accessibility</td>
                         <td>Explorer API, verification endpoints</td>
                     </tr>
@@ -940,7 +943,7 @@ event = shredder.create_event(
             <div class="success-box">
                 <h4 class="text-green-400 font-semibold mb-3"><i class="fas fa-check-circle mr-2"></i>Key Takeaways</h4>
                 <ol class="text-slate-300 mb-0">
-                    <li><strong>Crypto-shredding is EDPB-endorsed</strong> — This is not a legal loophole but a recognized compliance mechanism.</li>
+                    <li><strong>Crypto-shredding is not EDPB-endorsed</strong> — EDPB Guidelines 02/2025 treat encrypted data as personal data; whether key destruction satisfies Article 17 is assessed case by case.</li>
                     <li><strong>Hash chain integrity survives erasure</strong> — The audit trail remains valid and verifiable.</li>
                     <li><strong>Implementation requires HSM</strong> — Software-only solutions do not provide sufficient key protection.</li>
                     <li><strong>Erasure certificates provide evidence</strong> — Verifiable evidence relevant to compliance for regulators and data subjects.</li>
@@ -960,7 +963,7 @@ event = shredder.create_event(
             <ul>
                 <li><strong>GDPR</strong>: Regulation (EU) 2016/679 of the European Parliament</li>
                 <li><strong>MiFID II</strong>: Directive 2014/65/EU</li>
-                <li><strong>MiFID II RTS 25</strong>: Commission Delegated Regulation (EU) 2017/580</li>
+                <li><strong>MiFID II RTS 25</strong>: Commission Delegated Regulation (EU) 2017/574</li>
                 <li><strong>EU AI Act</strong>: Regulation (EU) 2024/1689</li>
                 <li><strong>EDPB Guidelines 02/2025</strong>: Guidelines on Blockchain and Distributed Ledger Technologies</li>
             </ul>

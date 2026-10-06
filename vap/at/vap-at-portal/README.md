@@ -1,6 +1,6 @@
 # VAP-AT Level 1 Self-Assessment Tool
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://veritaschain.github.io/vap-at-portal/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://veritaschain.org/vap/at/vap-at-portal/)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 **VAP-AT Level 1 (Self-Assessment Tool)** - Interactive self-assessment portal for AI system auditability evaluation.
@@ -24,7 +24,7 @@ Fully optimized for all devices:
 
 ## 🚀 Live Demo
 
-Visit: **https://veritaschain.github.io/vap-at-portal/**
+Visit: **https://veritaschain.org/vap/at/vap-at-portal/**
 
 ## 📋 Features
 

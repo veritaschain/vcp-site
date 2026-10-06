@@ -141,7 +141,7 @@ const i18n = {
                 question: "Is chronological order recorded in an append-only, tamper-evident form?",
                 s0: "No sequence guarantee. Events may be reordered or backdated.",
                 s1: "Timestamps present but not cryptographically fixed. Order depends on system clock integrity.",
-                s2: "Append-only, tamper-evident sequence. UUIDv7 or similar provides cryptographically fixed ordering."
+                s2: "Append-only, tamper-evident sequence. Order is fixed cryptographically (hash chaining and/or Merkle inclusion with an externally anchored root); UUIDv7 identifiers are time-ordered but are not a cryptographic control."
             },
             c4: {
                 name: "Decision Provenance",
@@ -332,7 +332,7 @@ const i18n = {
                 question: "時系列順序が追記専用・改ざん検知可能な形で記録されていますか？",
                 s0: "順序保証なし。イベントは並べ替えやバックデートが可能。",
                 s1: "タイムスタンプはあるが暗号学的に固定されていない。順序はシステムクロックの整合性に依存。",
-                s2: "追記専用で改ざん検知可能な順序。UUIDv7または同等の機能が暗号学的に固定された順序を提供。"
+                s2: "追記専用で改ざん検知可能な順序。順序はハッシュチェーンやMerkle包含証明と外部アンカリングにより暗号学的に固定される。UUIDv7は時刻順の識別子であり、暗号学的な統制ではない。"
             },
             c4: {
                 name: "意思決定来歴",
@@ -412,7 +412,7 @@ const i18n = {
                 desc: "10项标准 × 0-2分 = 20分制，支持持续改进追踪"
             },
             regulatory: {
-                title: "监管合规",
+                title: "监管映射",
                 desc: "映射到EU AI Act、MiFID II、SEC 17a-4、GDPR和DORA要求"
             },
             evidence: {
@@ -523,7 +523,7 @@ const i18n = {
                 question: "时间顺序是否以仅追加、可检测篡改的形式记录？",
                 s0: "无序列保证。事件可能被重新排序或回溯。",
                 s1: "有时间戳但未加密固定。顺序依赖系统时钟完整性。",
-                s2: "仅追加、可检测篡改的序列。UUIDv7或类似机制提供加密固定的排序。"
+                s2: "仅追加、可检测篡改的序列。顺序通过哈希链和/或带外部锚定的Merkle包含证明以密码学方式固定；UUIDv7只是按时间排序的标识符，不是密码学控制手段。"
             },
             c4: {
                 name: "决策溯源",
@@ -714,7 +714,7 @@ const i18n = {
                 question: "¿Se registra el orden cronológico en un formato de solo anexión que permita detectar manipulaciones?",
                 s0: "Sin garantía de secuencia. Los eventos pueden reordenarse o antedatarse.",
                 s1: "Timestamps presentes pero no fijados criptográficamente. El orden depende de la integridad del reloj del sistema.",
-                s2: "Secuencia de solo anexión en la que cualquier manipulación es detectable. UUIDv7 o similar proporciona ordenamiento fijado criptográficamente."
+                s2: "Secuencia de solo anexión en la que cualquier manipulación es detectable. El orden se fija criptográficamente (encadenamiento de hashes y/o inclusión Merkle con raíz anclada externamente); los identificadores UUIDv7 están ordenados por tiempo, pero no son un control criptográfico."
             },
             c4: {
                 name: "Procedencia de Decisiones",

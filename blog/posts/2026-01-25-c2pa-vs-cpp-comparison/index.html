@@ -271,12 +271,15 @@
     <main style="padding: 3rem 1rem;">
         <div class="article-container">
             <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 6, 2026).</strong> This article was published on January 25, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 6, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
                 
                 <!-- Executive Summary -->
                 <div class="comparison-box">
                     <h3 style="color: #60a5fa; margin-top: 0;"><i class="fas fa-balance-scale mr-2"></i>Executive Summary</h3>
                     <p>The Coalition for Content Provenance and Authenticity (C2PA) has emerged as the dominant standard for digital media provenance, backed by industry giants including Adobe, Microsoft, Google, and Sony. With over 6,000 Content Authenticity Initiative members and ISO standardization underway, C2PA represents the current state-of-the-art in content authenticity.</p>
-                    <p>However, as we move into an era where AI-generated content becomes indistinguishable from captured reality, and where legal and regulatory frameworks increasingly demand cryptographic proof of media origin, C2PA's architectural limitations become apparent. The <strong>Capture Provenance Profile (CPP)</strong>, developed within the Verifiable AI Provenance (VAP) Framework, addresses these gaps through mathematically verifiable completeness, privacy-preserving verification, and forensic-grade evidence chains.</p>
+                    <p>However, as we move into an era where AI-generated content becomes indistinguishable from captured reality, and where disputes over the origin of media are becoming more frequent, C2PA's architectural limitations become apparent. The <strong>Capture Provenance Profile (CPP)</strong>, developed within the Verifiable AI Provenance (VAP) Framework, addresses these gaps through mathematically verifiable completeness, privacy-preserving verification, and forensic-grade evidence chains.</p>
                     <p style="margin-bottom: 0;">This article provides a comprehensive technical comparison of both specifications. Our goal is not to position CPP as a replacement for C2PA, but to articulate how these specifications serve <strong>complementary purposes</strong>—and why certain applications demand the stronger verifiability that CPP provides.</p>
                 </div>
 
@@ -503,7 +506,7 @@ Result:   Mismatch → VIOLATION DETECTED</code></pre>
                 <table>
                     <thead>
                         <tr>
-                            <th>CPP Tier</th>
+                            <th>VCP Tier (not CPP)</th>
                             <th>Precision</th>
                             <th>Anchor Interval</th>
                             <th>Use Case</th>
@@ -542,7 +545,7 @@ Result:   Mismatch → VIOLATION DETECTED</code></pre>
                     <p><strong>Can anyone prove photos are missing?</strong></p>
                     <ul>
                         <li><span class="protocol-badge badge-c2pa">C2PA</span>: <strong>No.</strong> Each manifest is independent.</li>
-                        <li><span class="protocol-badge badge-cpp">CPP</span>: <strong>Yes.</strong> The Completeness Invariant immediately reveals the mismatch.</li>
+                        <li><span class="protocol-badge badge-cpp">CPP</span>: <strong>Only in part.</strong> Photos removed after the collection was sealed and externally timestamped are detectable against that anchor; photos removed before anchoring, or never taken with the app, leave no trace.</li>
                     </ul>
                 </div>
                 
@@ -560,22 +563,22 @@ Result:   Mismatch → VIOLATION DETECTED</code></pre>
                         <tr>
                             <td>Selective evidence deletion</td>
                             <td>❌ Undetectable</td>
-                            <td>✅ Detected</td>
+                            <td>✅ Detectable after anchoring</td>
                         </tr>
                         <tr>
                             <td>Cherry-picked documentation</td>
                             <td>❌ Undetectable</td>
-                            <td>✅ Detected</td>
+                            <td>✅ Detectable after anchoring</td>
                         </tr>
                         <tr>
                             <td>Partial disclosure</td>
                             <td>❌ Undetectable</td>
-                            <td>✅ Detected</td>
+                            <td>✅ Detectable after anchoring</td>
                         </tr>
                         <tr>
                             <td>Manufactured gaps</td>
                             <td>❌ Undetectable</td>
-                            <td>✅ Detected</td>
+                            <td>✅ Detectable after anchoring</td>
                         </tr>
                     </tbody>
                 </table>
@@ -714,7 +717,7 @@ Result:   Mismatch → VIOLATION DETECTED</code></pre>
                         <tr>
                             <td>Microsecond timestamps</td>
                             <td>❌ Millisecond typical</td>
-                            <td>✅ IEEE 1588 PTP</td>
+                            <td>⚠️ Device clock + RFC 3161 TSA</td>
                         </tr>
                         <tr>
                             <td>Post-quantum readiness</td>
@@ -742,7 +745,7 @@ Result:   Mismatch → VIOLATION DETECTED</code></pre>
                 <div class="key-finding" style="margin-top: 2rem;">
                     <h3 style="color: #fbbf24; margin-top: 0;"><i class="fas fa-lightbulb mr-2"></i>The Fundamental Question</h3>
                     <p>C2PA provides <em>sufficient</em> provenance for media distribution—answering "who created this and was it modified?"</p>
-                    <p>CPP provides <em>forensic-grade</em> provenance for high-stakes scenarios—answering "can we mathematically verify that nothing was deleted, when exactly this was captured, and that a human was present?"</p>
+                    <p>CPP provides <em>forensic-grade</em> provenance for high-stakes scenarios—answering "can we detect deletion from an anchored collection, check the capture time against a third-party timestamp, and see evidence that a human-presence check was performed?"</p>
                     <p style="margin-bottom: 0;"><strong>The future of digital trust is not a single standard, but a spectrum of verifiability matched to the stakes involved.</strong></p>
                 </div>
 
@@ -765,7 +768,7 @@ Result:   Mismatch → VIOLATION DETECTED</code></pre>
                     <div>
                         <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">Implementation</h4>
                         <a href="https://veritaschain.org/vap/cpp/verasnap" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeraSnap (iOS)</a>
-                        <a href="https://veritaschain.org/vap/cpp/vericheck" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCheck (Web)</a>
+                        <a href="https://veritaschain.org/vap/cpp/veracheck/" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCheck (Web)</a>
                     </div>
                 </div>
             </div>

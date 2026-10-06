@@ -193,13 +193,13 @@ export const faqPage = () => html`
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong class="highlight">VC-Certified</strong>は、対象システムが国際標準規格
+                            <strong class="highlight">VC-Certified</strong>は、対象システムがオープン仕様
                             <strong>「Veritas Chain Protocol (VCP)」</strong>に
                             <strong class="text-blue-600">「技術的に適合していること」</strong>のみを証明するものです。
                         </p>
                         <p class="font-semibold text-gray-800">具体的には、以下の点が数学的・暗号学的に正しいことを検証しています:</p>
                         <ul class="list-disc list-inside space-y-2 ml-4">
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>取引データが<strong>改ざん不可能 (Immutable)</strong> であること</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>取引データが<strong>改ざん検知可能 (Tamper-evident)</strong> であること</li>
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i>アルゴリズムの<strong>意思決定プロセス</strong>が記録されていること</li>
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i>時刻同期や数値精度が規定の<strong>基準 (Tier)</strong> を満たしていること</li>
                         </ul>
@@ -234,7 +234,7 @@ export const faqPage = () => html`
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
-                            <strong>VSOは中立的な国際標準化団体です。</strong>
+                            <strong>VSOは中立的な標準化団体です。</strong>
                             認証バッジの発行は、そのシステムが<strong class="highlight">透明性の基準を満たしている</strong>ことを示すものであり、
                             その企業の商品やサービス自体を推奨するものではありません。
                         </p>
@@ -380,7 +380,7 @@ export const faqPage = () => html`
                     <div class="text-gray-700 leading-relaxed space-y-3">
                         <p>
                             <strong>Silver Tier</strong>は原子時計並みの精度 (PTPv2) こそ求めませんが、
-                            <strong class="highlight">「不正の不可逆性 (Irreversibility of Fraud)」</strong>を保証します。
+                            <strong class="highlight">「事後的な不正の検知可能性」</strong>を提供します。
                         </p>
                         <div class="grid gap-3 mt-4">
                             <div class="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded">
@@ -393,21 +393,21 @@ export const faqPage = () => html`
                             <div class="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded">
                                 <i class="fas fa-chain-broken text-blue-600 text-xl mt-1"></i>
                                 <div>
-                                    <h4 class="font-bold text-blue-900">事後改ざんの防止</h4>
+                                    <h4 class="font-bold text-blue-900">事後改ざんの検知</h4>
                                     <p class="text-sm text-gray-700">データは24時間ごとにブロックチェーンへアンカーされます。</p>
                                 </div>
                             </div>
                         </div>
                         <div class="warning-box p-4 rounded-md mt-4">
                             <p class="text-sm text-gray-800">
-                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>防止される不正:</strong>
+                                <strong><i class="fas fa-ban text-red-600 mr-2"></i>検知可能になる不正:</strong>
                             </p>
                             <ul class="text-sm text-gray-700 mt-2 space-y-1">
                                 <li>• 「後から都合の悪い取引を削除する」</li>
                                 <li>• 「過去の日時に偽のデータを挿入する」</li>
                             </ul>
                             <p class="text-sm text-gray-800 mt-2">
-                                といった典型的な不正は、<strong>たとえデータベース管理者であっても不可能</strong>になります。
+                                といった典型的な不正は、<strong>たとえデータベース管理者によるものであっても検知可能</strong>になります。
                             </p>
                         </div>
                         <p class="mt-4 font-semibold text-green-700">
@@ -477,7 +477,7 @@ export const faqPage = () => html`
                             <strong>Silver Tier</strong>はVCPコンプライアンスの主要な利点をすべて提供します：
                         </p>
                         <ul class="list-disc list-inside space-y-1 ml-4">
-                            <li>暗号学的完全性を持つ改ざん不可能な監査証跡</li>
+                            <li>暗号学的に改ざん検知可能なログ</li>
                             <li>UUID v7による時間順序付きイベントログ</li>
                             <li>24時間ごとのブロックチェーンアンカリング</li>
                             <li>遡及的データ操作からの保護</li>
@@ -915,7 +915,7 @@ export const faqPage = () => html`
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-handshake mr-2"></i>
-                            A. VSOはグローバルな規制機関、学術機関、技術団体と協力して相互運用性を促進しています。
+                            A. VC-Certifiedは現時点で正式な国際的承認を受けていません。VSOは相互運用性の促進のため、規制、学術、技術コミュニティとの対話を求めています。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
