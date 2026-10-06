@@ -4,7 +4,7 @@
 [![CPP Version](https://img.shields.io/badge/CPP-v1.0-blue.svg)](https://github.com/veritaschain/cpp-spec)
 [![VAP Version](https://img.shields.io/badge/VAP-v1.2-green.svg)](https://github.com/veritaschain/vap-spec)
 
-Web-based verification tool for cryptographic evidence captured with [VeriCapture](https://veritaschain.org/vap/cpp/vericapture). Implements the **Content Provenance Protocol (CPP)** specification for cryptographic evidence verification.
+Web-based verification tool for cryptographic evidence captured with [VeriCapture](https://veritaschain.org/vap/cpp/vericapture). Implements the **Capture Provenance Profile (CPP)** specification for cryptographic evidence verification.
 
 ## 🔍 Features
 

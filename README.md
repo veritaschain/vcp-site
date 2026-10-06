@@ -2,7 +2,7 @@
 
 **Global audit standard for algorithmic and AI-driven trading**
 
-Official website for VeritasChain Protocol (VCP) - An open standard for recording decision-making and execution results of algorithmic and AI-driven trading in an immutable and verifiable format.
+Official website for VeritasChain Protocol (VCP) - An open standard for recording decision-making and execution results of algorithmic and AI-driven trading in a tamper-evident and verifiable format.
 
 ---
 
@@ -160,13 +160,15 @@ https://veritaschain.github.io/vcp-site/
 
 ## 🏛️ Standards & Compliance
 
-### Regulatory Compliance
+### Regulatory Relevance
 
-- ✅ **MiFID II RTS 25** (EU algorithmic trading)
-- ✅ **EU AI Act** (2024/2026 - High-risk AI systems)
-- ✅ **GDPR** (Data privacy)
-- ✅ **CAT Rule 613** (US SEC Consolidated Audit Trail)
-- ✅ **APAC Standards** (Japan, Singapore, Hong Kong alignment)
+VCP produces evidence relevant to the regimes below. Conformance to VCP does not constitute compliance with any of them (VAP v1.2 §1.6).
+
+- **MiFID II RTS 25** (Delegated Regulation (EU) 2017/574: synchronisation of business clocks to UTC for trading venues and their members or participants)
+- **EU AI Act** (Regulation (EU) 2024/1689; Annex III high-risk obligations apply from 2 December 2027)
+- **GDPR** (Data privacy)
+- **CAT Rule 613** (US SEC Consolidated Audit Trail)
+- **APAC Standards** (Japan, Singapore, Hong Kong alignment)
 
 ### Standards Body Conventions
 

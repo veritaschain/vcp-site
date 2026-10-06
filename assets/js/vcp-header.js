@@ -208,7 +208,7 @@ class VCPHeader extends HTMLElement {
                 launchScorecard: '🚀 启动评分卡浏览器',
                 vcpProtocol: 'VCP协议',
                 standardizationRoadmap: '标准化路线图',
-                tamperEvidenceDemo: '防篡改演示',
+                tamperEvidenceDemo: '篡改检测演示',
                 developersIntegration: '开发者 / 集成',
                 developers: '开发者',
                 about: '关于',
