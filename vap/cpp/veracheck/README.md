@@ -8,13 +8,15 @@ Web-based verification tool for cryptographic evidence captured with [VeraSnap](
 
 ## 🔍 Features
 
-### Three-Layer Verification
+### Three Layers of a Verification Pack
 
-| Layer | Verification | Description |
-|-------|--------------|-------------|
-| **Layer 1** | Event Integrity | SHA-256 hash + ES256 digital signature |
-| **Layer 2** | Collection Integrity | Merkle proof + Completeness Invariant (XOR hash sum) |
-| **Layer 3** | External Verifiability | RFC 3161 TSA timestamp anchor |
+| Layer | What the pack carries | What this web version does |
+|-------|-----------------------|----------------------------|
+| **Layer 1** | Event integrity: SHA-256 hash + ES256 digital signature | Verifies the ES256 signature when the event embeds its public key (CPP v1.0 pack format); otherwise reports that a signature and a hash are present, without verifying them |
+| **Layer 2** | Collection integrity: Merkle proof + completeness field | Reports presence only; the Merkle root and the completeness value are not recomputed |
+| **Layer 3** | External verifiability: RFC 3161 TSA timestamp token | Reports presence only; the token is not validated |
+
+Results that are not verified are shown as "present — not verified", never as passed checks.
 
 ### Supported Languages (10)
 
@@ -33,7 +35,7 @@ Web-based verification tool for cryptographic evidence captured with [VeraSnap](
 
 ### Privacy-First Design
 
-- ✅ **100% client-side verification** - No data sent to any server
+- ✅ **100% client-side processing** - No data sent to any server
 - ✅ **No tracking or analytics**
 - ✅ **Works offline** after initial page load
 - ✅ **Open source** under CC BY 4.0
@@ -122,7 +124,7 @@ VeraCheck accepts `.veripack` or `.json` files following the CPP specification a
 
 > **Provenance ≠ Truth**
 >
-> VeraCheck verifies capture provenance data. It proves **when** and **by what device** media was captured. It does **NOT** verify:
+> VeraCheck displays capture provenance data: **when**, and **by what device**, the media is recorded as having been captured. It does **NOT** verify:
 > - Content truthfulness
 > - Scene authenticity  
 > - Whether content was staged or manipulated before capture
