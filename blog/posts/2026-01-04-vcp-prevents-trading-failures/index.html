@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>When Trust Failed: How VCP v1.1 Would Have Made $20B in Trading Disasters Auditable - VeritasChain Protocol</title>
+    <title>When Trust Failed: What VCP v1.1 Records Are Designed to Make Auditable: Lessons from $20B in Trading Disasters - VeritasChain Protocol</title>
     <meta name="description" content="Analysis of Three 2025 incidents—Two Sigma fraud, Jane Street controversy, crypto liquidation cascade—and what VCP v1.1's cryptographic verification would have made auditable across $20 billion in losses.">
     <meta name="keywords" content="VCP, VeritasChain, Two Sigma, Jane Street, SEBI, Crypto Crash, Algorithmic Trading, Audit Trail, Cryptographic Verification, SEC, Market Manipulation">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -19,7 +19,7 @@
     </script>
     
     <!-- Open Graph -->
-    <meta property="og:title" content="When Trust Failed: How VCP v1.1 Would Have Made $20B in Trading Disasters Auditable">
+    <meta property="og:title" content="When Trust Failed: What VCP v1.1 Records Are Designed to Make Auditable: Lessons from $20B in Trading Disasters">
     <meta property="og:description" content="Three 2025 incidents exposed the fatal flaw in algorithmic trading oversight. VCP v1.1 offers verification-based market supervision.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-01-04-vcp-prevents-trading-failures/">
@@ -33,7 +33,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="When Trust Failed: VCP v1.1 and $20B Trading Disasters">
     <meta name="twitter:description" content="What cryptographic verification would have made auditable in three major 2025 trading incidents.">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -97,7 +97,7 @@
     {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "When Trust Failed: How VCP v1.1 Would Have Made $20B in Trading Disasters Auditable - VeritasChain Protocol",
+    "headline": "When Trust Failed: What VCP v1.1 Records Are Designed to Make Auditable: Lessons from $20B in Trading Disasters - VeritasChain Protocol",
     "description": "Analysis of Three 2025 incidents—Two Sigma fraud, Jane Street controversy, crypto liquidation cascade—and what VCP v1.1's cryptographic verification would have made auditable across $20 billion in losses.",
     "image": "https://veritaschain.org/assets/OGP.png",
     "author": {
@@ -261,6 +261,9 @@
 
             <!-- Article Content -->
             <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 7, 2026).</strong> This article was published on January 4, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. MiFID II RTS 25 (Delegated Regulation (EU) 2017/574), cited here, was replaced on 2 March 2026 by Delegated Regulation (EU) 2025/1155. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 7, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
                 
                 <h2 id="credibility-crisis">1. The Year Algorithmic Trading Lost Its Credibility</h2>
                 
@@ -322,7 +325,7 @@
                     
                     <p><strong>Layer 3: Mandatory External Anchoring</strong> — Daily Merkle roots committed to independent third-party systems. An auditor could retrieve anchored roots and compare them against computed roots from current logs—any tampering would be cryptographically detectable.</p>
                     
-                    <p style="margin-bottom: 0;"><strong>Multi-Log Replication (REQ-ML-01)</strong> — Events transmitted to N≥2 independent log servers. Wu would need to compromise multiple servers before daily anchoring—transforming "modify one database" to "compromise distributed infrastructure."</p>
+                    <p style="margin-bottom: 0;"><strong>Limit</strong> — VCP v1.1 does not define multi-log replication. As §5.6.9 of the specification states, a single party could still omit events before anchoring.</p>
                 </div>
 
                 <h2 id="jane-street">3. Incident Two: The Cross-Market Arbitrage Controversy</h2>
@@ -389,7 +392,7 @@
   "RegulatoryClassification": "ALGO_HFT"
 }</code></pre>
                     
-                    <p>Regulators could query in near-real-time: "Show all INDEX_ARBITRAGE events where morning delta exceeds 5x afternoon delta on expiry days." The records behind the pattern SEBI spent months identifying would be queryable within <strong>hours</strong>.</p>
+                    <p>Where such fields are recorded, a regulator that obtains the records can filter them by declared policy category (for example, all INDEX_ARBITRAGE events on expiry days). VCP gives regulators no real-time access, and the specification does not determine how quickly a pattern can be identified.</p>
                     
                     <p><strong>VCP-XREF Dual Logging</strong> — Cross-reference extension enables linked logging between counterparties. Both Jane Street and NSE generate VCP events containing shared CrossReferenceID. Auditors can verify both parties recorded the same transaction details.</p>
                     
@@ -466,7 +469,7 @@
   "DivergenceFromExternal": 0.33
 }</code></pre>
                     
-                    <p><strong>Gossip Protocol (REQ-GS)</strong> — Consistency checking across venues would make divergences like the following detectable:</p>
+                    <p><strong>What a reviewer could read from such a record</strong> — VCP v1.1 defines no gossip protocol and performs no cross-venue checking. A divergence is visible only if the venue itself records the external reference prices, for example:</p>
                     
                     <blockquote style="background: rgba(239, 68, 68, 0.1); border-color: #ef4444;">"ALERT: Binance USDe valuation ($0.65) diverges >30% from Curve ($0.97) and Chainlink ($0.98). Cross-collateral liquidations may be based on anomalous pricing."</blockquote>
                     
@@ -483,8 +486,8 @@
                     </thead>
                     <tbody>
                         <tr><td><strong>SEC Rule 206(4)-7</strong></td><td>Records "secured from unauthorized alteration"</td><td>No verification methodology; insiders can modify undetected</td></tr>
-                        <tr><td><strong>MiFID II RTS 25</strong></td><td>100μs UTC divergence, "tamper-proof archive"</td><td>WORM compliance doesn't require cryptographic verification</td></tr>
-                        <tr><td><strong>EU AI Act Article 12</strong></td><td>Automatic recording of events</td><td>Recommends—rather than mandates—cryptographic audit trails</td></tr>
+                        <tr><td><strong>MiFID II RTS 25</strong></td><td>100μs maximum divergence from UTC for HFT (clock synchronisation)</td><td>Covers clock accuracy only; says nothing about protecting or verifying records</td></tr>
+                        <tr><td><strong>EU AI Act Article 12</strong></td><td>Automatic recording of events</td><td>Does not address cryptographic verification of logs</td></tr>
                     </tbody>
                 </table>
                 
@@ -514,9 +517,9 @@
                 <p>VCP v1.1 extends tamper-evidence to <strong>verifiable completeness</strong>—making omission of logged events from anchored batches detectable:</p>
                 
                 <ul>
-                    <li><strong>Multi-Log Replication (REQ-ML-01)</strong>: Events transmitted to N≥2 independent log servers simultaneously</li>
-                    <li><strong>Gossip Protocol (REQ-GS)</strong>: Cross-server consistency verification before external anchoring</li>
-                    <li><strong>Monitor Nodes</strong>: Independent surveillance detecting anomalies in event streams</li>
+                    <li><strong>Merkle tree construction (RFC 6962)</strong>: every event in a batch contributes to one Merkle root</li>
+                    <li><strong>External anchoring</strong>: the Merkle root is anchored with an independent third party at the tier's interval (required for all tiers in v1.1)</li>
+                    <li><strong>Limit</strong>: an event that was never logged, or that was dropped before anchoring, is not detectable</li>
                 </ul>
 
                 <h2 id="path-forward">7. The Path Forward</h2>
@@ -533,7 +536,7 @@
                 <ul>
                     <li><strong>For Regulators</strong>: VCP-compliant logs provide a technical standard that goes beyond "tamper-proof archives" to genuine cryptographic verification</li>
                     <li><strong>For Exchanges and Trading Firms</strong>: VCP compliance demonstrates commitment to transparency in an industry where trust has been repeatedly violated</li>
-                    <li><strong>For Investors</strong>: VCP verification provides assurance that systems handling their assets actually behave as claimed—not because someone promised, but because <strong>anyone can verify</strong></li>
+                    <li><strong>For Investors</strong>: VCP verification lets investors check that the records of systems handling their assets have not been altered since anchoring—not because someone promised, but because <strong>anyone can verify</strong></li>
                 </ul>
 
             </article>
@@ -544,7 +547,7 @@
                     <i class="fas fa-book" style="color: #60a5fa; margin-right: 0.75rem;"></i>Related Resources
                 </h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                    <a href="https://veritaschain.org/spec/v1.1/" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: #0f172a; border-radius: 0.5rem; text-decoration: none; color: #cbd5e1;">
+                    <a href="https://veritaschain.org/vcp/specification/" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: #0f172a; border-radius: 0.5rem; text-decoration: none; color: #cbd5e1;">
                         <i class="fas fa-file-code" style="color: #10b981; font-size: 1.25rem;"></i>
                         <span>VCP v1.1 Specification</span>
                     </a>

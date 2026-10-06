@@ -32,7 +32,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="VCP v1.1 & EU AI Act Compliance">
     <meta name="twitter:description" content="How VCP v1.1 solves EU AI Act Article 12 logging requirements for algorithmic trading.">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -214,10 +214,13 @@
     <!-- Article Content -->
     <main style="background: #0f172a; padding: 4rem 2rem;">
         <article class="prose">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 7, 2026).</strong> This article was published on January 1, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Since publication, Regulation (EU) 2026/1744 has moved the application of the EU AI Act's high-risk rules to 2 December 2027 (Annex III systems) and 2 August 2028 (Annex I systems). Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. MiFID II RTS 25 (Delegated Regulation (EU) 2017/574), cited here, was replaced on 2 March 2026 by Delegated Regulation (EU) 2025/1155. The multi-log replication, gossip protocol and monitor nodes that this article describes as parts of VCP v1.1 are not in the published VCP specification (v1.0, v1.1 or v1.2 RC1). VCP v1.1 requires external anchoring at every tier and notes that a single party could omit events before anchoring. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 7, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
             
             <div class="highlight-box">
                 <h3 style="margin-top: 0; color: #f1f5f9;"><i class="fas fa-clipboard-list" style="color: #3b82f6;"></i> Executive Summary</h3>
-                <p style="margin-bottom: 0.75rem;">The EU AI Act creates binding logging, traceability, and accountability obligations for algorithmic trading systems. High-risk AI systems must provide automatic event logging, full lifecycle traceability, and tamper-evident audit trails by <strong>August 2, 2026</strong>.</p>
+                <p style="margin-bottom: 0.75rem;">The EU AI Act creates binding logging, traceability, and accountability obligations for high-risk AI systems; algorithmic trading as such is not listed in Annex III. High-risk AI systems must technically allow automatic recording of events (Article 12) from <strong>August 2, 2026</strong>; the Act does not require tamper-evident audit trails.</p>
                 <p style="margin-bottom: 0;"><strong>Non-compliance penalties reach €15 million or 3% of global annual turnover.</strong> VCP v1.1 directly addresses these requirements through mathematically verifiable evidence chains.</p>
             </div>
             
@@ -252,7 +255,7 @@
             
             <p>While algorithmic trading is not explicitly enumerated in Annex III high-risk categories, the practical reality is unambiguous: <strong>firms cannot afford to treat trading AI as anything other than high-risk</strong>.</p>
             
-            <p>Article 6(3) provides the decisive criterion: any AI system performing <strong>profiling of natural persons</strong> is "always considered high-risk." Credit scoring, investment suitability assessment, and personalized trading recommendations fall squarely within this definition.</p>
+            <p>Article 6(3) is narrower than that: an AI system already listed in Annex III is always considered high-risk where it performs <strong>profiling of natural persons</strong> (the Article 6(3) exemptions then do not apply). Of the uses mentioned here, only creditworthiness assessment and credit scoring is listed in Annex III (point 5(b)); investment suitability assessment and personalized trading recommendations are not.</p>
             
             <h3>Timeline Uncertainty</h3>
             
@@ -293,7 +296,7 @@
             
             <p>Article 12(1) states: <em>"High-risk AI systems shall technically allow for the automatic recording of events ('logs') over the lifetime of the system."</em></p>
             
-            <p>The phrase "over the lifetime of the system" creates an extraordinary obligation: logs must be preservable and verifiable for the entire operational period of the AI system, which may span decades.</p>
+            <p>The phrase "over the lifetime of the system" describes a capability: the system must be able to record events automatically throughout its operation. Retention is governed separately (Articles 19 and 26(6): at least six months unless other law provides otherwise); the Act does not require logs to be kept, or to be verifiable, for the whole lifetime.</p>
             
             <p>Article 12(2) specifies that logging capabilities must enable:</p>
             <ul>
@@ -523,7 +526,7 @@
             
             <h2 id="technical-mapping"><i class="fas fa-project-diagram" style="color: #ec4899; margin-right: 0.5rem;"></i>Technical Mapping</h2>
             
-            <h3>EU AI Act Article-by-Article Compliance</h3>
+            <h3>EU AI Act Article-by-Article Mapping</h3>
             
             <table>
                 <thead>
@@ -537,32 +540,32 @@
                     <tr>
                         <td><strong>Art. 12(1)</strong> Automatic logging</td>
                         <td>VCP-CORE EventHash, Timestamp, TraceID</td>
-                        <td>✓ Exceeds</td>
+                        <td>Relevant evidence</td>
                     </tr>
                     <tr>
                         <td><strong>Art. 12(2)</strong> Risk identification</td>
                         <td>VCP-RISK module, ERR_* event types</td>
-                        <td>✓ Exceeds</td>
+                        <td>Relevant evidence</td>
                     </tr>
                     <tr>
                         <td><strong>Art. 12(3)</strong> Human verifier logging</td>
                         <td>VCP-GOV OperatorID with Ed25519</td>
-                        <td>✓ Exceeds</td>
+                        <td>Relevant evidence</td>
                     </tr>
                     <tr>
                         <td><strong>Art. 13</strong> Transparency</td>
                         <td>VCP-GOV DecisionFactors, ModelHash</td>
-                        <td>✓ Exceeds</td>
+                        <td>Relevant evidence</td>
                     </tr>
                     <tr>
                         <td><strong>Art. 14</strong> Human oversight</td>
                         <td>VCP-GOV approval fields, VCP-XREF</td>
-                        <td>✓ Exceeds</td>
+                        <td>Relevant evidence</td>
                     </tr>
                     <tr>
                         <td><strong>Art. 15</strong> Cybersecurity</td>
                         <td>Three-layer architecture, external anchoring</td>
-                        <td>✓ Exceeds</td>
+                        <td>Relevant evidence</td>
                     </tr>
                     <tr>
                         <td><strong>Art. 18(1)</strong> 10-year documentation</td>
@@ -572,7 +575,7 @@
                     <tr>
                         <td><strong>Art. 19(1)</strong> 6-month retention</td>
                         <td>Append-only chain makes deletion detectable</td>
-                        <td>✓ Exceeds</td>
+                        <td>Relevant evidence</td>
                     </tr>
                 </tbody>
             </table>
@@ -591,7 +594,7 @@
             
             <h3>Gossip Protocol for Root Consistency</h3>
             
-            <p>All log servers exchange signed Merkle roots at anchor time. Any inconsistency triggers immediate alerts. This prevents "split-view" attacks where different auditors see different versions.</p>
+            <p>All log servers exchange signed Merkle roots at anchor time. Any inconsistency triggers immediate alerts. This makes "split-view" presentation, where different auditors are shown different versions, detectable.</p>
             
             <h2 id="gdpr"><i class="fas fa-user-shield" style="color: #8b5cf6; margin-right: 0.5rem;"></i>GDPR Compatibility: Crypto-Shredding</h2>
             

@@ -274,12 +274,15 @@
     <main style="padding: 3rem 1rem;">
         <div class="article-container">
             <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>編集注（2026年10月7日追記）</strong> この記事は2026年1月25日に公開した記録です。版数・日付・数値・規制の施行時期は公開時点のものです。 仕様の版は更新されています。現行はVCP v1.1（公開済み）とv1.2リリース候補版、VAP v1.2.0 Draft 3、CAP v1.0、CPP v1.4です。 法令上の要件およびVSO仕様の機能に関する記述の一部は、2026年10月7日に訂正しました。 現在の状況：<a href="/standardization/ja/" style="color:inherit;text-decoration:underline;">標準化の状況</a> · <a href="/vap/ja/" style="color:inherit;text-decoration:underline;">VAPとプロファイル</a></div>
+
                 
                 <!-- Executive Summary -->
                 <div class="comparison-box">
                     <h3 style="color: #60a5fa; margin-top: 0;"><i class="fas fa-balance-scale mr-2"></i>エグゼクティブサマリー</h3>
                     <p>Coalition for Content Provenance and Authenticity（C2PA）は、Adobe、Microsoft、Google、Sonyなどの業界大手に支えられ、デジタルメディア来歴の支配的な標準として台頭してきました。6,000を超えるContent Authenticity Initiativeメンバーと進行中のISO標準化により、C2PAはコンテンツ真正性における現在の最先端技術を代表しています。</p>
-                    <p>しかし、AI生成コンテンツが撮影された現実と見分けがつかなくなり、法的・規制的フレームワークがメディア起源の暗号学的証明をますます求めるようになるにつれ、C2PAのアーキテクチャ上の限界が明らかになってきます。Verifiable AI Provenance（VAP）Framework内で開発された<strong>Capture Provenance Profile（CPP）</strong>は、数学的に検証可能な完全性、プライバシー保護検証、フォレンジック品質の証拠チェーンを通じてこれらのギャップに対処します。</p>
+                    <p>しかし、AI生成コンテンツが撮影された現実と見分けがつかなくなり、メディアの起源をめぐる争いが増えるにつれ、C2PAのアーキテクチャ上の限界が明らかになってきます。Verifiable AI Provenance（VAP）Framework内で開発された<strong>Capture Provenance Profile（CPP）</strong>は、数学的に検証可能な完全性、プライバシー保護検証、フォレンジック品質の証拠チェーンを通じてこれらのギャップに対処します。</p>
                     <p style="margin-bottom: 0;">本記事では両仕様の包括的な技術比較を提供します。私たちの目標はCPPをC2PAの代替として位置付けることではなく、これらの仕様が<strong>相補的な目的</strong>にどう役立つか—そしてなぜ特定のアプリケーションにはCPPが提供するより強力な検証可能性が必要なのかを明確にすることです。</p>
                 </div>
 
@@ -506,7 +509,7 @@ CPPモデル:  作成者が署名 → TSAが副署名 → 独立した第三者<
                 <table>
                     <thead>
                         <tr>
-                            <th>CPPティア</th>
+                            <th>VCPティア（CPPではない）</th>
                             <th>精度</th>
                             <th>アンカー間隔</th>
                             <th>ユースケース</th>
@@ -545,7 +548,7 @@ CPPモデル:  作成者が署名 → TSAが副署名 → 独立した第三者<
                     <p><strong>誰かが写真が欠落していることを証明できるか？</strong></p>
                     <ul>
                         <li><span class="protocol-badge badge-c2pa">C2PA</span>：<strong>いいえ。</strong>各マニフェストは独立している。</li>
-                        <li><span class="protocol-badge badge-cpp">CPP</span>：<strong>はい。</strong>完全性不変量が即座に不一致を明らかにする。</li>
+                        <li><span class="protocol-badge badge-cpp">CPP</span>：<strong>一部のみ。</strong>コレクションが封印され外部タイムスタンプでアンカーされた後に削除された写真は、そのアンカーとの照合で検出可能です。アンカー前に削除された写真や、そもそもアプリで撮影されなかった写真は痕跡を残しません。</li>
                     </ul>
                 </div>
                 
@@ -717,7 +720,7 @@ CPPモデル:  作成者が署名 → TSAが副署名 → 独立した第三者<
                         <tr>
                             <td>マイクロ秒タイムスタンプ</td>
                             <td>❌ ミリ秒が一般的</td>
-                            <td>✅ IEEE 1588 PTP</td>
+                            <td>⚠️ 端末時計＋RFC 3161 TSA</td>
                         </tr>
                         <tr>
                             <td>ポスト量子対応</td>
@@ -745,7 +748,7 @@ CPPモデル:  作成者が署名 → TSAが副署名 → 独立した第三者<
                 <div class="key-finding" style="margin-top: 2rem;">
                     <h3 style="color: #fbbf24; margin-top: 0;"><i class="fas fa-lightbulb mr-2"></i>根本的な問い</h3>
                     <p>C2PAはメディア配信のための<em>十分な</em>来歴を提供します—「誰がこれを作成し、変更されたか？」に答えます。</p>
-                    <p>CPPは高リスクシナリオのための<em>フォレンジック品質</em>の来歴を提供します—「何も削除されていないこと、これが正確にいつ撮影されたか、人間がいたことを数学的に検証できるか？」に答えます。</p>
+                    <p>CPPは高リスクシナリオのための<em>フォレンジック品質</em>の来歴を提供します—「アンカー済みコレクションからの削除を検出できるか、第三者タイムスタンプで撮影時刻を確認できるか、人間の存在確認が行われた証拠を示せるか？」に答えます。</p>
                     <p style="margin-bottom: 0;"><strong>デジタル信頼の未来は単一の標準ではなく、関係するリスクに合わせた検証可能性のスペクトラムです。</strong></p>
                 </div>
 
@@ -768,7 +771,7 @@ CPPモデル:  作成者が署名 → TSAが副署名 → 独立した第三者<
                     <div>
                         <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">実装</h4>
                         <a href="https://veritaschain.org/vap/cpp/verasnap" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeraSnap（iOS）</a>
-                        <a href="https://veritaschain.org/vap/cpp/vericheck" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCheck（Web）</a>
+                        <a href="https://veritaschain.org/vap/cpp/veracheck/" target="_blank" style="color: #60a5fa; text-decoration: none; display: block;">VeriCheck（Web）</a>
                     </div>
                 </div>
             </div>

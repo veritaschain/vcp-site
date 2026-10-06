@@ -37,7 +37,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="The SaaSpocalypse: $285 Billion Erased by Four Paragraphs">
     <meta name="twitter:description" content="Why AI markets need a flight recorder—$285B erased, $1T in 7 days, and no forensic capability to reconstruct what happened.">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -213,6 +213,9 @@
     </section>
     
     <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 7, 2026).</strong> This article was published on February 6, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Since publication, Regulation (EU) 2026/1744 has moved the application of the EU AI Act's high-risk rules to 2 December 2027 (Annex III systems) and 2 August 2028 (Annex I systems). Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 7, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
         <div class="prose">
             
             <div class="key-point">
@@ -363,7 +366,7 @@
             <h3>3.2 VCP-RISK: Documenting What the Safety Systems Did</h3>
             
             <p>
-                No circuit breaker activations were reported during the SaaSpocalypse — a finding that itself requires documentation. VCP-RISK's kill switch schema records not only activations but <strong>near-misses</strong>: cases where monitored parameters approached trigger thresholds without crossing them.
+                No circuit breaker activations were reported during the SaaSpocalypse — a finding that itself requires documentation. VCP-RISK records the applied controls, a parameter snapshot and any triggered controls; a snapshot showing utilisation close to a limit can document a <strong>near-miss</strong>, although the specification defines no dedicated kill-switch or near-miss schema.
             </p>
             
             <h3>3.3 VCP-GOV: The Decision Factors That Explain "Why"</h3>
@@ -380,13 +383,13 @@
             <h3>4.1 Multi-Log Replication</h3>
             
             <p>
-                VCP v1.1 mandates <strong>Multi-Log Replication</strong> (REQ-ML-01): every event must be simultaneously transmitted to a minimum of N=2 independent log endpoints under different administrative control. An attacker attempting to delete or modify a record must compromise <strong>all</strong> log servers holding that record.
+                VCP v1.1 does not define a <strong>multi-log replication</strong> requirement; what it mandates at every tier is external anchoring of Merkle roots. Replicating events to two or more independent log endpoints under different administrative control is an optional deployment practice. An attacker attempting to delete or modify a record must compromise <strong>all</strong> log servers holding that record.
             </p>
             
             <h3>4.2 Gossip Protocol: Detecting Split-View Attacks</h3>
             
             <p>
-                Under VCP v1.1's Gossip Protocol (REQ-GS-01 through REQ-GS-03), all log servers exchange <strong>Ed25519-signed Merkle roots</strong> with peers at regular intervals. If a log server in New York and a log server in London hold inconsistent records for the same entity's trading activity, the Gossip Protocol detects this divergence within seconds.
+                VCP v1.1 does not define a gossip protocol. In v1.1, split-view presentation is detectable through external anchoring: each batch's <strong>signed Merkle root</strong> is anchored with an independent third party, so a party shown a different history can check it against the anchor, and where two parties log the same transaction VCP-XREF dual logging lets them cross-check each other's records.
             </p>
             
             <h2><i class="fas fa-chart-bar" style="color: #8b5cf6; margin-right: 0.5rem;"></i> Part V: Comparative Analysis — Four AI-Triggered Market Shocks in 13 Months</h2>
@@ -426,7 +429,7 @@
             
             <ul>
                 <li><strong>First, the information trigger chain is untraceable.</strong> Which NLP algorithms first detected the Anthropic product page? VCP-GOV's <code>ModelHash</code> + <code>DecisionFactors</code> combined with VCP-TRADE's <code>trace_id</code> correlation solves this.</li>
-                <li><strong>Second, cross-border propagation causation is unprovable.</strong> Did the European selling cause the US selling? VCP-XREF's <code>cross_reference_id</code> with independent external anchoring makes this cryptographically verifiable.</li>
+                <li><strong>Second, cross-border propagation causation is unprovable.</strong> Did the European selling cause the US selling? VCP-XREF's <code>CrossReferenceID</code> and external anchoring make the order of the events that the parties recorded verifiable; whether one sell-off caused another remains a matter of analysis.</li>
                 <li><strong>Third, log completeness under extreme volume is unguaranteed.</strong> VCP v1.1's three-layer completeness architecture makes verifiable not just that recorded events are unmodified but that logged events are not missing from anchored batches.</li>
             </ul>
             
@@ -442,7 +445,7 @@
                 <ul style="margin-bottom: 0;">
                     <li><a href="https://github.com/veritaschain/vcp-spec/tree/main/spec/v1.1" target="_blank">VCP v1.1 Specification (GitHub)</a></li>
                     <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">IETF Internet-Draft: draft-kamimura-scitt-vcp</a></li>
-                    <li><a href="https://veritaschain.org/developers" target="_blank">Developer Documentation</a></li>
+                    <li><a href="https://veritaschain.org/vcp/developers/" target="_blank">Developer Documentation</a></li>
                 </ul>
             </div>
             

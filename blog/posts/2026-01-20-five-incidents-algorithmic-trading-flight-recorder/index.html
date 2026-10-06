@@ -529,6 +529,9 @@
     
     <!-- Article -->
     <article class="article-container">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 7, 2026).</strong> This article was published on January 20, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Since publication, Regulation (EU) 2026/1744 has moved the application of the EU AI Act's high-risk rules to 2 December 2027 (Annex III systems) and 2 August 2028 (Annex I systems). Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. MiFID II RTS 25 (Delegated Regulation (EU) 2017/574), cited here, was replaced on 2 March 2026 by Delegated Regulation (EU) 2025/1155. The multi-log replication, gossip protocol and monitor nodes that this article describes as parts of VCP v1.1 are not in the published VCP specification (v1.0, v1.1 or v1.2 RC1). VCP v1.1 requires external anchoring at every tier and notes that a single party could omit events before anchoring. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 7, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
         <header class="article-header">
             <span class="article-category">
                 <i class="fas fa-search"></i> Case Analysis
@@ -697,7 +700,7 @@
             
             <h3>How VCP v1.1 Addresses This</h3>
             
-            <p>VCP v1.1 introduces <strong>VCP-XREF</strong> (Cross-Reference Dual Logging), which requires certified implementations to simultaneously write events to at least two independent log receivers. This isn't merely redundancy—it's a mechanism for detecting selective disclosure.</p>
+            <p>VCP v1.1 introduces <strong>VCP-XREF</strong> (Cross-Reference Dual Logging), an optional extension in which two independent parties (for example a trader and a broker) each log the same event under a shared CrossReferenceID. This isn't merely redundancy—it's a mechanism for detecting selective disclosure.</p>
             
             <p>For headline-driven trading, VCP-XREF enables reconstruction of the complete signal chain:</p>
             
@@ -757,7 +760,7 @@ EXE (Execution)
                 <li><strong>AI-specific stress tests</strong> conducted by BoE and FCA, simulating market shocks designed to reveal AI-correlated behaviors</li>
                 <li><strong>FCA guidance on AI use in financial services</strong> by the end of 2026</li>
                 <li><strong>Enhanced oversight of critical third-party technology providers</strong></li>
-                <li><strong>Mandatory audit trails</strong> for AI decision-making in trading contexts</li>
+                
             </ol>
             
             <h3>How VCP v1.1 Aligns With UK Proposals</h3>
@@ -765,7 +768,7 @@ EXE (Execution)
             <table>
                 <thead>
                     <tr>
-                        <th>UK Committee Recommendation</th>
+                        <th>Theme (VSO's reading of the report)</th>
                         <th>VCP v1.1 Capability</th>
                     </tr>
                 </thead>
@@ -789,7 +792,7 @@ EXE (Execution)
                 </tbody>
             </table>
             
-            <p>The <strong>Multi-Log Replication</strong> capability in VCP-XREF also addresses cloud concentration risk. By requiring simultaneous writes to geographically and administratively independent log receivers, VCP implementations maintain audit trail integrity even if a primary cloud provider experiences an outage.</p>
+            
             
             <hr class="section-divider">
             
@@ -877,7 +880,7 @@ EXE (Execution)
                 <li>Deployer operational monitoring (Article 26(5))</li>
             </ul>
             
-            <p>Article 19 further specifies that deployers must retain logs "for a period appropriate to the intended purpose of the high-risk AI system, of at least six months."</p>
+            <p>Articles 19 and 26(6) further specify that providers and deployers must retain logs "for a period appropriate to the intended purpose of the high-risk AI system, of at least six months."</p>
             
             <h3>CEN-CENELEC Standards Development</h3>
             
@@ -915,13 +918,13 @@ EXE (Execution)
                         <td>VCC (cloud) or on-premise storage with configurable retention</td>
                     </tr>
                     <tr>
-                        <td>Integrity verification</td>
+                        <td>Integrity verification (a VCP feature; not an Article 12 requirement)</td>
                         <td>Merkle proofs verifiable in-browser without server trust</td>
                     </tr>
                 </tbody>
             </table>
             
-            <p>The <strong>ERASURE event type</strong> introduced in VCP v1.1 addresses GDPR's right to erasure while maintaining audit trail integrity. When personal data must be deleted, VCP generates an ERASURE event that references the original data's hashes without containing the data itself.</p>
+            <p>VCP v1.1 lists <strong>crypto-shredding</strong> under its VCP-PRIVACY module as the mechanism for erasure requests: personal data is encrypted and the key destroyed, while the hashes stay in place so the audit trail remains verifiable. Whether this satisfies GDPR Article 17 is a legal question.</p>
             
             <hr class="section-divider">
             
@@ -946,7 +949,7 @@ EXE (Execution)
                     </tr>
                     <tr>
                         <td><strong>MiFID II RTS 25</strong> (EU)</td>
-                        <td>5-year record retention, 25μs clock sync</td>
+                        <td>Clock synchronisation to UTC: maximum divergence 100μs for HFT, 1ms for other algorithmic trading</td>
                         <td>TimestampPrecision, ClockSyncStatus fields</td>
                     </tr>
                     <tr>
@@ -960,7 +963,7 @@ EXE (Execution)
                         <td>Multi-Log Replication, External Anchor redundancy</td>
                     </tr>
                     <tr>
-                        <td><strong>CFTC Regulation AT</strong> (US)</td>
+                        <td><strong>CFTC Electronic Trading Risk Principles</strong> (US)</td>
                         <td>Algorithmic trading risk controls</td>
                         <td>VCP-RISK extension, pre-trade control logging</td>
                     </tr>
