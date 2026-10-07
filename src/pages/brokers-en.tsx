@@ -22,9 +22,9 @@ export const brokersPageEn = () => html`
     <link rel="apple-touch-icon" href="/assets/img/logo.png">
     
     <!-- Primary Meta Tags -->
-    <title>VCP for Institutional Brokers | Cryptographic Best Execution Proof | MiFID II Compliant</title>
-    <meta name="title" content="VCP for Institutional Brokers | Cryptographic Best Execution Proof | MiFID II Compliant">
-    <meta name="description" content="The world's only protocol to cryptographically prove Best Execution. MiFID II RTS 25/28 & EU AI Act Article 12 compliant audit trails. Non-intrusive sidecar integration for institutional brokers, ECNs & audit firms.">
+    <title>VCP for Institutional Brokers | Cryptographic Best Execution Proof | MiFID II-Relevant Audit Trails</title>
+    <meta name="title" content="VCP for Institutional Brokers | Cryptographic Best Execution Proof | MiFID II-Relevant Audit Trails">
+    <meta name="description" content="A protocol that makes Best Execution cryptographically verifiable. MiFID II RTS 25/28 & EU AI Act Article 12 compliant audit trails. Non-intrusive sidecar integration for institutional brokers, ECNs & audit firms.">
     <meta name="keywords" content="Best Execution, MiFID II, RTS 25, RTS 28, EU AI Act, algorithmic trading, audit trail, cryptographic proof, institutional broker, ECN, compliance, regulatory technology, RegTech, trading transparency, VCP, VeritasChain">
     <meta name="author" content="VeritasChain Standards Organization (VSO)">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -41,7 +41,7 @@ export const brokersPageEn = () => html`
     <meta property="og:site_name" content="VeritasChain">
     <meta property="og:url" content="https://veritaschain.org/brokers/">
     <meta property="og:title" content="VCP for Institutional Brokers | Cryptographic Best Execution Proof">
-    <meta property="og:description" content="The world's only protocol to cryptographically prove Best Execution. MiFID II RTS 25/28 & EU AI Act Article 12 compliant. For institutional brokers, ECNs & audit firms.">
+    <meta property="og:description" content="A protocol that makes Best Execution cryptographically verifiable. MiFID II RTS 25/28 & EU AI Act Article 12 compliant. For institutional brokers, ECNs & audit firms.">
     <meta property="og:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -52,10 +52,10 @@ export const brokersPageEn = () => html`
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@VeritasChainOrg">
-    <meta name="twitter:creator" content="@VeritasChainOrg">
+    <meta name="twitter:site" content="@Veritas_chain">
+    <meta name="twitter:creator" content="@Veritas_chain">
     <meta name="twitter:title" content="VCP for Institutional Brokers | Cryptographic Best Execution Proof">
-    <meta name="twitter:description" content="The world's only protocol to cryptographically prove Best Execution. MiFID II compliant audit trails for institutional due-diligence.">
+    <meta name="twitter:description" content="A protocol that makes Best Execution cryptographically verifiable. MiFID II compliant audit trails for institutional due-diligence.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/veritaschain/vcp-site/main/assets/OGP.png">
     <meta name="twitter:image:alt" content="VeritasChain Protocol - Cryptographic Best Execution Verification">
     
@@ -88,7 +88,7 @@ export const brokersPageEn = () => html`
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "VCP for Institutional Brokers",
-        "description": "The world's only protocol to cryptographically prove Best Execution. MiFID II RTS 25/28 & EU AI Act Article 12 compliant audit trails.",
+        "description": "A protocol that makes Best Execution cryptographically verifiable. MiFID II RTS 25/28 & EU AI Act Article 12 compliant audit trails.",
         "url": "https://veritaschain.org/brokers/",
         "inLanguage": "en",
         "isPartOf": {
@@ -144,7 +144,7 @@ export const brokersPageEn = () => html`
                 "name": "What is VCP (VeritasChain Protocol)?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "VCP is the world's only protocol that cryptographically proves Best Execution in algorithmic trading. It creates tamper-proof audit trails compliant with MiFID II RTS 25/28 and EU AI Act Article 12."
+                    "text": "VCP is an open protocol that makes Best Execution in algorithmic trading cryptographically verifiable. It creates tamper-evident audit trails that produce evidence relevant to MiFID II RTS 25 and EU AI Act Article 12; conformance does not by itself constitute legal compliance."
                 }
             },
             {
@@ -157,10 +157,10 @@ export const brokersPageEn = () => html`
             },
             {
                 "@type": "Question",
-                "name": "Is VCP compliant with MiFID II regulations?",
+                "name": "How does VCP relate to MiFID II requirements?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. VCP's data model natively supports MiFID II RTS 25/27/28 and EU AI Act Article 12 requirements. PTP time synchronization and algorithm IDs are automatically recorded."
+                    "text": "VCP's data model records the information relevant to MiFID II RTS 25 and EU AI Act Article 12 requirements. PTP time synchronization and algorithm IDs are automatically recorded."
                 }
             }
         ]
@@ -277,7 +277,7 @@ export const brokersPageEn = () => html`
                     
                     <p class="text-xl text-slate-300 mb-8 leading-relaxed">
                         VCP runs as a <span class="highlight-text text-white font-semibold">sidecar</span> beside your execution systems,<br>
-                        generating <span class="highlight-text text-white font-semibold">tamper-proof, MiFID II RTS 25 / EU AI Act Article 12</span><br>
+                        generating <span class="highlight-text text-white font-semibold">tamper-evident, MiFID II RTS 25 / EU AI Act Article 12</span><br>
                         compliant audit trails suitable for <span class="highlight-text text-white font-semibold">institutional due-diligence</span>.
                     </p>
                     
@@ -354,9 +354,9 @@ export const brokersPageEn = () => html`
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
-                    Three Messages Only VCP Can Deliver
+                    Three Messages VCP Delivers
                 </h2>
-                <p class="text-slate-600">No one else in the world can say these three things.</p>
+                <p class="text-slate-600">What VCP offers brokers, in three points.</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
@@ -371,7 +371,7 @@ export const brokersPageEn = () => html`
                         VCP chains all events from order creation to execution using hash chains and seals them with Ed25519 digital signatures.
                     </p>
                     <p class="text-slate-600 leading-relaxed mb-4">
-                        This provides mathematical proof that slippage and order rejection were not intentional.
+                        This makes slippage and order-rejection decisions cryptographically verifiable after the fact.
                     </p>
                     <div class="bg-emerald-50 p-4 rounded-lg">
                         <p class="text-sm text-emerald-800 font-medium">
@@ -484,13 +484,13 @@ export const brokersPageEn = () => html`
                         </svg>
                     </div>
                     
-                    <!-- Immutable Storage -->
+                    <!-- Append-Only Storage -->
                     <div class="flex-1">
                         <div class="bg-slate-700/50 border border-slate-600 rounded-xl p-6 text-center">
                             <div class="w-16 h-16 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <i class="fas fa-cube text-2xl text-slate-300"></i>
                             </div>
-                            <h4 class="text-white font-bold mb-2">Immutable Storage</h4>
+                            <h4 class="text-white font-bold mb-2">Append-Only Storage</h4>
                             <p class="text-slate-400 text-sm">Audit Log<br/>Blockchain Anchor</p>
                         </div>
                     </div>
@@ -506,7 +506,7 @@ export const brokersPageEn = () => html`
                 <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">
                     Institutional Use Cases
                 </h2>
-                <p class="text-slate-600">How leading brokers and ECNs leverage VCP</p>
+                <p class="text-slate-600">How brokers and ECNs can leverage VCP</p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-6">
@@ -532,7 +532,7 @@ export const brokersPageEn = () => html`
                         <h4 class="font-bold text-slate-900">Regulatory Compliance Automation</h4>
                     </div>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        Automatically satisfy MiFID II RTS 25 / EU AI Act Article 12 record-keeping obligations with cryptographically-secured logs.
+                        Automatically produce evidence relevant to MiFID II RTS 25 / EU AI Act Article 12 record-keeping obligations with cryptographically-secured logs.
                     </p>
                 </div>
                 

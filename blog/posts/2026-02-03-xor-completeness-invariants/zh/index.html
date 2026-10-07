@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XOR完整性不变量：解决数字证据的"缺失"问题 - VeritasChain Blog</title>
-    <meta name="description" content="深入技术解析XOR完整性不变量如何解决取证的根本挑战——不仅证明存在什么，还要证明应该存在什么。作为Content Provenance Protocol (CPP)的一部分在VeraSnap中实现。">
-    <meta name="keywords" content="XOR完整性不变量, Content Provenance Protocol, CPP, VeraSnap, 数字取证, 省略攻击, 删除检测, RFC 3161, 加密累加器, 内容真实性, C2PA">
+    <meta name="description" content="深入技术解析XOR完整性不变量如何应对取证的根本挑战——不仅验证存在什么，还要验证应该存在什么。作为Capture Provenance Profile (CPP)的一部分在VeraSnap中实现。">
+    <meta name="keywords" content="XOR完整性不变量, Capture Provenance Profile, CPP, VeraSnap, 数字取证, 省略攻击, 删除检测, RFC 3161, 加密累加器, 内容真实性, C2PA">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     <meta name="author" content="VeritasChain Standards Organization">
@@ -21,7 +21,7 @@
     
     <!-- Open Graph -->
     <meta property="og:title" content="XOR完整性不变量：解决数字证据的'缺失'问题">
-    <meta property="og:description" content="深入技术解析XOR完整性不变量如何解决取证的根本挑战——不仅证明存在什么，还要证明应该存在什么。">
+    <meta property="og:description" content="深入技术解析XOR完整性不变量如何应对取证的根本挑战——不仅验证存在什么，还要验证应该存在什么。">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://veritaschain.org/blog/posts/2026-02-03-xor-completeness-invariants/zh/">
     <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
@@ -35,7 +35,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="XOR完整性不变量：解决数字证据的'缺失'问题">
     <meta name="twitter:description" content="基于XOR的删除检测用于取证证据——从MIT研究到VeraSnap的实际实现。">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -313,7 +313,7 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "XOR完整性不变量：解决数字证据的'缺失'问题",
-    "description": "深入技术解析XOR完整性不变量如何解决取证的根本挑战——不仅证明存在什么，还要证明应该存在什么。",
+    "description": "深入技术解析XOR完整性不变量如何应对取证的根本挑战——不仅验证存在什么，还要验证应该存在什么。",
     "image": "https://veritaschain.org/assets/OGP.png",
     "author": {
         "@type": "Organization",
@@ -364,7 +364,7 @@
             </h1>
             
             <p style="font-size: 1.15rem; color: #94a3b8; line-height: 1.7; margin-bottom: 2rem;">
-                深入解析VeraSnap和Content Provenance Protocol (CPP)——基于XOR的累加器如何通过确定性验证数据集完整性来检测数字证据的选择性删除。
+                深入解析VeraSnap和Capture Provenance Profile (CPP)——基于XOR的累加器如何使从已封存的数字证据集合中移除条目的行为可被检测。
             </p>
             
             <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
@@ -384,6 +384,9 @@
     
     <!-- Article Content -->
     <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>编辑说明（2026年10月7日补充）</strong> 本文发布于2026年2月3日，作为当时的记录保留：版本、日期、数字和监管时间表均为发布时的情况。 文中提到的Internet-Draft此后已有修订；它们仍是个人提交，未被任何IETF工作组采纳。 本文中有关法律要求以及VSO规范功能的部分表述已于2026年10月7日更正。 当前状况：<a href="/standardization/zh/" style="color:inherit;text-decoration:underline;">标准化状况</a> · <a href="/vap/zh/" style="color:inherit;text-decoration:underline;">VAP及其配置文件</a></div>
+
         <div class="prose">
             
             <div class="key-point">
@@ -391,7 +394,7 @@
                     <i class="fas fa-bullseye"></i> 摘要
                 </div>
                 <p style="margin-bottom: 0;">
-                    XOR完整性不变量代表了检测数字证据选择性删除的密码学突破——解决了取证的根本挑战：不仅证明<em>存在什么</em>，还要证明<em>应该存在什么</em>。作为Content Provenance Protocol (CPP)的一部分在<a href="https://veritaschain.org/vap/cpp/verasnap">VeraSnap</a>中实现，这种数学方法通过在所有证明包中维护运行的XOR累加器，提供数据集完整性的确定性验证。
+                    XOR完整性不变量代表了检测数字证据选择性删除的密码学突破——应对了取证的根本挑战：不仅验证<em>存在什么</em>，还要验证<em>应该存在什么</em>。作为Capture Provenance Profile (CPP)的一部分在<a href="https://veritaschain.org/vap/cpp/verasnap">VeraSnap</a>中实现，这种数学方法通过在所有证明包中维护运行的XOR累加器，提供数据集完整性的确定性验证。
                 </p>
             </div>
             
@@ -418,7 +421,7 @@
             <h3>1.2 传统完整性机制的局限性</h3>
             
             <p>
-                <strong>哈希链</strong>创建连续的哈希依赖关系，其中每个哈希包含前一个哈希，形成防篡改日志。然而，它们根本无法检测从链的开头或中间删除的整个片段。
+                <strong>哈希链</strong>创建连续的哈希依赖关系，其中每个哈希包含前一个哈希，形成可检测篡改的日志。然而，它们根本无法检测从链的开头或中间删除的整个片段。
             </p>
             
             <p>
@@ -432,7 +435,7 @@
             <h3>1.3 完整性的取证要求</h3>
             
             <p>
-                <strong>ISO/IEC 27037:2012</strong>规定数字证据必须展示四个不同的属性：
+                <strong>ISO/IEC 27037:2012</strong>规定了数字证据处理的原则（相关性、可靠性和充分性，以及可审计、可重复、可再现、可论证的流程）。取证实务通常期望证据具备以下四个属性：
             </p>
             
             <table class="data-table">
@@ -530,7 +533,7 @@
                     <li>对它们进行XOR：<code>(E₁ ⊕ E₂ ⊕ E₃) ⊕ (E₁ ⊕ E₃) = E₂ ≠ 0</code></li>
                 </ul>
                 <p style="margin-top: 1rem; margin-bottom: 0; color: #10b981;">
-                    <strong>非零结果从数学上证明了不完整性。</strong>
+                    <strong>非零结果使不完整性可从数学上被检测。</strong>
                 </p>
             </div>
             
@@ -545,7 +548,7 @@
             <h3>3.1 三层安全模型</h3>
             
             <p>
-                Content Provenance Protocol在Verifiable AI Provenance (VAP) Framework v1.2下的综合三层安全架构中定位XOR完整性：
+                Capture Provenance Profile在Verifiable AI Provenance (VAP) Framework v1.2下的综合三层安全架构中定位XOR完整性：
             </p>
             
             <div class="architecture-diagram">┌─────────────────────────────────────────────────────────────┐
@@ -571,12 +574,12 @@
             
             <h4>3.2.2 "缺失即证据"</h4>
             <p>
-                协议明确将删除检测构建到其架构中。
+                该规范明确将删除检测构建到其架构中。
             </p>
             
             <h4>3.2.3 "来源 ≠ 真相"</h4>
             <p>
-                CPP明确承认协议证明内容何时、何地、由何设备捕获——但<strong>不</strong>证明内容本身是否真实。
+                CPP明确承认该规范使内容何时、何地、由何设备捕获可被验证——但<strong>不</strong>证明内容本身是否真实。
             </p>
             
             <h3>3.3 符合性级别</h3>
@@ -621,7 +624,7 @@
             <h3>4.1 产品概述</h3>
             
             <p>
-                <a href="https://veritaschain.org/vap/cpp/verasnap">VeraSnap</a>于2026年1月16日由VeritasChain Co., Ltd.（东京）发布，代表了Content Provenance Protocol的首个生产实现。iOS应用程序可在<a href="https://apps.apple.com/app/id6757994770">Apple App Store</a>上获得，在175个国家/地区分发，支持10种语言本地化。
+                <a href="https://veritaschain.org/vap/cpp/verasnap">VeraSnap</a>于2026年1月16日由VeritasChain Co., Ltd.（东京）发布，代表了Capture Provenance Profile的首个生产实现。iOS应用程序可在<a href="https://apps.apple.com/app/id6757994770">Apple App Store</a>上获得，在175个国家/地区分发，支持10种语言本地化。
             </p>
             
             <div class="key-point">
@@ -692,7 +695,7 @@
             <h2><i class="fas fa-flag-checkered" style="color: #10b981; margin-right: 0.5rem;"></i> VII. 结论</h2>
             
             <p>
-                XOR完整性不变量解决了现有内容来源技术承认但未解决的问题：<strong>证明没有证据被省略</strong>。XOR自逆属性的数学优雅性使得在O(1)空间复杂度下实现确定性删除检测成为可能——这是哈希链、默克尔树和C2PA清单本质上无法提供的能力。
+                XOR完整性不变量解决了现有内容来源技术承认但未解决的问题：<strong>使证据遗漏可被检测</strong>。XOR自逆属性的数学优雅性使得在O(1)空间复杂度下实现确定性删除检测成为可能——这是哈希链、默克尔树和C2PA清单本质上无法提供的能力。
             </p>
             
             <div class="key-point">

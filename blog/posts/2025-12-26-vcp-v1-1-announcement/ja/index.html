@@ -36,7 +36,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="VCP v1.1：三層アーキテクチャによる外部検証可能性の強化">
     <meta name="twitter:description" content="VCP v1.1を発表：全ティアで必須となるExternal AnchoringとPolicy Identification。">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -504,6 +504,9 @@
 
     <!-- Article Content -->
     <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>編集注（2026年10月7日追記）</strong> この記事は2025年12月26日に公開した記録です。版数・日付・数値・規制の施行時期は公開時点のものです。 仕様の版は更新されています。現行はVCP v1.1（公開済み）とv1.2リリース候補版、VAP v1.2.0 Draft 3、CAP v1.0、CPP v1.4です。 記載した計画や目標時期には、実現していないものがあります。 本文で引用しているMiFID II RTS 25（委任規則(EU) 2017/574）は、2026年3月2日に委任規則(EU) 2025/1155に置き換えられました。 法令上の要件およびVSO仕様の機能に関する記述の一部は、2026年10月7日に訂正しました。 現在の状況：<a href="/standardization/ja/" style="color:inherit;text-decoration:underline;">標準化の状況</a> · <a href="/vap/ja/" style="color:inherit;text-decoration:underline;">VAPとプロファイル</a></div>
+
         <div class="prose">
             
             <!-- Version Badge -->
@@ -569,7 +572,7 @@
             
             <h2 id="why-v11">なぜv1.1なのか？アップデートの背景</h2>
             
-            <p>2025年11月にVCP v1.0をリリースした際、私たちの主な目標はアルゴリズム取引監査証跡の堅固な基盤を確立することでした。仕様は好評を博し、初期導入者はSilver、Gold、Platinumの各ティアでVCPを正常に実装しました。</p>
+            <p>2025年11月にVCP v1.0をリリースした際、私たちの主な目標はアルゴリズム取引監査証跡の堅固な基盤を確立することでした。</p>
             
             <p>しかし、IETF SCITT Working Groupの参加者、規制コンサルタント、実装チームを含むコミュニティとの対話を通じて、構造的な課題が浮かび上がってきました。</p>
             
@@ -584,19 +587,19 @@
             
             <p>これはVCPの核心原則である<strong>「信じるな、検証せよ」</strong>にギャップを生み出していました。</p>
             
-            <p>問題はこうです：Merkle Treeはそのルートの信頼性に依存します。Merkle Rootが一度も外部にアンカリングされなければ、ログ生成者が事後的にツリー全体を再構築することが理論上可能です。External Anchoringなしでは、「改ざん不可能性」の保証は生成者への信頼に依存していました—これはまさにVCPが排除しようとしていたものです。</p>
+            <p>問題はこうです：Merkle Treeはそのルートの信頼性に依存します。Merkle Rootが一度も外部にアンカリングされなければ、ログ生成者が事後的にツリー全体を再構築することが理論上可能です。External Anchoringなしでは、改ざん検知可能性は生成者への信頼に依存していました—これはまさにVCPが排除しようとしていたものです。</p>
             
             <h3>解決策：必須のExternal Anchoring</h3>
             
             <p>v1.1では、External Anchoringを<strong>全ティアでREQUIRED</strong>とすることでこの問題を解決しました。各ティアに適切な頻度と、Silverティア実装向けの軽量オプションを用意しています。</p>
             
-            <p>これは負担を増やすことではありません。最もシンプルなVCP展開であっても、規制当局や監査人が本当に必要としているもの—<strong>外部から検証可能な完全性の証明</strong>—を提供することを確実にするためです。</p>
+            <p>これは負担を増やすことではありません。最もシンプルなVCP展開であっても、規制当局や監査人が本当に必要としているもの—<strong>外部から検証可能な完全性の証拠</strong>—を提供することを確実にするためです。</p>
             
             <hr>
             
             <h2 id="three-layer">三層アーキテクチャ</h2>
             
-            <p>v1.1における最も重要な変更の一つは、完全性とセキュリティのための明確な<strong>三層アーキテクチャ</strong>の導入です。この構造は、異なる暗号メカニズムがどのように連携し、各層の保証がどこから生まれるかを明確にします。</p>
+            <p>v1.1における最も重要な変更の一つは、完全性とセキュリティのための明確な<strong>三層アーキテクチャ</strong>の導入です。この構造は、異なる暗号メカニズムがどのように連携し、各層の完全性特性がどこから生まれるかを明確にします。</p>
             
             <div class="layer-diagram">┌─────────────────────────────────────────────────────────────────────┐
 │                                                                     │
@@ -615,7 +618,7 @@
 │                                                                     │
 │  層2: コレクション完全性    ← 外部検証可能性の核心                      │
 │  ────────────────────────                                           │
-│  目的: イベントバッチの完全性を証明                                    │
+│  目的: イベントバッチの完全性を検証                                    │
 │                                                                     │
 │  コンポーネント:                                                      │
 │  ├─ Merkle Tree (RFC 6962): REQUIRED                                │
@@ -636,11 +639,11 @@
             
             <h3>この構造が重要な理由</h3>
             
-            <p><strong>層1（イベント完全性）</strong>は、各イベントが完全で未改変であることを保証します。EventHashはイベント内容のフィンガープリントを提供します。</p>
+            <p><strong>層1（イベント完全性）</strong>は、個々のイベントへのいかなる改変も検知可能にします。EventHashはイベント内容のフィンガープリントを提供します。</p>
             
-            <p><strong>層2（コレクション完全性）</strong>は、イベントのバッチが完全であること—事後にイベントが追加、削除、または並べ替えられていないこと—を証明します。Merkle Tree構造により、バッチ内の任意のイベントの包含を効率的に検証できます。</p>
+            <p><strong>層2（コレクション完全性）</strong>は、イベントのバッチの完全性を検証可能にします—事後のイベントの追加、削除、並べ替えは検知可能になります。Merkle Tree構造により、バッチ内の任意のイベントの包含を効率的に検証できます。</p>
             
-            <p><strong>層3（外部検証可能性）</strong>は、VCPがその核心的価値を提供する場所です。Merkle Rootを外部の不変ターゲット（ブロックチェーン、RFC 3161 TSA、または認証済みデータベース）にアンカリングすることで、<strong>ログ生成者が事後に修正できない証拠</strong>を作成します。</p>
+            <p><strong>層3（外部検証可能性）</strong>は、VCPがその核心的価値を提供する場所です。Merkle Rootを外部の不変ターゲット（ブロックチェーン、RFC 3161 TSA、または認証済みデータベース）にアンカリングすることで、<strong>ログ生成者が事後に修正すれば検知される証拠</strong>を作成します。</p>
             
             <p>これが「信じるな、検証せよ」を可能にするものです。第三者は、あなたを信頼することなく、監査証跡の完全性を独立して検証できます。</p>
             
@@ -676,7 +679,7 @@
             <p>v1.1では、PrevHashを<strong>OPTIONAL</strong>としました。その理由は：</p>
             
             <ol>
-                <li><strong>Merkle Tree + External Anchor</strong>が外部検証可能性の本質的な保証を提供する</li>
+                <li><strong>Merkle Tree + External Anchor</strong>が外部検証可能性の本質的な基盤を提供する</li>
                 <li><strong>ハッシュチェーンは補完するが、External Anchoringを代替しない</strong></li>
                 <li><strong>Silverティアの実装を簡素化</strong>することで導入障壁を下げる</li>
             </ol>
@@ -714,7 +717,7 @@
     "PolicyID": "org.veritaschain.prod:hft-system-001",
     "ConformanceTier": "PLATINUM",
     "RegistrationPolicy": {
-      "Issuer": "VeritasChain Inc.",
+      "Issuer": "VeritasChain Co., Ltd.",
       "PolicyURI": "https://veritaschain.org/policies/prod-hft",
       "EffectiveDate": 1735084800000
     },
@@ -975,13 +978,13 @@
             
             <p>VCP v1.1は、<strong>「信じるな、検証せよ」</strong>の原則への私たちのコミットメントを強化します。</p>
             
-            <p>External Anchoringを全ティアで必須とすることで、開発者のMT5バックテスト環境から高頻度取引会社の本番システムまで、あらゆるVCP展開が同じ基本的保証を提供することを確実にします：</p>
+            <p>External Anchoringを全ティアで必須とすることで、開発者のMT5バックテスト環境から高頻度取引会社の本番システムまで、あらゆるVCP展開が同じ基本的特性を提供することを確実にします：</p>
             
             <div class="highlight-box" style="text-align: center; border-color: rgba(59, 130, 246, 0.5);">
                 <p style="font-size: 1.25rem; color: #f1f5f9; font-weight: 700; margin: 0;"><strong>第三者は、あなたを信頼することなく、監査証跡の完全性を検証できる。</strong></p>
             </div>
             
-            <p style="text-align: center; margin-top: 2rem;">これがアルゴリズム取引に必要なものです。これが規制当局が求めているものです。<br><strong>そしてこれが、VCP v1.1が提供するものです。</strong></p>
+            <p style="text-align: center; margin-top: 2rem;">これがアルゴリズム取引に必要なものです。<br><strong>そしてこれが、VCP v1.1が提供を目指すものです。</strong></p>
             
             <hr>
             
@@ -990,8 +993,8 @@
             <ul>
                 <li><a href="https://github.com/veritaschain/vcp-spec" target="_blank">VCP v1.1仕様（ドラフト版）- GitHub</a></li>
                 <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">IETFインターネットドラフト：draft-kamimura-scitt-vcp</a></li>
-                <li><a href="https://veritaschain.org/certification/" target="_blank">VC-Certifiedプログラム</a></li>
-                <li><a href="https://docs.veritaschain.org" target="_blank">開発者ドキュメント</a></li>
+                <li><a href="https://veritaschain.org/certified/ja/" target="_blank">VC-Certifiedプログラム</a></li>
+                <li><a href="https://veritaschain.org/vcp/developers/ja/" target="_blank">開発者ドキュメント</a></li>
             </ul>
             
             <hr>

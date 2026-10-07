@@ -27,7 +27,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="The 2025-2026 Algorithmic Trading Crisis">
-    <meta name="twitter:description" content="Eight Major Incidents, Five Failure Patterns, One Solution: VCP v1.1">
+    <meta name="twitter:description" content="Eight Major Incidents, Five Failure Patterns, and the Case for VCP v1.1">
     <meta name="twitter:image" content="https://github.com/veritaschain/vcp-site/blob/main/assets/OGP.png">
     
     <!-- Canonical URL -->
@@ -297,6 +297,9 @@
         </a>
         
         <article>
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 7, 2026).</strong> This article was published on January 24, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. MiFID II RTS 25 (Delegated Regulation (EU) 2017/574), cited here, was replaced on 2 March 2026 by Delegated Regulation (EU) 2025/1155. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 7, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
             <header class="article-header">
                 <span class="article-category">
                     <i class="fas fa-chart-line"></i> Comprehensive Analysis
@@ -360,7 +363,7 @@
                         <li>All eight incidents share a common failure pattern: the audited party controlled the audit evidence</li>
                         <li>Traditional logging systems cannot prove completeness, ordering, or freedom from tampering</li>
                         <li>VCP v1.1's external anchoring requirement creates accountability independent of producer systems</li>
-                        <li>Regulatory frameworks increasingly mandate capabilities that only cryptographic audit trails can provide</li>
+                        <li>Regulatory frameworks increasingly emphasise traceability and record integrity; cryptographic audit trails are one way to provide them</li>
                         <li>The cost of implementation is substantially lower than the cost of a single major incident</li>
                     </ol>
                 </div>
@@ -426,7 +429,7 @@
                 
                 <div class="incident-card">
                     <h4><i class="fas fa-exclamation-triangle"></i> Event Summary</h4>
-                    <p>Portfolio manager Jian Wu manipulated "decorrelation parameters" in Two Sigma's celFS database for nearly <strong>four years</strong>, causing <strong>$165 million in client losses</strong>. The SEC announced a <strong>$90 million settlement</strong> in September 2025.</p>
+                    <p>Portfolio manager Jian Wu manipulated "decorrelation parameters" in Two Sigma's celFS database for about <strong>22 months</strong>, causing <strong>$165 million in client losses</strong>. The SEC announced a <strong>$90 million settlement</strong> in January 2025; criminal charges against Wu followed in September 2025.</p>
                 </div>
                 
                 <p><strong>Audit Trail Failure:</strong> Wu controlled the very parameters that determined his compensation. No independent party could prove when parameters actually changed. When Wu attempted to revert parameters to conceal his scheme, logs couldn't prove the original manipulation had occurred.</p>
@@ -522,7 +525,7 @@
                 
                 <ol>
                     <li><strong>Producer Independence:</strong> Evidence integrity must be verifiable without trusting the producer</li>
-                    <li><strong>Cryptographic Completeness:</strong> Collections must be provably complete</li>
+                    <li><strong>Cryptographic Completeness:</strong> Collections must be verifiably complete</li>
                     <li><strong>Temporal Precision:</strong> Timestamps must support operational speed</li>
                     <li><strong>Crypto-Agility:</strong> Cryptographic primitives must be replaceable</li>
                     <li><strong>Regulatory Alignment:</strong> Protocol requirements must map to regulatory frameworks</li>
@@ -530,7 +533,7 @@
                 
                 <div class="layer-card">
                     <h4><i class="fas fa-cube"></i> Layer 1: Event Integrity</h4>
-                    <p>Event integrity ensures that individual events cannot be modified after creation without detection.</p>
+                    <p>Event integrity makes any modification of individual events after creation detectable.</p>
                     <ul>
                         <li><strong>SHA-256 EventHash:</strong> Hash of canonical event representation</li>
                         <li><strong>Ed25519 Signatures:</strong> Non-repudiation binding events to identities</li>
@@ -540,7 +543,7 @@
                 
                 <div class="layer-card">
                     <h4><i class="fas fa-cubes"></i> Layer 2: Collection Integrity</h4>
-                    <p>Collection integrity ensures that batches of events are provably complete and unmodified.</p>
+                    <p>Collection integrity makes the completeness and integrity of event batches verifiable.</p>
                     <ul>
                         <li><strong>RFC 6962 Merkle Trees:</strong> Domain-separated construction</li>
                         <li><strong>Signed Tree Head (STH):</strong> Producer-signed commitment</li>
@@ -551,7 +554,7 @@
                 
                 <div class="layer-card">
                     <h4><i class="fas fa-external-link-alt"></i> Layer 3: External Verifiability</h4>
-                    <p>External verifiability ensures evidence can be verified without trusting producer systems.</p>
+                    <p>External verifiability allows evidence to be verified without trusting producer systems.</p>
                     <ul>
                         <li><strong>Mandatory External Anchoring:</strong> Producer cannot control anchor</li>
                         <li><strong>Bitcoin/Ethereum:</strong> OpenTimestamps, smart contracts</li>
@@ -586,27 +589,23 @@
                             <td>Cross-party verification</td>
                             <td>SharedRefKey, dual-signature</td>
                         </tr>
-                        <tr>
-                            <td><strong>VCP-AI</strong></td>
-                            <td>AI decision logging</td>
-                            <td>prompt_components, trust_level</td>
-                        </tr>
+                        
                     </tbody>
                 </table>
                 
                 <h2 id="technical-mapping">5. Incident-by-Incident Technical Mapping</h2>
                 
                 <h3>CSE Cascade: VCP Solution</h3>
-                <p>VCP-TRADE <code>referencePrice</code> field enables automated deviation alerts. Order at 3,571x reference price triggers immediate exception logging and external notification before acceptance.</p>
+                <p>VCP-TRADE <code>referencePrice</code> field records the reference price alongside each order, so an order at 3,571x the reference price is auditable after the fact as a deviation.</p>
                 
                 <h3>Two Sigma: VCP Solution</h3>
                 <p>VCP-GOV.PAR events capture <code>previousValue</code>, <code>newValue</code>, <code>modifierID</code>, and <code>justification</code>. Four years of parameter manipulation would generate ~35,000+ tamper-evident records.</p>
                 
                 <h3>Fake Headline: VCP Solution</h3>
-                <p>VCP-GOV.SIG events with <code>verificationStatus=UNVERIFIED</code> create permanent record that algorithms traded on unverified information.</p>
+                <p>VCP-GOV.SIG events with <code>verificationStatus=UNVERIFIED</code> create a tamper-evident record that algorithms traded on unverified information.</p>
                 
                 <h3>Shinhan Wash Trading: VCP Solution</h3>
-                <p>VCP-XREF's dual-logging architecture reveals when the same beneficial owner appears on both sides of a trade. Detection occurs at trade time rather than months later.</p>
+                <p>VCP-XREF's dual-logging architecture makes it auditable when the same beneficial owner appears on both sides of a trade, from records created at trade time rather than reconstructed months later.</p>
                 
                 <h3>Silver Flash Crash: VCP Solution</h3>
                 <p>Margin calculation inputs (volatility data, position concentrations, stress scenarios) are hashed and anchored before margin changes are announced.</p>
@@ -615,10 +614,10 @@
                 <p>Traders can request inclusion proofs demonstrating their orders existed in the committed order book state.</p>
                 
                 <h3>MEV Attack: VCP Solution</h3>
-                <p>VCP commitment-reveal scheme enables traders to anchor trade intent before revealing details. Any MEV extraction is provably front-running rather than coincidental arbitrage.</p>
+                <p>VCP v1.1 defines no commitment-reveal scheme. With VCP-XREF dual logging, the trader's and the counterparty's records of the same order could be compared after the fact; VCP does not prevent MEV extraction or classify it as front-running.</p>
                 
                 <h3>AI Data Leak: VCP Solution</h3>
-                <p>VCP-AI events capture all prompt components with trust level designations. Anomalous patterns are immediately visible in logs.</p>
+                <p>VCP v1.1 defines no VCP-AI module. Decision context can be recorded through VCP-GOV fields; VCP records do not detect prompt injection.</p>
                 
                 <h2 id="regulatory-alignment">6. Regulatory Alignment Analysis</h2>
                 

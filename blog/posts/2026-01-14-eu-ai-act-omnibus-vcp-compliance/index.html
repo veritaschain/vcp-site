@@ -37,7 +37,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="EU AI Act's Shifting Enforcement Landscape: Building Cryptographic Audit Infrastructure">
     <meta name="twitter:description" content="Digital Omnibus analysis and how VCP v1.1 addresses emerging regulatory requirements for algorithmic trading.">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -226,6 +226,9 @@
     <main class="py-12 px-4">
         <div class="max-w-4xl mx-auto">
             <article class="prose">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 7, 2026).</strong> This article was published on January 14, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Since publication, Regulation (EU) 2026/1744 has moved the application of the EU AI Act's high-risk rules to 2 December 2027 (Annex III systems) and 2 August 2028 (Annex I systems). Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. MiFID II RTS 25 (Delegated Regulation (EU) 2017/574), cited here, was replaced on 2 March 2026 by Delegated Regulation (EU) 2025/1155. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 7, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
                 
                 <!-- Executive Summary -->
                 <div class="info-box">
@@ -249,7 +252,7 @@
                         <a href="#section-3" class="toc-link">III. Article 73 Serious Incident Reporting: Correcting the 72-Hour Myth</a>
                         <a href="#section-4" class="toc-link">IV. VCP v1.1: A Technical Response to Regulatory Demands</a>
                         <a href="#section-5" class="toc-link">V. Regulatory Mapping: VCP v1.1 to EU AI Act Requirements</a>
-                        <a href="#section-6" class="toc-link">VI. Completeness Guarantees: Beyond Tamper Evidence</a>
+                        <a href="#section-6" class="toc-link">VI. Verifiable Completeness: Beyond Tamper Evidence</a>
                         <a href="#section-7" class="toc-link">VII. GDPR Compatibility: The Crypto-Shredding Approach</a>
                         <a href="#section-8" class="toc-link">VIII. IETF SCITT Integration</a>
                         <a href="#section-9" class="toc-link">IX. Practical Implementation Guidance</a>
@@ -296,7 +299,7 @@
                 
                 <p>While <strong>algorithmic trading systems</strong> are not directly named in Annex III, compliance officers at major financial institutions increasingly classify AI-driven trading as high-risk based on:</p>
                 <ul>
-                    <li><strong>Article 6's general high-risk criteria</strong>: Systems posing significant risks to health, safety, fundamental rights, or property</li>
+                    <li><strong>Article 6 (by analogy only)</strong>: Article 6 has no general "significant risk" test—a system is high-risk only as a safety component of an Annex I product (Art. 6(1)) or if it is listed in Annex III (Art. 6(2)), and neither covers algorithmic trading</li>
                     <li><strong>Article 73's serious incident reporting scope</strong>: Market disruption events fall under "serious and irreversible disruption to critical infrastructure management and operation"</li>
                 </ul>
 
@@ -380,7 +383,7 @@
                 
                 <div class="success-box">
                     <h4 style="margin-top: 0;"><i class="fas fa-shield-alt" style="color: #10b981;"></i> VCP v1.1 Solution</h4>
-                    <p style="margin-bottom: 0;"><strong>VCP v1.1 addresses this gap</strong> by adding cryptographic immutability on top of standard logging requirements. Where ISO/IEC 24970 requires secure storage, VCP requires mathematically verifiable integrity through its three-layer architecture.</p>
+                    <p style="margin-bottom: 0;"><strong>VCP v1.1 addresses this gap</strong> by adding cryptographic tamper evidence on top of standard logging requirements. Where ISO/IEC 24970 requires secure storage, VCP requires mathematically verifiable integrity through its three-layer architecture.</p>
                 </div>
 
                 <!-- Section III -->
@@ -463,7 +466,7 @@
                 <h2 id="section-4">IV. VCP v1.1: A Technical Response to Regulatory Demands</h2>
 
                 <h3>4.1 The Three-Layer Architecture</h3>
-                <p>VCP v1.1 introduces a comprehensive three-layer integrity architecture explicitly designed to meet regulatory requirements at each evidence level:</p>
+                <p>VCP v1.1 introduces a comprehensive three-layer integrity architecture explicitly designed to address regulatory requirements at each evidence level:</p>
 
                 <div class="tier-card tier-silver">
                     <h4 style="margin-top: 0;"><i class="fas fa-layer-group" style="color: #60a5fa;"></i> Layer 1: Event Integrity</h4>
@@ -479,7 +482,7 @@
 
                 <div class="tier-card tier-gold">
                     <h4 style="margin-top: 0;"><i class="fas fa-layer-group" style="color: #fbbf24;"></i> Layer 2: Collection Integrity</h4>
-                    <p><strong>Purpose:</strong> Prove completeness of event sets and detect omissions.</p>
+                    <p><strong>Purpose:</strong> Make completeness of event sets verifiable and omissions detectable.</p>
                     <p><strong>Implementation:</strong></p>
                     <ul style="margin-bottom: 0;">
                         <li>VCP batches events into <strong>Merkle trees</strong> following RFC 6962 conventions</li>
@@ -491,7 +494,7 @@
 
                 <div class="tier-card tier-platinum">
                     <h4 style="margin-top: 0;"><i class="fas fa-layer-group" style="color: #e5e4e2;"></i> Layer 3: External Verifiability</h4>
-                    <p><strong>Purpose:</strong> Prove when records existed and who created them, without requiring trust in the log producer.</p>
+                    <p><strong>Purpose:</strong> Make verifiable when records existed and who created them, without requiring trust in the log producer.</p>
                     <p><strong>Implementation:</strong></p>
                     <ul style="margin-bottom: 0;">
                         <li><strong>Ed25519 digital signatures</strong> (default) authenticate event origin</li>
@@ -574,7 +577,7 @@
                             <tr><th>Scenario</th><th>Party A</th><th>Party B</th><th>Benefit</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td>Prop Trading</td><td>Trader</td><td>Prop Firm</td><td>Prevents payout disputes</td></tr>
+                            <tr><td>Prop Trading</td><td>Trader</td><td>Prop Firm</td><td>Verifiable evidence for payout disputes</td></tr>
                             <tr><td>Broker Execution</td><td>Algo Provider</td><td>Broker</td><td>Best execution verification</td></tr>
                             <tr><td>Regulatory Audit</td><td>Trading Firm</td><td>Regulator</td><td>Independent verification</td></tr>
                         </tbody>
@@ -582,7 +585,7 @@
                 </div>
 
                 <h3>4.4 Timing Requirements Alignment</h3>
-                <p>VCP v1.1's clock synchronization requirements exceed MiFID II RTS 25 mandates:</p>
+                <p>VCP v1.1's clock synchronization requirements by tier (only Platinum is tighter than the RTS 25 limit of 100 microseconds for HFT; Gold matches the 1 millisecond limit; Silver is not intended for RTS 25-regulated systems):</p>
                 <table>
                     <thead>
                         <tr>
@@ -654,24 +657,24 @@
                         <tr>
                             <th>EU AI Act Requirement</th>
                             <th>VCP v1.1 Implementation</th>
-                            <th>Compliance Level</th>
+                            <th>Evidence Coverage</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><strong>Article 12 (Record-keeping)</strong></td>
                             <td>Three-layer architecture + External Anchor</td>
-                            <td>✅ Full compliance</td>
+                            <td>✅ Relevant evidence produced</td>
                         </tr>
                         <tr>
                             <td><strong>Article 13 (Transparency)</strong></td>
                             <td>VCP-GOV extension (ModelID, DecisionFactors)</td>
-                            <td>✅ Full compliance</td>
+                            <td>✅ Relevant evidence produced</td>
                         </tr>
                         <tr>
                             <td><strong>Article 14 (Human oversight)</strong></td>
                             <td>VCP-GOV (OperatorID, LastApprovalBy)</td>
-                            <td>✅ Full compliance</td>
+                            <td>✅ Relevant evidence produced</td>
                         </tr>
                         <tr>
                             <td><strong>Article 17 (Quality management)</strong></td>
@@ -691,18 +694,18 @@
                         <tr>
                             <td><strong>prEN ISO/IEC 24970</strong></td>
                             <td>EventHash, Merkle Tree, TraceID, timestamps</td>
-                            <td>✅ Full compliance</td>
+                            <td>✅ Relevant evidence produced</td>
                         </tr>
                         <tr>
                             <td><strong>MiFID II RTS 25</strong></td>
                             <td>TimestampPrecision, ClockSyncStatus</td>
-                            <td>✅ Exceeds requirements</td>
+                            <td>✅ Relevant timing evidence</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <!-- Section VI -->
-                <h2 id="section-6">VI. Completeness Guarantees: Beyond Tamper Evidence</h2>
+                <h2 id="section-6">VI. Verifiable Completeness: Beyond Tamper Evidence</h2>
 
                 <h3>6.1 The Omission Detection Problem</h3>
                 <p>Traditional audit trails provide tamper evidence—detection that existing records were modified. However, they typically cannot prove that no records were omitted. A malicious actor could simply choose not to record inconvenient events, leaving no trace of their existence.</p>
@@ -711,12 +714,12 @@
                 <p>VCP v1.1 addresses omission detection through its three-layer architecture:</p>
                 <ol>
                     <li><strong>Merkle Tree Construction</strong>: All events within a batch are incorporated into a single Merkle tree. The resulting Merkle root represents the complete batch content.</li>
-                    <li><strong>External Anchoring</strong>: The Merkle root is committed to an external timestamp authority at tier-specified intervals. Once anchored, the log producer cannot retroactively add or remove events.</li>
+                    <li><strong>External Anchoring</strong>: The Merkle root is committed to an external timestamp authority at tier-specified intervals. Once anchored, any retroactive addition or removal of events by the log producer becomes detectable.</li>
                     <li><strong>Split-View Resistance</strong>: The external anchor serves as a single source of truth. If a log producer attempts to present different views to different verifiers, the anchor reveals the inconsistency.</li>
                 </ol>
 
                 <h3>6.3 VCP-XREF Enhanced Completeness</h3>
-                <p>For scenarios requiring maximum completeness guarantees, VCP-XREF dual logging provides additional protection:</p>
+                <p>For scenarios requiring maximum verifiable completeness, VCP-XREF dual logging provides additional protection:</p>
                 <ul>
                     <li>Two independent parties maintain separate VCP logs</li>
                     <li>Events are cross-referenced via CrossReferenceID</li>
@@ -734,20 +737,20 @@
                 <p>VCP addresses this through <strong>crypto-shredding</strong>—a technique where personally identifiable information is encrypted with per-subject keys before being recorded in the audit chain:</p>
                 <ol>
                     <li><strong>Pre-Recording Encryption</strong>: PII within VCP events is encrypted using unique cryptographic keys tied to specific data subjects</li>
-                    <li><strong>Chain Storage</strong>: Only encrypted ciphertext appears in the immutable audit trail</li>
+                    <li><strong>Chain Storage</strong>: Only encrypted ciphertext appears in the append-only audit trail</li>
                     <li><strong>Erasure Implementation</strong>: Upon valid erasure request, the specific decryption key is destroyed in the Key Management System</li>
                     <li><strong>Effect</strong>: The ciphertext remains in the chain (preserving audit integrity), but becomes permanently indecipherable—functionally equivalent to deletion</li>
                 </ol>
 
                 <div class="success-box">
-                    <p style="margin-bottom: 0;">VCP thereby satisfies both <strong>MiFID II's requirement for immutable transaction records</strong> (7-year retention) and <strong>GDPR's erasure rights</strong>.</p>
+                    <p style="margin-bottom: 0;">VCP thereby produces records relevant to both <strong>MiFID II's record-retention requirements</strong> (five years, extendable to seven at the competent authority's request) and <strong>GDPR's erasure rights</strong>.</p>
                 </div>
 
                 <!-- Section VIII -->
                 <h2 id="section-8">VIII. IETF SCITT Integration</h2>
 
                 <h3>8.1 Standards Body Positioning</h3>
-                <p>VCP's technical architecture is positioned within the IETF Supply Chain Integrity, Transparency, and Trust (SCITT) Working Group framework. SCITT defines interoperable building blocks for integrity and accountability:</p>
+                <p>VCP's technical architecture is designed to align with the IETF Supply Chain Integrity, Transparency, and Trust (SCITT) architecture. SCITT defines interoperable building blocks for integrity and accountability:</p>
                 <ul>
                     <li><strong>Transparency Services</strong>: Append-only logs using Merkle tree verifiable data structures</li>
                     <li><strong>Signed Statements</strong>: COSE_Sign1 messages containing claims about artifacts</li>
@@ -755,7 +758,7 @@
                 </ul>
 
                 <h3>8.2 draft-kamimura-scitt-vcp</h3>
-                <p><strong>draft-kamimura-scitt-vcp</strong> (submitted to IETF) positions VCP as a SCITT profile for financial trading audit trails, extending the general-purpose SCITT architecture with domain-specific requirements:</p>
+                <p><strong>draft-kamimura-scitt-vcp</strong> (an individual Internet-Draft, not adopted by an IETF Working Group) positions VCP as a SCITT profile for financial trading audit trails, extending the general-purpose SCITT architecture with domain-specific requirements:</p>
                 <ul>
                     <li>Nanosecond timing precision</li>
                     <li>Regulatory compliance mapping (PolicyID)</li>
@@ -810,7 +813,7 @@
 
                 <div class="success-box">
                     <h4 style="margin-top: 0;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Best Case (for early movers)</h4>
-                    <p style="margin-bottom: 0;">Begin VCP implementation Q1 2026. Production-ready infrastructure by late 2026. <strong>Full compliance posture before any enforcement scenario materializes.</strong></p>
+                    <p style="margin-bottom: 0;">Begin VCP implementation Q1 2026. Production-ready infrastructure by late 2026. <strong>Verifiable evidence infrastructure in place before any enforcement scenario materializes.</strong></p>
                 </div>
 
                 <p>In all scenarios, organizations implementing cryptographic audit infrastructure now gain compounding advantages:</p>
@@ -835,17 +838,17 @@
                 <!-- Section XI -->
                 <h2 id="section-11">XI. Conclusion: The Standard That Fills the Standards Gap</h2>
 
-                <p>The European Commission's Digital Omnibus proposal confirmed what sophisticated market participants already understood: harmonized AI standards will not arrive before compliance obligations crystallize. The question facing every algorithmic trading operation is whether to wait in regulatory limbo or build verification infrastructure that will satisfy requirements whenever they materialize.</p>
+                <p>The European Commission's Digital Omnibus proposal confirmed what sophisticated market participants already understood: harmonized AI standards will not arrive before compliance obligations crystallize. The question facing every algorithmic trading operation is whether to wait in regulatory limbo or build verification infrastructure that produces evidence relevant to requirements whenever they materialize.</p>
 
                 <p>VCP v1.1 offers a technically rigorous answer:</p>
                 <ul>
                     <li>Its <strong>three-layer architecture</strong> addresses Article 12 record-keeping, Article 72 post-market monitoring, and Article 73 incident reporting requirements</li>
-                    <li>Its <strong>precision timing fields</strong> satisfy MiFID II RTS 25 mandates and exceed prEN ISO/IEC 24970 expectations</li>
-                    <li>Its <strong>crypto-shredding mechanism</strong> resolves GDPR tensions without compromising audit integrity</li>
+                    <li>Its <strong>precision timing fields</strong> are designed to support MiFID II RTS 25 timing requirements and prEN ISO/IEC 24970 expectations</li>
+                    <li>Its <strong>crypto-shredding mechanism</strong> is designed to support GDPR erasure requests while keeping the audit trail verifiable (whether key destruction satisfies Article 17 is a legal determination)</li>
                     <li>Its <strong>IETF SCITT alignment</strong> positions implementations for interoperability with emerging transparency log standards</li>
                 </ul>
 
-                <p>The protocol does not claim to replace harmonized standards—it provides the cryptographic foundation upon which any future standard can build. When CEN-CENELEC's JTC 21 finalizes prEN ISO/IEC 24970, VCP implementations will already satisfy its logging requirements and exceed them through third-party verifiability that pure logging standards do not mandate.</p>
+                <p>The protocol does not claim to replace harmonized standards—it provides the cryptographic foundation upon which any future standard can build. When CEN-CENELEC's JTC 21 finalizes prEN ISO/IEC 24970, VCP implementations will already produce logs relevant to its requirements, with third-party verifiability that pure logging standards do not mandate.</p>
 
                 <div class="success-box">
                     <h4 style="margin-top: 0;"><i class="fas fa-rocket" style="color: #10b981;"></i> The Time for Action is Now</h4>

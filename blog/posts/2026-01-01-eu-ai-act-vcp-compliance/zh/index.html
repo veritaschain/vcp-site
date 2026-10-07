@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="EU AI 法案 Article 12 与 VCP v1.1 的技术合规映射。">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
     
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
@@ -129,7 +129,7 @@
 </head>
 <body class="bg-[#0f172a] text-gray-100 min-h-screen">
     <!-- Header -->
-    <header-component language="zh"></header-component>
+    <vcp-header lang="zh"></vcp-header>
     
     <main class="pt-20">
         <!-- Article Header -->
@@ -151,7 +151,7 @@
                 </h1>
                 
                 <p class="text-xl text-gray-400 mb-8 leading-relaxed">
-                    高风险 AI 系统的终身日志记录要求、处罚框架，以及 VCP v1.1 如何提供防篡改解决方案。
+                    高风险 AI 系统的终身日志记录要求、处罚框架，以及 VCP v1.1 如何提供可检测篡改的解决方案。
                 </p>
                 
                 <div class="flex flex-wrap items-center gap-6 text-sm text-gray-400">
@@ -181,6 +181,9 @@
         
         <!-- Article Content -->
         <article class="max-w-4xl mx-auto px-4 py-12">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>编辑说明（2026年10月7日补充）</strong> 本文发布于2026年1月1日，作为当时的记录保留：版本、日期、数字和监管时间表均为发布时的情况。 发布之后，条例(EU) 2026/1744已将EU AI Act高风险规则的适用日期改为2027年12月2日（附件III系统）和2028年8月2日（附件I系统）。 规范版本已更新：现行文本为VCP v1.1（已发布）及v1.2候选发布版、VAP v1.2.0 Draft 3、CAP v1.0和CPP v1.4。 文中引用的MiFID II RTS 25（授权条例(EU) 2017/574）已于2026年3月2日被授权条例(EU) 2025/1155取代。 本文中有关法律要求以及VSO规范功能的部分表述已于2026年10月7日更正。 当前状况：<a href="/standardization/zh/" style="color:inherit;text-decoration:underline;">标准化状况</a> · <a href="/vap/zh/" style="color:inherit;text-decoration:underline;">VAP及其配置文件</a></div>
+
             <div class="prose">
                 
                 <div class="warning-box">
@@ -188,14 +191,14 @@
                         <i class="fas fa-exclamation-triangle text-yellow-500 mt-1"></i>
                         <div>
                             <strong class="text-yellow-400">关键截止日期：2026年8月</strong>
-                            <p class="mt-2 mb-0">EU AI 法案针对高风险 AI 系统的要求将于2026年8月2日生效。算法交易系统因 Annex III 分类而受此约束。</p>
+                            <p class="mt-2 mb-0">EU AI 法案针对高风险 AI 系统的要求将于2026年8月2日生效。算法交易本身并未列入 Annex III；只有属于 Annex III 所列用途（如信用评估）的系统才受此约束。</p>
                         </div>
                     </div>
                 </div>
 
                 <h2>执行摘要</h2>
                 
-                <p>EU AI 法案对高风险 AI 系统提出了终身防篡改日志记录的强制要求。对于算法交易，这意味着 <strong>所有 AI 决策都必须可追溯、可审计，并在其整个生命周期内可验证</strong>。</p>
+                <p>EU AI 法案要求高风险 AI 系统在技术上能够在其整个生命周期内自动记录事件（Article 12）；该法并不要求日志可检测篡改。对于属于高风险类别的系统，这意味着 <strong>与风险相关的事件应当可追溯、可审计</strong>。</p>
                 
                 <p>本文档提供了 Article 12 要求与 VCP v1.1 三层架构之间的精确技术映射，涵盖事件完整性、集合完整性和外部可验证性。</p>
 
@@ -229,9 +232,9 @@
                             <td>Layer 1: EventHash + 链式结构</td>
                         </tr>
                         <tr>
-                            <td>防篡改存储</td>
+                            <td>与风险识别、上市后监测相关的事件记录（法案未要求可检测篡改）</td>
                             <td>Art. 12(2)</td>
-                            <td>Layer 2: Merkle Tree 保证</td>
+                            <td>Layer 2: Merkle Tree 可验证性</td>
                         </tr>
                         <tr>
                             <td>可追溯性</td>
@@ -355,14 +358,14 @@
                             <td>PTPv2 &lt;1µs</td>
                             <td>每10分钟</td>
                             <td>纳秒</td>
-                            <td>✅ 完全合规</td>
+                            <td>✅ 完全适用</td>
                         </tr>
                         <tr>
                             <td><strong>Gold</strong></td>
                             <td>&lt;1ms</td>
                             <td>每小时</td>
                             <td>微秒</td>
-                            <td>✅ 合规</td>
+                            <td>✅ 适用</td>
                         </tr>
                         <tr>
                             <td><strong>Silver</strong></td>
@@ -410,7 +413,7 @@
                             <td>审计能力</td>
                             <td>按需</td>
                             <td>终身</td>
-                            <td>加密保证</td>
+                            <td>加密可验证</td>
                         </tr>
                     </tbody>
                 </table>
@@ -429,7 +432,7 @@
                 
                 <div class="info-box">
                     <strong class="text-blue-400">隐私设计原则</strong>
-                    <p class="mt-2 mb-0">通过分离个人数据和审计证明，VCP v1.1 允许组织满足 GDPR 删除权要求，同时保持 AI 法案所需的完整审计追踪。</p>
+                    <p class="mt-2 mb-0">通过分离个人数据和审计证据，VCP v1.1 支持组织响应 GDPR 删除权请求，同时保持 AI 法案所需的完整审计追踪。</p>
                 </div>
 
                 <h2>实施路线图</h2>
@@ -464,7 +467,7 @@
 
                 <h2>跨司法管辖区适用性</h2>
                 
-                <p>VCP v1.1 正在与全球 58 个司法管辖区的监管机构进行对话：</p>
+                <p>VSO 已向多个司法管辖区的监管机构单方面提交 VCP 规范（并非双向对话，亦不代表任何监管机构的认可），其中包括：</p>
                 
                 <ul>
                     <li><strong>美国</strong>：CFTC、SEC、FinCEN</li>
@@ -479,7 +482,7 @@
                 <h2>资源与下一步</h2>
                 
                 <div class="grid md:grid-cols-2 gap-4 mt-6">
-                    <a href="https://veritaschain.org/specifications/vcp-v1.1" class="block p-4 bg-[#1e293b] rounded-lg border border-gray-700/50 hover:border-blue-500/50 transition-colors">
+                    <a href="https://veritaschain.org/vcp/specification/" class="block p-4 bg-[#1e293b] rounded-lg border border-gray-700/50 hover:border-blue-500/50 transition-colors">
                         <i class="fas fa-file-alt text-blue-400 mb-2"></i>
                         <h4 class="text-white font-semibold mb-1">VCP v1.1 规范</h4>
                         <p class="text-gray-400 text-sm mb-0">完整技术文档</p>
@@ -531,8 +534,8 @@
         <section class="py-16 px-4">
             <div class="max-w-4xl mx-auto text-center">
                 <div class="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-8 border border-blue-500/20">
-                    <h2 class="text-2xl font-bold mb-4">准备好确保合规了吗？</h2>
-                    <p class="text-gray-400 mb-6">联系我们了解VCP v1.1如何帮助您满足EU AI法案的要求。</p>
+                    <h2 class="text-2xl font-bold mb-4">准备好构建可验证的审计追踪了吗？</h2>
+                    <p class="text-gray-400 mb-6">联系我们了解VCP v1.1如何帮助您应对EU AI法案的要求。</p>
                     <div class="flex flex-wrap justify-center gap-4">
                         <a href="/what-is-vcp/zh/" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                             了解更多
@@ -547,8 +550,9 @@
     </main>
 
     <!-- Footer -->
-    <footer-component language="zh"></footer-component>
+    <vcp-footer lang="zh"></vcp-footer>
     
-    <script src="/assets/js/components.js"></script>
+    <script src="/assets/js/vcp-header.js"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
 </body>
 </html>

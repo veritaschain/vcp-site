@@ -36,7 +36,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="VCP v1.1：通过三层架构强化外部可验证性">
     <meta name="twitter:description" content="VCP v1.1发布：所有层级强制外部锚定与策略标识。">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -504,6 +504,9 @@
 
     <!-- Article Content -->
     <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>编辑说明（2026年10月7日补充）</strong> 本文发布于2025年12月26日，作为当时的记录保留：版本、日期、数字和监管时间表均为发布时的情况。 规范版本已更新：现行文本为VCP v1.1（已发布）及v1.2候选发布版、VAP v1.2.0 Draft 3、CAP v1.0和CPP v1.4。 文中的计划和目标日期并未全部实现。 文中引用的MiFID II RTS 25（授权条例(EU) 2017/574）已于2026年3月2日被授权条例(EU) 2025/1155取代。 本文中有关法律要求以及VSO规范功能的部分表述已于2026年10月7日更正。 当前状况：<a href="/standardization/zh/" style="color:inherit;text-decoration:underline;">标准化状况</a> · <a href="/vap/zh/" style="color:inherit;text-decoration:underline;">VAP及其配置文件</a></div>
+
         <div class="prose">
             
             <!-- Version Badge -->
@@ -569,7 +572,7 @@
             
             <h2 id="why-v11">为什么是v1.1？更新背景</h2>
             
-            <p>当我们在2025年11月发布VCP v1.0时，主要目标是为算法交易审计追踪建立一个稳健的基础。该规范获得了良好的反响，早期采用者成功地在Silver、Gold和Platinum各层级实现了VCP。</p>
+            <p>当我们在2025年11月发布VCP v1.0时，主要目标是为算法交易审计追踪建立一个稳健的基础。</p>
             
             <p>然而，随着我们与社区的交流——包括IETF SCITT工作组参与者、监管顾问和实施团队——一个结构性问题浮现出来。</p>
             
@@ -584,19 +587,19 @@
             
             <p>这在VCP的核心原则<strong>"不要信任，要验证"</strong>中造成了缺口。</p>
             
-            <p>问题在于：Merkle Tree的可信度取决于其根。如果Merkle Root从未被外部锚定，日志生产者理论上可以在事后重建整棵树。没有外部锚定，"不可篡改性"的保证依赖于对生产者的信任——这正是VCP设计要消除的。</p>
+            <p>问题在于：Merkle Tree的可信度取决于其根。如果Merkle Root从未被外部锚定，日志生产者理论上可以在事后重建整棵树。没有外部锚定，篡改可检测性依赖于对生产者的信任——这正是VCP设计要消除的。</p>
             
             <h3>解决方案：强制外部锚定</h3>
             
             <p>v1.1通过将外部锚定设为<strong>所有层级的强制要求</strong>来解决这个问题，同时为各层级提供适当的频率和Silver层级实现的轻量级选项。</p>
             
-            <p>这不是增加负担——而是确保即使是最简单的VCP部署也能提供监管机构和审计师真正需要的：<strong>可外部验证的完整性证明</strong>。</p>
+            <p>这不是增加负担——而是确保即使是最简单的VCP部署也能提供监管机构和审计师真正需要的：<strong>可外部验证的完整性证据</strong>。</p>
             
             <hr>
             
             <h2 id="three-layer">三层架构</h2>
             
-            <p>v1.1中最重要的变化之一是引入了清晰的<strong>三层架构</strong>来保证完整性和安全性。这种结构阐明了不同加密机制如何协同工作，以及每层保证的来源。</p>
+            <p>v1.1中最重要的变化之一是引入了清晰的<strong>三层架构</strong>来支撑完整性和安全性。这种结构阐明了不同加密机制如何协同工作，以及每层完整性特性的来源。</p>
             
             <div class="layer-diagram">┌─────────────────────────────────────────────────────────────────────┐
 │                                                                     │
@@ -615,7 +618,7 @@
 │                                                                     │
 │  第2层: 集合完整性    ← 外部可验证性的核心                              │
 │  ────────────────                                                   │
-│  目的: 证明事件批次的完整性                                            │
+│  目的: 验证事件批次的完整性                                            │
 │                                                                     │
 │  组件:                                                               │
 │  ├─ Merkle Tree (RFC 6962): 必需                                    │
@@ -636,11 +639,11 @@
             
             <h3>这种结构为何重要</h3>
             
-            <p><strong>第1层（事件完整性）</strong>确保每个单独的事件是完整且未被修改的。EventHash提供事件内容的指纹。</p>
+            <p><strong>第1层（事件完整性）</strong>使对每个单独事件的任何修改都可被检测。EventHash提供事件内容的指纹。</p>
             
-            <p><strong>第2层（集合完整性）</strong>证明一批事件是完整的——没有在事后添加、删除或重新排序事件。Merkle Tree结构使得可以高效地验证任何单个事件是否包含在批次中。</p>
+            <p><strong>第2层（集合完整性）</strong>使一批事件的完整性可验证——事后添加、删除或重新排序事件都可被检测。Merkle Tree结构使得可以高效地验证任何单个事件是否包含在批次中。</p>
             
-            <p><strong>第3层（外部可验证性）</strong>是VCP实现其核心价值主张的地方。通过将Merkle Root锚定到外部不可变目标（区块链、RFC 3161 TSA或认证数据库），我们创建了<strong>日志生产者无法事后修改的证据</strong>。</p>
+            <p><strong>第3层（外部可验证性）</strong>是VCP实现其核心价值主张的地方。通过将Merkle Root锚定到外部不可变目标（区块链、RFC 3161 TSA或认证数据库），我们创建了<strong>日志生产者若事后修改即可被检测的证据</strong>。</p>
             
             <p>这就是"不要信任，要验证"得以实现的原因。第三方可以独立验证您审计追踪的完整性，而无需信任您。</p>
             
@@ -676,7 +679,7 @@
             <p>在v1.1中，我们将PrevHash设为<strong>可选</strong>，因为：</p>
             
             <ol>
-                <li><strong>Merkle Tree + 外部锚定</strong>提供了外部可验证性的本质保证</li>
+                <li><strong>Merkle Tree + 外部锚定</strong>提供了外部可验证性的本质基础</li>
                 <li><strong>哈希链是补充但不能替代</strong>外部锚定</li>
                 <li><strong>简化Silver层级</strong>实现降低了采用门槛</li>
             </ol>
@@ -714,7 +717,7 @@
     "PolicyID": "org.veritaschain.prod:hft-system-001",
     "ConformanceTier": "PLATINUM",
     "RegistrationPolicy": {
-      "Issuer": "VeritasChain Inc.",
+      "Issuer": "VeritasChain Co., Ltd.",
       "PolicyURI": "https://veritaschain.org/policies/prod-hft",
       "EffectiveDate": 1735084800000
     },
@@ -975,13 +978,13 @@
             
             <p>VCP v1.1强化了我们对<strong>"不要信任，要验证"</strong>原则的承诺。</p>
             
-            <p>通过将外部锚定设为所有层级的强制要求，我们确保每个VCP部署——从开发者的MT5回测环境到高频交易公司的生产系统——都提供相同的基本保证：</p>
+            <p>通过将外部锚定设为所有层级的强制要求，我们确保每个VCP部署——从开发者的MT5回测环境到高频交易公司的生产系统——都提供相同的基本特性：</p>
             
             <div class="highlight-box" style="text-align: center; border-color: rgba(59, 130, 246, 0.5);">
                 <p style="font-size: 1.25rem; color: #f1f5f9; font-weight: 700; margin: 0;"><strong>第三方可以验证您审计追踪的完整性，而无需信任您。</strong></p>
             </div>
             
-            <p style="text-align: center; margin-top: 2rem;">这是算法交易所需要的。这是监管机构正在要求的。<br><strong>这就是VCP v1.1所提供的。</strong></p>
+            <p style="text-align: center; margin-top: 2rem;">这是算法交易所需要的。<br><strong>这就是VCP v1.1旨在提供的。</strong></p>
             
             <hr>
             
@@ -990,8 +993,8 @@
             <ul>
                 <li><a href="https://github.com/veritaschain/vcp-spec" target="_blank">VCP v1.1规范（草案）- GitHub</a></li>
                 <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">IETF互联网草案：draft-kamimura-scitt-vcp</a></li>
-                <li><a href="https://veritaschain.org/certification/" target="_blank">VC-Certified计划</a></li>
-                <li><a href="https://docs.veritaschain.org" target="_blank">开发者文档</a></li>
+                <li><a href="https://veritaschain.org/certified/zh/" target="_blank">VC-Certified计划</a></li>
+                <li><a href="https://veritaschain.org/vcp/developers/zh/" target="_blank">开发者文档</a></li>
             </ul>
             
             <hr>

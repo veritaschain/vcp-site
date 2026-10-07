@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VCP v1.1: 加强外部可验证性 - VeritasChain Protocol</title>
-    <meta name="description" content="VCP v1.1引入三层架构、所有层级强制外部锚定和策略识别。将防篡改证明扩展为完整性保证。">
+    <meta name="description" content="VCP v1.1引入三层架构、所有层级强制外部锚定和策略识别。将篡改可检测性扩展为完整性验证。">
     <meta name="keywords" content="VCP, VeritasChain Protocol, v1.1, 三层架构, 外部锚定, 策略识别, 算法交易, 加密审计">
     
     <!-- Google Analytics -->
@@ -25,7 +25,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="VCP v1.1: 加强外部可验证性">
     <meta name="twitter:description" content="三层架构、强制外部锚定和策略识别。">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -247,7 +247,7 @@
             <div class="mb-6">
                 <span class="version-badge">
                     <i class="fas fa-check-circle"></i>
-                    发布: 2026年1月
+                    发布: 2025年12月30日 · v1.2 正式版已公开
                 </span>
             </div>
             
@@ -267,7 +267,7 @@
             <div class="bg-gradient-to-r from-blue-900/50 to-purple-900/50 border border-blue-500/30 rounded-2xl p-6 mb-10 max-w-3xl mx-auto">
                 <p class="text-lg text-blue-100">
                     <i class="fas fa-shield-halved text-blue-400 mr-2"></i>
-                    <strong>核心增强:</strong> VCP v1.1将防篡改证明扩展为<strong class="text-green-400">完整性保证</strong>——使第三方能够以加密方式验证事件不仅未被篡改，而且<strong class="text-yellow-300">没有遗漏必需的事件</strong>。
+                    <strong>核心增强:</strong> VCP v1.1将篡改可检测性扩展为<strong class="text-green-400">完整性验证</strong>——使第三方能够以锚定（批次）粒度、以加密方式验证事件不仅未被篡改，而且<strong class="text-yellow-300">批次在锚定后没有事件被遗漏</strong>。
                 </p>
             </div>
             
@@ -445,7 +445,7 @@
                         <span class="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm font-semibold rounded-full">集合完整性</span>
                         <span class="px-2 py-0.5 bg-yellow-500/20 text-yellow-300 text-xs font-semibold rounded">外部可验证性的核心</span>
                     </div>
-                    <p class="text-slate-300 mb-4">目的：证明事件批次的完整性</p>
+                    <p class="text-slate-300 mb-4">目的：使事件批次的完整性可验证</p>
                     <div class="flex flex-wrap gap-3">
                         <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">
                             <i class="fas fa-sitemap mr-1"></i> Merkle Tree (RFC 6962): <span class="text-green-400">强制</span>
@@ -583,7 +583,7 @@
     "PolicyID": "org.veritaschain.prod:hft-system-001",
     "ConformanceTier": "PLATINUM",
     "RegistrationPolicy": {
-      "Issuer": "VeritasChain Inc.",
+      "Issuer": "VeritasChain Co., Ltd.",
       "PolicyURI": "https://veritaschain.org/policies/prod-hft",
       "EffectiveDate": 1735084800000
     },
@@ -756,15 +756,15 @@
                                 <span class="text-slate-400">超时</span>
                             </div>
                             <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
-                                <span class="text-red-400 font-mono">ERR_RATE</span>
-                                <span class="text-slate-400">速率限制</span>
+                                <span class="text-red-400 font-mono">ERR_REJECT</span>
+                                <span class="text-slate-400">拒绝</span>
                             </div>
                             <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
-                                <span class="text-red-400 font-mono">ERR_DATA</span>
-                                <span class="text-slate-400">数据验证</span>
+                                <span class="text-red-400 font-mono">ERR_PARSE</span>
+                                <span class="text-slate-400">数据（解析/校验）</span>
                             </div>
                             <div class="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
-                                <span class="text-red-400 font-mono">ERR_SYS</span>
+                                <span class="text-red-400 font-mono">ERR_SYSTEM</span>
                                 <span class="text-slate-400">系统</span>
                             </div>
                         </div>
@@ -780,16 +780,11 @@
                     <div class="code-block p-4">
                         <pre class="text-green-400 text-sm"><code>{
   "ErrorDetails": {
-    "ErrorType": "ERR_CONN",
     "ErrorCode": "BROKER_DISCONNECT",
-    "Message": "与经纪商API的连接中断",
-    "Severity": "HIGH",
-    "Recoverable": true,
-    "RetryCount": 3,
-    "Context": {
-      "endpoint": "api.broker.com",
-      "lastSuccessful": 1735084800000
-    }
+    "ErrorMessage": "与经纪商API的连接中断",
+    "Severity": "CRITICAL",
+    "AffectedComponent": "broker-gateway",
+    "RecoveryAction": "以指数退避方式重连"
   }
 }</code></pre>
                     </div>
@@ -875,7 +870,7 @@
                 <div class="flex flex-col lg:flex-row items-start gap-8">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-4">
-                            <span class="px-3 py-1 bg-green-500/20 text-green-400 text-sm font-semibold rounded-full">生产就绪</span>
+                            <span class="px-3 py-1 bg-green-500/20 text-green-400 text-sm font-semibold rounded-full">已发布</span>
                             <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-sm font-semibold rounded-full">VSO-IMPL-001</span>
                         </div>
                         <h3 class="text-2xl font-bold text-white mb-4">VCP v1.1 实现文档</h3>
@@ -1029,7 +1024,7 @@
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">参与其中</h2>
             <p class="text-xl text-slate-400 mb-8">
-                VCP v1.1已于<strong class="text-green-400">2026年1月</strong>正式发布。我们欢迎社区反馈，以继续改进规范。
+                VCP v1.1已于<strong class="text-green-400">2025年12月30日</strong>发布。其后续版本VCP v1.2已作为正式版（Production Ready，GA 2026年7月6日）发布。我们欢迎社区反馈，以继续改进规范。
             </p>
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -1051,7 +1046,7 @@
                 <a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank" class="bg-slate-700/50 hover:bg-slate-700 border border-slate-600 rounded-xl p-6 transition-all group">
                     <i class="fas fa-globe text-4xl text-white mb-4 group-hover:text-blue-400 transition-colors"></i>
                     <h3 class="text-lg font-semibold text-white mb-2">IETF Internet-Draft（个人提交）</h3>
-                    <p class="text-slate-400 text-sm">参与算法透明性讨论</p>
+                    <p class="text-slate-400 text-sm">个人草案（draft-kamimura-scitt-vcp），未被任何工作组采纳</p>
                 </a>
             </div>
             

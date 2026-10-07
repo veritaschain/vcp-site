@@ -35,7 +35,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="VCP v1.1: Three-Layer Architecture for External Verifiability">
     <meta name="twitter:description" content="Announcing VCP v1.1 with mandatory External Anchoring and Policy Identification.">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -493,6 +493,9 @@
 
     <!-- Article Content -->
     <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 7, 2026).</strong> This article was published on December 26, 2025 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. Not all plans and target dates given here were met. MiFID II RTS 25 (Delegated Regulation (EU) 2017/574), cited here, was replaced on 2 March 2026 by Delegated Regulation (EU) 2025/1155. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 7, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
         <div class="prose">
             
             <!-- Version Badge -->
@@ -558,7 +561,7 @@
             
             <h2 id="why-v11">Why v1.1? The Story Behind the Update</h2>
             
-            <p>When we released VCP v1.0 in November 2025, our primary goal was to establish a robust foundation for algorithmic trading audit trails. The specification was well-received, with early adopters successfully implementing VCP across Silver, Gold, and Platinum tiers.</p>
+            <p>When we released VCP v1.0 in November 2025, our primary goal was to establish a robust foundation for algorithmic trading audit trails.</p>
             
             <p>However, as we engaged with the community—including feedback from IETF SCITT Working Group participants, regulatory consultants, and implementation teams—a structural issue emerged.</p>
             
@@ -573,19 +576,19 @@
             
             <p>This created a gap in VCP's core principle of <strong>"Verify, Don't Trust."</strong></p>
             
-            <p>Here's the problem: A Merkle Tree is only as trustworthy as its root. If the Merkle Root is never externally anchored, the log producer could theoretically reconstruct the entire tree after the fact. Without external anchoring, the "immutability" guarantee relied on trusting the producer—exactly what VCP was designed to eliminate.</p>
+            <p>Here's the problem: A Merkle Tree is only as trustworthy as its root. If the Merkle Root is never externally anchored, the log producer could theoretically reconstruct the entire tree after the fact. Without external anchoring, tamper-evidence relied on trusting the producer—exactly what VCP was designed to eliminate.</p>
             
             <h3>The Solution: Mandatory External Anchoring</h3>
             
             <p>v1.1 resolves this by making External Anchoring <strong>REQUIRED for all tiers</strong>, with tier-appropriate frequencies and lightweight options for Silver tier implementations.</p>
             
-            <p>This isn't about adding burden—it's about ensuring that even the simplest VCP deployment provides what regulators and auditors actually need: <strong>externally verifiable proof of integrity</strong>.</p>
+            <p>This isn't about adding burden—it's about ensuring that even the simplest VCP deployment provides what regulators and auditors actually need: <strong>externally verifiable evidence of integrity</strong>.</p>
             
             <hr>
             
             <h2 id="three-layer">The Three-Layer Architecture</h2>
             
-            <p>One of the most significant changes in v1.1 is the introduction of a clear <strong>three-layer architecture</strong> for integrity and security. This structure clarifies how different cryptographic mechanisms work together and where each layer's guarantees originate.</p>
+            <p>One of the most significant changes in v1.1 is the introduction of a clear <strong>three-layer architecture</strong> for integrity and security. This structure clarifies how different cryptographic mechanisms work together and where each layer's integrity properties originate.</p>
             
             <div class="layer-diagram">┌─────────────────────────────────────────────────────────────────────┐
 │                                                                     │
@@ -604,7 +607,7 @@
 │                                                                     │
 │  LAYER 2: Collection Integrity    ← Core for external verifiability│
 │  ────────────────────────────────                                   │
-│  Purpose: Prove completeness of event batches                       │
+│  Purpose: Verify completeness of event batches                      │
 │                                                                     │
 │  Components:                                                        │
 │  ├─ Merkle Tree (RFC 6962): REQUIRED                               │
@@ -625,11 +628,11 @@
             
             <h3>Why This Structure Matters</h3>
             
-            <p><strong>Layer 1 (Event Integrity)</strong> ensures each individual event is complete and unmodified. The EventHash provides a fingerprint of the event's contents.</p>
+            <p><strong>Layer 1 (Event Integrity)</strong> makes any modification of an individual event detectable. The EventHash provides a fingerprint of the event's contents.</p>
             
-            <p><strong>Layer 2 (Collection Integrity)</strong> proves that a batch of events is complete—no events were added, removed, or reordered after the fact. The Merkle Tree structure enables efficient verification of any single event's inclusion in the batch.</p>
+            <p><strong>Layer 2 (Collection Integrity)</strong> makes the completeness of a batch of events verifiable—events added, removed, or reordered after the fact become detectable. The Merkle Tree structure enables efficient verification of any single event's inclusion in the batch.</p>
             
-            <p><strong>Layer 3 (External Verifiability)</strong> is where VCP delivers its core value proposition. By anchoring the Merkle Root to an external, immutable target (blockchain, RFC 3161 TSA, or attested database), we create proof that <strong>cannot be retroactively modified by the log producer</strong>.</p>
+            <p><strong>Layer 3 (External Verifiability)</strong> is where VCP delivers its core value proposition. By anchoring the Merkle Root to an external, immutable target (blockchain, RFC 3161 TSA, or attested database), we create evidence that <strong>the log producer cannot retroactively modify without detection</strong>.</p>
             
             <p>This is what makes "Verify, Don't Trust" possible. A third party can independently verify the integrity of your audit trail without trusting you.</p>
             
@@ -665,7 +668,7 @@
             <p>In v1.1, we've made PrevHash <strong>OPTIONAL</strong> because:</p>
             
             <ol>
-                <li><strong>Merkle Tree + External Anchor</strong> provides the essential guarantee of external verifiability</li>
+                <li><strong>Merkle Tree + External Anchor</strong> provides the essential basis for external verifiability</li>
                 <li><strong>Hash chains complement but don't replace</strong> external anchoring</li>
                 <li><strong>Simplifying Silver tier</strong> implementations reduces adoption barriers</li>
             </ol>
@@ -703,7 +706,7 @@
     "PolicyID": "org.veritaschain.prod:hft-system-001",
     "ConformanceTier": "PLATINUM",
     "RegistrationPolicy": {
-      "Issuer": "VeritasChain Inc.",
+      "Issuer": "VeritasChain Co., Ltd.",
       "PolicyURI": "https://veritaschain.org/policies/prod-hft",
       "EffectiveDate": 1735084800000
     },
@@ -964,13 +967,13 @@ Examples:
             
             <p>VCP v1.1 strengthens our commitment to the principle of <strong>"Verify, Don't Trust."</strong></p>
             
-            <p>By making External Anchoring mandatory for all tiers, we ensure that every VCP deployment—from a developer's MT5 backtesting environment to a high-frequency trading firm's production systems—provides the same fundamental guarantee:</p>
+            <p>By making External Anchoring mandatory for all tiers, we ensure that every VCP deployment—from a developer's MT5 backtesting environment to a high-frequency trading firm's production systems—provides the same fundamental property:</p>
             
             <div class="highlight-box" style="text-align: center; border-color: rgba(59, 130, 246, 0.5);">
                 <p style="font-size: 1.25rem; color: #f1f5f9; font-weight: 700; margin: 0;"><strong>A third party can verify the integrity of your audit trail without trusting you.</strong></p>
             </div>
             
-            <p style="text-align: center; margin-top: 2rem;">This is what algorithmic trading needs. This is what regulators are asking for.<br><strong>And this is what VCP v1.1 delivers.</strong></p>
+            <p style="text-align: center; margin-top: 2rem;">This is what algorithmic trading needs.<br><strong>And this is what VCP v1.1 is designed to provide.</strong></p>
             
             <hr>
             
@@ -979,8 +982,8 @@ Examples:
             <ul>
                 <li><a href="https://github.com/veritaschain/vcp-spec" target="_blank">VCP v1.1 Specification (Draft) - GitHub</a></li>
                 <li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" target="_blank">IETF Internet-Draft: draft-kamimura-scitt-vcp</a></li>
-                <li><a href="https://veritaschain.org/certification/" target="_blank">VC-Certified Program</a></li>
-                <li><a href="https://docs.veritaschain.org" target="_blank">Developer Documentation</a></li>
+                <li><a href="https://veritaschain.org/certified/" target="_blank">VC-Certified Program</a></li>
+                <li><a href="https://veritaschain.org/vcp/developers/" target="_blank">Developer Documentation</a></li>
             </ul>
             
             <hr>

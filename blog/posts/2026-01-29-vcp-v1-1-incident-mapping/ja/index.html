@@ -35,7 +35,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="VCP v1.1 技術マッピング：グローバルアルゴリズム取引インシデント（2024-2026）">
     <meta name="twitter:description" content="VCP v1.1の三層アーキテクチャが中国、インド、日本、欧州の監査証跡の欠陥にどのように対応するか。">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -417,6 +417,9 @@
 
     <!-- Article Content -->
     <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>編集注（2026年10月7日追記）</strong> この記事は2026年1月29日に公開した記録です。版数・日付・数値・規制の施行時期は公開時点のものです。 仕様の版は更新されています。現行はVCP v1.1（公開済み）とv1.2リリース候補版、VAP v1.2.0 Draft 3、CAP v1.0、CPP v1.4です。 本文で引用しているMiFID II RTS 25（委任規則(EU) 2017/574）は、2026年3月2日に委任規則(EU) 2025/1155に置き換えられました。 本文がVCP v1.1の一部として説明しているマルチログ・レプリケーション、ゴシッププロトコル、モニターノードは、公開済みのVCP仕様（v1.0、v1.1、v1.2 RC1）にはありません。VCP v1.1が求めるのは全ティアでの外部アンカリングであり、仕様は、単一の当事者がアンカー前にイベントを省略し得ることを明記しています。 法令上の要件およびVSO仕様の機能に関する記述の一部は、2026年10月7日に訂正しました。 現在の状況：<a href="/standardization/ja/" style="color:inherit;text-decoration:underline;">標準化の状況</a> · <a href="/vap/ja/" style="color:inherit;text-decoration:underline;">VAPとプロファイル</a></div>
+
         <div class="prose">
             
             <!-- Executive Summary -->
@@ -426,7 +429,7 @@
                     エグゼクティブサマリー
                 </div>
                 <p style="margin-bottom: 1rem;">2024年から2026年にかけて、4つの主要な規制インシデントが従来の監査証跡システムの根本的な弱点を露呈しました。各インシデントは、既存のロギングインフラストラクチャが最も重要な時—市場ストレス、国際的紛争、執行手続き中—に正に機能しなくなることを示しました。</p>
-                <p style="margin-bottom: 0;"><strong>重要な発見：</strong>VCP v1.1は、ソースコードの開示を<em>必要とせずに</em>取引システムの完全性の暗号学的証明を規制当局に提供します—これは4つすべてのインシデントの中心的な対立を解決します。</p>
+                <p style="margin-bottom: 0;"><strong>重要な発見：</strong>VCP v1.1は、ソースコードの開示を<em>必要とせずに</em>取引システム記録の完全性に関する検証可能な暗号学的証拠を規制当局に提供します—これは4つすべてのインシデントの中心的な対立に対処します。</p>
             </div>
 
             <!-- Table of Contents -->
@@ -499,14 +502,14 @@
   紛争：「言い分の対立」
 
 VCPアプローチ：
-  企業：「暗号学的証明があります」
+  企業：「検証可能な暗号学的証拠があります」
   規制当局：「数学が有効性を確認」
-  紛争：「証拠は自己認証的」</div>
+  紛争：「証拠は独立して検証可能」</div>
 
             <!-- Section 2 -->
             <h2 id="vcp-architecture">2. VCP v1.1 三層アーキテクチャ</h2>
 
-            <p>VCP v1.1は、暗号学的整合性のための明確な三層アーキテクチャを導入し、各層が互いを補完する独立した保証を提供します：</p>
+            <p>VCP v1.1は、暗号学的整合性のための明確な三層アーキテクチャを導入し、各層が互いを補完する独立した検証特性を提供します：</p>
 
             <div class="vcp-layer layer-3">
                 <strong style="color: #ef4444;">第3層：外部検証可能性</strong>
@@ -524,7 +527,7 @@ VCPアプローチ：
                     <li>RFC 6962マークル木：必須</li>
                     <li>署名付きマークルルート：必須</li>
                     <li>包含証明：選択的開示機能</li>
-                    <li>一貫性証明：追記のみ保証</li>
+                    <li>一貫性証明：追記のみの検証</li>
                 </ul>
             </div>
 
@@ -645,9 +648,9 @@ SEBI執行部門（2025年7月）：
             
             <p>申し立てられたスキームは、NSE現物セグメント、NSE先物・オプション、複数のJane Street法人にまたがって運営されていました。VCP-XREFは自動的なクロス取引所相関を提供します。</p>
 
-            <h3>ゴシッププロトコル：将来のスプリットビューを防止</h3>
+            <h3>ゴシッププロトコル：スプリットビューを検出可能に</h3>
             
-            <p>VCP v1.1の<strong>ゴシッププロトコル</strong>は、SEBIのスプリットビュー問題に直接対処します。ログサーバーは署名付きマークルルートを交換し、任意の不一致は即座のアラートをトリガーします。VCPが展開されていれば、SEBI監視部門と執行部門は<strong>暗号学的に同一の</strong>データを受け取っていたでしょう。</p>
+            <p>VCP v1.1で必須となった<strong>外部アンカリング</strong>は、スプリットビュー問題に対処します。バッチのマークルルートが独立した第三者にアンカーされた後は、別の当事者に異なる履歴を提示しても、そのアンカーとの照合で検出可能です。VCPの下では、SEBIの監視部門と執行部門のような別々のチームが、<strong>暗号学的に同一の</strong>データを分析していることを検証でき、相違があれば検出可能です。</p>
 
             <!-- Section 5: Flash Crashes -->
             <h2 id="incident-flash">5. インシデント3：フラッシュクラッシュイベント（2024-2025）</h2>
@@ -709,7 +712,7 @@ SEBI執行部門（2025年7月）：
                 <thead>
                     <tr>
                         <th>取引タイプ</th>
-                        <th>要求される粒度</th>
+                        <th>UTCからの最大乖離</th>
                         <th>VCP階層</th>
                     </tr>
                 </thead>
@@ -754,7 +757,7 @@ SEBI執行部門（2025年7月）：
                     <i class="fas fa-check-circle"></i>
                     検証可能性に関するVCPの立場
                 </div>
-                <p style="margin-bottom: 0;">複雑なAIシステムでは完全な説明可能性は不可能なことが多いです。VCPは補完的な保証として<em>検証可能性</em>を提供します—AIが<em>なぜ</em>決定を下したかを説明できなくても、何の入力を受け取ったか、何の出力を生成したか、いつ決定が行われたか、記録が変更されていないことを証明できます。</p>
+                <p style="margin-bottom: 0;">複雑なAIシステムでは完全な説明可能性は不可能なことが多いです。VCPは補完的な保証として<em>検証可能性</em>を提供します—AIが<em>なぜ</em>決定を下したかを説明できなくても、何の入力を受け取ったか、何の出力を生成したか、いつ決定が行われたか、記録が変更されていないことを検証できます。</p>
             </div>
 
             <h3>EU AI Act第12条との整合性</h3>
@@ -766,7 +769,7 @@ SEBI執行部門（2025年7月）：
 
             <h3>GDPR互換性：暗号シュレッディング</h3>
             
-            <p>重要な課題：<strong>不変の監査証跡 vs 消去の権利</strong>。VCPは暗号シュレッディングでこれを解決します—個人データは対象者ごとの鍵で暗号化されます。消去リクエストに応じて鍵を削除すると、オンチェーンデータは計算上回復不可能になり、ハッシュチェーンの整合性は保持されます。</p>
+            <p>重要な課題：<strong>追記専用の監査証跡 vs 消去の権利</strong>。VCPは暗号シュレッディングでこれに対処します—個人データは対象者ごとの鍵で暗号化されます。消去リクエストに応じて鍵を削除すると、オンチェーンデータは計算上回復不可能になり、ハッシュチェーンの整合性は保持されます。</p>
 
             <!-- Section 7: Cross-Cutting -->
             <h2 id="cross-cutting">7. 横断的技術分析</h2>
@@ -935,7 +938,7 @@ SEBI執行部門（2025年7月）：
                     </tr>
                     <tr>
                         <td>完全性は主張される</td>
-                        <td>完全性は証明可能</td>
+                        <td>完全性は検証可能</td>
                     </tr>
                     <tr>
                         <td>紛争は敵対的になる</td>
@@ -949,10 +952,10 @@ SEBI執行部門（2025年7月）：
                     <i class="fas fa-quote-left"></i>
                     「信頼するな、検証せよ」の未来
                 </div>
-                <p style="margin-bottom: 0;">取引会社がVCPを展開すると：「我々を信頼して」と言う必要がなくなり—コンプライアンスを<em>証明</em>できます。規制当局は「信頼する」必要がなくなり—数学的に検証できます。紛争は「言った、言わない」に陥らなくなり—証拠は自己認証的です。</p>
+                <p style="margin-bottom: 0;">取引会社がVCPを展開すると：「我々を信頼して」と言う必要がなくなり—コンプライアンスに関連する<em>検証可能な証拠</em>を提示できます。規制当局は「信頼する」必要がなくなり—数学的に検証できます。紛争は「言った、言わない」に陥らなくなり—証拠は独立して検証可能です。</p>
             </div>
 
-            <p>2024-2026年のインシデントは痛みを伴う教訓でした。VCP v1.1は、それらが繰り返されないようにするための技術的基盤を提供します。</p>
+            <p>2024-2026年のインシデントは痛みを伴う教訓でした。VCP v1.1は、同様のインシデントが再発した場合にそれを監査可能にするための技術的基盤を提供します。</p>
 
             <blockquote>
                 「信頼するな、検証せよ」— VeritasChain Standards Organization
@@ -962,7 +965,7 @@ SEBI執行部門（2025年7月）：
             <h2>リソース</h2>
             
             <ul>
-                <li><strong>VCP v1.1仕様：</strong><a href="https://veritaschain.org/vcp/">veritaschain.org/vcp/</a></li>
+                <li><strong>VCP v1.1仕様：</strong><a href="https://veritaschain.org/what-is-vcp/ja/">veritaschain.org/vcp/</a></li>
                 <li><strong>IETFドラフト：</strong><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/">draft-kamimura-scitt-vcp</a></li>
                 <li><strong>GitHub：</strong><a href="https://github.com/veritaschain">github.com/veritaschain</a></li>
             </ul>

@@ -6,7 +6,7 @@
     <title>Four Verified Incidents, $700 Million in Regulatory Penalties, and the Architecture of Algorithmic Accountability | VeritasChain Blog</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="How Citigroup, Jane Street, the Japan Flash Crash, and Warsaw's Trading Halt Reveal the Urgent Need for Cryptographic Audit Standards—And Why VCP v1.1 Represents the Technical Solution">
+    <meta name="description" content="How Citigroup, Jane Street, the Japan Flash Crash, and Warsaw's Trading Halt Reveal the Urgent Need for Cryptographic Audit Standards—And How VCP v1.1 Is Designed to Address It">
     <meta name="keywords" content="VCP v1.1, Citigroup, Jane Street, SEBI, FCA, algorithmic trading, flash crash, audit trails, cryptographic verification, MiFID II, EU AI Act">
     <meta name="author" content="VeritasChain Standards Organization">
     <link rel="canonical" href="https://veritaschain.org/blog/posts/2026-01-25-four-incidents-700m-penalties-vcp/">
@@ -297,7 +297,7 @@
             </h1>
             
             <p class="text-xl text-gray-300 mb-6">
-                How Citigroup, Jane Street, the Japan Flash Crash, and Warsaw's Trading Halt Reveal the Urgent Need for Cryptographic Audit Standards—And Why VCP v1.1 Represents the Technical Solution
+                How Citigroup, Jane Street, the Japan Flash Crash, and Warsaw's Trading Halt Reveal the Urgent Need for Cryptographic Audit Standards—And How VCP v1.1 Is Designed to Address It
             </p>
             
             <div class="flex flex-wrap items-center gap-4 text-gray-400">
@@ -320,6 +320,9 @@
     <main style="padding: 3rem 1rem;">
         <div class="article-container">
             <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>Editorial note (added October 7, 2026).</strong> This article was published on January 25, 2026 and is kept as a dated record: versions, dates, figures and regulatory timelines are those of the publication date. Specification versions have changed: the current texts are VCP v1.1 (published) with v1.2 as a Release Candidate, VAP v1.2.0 Draft 3, CAP v1.0 and CPP v1.4. Statements in this article about legal requirements and about what VSO specifications do were corrected on October 7, 2026. Current status: <a href="/standardization/" style="color:inherit;text-decoration:underline;">standardization</a> · <a href="/vap/" style="color:inherit;text-decoration:underline;">VAP and its profiles</a>.</div>
+
                 
                 <!-- Executive Summary -->
                 <div class="key-finding">
@@ -332,7 +335,7 @@
                         <li><strong>Traditional compliance systems failed despite extensive warning mechanisms</strong>: Citigroup's system generated 711 warnings that were overridden in a single pop-up window</li>
                         <li><strong>Cross-market manipulation requires cross-party verification</strong>: Jane Street's alleged strategy exploited the absence of coordinated audit trails between cash and derivatives markets</li>
                         <li><strong>Systemic stress amplifies algorithmic feedback loops</strong>: Both the Japan crash and Warsaw halt demonstrated how algorithmic trading can transform market stress into cascade failures</li>
-                        <li><strong>VCP v1.1's mandatory external anchoring addresses the root cause</strong>: Producer-independent verification eliminates the "audited party controls evidence" paradox</li>
+                        <li><strong>VCP v1.1's mandatory external anchoring addresses the root cause</strong>: anchored records can be verified without relying on the producer, although the producer still decides what is recorded in the first place</li>
                     </ol>
                     
                     <p style="margin-bottom: 0;"><strong>Methodology Note:</strong> This analysis explicitly excludes the "SIMONE AI" incident reported in certain publications, which our fact-checking process identified as April Fools' satire. All incidents analyzed herein are verified through primary regulatory sources.</p>
@@ -564,7 +567,7 @@
                         </tr>
                         <tr>
                             <td>Beneficial ownership fragmentation</td>
-                            <td><code>beneficialOwner_commitment</code> enables cryptographic proof of ownership relationships</td>
+                            <td><code>beneficialOwner_commitment</code> enables verifiable cryptographic evidence of ownership relationships</td>
                         </tr>
                         <tr>
                             <td>Intent versus legitimate trading</td>
@@ -600,7 +603,7 @@
                 
                 <p><strong>Primary Cause:</strong> The Bank for International Settlements Bulletin No. 90 identifies leveraged carry trade unwinding as the primary cause, with an estimated <strong>¥40 trillion ($250 billion)</strong> in carry trade positions unwound.</p>
                 
-                <p><strong>Limitation:</strong> This crash was primarily driven by macroeconomic factors rather than algorithmic control failures. VCP would significantly improve forensic reconstruction but could not have prevented the underlying trigger.</p>
+                <p><strong>Limitation:</strong> This crash was primarily driven by macroeconomic factors rather than algorithmic control failures. VCP records support forensic reconstruction after the fact; VCP is post-hoc and does not prevent the underlying trigger.</p>
 
                 <!-- Warsaw Halt -->
                 <h2 id="warsaw">6. Incident Analysis: Warsaw Stock Exchange Trading Halt</h2>
@@ -689,7 +692,7 @@
                 
                 <ol>
                     <li><strong>Producer Independence:</strong> Evidence integrity verifiable without trusting the producer</li>
-                    <li><strong>Cryptographic Completeness:</strong> Collections are provably complete via Merkle trees</li>
+                    <li><strong>Cryptographic Completeness:</strong> Collections are verifiably complete (at anchor granularity) via Merkle trees</li>
                     <li><strong>Temporal Precision:</strong> Microsecond/nanosecond timestamps with PTPv2 synchronization</li>
                     <li><strong>Crypto-Agility:</strong> Algorithm identifiers for post-quantum migration</li>
                     <li><strong>Regulatory Alignment:</strong> Direct mapping to MiFID II, EU AI Act, SEC CAT requirements</li>
@@ -725,7 +728,7 @@
                 
                 <h3>Citigroup Flash Crash: VCP Technical Response</h3>
                 
-                <p><strong>Prevention Potential: HIGHEST</strong></p>
+                <p><strong>Auditability Potential: HIGHEST</strong></p>
                 
                 <pre><code>{
   "eventType": "GOV.ALERT_ACK",
@@ -744,7 +747,7 @@
                 
                 <h3>Jane Street SEBI: Cross-Market Correlation</h3>
                 
-                <p><strong>Detection Potential: STRONG</strong></p>
+                <p><strong>Auditability Potential: STRONG</strong></p>
                 
                 <pre><code>// Cash market event (NSE)
 {
@@ -766,7 +769,7 @@
   "beneficialOwner_commitment": "hash(JSI-Investments-Mauritius)"
 }</code></pre>
                 
-                <p>The <code>correlationID</code> and matching <code>beneficialOwner_commitment</code> would immediately reveal the relationship between cash buying and options positioning.</p>
+                <p>Records carrying the same <code>correlationID</code> and matching <code>beneficialOwner_commitment</code> make the relationship between cash buying and options positioning auditable.</p>
 
                 <!-- Regulatory Framework -->
                 <h2 id="regulatory-framework">10. Regulatory Framework Analysis</h2>
@@ -791,7 +794,7 @@
                         </tr>
                         <tr>
                             <td>Prevention of market disorder</td>
-                            <td>VCP-TRADE order lifecycle with anomaly detection</td>
+                            <td>VCP-TRADE order-lifecycle records (post-hoc evidence; VCP does not detect anomalies or prevent disorder)</td>
                         </tr>
                         <tr>
                             <td>Algorithm testing before deployment</td>
@@ -887,12 +890,12 @@
                 <p>VCP v1.1 addresses this fundamental flaw through three layers of cryptographic verification:</p>
                 
                 <ol>
-                    <li><strong>Event Integrity</strong> ensures individual events cannot be modified</li>
-                    <li><strong>Collection Integrity</strong> ensures batches are provably complete</li>
-                    <li><strong>External Verifiability</strong> ensures evidence can be verified without trusting producers</li>
+                    <li><strong>Event Integrity</strong> makes modification of individual events detectable</li>
+                    <li><strong>Collection Integrity</strong> makes batch completeness verifiable</li>
+                    <li><strong>External Verifiability</strong> allows evidence to be verified without trusting producers</li>
                 </ol>
                 
-                <p>The mandatory external anchoring requirement is the critical innovation: <strong>producers cannot control what they cannot modify, and they cannot modify what is anchored to external systems</strong>.</p>
+                <p>The mandatory external anchoring requirement is the critical innovation: <strong>once Merkle roots are anchored to external systems, any later modification or removal by the producer is detectable</strong>.</p>
                 
                 <h3>The Business Case</h3>
                 

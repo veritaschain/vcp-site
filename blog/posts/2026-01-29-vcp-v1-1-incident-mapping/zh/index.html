@@ -35,7 +35,7 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@veritaschain">
+    <meta name="twitter:site" content="@Veritas_chain">
     <meta name="twitter:title" content="VCP v1.1 技术映射：全球算法交易事件（2024-2026）">
     <meta name="twitter:description" content="VCP v1.1的三层架构如何解决中国、印度、日本和欧洲的审计追踪缺陷。">
     <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
@@ -417,6 +417,9 @@
 
     <!-- Article Content -->
     <article class="article-content">
+<!-- vso-dated-notice -->
+<div role="note" style="margin:0 0 1.75rem 0;padding:0.9rem 1.1rem;border:1px solid rgba(245,158,11,0.55);border-left:4px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,0.10);font-size:0.9rem;line-height:1.65;text-align:left;"><strong>编辑说明（2026年10月7日补充）</strong> 本文发布于2026年1月29日，作为当时的记录保留：版本、日期、数字和监管时间表均为发布时的情况。 规范版本已更新：现行文本为VCP v1.1（已发布）及v1.2候选发布版、VAP v1.2.0 Draft 3、CAP v1.0和CPP v1.4。 文中引用的MiFID II RTS 25（授权条例(EU) 2017/574）已于2026年3月2日被授权条例(EU) 2025/1155取代。 本文作为VCP v1.1组成部分介绍的多日志复制、Gossip协议和监控节点，并不在已发布的VCP规范（v1.0、v1.1、v1.2 RC1）之中。VCP v1.1要求所有层级进行外部锚定，并指出单一当事方可能在锚定之前遗漏事件。 本文中有关法律要求以及VSO规范功能的部分表述已于2026年10月7日更正。 当前状况：<a href="/standardization/zh/" style="color:inherit;text-decoration:underline;">标准化状况</a> · <a href="/vap/zh/" style="color:inherit;text-decoration:underline;">VAP及其配置文件</a></div>
+
         <div class="prose">
             
             <!-- Executive Summary -->
@@ -426,7 +429,7 @@
                     执行摘要
                 </div>
                 <p style="margin-bottom: 1rem;">2024年至2026年间，四起重大监管事件暴露了传统审计追踪系统的根本弱点。每起事件都表明，现有的日志基础设施恰恰在最关键的时刻——市场压力、跨司法管辖争议和执法程序期间——失效。</p>
-                <p style="margin-bottom: 0;"><strong>核心发现：</strong>VCP v1.1为监管机构提供交易系统完整性的加密证明，而<em>无需</em>披露源代码——这解决了所有四起事件的核心冲突。</p>
+                <p style="margin-bottom: 0;"><strong>核心发现：</strong>VCP v1.1为监管机构提供交易系统记录完整性的可验证加密证据，而<em>无需</em>披露源代码——这回应了所有四起事件的核心冲突。</p>
             </div>
 
             <!-- Table of Contents -->
@@ -499,14 +502,14 @@
   争议："各执一词"
 
 VCP方法：
-  企业："这是加密证明"
+  企业："这是可验证的加密证据"
   监管机构："数学确认有效性"
-  争议："证据是自我认证的"</div>
+  争议："证据可独立验证"</div>
 
             <!-- Section 2 -->
             <h2 id="vcp-architecture">2. VCP v1.1 三层架构</h2>
 
-            <p>VCP v1.1引入了清晰的三层加密完整性架构，每层提供相互补充的独立保证：</p>
+            <p>VCP v1.1引入了清晰的三层加密完整性架构，每层提供相互补充的独立验证属性：</p>
 
             <div class="vcp-layer layer-3">
                 <strong style="color: #ef4444;">第3层：外部可验证性</strong>
@@ -524,7 +527,7 @@ VCP方法：
                     <li>RFC 6962 Merkle树：必需</li>
                     <li>签名Merkle根：必需</li>
                     <li>包含证明：选择性披露能力</li>
-                    <li>一致性证明：仅追加保证</li>
+                    <li>一致性证明：仅追加验证</li>
                 </ul>
             </div>
 
@@ -645,9 +648,9 @@ SEBI执法部门（2025年7月）：
             
             <p>被指控的计划跨越NSE现货部门、NSE期货和期权以及多个Jane Street法律实体运作。VCP-XREF提供自动跨交易所关联。</p>
 
-            <h3>Gossip协议：防止未来的分裂视图</h3>
+            <h3>Gossip协议：使分裂视图可被检测</h3>
             
-            <p>VCP v1.1的<strong>Gossip协议</strong>直接解决SEBI的分裂视图问题。日志服务器交换签名的Merkle根，任何差异都会触发即时警报。如果部署了VCP，SEBI监控和执法部门将收到<strong>加密相同的</strong>数据。</p>
+            <p>VCP v1.1强制要求的<strong>外部锚定</strong>针对分裂视图问题：批次的Merkle根一旦锚定到独立第三方，向另一方出示不同的历史即可对照该锚定被检测出来。在VCP下，SEBI监控和执法部门等不同团队可以验证他们分析的是<strong>加密相同的</strong>数据；任何差异都可被检测。</p>
 
             <!-- Section 5: Flash Crashes -->
             <h2 id="incident-flash">5. 事件3：闪崩事件（2024-2025）</h2>
@@ -709,7 +712,7 @@ SEBI执法部门（2025年7月）：
                 <thead>
                     <tr>
                         <th>交易类型</th>
-                        <th>要求粒度</th>
+                        <th>与UTC的最大偏差</th>
                         <th>VCP层级</th>
                     </tr>
                 </thead>
@@ -754,7 +757,7 @@ SEBI执法部门（2025年7月）：
                     <i class="fas fa-check-circle"></i>
                     VCP关于可验证性的立场
                 </div>
-                <p style="margin-bottom: 0;">对于复杂AI系统，完全的可解释性通常是不可能的。VCP提供<em>可验证性</em>作为补充保证——即使我们无法解释AI<em>为什么</em>做出决策，我们也可以证明：它收到了什么输入、产生了什么输出、决策何时发生、以及记录未被修改。</p>
+                <p style="margin-bottom: 0;">对于复杂AI系统，完全的可解释性通常是不可能的。VCP提供<em>可验证性</em>作为补充保证——即使我们无法解释AI<em>为什么</em>做出决策，我们也可以验证：它收到了什么输入、产生了什么输出、决策何时发生、以及记录未被修改。</p>
             </div>
 
             <h3>EU AI Act第12条对齐</h3>
@@ -766,7 +769,7 @@ SEBI执法部门（2025年7月）：
 
             <h3>GDPR兼容性：加密销毁</h3>
             
-            <p>关键挑战：<strong>不可变审计追踪 vs 删除权</strong>。VCP通过加密销毁解决这个问题——个人数据用每个主体的密钥加密。在删除请求时，删除密钥；链上数据在计算上变得不可恢复，同时哈希链完整性得以保留。</p>
+            <p>关键挑战：<strong>仅追加审计追踪 vs 删除权</strong>。VCP通过加密销毁应对这个问题——个人数据用每个主体的密钥加密。在删除请求时，删除密钥；链上数据在计算上变得不可恢复，同时哈希链完整性得以保留。</p>
 
             <!-- Section 7: Cross-Cutting -->
             <h2 id="cross-cutting">7. 跨领域技术分析</h2>
@@ -935,7 +938,7 @@ SEBI执法部门（2025年7月）：
                     </tr>
                     <tr>
                         <td>完整性是声称的</td>
-                        <td>完整性是可证明的</td>
+                        <td>完整性是可验证的</td>
                     </tr>
                     <tr>
                         <td>争议变得对抗性</td>
@@ -949,10 +952,10 @@ SEBI执法部门（2025年7月）：
                     <i class="fas fa-quote-left"></i>
                     "验证，不要信任"的未来
                 </div>
-                <p style="margin-bottom: 0;">当交易公司部署VCP时：他们不再需要说"信任我们"——他们可以<em>证明</em>合规。监管机构不再需要"信任他们"——他们可以数学验证。争议不再陷入"各执一词"——证据是自我认证的。</p>
+                <p style="margin-bottom: 0;">当交易公司部署VCP时：他们不再需要说"信任我们"——他们可以提供与合规相关的<em>可验证证据</em>。监管机构不再需要"信任他们"——他们可以数学验证。争议不再陷入"各执一词"——证据可独立验证。</p>
             </div>
 
-            <p>2024-2026年的事件是痛苦的教训。VCP v1.1提供了确保它们不会重演的技术基础。</p>
+            <p>2024-2026年的事件是痛苦的教训。VCP v1.1为此类事件再次发生时的可审计性提供了技术基础。</p>
 
             <blockquote>
                 "验证，不要信任" — VeritasChain Standards Organization
@@ -962,7 +965,7 @@ SEBI执法部门（2025年7月）：
             <h2>资源</h2>
             
             <ul>
-                <li><strong>VCP v1.1规范：</strong><a href="https://veritaschain.org/vcp/">veritaschain.org/vcp/</a></li>
+                <li><strong>VCP v1.1规范：</strong><a href="https://veritaschain.org/what-is-vcp/zh/">veritaschain.org/vcp/</a></li>
                 <li><strong>IETF草案：</strong><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/">draft-kamimura-scitt-vcp</a></li>
                 <li><strong>GitHub：</strong><a href="https://github.com/veritaschain">github.com/veritaschain</a></li>
             </ul>

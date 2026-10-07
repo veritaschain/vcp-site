@@ -58,7 +58,7 @@ function initSearch() {
 function handleSearch(query) {
   console.log('Searching for:', query);
   // In a real implementation, this would query the API
-  alert(`Search functionality coming soon!\nSearching for: ${query}\n\nThis will query the VCP API endpoint:\nGET /v1/events/${query}`);
+  alert(`Search is not available on this sample page.\nYou entered: ${query}\n\nOnce the Explorer API is deployed, this search would call:\nGET /v1/events/${query}`);
 }
 
 // Count-up animation for stats

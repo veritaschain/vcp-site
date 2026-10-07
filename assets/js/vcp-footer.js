@@ -62,7 +62,7 @@ class VCPFooter extends HTMLElement {
         // Translation data for all supported languages
         this.translations = {
             en: {
-                copyright: '© 2025 - 2026 VeritasChain Inc. All rights reserved.',
+                copyright: '© 2025 - 2026 VeritasChain Co., Ltd. All rights reserved.',
                 independence: 'VSO operates independently and does not provide trading services.',
                 disclaimer1: 'VSO does not endorse or certify any financial performance claims.',
                 disclaimer2: 'All specifications are provided "as-is" without warranties of any kind.',
@@ -72,7 +72,7 @@ class VCPFooter extends HTMLElement {
                 revision: 'VCP Specification v1.2 — Production Ready (GA 2026-07-06)'
             },
             ja: {
-                copyright: '© 2025 - 2026 VeritasChain Inc. All rights reserved.',
+                copyright: '© 2025 - 2026 VeritasChain Co., Ltd. All rights reserved.',
                 independence: 'VSOは独立して運営されており、取引サービスを提供していません。',
                 disclaimer1: 'VSOは金融パフォーマンスに関する主張を保証または認証しません。',
                 disclaimer2: 'すべての仕様は「現状のまま」提供され、いかなる種類の保証も伴いません。',
@@ -82,7 +82,7 @@ class VCPFooter extends HTMLElement {
                 revision: 'VCP仕様 v1.2 — 正式版（Production Ready、2026年7月6日 GA）'
             },
             zh: {
-                copyright: '© 2025 - 2026 VeritasChain Inc. 保留所有权利。',
+                copyright: '© 2025 - 2026 VeritasChain Co., Ltd. 保留所有权利。',
                 independence: 'VSO独立运营，不提供交易服务。',
                 disclaimer1: 'VSO不认可或证明任何财务绩效声明。',
                 disclaimer2: '所有规范均按"原样"提供，不提供任何形式的保证。',
