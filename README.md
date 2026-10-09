@@ -173,7 +173,7 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 ### Standards Body Conventions
 
 - **"as-is" warranty disclaimer** (ISO/IEEE standard)
-- **Revision history** in footer (v1.0 → v1.1)
+- **Revision history** in footer (current: VCP v1.2)
 - **Module coverage** explicitly stated (CORE, TRADE, GOV, RISK, PRIVACY, RECOVERY)
 - **Technical precision** - Only guaranteed values stated
 
@@ -202,7 +202,11 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 - On-Chain Audit Proofs (ZK-based)
 - VC-Certified SVG badge
 
-### Next update: planned — no date set
+### Current specification: VCP v1.2 — Production Ready (GA 2026-07-06)
+
+- Specification: https://github.com/veritaschain/vcp-spec/tree/main/spec/v1.2
+- JSON Schema: https://veritaschain.org/schema/vcp-event-v1.2.json
+- Previous: v1.1 (2025-12-30), v1.0 (2025-11-25)
 
 ---
 

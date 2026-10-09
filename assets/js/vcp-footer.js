@@ -69,7 +69,7 @@ class VCPFooter extends HTMLElement {
                 organization: 'VeritasChain Standards Organization',
                 duns: 'D-U-N-S: 698368529',
                 address: 'Ebisu Office — 2-4-8 Ebisu-Nishi, Shibuya-ku, Tokyo 150-0021, Japan',
-                revision: 'VCP Specification v1.1 — published 2025-12-30 | v1.2 Release Candidate (RC1) — 2026-05-31'
+                revision: 'VCP Specification v1.2 — Production Ready (GA 2026-07-06)'
             },
             ja: {
                 copyright: '© 2025 - 2026 VeritasChain Co., Ltd. All rights reserved.',
@@ -79,7 +79,7 @@ class VCPFooter extends HTMLElement {
                 organization: 'VeritasChain Standards Organization',
                 duns: 'D-U-N-S: 698368529',
                 address: '恵比寿オフィス — 〒150-0021 東京都渋谷区恵比寿西2-4-8',
-                revision: 'VCP仕様 v1.1 — 2025年12月30日公開 | v1.2 リリース候補（RC1）— 2026年5月31日'
+                revision: 'VCP仕様 v1.2 — 正式版（Production Ready、2026年7月6日 GA）'
             },
             zh: {
                 copyright: '© 2025 - 2026 VeritasChain Co., Ltd. 保留所有权利。',
@@ -89,7 +89,7 @@ class VCPFooter extends HTMLElement {
                 organization: 'VeritasChain Standards Organization',
                 duns: 'D-U-N-S: 698368529',
                 address: '惠比寿办公室 — 日本东京都涩谷区惠比寿西2-4-8 邮编150-0021',
-                revision: 'VCP规范 v1.1 — 2025年12月30日发布 | v1.2 候选发布版（RC1）— 2026年5月31日'
+                revision: 'VCP规范 v1.2 — 正式版（Production Ready，2026年7月6日 GA）'
             }
         };
     }

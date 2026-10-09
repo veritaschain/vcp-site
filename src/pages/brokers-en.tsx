@@ -284,7 +284,7 @@ export const brokersPageEn = () => html`
                     <div class="flex flex-wrap gap-4">
                         <a href="https://github.com/veritaschain/vcp-spec" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/30">
                             <i class="fas fa-file-alt"></i>
-                            Technical Specification (VCP v1.1 / v1.2 RC1)
+                            Technical Specification (VCP v1.2)
                         </a>
                         <a href="mailto:partners@veritaschain.org?subject=VCP%20PoC%20Inquiry%20-%20Institutional" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2">
                             <i class="fas fa-rocket"></i>
