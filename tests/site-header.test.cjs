@@ -5,6 +5,27 @@ const vm = require('node:vm');
 const source = fs.readFileSync('assets/js/vcp-header.js', 'utf8');
 let Header;
 const location = { pathname: "/" };
+test('versioned header loads styles and motion at valid versioned URLs', () => {
+  for (const query of ['', '?v=20261014']) {
+    const assets = [];
+    vm.runInNewContext(source, {
+      URL, HTMLElement: class {}, window: { location },
+      document: {
+        currentScript: { src: `https://veritaschain.org/assets/js/vcp-header.js${query}` },
+        getElementById: () => null,
+        createElement: () => ({}),
+        head: { appendChild: element => assets.push(element) }
+      },
+      customElements: { define() {} }
+    });
+    assert.deepEqual(assets.map(asset => asset.href || asset.src), [
+      `https://veritaschain.org/assets/css/vcp-header.css${query}`,
+      `https://veritaschain.org/assets/css/site-motion.css${query}`,
+      `https://veritaschain.org/assets/js/site-motion.js${query}`
+    ]);
+    assert.equal(assets[2].defer, true);
+  }
+});
 vm.runInNewContext(source, {
   URL, HTMLElement: class {}, window: { location },
   document: { currentScript: { src: 'https://veritaschain.org/assets/js/vcp-header.js' }, getElementById: () => ({}) },
