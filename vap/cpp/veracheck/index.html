@@ -6,17 +6,17 @@
     <title>VeraCheck - CPP Evidence Verification</title>
     <meta name="description" content="Beta web viewer for CPP verification packs created with VeraSnap. It shows the provenance data and checks the structure of a pack; it does not fully verify signatures, Merkle proofs or timestamps.">
     <meta name="author" content="VeritasChain Standards Organization">
-    <link rel="canonical" href="https://veritaschain.org/vap/cpp/veracheck">
-    
+
+
     <!-- Open Graph -->
-    <meta property="og:title" content="VeraCheck - Evidence Verification">
-    <meta property="og:description" content="View the provenance data of media captured with VeraSnap (beta web version)">
+    <meta property="og:title" content="VeraCheck - CPP Evidence Verification">
+    <meta property="og:description" content="Beta web viewer for CPP verification packs created with VeraSnap. It shows the provenance data and checks the structure of a pack; it does not fully verify signatures, Merkle proofs or timestamps.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://veritaschain.org/vap/cpp/veracheck">
-    
+    <meta property="og:url" content="https://veritaschain.org/vap/cpp/veracheck/">
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
-    
+
     <style>
         :root {
             --primary: #1a365d;
@@ -34,7 +34,7 @@
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-        
+
         [data-theme="dark"] {
             --primary: #90cdf4;
             --primary-light: #63b3ed;
@@ -45,13 +45,13 @@
             --text-muted: #a0aec0;
             --border: #4a5568;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: var(--bg);
@@ -59,17 +59,17 @@
             line-height: 1.6;
             min-height: 100vh;
         }
-        
+
         [dir="rtl"] {
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
         }
-        
+
         .container {
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         header {
             text-align: center;
             padding: 40px 20px;
@@ -77,7 +77,7 @@
             color: white;
             margin-bottom: 30px;
         }
-        
+
         header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
@@ -86,13 +86,13 @@
             justify-content: center;
             gap: 12px;
         }
-        
+
         header p {
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
         }
-        
+
         .beta-banner {
             background: linear-gradient(135deg, rgba(214, 158, 46, 0.15) 0%, rgba(214, 158, 46, 0.05) 100%);
             border: 1px solid var(--warning);
@@ -105,7 +105,7 @@
             gap: 15px;
             flex-wrap: wrap;
         }
-        
+
         .beta-badge {
             background: var(--warning);
             color: #000;
@@ -116,24 +116,24 @@
             letter-spacing: 0.5px;
             flex-shrink: 0;
         }
-        
+
         .beta-banner p {
             margin: 0;
             font-size: 0.9rem;
             flex: 1;
         }
-        
+
         .beta-banner a {
             color: var(--accent);
             text-decoration: none;
             font-weight: 500;
             white-space: nowrap;
         }
-        
+
         .beta-banner a:hover {
             text-decoration: underline;
         }
-        
+
         .controls {
             display: flex;
             justify-content: flex-end;
@@ -141,7 +141,7 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        
+
         select, button {
             padding: 8px 16px;
             border: 1px solid var(--border);
@@ -152,11 +152,11 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        
+
         select:hover, button:hover {
             border-color: var(--accent);
         }
-        
+
         .card {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -164,7 +164,7 @@
             padding: 30px;
             margin-bottom: 20px;
         }
-        
+
         .card h2 {
             font-size: 1.25rem;
             margin-bottom: 20px;
@@ -172,7 +172,7 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .upload-zone {
             border: 2px dashed var(--border);
             border-radius: var(--radius);
@@ -181,21 +181,21 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         .upload-zone:hover, .upload-zone.dragover {
             border-color: var(--accent);
             background: rgba(49, 130, 206, 0.05);
         }
-        
+
         .upload-zone .icon {
             font-size: 48px;
             margin-bottom: 15px;
         }
-        
+
         .upload-zone input {
             display: none;
         }
-        
+
         .tab-nav {
             display: flex;
             gap: 5px;
@@ -203,7 +203,7 @@
             border-bottom: 2px solid var(--border);
             padding-bottom: 0;
         }
-        
+
         .tab-btn {
             padding: 12px 24px;
             border: none;
@@ -216,24 +216,24 @@
             margin-bottom: -2px;
             transition: all 0.2s;
         }
-        
+
         .tab-btn:hover {
             color: var(--text);
         }
-        
+
         .tab-btn.active {
             color: var(--accent);
             border-bottom-color: var(--accent);
         }
-        
+
         .tab-content {
             display: none;
         }
-        
+
         .tab-content.active {
             display: block;
         }
-        
+
         .json-textarea {
             width: 100%;
             min-height: 300px;
@@ -248,23 +248,23 @@
             resize: vertical;
             transition: border-color 0.2s;
         }
-        
+
         .json-textarea:focus {
             outline: none;
             border-color: var(--accent);
         }
-        
+
         .json-textarea::placeholder {
             color: var(--text-muted);
         }
-        
+
         .paste-actions {
             display: flex;
             gap: 10px;
             margin-top: 15px;
             flex-wrap: wrap;
         }
-        
+
         .btn-secondary {
             background: var(--bg);
             color: var(--text);
@@ -275,22 +275,22 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        
+
         .btn-secondary:hover {
             border-color: var(--accent);
             background: var(--card-bg);
         }
-        
+
         .paste-actions .btn-primary {
             margin-top: 0;
             margin-left: auto;
         }
-        
+
         [dir="rtl"] .paste-actions .btn-primary {
             margin-left: 0;
             margin-right: auto;
         }
-        
+
         .btn-primary {
             background: var(--accent);
             color: white;
@@ -300,24 +300,24 @@
             font-weight: 600;
             margin-top: 15px;
         }
-        
+
         .btn-primary:hover {
             background: var(--primary-light);
         }
-        
+
         .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-        
+
         .results {
             display: none;
         }
-        
+
         .results.visible {
             display: block;
         }
-        
+
         .result-item {
             display: flex;
             align-items: flex-start;
@@ -327,60 +327,60 @@
             margin-bottom: 10px;
             background: var(--bg);
         }
-        
+
         .result-item.pass {
             border-left: 4px solid var(--success);
         }
-        
+
         .result-item.fail {
             border-left: 4px solid var(--error);
         }
-        
+
         .result-item.warn {
             border-left: 4px solid var(--warning);
         }
-        
+
         .result-item.info {
             border-left: 4px solid var(--accent);
         }
-        
+
         .result-icon {
             font-size: 24px;
             flex-shrink: 0;
         }
-        
+
         .result-content h4 {
             font-size: 1rem;
             margin-bottom: 5px;
         }
-        
+
         .result-content p {
             font-size: 0.875rem;
             color: var(--text-muted);
         }
-        
+
         .summary {
             padding: 20px;
             border-radius: var(--radius);
             margin-bottom: 20px;
             text-align: center;
         }
-        
+
         .summary.valid {
             background: linear-gradient(135deg, rgba(56, 161, 105, 0.1) 0%, rgba(56, 161, 105, 0.05) 100%);
             border: 1px solid var(--success);
         }
-        
+
         .summary.invalid {
             background: linear-gradient(135deg, rgba(229, 62, 62, 0.1) 0%, rgba(229, 62, 62, 0.05) 100%);
             border: 1px solid var(--error);
         }
-        
+
         .summary h3 {
             font-size: 1.5rem;
             margin-bottom: 10px;
         }
-        
+
         .disclaimer {
             background: rgba(49, 130, 206, 0.1);
             border: 1px solid var(--accent);
@@ -392,12 +392,12 @@
             align-items: flex-start;
             gap: 10px;
         }
-        
+
         .disclaimer .icon {
             font-size: 20px;
             flex-shrink: 0;
         }
-        
+
         .details-toggle {
             cursor: pointer;
             color: var(--accent);
@@ -405,7 +405,7 @@
             margin-top: 10px;
             display: inline-block;
         }
-        
+
         .details-content {
             display: none;
             margin-top: 15px;
@@ -418,47 +418,47 @@
             white-space: pre-wrap;
             word-break: break-all;
         }
-        
+
         .details-content.visible {
             display: block;
         }
-        
+
         .metadata {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
-        
+
         .metadata-item {
             padding: 15px;
             background: var(--bg);
             border-radius: 8px;
         }
-        
+
         .metadata-item label {
             font-size: 0.75rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
+
         .metadata-item .value {
             font-weight: 600;
             margin-top: 5px;
             word-break: break-all;
         }
-        
+
         .loading {
             display: none;
             text-align: center;
             padding: 40px;
         }
-        
+
         .loading.visible {
             display: block;
         }
-        
+
         .spinner {
             width: 40px;
             height: 40px;
@@ -468,18 +468,18 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 15px;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
+
         footer {
             text-align: center;
             padding: 30px 20px;
             color: var(--text-muted);
             font-size: 0.875rem;
         }
-        
+
         .contribute-section {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -488,25 +488,25 @@
             max-width: 600px;
             box-shadow: var(--shadow);
         }
-        
+
         .contribute-section h3 {
             color: var(--text);
             margin-bottom: 10px;
             font-size: 1.1rem;
         }
-        
+
         .contribute-section p {
             margin-bottom: 15px;
             line-height: 1.6;
         }
-        
+
         .contribute-links {
             display: flex;
             justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
         }
-        
+
         .contribute-links a {
             display: inline-flex;
             align-items: center;
@@ -520,28 +520,28 @@
             font-size: 0.875rem;
             transition: all 0.2s;
         }
-        
+
         .contribute-links a:hover {
             border-color: var(--accent);
             color: var(--accent);
         }
-        
+
         .footer-divider {
             width: 60px;
             height: 1px;
             background: var(--border);
             margin: 25px auto;
         }
-        
+
         footer a {
             color: var(--accent);
             text-decoration: none;
         }
-        
+
         footer a:hover {
             text-decoration: underline;
         }
-        
+
         .layer-badge {
             display: inline-block;
             padding: 2px 8px;
@@ -551,11 +551,11 @@
             text-transform: uppercase;
             margin-left: 8px;
         }
-        
+
         .layer-badge.layer1 { background: #e6fffa; color: #234e52; }
         .layer-badge.layer2 { background: #fefcbf; color: #744210; }
         .layer-badge.layer3 { background: #fed7e2; color: #702459; }
-        
+
         .conformance-level {
             display: inline-flex;
             align-items: center;
@@ -565,29 +565,38 @@
             font-size: 0.875rem;
             font-weight: 600;
         }
-        
+
         .conformance-level.bronze { background: #cd7f32; color: white; }
         .conformance-level.silver { background: #c0c0c0; color: #333; }
         .conformance-level.gold { background: #ffd700; color: #333; }
-        
+
         @media (max-width: 600px) {
             header h1 {
                 font-size: 1.75rem;
             }
-            
+
             .card {
                 padding: 20px;
             }
-            
+
             .upload-zone {
                 padding: 40px 20px;
             }
-            
+
             .controls {
                 justify-content: center;
             }
         }
     </style>
+    <link rel="canonical" href="https://veritaschain.org/vap/cpp/veracheck/">
+    <meta property="og:site_name" content="VeritasChain Standards Organization (VSO)">
+    <meta name="twitter:title" content="VeraCheck - CPP Evidence Verification">
+    <meta name="twitter:description" content="Beta web viewer for CPP verification packs created with VeraSnap. It shows the provenance data and checks the structure of a pack; it does not fully verify signatures, Merkle proofs or timestamps.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <script id="site-webpage" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://veritaschain.org/vap/cpp/veracheck/#webpage", "url": "https://veritaschain.org/vap/cpp/veracheck/", "name": "VeraCheck - CPP Evidence Verification", "description": "Beta web viewer for CPP verification packs created with VeraSnap. It shows the provenance data and checks the structure of a pack; it does not fully verify signatures, Merkle proofs or timestamps.", "inLanguage": "en", "isPartOf": {"@id": "https://veritaschain.org/#website"}, "publisher": {"@id": "https://veritaschain.org/#organization"}}</script>
 </head>
 <body>
     <header>

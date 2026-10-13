@@ -286,7 +286,7 @@ class VCPHeader extends HTMLElement {
         <nav class="main-nav ${themeClass}">
             <div class="nav-container">
                 <a href="${lang === 'en' ? '/' : `/${lang}/`}" class="nav-logo" aria-label="VeritasChain Standards Organization (VSO)">
-                    <img class="logo-image" src="/assets/img/logo.png" width="40" height="40" alt="" decoding="async">
+                    <img class="logo-image" src="/press/logo-transparent.png" width="40" height="40" alt="" decoding="async">
                     <span class="logo-wordmark"><span class="logo-text">VeritasChain</span><span class="logo-subtitle">VSO · VAP / VCP</span></span>
                 </a>
 
@@ -298,6 +298,24 @@ class VCPHeader extends HTMLElement {
                 </button>
 
                 <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle">
+                            ${t.vap} <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/vap/" class="dropdown-item">${t.vapOverview}</a>
+                            <a href="/vap/dvp/" class="dropdown-item">${t.vapDvp}</a>
+                            <a href="/vap/map/" class="dropdown-item">${t.vapMap}</a>
+                            <a href="/vap/eip/" class="dropdown-item">${t.vapEip}</a>
+                            <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
+                            <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
+                            <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
+                            <a href="/vap/cpp/" class="dropdown-item">${t.vapCpp}</a>
+                            <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
+                            <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
+                        </div>
+                    </div>
+
                     <div class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle">
                             ${t.vcp} <i class="fas fa-chevron-down"></i>
@@ -319,24 +337,6 @@ class VCPHeader extends HTMLElement {
                             <a href="/certified/apply/" class="dropdown-item">${t.certifiedApply}</a>
                             <a href="/certified/faq/" class="dropdown-item">${t.certifiedFaq}</a>
                             <a href="/certified/cab/" class="dropdown-item">${t.certifiedCabs}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
-                            ${t.vap} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/vap/" class="dropdown-item">${t.vapOverview}</a>
-                            <a href="/vap/dvp/" class="dropdown-item">${t.vapDvp}</a>
-                            <a href="/vap/map/" class="dropdown-item">${t.vapMap}</a>
-                            <a href="/vap/eip/" class="dropdown-item">${t.vapEip}</a>
-                            <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
-                            <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
-                            <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
-                            <a href="/vap/cpp/" class="dropdown-item">${t.vapCpp}</a>
-                            <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
-                            <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
                         </div>
                     </div>
 
@@ -390,7 +390,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/overview/" class="dropdown-item">${t.overview}</a>
                             <a href="/about/" class="dropdown-item">${t.aboutVso}</a>
                             <a href="/distributed-organization/" class="dropdown-item">${t.distributedOrganization}</a>
-                            <a href="/vso" class="dropdown-item">${t.vso}</a>
+                            <a href="/vso/" class="dropdown-item">${t.vso}</a>
                             <a href="/company/" class="dropdown-item">${t.company}</a>
                             <a href="/partners/" class="dropdown-item">${t.partners}</a>
                             <a href="/press/" class="dropdown-item">${t.pressKit}</a>
@@ -424,11 +424,22 @@ class VCPHeader extends HTMLElement {
         ` : ''}
         `;
 
+        this.localizeNavigation(lang);
         this.initializeNavigation();
     }
 
+    localizeNavigation(lang) {
+        if (!['ja', 'zh'].includes(lang)) return;
+        // Only route to translations that exist; English-only tools keep their working URL.
+        const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/vso/", "/what-is-vcp/"]);
+        this.querySelectorAll('.dropdown-menu a[href^="/"]').forEach(link => {
+            const path = link.getAttribute('href');
+            if (translatedRoutes.has(path)) link.setAttribute('href', `${path}${lang}/`);
+        });
+    }
+
     detectLanguage() {
-        const path = window.location.pathname;
+        const path = window.location.pathname.replace(/\/index\.html$/, "/");
         // Language code is at the end of the path: /path/to/page/ja or /path/to/page/zh
         if (path.endsWith('/ja') || path.endsWith('/ja/')) {
             return 'ja';
@@ -439,7 +450,7 @@ class VCPHeader extends HTMLElement {
     }
 
     generateLangUrls() {
-        const path = window.location.pathname;
+        const path = window.location.pathname.replace(/\/index\.html$/, "/");
 
         // Remove existing language suffix to get the base path
         // Pattern: /path/to/page/ja or /path/to/page/zh
@@ -459,8 +470,8 @@ class VCPHeader extends HTMLElement {
         // English is the base path, ja/zh are suffixes
         return {
             en: basePath,
-            ja: basePath + 'ja',
-            zh: basePath + 'zh'
+            ja: basePath + 'ja/',
+            zh: basePath + 'zh/'
         };
     }
 
