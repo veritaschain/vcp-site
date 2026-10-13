@@ -10,7 +10,7 @@ import sys
 from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import unquote, urlsplit
+from urllib.parse import unquote, urlsplit, urljoin
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,11 +30,18 @@ class Page(HTMLParser):
         self.lang = ''
         self.h1 = 0
         self.json = []
+        self.ids = set()
+        self.refs = []
+        self.images = []
         self.mode = ''
         self.feed(path.read_text(encoding='utf-8'))
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if attrs.get('id'): self.ids.add(attrs['id'])
+        if tag == 'a' and attrs.get('name'): self.ids.add(attrs['name'])
+        if tag == 'a' and attrs.get('href'): self.refs.append(attrs['href'])
+        if tag == 'img': self.images.append(attrs)
         if tag == 'html': self.lang = attrs.get('lang', '')
         if tag == 'h1': self.h1 += 1
         if tag == 'meta':
@@ -96,14 +103,37 @@ def check():
         if not page.indexable: errors.append(f'{rel}: noindex URL in sitemap')
         if page.canonical != [url]: errors.append(f'{rel}: canonical does not match sitemap')
         if not page.title.strip(): errors.append(f'{rel}: missing title')
+        if not page.h1: errors.append(f'{rel}: missing static primary heading')
         if not page.lang: errors.append(f'{rel}: missing language')
         for key in ('description', 'og:title', 'og:description', 'og:url', 'twitter:card'):
             if len(page.meta.get(key, [])) != 1 or not page.meta[key][0].strip(): errors.append(f'{rel}: missing/duplicate {key}')
         if page.meta.get('og:url') != [url]: errors.append(f'{rel}: og:url mismatch')
+        for key in ('og:title', 'twitter:title'):
+            if page.meta.get(key) != [page.title]: errors.append(f'{rel}: {key} differs from title')
+        for key in ('og:description', 'twitter:description'):
+            if page.meta.get(key) != page.meta.get('description'): errors.append(f'{rel}: {key} differs from description')
         for data in page.json:
             try: json.loads(data)
             except ValueError: errors.append(f'{rel}: invalid JSON-LD')
+    targets = {p.path.resolve(): p for p in pages.values()}
     for url, page in pages.items():
+        for ref in page.refs + [i.get('src', '') for i in page.images] + page.meta.get('og:image', []) + page.meta.get('twitter:image', []):
+            if not ref or ref == '#': continue
+            target = urlsplit(urljoin(url, ref))
+            if target.scheme not in ('http', 'https') or target.netloc != 'veritaschain.org': continue
+            path = ROOT / unquote(target.path).lstrip('/')
+            if path.is_dir(): path /= 'index.html'
+            if not path.exists():
+                errors.append(f'{url}: missing internal target: {ref}'); continue
+            # Client-side fragment routes and text fragments are handled by their applications.
+            if target.fragment and path.suffix == '.html' and not target.fragment.startswith(('/', ':~:')):
+                dest = targets.get(path.resolve())
+                if dest is None:
+                    dest = Page(path); targets[path.resolve()] = dest
+                if unquote(target.fragment) not in dest.ids:
+                    errors.append(f'{url}: missing anchor: {ref}')
+        for img in page.images:
+            if 'alt' not in img: errors.append(f'{url}: image missing alt: {img.get("src", "")}')
         for language, alternate in page.alternates.items():
             if alternate not in pages:
                 errors.append(f'{url}: alternate not in canonical sitemap: {alternate}')
