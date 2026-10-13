@@ -390,7 +390,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/overview/" class="dropdown-item">${t.overview}</a>
                             <a href="/about/" class="dropdown-item">${t.aboutVso}</a>
                             <a href="/distributed-organization/" class="dropdown-item">${t.distributedOrganization}</a>
-                            <a href="/vso" class="dropdown-item">${t.vso}</a>
+                            <a href="/vso/" class="dropdown-item">${t.vso}</a>
                             <a href="/company/" class="dropdown-item">${t.company}</a>
                             <a href="/partners/" class="dropdown-item">${t.partners}</a>
                             <a href="/press/" class="dropdown-item">${t.pressKit}</a>
@@ -424,7 +424,18 @@ class VCPHeader extends HTMLElement {
         ` : ''}
         `;
 
+        this.localizeNavigation(lang);
         this.initializeNavigation();
+    }
+
+    localizeNavigation(lang) {
+        if (!['ja', 'zh'].includes(lang)) return;
+        // Only route to translations that exist; English-only tools keep their working URL.
+        const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/vso/", "/what-is-vcp/"]);
+        this.querySelectorAll('.dropdown-menu a[href^="/"]').forEach(link => {
+            const path = link.getAttribute('href');
+            if (translatedRoutes.has(path)) link.setAttribute('href', `${path}${lang}/`);
+        });
     }
 
     detectLanguage() {
