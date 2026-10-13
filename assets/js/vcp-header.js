@@ -300,6 +300,24 @@ class VCPHeader extends HTMLElement {
                 <div class="nav-menu">
                     <div class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle">
+                            ${t.vap} <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/vap/" class="dropdown-item">${t.vapOverview}</a>
+                            <a href="/vap/dvp/" class="dropdown-item">${t.vapDvp}</a>
+                            <a href="/vap/map/" class="dropdown-item">${t.vapMap}</a>
+                            <a href="/vap/eip/" class="dropdown-item">${t.vapEip}</a>
+                            <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
+                            <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
+                            <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
+                            <a href="/vap/cpp/" class="dropdown-item">${t.vapCpp}</a>
+                            <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
+                            <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle">
                             ${t.vcp} <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu">
@@ -319,24 +337,6 @@ class VCPHeader extends HTMLElement {
                             <a href="/certified/apply/" class="dropdown-item">${t.certifiedApply}</a>
                             <a href="/certified/faq/" class="dropdown-item">${t.certifiedFaq}</a>
                             <a href="/certified/cab/" class="dropdown-item">${t.certifiedCabs}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
-                            ${t.vap} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/vap/" class="dropdown-item">${t.vapOverview}</a>
-                            <a href="/vap/dvp/" class="dropdown-item">${t.vapDvp}</a>
-                            <a href="/vap/map/" class="dropdown-item">${t.vapMap}</a>
-                            <a href="/vap/eip/" class="dropdown-item">${t.vapEip}</a>
-                            <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
-                            <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
-                            <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
-                            <a href="/vap/cpp/" class="dropdown-item">${t.vapCpp}</a>
-                            <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
-                            <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
                         </div>
                     </div>
 
