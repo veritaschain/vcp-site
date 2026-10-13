@@ -33,6 +33,7 @@ class Page(HTMLParser):
         self.ids = set()
         self.refs = []
         self.images = []
+        self.headers = []
         self.mode = ''
         self.feed(path.read_text(encoding='utf-8'))
 
@@ -42,6 +43,7 @@ class Page(HTMLParser):
         if tag == 'a' and attrs.get('name'): self.ids.add(attrs['name'])
         if tag == 'a' and attrs.get('href'): self.refs.append(attrs['href'])
         if tag == 'img': self.images.append(attrs)
+        if tag == 'vcp-header': self.headers.append(attrs)
         if tag == 'html': self.lang = attrs.get('lang', '')
         if tag == 'h1': self.h1 += 1
         if tag == 'meta':
@@ -117,6 +119,12 @@ def check():
             except ValueError: errors.append(f'{rel}: invalid JSON-LD')
     targets = {p.path.resolve(): p for p in pages.values()}
     for url, page in pages.items():
+        for header in page.headers:
+            if header.get('show-lang-switcher') == 'false': continue
+            base = re.sub(r'/(ja|zh)/$', '/', url)
+            for lang in header.get('available-langs', 'en,ja,zh').split(','):
+                suffix = '' if lang.strip() == 'en' else lang.strip() + '/'
+                page.refs.append(base + suffix)
         for ref in page.refs + [i.get('src', '') for i in page.images] + page.meta.get('og:image', []) + page.meta.get('twitter:image', []):
             if not ref or ref == '#': continue
             target = urlsplit(urljoin(url, ref))
