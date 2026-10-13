@@ -20,6 +20,23 @@
  * Font Awesome is required for icons.
  */
 
+// Shared progressive enhancements apply to every page using this header.
+// Metadata remains in server-delivered HTML; this loader only adds presentation.
+(() => {
+    const scriptURL = new URL(document.currentScript.src);
+    if (!document.getElementById('vso-motion-css')) {
+        const css = document.createElement('link');
+        css.id = 'vso-motion-css';
+        css.rel = 'stylesheet';
+        css.href = new URL('../css/site-motion.css', scriptURL).href;
+        document.head.appendChild(css);
+        const script = document.createElement('script');
+        script.src = new URL('site-motion.js', scriptURL).href;
+        script.defer = true;
+        document.head.appendChild(script);
+    }
+})();
+
 // Auto-load vcp-header.css if not already loaded
 (function() {
     const cssId = 'vcp-header-css';
@@ -268,9 +285,9 @@ class VCPHeader extends HTMLElement {
         this.innerHTML = `
         <nav class="main-nav ${themeClass}">
             <div class="nav-container">
-                <a href="/" class="nav-logo">
-                    <span class="logo-icon">🛡️</span>
-                    <span class="logo-text">VeritasChain</span>
+                <a href="${lang === 'en' ? '/' : `/${lang}/`}" class="nav-logo" aria-label="VeritasChain Standards Organization (VSO)">
+                    <img class="logo-image" src="/assets/img/logo.png" width="40" height="40" alt="" decoding="async">
+                    <span class="logo-wordmark"><span class="logo-text">VeritasChain</span><span class="logo-subtitle">VSO · VAP / VCP</span></span>
                 </a>
 
                 <!-- Mobile Menu Toggle -->

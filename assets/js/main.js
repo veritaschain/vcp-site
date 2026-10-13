@@ -12,37 +12,20 @@
       const href = this.getAttribute('href');
       if (href === '#' || !href) return;
       
-      e.preventDefault();
-      const target = document.querySelector(href);
+      let target;
+      try { target = document.getElementById(decodeURIComponent(href.slice(1))); } catch { return; }
       if (target) {
+        e.preventDefault();
+        history.pushState(null, '', href);
         target.scrollIntoView({
-          behavior: 'smooth',
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
           block: 'start'
         });
       }
     });
   });
 
-  // ===== Fade In on Scroll Animation =====
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-
-  const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  // Observe sections for fade-in animation
-  document.querySelectorAll('.section').forEach(section => {
-    section.classList.add('fade-in');
-    observer.observe(section);
-  });
+  // Scroll reveals are handled by site-motion.js without hiding initial content.
 
   // ===== Scroll to Top Button =====
   let scrollTopBtn = null;
@@ -74,7 +57,7 @@
     scrollTopBtn.addEventListener('click', () => {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
       });
     });
     
@@ -106,7 +89,7 @@
     }
   }
 
-  window.addEventListener('scroll', handleScrollTopButton);
+  window.addEventListener('scroll', handleScrollTopButton, { passive: true });
 
   // ===== Lazy Loading for Images =====
   if ('loading' in HTMLImageElement.prototype) {
@@ -143,11 +126,11 @@
     });
   }
 
-  window.addEventListener('scroll', updateActiveSection);
+  window.addEventListener('scroll', updateActiveSection, { passive: true });
 
   // ===== External Links - Open in New Tab =====
   document.querySelectorAll('a[href^="http"]').forEach(link => {
-    if (!link.getAttribute('target')) {
+    if (new URL(link.href).origin !== window.location.origin && !link.getAttribute('target')) {
       link.setAttribute('target', '_blank');
       link.setAttribute('rel', 'noopener noreferrer');
     }
