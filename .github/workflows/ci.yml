@@ -13,6 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate canonical metadata and multilingual sitemap
+        run: python3 scripts/seo.py check
+
+      - name: Check progressive motion and JavaScript syntax
+        run: |
+          node --check assets/js/site-motion.js
+          node --check assets/js/vcp-header.js
+          node --check assets/js/main.js
+          node --test tests/site-motion.test.cjs
+
       - name: Check file structure
         run: |
           echo "📁 Checking file structure..."
