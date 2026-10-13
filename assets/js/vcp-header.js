@@ -24,40 +24,28 @@
 // Metadata remains in server-delivered HTML; this loader only adds presentation.
 (() => {
     const scriptURL = new URL(document.currentScript.src);
+    const assetURL = (path) => {
+        const url = new URL(path, scriptURL);
+        url.search = scriptURL.search;
+        return url.href;
+    };
+    if (!document.getElementById('vcp-header-css')) {
+        const css = document.createElement('link');
+        css.id = 'vcp-header-css';
+        css.rel = 'stylesheet';
+        css.href = assetURL('../css/vcp-header.css');
+        document.head.appendChild(css);
+    }
     if (!document.getElementById('vso-motion-css')) {
         const css = document.createElement('link');
         css.id = 'vso-motion-css';
         css.rel = 'stylesheet';
-        css.href = new URL('../css/site-motion.css', scriptURL).href;
+        css.href = assetURL('../css/site-motion.css');
         document.head.appendChild(css);
         const script = document.createElement('script');
-        script.src = new URL('site-motion.js', scriptURL).href;
+        script.src = assetURL('site-motion.js');
         script.defer = true;
         document.head.appendChild(script);
-    }
-})();
-
-// Auto-load vcp-header.css if not already loaded
-(function() {
-    const cssId = 'vcp-header-css';
-    if (!document.getElementById(cssId)) {
-        const head = document.getElementsByTagName('head')[0];
-        const link = document.createElement('link');
-        link.id = cssId;
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        // Determine the base path from the script location
-        const scripts = document.getElementsByTagName('script');
-        let basePath = '/assets/css/';
-        for (let i = 0; i < scripts.length; i++) {
-            const src = scripts[i].src;
-            if (src.includes('vcp-header.js')) {
-                basePath = src.replace('/js/vcp-header.js', '/css/');
-                break;
-            }
-        }
-        link.href = basePath + 'vcp-header.css';
-        head.appendChild(link);
     }
 })();
 
