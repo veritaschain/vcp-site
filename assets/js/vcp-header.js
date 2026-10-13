@@ -439,7 +439,7 @@ class VCPHeader extends HTMLElement {
     }
 
     detectLanguage() {
-        const path = window.location.pathname;
+        const path = window.location.pathname.replace(/\/index\.html$/, "/");
         // Language code is at the end of the path: /path/to/page/ja or /path/to/page/zh
         if (path.endsWith('/ja') || path.endsWith('/ja/')) {
             return 'ja';
@@ -450,7 +450,7 @@ class VCPHeader extends HTMLElement {
     }
 
     generateLangUrls() {
-        const path = window.location.pathname;
+        const path = window.location.pathname.replace(/\/index\.html$/, "/");
 
         // Remove existing language suffix to get the base path
         // Pattern: /path/to/page/ja or /path/to/page/zh
@@ -470,8 +470,8 @@ class VCPHeader extends HTMLElement {
         // English is the base path, ja/zh are suffixes
         return {
             en: basePath,
-            ja: basePath + 'ja',
-            zh: basePath + 'zh'
+            ja: basePath + 'ja/',
+            zh: basePath + 'zh/'
         };
     }
 

@@ -4,8 +4,9 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const source = fs.readFileSync('assets/js/vcp-header.js', 'utf8');
 let Header;
+const location = { pathname: "/" };
 vm.runInNewContext(source, {
-  URL, HTMLElement: class {},
+  URL, HTMLElement: class {}, window: { location },
   document: { currentScript: { src: 'https://veritaschain.org/assets/js/vcp-header.js' }, getElementById: () => ({}) },
   customElements: { define(name, element) { Header = element; } }
 });
@@ -29,4 +30,17 @@ test('English navigation keeps canonical base routes', () => {
   const links = linksFor('en');
   assert.ok(links.some(link => link.path === '/vap/'));
   assert.ok(links.every(link => !/\/(ja|zh)\/$/.test(link.path)));
+});
+
+test('language switches normalize explicit index files and trailing slashes', () => {
+  location.pathname = '/ja/index.html';
+  let urls = Header.prototype.generateLangUrls.call({});
+  assert.equal(urls.en, '/');
+  assert.equal(urls.ja, '/ja/');
+  assert.equal(urls.zh, '/zh/');
+  location.pathname = '/vap/zh';
+  urls = Header.prototype.generateLangUrls.call({});
+  assert.equal(urls.en, '/vap/');
+  assert.equal(urls.ja, '/vap/ja/');
+  assert.equal(urls.zh, '/vap/zh/');
 });
