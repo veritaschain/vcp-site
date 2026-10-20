@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XTK1LJKRGV');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifiable Evidence for AI-Assisted Security Research - VAP Application Example | VSO</title>
+    <meta name="description" content="An evidence design for checking AI-assisted security research from its process, not only its results: a proposal to combine VAP observation records (OAP) and delegation records (DAP). Design proposal; informative, non-normative. States what it can and cannot verify.">
+    <meta name="keywords" content="VAP, OAP, DAP, AI-assisted security research, evidence design, provenance, delegation, verifiability, VeritasChain">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Verifiable Evidence for AI-Assisted Security Research - VAP Application Example | VSO">
+    <meta property="og:description" content="An evidence design for checking AI-assisted security research from its process, not only its results: a proposal to combine VAP observation records (OAP) and delegation records (DAP). Design proposal; informative, non-normative. States what it can and cannot verify.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://veritaschain.org/use-cases/security-research/">
+    <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Verifiable Evidence for AI-Assisted Security Research - VAP Application Example | VSO">
+    <meta name="twitter:description" content="An evidence design for checking AI-assisted security research from its process, not only its results: a proposal to combine VAP observation records (OAP) and delegation records (DAP). Design proposal; informative, non-normative. States what it can and cannot verify.">
+    <meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">
+
+    <!-- Language Alternates (this page exists in English and Japanese only) -->
+    <link rel="alternate" hreflang="en" href="https://veritaschain.org/use-cases/security-research/" />
+    <link rel="alternate" hreflang="ja" href="https://veritaschain.org/use-cases/security-research/ja/" />
+    <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/use-cases/security-research/" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="shortcut icon" href="/assets/img/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+
+    <!-- Font Awesome (required by the shared header and footer) -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Site styles -->
+    <link href="/assets/css/main.css?v=20261014" rel="stylesheet">
+    <link href="/use-cases/security-research/security-research.css?v=20261020" rel="stylesheet">
+
+    <!-- VCP Header / Footer Components -->
+    <script src="/assets/js/vcp-header.js?v=20261014"></script>
+    <script src="/assets/js/vcp-footer.js"></script>
+
+    <link rel="canonical" href="https://veritaschain.org/use-cases/security-research/" />
+    <meta property="og:site_name" content="VeritasChain Standards Organization (VSO)">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <script id="site-webpage" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://veritaschain.org/use-cases/security-research/#webpage", "url": "https://veritaschain.org/use-cases/security-research/", "name": "Verifiable Evidence for AI-Assisted Security Research - VAP Application Example | VSO", "description": "An evidence design for checking AI-assisted security research from its process, not only its results: a proposal to combine VAP observation records (OAP) and delegation records (DAP). Design proposal; informative, non-normative. States what it can and cannot verify.", "inLanguage": "en", "isPartOf": {"@id": "https://veritaschain.org/#website"}, "publisher": {"@id": "https://veritaschain.org/#organization"}}</script>
+</head>
+<body class="sr-page">
+    <a class="sr-skip" href="#main">Skip to main content</a>
+
+    <!-- VCP Header (this page is available in English and Japanese) -->
+    <vcp-header theme="dark" lang="en" available-langs="en,ja"></vcp-header>
+
+    <nav class="sr-breadcrumb" aria-label="Breadcrumb">
+        <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/vap/">VAP</a></li>
+            <li><span aria-current="page">Verifiable Evidence for AI-Assisted Security Research</span></li>
+        </ol>
+    </nav>
+
+    <main id="main" tabindex="-1">
+
+        <!-- 1. First view -->
+        <section class="hero sr-hero" aria-labelledby="sr-title">
+            <div class="hero-content">
+                <p class="sr-eyebrow">VAP application example · Verifiable Evidence for AI-Assisted Security Research</p>
+                <h1 class="hero-title" id="sr-title">Verify AI-assisted security research from its process, not only its results.</h1>
+                <ul class="sr-chips" aria-label="Status of this page">
+                    <li class="sr-chip sr-chip--proposal">Status: design proposal</li>
+                    <li class="sr-chip sr-chip--informative">Informative · non-normative</li>
+                </ul>
+                <p class="sr-hero-lead">Which targets were examined, under what authority and which rules? What was observed, and why was it judged a possible problem?</p>
+                <p class="sr-hero-lead">This application proposal combines VAP observation records and delegation records so that third parties can check the process of AI-assisted security research from evidence.</p>
+                <div class="hero-cta">
+                    <a href="#design" class="btn btn-primary"><i class="fas fa-diagram-project" aria-hidden="true"></i> Read the application design</a>
+                    <a href="#specs" class="btn btn-secondary"><i class="fas fa-book" aria-hidden="true"></i> Check the related specifications</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page status -->
+        <section class="sr-statusband" aria-labelledby="sr-status-title">
+            <div class="sr-wrap">
+                <h2 id="sr-status-title">What this page is</h2>
+                <dl>
+                    <div>
+                        <dt>Page type</dt>
+                        <dd>VAP application example (technical application proposal)</dd>
+                    </div>
+                    <div>
+                        <dt>Normative status</dt>
+                        <dd>Design proposal; informative, non-normative. It sets no specification requirements and does not establish a new official profile.</dd>
+                    </div>
+                    <div>
+                        <dt>Specifications referenced</dt>
+                        <dd>VAP v1.2.0 (Draft Specification, Draft 3); OAP v0.1.1 (Working Draft); DAP v0.1.0 (Working Draft)</dd>
+                    </div>
+                    <div>
+                        <dt>Implementation status</dt>
+                        <dd>No system implementing this design has been released (not implemented).</dd>
+                    </div>
+                    <div>
+                        <dt>Last checked</dt>
+                        <dd><time datetime="2026-10-20">20 October 2026</time></dd>
+                    </div>
+                </dl>
+                <p class="sr-intro">When security research is delegated to an AI agent, what usually gets reported is the result: “a problem was found”. This page explains, following the specification VSO publishes (VAP), a design approach that lets a third party check from records how that result was reached — who delegated what, what was observed, and how it was judged. It does not discuss any case involving a specific company.</p>
+            </div>
+        </section>
+
+        <!-- 2. Problem -->
+        <section class="sr-section" id="problem" aria-labelledby="problem-title">
+            <div class="sr-wrap">
+                <span class="sr-kicker">01 · The problem</span>
+                <h2 id="problem-title">A report that says “found it” does not show the whole investigation.</h2>
+                <p class="sr-lead">When an AI reports that it has found a problem, that report alone does not tell you:</p>
+                <ul class="sr-questions">
+                    <li>Who authorized which targets and which operations.</li>
+                    <li>Which version of the rules applied at run time.</li>
+                    <li>How each URL was discovered.</li>
+                    <li>What was actually retrieved, and what was inferred.</li>
+                    <li>Whether the allow/deny decisions match the traffic that actually took place.</li>
+                    <li>Whether, if an assessment was corrected, the original judgment and the reason for the change can be traced.</li>
+                </ul>
+
+                <div class="sr-grid">
+                    <article class="sr-card">
+                        <span class="sr-num">01</span>
+                        <h3>Authority and scope</h3>
+                        <p>Who authorized the research, and which targets and operations were allowed? A record that work was delegated to an AI internally and permission obtained from the target organization are different things.</p>
+                    </article>
+                    <article class="sr-card">
+                        <span class="sr-num">02</span>
+                        <h3>Source of observations</h3>
+                        <p>From which URL, when, and by what route did the material behind a judgment come? How a URL was found is part of the record.</p>
+                    </article>
+                    <article class="sr-card">
+                        <span class="sr-num">03</span>
+                        <h3>Basis for judgment</h3>
+                        <p>Observed facts, referenced information, and conditions not yet confirmed. Unless these three are kept apart, inference travels as if it were fact.</p>
+                    </article>
+                    <article class="sr-card">
+                        <span class="sr-num">04</span>
+                        <h3>What was actually done</h3>
+                        <p>Planned operations, allow/deny decisions, and the traffic that actually occurred. Whether decision and execution matched can only be checked by comparing both records.</p>
+                    </article>
+                </div>
+
+                <h3 class="sr-subhead">Five records that cannot stand in for one another</h3>
+                <p class="sr-lead">The record that research was authorized, the pre-retrieval decision, the actual traffic, the technical assessment, and the decision on notifying the target company are each a different record.</p>
+                <ol class="sr-records">
+                    <li><strong>Authorization record</strong><span>Who approved which targets, operations and period.</span></li>
+                    <li><strong>Pre-retrieval decision</strong><span>How an operation was allowed or denied before it was performed.</span></li>
+                    <li><strong>Actual traffic</strong><span>What was sent and what was received, including failures and interruptions.</span></li>
+                    <li><strong>Technical assessment</strong><span>What was concluded from the observations, and what was left unconfirmed.</span></li>
+                    <li><strong>Notification decision</strong><span>Whether to inform the target company, and what to tell it.</span></li>
+                </ol>
+                <p class="sr-example">For example, a record that an operation was decided as “allowed” does not show that the operation was carried out as decided. Conversely, a record of traffic alone does not show whether that traffic stayed within what was authorized.</p>
+            </div>
+        </section>
+
+        <!-- 3. VAP / OAP / DAP -->
+        <section class="sr-section sr-section--alt" id="design" aria-labelledby="design-title">
+            <div class="sr-wrap">
+                <span class="sr-kicker">02 · Combining VAP, OAP and DAP</span>
+                <h2 id="design-title">Linking the provenance of observations with records of delegated actions.</h2>
+                <p class="sr-lead">VAP (Verifiable AI Provenance Framework) is a cross-domain framework for making records of AI decisions and actions verifiable after the fact. VAP v1.2 registers OAP, which covers observation of web material published by third parties, and DAP, which covers actions an agent takes under delegated authority. Both are Working Drafts.</p>
+
+                <div class="sr-glossary">
+                    <h3>Terms used on this page</h3>
+                    <dl>
+                        <dt>Provenance</dt>
+                        <dd>The history of a record or piece of data: when, where, by whom and how it was created and handled.</dd>
+                        <dt>Delegation</dt>
+                        <dd>One party (the principal) entrusting work or authority to another party — here, an AI agent — within a defined scope and period.</dd>
+                        <dt>Verifiability</dt>
+                        <dd>The property that a third party can check whether records were altered, and how records relate to one another, without having to trust whoever produced them.</dd>
+                        <dt>External anchoring</dt>
+                        <dd>Fixing a digest (hash value) of records in an outside service that the record keeper cannot rewrite alone, such as a timestamp authority or a transparency log.</dd>
+                        <dt>Non-normative</dt>
+                        <dd>Not a requirement of a specification; reference material to aid understanding.</dd>
+                    </dl>
+                </div>
+
+                <figure class="sr-figure" aria-labelledby="fig-composition-caption">
+                    <div class="sr-deploy">
+                        <span class="sr-deploy-label">Composition of one deployment — as described in VAP v1.2</span>
+                        <div class="sr-stack">
+                            <div class="sr-node sr-node--oap">
+                                <span class="sr-node-kind">Domain profile</span>
+                                <h3>OAP</h3>
+                                <span class="sr-node-name">Observed Artifact Provenance</span>
+                                <p>Covers the provenance of web material that a third party published and that was retrieved over a network, observed at a URL. It targets records of material that may later be disputed, deleted, edited or denied.</p>
+                                <span class="sr-node-meta">v0.1.1 Working Draft · VSO-VAP-OAP-001</span>
+                            </div>
+                            <div class="sr-plus" aria-hidden="true">+</div>
+                            <div class="sr-node sr-node--dap">
+                                <span class="sr-node-kind">Cross-cutting capability</span>
+                                <h3>DAP</h3>
+                                <span class="sr-node-name">Delegated Access Provenance (common name VAP-AGENT)</span>
+                                <p>Covers the provenance of agent access, tool invocation, action and data transfer under authority delegated by a principal. It is not tied to any domain and is used together with a domain profile.</p>
+                                <span class="sr-node-meta">v0.1.0 Working Draft · VSO-VAP-DAP-001</span>
+                            </div>
+                        </div>
+                        <p class="sr-inherit"><span aria-hidden="true">↓</span>Both inherit the requirements of the Shared Assurance Core below</p>
+                        <div class="sr-node sr-node--vap">
+                            <span class="sr-node-kind">Common foundation</span>
+                            <h3>VAP</h3>
+                            <span class="sr-node-name">Shared Assurance Core</span>
+                            <p>Requirements inherited by every profile and capability, including the integrity, provenance, traceability and accountability layers, external anchoring (<span class="sr-nowrap">INT-006</span>), and the Completeness Invariant (<span class="sr-nowrap">INT-008</span>), which makes post-anchor omission and split-view presentation detectable at anchor granularity.</p>
+                            <span class="sr-node-meta">VAP v1.2.0 Draft Specification (Draft 3) · VSO-VAP-SPEC-001</span>
+                        </div>
+                    </div>
+                    <figcaption id="fig-composition-caption">Figure: where OAP and DAP sit in VAP v1.2. One deployment combines OAP (a domain profile for the provenance of observations) with DAP (a cross-cutting capability for the provenance of delegated actions), and both inherit VAP’s Shared Assurance Core. Each description follows the text of VAP v1.2 (§2.2.6, §4.5.2, §4.6 and §5.4).</figcaption>
+                </figure>
+
+                <ul class="sr-facts" aria-label="What the specification states">
+                    <li><span class="sr-tag sr-tag--spec"><i class="fas fa-book" aria-hidden="true"></i>Stated in the specification</span><br>A deployment uses exactly one domain profile and may invoke zero or more cross-cutting capabilities. Each invoked capability must be declared, and where both constrain the same event class, the stricter constraint applies (VAP v1.2 §4.6.3).</li>
+                    <li><span class="sr-tag sr-tag--spec"><i class="fas fa-book" aria-hidden="true"></i>Stated in the specification</span><br>OAP is described as composing with DAP where retrieval is performed by an autonomous agent (VAP v1.2 §4.6.4 and §5.4).</li>
+                    <li><span class="sr-tag sr-tag--spec"><i class="fas fa-book" aria-hidden="true"></i>Stated in the specification</span><br>A Working Draft is a stage at which event names, field names and invariant formulations are expected to change; it is not for production conformance claims (VAP v1.2 §4.5.2).</li>
+                    <li class="sr-facts-note"><span class="sr-tag sr-tag--note"><i class="fas fa-magnifying-glass" aria-hidden="true"></i>Scope of what was checked</span><br>As of this page’s preparation (20 October 2026), the texts of OAP and DAP are not posted in VSO’s public repositories. The explanations on this page are based on the text of VAP v1.2.</li>
+                </ul>
+
+                <div class="sr-proposal" aria-labelledby="proposal-title">
+                    <span class="sr-tag sr-tag--prop"><i class="fas fa-pen-ruler" aria-hidden="true"></i>Proposed on this page — not official fields defined in OAP or DAP</span>
+                    <h3 id="proposal-title">Additional considerations for security research</h3>
+                    <p>For security research, we are considering linking the following information to observation records and delegation records. Which record should carry each item, and in what form, has not been decided.</p>
+                    <ul class="sr-proposal-list">
+                        <li><span class="sr-num">01</span><strong>Relationship between the asset and its operator</strong><span>Which organization the observed domain or service was judged to be operated by, and on what basis.</span></li>
+                        <li><span class="sr-num">02</span><strong>How the URL was discovered</strong><span>Where the URL came from — a reference in public HTML, DNS, existing observation data whose terms of use were checked, and so on.</span></li>
+                        <li><span class="sr-num">03</span><strong>Basis for the product and version observation</strong><span>From which part of which response a product name or version number was read.</span></li>
+                        <li><span class="sr-num">04</span><strong>Advisories referenced</strong><span>The source of the vulnerability information used for matching, and its version at the time it was consulted.</span></li>
+                        <li><span class="sr-num">05</span><strong>Unconfirmed conditions</strong><span>Conditions that cannot be confirmed from outside, such as the version of the code actually running, individual patches, or whether a feature is in use.</span></li>
+                        <li><span class="sr-num">06</span><strong>Correction history of the assessment</strong><span>When an assessment changes: the original assessment, the new one, the reason, and who made the change.</span></li>
+                    </ul>
+                </div>
+
+                <h3 class="sr-subhead" id="mapping">What the specification states, and what this page proposes</h3>
+                <p class="sr-lead">The left side of each row is what VAP v1.2 states; the right side is this page’s own application proposal. The right side is not a definition in OAP, DAP or VAP.</p>
+                <div class="sr-map">
+                    <article class="sr-map-row">
+                        <h4>Observation records</h4>
+                        <div class="sr-map-cell sr-map-cell--spec">
+                            <span class="sr-tag sr-tag--spec">Stated in the specification</span>
+                            <p>OAP is a domain profile for the provenance of records of web material published by third parties and observed at a URL (§2.2.6, §5.4). It refers to an ObservationScopeManifest and to an attempt-closure invariant, Invariant OAP-1 (§5.4; their definitions are in the OAP text).</p>
+                        </div>
+                        <div class="sr-map-cell sr-map-cell--prop">
+                            <span class="sr-tag sr-tag--prop">Proposed on this page</span>
+                            <p>Link how each URL was discovered, and the basis for each product and version observation, to the observation record.</p>
+                        </div>
+                    </article>
+                    <article class="sr-map-row">
+                        <h4>Delegation records</h4>
+                        <div class="sr-map-cell sr-map-cell--spec">
+                            <span class="sr-tag sr-tag--spec">Stated in the specification</span>
+                            <p>DAP is a cross-cutting capability for the provenance of agent access, tool invocation, action and data transfer under authority delegated by a principal (§4.6.2). VAP’s responsibility schema includes a delegation_chain of delegator, delegatee, scope and validity period (§4.4.3).</p>
+                        </div>
+                        <div class="sr-map-cell sr-map-cell--prop">
+                            <span class="sr-tag sr-tag--prop">Proposed on this page</span>
+                            <p>Treat internal delegation to an agent and permission obtained from the target organization as separate records.</p>
+                        </div>
+                    </article>
+                    <article class="sr-map-row">
+                        <h4>Composition</h4>
+                        <div class="sr-map-cell sr-map-cell--spec">
+                            <span class="sr-tag sr-tag--spec">Stated in the specification</span>
+                            <p>A deployment consists of one domain profile and zero or more declared capabilities; where constraints overlap, the stricter applies (§4.6.3). OAP composes with DAP where retrieval is performed by an autonomous agent (§4.6.4, §5.4).</p>
+                        </div>
+                        <div class="sr-map-cell sr-map-cell--prop">
+                            <span class="sr-tag sr-tag--prop">Proposed on this page</span>
+                            <p>Link OAP and DAP records along six research stages: setting the scope, delegation, pre-retrieval decision, observation and retrieval, technical assessment, and notification, correction and handover.</p>
+                        </div>
+                    </article>
+                    <article class="sr-map-row">
+                        <h4>Version of the rules</h4>
+                        <div class="sr-map-cell sr-map-cell--spec">
+                            <span class="sr-tag sr-tag--spec">Stated in the specification</span>
+                            <p>VAP’s policy identification (policy_id, §7.1) identifies the verification policy under which events were produced. It does not represent the rules for what research may or may not do.</p>
+                        </div>
+                        <div class="sr-map-cell sr-map-cell--prop">
+                            <span class="sr-tag sr-tag--prop">Proposed on this page</span>
+                            <p>Reference the version of the research rules (targets, permitted and prohibited operations, period of application) from the delegation record and the pre-retrieval decision record.</p>
+                        </div>
+                    </article>
+                    <article class="sr-map-row">
+                        <h4>Detecting alteration and omission</h4>
+                        <div class="sr-map-cell sr-map-cell--spec">
+                            <span class="sr-tag sr-tag--spec">Stated in the specification</span>
+                            <p>External anchoring is required at all conformance levels (<span class="sr-nowrap">INT-006</span>). For any anchored batch, a third party must be able to detect omission or split-view presentation after anchoring (Completeness Invariant, <span class="sr-nowrap">INT-008</span>). Events that were never recorded are out of reach (Appendix A).</p>
+                        </div>
+                        <div class="sr-map-cell sr-map-cell--prop">
+                            <span class="sr-tag sr-tag--prop">Proposed on this page</span>
+                            <p>When verification is implemented, state the trusted record source, how records are fixed externally, and the scope being verified.</p>
+                        </div>
+                    </article>
+                    <article class="sr-map-row">
+                        <h4>Assessment, notification and correction</h4>
+                        <div class="sr-map-cell sr-map-cell--spec">
+                            <span class="sr-tag sr-tag--spec">Stated in the specification</span>
+                            <p>There is an abstract provenance model (actor, input, context, action, outcome; §4.2.2) and an override_history (§4.4.3). The VAP v1.2 text defines no records specific to security assessments or notification decisions (the OAP and DAP texts have not been checked).</p>
+                        </div>
+                        <div class="sr-map-cell sr-map-cell--prop">
+                            <span class="sr-tag sr-tag--prop">Proposed on this page</span>
+                            <p>Treat observed facts, referenced information, likely applicability, unconfirmed conditions, the notification decision and the reason for a correction as separate records.</p>
+                        </div>
+                    </article>
+                    <article class="sr-map-row">
+                        <h4>Scope of assurance</h4>
+                        <div class="sr-map-cell sr-map-cell--spec">
+                            <span class="sr-tag sr-tag--spec">Stated in the specification</span>
+                            <p>Conformance to VAP or a profile does not constitute compliance with any law and does not warrant that recorded decisions are correct, fair or safe; it concerns only the integrity, completeness at anchor granularity, and attributability of the records (§1.6). VAP does not prevent, block or intercept AI behaviour (Declaration).</p>
+                        </div>
+                        <div class="sr-map-cell sr-map-cell--prop">
+                            <span class="sr-tag sr-tag--prop">Proposed on this page</span>
+                            <p>Design the evidence mechanism and execution control as separate mechanisms.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Flow -->
+        <section class="sr-section" id="flow" aria-labelledby="flow-title">
+            <div class="sr-wrap">
+                <span class="sr-kicker">03 · A research flow that links the evidence</span>
+                <h2 id="flow-title">Trace a single finding back to the original observation and judgment.</h2>
+                <p class="sr-lead">The stages below are an application proposal for linking records (proposed on this page). Under “related specification elements”, each stage lists only what VAP v1.2 actually states.</p>
+
+                <ol class="sr-timeline">
+                    <li>
+                        <span class="sr-step-num" aria-hidden="true">1</span>
+                        <div class="sr-step">
+                            <h3>Setting the research scope</h3>
+                            <dl>
+                                <dt>What to link</dt>
+                                <dd>Targets, permitted and prohibited operations, version of the rules, period of application</dd>
+                                <dt>Related specification elements</dt>
+                                <dd><span class="sr-tag sr-tag--spec">Stated in the specification</span>OAP’s ObservationScopeManifest (referred to in §5.4)<br><span class="sr-tag sr-tag--prop">Proposed on this page</span>Mapping it to the research scope</dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="sr-step-num" aria-hidden="true">2</span>
+                        <div class="sr-step">
+                            <h3>Delegation to the agent</h3>
+                            <dl>
+                                <dt>What to link</dt>
+                                <dd>Delegator, acting party, scope of delegation, changes and revocation</dd>
+                                <dt>Related specification elements</dt>
+                                <dd><span class="sr-tag sr-tag--spec">Stated in the specification</span>DAP (§4.6.2); the delegation_chain in the responsibility schema (§4.4.3)</dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="sr-step-num" aria-hidden="true">3</span>
+                        <div class="sr-step">
+                            <h3>Pre-retrieval decision</h3>
+                            <dl>
+                                <dt>What to link</dt>
+                                <dd>Planned operation, allow/deny decision, and its basis</dd>
+                                <dt>Related specification elements</dt>
+                                <dd><span class="sr-tag sr-tag--spec">Stated in the specification</span>What DAP covers (access, tool invocation, action; §4.6.2)<br><span class="sr-tag sr-tag--prop">Proposed on this page</span>Recording the decision before retrieval and linking it to the retrieval record</dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="sr-step-num" aria-hidden="true">4</span>
+                        <div class="sr-step">
+                            <h3>Observation and retrieval</h3>
+                            <dl>
+                                <dt>What to link</dt>
+                                <dd>Actual target, time of retrieval, response, failures and interruptions</dd>
+                                <dt>Related specification elements</dt>
+                                <dd><span class="sr-tag sr-tag--spec">Stated in the specification</span>OAP (§5.4); the attempt-closure invariant, Invariant OAP-1 (referred to in §5.4)</dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="sr-step-num" aria-hidden="true">5</span>
+                        <div class="sr-step">
+                            <h3>Technical assessment</h3>
+                            <dl>
+                                <dt>What to link</dt>
+                                <dd>Observed facts, referenced information, likely applicability, unconfirmed conditions</dd>
+                                <dt>Related specification elements</dt>
+                                <dd><span class="sr-tag sr-tag--spec">Stated in the specification</span>The abstract provenance model (§4.2.2); nothing specific to assessments is defined<br><span class="sr-tag sr-tag--prop">Proposed on this page</span>Recording observed facts and inferences as separate items</dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="sr-step-num" aria-hidden="true">6</span>
+                        <div class="sr-step">
+                            <h3>Notification, correction and handover</h3>
+                            <dl>
+                                <dt>What to link</dt>
+                                <dd>What was notified and why, reasons for corrections, handover to the people who will respond</dd>
+                                <dt>Related specification elements</dt>
+                                <dd><span class="sr-tag sr-tag--spec">Stated in the specification</span>override_history (§4.4.3); nothing specific to notification or handover is defined<br><span class="sr-tag sr-tag--prop">Proposed on this page</span>Keeping the before and after of a correction, and its reason, linked to the original assessment</dd>
+                            </dl>
+                        </div>
+                    </li>
+                </ol>
+
+                <h3 class="sr-subhead">Internal delegation and the target organization’s permission are different things</h3>
+                <div class="sr-lanes">
+                    <div class="sr-lane sr-lane--internal">
+                        <h4>Internal delegation</h4>
+                        <p>Within the organization doing the research: who entrusted which agent with what scope of work. Changes to and revocation of the delegation are recorded too. The intent is to map this to what DAP covers — actions under delegated authority (proposed on this page).</p>
+                    </div>
+                    <div class="sr-neq" aria-hidden="true">≠</div>
+                    <div class="sr-lane sr-lane--target">
+                        <h4>The target organization’s permission</h4>
+                        <p>Which scope and period of testing the target company has authorized. This is a separate record, linked to the version of the authorization letter or contract.</p>
+                    </div>
+                </div>
+                <p class="sr-callout"><strong>Internal delegation creates no authority to access third-party systems.</strong> Operations that presuppose the target organization’s permission (for example, additional testing under a permission or contract) are linked to the record of that permission; an internal delegation record is never used in its place.</p>
+
+                <h3 class="sr-subhead">Keep execution control and the evidence mechanism separate</h3>
+                <div class="sr-duo">
+                    <article class="sr-card">
+                        <h4><i class="fas fa-shield-halved" aria-hidden="true"></i>Execution control</h4>
+                        <p>Execution control enforces the scope of operations in the system.</p>
+                    </article>
+                    <article class="sr-card">
+                        <h4><i class="fas fa-file-signature" aria-hidden="true"></i>Evidence mechanism</h4>
+                        <p>The evidence mechanism produces records of those decisions and of their execution that can be checked afterwards.</p>
+                    </article>
+                </div>
+                <p class="sr-callout">Evidence records alone cannot prevent prohibited operations. VAP is a framework for after-the-fact verification and does not prevent, block or intercept AI behaviour (VAP v1.2, Declaration). Preventing prohibited operations requires separate execution control.</p>
+            </div>
+        </section>
+
+        <!-- 5. Synthetic example -->
+        <section class="sr-section sr-section--alt" id="example" aria-labelledby="example-title">
+            <div class="sr-wrap">
+                <span class="sr-kicker">04 · An example with synthetic data</span>
+                <h2 id="example-title">Two findings may both say “candidate” — check what stands behind each.</h2>
+                <p class="sr-lead">An example built from a fictitious target and synthetic data. It contains no real company, URL or vulnerability information. The display is static and for explanation only; no signature or hash value has been verified.</p>
+
+                <article class="sr-evidence" aria-labelledby="evidence-title">
+                    <div class="sr-evidence-head">
+                        <h3 id="evidence-title">Evidence card (example)</h3>
+                        <ul class="sr-chips" aria-label="Status of this example">
+                            <li class="sr-chip sr-chip--synthetic">Synthetic data</li>
+                            <li class="sr-chip sr-chip--none">Cryptographic verification: not performed</li>
+                        </ul>
+                    </div>
+                    <table>
+                        <caption>Example of a conditional problem candidate for a fictitious target</caption>
+                        <tbody>
+                            <tr><th scope="row">Data type</th><td>Synthetic data</td></tr>
+                            <tr><th scope="row">Target</th><td>A fictitious public website, <span class="sr-mono">https://shop.example/</span> (<span class="sr-mono">.example</span> is a domain name reserved for examples)</td></tr>
+                            <tr><th scope="row">Origin of the URL</th><td>A reference in public HTML (a script referenced by the home page’s HTML)</td></tr>
+                            <tr><th scope="row">Rules applied</th><td>Demo research policy <span class="sr-mono">demo-policy</span>, version 3 (fictitious)</td></tr>
+                            <tr><th scope="row">What was observed</th><td>A plugin name and an apparent version string, <span class="sr-mono">demo-gallery 2.3.1</span></td></tr>
+                            <tr><th scope="row">Matching result</th><td>Matches the affected range “below 2.4.0” of demo advisory <span class="sr-mono">DEMO-ADV-0001</span> (fictitious)</td></tr>
+                            <tr><th scope="row">Unconfirmed</th><td>The version of the code actually running, whether individual patches were applied, whether the feature is in use</td></tr>
+                            <tr><th scope="row">Assessment</th><td>Conditional problem candidate</td></tr>
+                            <tr><th scope="row">Notification status</th><td>Not sent</td></tr>
+                            <tr><th scope="row">Cryptographic verification</th><td>Not performed in this example</td></tr>
+                        </tbody>
+                    </table>
+                    <details>
+                        <summary>Example details: see how the records link (this is not a verification step)</summary>
+                        <ol class="sr-chain">
+                            <li>Research scope <span class="sr-mono">DEMO-SCOPE-01</span> — target: shop.example / permitted: retrieving public pages / prohibited: bypassing authentication, load-inducing operations / rules: demo-policy version 3</li>
+                            <li>Delegation <span class="sr-mono">DEMO-DELEG-01</span> — delegator: researcher (fictitious) / acting party: research agent (fictitious) / scope: DEMO-SCOPE-01</li>
+                            <li>Pre-retrieval decision <span class="sr-mono">DEMO-DEC-01</span> — planned operation: retrieve the home page / decision: allowed / basis: a permitted operation under DEMO-SCOPE-01</li>
+                            <li>Observation and retrieval <span class="sr-mono">DEMO-OBS-01</span> — retrieved: 2026-10-01 09:12 UTC (synthetic) / response: 200 / decision referenced: DEMO-DEC-01</li>
+                            <li>Technical assessment <span class="sr-mono">DEMO-ASSESS-01</span> — observed fact: the string “demo-gallery 2.3.1” / matched against: DEMO-ADV-0001 / unconfirmed items: 3 / assessment: conditional problem candidate</li>
+                            <li>Notification — not sent (no notification decision has been recorded)</li>
+                        </ol>
+                        <p class="sr-note">All record IDs are fictitious values for explanation. They are not official OAP or DAP event names or field names. Opening this list does not verify any signature, check any external anchor, or detect tampering.</p>
+                    </details>
+                </article>
+
+                <h3 class="sr-subhead">What to state if verification is implemented</h3>
+                <p class="sr-lead">If detection of alteration, omission or substitution is implemented in future, at least the following three points will be stated (proposed on this page).</p>
+                <div class="sr-grid">
+                    <article class="sr-card">
+                        <h4>Trusted record source</h4>
+                        <p>Whose records, signed with which keys, serve as the starting point for verification.</p>
+                    </article>
+                    <article class="sr-card">
+                        <h4>How records are fixed externally</h4>
+                        <p>In which outside service (a timestamp authority, a transparency log, and so on) record digests are fixed, and how often. In VAP v1.2, external anchoring is required at all conformance levels (<span class="sr-nowrap">INT-006</span>).</p>
+                    </article>
+                    <article class="sr-card">
+                        <h4>Scope of verification</h4>
+                        <p>Which batches, periods and kinds of record were verified. Post-anchor omission or split-view presentation can be within reach of detection; actions that were never recorded cannot be detected (VAP v1.2 §4.1.7, Appendix A).</p>
+                    </article>
+                </div>
+                <p class="sr-note">VAP v1.2 recommends an Evidence Pack: a bundle a third party can verify offline, containing events, audit paths, anchor records, external anchor proofs, public keys, policy documents and similar material (§9.3). The example on this page is not an Evidence Pack.</p>
+            </div>
+        </section>
+
+        <!-- 6. Limits -->
+        <section class="sr-section" id="limits" aria-labelledby="limits-title">
+            <div class="sr-wrap">
+                <span class="sr-kicker">05 · What can be verified, and the limits</span>
+                <h2 id="limits-title">Being able to verify the evidence is not the same as the judgment being right.</h2>
+                <p class="sr-lead">These are the premises for evaluating this evidence design. Read them as part of the design.</p>
+                <table class="sr-limits">
+                    <caption>What this design aims to do, and what that alone does not guarantee</caption>
+                    <thead>
+                        <tr><th scope="col">What the design aims to do</th><th scope="col">What that alone does not guarantee</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Detect alteration of stored records</td><td>That observations represent reality completely and accurately</td></tr>
+                        <tr><td>Trace judgments and their basis</td><td>That a vulnerability exists, or that it can be exploited</td></tr>
+                        <tr><td>Cross-check delegation records against operation records</td><td>That the target company gave permission, or that the research was lawful</td></tr>
+                        <tr><td>Verify evidence within a declared scope</td><td>That no unmeasured or unrecorded action took place</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="sr-subhead">Adding a hash later cannot prove a past approval</h3>
+                <p>A hash value confirms that the content of a document is unchanged; it does not show when the document was created. To show that an approval existed at a given time, a record of that approval must be included in records that were fixed externally at that time. Adding a hash to a document created or obtained afterwards cannot meet this condition. And even an externally fixed record does not show that the approver had authority, or that what was approved was appropriate.</p>
+
+                <div class="sr-statement">
+                    <p>This proposal is an evidence design for verifying research records after the fact. It does not grant access to any target, and it does not guarantee that a vulnerability exists, legal compliance, or independent certification.</p>
+                </div>
+                <p class="sr-note">Position in the specification: conformance to VAP or a profile does not constitute legal compliance and does not warrant that recorded decisions are correct (VAP v1.2 §1.6). Events that were never measured are, by construction, outside the reach of verification (VAP v1.2, Appendix A).</p>
+            </div>
+        </section>
+
+        <!-- 7. EVIDECT -->
+        <section class="sr-section sr-section--alt" id="evidect" aria-labelledby="evidect-title">
+            <div class="sr-wrap">
+                <span class="sr-kicker">06 · Implementation plan</span>
+                <h2 id="evidect-title">Implementation plan: EVIDECT</h2>
+                <div class="sr-panel">
+                    <ul class="sr-chips sr-chips--start" aria-label="Status of EVIDECT">
+                        <li class="sr-chip sr-chip--none">Not implemented</li>
+                        <li class="sr-chip sr-chip--proposal">Application design proposal</li>
+                    </ul>
+                    <p>EVIDECT is a security research service being developed by VeritasChain Co., Ltd. We are considering a design that links observation, delegation, assessment and notification records to the process of examining public information and similar sources for possible problems.</p>
+                    <p>Support for VAP, OAP and DAP as presented on this page is an application design proposal. Implementation status, test results and any conformity assessment will each be shown together with material that can be checked.</p>
+                    <dl class="sr-kv">
+                        <dt>Developer</dt>
+                        <dd>VeritasChain Co., Ltd., the company that provides VSO’s operating base (see <a href="/vso/policies/">VSO’s policy on neutrality and its operating base</a> and <a href="/company/">company information</a>)</dd>
+                        <dt>Standing</dt>
+                        <dd>Our own implementation plan. It is not an independent adoption by an outside organization.</dd>
+                        <dt>Support for VAP, OAP and DAP</dt>
+                        <dd>Not implemented (design under consideration)</dd>
+                        <dt>Test results and conformity assessment</dt>
+                        <dd>None</dd>
+                        <dt>Service information</dt>
+                        <dd>There is no publicly available service website (as of <time datetime="2026-10-20">20 October 2026</time>).</dd>
+                    </dl>
+                    <p class="sr-disclosure"><strong>Implementation status (disclosure under VAP v1.2):</strong> there are zero external implementations of VAP or any VAP profile, and zero Evidence Packs accepted in any proceeding. VeritasChain Co., Ltd., which provides VSO’s operating base, holds ten paid service contracts with European organizations in regulatory technology, financial trading, and audit and assurance (client names withheld pending individual consent). These contracts are not external implementations of VAP or VCP, and they are not independent validation of those specifications.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. References, status and review -->
+        <section class="sr-section" id="specs" aria-labelledby="specs-title">
+            <div class="sr-wrap">
+                <span class="sr-kicker">07 · Specifications, publication status and review</span>
+                <h2 id="specs-title">Check the specifications, and review the design.</h2>
+                <p class="sr-lead">The material this page refers to, and the publication status of related outputs. Status is always given in words.</p>
+                <ul class="sr-refs">
+                    <li>
+                        <span class="sr-ref-title"><a href="https://github.com/veritaschain/vap-spec/blob/47bbeb59e1b3f0163882d473fc6542b07317641f/spec/v1.2/VAP_Framework_Specification.md">VAP Framework Specification v1.2.0 (Draft 3)</a></span>
+                        <span class="sr-state sr-state--published">Published (Draft Specification)</span>
+                        <span class="sr-ref-meta">VSO-VAP-SPEC-001 · <a href="https://github.com/veritaschain/vap-spec">veritaschain/vap-spec</a> (commit <span class="sr-mono">47bbeb5</span>, checked on 20 October 2026)</span>
+                    </li>
+                    <li>
+                        <span class="sr-ref-title"><a href="https://github.com/veritaschain/vap-spec/blob/47bbeb59e1b3f0163882d473fc6542b07317641f/spec/v1.2/VSO-VAP-CHANGE-001.md">VAP v1.2 Change Proposal (normative annex)</a></span>
+                        <span class="sr-state sr-state--published">Published</span>
+                        <span class="sr-ref-meta">VSO-VAP-CHANGE-001 · the document governing change control for VAP v1.2</span>
+                    </li>
+                    <li>
+                        <span class="sr-ref-title">OAP — Observed Artifact Provenance v0.1.1</span>
+                        <span class="sr-state sr-state--draft">Working Draft</span>
+                        <span class="sr-ref-meta">VSO-VAP-OAP-001 · listed in the profile registry of VAP v1.2 §4.5.2. The text is not posted in VSO’s public repositories (checked 20 October 2026).</span>
+                    </li>
+                    <li>
+                        <span class="sr-ref-title">DAP — Delegated Access Provenance (VAP-AGENT) v0.1.0</span>
+                        <span class="sr-state sr-state--draft">Working Draft</span>
+                        <span class="sr-ref-meta">VSO-VAP-DAP-001 · listed in the capability registry of VAP v1.2 §4.6.2. The text is not posted in VSO’s public repositories (checked 20 October 2026).</span>
+                    </li>
+                    <li>
+                        <span class="sr-ref-title"><a href="#mapping">Application mapping (what the specification states vs. what this page proposes)</a></span>
+                        <span class="sr-state sr-state--published">On this page</span>
+                        <span class="sr-ref-meta">Shows this page’s own proposals separately from what VAP v1.2 states.</span>
+                    </li>
+                    <li>
+                        <span class="sr-ref-title"><a href="#example">Synthetic sample</a></span>
+                        <span class="sr-state sr-state--published">Static example only</span>
+                        <span class="sr-ref-meta">The example on this page (HTML). No machine-readable sample file has been produced.</span>
+                    </li>
+                    <li>
+                        <span class="sr-ref-title">Verification results</span>
+                        <span class="sr-state sr-state--none">None (not performed)</span>
+                        <span class="sr-ref-meta">No cryptographic verification has been performed on the example on this page.</span>
+                    </li>
+                    <li>
+                        <span class="sr-ref-title">Implementation (EVIDECT)</span>
+                        <span class="sr-state sr-state--none">Not implemented</span>
+                        <span class="sr-ref-meta">No code supporting VAP, OAP or DAP, evidence set, or conformance test result has been published.</span>
+                    </li>
+                </ul>
+
+                <div class="sr-review">
+                    <div>
+                        <h3>Review the application design</h3>
+                        <p>We welcome comments on this application design, for example on:</p>
+                        <ul class="sr-plain-list">
+                            <li>Whether the distinction between the five records (authorization, pre-retrieval decision, actual traffic, technical assessment, notification decision) is sufficient.</li>
+                            <li>Which OAP or DAP records the additional considerations should be linked to.</li>
+                            <li>Whether the premises of verification (trusted record source, how records are fixed externally, scope of verification) are stated clearly enough.</li>
+                        </ul>
+                        <p class="sr-note">Comments do not amount to normative changes to VAP or any profile. Specification changes follow VSO’s change management process (VAP v1.2 §10.3).</p>
+                    </div>
+                    <div class="sr-contact">
+                        <h3>Contact</h3>
+                        <p>The standards contact listed in the VAP specification.</p>
+                        <a class="btn btn-secondary" href="mailto:standards@veritaschain.org?subject=Review%3A%20Verifiable%20Evidence%20for%20AI-Assisted%20Security%20Research"><i class="fas fa-envelope" aria-hidden="true"></i> standards@veritaschain.org</a>
+                    </div>
+                </div>
+
+                <h3 class="sr-subhead">Change history</h3>
+                <ol class="sr-history" reversed>
+                    <li><time datetime="2026-10-21">2026-10-21</time><span>First edition published (design proposal; informative, non-normative)</span></li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <vcp-footer theme="dark" lang="en"></vcp-footer>
+</body>
+</html>
