@@ -48,7 +48,7 @@
 
     <!-- Site styles -->
     <link href="/assets/css/main.css?v=20261014" rel="stylesheet">
-    <link href="/use-cases/security-research/security-research.css?v=20261020" rel="stylesheet">
+    <link href="/use-cases/security-research/security-research.css?v=20261021" rel="stylesheet">
 
     <!-- VCP Header / Footer Components -->
     <script src="/assets/js/vcp-header.js?v=20261014"></script>
@@ -79,16 +79,42 @@
         <section class="hero sr-hero" aria-labelledby="sr-title">
             <div class="hero-content">
                 <p class="sr-eyebrow">VAP application example · Verifiable Evidence for AI-Assisted Security Research</p>
-                <h1 class="hero-title" id="sr-title">Verify AI-assisted security research from its process, not only its results.</h1>
+                <h1 class="hero-title" id="sr-title">Make AI-assisted security research verifiable, from actions to findings.</h1>
                 <ul class="sr-chips" aria-label="Status of this page">
                     <li class="sr-chip sr-chip--proposal">Status: design proposal</li>
                     <li class="sr-chip sr-chip--informative">Informative · non-normative</li>
                 </ul>
-                <p class="sr-hero-lead">Which targets were examined, under what authority and which rules? What was observed, and why was it judged a possible problem?</p>
-                <p class="sr-hero-lead">This application proposal combines VAP observation records and delegation records so that third parties can check the process of AI-assisted security research from evidence.</p>
+                <p class="sr-hero-lead sr-hero-purpose">Trace who authorized the work, what the agent observed, and how each finding was reached.</p>
+                <p class="sr-hero-lead">This application proposal combines VAP observation records and delegation records so that whoever receives a finding can see what it rests on and how far it has been confirmed.</p>
                 <div class="hero-cta">
                     <a href="#design" class="btn btn-primary"><i class="fas fa-diagram-project" aria-hidden="true"></i> Read the application design</a>
                     <a href="#specs" class="btn btn-secondary"><i class="fas fa-book" aria-hidden="true"></i> Check the related specifications</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- What changes: a result-only report vs. the report this design aims for -->
+        <section class="sr-compare-band" aria-labelledby="compare-title">
+            <div class="sr-wrap">
+                <h2 id="compare-title">From a bare result to a finding you can trace</h2>
+                <div class="sr-compare">
+                    <div class="sr-compare-col sr-compare-col--before">
+                        <h3>A result-only report</h3>
+                        <p class="sr-quote">“Outdated plugin detected.”</p>
+                        <p class="sr-compare-note">What it rests on, and how far it was confirmed, cannot be seen.</p>
+                    </div>
+                    <div class="sr-compare-arrow" aria-hidden="true">→</div>
+                    <div class="sr-compare-col sr-compare-col--after">
+                        <h3>The report this design aims for</h3>
+                        <p>Which part of which response was matched against which information — with the conditions that remain unconfirmed.</p>
+                        <dl class="sr-mini" aria-label="Example (synthetic data)">
+                            <dt>Observed</dt><dd>The string <span class="sr-mono">demo-gallery 2.3.1</span> in public HTML</dd>
+                            <dt>Matched</dt><dd>Affected range “below 2.4.0” of demo advisory <span class="sr-mono">DEMO-ADV-0001</span> (fictitious)</dd>
+                            <dt>Unconfirmed</dt><dd>Version of the code actually running, individual patches, whether the feature is in use</dd>
+                            <dt>Assessment</dt><dd>Conditional problem candidate (notification: not sent)</dd>
+                        </dl>
+                        <p class="sr-compare-note"><span class="sr-chip sr-chip--synthetic">Synthetic data</span> No cryptographic verification has been performed. <a href="#example">See the full example</a></p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -112,14 +138,13 @@
                     </div>
                     <div>
                         <dt>Implementation status</dt>
-                        <dd>No system implementing this design has been released (not implemented).</dd>
+                        <dd>The application design is at the design stage. No implementation or test result has been released.</dd>
                     </div>
                     <div>
                         <dt>Last checked</dt>
                         <dd><time datetime="2026-10-20">20 October 2026</time></dd>
                     </div>
                 </dl>
-                <p class="sr-intro">When security research is delegated to an AI agent, what usually gets reported is the result: “a problem was found”. This page explains, following the specification VSO publishes (VAP), a design approach that lets a third party check from records how that result was reached — who delegated what, what was observed, and how it was judged. It does not discuss any case involving a specific company.</p>
             </div>
         </section>
 
@@ -128,36 +153,32 @@
             <div class="sr-wrap">
                 <span class="sr-kicker">01 · The problem</span>
                 <h2 id="problem-title">A report that says “found it” does not show the whole investigation.</h2>
-                <p class="sr-lead">When an AI reports that it has found a problem, that report alone does not tell you:</p>
-                <ul class="sr-questions">
-                    <li>Who authorized which targets and which operations.</li>
-                    <li>Which version of the rules applied at run time.</li>
-                    <li>How each URL was discovered.</li>
-                    <li>What was actually retrieved, and what was inferred.</li>
-                    <li>Whether the allow/deny decisions match the traffic that actually took place.</li>
-                    <li>Whether, if an assessment was corrected, the original judgment and the reason for the change can be traced.</li>
-                </ul>
+                <p class="sr-lead">When an AI reports that it has found a problem, that report alone leaves four things unclear.</p>
 
                 <div class="sr-grid">
                     <article class="sr-card">
                         <span class="sr-num">01</span>
                         <h3>Authority and scope</h3>
-                        <p>Who authorized the research, and which targets and operations were allowed? A record that work was delegated to an AI internally and permission obtained from the target organization are different things.</p>
+                        <p class="sr-card-q">Who authorized which targets and operations? Which version of the rules applied at run time?</p>
+                        <p>A record that work was delegated to an AI internally and permission obtained from the target organization are different things.</p>
                     </article>
                     <article class="sr-card">
                         <span class="sr-num">02</span>
                         <h3>Source of observations</h3>
-                        <p>From which URL, when, and by what route did the material behind a judgment come? How a URL was found is part of the record.</p>
+                        <p class="sr-card-q">How was each URL discovered? What was actually retrieved?</p>
+                        <p>From which URL, when, and by what route the material behind a judgment came is part of the record.</p>
                     </article>
                     <article class="sr-card">
                         <span class="sr-num">03</span>
                         <h3>Basis for judgment</h3>
-                        <p>Observed facts, referenced information, and conditions not yet confirmed. Unless these three are kept apart, inference travels as if it were fact.</p>
+                        <p class="sr-card-q">What was observed, and what was inferred? If an assessment was corrected, can the original judgment and the reason be traced?</p>
+                        <p>Unless observed facts, referenced information and unconfirmed conditions are kept apart, inference travels as if it were fact.</p>
                     </article>
                     <article class="sr-card">
                         <span class="sr-num">04</span>
                         <h3>What was actually done</h3>
-                        <p>Planned operations, allow/deny decisions, and the traffic that actually occurred. Whether decision and execution matched can only be checked by comparing both records.</p>
+                        <p class="sr-card-q">Do the allow/deny decisions match the traffic that actually took place?</p>
+                        <p>Whether decision and execution matched can only be checked by comparing both records.</p>
                     </article>
                 </div>
 
@@ -528,8 +549,8 @@
                     </tbody>
                 </table>
 
-                <h3 class="sr-subhead">Adding a hash later cannot prove a past approval</h3>
-                <p>A hash value confirms that the content of a document is unchanged; it does not show when the document was created. To show that an approval existed at a given time, a record of that approval must be included in records that were fixed externally at that time. Adding a hash to a document created or obtained afterwards cannot meet this condition. And even an externally fixed record does not show that the approver had authority, or that what was approved was appropriate.</p>
+                <h3 class="sr-subhead">A hash added afterwards does not, by itself, show prior approval</h3>
+                <p>Adding a hash afterwards does not, by itself, show that an approval record existed before the research. This design considers linking approval records and execution records to external anchors, so that one can check by when each record existed. The approver’s authority and the validity of the approval need to be confirmed separately.</p>
 
                 <div class="sr-statement">
                     <p>This proposal is an evidence design for verifying research records after the fact. It does not grant access to any target, and it does not guarantee that a vulnerability exists, legal compliance, or independent certification.</p>
@@ -545,8 +566,8 @@
                 <h2 id="evidect-title">Implementation plan: EVIDECT</h2>
                 <div class="sr-panel">
                     <ul class="sr-chips sr-chips--start" aria-label="Status of EVIDECT">
-                        <li class="sr-chip sr-chip--none">Not implemented</li>
-                        <li class="sr-chip sr-chip--proposal">Application design proposal</li>
+                        <li class="sr-chip sr-chip--none">Service: in development</li>
+                        <li class="sr-chip sr-chip--proposal">Evidence integration: design stage</li>
                     </ul>
                     <p>EVIDECT is a security research service being developed by VeritasChain Co., Ltd. We are considering a design that links observation, delegation, assessment and notification records to the process of examining public information and similar sources for possible problems.</p>
                     <p>Support for VAP, OAP and DAP as presented on this page is an application design proposal. Implementation status, test results and any conformity assessment will each be shown together with material that can be checked.</p>
@@ -555,14 +576,15 @@
                         <dd>VeritasChain Co., Ltd., the company that provides VSO’s operating base (see <a href="/vso/policies/">VSO’s policy on neutrality and its operating base</a> and <a href="/company/">company information</a>)</dd>
                         <dt>Standing</dt>
                         <dd>Our own implementation plan. It is not an independent adoption by an outside organization.</dd>
-                        <dt>Support for VAP, OAP and DAP</dt>
-                        <dd>Not implemented (design under consideration)</dd>
-                        <dt>Test results and conformity assessment</dt>
+                        <dt>Service</dt>
+                        <dd>In development</dd>
+                        <dt>Evidence integration using VAP, OAP and DAP</dt>
+                        <dd>Design stage</dd>
+                        <dt>Published conformance test results</dt>
                         <dd>None</dd>
                         <dt>Service information</dt>
                         <dd>There is no publicly available service website (as of <time datetime="2026-10-20">20 October 2026</time>).</dd>
                     </dl>
-                    <p class="sr-disclosure"><strong>Implementation status (disclosure under VAP v1.2):</strong> there are zero external implementations of VAP or any VAP profile, and zero Evidence Packs accepted in any proceeding. VeritasChain Co., Ltd., which provides VSO’s operating base, holds ten paid service contracts with European organizations in regulatory technology, financial trading, and audit and assurance (client names withheld pending individual consent). These contracts are not external implementations of VAP or VCP, and they are not independent validation of those specifications.</p>
                 </div>
             </div>
         </section>
@@ -610,9 +632,9 @@
                         <span class="sr-ref-meta">No cryptographic verification has been performed on the example on this page.</span>
                     </li>
                     <li>
-                        <span class="sr-ref-title">Implementation (EVIDECT)</span>
-                        <span class="sr-state sr-state--none">Not implemented</span>
-                        <span class="sr-ref-meta">No code supporting VAP, OAP or DAP, evidence set, or conformance test result has been published.</span>
+                        <span class="sr-ref-title">Evidence integration in EVIDECT</span>
+                        <span class="sr-state sr-state--none">Design stage</span>
+                        <span class="sr-ref-meta">Evidence integration using VAP, OAP and DAP is at the design stage. No code, evidence set or conformance test result has been published.</span>
                     </li>
                 </ul>
 
@@ -636,8 +658,23 @@
 
                 <h3 class="sr-subhead">Change history</h3>
                 <ol class="sr-history" reversed>
+                    <li><time datetime="2026-10-21">2026-10-21</time><span>Added an opening comparison; split the EVIDECT status; narrowed the explanation of hashes and prior approval; moved the organization and implementation-status disclosure to its own section.</span></li>
                     <li><time datetime="2026-10-21">2026-10-21</time><span>First edition published (design proposal; informative, non-normative)</span></li>
                 </ol>
+            </div>
+        </section>
+
+        <!-- 9. Organization and implementation status disclosure -->
+        <section class="sr-section sr-section--alt" id="disclosure" aria-labelledby="disclosure-title">
+            <div class="sr-wrap">
+                <span class="sr-kicker">08 · Organization and implementation status</span>
+                <h2 id="disclosure-title">Organization and implementation status disclosure</h2>
+                <dl class="sr-kv">
+                    <dt>VSO and VeritasChain Co., Ltd.</dt>
+                    <dd>VSO’s operating base is provided by VeritasChain Co., Ltd. VSO’s neutrality rests on published mechanisms rather than on its legal form (see <a href="/vso/policies/">VSO’s policy on neutrality and its operating base</a>).</dd>
+                    <dt>Implementation status (disclosure as stated in VAP v1.2)</dt>
+                    <dd>There are zero external implementations of VAP or any VAP profile, and zero Evidence Packs accepted in any proceeding. VeritasChain Co., Ltd., which provides VSO’s operating base, holds ten paid service contracts with European organizations in regulatory technology, financial trading, and audit and assurance (client names withheld pending individual consent). These contracts are not external implementations of VAP or VCP, and they are not independent validation of those specifications.</dd>
+                </dl>
             </div>
         </section>
     </main>

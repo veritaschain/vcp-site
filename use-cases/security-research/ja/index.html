@@ -48,7 +48,7 @@
 
     <!-- Site styles -->
     <link href="/assets/css/main.css?v=20261014" rel="stylesheet">
-    <link href="/use-cases/security-research/security-research.css?v=20261020" rel="stylesheet">
+    <link href="/use-cases/security-research/security-research.css?v=20261021" rel="stylesheet">
 
     <!-- VCP Header / Footer Components -->
     <script src="/assets/js/vcp-header.js?v=20261014"></script>
@@ -84,11 +84,37 @@
                     <li class="sr-chip sr-chip--proposal">状態：設計提案</li>
                     <li class="sr-chip sr-chip--informative">参考情報・非規範</li>
                 </ul>
-                <p class="sr-hero-lead">どの対象を、どの権限とルールに基づいて調べたのか。何を観測し、なぜ問題の可能性があると判断したのか。</p>
+                <p class="sr-hero-lead sr-hero-purpose">調査結果を受け取った人が、何を根拠に、どこまで確認された結果なのかを、たどれるようにする。</p>
                 <p class="sr-hero-lead">VAPの観測記録と委任記録を組み合わせ、AIによるセキュリティ調査の過程を、第三者が証拠から確認できる形にする適用提案です。</p>
                 <div class="hero-cta">
                     <a href="#design" class="btn btn-primary"><i class="fas fa-diagram-project" aria-hidden="true"></i> 適用設計を読む</a>
                     <a href="#specs" class="btn btn-secondary"><i class="fas fa-book" aria-hidden="true"></i> 関連仕様を確認する</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- What changes: a result-only report vs. the report this design aims for -->
+        <section class="sr-compare-band" aria-labelledby="compare-title">
+            <div class="sr-wrap">
+                <h2 id="compare-title">結果だけの報告から、根拠をたどれる報告へ</h2>
+                <div class="sr-compare">
+                    <div class="sr-compare-col sr-compare-col--before">
+                        <h3>結果だけの報告</h3>
+                        <p class="sr-quote">「古いプラグインを検出しました」</p>
+                        <p class="sr-compare-note">何を根拠に、どこまで確認した結果なのかは分かりません。</p>
+                    </div>
+                    <div class="sr-compare-arrow" aria-hidden="true">→</div>
+                    <div class="sr-compare-col sr-compare-col--after">
+                        <h3>この設計で目指す報告</h3>
+                        <p>どの応答の、どの表記を、どの情報と照合したのか。未確認条件も含めて確認できる。</p>
+                        <dl class="sr-mini" aria-label="表示例（合成データ）">
+                            <dt>観測</dt><dd>公開HTML内の表記 <span class="sr-mono">demo-gallery 2.3.1</span></dd>
+                            <dt>照合</dt><dd>デモ用アドバイザリ <span class="sr-mono">DEMO-ADV-0001</span>（架空）の影響範囲「2.4.0未満」</dd>
+                            <dt>未確認</dt><dd>実稼働コードの版、個別修正の有無、該当機能の利用状況</dd>
+                            <dt>評価</dt><dd>条件付きの問題候補（通知：未送信）</dd>
+                        </dl>
+                        <p class="sr-compare-note"><span class="sr-chip sr-chip--synthetic">合成データ</span> 暗号学的検証は未実施です。<a href="#example">表示例の全体を見る</a></p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -112,14 +138,13 @@
                     </div>
                     <div>
                         <dt>実装状況</dt>
-                        <dd>本ページの設計を実装し、公開したシステムはありません（未実装）。</dd>
+                        <dd>適用設計は設計段階です。公開された実装・試験結果はありません。</dd>
                     </div>
                     <div>
                         <dt>最終確認日</dt>
                         <dd><time datetime="2026-10-20">2026年10月20日</time></dd>
                     </div>
                 </dl>
-                <p class="sr-intro">AIエージェントにセキュリティ調査を任せると、「問題を見つけた」という結果だけが報告されがちです。このページでは、その結果に至るまでに「誰が何を任せ、何を観測し、どう判断したか」を、後から第三者が記録で確かめられるようにする設計の考え方を、VSOが公開している仕様（VAP）に沿って説明します。特定の企業を対象とした事例は扱いません。</p>
             </div>
         </section>
 
@@ -128,36 +153,32 @@
             <div class="sr-wrap">
                 <span class="sr-kicker">01 · 解決したい課題</span>
                 <h2 id="problem-title">「発見しました」という報告だけでは、調査の全体像は分からない。</h2>
-                <p class="sr-lead">AIが「問題を発見した」と報告しても、それだけでは次のことが分かりません。</p>
-                <ul class="sr-questions">
-                    <li>誰が、どの対象と操作を認めたのか。</li>
-                    <li>実行時に、どの版のルールが適用されたのか。</li>
-                    <li>URLを、どのように発見したのか。</li>
-                    <li>何を実際に取得し、何を推測したのか。</li>
-                    <li>許可・拒否の判断と、実際の通信は一致しているのか。</li>
-                    <li>評価が訂正された場合、元の判断と変更理由を追跡できるのか。</li>
-                </ul>
+                <p class="sr-lead">AIが「問題を発見した」と報告しても、それだけでは次の四つが分かりません。</p>
 
                 <div class="sr-grid">
                     <article class="sr-card">
                         <span class="sr-num">01</span>
                         <h3>権限と範囲</h3>
-                        <p>誰が調査を認め、どの対象・どの操作までを許したのか。社内でAIに作業を任せた記録と、対象組織から得た許可は、別のものです。</p>
+                        <p class="sr-card-q">誰が、どの対象と操作を認めたのか。実行時に、どの版のルールが適用されたのか。</p>
+                        <p>社内でAIに作業を任せた記録と、対象組織から得た許可は、別のものです。</p>
                     </article>
                     <article class="sr-card">
                         <span class="sr-num">02</span>
                         <h3>観測の出所</h3>
-                        <p>判断の材料が、どのURLから、いつ、どの経路で得られたのか。URLをどう見つけたかも、記録の一部です。</p>
+                        <p class="sr-card-q">URLを、どのように発見したのか。何を実際に取得したのか。</p>
+                        <p>判断の材料が、どのURLから、いつ、どの経路で得られたのかも、記録の一部です。</p>
                     </article>
                     <article class="sr-card">
                         <span class="sr-num">03</span>
                         <h3>判断の根拠</h3>
-                        <p>観測した事実、参照した情報、まだ確認できていない条件。この三つを区別しなければ、推測が事実のように伝わります。</p>
+                        <p class="sr-card-q">何を観測し、何を推測したのか。評価が訂正されたとき、元の判断と変更理由を追えるのか。</p>
+                        <p>観測した事実、参照した情報、未確認の条件を区別しなければ、推測が事実のように伝わります。</p>
                     </article>
                     <article class="sr-card">
                         <span class="sr-num">04</span>
                         <h3>実際の操作</h3>
-                        <p>予定された操作、許可・拒否の判断、実際に行われた通信。判断と実行が一致していたかは、両方の記録を照らし合わせて初めて確かめられます。</p>
+                        <p class="sr-card-q">許可・拒否の判断と、実際の通信は一致しているのか。</p>
+                        <p>判断と実行が一致していたかは、両方の記録を照らし合わせて初めて確かめられます。</p>
                     </article>
                 </div>
 
@@ -528,8 +549,8 @@
                     </tbody>
                 </table>
 
-                <h3 class="sr-subhead">後からハッシュ値を付けても、過去の承認は証明できない</h3>
-                <p>ハッシュ値は、資料の内容が同一であることを確かめる手段であり、資料がいつ作られたかは示しません。ある時点で承認が存在したことを示すには、その時点で外部に固定された記録の中に、承認の記録が含まれている必要があります。後から作成・入手した資料にハッシュ値を付けても、この条件は満たせません。また、外部に固定された記録であっても、承認した人に権限があったことや、承認の内容が適切であったことまでは示しません。</p>
+                <h3 class="sr-subhead">後からハッシュ値を付けるだけでは、事前の承認は示せない</h3>
+                <p>後からハッシュ値を付けるだけでは、調査前に承認記録が存在したことまでは示せません。本設計では、承認記録と実行記録を外部アンカーに結び付け、どの時点までに記録が存在していたかを確認する方法を検討します。承認者の権限や承認の有効性は、別途確認が必要です。</p>
 
                 <div class="sr-statement">
                     <p>本提案は、調査記録を事後検証するための証拠設計です。対象へのアクセス権限を付与するものではなく、脆弱性の成立、法令遵守、独立認証を保証するものでもありません。</p>
@@ -545,8 +566,8 @@
                 <h2 id="evidect-title">実装計画：EVIDECT</h2>
                 <div class="sr-panel">
                     <ul class="sr-chips sr-chips--start" aria-label="EVIDECTの状態">
-                        <li class="sr-chip sr-chip--none">未実装</li>
-                        <li class="sr-chip sr-chip--proposal">適用設計の提案</li>
+                        <li class="sr-chip sr-chip--none">サービス：開発中</li>
+                        <li class="sr-chip sr-chip--proposal">証跡統合：設計段階</li>
                     </ul>
                     <p>EVIDECTは、VeritasChain株式会社が開発しているセキュリティ調査サービスです。公開情報等から問題の可能性を調べる過程に、観測・委任・評価・通知の記録を結び付ける設計を検討しています。</p>
                     <p>本ページで紹介するVAP・OAP・DAPへの対応は、適用設計の提案です。実装状況、試験結果、適合評価の有無は、それぞれ確認できる資料とともに示します。</p>
@@ -555,14 +576,15 @@
                         <dd>VeritasChain株式会社（VSOの運営基盤を提供している会社です。<a href="/vso/policies/ja/">VSOの中立性と運営基盤に関する方針</a>・<a href="/company/ja/">会社情報</a>）</dd>
                         <dt>位置づけ</dt>
                         <dd>自社の実装計画です。外部の組織による独立した採用事例ではありません。</dd>
-                        <dt>VAP・OAP・DAPへの対応</dt>
-                        <dd>未実装（設計を検討中）</dd>
-                        <dt>試験結果・適合評価</dt>
+                        <dt>サービス</dt>
+                        <dd>開発中</dd>
+                        <dt>VAP・OAP・DAPによる証跡統合</dt>
+                        <dd>設計段階</dd>
+                        <dt>公開された適合試験結果</dt>
                         <dd>なし</dd>
                         <dt>サービス情報</dt>
                         <dd>一般公開されたサービスサイトはありません（<time datetime="2026-10-20">2026年10月20日</time>時点）。</dd>
                     </dl>
-                    <p class="sr-disclosure"><strong>実装状況の開示（VAP v1.2）：</strong>VAPおよびVAPのプロファイルの外部実装はゼロ、いかなる手続においても受理されたEvidence Packもゼロです。VSOの運営基盤であるVeritasChain株式会社は、規制技術、金融取引、監査・保証の分野の欧州の組織と10件の有償サービス契約を締結しています（顧客名は個別の同意が得られるまで非公開）。これらの契約は、VAPまたはVCPの外部実装ではなく、それらの仕様の独立した検証でもありません。</p>
                 </div>
             </div>
         </section>
@@ -610,9 +632,9 @@
                         <span class="sr-ref-meta">本ページの表示例について、暗号学的な検証は行っていません。</span>
                     </li>
                     <li>
-                        <span class="sr-ref-title">実装（EVIDECT）</span>
-                        <span class="sr-state sr-state--none">未実装</span>
-                        <span class="sr-ref-meta">VAP・OAP・DAPに対応するコード、証拠一式、適合試験の結果は公開されていません。</span>
+                        <span class="sr-ref-title">EVIDECTでの証跡統合</span>
+                        <span class="sr-state sr-state--none">設計段階</span>
+                        <span class="sr-ref-meta">VAP・OAP・DAPによる証跡統合は設計段階です。公開されたコード、証拠一式、適合試験の結果はありません。</span>
                     </li>
                 </ul>
 
@@ -636,8 +658,23 @@
 
                 <h3 class="sr-subhead">変更履歴</h3>
                 <ol class="sr-history" reversed>
+                    <li><time datetime="2026-10-21">2026-10-21</time><span>冒頭に報告の比較例を追加。EVIDECTの状態表示を細分化。ハッシュと事前承認の説明の範囲を限定。組織と実装状況の開示を独立した欄に移動。</span></li>
                     <li><time datetime="2026-10-21">2026-10-21</time><span>初版公開（設計提案・参考情報・非規範）</span></li>
                 </ol>
+            </div>
+        </section>
+
+        <!-- 9. Organization and implementation status disclosure -->
+        <section class="sr-section sr-section--alt" id="disclosure" aria-labelledby="disclosure-title">
+            <div class="sr-wrap">
+                <span class="sr-kicker">08 · 組織と実装状況の開示</span>
+                <h2 id="disclosure-title">組織と実装状況の開示</h2>
+                <dl class="sr-kv">
+                    <dt>VSOとVeritasChain株式会社</dt>
+                    <dd>VSOの運営基盤は、VeritasChain株式会社が提供しています。VSOの中立性は法人形態ではなく、公開された仕組みによって担保しています（<a href="/vso/policies/ja/">VSOの中立性と運営基盤に関する方針</a>）。</dd>
+                    <dt>実装状況（VAP v1.2の記載に基づく開示）</dt>
+                    <dd>VAPおよびVAPのプロファイルの外部実装はゼロ、いかなる手続においても受理されたEvidence Packもゼロです。VSOの運営基盤であるVeritasChain株式会社は、規制技術、金融取引、監査・保証の分野の欧州の組織と10件の有償サービス契約を締結しています（顧客名は個別の同意が得られるまで非公開）。これらの契約は、VAPまたはVCPの外部実装ではなく、それらの仕様の独立した検証でもありません。</dd>
+                </dl>
             </div>
         </section>
     </main>
