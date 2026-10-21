@@ -362,3 +362,70 @@ body.sr-page { background: var(--sr-bg); font-family: var(--font-sans); -webkit-
   .sr-evidence th, .sr-evidence td, .sr-limits th, .sr-limits td { padding: .7rem .8rem; font-size: .88rem; }
   .sr-evidence th { width: 38%; }
 }
+
+/* ---------- Page motion: visible by default, pausable, viewport-aware ---------- */
+.sr-page .sr-hero .hero-content, .sr-page main .sr-hero::before { animation: none; }
+.sr-motion-controls { margin-top: 1rem; min-height: 36px; }
+.sr-motion-toggle {
+  display: inline-flex; align-items: center; gap: .55rem; min-height: 36px;
+  padding: .4rem .7rem; border: 1px solid #64748b; border-radius: .5rem;
+  color: #dbe4f0; background: rgba(15, 23, 42, .55); font: inherit; font-size: .8rem;
+  cursor: pointer; line-height: 1.5;
+}
+.sr-motion-toggle[hidden] { display: none; }
+.sr-motion-toggle:hover { color: #fff; border-color: #c4b5fd; }
+.sr-motion-toggle:focus-visible { outline: 3px solid #38bdf8; outline-offset: 4px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .sr-page .sr-iso img {
+    animation: sr-isometric-float 7.5s ease-in-out infinite;
+    animation-play-state: paused; transform-origin: 50% 65%;
+  }
+  .sr-page .sr-iso--design img { animation-duration: 8.5s; }
+  .sr-page .sr-iso--review img { animation-duration: 9s; }
+  .sr-motion-running .sr-iso.sr-in-view img { animation-play-state: running; }
+  .sr-page main .sr-hero::before {
+    animation: sr-ambient-breathe 10s ease-in-out infinite;
+    animation-play-state: paused;
+  }
+  .sr-motion-running.sr-hero-visible .sr-hero::before { animation-play-state: running; }
+  .sr-motion-running :is(.sr-card, .sr-node, .sr-step, .sr-lane, .sr-map-row, .sr-faq-item, .sr-refs > li, .vso-founder-card) {
+    transition: translate .28s cubic-bezier(.22,1,.36,1), border-color .28s ease, box-shadow .28s ease;
+  }
+  .sr-motion-running :is(.sr-review .btn, .vso-founder-link, .sr-motion-toggle) {
+    transition: translate .22s ease, background-color .22s ease, border-color .22s ease;
+  }
+  .sr-motion-running :is(.sr-ref-title, .sr-compare-note a) {
+    transition: color .2s ease, text-decoration-color .2s ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .sr-motion-running :is(.sr-card, .sr-node, .sr-step, .sr-lane, .sr-map-row, .sr-faq-item, .sr-refs > li, .vso-founder-card):hover {
+      translate: 0 -4px; box-shadow: 0 12px 28px rgba(2, 6, 23, .3);
+    }
+    .sr-motion-running :is(.sr-card, .sr-step, .sr-map-row, .sr-faq-item):hover { border-color: #7886b6; }
+    .sr-motion-running .vso-founder-link:hover { translate: 0 -2px; }
+  }
+  .sr-motion-running :is(.sr-card, .sr-step, .sr-faq-item):focus-within { border-color: #a5b4fc; }
+  @keyframes sr-isometric-float {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-7px) rotate(.35deg); }
+  }
+  @keyframes sr-ambient-breathe {
+    0%, 100% { opacity: .35; }
+    50% { opacity: .7; }
+  }
+}
+
+html.sr-motion-paused { scroll-behavior: auto !important; }
+html.sr-motion-paused .sr-page :is(main, .vso-founder) *,
+html.sr-motion-paused .sr-page :is(main, .vso-founder) *::before,
+html.sr-motion-paused .sr-page :is(main, .vso-founder) *::after {
+  animation-play-state: paused !important; transition: none !important;
+}
+html.sr-motion-paused .sr-page :is(.btn, .vso-founder-link):hover { translate: none; transform: none; }
+@media (prefers-reduced-motion: reduce), print {
+  .sr-page :is(main, .vso-founder) *,
+  .sr-page :is(main, .vso-founder) *::before,
+  .sr-page :is(main, .vso-founder) *::after { animation: none !important; transition: none !important; }
+  .sr-motion-controls { display: none; }
+}
