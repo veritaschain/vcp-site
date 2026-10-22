@@ -202,8 +202,11 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 - On-Chain Audit Proofs (ZK-based)
 - VC-Certified SVG badge
 
-### Current specification: VCP v1.2 — Production Ready (GA 2026-07-06)
+### Current specification: VCP v1.2.0 — General Availability
 
+- Tag v1.2.0 → b23acb266f88df81d960d36d58fb64ceaa0dd5ed
+- GA merged 2026-10-08 JST; fix merged 2026-10-09 JST
+- This is the VCP release status, separate from VAP v1.2.0 Draft 3
 - Specification: https://github.com/veritaschain/vcp-spec/tree/main/spec/v1.2
 - JSON Schema: https://veritaschain.org/schema/vcp-event-v1.2.json
 - Previous: v1.1 (2025-12-30), v1.0 (2025-11-25)

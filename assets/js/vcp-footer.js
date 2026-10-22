@@ -63,33 +63,33 @@ class VCPFooter extends HTMLElement {
         this.translations = {
             en: {
                 copyright: '© 2025 - 2026 VeritasChain Co., Ltd. All rights reserved.',
-                independence: 'VSO operates independently and does not provide trading services.',
+                independence: 'Neutrality rests on public procedures, conflict-of-interest management, and a non-endorsement policy. VSO does not provide trading services.',
                 disclaimer1: 'VSO does not endorse or certify any financial performance claims.',
                 disclaimer2: 'All specifications are provided "as-is" without warranties of any kind.',
-                organization: 'VeritasChain Standards Organization',
+                organization: 'VeritasChain Standards Organization (VSO), operated by VeritasChain Co., Ltd.',
                 duns: 'D-U-N-S: 698368529',
-                address: 'Ebisu Office — 2-4-8 Ebisu-Nishi, Shibuya-ku, Tokyo 150-0021, Japan',
-                revision: 'VCP Specification v1.2 — Production Ready (GA 2026-07-06)'
+                address: 'Tokyo, Japan',
+                revision: 'VCP Specification v1.2.0 GA (tag v1.2.0, b23acb266f88df81d960d36d58fb64ceaa0dd5ed; GA merged 2026-10-08 JST; fix merged 2026-10-09 JST)'
             },
             ja: {
                 copyright: '© 2025 - 2026 VeritasChain Co., Ltd. All rights reserved.',
-                independence: 'VSOは独立して運営されており、取引サービスを提供していません。',
+                independence: '中立性は、公開された手続、利益相反の管理、および非推奨方針によって説明されます。VSOは取引サービスを提供しません。',
                 disclaimer1: 'VSOは金融パフォーマンスに関する主張を保証または認証しません。',
                 disclaimer2: 'すべての仕様は「現状のまま」提供され、いかなる種類の保証も伴いません。',
-                organization: 'VeritasChain Standards Organization',
+                organization: 'VeritasChain Standards Organization (VSO), operated by VeritasChain Co., Ltd.',
                 duns: 'D-U-N-S: 698368529',
-                address: '恵比寿オフィス — 〒150-0021 東京都渋谷区恵比寿西2-4-8',
-                revision: 'VCP仕様 v1.2 — 正式版（Production Ready、2026年7月6日 GA）'
+                address: '東京、日本',
+                revision: 'VCP仕様 v1.2.0 GA（タグ v1.2.0、b23acb266f88df81d960d36d58fb64ceaa0dd5ed。GAマージ 2026-10-08 JST、修正マージ 2026-10-09 JST）'
             },
             zh: {
                 copyright: '© 2025 - 2026 VeritasChain Co., Ltd. 保留所有权利。',
-                independence: 'VSO独立运营，不提供交易服务。',
+                independence: '中立性由其公开程序、利益冲突管理和非背书政策说明。VSO不提供交易服务。',
                 disclaimer1: 'VSO不认可或证明任何财务绩效声明。',
                 disclaimer2: '所有规范均按"原样"提供，不提供任何形式的保证。',
-                organization: 'VeritasChain Standards Organization',
+                organization: 'VeritasChain Standards Organization (VSO), operated by VeritasChain Co., Ltd.',
                 duns: 'D-U-N-S: 698368529',
-                address: '惠比寿办公室 — 日本东京都涩谷区惠比寿西2-4-8 邮编150-0021',
-                revision: 'VCP规范 v1.2 — 正式版（Production Ready，2026年7月6日 GA）'
+                address: '日本东京',
+                revision: 'VCP规范 v1.2.0 GA（标签 v1.2.0，b23acb266f88df81d960d36d58fb64ceaa0dd5ed。GA合并于2026-10-08 JST，修复合并于2026-10-09 JST）'
             }
         };
     }
