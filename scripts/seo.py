@@ -143,6 +143,10 @@ def check():
         for img in page.images:
             if 'alt' not in img: errors.append(f'{url}: image missing alt: {img.get("src", "")}')
         for language, alternate in page.alternates.items():
+            # The Japanese security research page is hosted on EVIDECT.
+            if (url == 'https://veritaschain.org/use-cases/security-research/'
+                    and language == 'ja' and alternate == 'https://evidect.veritaschain.org/'):
+                continue
             if alternate not in pages:
                 errors.append(f'{url}: alternate not in canonical sitemap: {alternate}')
             elif language != 'x-default' and url not in pages[alternate].alternates.values():

@@ -55,13 +55,20 @@ test('English navigation keeps canonical base routes', () => {
 
 test('language switches normalize explicit index files and trailing slashes', () => {
   location.pathname = '/ja/index.html';
-  let urls = Header.prototype.generateLangUrls.call({});
+  let urls = Header.prototype.generateLangUrls.call({ getAttribute: () => null });
   assert.equal(urls.en, '/');
   assert.equal(urls.ja, '/ja/');
   assert.equal(urls.zh, '/zh/');
   location.pathname = '/vap/zh';
-  urls = Header.prototype.generateLangUrls.call({});
+  urls = Header.prototype.generateLangUrls.call({ getAttribute: () => null });
   assert.equal(urls.en, '/vap/');
   assert.equal(urls.ja, '/vap/ja/');
   assert.equal(urls.zh, '/vap/zh/');
+});
+
+test('Japanese language switch can point directly to EVIDECT', () => {
+  location.pathname = '/use-cases/security-research/';
+  const urls = Header.prototype.generateLangUrls.call({ getAttribute: name => name === 'ja-url' ? 'https://evidect.veritaschain.org/' : null });
+  assert.equal(urls.en, '/use-cases/security-research/');
+  assert.equal(urls.ja, 'https://evidect.veritaschain.org/');
 });
