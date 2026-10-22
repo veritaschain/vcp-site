@@ -245,7 +245,7 @@ class VCPHeader extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['theme', 'lang', 'show-lang-switcher', 'available-langs'];
+        return ['theme', 'lang', 'show-lang-switcher', 'available-langs', 'ja-url'];
     }
 
     connectedCallback() {
@@ -458,7 +458,7 @@ class VCPHeader extends HTMLElement {
         // English is the base path, ja/zh are suffixes
         return {
             en: basePath,
-            ja: basePath + 'ja/',
+            ja: this.getAttribute('ja-url') || basePath + 'ja/',
             zh: basePath + 'zh/'
         };
     }
