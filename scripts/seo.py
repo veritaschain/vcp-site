@@ -36,6 +36,8 @@ class Page(HTMLParser):
         self.headers = []
         self.mode = ''
         self.feed(path.read_text(encoding='utf-8'))
+        # Keep real source anchors separate from inferred language-switcher links.
+        self.static_refs = list(self.refs)
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -157,7 +159,26 @@ def check():
     titles = Counter(p.title.strip() for p in pages.values())
     for title, count in titles.items():
         if count > 1: errors.append(f'Duplicate public page title: {title}')
-    print(json.dumps({'public_pages': len(pages), 'errors': errors}, ensure_ascii=False, indent=2))
+    canonical_paths = {p.path.resolve(): url for url, p in pages.items()}
+    reachable = set()
+    pending = [ORIGIN + '/']
+    while pending:
+        current = pending.pop()
+        if current in reachable or current not in pages: continue
+        reachable.add(current)
+        for ref in pages[current].static_refs:
+            target = urlsplit(urljoin(current, ref))
+            if target.scheme != 'https' or target.netloc != 'veritaschain.org': continue
+            try:
+                path = page_path(target._replace(query='', fragment='').geturl())
+                if path.is_dir(): path /= 'index.html'
+                destination = canonical_paths.get(path.resolve())
+                if destination and destination not in reachable: pending.append(destination)
+            except ValueError:
+                continue
+    for url in sorted(set(pages) - reachable):
+        errors.append(f'{url}: no static link path from the homepage')
+    print(json.dumps({'public_pages': len(pages), 'static_reachable_pages': len(reachable), 'errors': errors}, ensure_ascii=False, indent=2))
     return bool(errors)
 
 
