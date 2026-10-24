@@ -53,6 +53,14 @@ test('English navigation keeps canonical base routes', () => {
   assert.ok(links.every(link => !/\/(ja|zh)\/$/.test(link.path)));
 });
 
+test('guides use Japanese translations and retain English for unavailable Chinese', () => {
+  for (const route of ['ai-governance', 'ai-audit-trail']) {
+    assert.ok(linksFor('ja').some(link => link.path === `/guides/${route}/ja/`));
+    assert.ok(linksFor('zh').some(link => link.path === `/guides/${route}/`));
+    assert.ok(!linksFor('zh').some(link => link.path === `/guides/${route}/zh/`));
+  }
+});
+
 test('language switches normalize explicit index files and trailing slashes', () => {
   location.pathname = '/ja/index.html';
   let urls = Header.prototype.generateLangUrls.call({ getAttribute: () => null });
