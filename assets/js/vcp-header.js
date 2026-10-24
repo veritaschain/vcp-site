@@ -84,6 +84,8 @@ class VCPHeader extends HTMLElement {
                 vapCpp: 'CPP - Capture Provenance',
                 vapGam: 'GAM - Gaming Application',
                 vapAt: 'VAP-AT',
+                vapLimits: 'What VAP does not do',
+                vapIncidents: 'AI incident verification records',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Apply for Certification',
                 standards: 'Standards',
@@ -149,6 +151,8 @@ class VCPHeader extends HTMLElement {
                 vapCpp: 'CPP - キャプチャ来歴',
                 vapGam: 'GAM - ゲーミングアプリケーション',
                 vapAt: 'VAP-AT',
+                vapLimits: 'VAPにできないこと',
+                vapIncidents: 'AI事件の検証記録',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証を申請',
                 standards: '標準規格',
@@ -214,6 +218,8 @@ class VCPHeader extends HTMLElement {
                 vapCpp: 'CPP - 捕获来源',
                 vapGam: 'GAM - 游戏应用',
                 vapAt: 'VAP-AT',
+                vapLimits: 'VAP 的限制（英文）',
+                vapIncidents: 'AI 事件核查记录（英文）',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '申请认证',
                 standards: '标准',
@@ -310,6 +316,8 @@ class VCPHeader extends HTMLElement {
                             <a href="/vap/cpp/" class="dropdown-item">${t.vapCpp}</a>
                             <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
                             <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
+                            <a href="/vap/limits/" class="dropdown-item">${t.vapLimits}</a>
+                            <a href="/incidents/" class="dropdown-item">${t.vapIncidents}</a>
                         </div>
                     </div>
 
@@ -434,7 +442,7 @@ class VCPHeader extends HTMLElement {
         const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/vso/", "/what-is-vcp/"]);
         this.querySelectorAll('.dropdown-menu a[href^="/"]').forEach(link => {
             const path = link.getAttribute('href');
-            if (translatedRoutes.has(path) || (lang === 'ja' && ['/guides/ai-governance/', '/guides/ai-audit-trail/'].includes(path))) link.setAttribute('href', `${path}${lang}/`);
+            if (translatedRoutes.has(path) || (lang === 'ja' && ['/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/'].includes(path))) link.setAttribute('href', `${path}${lang}/`);
         });
     }
 
