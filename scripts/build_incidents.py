@@ -73,7 +73,7 @@ COMMON = {
         'spec_vs': 'VAP v1.2 §1.6 (verbatim)',
         'decl_vs': 'VAP v1.2, Declaration (verbatim)',
         'status_h': 'Implementation status',
-        'status': ('As of September 2026: zero external implementations of VAP or any VAP profile, and zero Evidence Packs '
+        'status': ('As of 25 October 2026: zero external implementations of VAP or any VAP profile, and zero Evidence Packs '
                    'accepted in any proceeding. The previously published paid-service contract figure was withdrawn on '
                    '24 October 2026 pending reconciliation with primary records; this does not establish a count of zero.'),
         'status_link': ('Dated correction', 'https://github.com/veritaschain/vap-spec/blob/main/disclosures/2026-10-24-commercial-contracts.md'),
@@ -87,7 +87,7 @@ COMMON = {
         'spec_vs': 'VAP v1.2 §1.6（原文）',
         'decl_vs': 'VAP v1.2 Declaration（原文）',
         'status_h': '実装状況',
-        'status': ('2026年9月時点で、VAP または VAP プロファイルの外部実装はゼロ、手続で受理された Evidence Pack もゼロです。'
+        'status': ('2026年10月25日時点で、VAP または VAP プロファイルの外部実装はゼロ、手続で受理された Evidence Pack もゼロです。'
                    '以前に公表した有償契約の件数は、一次記録との照合が済むまで2026年10月24日に取り下げました。これは件数がゼロだという意味ではありません。'),
         'status_link': ('日付入りの訂正（英語）', 'https://github.com/veritaschain/vap-spec/blob/main/disclosures/2026-10-24-commercial-contracts.md'),
         'corrections': ('訂正記録', '/vso/corrections/ja/'),
