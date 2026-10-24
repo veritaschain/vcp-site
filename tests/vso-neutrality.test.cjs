@@ -14,6 +14,10 @@ const PATTERNS = [
   /Exclusive for [A-Z]/,
   /Custom Demo for [A-Z]/,
   /戦略提案/,
+  /Complete Solution Demo/,
+  /\(Concept Demo\)/,
+  /[A-Z][A-Za-z]+ × VeritasChain/,
+  /VCP for [A-Z][A-Za-z]+ \|/,
 ];
 
 function htmlFiles(dir, out = []) {
