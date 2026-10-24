@@ -30,10 +30,14 @@ the quoted §1.6 text and incident narratives are preserved. No repair to the
 examples or normative specification is represented by this wording change.
 
 The reference is the **already merged** VAP commit
-`0f8a2faa2cd50c296c90974476f4b6ecf169c163`, document SHA-256
-`a966a6d6de00f84a4d3fc1d6188b833aac0714f50fa7088b87bd475b307d4a3f`.
-It deliberately does not describe a pending public-disclosure PR as published.
-Reconcile the reference if a newer version is approved before deployment.
+`b5ef9316717bebe638d5eca621327b54cdda93e1` (vap-spec PR #20), document SHA-256
+`24a961ddd419298d02b2cc2b8015d6e058501a2411ffa9a744a218bf110ac6bf`.
+It replaces the earlier pin `0f8a2faa2cd50c296c90974476f4b6ecf169c163` /
+`a966a6d6de00f84a4d3fc1d6188b833aac0714f50fa7088b87bd475b307d4a3f`, whose header
+still carried the withdrawn commercial-count statement. The §10.4 VCP rows are
+identical in both versions. Only the reference strings and the resulting
+**after** hashes changed; the **before** hashes and wording are unchanged.
+Reconcile the reference again if a newer version is approved before deployment.
 
 ## Validation and deployment boundary
 
@@ -54,3 +58,27 @@ Reconcile the reference if a newer version is approved before deployment.
 Experimental extensions remain **unadopted**. Independent third-party
 reproduction remains **unestablished**. This is a website correction package,
 not a new specification release, certification decision, or research result.
+
+## Deployment observation — 24 October 2026
+
+A deployment to XServer was observed after this package was re-pinned. The
+served `/specification/` page reports `Last-Modified: Sat, 24 Oct 2026
+12:14:04 GMT`. At 21:36 JST all 31 package files were retrieved again from
+their public URLs; none still matches its **before** hash.
+
+- 17 files match the package **after** hash exactly.
+- 14 files differ from it only by deployment-time date metadata, which this
+  package left for the deployment step: `dateModified` in the 12 blog pages'
+  JSON-LD, a `WORDING_UPDATED` constant in `tools/build.py` used for sitemap
+  `lastmod` and feed `published`/`updated`, the same status lines added to
+  the generator's `llms.txt` source, and a final newline in `llms.txt`.
+
+`deployed-2026-10-24.json` records the served SHA-256 of each file plus
+`sitemap.xml` and `feed.xml`, which are outside the package.
+`deployment-adjustments.patch` applied to the package **after** state
+reproduces all 31 served files (verified). No served file contains the old
+pin `0f8a2fa` / `a966a6d6…` or the withdrawn commercial count.
+
+This repository holds no record of who deployed, the pre-deployment backup,
+or the uploaded archive; those are not established here. This is an
+observation of public output, not a deployment authorization record.
