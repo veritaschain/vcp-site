@@ -30,10 +30,14 @@ the quoted §1.6 text and incident narratives are preserved. No repair to the
 examples or normative specification is represented by this wording change.
 
 The reference is the **already merged** VAP commit
-`0f8a2faa2cd50c296c90974476f4b6ecf169c163`, document SHA-256
-`a966a6d6de00f84a4d3fc1d6188b833aac0714f50fa7088b87bd475b307d4a3f`.
-It deliberately does not describe a pending public-disclosure PR as published.
-Reconcile the reference if a newer version is approved before deployment.
+`b5ef9316717bebe638d5eca621327b54cdda93e1` (vap-spec PR #20), document SHA-256
+`24a961ddd419298d02b2cc2b8015d6e058501a2411ffa9a744a218bf110ac6bf`.
+It replaces the earlier pin `0f8a2faa2cd50c296c90974476f4b6ecf169c163` /
+`a966a6d6de00f84a4d3fc1d6188b833aac0714f50fa7088b87bd475b307d4a3f`, whose header
+still carried the withdrawn commercial-count statement. The §10.4 VCP rows are
+identical in both versions. Only the reference strings and the resulting
+**after** hashes changed; the **before** hashes and wording are unchanged.
+Reconcile the reference again if a newer version is approved before deployment.
 
 ## Validation and deployment boundary
 
