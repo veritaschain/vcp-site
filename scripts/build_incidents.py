@@ -185,8 +185,8 @@ INC = {
                    'compare sources. Each record lists the sources it relies on, linked wherever VSO has confirmed the address, '
                    'so that readers can check them. Several records involve AI developers. They are held to the same rules '
                    'and marked: a developer is marked when it is a party, or its model or tool is central to the record, in its '
-                   'role as developer or provider of the AI system at issue. Records involving a developer whose models VSO uses '
-                   'in this work say so.'),
+                   'role as developer or provider of the AI system at issue. Records involving Anthropic, whose Claude models VSO '
+                   'uses in this work, say so.'),
         'excluded': 'Not listed: {items}. Follow-up reporting on an incident already listed is not recorded as a new incident.',
         'reasons': {'HOLD': 'on hold', 'DO-NOT-PUBLISH-AS-NEW': 'not recorded as new incidents (no new primary facts)',
                     'awaiting re-verification': 'awaiting re-verification', 'registration undecided': 'registration undecided'},
@@ -234,7 +234,7 @@ INC = {
         'method': ('VSO の検証は AI の支援を受けています。Anthropic の Claude を含む AI モデルを、情報源の検索と照合に使っています。'
                    '各記録には根拠とした情報源を挙げ、所在を確認できたものにはリンクを付けて、読み手が自ら確かめられるようにしています。'
                    'いくつかの記録には AI 開発者が関わっています。それらにも同じ規則を当てて印を付けています。印を付けるのは、問題の AI システムの開発者・提供者としての立場で当事者である場合か、そのモデルやツールが記録の中心にある場合です。'
-                   'VSO がこの作業でモデルを使っている開発者が関わる記録には、その旨を記しています。'),
+                   'VSO がこの作業で Claude のモデルを使っている Anthropic が関わる記録には、その旨を記しています。'),
         'excluded': '掲載していないもの：{items}。掲載済みの事件の続報は、新しい事件として記録しません。',
         'reasons': {'HOLD': '保留', 'DO-NOT-PUBLISH-AS-NEW': '新しい一次情報がないため新規事件として記録していないもの',
                     'awaiting re-verification': '再検証待ち', 'registration undecided': '登録未決'},
