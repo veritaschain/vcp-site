@@ -181,7 +181,7 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 
 ## 🎯 Target Audiences
 
-1. **Developers** - Implement VCP from the open specification (SDK source code is not yet public)
+1. **Developers** - Implement VCP from the open specification (an offline core for VCP v1.2, [vcp-sdk](https://github.com/veritaschain/vcp-sdk) v0.1.0, is published as a pre-release; it is not an implementation of vcp-sdk-spec)
 2. **Exchanges & Brokers** - Deploy as FIX protocol sidecar
 3. **Regulators** - Review the open specification
 4. **HFT Firms** - Platinum-tier compliance
