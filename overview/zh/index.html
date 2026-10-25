@@ -214,6 +214,7 @@
 </head>
 <body class="bg-slate-50">
     <vcp-header theme="blue" lang="zh" available-langs="en,ja,zh"></vcp-header>
+<aside id="integrity-review-2026-10-24" aria-label="完整性审查补充 — 2026年10月24日" style="background:#172033;color:#e2e8f0;border:1px solid #64748b;border-radius:8px;padding:1rem;max-width:1100px;margin:5rem auto 1.5rem;font:15px/1.7 system-ui,sans-serif;"><strong>完整性审查补充 — 2026年10月24日</strong><p>VCP v1.2 §6.2.1要求采用RFC 6962的树结构，但已发布的构建和证明示例存在已知不一致。仅对根签名不能认证附加的批次信息，纳秒值的精确序列化也有待审查。下文的RFC表述属于要求或历史说明，不代表每个实现均已验证符合要求。尚未确立对VAP的完全符合性。修订提案与实验性扩展仍未采纳，独立复现尚未成立。 <a style="color:#93c5fd" href="https://github.com/veritaschain/vap-spec/blob/9fa5fbc68075079b4599e16940e9078db976cd59/experiments/vcp-v1.2-integrity-alignment/README.md">查看观察记录与局限</a>.</p></aside>
 
     <!-- Hero Section -->
     <section class="hero-overview py-16 md:py-24">
@@ -320,7 +321,7 @@
                     
                     <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">核心技术组件</h3>
                     <ul class="list-disc list-inside space-y-2 ml-4">
-                        <li><strong>加密哈希链：</strong> 事件使用加密哈希链接，创建可检测篡改的序列</li>
+                        <li><strong>Merkle树与外部锚定：</strong> 事件哈希被汇集到Merkle树（RFC 6962域分离哈希）中，其根值按等级规定的间隔进行外部锚定（自v1.1起，所有等级均为必需）；事件之间的哈希链（PrevHash）为可选项</li>
                         <li><strong>Merkle证明：</strong> 在大型数据集中高效验证单个记录</li>
                         <li><strong>数字签名：</strong> 每个事件都经过签名以建立真实性和不可否认性</li>
                         <li><strong>可检测篡改的事件日志：</strong> 对历史记录的任何修改都变得可检测</li>
@@ -376,7 +377,7 @@
                             <tr>
                                 <td class="font-medium text-slate-700">修改检测</td>
                                 <td class="text-slate-600">困难或不可能</td>
-                                <td class="text-slate-600">通过哈希链断裂可数学检测</td>
+                                <td class="text-slate-600">可通过Merkle证明和外部锚点检测（使用可选的PrevHash时，也可通过哈希链断裂检测）</td>
                             </tr>
                         </tbody>
                     </table>
@@ -454,7 +455,7 @@
                             <i class="fas fa-info"></i>
                         </div>
                         <p class="text-slate-600">
-                            除非被认可的标准组织或监管机构正式采用，本规范是<strong>非规范性的</strong>。
+                            VCP是一项<strong>自愿性规范</strong>：它不具有法律或监管效力，也未被任何公认的标准组织或监管机构采用。
                         </p>
                     </div>
                     <div class="clarification-item">
