@@ -44,7 +44,7 @@ const i18n = {
         },
         philosophy: {
             quote: "Verify, Don't Trust",
-            desc: "Evaluating that audit trails for AI systems exist in a mathematically verifiable form."
+            desc: "Evaluating whether audit trails for AI systems exist in a cryptographically verifiable (tamper-evident) form."
         },
         assessment: {
             title: "Self-Assessment",
@@ -235,7 +235,7 @@ const i18n = {
         },
         philosophy: {
             quote: "Verify, Don't Trust",
-            desc: "AIシステムの監査証跡が数学的に検証可能な形で存在することを評価します。"
+            desc: "AIシステムの監査証跡が、暗号学的に検証可能（改ざん検知可能）な形で存在するかを評価します。"
         },
         assessment: {
             title: "自己評価",
@@ -426,7 +426,7 @@ const i18n = {
         },
         philosophy: {
             quote: "验证，而非信任",
-            desc: "评估AI系统的审计痕迹是否以数学可验证的形式存在。"
+            desc: "评估AI系统的审计痕迹是否以可通过密码学验证（可检测篡改）的形式存在。"
         },
         assessment: {
             title: "自我评估",
