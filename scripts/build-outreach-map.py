@@ -14,7 +14,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_SHA256 = "3e458fc036ad0a66411f2c1e6cac49c5d7bfb81cb1123bc513b22511a2b7fdeb"
-NEW = {"FR", "IT", "NL", "ES", "IE", "SE", "DK", "PT", "CZ", "SK"}
+NEW = {"FR", "IT", "NL", "ES", "IE", "SE", "DK", "PT", "CZ", "SK", "BE", "HR", "RO", "LV", "HU", "IS", "BG", "GR"}
 COLORS = {"new": "#50d5f5", "historical": "#269b78", "other": "#283950"}
 
 
@@ -43,7 +43,7 @@ def mercator(lat):
 
 def draw(features, listed, *, europe=False):
     width, height = (360, 480) if europe else (864, 480)
-    west, east, south, north = (-13, 30, 34, 71) if europe else (-180, 180, -58, 84)
+    west, east, south, north = (-25, 33, 33, 71) if europe else (-180, 180, -58, 84)
     ymin, ymax = mercator(south), mercator(north)
     scale = min((width - 24) / (east - west), (height - 24) / (ymax - ymin))
     ox = (width - (east - west) * scale) / 2
@@ -55,7 +55,7 @@ def draw(features, listed, *, europe=False):
     title = "European outreach detail" if europe else "Regulatory outreach world map"
     parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
              f'<title id="title">{title}</title>',
-             '<desc id="desc">Cyan: France, Italy, Netherlands, Spain, Ireland, Sweden, Denmark, Portugal, Czechia and Slovakia, contacted on 26 October 2026. Green: country and territory entries in the historical outreach list, still under review. Colors do not indicate regulatory receipt, approval or endorsement. EU-level outreach is listed separately on the page.</desc>',
+             '<desc id="desc">Cyan: France, Italy, Netherlands, Spain, Ireland, Sweden, Denmark, Portugal, Czechia, Slovakia, Belgium, Croatia, Romania, Latvia, Hungary, Iceland, Bulgaria and Greece, contacted on 26 October 2026 through 17 emails and one acknowledged form submission. Green: country and territory entries in the historical outreach list, still under review. Colors do not indicate regulatory receipt, approval or endorsement. EU-level outreach is listed separately on the page.</desc>',
              f'<defs><clipPath id="bounds"><rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="12"/></clipPath></defs>',
              f'<rect width="{width}" height="{height}" rx="12" fill="#101c2e"/>',
              '<g clip-path="url(#bounds)">']
@@ -99,7 +99,7 @@ def draw(features, listed, *, europe=False):
     parts.extend(markers)
     if europe:
         # Mainland label anchors keep abbreviations readable in small countries.
-        labels = {"FR": (2.5, 46.5), "IT": (12.5, 42.7), "NL": (5.4, 52.3), "ES": (-3.6, 40.0), "IE": (-8.0, 53.3), "SE": (16.3, 63.0), "DK": (9.5, 56.0), "PT": (-8.1, 39.5), "CZ": (15.1, 49.8), "SK": (19.4, 48.8)}
+        labels = {"FR": (2.5, 46.5), "IT": (12.5, 42.7), "NL": (5.4, 52.3), "ES": (-3.6, 40.0), "IE": (-8.0, 53.3), "SE": (16.3, 63.0), "DK": (9.5, 56.0), "PT": (-8.1, 39.5), "CZ": (15.1, 49.8), "SK": (19.4, 48.8), "BE": (4.6, 50.5), "HR": (16.0, 44.9), "RO": (24.8, 45.8), "LV": (24.8, 57.0), "HU": (19.2, 47.1), "IS": (-18.6, 65.0), "BG": (25.3, 42.7), "GR": (22.3, 39.2)}
         for code, (lon, lat) in labels.items():
             x, y = project(lon, lat)
             parts.append(f'<text x="{x:.1f}" y="{y:.1f}" text-anchor="middle" dominant-baseline="central" fill="#071624" font-family="system-ui,sans-serif" font-size="10" font-weight="800">{code}</text>')
