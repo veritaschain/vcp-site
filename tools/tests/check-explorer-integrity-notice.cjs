@@ -131,6 +131,9 @@ async function geometry(page) {
 
   for (const width of [320, 390, 768, 1024, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
+    // A same-document hash visit retains the prior Tab focus. Start a new
+    // document for each independent keyboard case without changing its gate.
+    await page.goto('about:blank');
     await page.goto(certUrl);
     await page.getByText('Demo data — not verified', { exact: true }).waitFor();
     await page.evaluate(() => window.scrollTo(0, 0));
