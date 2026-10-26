@@ -115,42 +115,42 @@
         "mainEntity": [
             {
                 "@type": "Question",
-                "name": "What is VC-Certified?",
+                "name": "什么是 VC-Certified？",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "VC-Certified is a certification scheme governed by the VeritasChain Standards Organization (VSO), under which VSO-approved Conformity Assessment Bodies (CABs) assess whether algorithmic trading systems conform to the VeritasChain Protocol (VCP) for cryptographic auditability. VSO does not issue certifications itself."
+                    "text": "VC-Certified 是由 VeritasChain 标准组织（VSO）治理的认证计划：由 VSO 批准的合格评定机构（CAB）评估算法交易系统是否符合以密码学可审计性为目标的 VeritasChain Protocol（VCP）。VSO 本身不颁发认证。"
                 }
             },
             {
                 "@type": "Question",
-                "name": "What are the certification tiers?",
+                "name": "认证分为哪些层级？",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "VC-Certified offers three tiers defined by the VCP specification: Silver (best-effort clock synchronization, external anchoring every 24 hours), Gold (NTP synchronization under 1 ms, anchoring every hour) and Platinum (PTPv2 synchronization under 1 µs, anchoring every 10 minutes). Post-quantum signature algorithms are not a certification requirement at any tier."
+                    "text": "VC-Certified 设有 VCP 规范定义的三个层级：Silver（尽力而为的时钟同步，每 24 小时进行一次外部锚定）、Gold（NTP 同步，偏差小于 1 毫秒，每小时锚定一次）和 Platinum（PTPv2 同步，偏差小于 1 微秒，每 10 分钟锚定一次）。在任何层级，后量子签名算法都不是认证要求。"
                 }
             },
             {
                 "@type": "Question",
-                "name": "Is VC-Certified mandatory for MiFID II compliance?",
+                "name": "满足 MiFID II 要求是否必须获得 VC-Certified？",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "VC-Certified is not legally mandatory, but implementing the VCP standard can help produce evidence relevant to MiFID II record-keeping and audit trail requirements for algorithmic trading."
+                    "text": "VC-Certified 并非法律强制要求，但实施 VCP 标准有助于生成与 MiFID II 算法交易记录保存及审计追踪要求相关的证据。"
                 }
             },
             {
                 "@type": "Question",
-                "name": "How long does certification take?",
+                "name": "认证需要多长时间？",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "The certification process is designed to take 2 to 6 weeks, depending on the tier and the complexity of the trading system being assessed."
+                    "text": "根据层级以及受评估交易系统的复杂程度，认证流程按设计可在 2 至 6 周内完成。"
                 }
             },
             {
                 "@type": "Question",
-                "name": "Who governs the VCP standard?",
+                "name": "谁负责治理 VCP 标准？",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "The VCP standard is maintained by the VeritasChain Standards Organization (VSO), an independent body committed to open standardization of algorithmic trading auditability."
+                    "text": "VCP 标准由 VeritasChain 标准组织（VSO）维护。VSO 由 VeritasChain株式会社运营，其中立性基于已公开的机制（https://veritaschain.org/vso/policies/zh/）。"
                 }
             }
         ]
@@ -231,7 +231,7 @@
                             <strong class="text-blue-600">符合</strong>
                             <strong>VeritasChain Protocol (VCP)</strong> 规范。
                         </p>
-                        <p class="font-semibold text-gray-800">具体而言，CAB 的评估会检查以下内容能否针对所提交的记录通过密码学验证：</p>
+                        <p class="font-semibold text-gray-800">具体而言，CAB 的评估会就所提交的记录检查以下内容（适用时通过密码学方式验证）：</p>
                         <ul class="list-disc list-inside space-y-2 ml-4">
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i>交易数据<strong>可检测篡改</strong>（仅追加）</li>
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i>算法<strong>决策过程</strong>已被记录</li>
@@ -358,7 +358,7 @@
                     <div class="info-box p-4 rounded-md mb-4">
                         <p class="text-sm font-bold text-blue-900">
                             <i class="fas fa-shield-alt mr-2"></i>
-                            A. 否，个人信息受 VCP-PRIVACY 模块保护。
+                            A. 如果系统按规范实施，则不应发生这种情况——但这取决于实施，而非认证本身。
                         </p>
                     </div>
                     <div class="text-gray-700 leading-relaxed space-y-3">
@@ -372,7 +372,8 @@
                                     <i class="fas fa-hashtag mr-2"></i>哈希处理
                                 </h4>
                                 <p class="text-sm text-gray-700">
-                                    记录在区块链或审计日志中的是数据的<strong>哈希值（指纹）</strong>——而非原始个人信息。
+                                    外部锚点仅保存经签名的<strong>默克尔根（批次的指纹）</strong>，不包含事件本身。
+                                    事件保存在审计日志中，其中的账户标识符必须经过假名化处理。
                                 </p>
                             </div>
                             <div class="border-l-4 border-purple-500 bg-purple-50 p-4 rounded">
@@ -381,8 +382,8 @@
                                 </h4>
                                 <p class="text-sm text-gray-700">
                                     个人身份信息 (PII) 使用每用户唯一密钥加密。
-                                    对于 <strong>GDPR 的"被遗忘权"</strong>，销毁解密密钥可使数据
-                                    <strong class="text-red-600">在数学上不可恢复</strong>。
+                                    对于依据 <strong>GDPR 第17条</strong>提出的删除请求，销毁解密密钥可使加密数据
+                                    <strong class="text-red-600">在实际上无法读取</strong>。这是否构成 GDPR 意义上的删除，需由控制者作出法律判断（VCP v1.2 §3.2.2）。
                                 </p>
                             </div>
                         </div>
@@ -1101,7 +1102,7 @@
                                 <strong><i class="fas fa-info-circle text-amber-600 mr-2"></i>重要区别：</strong>
                             </p>
                             <p class="text-sm text-gray-700 mt-2">
-                                VC-Certified 是<strong>技术合规认证</strong>，而非监管许可或财务审计。
+                                VC-Certified 是<strong>技术符合性认证</strong>，而非监管许可或财务审计。
                                 组织应独立维护所有必需的监管和财务合规。
                             </p>
                         </div>
