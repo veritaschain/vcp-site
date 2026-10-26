@@ -430,14 +430,17 @@ vcp-header .language-switcher.theme-light .lang-separator {
     left: -100%;
     width: 100%;
     height: calc(100vh - 70px);
+    height: calc(100dvh - 70px);
     background: rgba(15, 23, 42, 0.98);
     backdrop-filter: blur(10px);
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
     padding: var(--vcp-spacing-md);
     gap: 0;
     transition: left 0.3s ease;
     overflow-y: auto;
+    overscroll-behavior-y: contain;
     margin-left: 0;
   }
 
@@ -447,6 +450,7 @@ vcp-header .language-switcher.theme-light .lang-separator {
 
   vcp-header .nav-item {
     width: 100%;
+    flex-shrink: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
@@ -465,13 +469,13 @@ vcp-header .language-switcher.theme-light .lang-separator {
     border: none;
     border-radius: 0;
     background: rgba(255, 255, 255, 0.05);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    display: none;
   }
 
   vcp-header .dropdown.active .dropdown-menu {
-    max-height: 500px;
+    display: block;
+    max-height: none;
+    overflow: visible;
   }
 
   vcp-header .dropdown-item {
@@ -520,6 +524,11 @@ vcp-header .language-switcher.theme-light .lang-separator {
   vcp-header .main-nav.theme-blue .dropdown-item:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #93c5fd;
+  }
+
+  /* Keep the floating language switcher off the open navigation. */
+  vcp-header:has(.nav-menu.active) .language-switcher {
+    visibility: hidden;
   }
 
   /* Language Switcher - Mobile */
