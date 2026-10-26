@@ -1,0 +1,63 @@
+name: Validate staged Explorer static site (temporary)
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify-static-stage:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: veritaschain/vcp-site
+          ref: 711343aa5ebee758e88dfe88bfeb54cc401adcbb
+          path: site
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: veritaschain/vcp-explorer-gui
+          ref: 5bc0bc301a155502c191ac1d93c72fed8a64ad0a
+          path: gui
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Prepare composed published HTML + staged assets
+        run: |
+          test "$(git -C site rev-parse HEAD)" = "711343aa5ebee758e88dfe88bfeb54cc401adcbb"
+          test "$(git -C gui rev-parse HEAD)" = "5bc0bc301a155502c191ac1d93c72fed8a64ad0a"
+          mkdir -p dist
+          cp -a site/explorer/app/. dist/
+          python3 - <<'PY'
+          from pathlib import Path
+          h=Path('dist/index.html').read_text('utf-8')
+          assert h.count('id="integrity-review-2026-10-24"') == 1
+          assert 'rel="canonical"' in h
+          assert 'application/ld+json' in h
+          assert 'index-BgHVFH4T.js' in h
+          assert 'index-Ch4oTdYH.css' in h
+          assert 'index-DDFpEE9M.js' not in h
+          assert 'index-DfJrO8ma.css' not in h
+          PY
+      - name: Install isolated Chromium test tool
+        run: |
+          npm install --prefix browser-tools --ignore-scripts --no-audit --save-exact playwright@1.56.1
+          node browser-tools/node_modules/playwright/cli.js install --with-deps chromium
+      - name: Exercise staged composed SPA under /explorer/app/
+        env:
+          PW_MODULE: ${{ github.workspace }}/browser-tools/node_modules/playwright
+        run: |
+          timeout 180 node gui/tools/tests/check-static-subpath.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: staged-explorer-browser-evidence
+          path: subpath-evidence/
+          if-no-files-found: warn
+          retention-days: 14
