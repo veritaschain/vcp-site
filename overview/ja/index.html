@@ -214,6 +214,7 @@
 </head>
 <body class="bg-slate-50">
     <vcp-header theme="blue" lang="ja" available-langs="en,ja,zh"></vcp-header>
+<aside id="integrity-review-2026-10-24" aria-label="整合性レビューに関する追記 — 2026年10月24日" style="background:#172033;color:#e2e8f0;border:1px solid #64748b;border-radius:8px;padding:1rem;max-width:1100px;margin:5rem auto 1.5rem;font:15px/1.7 system-ui,sans-serif;"><strong>整合性レビューに関する追記 — 2026年10月24日</strong><p>VCP v1.2 §6.2.1はRFC 6962の構成を要求していますが、公開された木の構築・証明の例には既知の不整合があります。根だけへの署名は付随するバッチ情報を認証せず、正確なナノ秒値の直列化も検討対象です。以下のRFCへの言及は要件または過去の説明であり、個別実装の適合確認を意味しません。VAPへの完全適合は未確認です。修正案と実験的拡張は未採択、独立再現は未成立です。 <a style="color:#93c5fd" href="https://github.com/veritaschain/vap-spec/blob/9fa5fbc68075079b4599e16940e9078db976cd59/experiments/vcp-v1.2-integrity-alignment/README.md">観察記録と適用限界</a>.</p></aside>
 
     <!-- Hero Section -->
     <section class="hero-overview py-16 md:py-24">
@@ -320,7 +321,7 @@
                     
                     <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">中核技術コンポーネント</h3>
                     <ul class="list-disc list-inside space-y-2 ml-4">
-                        <li><strong>暗号ハッシュチェーン：</strong> イベントは暗号ハッシュを使用してリンクされ、改ざん検知可能なシーケンスを作成します</li>
+                        <li><strong>Merkleツリーと外部アンカリング：</strong> イベントのハッシュはMerkleツリー（RFC 6962のドメイン分離ハッシュ）にまとめられ、そのルートはティアに応じた間隔で外部にアンカリングされます（v1.1以降、すべてのティアで必須）。イベント間のハッシュチェーン（PrevHash）は任意です</li>
                         <li><strong>マークル証明：</strong> 大規模データセット内の個々のレコードの効率的な検証</li>
                         <li><strong>デジタル署名：</strong> 各イベントは署名され、真正性と否認防止を確立します</li>
                         <li><strong>改ざん検知可能なイベントログ：</strong> 履歴レコードへの変更が検出可能になります</li>
@@ -376,7 +377,7 @@
                             <tr>
                                 <td class="font-medium text-slate-700">変更検出</td>
                                 <td class="text-slate-600">困難または不可能</td>
-                                <td class="text-slate-600">ハッシュチェーン断裂により数学的に検出可能</td>
+                                <td class="text-slate-600">Merkle証明と外部アンカーにより検知可能（任意のPrevHashを使う場合は、ハッシュチェーンの断裂によっても検知可能）</td>
                             </tr>
                         </tbody>
                     </table>
@@ -454,7 +455,7 @@
                             <i class="fas fa-info"></i>
                         </div>
                         <p class="text-slate-600">
-                            本仕様は、認定標準化団体または規制当局によって正式に採用されない限り、<strong>非規範的</strong>です。
+                            VCPは<strong>任意の仕様</strong>であり、法的・規制上の効力はありません。また、公認された標準化団体や規制当局に採用されたこともありません。
                         </p>
                     </div>
                     <div class="clarification-item">
