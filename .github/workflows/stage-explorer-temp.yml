@@ -1,0 +1,149 @@
+name: Stage reviewed Explorer static files (temporary)
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-candidate:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: veritaschain/vcp-site
+          ref: 784dbdd5ab2467787ab2e05699f7e8abee6cd351
+          path: site
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: veritaschain/vcp-explorer-gui
+          ref: 5bc0bc301a155502c191ac1d93c72fed8a64ad0a
+          path: gui
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Build static GUI candidate with test-only source permissions
+        working-directory: gui
+        run: |
+          test "$(git rev-parse HEAD)" = "5bc0bc301a155502c191ac1d93c72fed8a64ad0a"
+          npm ci --no-audit
+          VITE_ROUTER_MODE=hash npm run build -- --base=/explorer/app/
+          npm test
+      - name: Stage only hashed assets and preserve current public index
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib,re,shutil
+          SITE=pathlib.Path('site'); GUI=pathlib.Path('gui'); STAGE=pathlib.Path('candidate')
+          prior=SITE/'explorer/app/index.html'
+          original=prior.read_bytes()
+          html=original.decode('utf-8')
+          assert 'id="integrity-review-2026-10-24"' in html
+          assert 'rel="canonical"' in html
+          assert 'application/ld+json' in html
+          js_old=re.findall(r'/explorer/app/assets/index-[\w-]+\.js',html)
+          css_old=re.findall(r'/explorer/app/assets/index-[\w-]+\.css',html)
+          assert len(js_old)==1 and len(css_old)==1,(js_old,css_old)
+          files=list((GUI/'dist/assets').iterdir())
+          js_new=[f for f in files if f.name.startswith('index-') and f.suffix=='.js']
+          css_new=[f for f in files if f.name.startswith('index-') and f.suffix=='.css']
+          assert len(js_new)==1 and len(css_new)==1,files
+          js=js_new[0].read_text('utf-8')
+          assert 'Print / Save as PDF' in js
+          assert 'Demo data' in js and 'not verified' in js
+          assert 'Download PDF' not in js
+          for f in (js_new+css_new):
+              assert not (SITE/'explorer/app/assets'/f.name).exists(),f.name
+          replacement_js='/explorer/app/assets/'+js_new[0].name
+          replacement_css='/explorer/app/assets/'+css_new[0].name
+          updated=html.replace(js_old[0],replacement_js).replace(css_old[0],replacement_css)
+          assert updated.replace(replacement_js,'_JS_').replace(replacement_css,'_CSS_')==html.replace(js_old[0],'_JS_').replace(css_old[0],'_CSS_')
+          assert updated.count('id="integrity-review-2026-10-24"')==1
+          out=STAGE/'explorer/app';(out/'assets').mkdir(parents=True)
+          (out/'index.html').write_text(updated,'utf-8')
+          for f in (js_new+css_new):shutil.copy2(f,out/'assets'/f.name)
+          def sha(b):return hashlib.sha256(b).hexdigest()
+          listing={str(f.relative_to(STAGE)):sha(f.read_bytes()) for f in STAGE.rglob('*') if f.is_file()}
+          manifest={
+              'source_repo':'veritaschain/vcp-explorer-gui',
+              'source_commit':'5bc0bc301a155502c191ac1d93c72fed8a64ad0a',
+              'site_base':'784dbdd5ab2467787ab2e05699f7e8abee6cd351',
+              'old_index_sha256':sha(original),
+              'old_js':js_old[0], 'old_css':css_old[0],
+              'new_js':replacement_js, 'new_css':replacement_css,
+              'file_sha256':listing,
+              'published':False,
+              'limits':'Candidate branch staging only; synthetic mock data; not certified.',
+          }
+          (STAGE/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n','utf-8')
+          print(json.dumps(manifest,indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: explorer-static-candidate
+          path: candidate/
+          if-no-files-found: error
+          retention-days: 14
+
+  create-stage-branch:
+    needs: build-candidate
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 784dbdd5ab2467787ab2e05699f7e8abee6cd351
+          persist-credentials: true
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: explorer-static-candidate
+          path: candidate
+      - name: Validate artifact and create a review branch only
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('candidate')
+          m=json.loads((root/'manifest.json').read_text('utf-8'))
+          assert m['source_commit']=='5bc0bc301a155502c191ac1d93c72fed8a64ad0a'
+          assert m['site_base']=='784dbdd5ab2467787ab2e05699f7e8abee6cd351'
+          expected=m['file_sha256']
+          assert len(expected)==3
+          actual={str(f.relative_to(root)):hashlib.sha256(f.read_bytes()).hexdigest() for f in root.rglob('*') if f.is_file() and f.name!='manifest.json'}
+          assert actual==expected,(actual,expected)
+          assert set(actual)=={'explorer/app/index.html',f"explorer/app/assets/{pathlib.Path(m['new_js']).name}",f"explorer/app/assets/{pathlib.Path(m['new_css']).name}"}
+          index=pathlib.Path('explorer/app/index.html')
+          assert hashlib.sha256(index.read_bytes()).hexdigest()==m['old_index_sha256']
+          html=(root/'explorer/app/index.html').read_text('utf-8')
+          assert html.count('id="integrity-review-2026-10-24"')==1
+          assert m['new_js'] in html and m['new_css'] in html
+          for p in actual:
+              if p.startswith('explorer/app/assets/'):assert not pathlib.Path(p).exists()
+          print(json.dumps({'verified_files':actual,'site_base':m['site_base'],'source':m['source_commit']},indent=2))
+          PY
+          test "$(git rev-parse HEAD)" = "784dbdd5ab2467787ab2e05699f7e8abee6cd351"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "784dbdd5ab2467787ab2e05699f7e8abee6cd351"
+          if git ls-remote --exit-code --heads origin refs/heads/stage/explorer-app-20261026; then
+            echo "Existing stage branch: refuse overwrite"; exit 1
+          fi
+          git checkout -b stage/explorer-app-20261026
+          cp candidate/explorer/app/index.html explorer/app/index.html
+          cp candidate/explorer/app/assets/* explorer/app/assets/
+          git add explorer/app/index.html explorer/app/assets/
+          git diff --cached --name-only
+          python3 - <<'PY'
+          import subprocess,json,pathlib
+          m=json.loads(pathlib.Path('candidate/manifest.json').read_text('utf-8'))
+          files=subprocess.check_output(['git','diff','--cached','--name-only']).decode().splitlines()
+          assert set(files)==set(m['file_sha256']),files
+          PY
+          git -c user.name="VeritasChain Standards Organization (VSO)" -c user.email="info@veritaschain.org" commit -m "stage: Explorer static demo subpath build (review required)"
+          git push origin HEAD:refs/heads/stage/explorer-app-20261026
+          echo "STAGED BRANCH ONLY, MAIN NOT MODIFIED"
