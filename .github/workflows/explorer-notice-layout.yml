@@ -1,0 +1,55 @@
+name: Explorer integrity notice layout
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'explorer/app/**'
+      - 'tools/tests/check-explorer-integrity-notice.cjs'
+      - '.github/workflows/explorer-notice-layout.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'explorer/app/**'
+      - 'tools/tests/check-explorer-integrity-notice.cjs'
+      - '.github/workflows/explorer-notice-layout.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  notice-layout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Check regression script syntax
+        run: node --check tools/tests/check-explorer-integrity-notice.cjs
+      - name: Install isolated pinned headless browser
+        run: |
+          npm install --prefix .notice-tools --ignore-scripts --no-audit --save-exact playwright@1.56.1
+          node .notice-tools/node_modules/playwright/cli.js install --with-deps --only-shell chromium
+      - name: Test composed site, seven widths, keyboard link and negative control
+        env:
+          PW_MODULE: ${{ github.workspace }}/.notice-tools/node_modules/playwright
+          NOTICE_EVIDENCE_DIR: notice-evidence/local
+        run: timeout 240 node tools/tests/check-explorer-integrity-notice.cjs
+      - name: Verify published bytes and read-only public notice behavior
+        if: github.event_name == 'push'
+        env:
+          PW_MODULE: ${{ github.workspace }}/.notice-tools/node_modules/playwright
+          NOTICE_EVIDENCE_DIR: notice-evidence/public
+          VERIFY_PUBLIC: '1'
+        run: timeout 360 node tools/tests/check-explorer-integrity-notice.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: explorer-notice-${{ github.event_name }}
+          path: notice-evidence/
+          if-no-files-found: warn
+          retention-days: 14
