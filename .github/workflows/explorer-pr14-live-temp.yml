@@ -1,0 +1,139 @@
+name: Verify published Explorer PR14 (temporary)
+on:
+  pull_request:
+    branches: [main]
+    paths: ['.github/workflows/explorer-pr14-live-temp.yml']
+permissions:
+  contents: read
+jobs:
+  observe:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: veritaschain/vcp-explorer-gui
+          ref: c390ef007c8e42f9bde19ee76ef04aaf695a4eb4
+          path: gui-review
+          persist-credentials: false
+      - name: Compare public HTML and assets against reviewed bytes
+        run: |
+          mkdir -p live-evidence
+          python3 - <<'PY'
+          import hashlib,json,pathlib,time,urllib.request,urllib.parse
+          out=pathlib.Path('live-evidence'); checks=[]
+          expected={
+            '/explorer/app/':'2575861d8b375433844e54030a6b2b53c0c77ef2a60a319a6102208ae5292f34',
+            '/explorer/app/assets/index-D83sVcrW.js':'bcac5e42edd4d6b730e64d1a9f3e9d2ec669c80568ea4a350b5350dde4c798e5',
+            '/explorer/app/assets/index-BuUUPhbd.css':'fc0803988c2daa27903cbafe57a58bc4f279bd2f291613ff825682e8530fd471'}
+          report={'source_site_commit':'929686b9bc4c8337d84192b5b4660abc5bded9e2','source_gui_commit':'c390ef007c8e42f9bde19ee76ef04aaf695a4eb4','observed_utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'checks':checks,'status':'INDETERMINATE'}
+          try:
+              for path,digest in expected.items():
+                  local=pathlib.Path('explorer/app/index.html') if path.endswith('/') else pathlib.Path(path.lstrip('/'))
+                  assert hashlib.sha256(local.read_bytes()).hexdigest()==digest
+                  req=urllib.request.Request('https://veritaschain.org'+path,headers={'User-Agent':'VSO-Explorer-ReadOnly-PR14-Review/1.0','Accept-Encoding':'identity','Cache-Control':'no-cache'})
+                  with urllib.request.urlopen(req,timeout=20) as response:
+                      final=response.geturl(); u=urllib.parse.urlparse(final)
+                      assert u.scheme=='https' and u.hostname=='veritaschain.org'
+                      b=response.read(2000001); assert len(b)<=2000000
+                      actual=hashlib.sha256(b).hexdigest()
+                      checks.append({'url':final,'http_status':response.status,'bytes':len(b),'expected_sha256':digest,'actual_sha256':actual,'matches':actual==digest,'last_modified':response.headers.get('Last-Modified'),'etag':response.headers.get('ETag')})
+                      (out/('public-index.html' if path.endswith('/') else pathlib.Path(path).name)).write_bytes(b)
+              report['status']='PUBLIC_BYTES_VERIFIED' if len(checks)==3 and all(c['matches'] and c['http_status']==200 for c in checks) else 'PUBLIC_BYTES_DIFFER'
+          except Exception as exc:
+              report['status']='UNREACHABLE_OR_INDETERMINATE';report['error']=type(exc).__name__+': '+str(exc)
+          (out/'http-comparison.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,indent=2))
+          raise SystemExit(0 if report['status']=='PUBLIC_BYTES_VERIFIED' else 2)
+          PY
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Install isolated test tools
+        run: |
+          npm install --prefix .browser-tools --ignore-scripts --no-audit --save-exact playwright@1.56.1
+          node .browser-tools/node_modules/playwright/cli.js install --with-deps chromium
+          python3 -m venv .pdf-tools
+          .pdf-tools/bin/pip install --disable-pip-version-check --no-input pymupdf==1.26.1
+      - name: Read-only public full-ID and PDF observation
+        env:
+          PW_MODULE: ${{ github.workspace }}/.browser-tools/node_modules/playwright
+        run: |
+          cat > live-evidence/check-public.cjs <<'JS'
+          'use strict';
+          const {chromium}=require(process.env.PW_MODULE);
+          const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+          const out=path.resolve('live-evidence'),checks=[],errors=[],blocked=[];
+          const origin='https://veritaschain.org',base='/explorer/app/';
+          let browser,context;
+          const uuid=/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
+          async function check(name,fn){try{const details=await fn();checks.push({name,status:'passed',details});}catch(e){checks.push({name,status:'failed',error:String(e)});throw e;}}
+          (async()=>{
+            browser=await chromium.launch({headless:true});
+            context=await browser.newContext({viewport:{width:1440,height:900}});
+            await context.route('**/*',route=>{const r=route.request(),u=new URL(r.url());if(u.origin===origin&&u.pathname.startsWith(base)&&r.method()==='GET')return route.continue();blocked.push({method:r.method(),url:r.url()});return route.abort();});
+            const page=await context.newPage();page.setDefaultTimeout(20000);page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto(origin+base,{waitUntil:'domcontentloaded',timeout:30000});
+            await check('existing integrity warning remains visible',async()=>{await page.locator('#integrity-review-2026-10-24').waitFor();return {visible:await page.locator('#integrity-review-2026-10-24').isVisible()};});
+            const first=page.locator('a[href*="#/events/"]').first();await first.waitFor();
+            const eventHref=await first.getAttribute('href');
+            const eventId=new URL(eventHref,origin+base).hash.split('/')[2];assert.match(eventId,uuid);
+            await first.click();await page.getByRole('heading',{name:'Event Details',exact:true}).waitFor();
+            const trace=page.locator('a[href*="#/chain/"]').first();await trace.waitFor();
+            const traceId=new URL(await trace.getAttribute('href'),origin+base).hash.split('/')[2];assert.match(traceId,uuid);
+            await page.getByRole('link',{name:'Certificate',exact:true}).click();
+            const certUrl=page.url();assert.equal(new URL(certUrl).pathname,base);
+            await check('public hash certificate route survives reload',async()=>{await page.reload();await page.getByRole('heading',{name:'Event Certificate',exact:true}).waitFor();await page.getByText('Demo data — not verified',{exact:true}).waitFor();return {url:page.url()};});
+            for(const width of [320,390,768,1440]){
+              await check('full route-derived IDs and contained width '+width,async()=>{
+                await page.setViewportSize({width,height:844});
+                const eid=(await page.locator('[data-certificate-field="Event ID"] dd p').innerText()).trim();
+                const tid=(await page.locator('[data-certificate-field="Trace ID"] dd p').innerText()).trim();
+                assert.equal(eid,eventId);assert.equal(tid,traceId);
+                const g=await page.evaluate(()=>({viewport:document.documentElement.clientWidth,doc:document.documentElement.scrollWidth,body:document.body.scrollWidth}));
+                assert.ok(g.doc<=g.viewport+1&&g.body<=g.viewport+1,JSON.stringify(g));
+                assert.ok(await page.getByText('Demo data — not verified',{exact:true}).isVisible());
+                await page.screenshot({path:path.join(out,'public-certificate-'+width+'.png'),fullPage:true});
+                return {fullIdentifiers:true,geometry:g};
+              });
+            }
+            await check('public named controls and functional print label',async()=>{
+              for(const [role,name]of [['link','Back to event'],['button','Copy Event ID'],['button','Copy event hash'],['button','Print / Save as PDF']])assert.equal(await page.getByRole(role,{name,exact:true}).count(),1);
+              assert.equal(await page.getByRole('button',{name:'Download PDF',exact:true}).count(),0);
+              await page.evaluate(()=>{window.__printCalls=0;window.print=()=>{window.__printCalls++;};});
+              await page.getByRole('button',{name:'Print / Save as PDF',exact:true}).click();assert.equal(await page.evaluate(()=>window.__printCalls),1);
+            });
+            const proof=(await page.locator('[data-certificate-proof-hash]').allTextContents()).map(s=>s.trim());
+            assert.ok(proof.length>=1&&proof.length<=16&&proof.every(h=>/^[0-9a-f]{64}$/i.test(h)));
+            fs.writeFileSync(path.join(out,'pdf-expectations.json'),JSON.stringify({event_id:eventId,trace_id:traceId,proof_hashes:proof,source:'Full IDs from public navigation hrefs; proof hashes from displayed bounded mock data.'},null,2)+'\n');
+            await check('actual PDF generated from public page',async()=>{const b=await page.pdf({path:path.join(out,'certificate-print.pdf'),preferCSSPageSize:true,printBackground:true,displayHeaderFooter:false});assert.ok(b.length>5000&&b.subarray(0,5).toString()==='%PDF-');return {bytes:b.length};});
+            await check('no uncaught page errors',async()=>assert.deepEqual(errors,[]));
+            fs.writeFileSync(path.join(out,'browser.json'),JSON.stringify({status:'passed',browser:browser.version(),observed_utc:new Date().toISOString(),url:certUrl,eventId,traceId,checks,errors,blocked,scope:'First-party read-only public synthetic demo; external fonts blocked. Not independent reproduction, backend verification, PDF/UA or general accessibility conformance.'},null,2)+'\n');
+          })().catch(e=>{console.error(e);process.exitCode=1;fs.writeFileSync(path.join(out,'browser.json'),JSON.stringify({status:'failed',error:String(e),checks,errors,blocked},null,2)+'\n');}).finally(async()=>{if(context)await context.close();if(browser)await browser.close();});
+          JS
+          timeout 180 node live-evidence/check-public.cjs
+      - name: Apply fixed-source PDF inspector to actual public-page output
+        run: |
+          test "$(git -C gui-review rev-parse HEAD)" = c390ef007c8e42f9bde19ee76ef04aaf695a4eb4
+          cp gui-review/tools/tests/check-print-pdf.py live-evidence/check-print-pdf.py
+          .pdf-tools/bin/python gui-review/tools/tests/check-print-pdf.py live-evidence
+      - name: Hash preserved evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import pathlib,hashlib,json
+          out=pathlib.Path('live-evidence');out.mkdir(exist_ok=True)
+          hashes={str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest() for p in out.rglob('*') if p.is_file() and p.name!='files.sha256.json'}
+          (out/'files.sha256.json').write_text(json.dumps(hashes,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: explorer-pr14-public-verification
+          path: live-evidence/
+          if-no-files-found: error
+          retention-days: 14
