@@ -522,15 +522,14 @@ class VCPHeader extends HTMLElement {
             navToggle.addEventListener('click', () => {
                 navToggle.classList.toggle('active');
                 navMenu.classList.toggle('active');
-            });
 
-            // Close all dropdowns when closing the menu
-            if (!navMenu.classList.contains('active')) {
-                const dropdowns = this.querySelectorAll('.dropdown');
-                dropdowns.forEach(dropdown => {
-                    dropdown.classList.remove('active');
-                });
-            }
+                // Reset expanded sections when the mobile panel is closed.
+                if (!navMenu.classList.contains('active')) {
+                    this.querySelectorAll('.dropdown').forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                    });
+                }
+            });
         }
 
         // Dropdown functionality
