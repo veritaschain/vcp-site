@@ -1,0 +1,136 @@
+name: Stage certificate contrast release (temporary)
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  build-preview:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: veritaschain/vcp-site
+          ref: c11a1756a6a6afe0aa467915148eae0355f19763
+          path: site
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: veritaschain/vcp-explorer-gui
+          ref: 21ff418b53470cfa32138e4b0c0958285d3ca290
+          path: gui
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Build fixed static GUI source
+        working-directory: gui
+        run: |
+          test "$(git rev-parse HEAD)" = "21ff418b53470cfa32138e4b0c0958285d3ca290"
+          npm ci --ignore-scripts --no-audit
+          VITE_ROUTER_MODE=hash npm run build -- --base=/explorer/app/
+          npm test
+      - name: Preserve public metadata and prepare immutable assets
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib,re,shutil
+          site=pathlib.Path('site'); gui=pathlib.Path('gui'); out=pathlib.Path('candidate')
+          old=(site/'explorer/app/index.html').read_bytes(); text=old.decode('utf-8')
+          assert text.count('id="integrity-review-2026-10-24"')==1
+          assert 'rel="canonical"' in text and 'application/ld+json' in text
+          oldjs=re.findall(r'/explorer/app/assets/index-[\w-]+\.js',text)
+          oldcss=re.findall(r'/explorer/app/assets/index-[\w-]+\.css',text)
+          js=list((gui/'dist/assets').glob('index-*.js')); css=list((gui/'dist/assets').glob('index-*.css'))
+          assert len(oldjs)==len(oldcss)==len(js)==len(css)==1
+          newjs='/explorer/app/assets/'+js[0].name; newcss='/explorer/app/assets/'+css[0].name
+          updated=text.replace(oldjs[0],newjs).replace(oldcss[0],newcss)
+          assert updated!=text
+          assert updated.replace(newjs,'_JS_').replace(newcss,'_CSS_')==text.replace(oldjs[0],'_JS_').replace(oldcss[0],'_CSS_')
+          assert 'Demo data' in js[0].read_text() and 'not verified' in js[0].read_text()
+          dst=out/'explorer/app';(dst/'assets').mkdir(parents=True)
+          (dst/'index.html').write_text(updated,encoding='utf-8')
+          for source in js+css:
+              existing=site/'explorer/app/assets'/source.name
+              if existing.exists(): assert existing.read_bytes()==source.read_bytes()
+              else: shutil.copy2(source,dst/'assets'/source.name)
+          files={str(f.relative_to(out)):hashlib.sha256(f.read_bytes()).hexdigest() for f in out.rglob('*') if f.is_file()}
+          assert 2<=len(files)<=3
+          manifest={'gui_source':'21ff418b53470cfa32138e4b0c0958285d3ca290','site_base':'c11a1756a6a6afe0aa467915148eae0355f19763','old_index_sha256':hashlib.sha256(old).hexdigest(),'old_js':oldjs[0],'old_css':oldcss[0],'new_js':newjs,'new_css':newcss,'files':files,'deployment_claim':False}
+          (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          shutil.rmtree(gui/'dist');shutil.copytree(site/'explorer/app',gui/'dist')
+          shutil.copytree(dst,gui/'dist',dirs_exist_ok=True)
+          print(json.dumps(manifest,indent=2))
+          PY
+      - name: Install isolated static-preview browser
+        run: |
+          npm install --prefix browser-tools --ignore-scripts --no-audit --save-exact playwright@1.56.1
+          node browser-tools/node_modules/playwright/cli.js install --with-deps chromium
+      - name: Test composed site HTML and new assets under the real subpath
+        working-directory: gui
+        env:
+          PW_MODULE: ${{ github.workspace }}/browser-tools/node_modules/playwright
+        run: timeout 180 node tools/tests/check-static-subpath.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: certificate-contrast-candidate
+          path: candidate/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: certificate-contrast-static-preview
+          path: gui/subpath-evidence/
+          if-no-files-found: warn
+          retention-days: 14
+  stage-only:
+    needs: build-preview
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: c11a1756a6a6afe0aa467915148eae0355f19763
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: certificate-contrast-candidate
+          path: candidate
+      - name: Verify artifacts and create a new non-main review branch
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib,shutil
+          root=pathlib.Path('candidate');m=json.loads((root/'manifest.json').read_text())
+          assert m['gui_source']=='21ff418b53470cfa32138e4b0c0958285d3ca290'
+          assert m['site_base']=='c11a1756a6a6afe0aa467915148eae0355f19763'
+          actual={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file() and p.name!='manifest.json'}
+          assert actual==m['files'] and 2<=len(actual)<=3
+          allowed={'explorer/app/index.html','explorer/app/assets/'+pathlib.Path(m['new_js']).name,'explorer/app/assets/'+pathlib.Path(m['new_css']).name}
+          assert 'explorer/app/index.html' in actual and set(actual)<=allowed
+          old=pathlib.Path('explorer/app/index.html').read_bytes();assert hashlib.sha256(old).hexdigest()==m['old_index_sha256']
+          updated=(root/'explorer/app/index.html').read_text()
+          assert updated.replace(m['new_js'],'_JS_').replace(m['new_css'],'_CSS_')==old.decode().replace(m['old_js'],'_JS_').replace(m['old_css'],'_CSS_')
+          for rel in actual:
+              if rel!='explorer/app/index.html': assert not pathlib.Path(rel).exists()
+          print(json.dumps(m,indent=2))
+          PY
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "c11a1756a6a6afe0aa467915148eae0355f19763"
+          if git ls-remote --exit-code --heads origin refs/heads/stage/certificate-contrast-20261026; then
+            echo 'Refuse existing stage branch overwrite'; exit 1
+          fi
+          git checkout -b stage/certificate-contrast-20261026
+          cp candidate/explorer/app/index.html explorer/app/index.html
+          cp candidate/explorer/app/assets/* explorer/app/assets/
+          git add explorer/app/index.html explorer/app/assets/
+          python3 - <<'PY'
+          import subprocess,json,pathlib
+          expected=json.loads(pathlib.Path('candidate/manifest.json').read_text())['files']
+          assert set(subprocess.check_output(['git','diff','--cached','--name-only']).decode().splitlines())==set(expected)
+          PY
+          git -c user.name='VeritasChain Standards Organization (VSO)' -c user.email='info@veritaschain.org' commit -m 'stage: verified certificate contrast assets (not a deployment)'
+          git push origin HEAD:refs/heads/stage/certificate-contrast-20261026
