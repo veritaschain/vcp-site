@@ -49,3 +49,29 @@ confirmed no horizontal overflow on the Japanese announcement or homepage;
 announcement filtering keeps both the new RTA item and recent outreach visible.
 Desktop article layout was also reviewed; the Japanese title uses phrase-level
 wrapping. These are website checks, not another execution of the RTA test suites.
+
+## Follow-up: published-recipe CI
+
+VCP RTA PR #16 merged as `4a40ee40f44ca8efe1e4d4f0f07df9050d5f3b21`.
+[Published checkpoint recipe run 40263948191](https://github.com/veritaschain/vcp-rta-reference/actions/runs/40263948191)
+was queried directly: both Python 3.11 / 3.13.5 jobs completed successfully,
+including the real fresh-network-clone recipe step and report retention.
+The run is a PR #16 record, not a claim that CI executed the eventual merge SHA.
+The pinned workflow-scope document and the original guide were compared.
+
+The three announcements now distinguish the complete published-procedure run
+from the earlier PR #14 source tests. They record the 29-input check, fixed
+809 + 15 cases, expected INDETERMINATE replay with exit 2, final assessment,
+and separate 13 launcher guard tests. Repeated cases are not new unique coverage.
+The automation, guide and checkpoint revisions remain separate. These are
+first-party results; extensions stay unadopted and independent reproduction
+stays unestablished. Thirty-day retention and incomplete environment locking
+remain explicit. No RTA suite was re-executed for this website publication.
+
+The existing homepage summaries and RTA review card were updated in EN/JA/ZH.
+The newer eight-country outreach update from site PR #124 is preserved.
+No URL, article title, publication date, normative text, implementation, signed
+evidence, fixed distribution, K3 or XServer file is changed by this follow-up.
+All 357 canonical pages and 12 legacy destinations passed the site checks;
+15 existing JavaScript tests passed without skips. The Japanese announcement
+was reviewed at desktop and 375 CSS pixels with no horizontal overflow.
