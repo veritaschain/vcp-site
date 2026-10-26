@@ -117,6 +117,8 @@ class VCPHeader extends HTMLElement {
                 impressum: 'Impressum',
                 mediaPress: 'Media & Press',
                 blog: 'Blog',
+                guides: 'Practical Guides',
+                aiAgentGuide: 'AI Agent Audit Logs',
                 aiGovernanceGuide: 'AI Governance Guide',
                 aiAuditTrailGuide: 'AI Audit Trail Guide',
                 siteDirectory: 'All Pages',
@@ -184,6 +186,8 @@ class VCPHeader extends HTMLElement {
                 impressum: 'インプリント',
                 mediaPress: 'メディア',
                 blog: 'ブログ',
+                guides: '実務ガイド一覧',
+                aiAgentGuide: 'AIエージェント監査ログ',
                 aiGovernanceGuide: 'AIガバナンスガイド',
                 aiAuditTrailGuide: 'AI監査ログガイド',
                 siteDirectory: 'サイトマップ',
@@ -251,6 +255,8 @@ class VCPHeader extends HTMLElement {
                 impressum: '出版信息',
                 mediaPress: '媒体与新闻',
                 blog: '博客',
+                guides: '实务指南（英文）',
+                aiAgentGuide: 'AI智能体审计日志（英文）',
                 aiGovernanceGuide: 'AI治理指南（英文）',
                 aiAuditTrailGuide: 'AI审计日志指南（英文）',
                 siteDirectory: '网站地图',
@@ -415,6 +421,8 @@ class VCPHeader extends HTMLElement {
                         </button>
                         <div class="dropdown-menu">
                             <a href="/support/" class="dropdown-item">${t.support}</a>
+                            <a href="/guides/" class="dropdown-item">${t.guides}</a>
+                            <a href="/guides/ai-agent-audit-log/" class="dropdown-item">${t.aiAgentGuide}</a>
                             <a href="/guides/ai-governance/" class="dropdown-item">${t.aiGovernanceGuide}</a>
                             <a href="/guides/ai-audit-trail/" class="dropdown-item">${t.aiAuditTrailGuide}</a>
                             <a href="/sitemap/" class="dropdown-item">${t.siteDirectory}</a>
@@ -442,7 +450,7 @@ class VCPHeader extends HTMLElement {
         const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/vso/", "/what-is-vcp/"]);
         this.querySelectorAll('.dropdown-menu a[href^="/"]').forEach(link => {
             const path = link.getAttribute('href');
-            if (translatedRoutes.has(path) || (lang === 'ja' && ['/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/'].includes(path))) link.setAttribute('href', `${path}${lang}/`);
+            if (translatedRoutes.has(path) || (lang === 'ja' && ['/guides/', '/guides/ai-agent-audit-log/', '/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/'].includes(path))) link.setAttribute('href', `${path}${lang}/`);
         });
     }
 
