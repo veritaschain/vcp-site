@@ -1,0 +1,133 @@
+name: Stage Explorer PR14 print correction (temporary)
+on:
+  pull_request:
+    branches: [main]
+    paths: ['.github/workflows/explorer-pr14-stage-temp.yml']
+permissions:
+  contents: read
+jobs:
+  build-preview:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: efadac1897d7d5f7789ccb925369ad8587c9b061
+          path: site
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: veritaschain/vcp-explorer-gui
+          ref: c390ef007c8e42f9bde19ee76ef04aaf695a4eb4
+          path: gui
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Build pinned source and run existing tests
+        working-directory: gui
+        run: |
+          test "$(git rev-parse HEAD)" = c390ef007c8e42f9bde19ee76ef04aaf695a4eb4
+          npm ci --ignore-scripts
+          VITE_ROUTER_MODE=hash npm run build -- --base=/explorer/app/
+          npm test
+      - name: Compose candidate while preserving original HTML
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib,re,shutil
+          source='c390ef007c8e42f9bde19ee76ef04aaf695a4eb4'
+          base='efadac1897d7d5f7789ccb925369ad8587c9b061'
+          old=pathlib.Path('site/explorer/app/index.html').read_bytes()
+          assert hashlib.sha256(old).hexdigest()=='90bf9e5a9cb388d09513cf7c041d2b7f81919fd6bce2fcdeafa61b6a7222976e'
+          html=old.decode('utf-8'); original=html
+          files=[]
+          for ext in ('js','css'):
+              found=list(pathlib.Path('gui/dist/assets').glob('index-*.'+ext)); assert len(found)==1
+              f=found[0]; assert not pathlib.Path('site/explorer/app/assets',f.name).exists()
+              pattern=r'/explorer/app/assets/index-[\w-]+\.'+ext
+              refs=re.findall(pattern,html); assert len(refs)==1
+              html=html.replace(refs[0],'/explorer/app/assets/'+f.name)
+              files.append(f)
+          pattern=r'/explorer/app/assets/index-[\w-]+\.(js|css)'
+          assert re.sub(pattern,'ASSET',original)==re.sub(pattern,'ASSET',html)
+          assert html.count('id="integrity-review-2026-10-24"')==1
+          assert 'rel="canonical"' in html and 'application/ld+json' in html
+          js=files[0].read_text('utf-8')
+          for marker in ('data-certificate-field','data-certificate-proof-hash','Print / Save as PDF','Demo data','not verified'):
+              assert marker in js,marker
+          out=pathlib.Path('candidate/explorer/app'); (out/'assets').mkdir(parents=True)
+          (out/'index.html').write_text(html,encoding='utf-8')
+          for f in files: shutil.copyfile(f,out/'assets'/f.name)
+          root=pathlib.Path('candidate')
+          hashes={str(f.relative_to(root)):hashlib.sha256(f.read_bytes()).hexdigest() for f in root.rglob('*') if f.is_file()}
+          m={'source_commit':source,'site_base':base,'old_index_sha256':hashlib.sha256(old).hexdigest(),'files':hashes,'published':False}
+          (root/'manifest.json').write_text(json.dumps(m,indent=2)+'\n')
+          shutil.copytree('site/explorer/app','dist')
+          shutil.copytree(out,'dist',dirs_exist_ok=True)
+          print(json.dumps(m,indent=2))
+          PY
+      - name: Install isolated browser test tools
+        run: |
+          npm install --prefix .browser-tools --ignore-scripts --no-audit --save-exact playwright@1.56.1
+          node .browser-tools/node_modules/playwright/cli.js install --with-deps chromium
+      - name: Exercise composed site on a strict static subpath
+        env:
+          PW_MODULE: ${{ github.workspace }}/.browser-tools/node_modules/playwright
+        run: timeout 180 node gui/tools/tests/check-static-subpath.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: explorer-pr14-candidate
+          path: candidate/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: explorer-pr14-stage-browser
+          path: subpath-evidence/
+          if-no-files-found: warn
+          retention-days: 14
+  stage-branch:
+    needs: build-preview
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: efadac1897d7d5f7789ccb925369ad8587c9b061
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: explorer-pr14-candidate
+          path: candidate
+      - name: Check exactly three files before creating a new branch
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib,re,shutil
+          root=pathlib.Path('candidate'); m=json.loads((root/'manifest.json').read_text())
+          assert m['source_commit']=='c390ef007c8e42f9bde19ee76ef04aaf695a4eb4'
+          assert m['site_base']=='efadac1897d7d5f7789ccb925369ad8587c9b061'
+          paths=m['files']; assert len(paths)==3 and 'explorer/app/index.html' in paths
+          assert sum(bool(re.fullmatch(r'explorer/app/assets/index-[\w-]+\.js',p)) for p in paths)==1
+          assert sum(bool(re.fullmatch(r'explorer/app/assets/index-[\w-]+\.css',p)) for p in paths)==1
+          actual={str(f.relative_to(root)):hashlib.sha256(f.read_bytes()).hexdigest() for f in root.rglob('*') if f.is_file() and f.name!='manifest.json'}
+          assert actual==paths
+          old=pathlib.Path('explorer/app/index.html').read_bytes(); assert hashlib.sha256(old).hexdigest()==m['old_index_sha256']
+          new=(root/'explorer/app/index.html').read_text(); pattern=r'/explorer/app/assets/index-[\w-]+\.(js|css)'
+          assert re.sub(pattern,'ASSET',old.decode())==re.sub(pattern,'ASSET',new)
+          for p in paths:
+              target=pathlib.Path(p)
+              if '/assets/' in p: assert not target.exists()
+              shutil.copyfile(root/p,target)
+          print(json.dumps(m,indent=2))
+          PY
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = efadac1897d7d5f7789ccb925369ad8587c9b061
+          if git ls-remote --exit-code --heads origin refs/heads/stage/explorer-pr14-20261026; then exit 1; fi
+          git checkout -b stage/explorer-pr14-20261026
+          git add explorer/app/index.html explorer/app/assets/
+          test "$(git diff --cached --name-only | wc -l)" = 3
+          git -c user.name='VeritasChain Standards Organization (VSO)' -c user.email='info@veritaschain.org' commit -m 'stage: full certificate IDs and grouped print proof from GUI PR14'
+          git push origin HEAD:refs/heads/stage/explorer-pr14-20261026
