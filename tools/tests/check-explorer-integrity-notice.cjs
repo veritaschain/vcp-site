@@ -150,6 +150,26 @@ async function geometry(page) {
   report.checks.push({ name: 'synthetic-inclusion-ui', passed: true, cases: inclusionChecks,
     limits: 'First-party UI integration checks only; not event-content, signature, anchor or independent verification.' });
 
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(url + '#/events/' + eventId + '/proof');
+    await page.getByRole('button', { name: 'Verify Inclusion', exact: true }).click();
+    await page.getByText('Inclusion proof matches supplied root', { exact: true }).waitFor();
+    const fit = await page.evaluate(() => ({ width: innerWidth, scrollWidth: document.documentElement.scrollWidth,
+      buttons: [...document.querySelectorAll('button.btn-verify, button.btn-secondary')].map(b => {
+        const r = b.getBoundingClientRect(); return { left: r.left, right: r.right };
+      }) }));
+    assert.ok(fit.scrollWidth <= width && fit.buttons.every(b => b.left >= 0 && b.right <= width), JSON.stringify(fit));
+    if (width === 390) {
+      await page.screenshot({ path: path.join(out, 'inclusion-390.png'), fullPage: true });
+      await page.evaluate(() => { document.querySelector('#explorer-proof-mobile-layout').sheet.disabled = true; });
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), 'Prior button layout must reproduce overflow');
+      await page.evaluate(() => { document.querySelector('#explorer-proof-mobile-layout').sheet.disabled = false; });
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    }
+    report.checks.push({ name: 'mobile-inclusion-controls', width, passed: true, fit });
+  }
+
   for (const width of [320, 390, 768, 1024, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     // A same-document hash visit retains the prior Tab focus. Start a new
