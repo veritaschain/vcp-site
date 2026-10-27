@@ -129,6 +129,27 @@ async function geometry(page) {
   assert.match(eventId, /^[0-9a-f-]{36}$/i);
   const certUrl = url + '#/events/' + eventId + '/certificate';
 
+  // Exercise the deployed bundle, including the uneven right branch of the
+  // 12-leaf synthetic fixture. A match authenticates neither root nor evidence.
+  await page.goto(url + '#/search');
+  await page.locator('a[href*="#/events/"]').first().waitFor();
+  const eventLinks = [...new Set(await page.locator('a[href*="#/events/"]').evaluateAll(
+    links => links.map(a => a.getAttribute('href')).filter(h => /^#\/events\/[0-9a-f-]{36}$/i.test(h))
+  ))];
+  assert.equal(eventLinks.length, 12, 'All 12 synthetic events must be available');
+  const inclusionChecks = [];
+  for (const link of eventLinks) {
+    await page.goto(url + link + '/proof');
+    await page.getByText('Demo inclusion check — supplied root and tree size are not authenticated', { exact: true }).waitFor();
+    assert.equal((await page.getByText('Supplied Tree Size', { exact: true }).locator('..').locator('p').innerText()).trim(), '12');
+    await page.getByRole('button', { name: 'Verify Inclusion', exact: true }).click();
+    await page.getByText('Inclusion proof matches supplied root', { exact: true }).waitFor();
+    await page.getByText('The supplied hash and path match this root and tree size. Event contents, signatures and external anchors have not been verified.', { exact: true }).waitFor();
+    inclusionChecks.push({ eventId: link.split('/')[2], treeSize: 12, suppliedRootMatch: true });
+  }
+  report.checks.push({ name: 'synthetic-inclusion-ui', passed: true, cases: inclusionChecks,
+    limits: 'First-party UI integration checks only; not event-content, signature, anchor or independent verification.' });
+
   for (const width of [320, 390, 768, 1024, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     // A same-document hash visit retains the prior Tab focus. Start a new
