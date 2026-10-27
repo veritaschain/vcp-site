@@ -82,6 +82,7 @@ class VCPHeader extends HTMLElement {
                 vapIap: 'IAP - Industry Accountability',
                 vapCap: 'CAP - Content / Creative',
                 vapCpp: 'CPP - Capture Provenance',
+                vapLap: 'VAP-LAP - Legal AI (proposed)',
                 vapGam: 'GAM - Gaming (concept)',
                 vapAt: 'VAP-AT',
                 vapLimits: 'What VAP does not do',
@@ -151,6 +152,7 @@ class VCPHeader extends HTMLElement {
                 vapIap: 'IAP - 産業アカウンタビリティ',
                 vapCap: 'CAP - コンテンツ / クリエイティブ',
                 vapCpp: 'CPP - キャプチャ来歴',
+                vapLap: 'VAP-LAP - 法律AI（提案）',
                 vapGam: 'GAM - ゲーミング（構想）',
                 vapAt: 'VAP-AT',
                 vapLimits: 'VAPにできないこと',
@@ -220,6 +222,7 @@ class VCPHeader extends HTMLElement {
                 vapIap: 'IAP - 行业问责',
                 vapCap: 'CAP - 内容 / 创意',
                 vapCpp: 'CPP - 捕获来源',
+                vapLap: 'VAP-LAP - 法律AI（提案）',
                 vapGam: 'GAM - 游戏（构想）',
                 vapAt: 'VAP-AT',
                 vapLimits: 'VAP 的限制（英文）',
@@ -320,6 +323,7 @@ class VCPHeader extends HTMLElement {
                             <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
                             <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
                             <a href="/vap/cpp/" class="dropdown-item">${t.vapCpp}</a>
+                            <a href="/vap/lap/" class="dropdown-item">${t.vapLap}</a>
                             <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
                             <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
                             <a href="/vap/limits/" class="dropdown-item">${t.vapLimits}</a>
@@ -447,7 +451,7 @@ class VCPHeader extends HTMLElement {
     localizeNavigation(lang) {
         if (!['ja', 'zh'].includes(lang)) return;
         // Only route to translations that exist; English-only tools keep their working URL.
-        const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/vso/", "/what-is-vcp/"]);
+        const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/lap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/vso/", "/what-is-vcp/"]);
         this.querySelectorAll('.dropdown-menu a[href^="/"]').forEach(link => {
             const path = link.getAttribute('href');
             if (translatedRoutes.has(path) || (lang === 'ja' && ['/guides/', '/guides/ai-agent-audit-log/', '/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/'].includes(path))) link.setAttribute('href', `${path}${lang}/`);
