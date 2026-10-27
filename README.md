@@ -13,6 +13,12 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 ### Available Pages
 
 - 🏠 **VCP Protocol Landing:** [index.html](index.html)
+- 🌐 **VAP Framework and Domain Profiles:** [vap/index.html](vap/index.html)
+  - [English](vap/index.html) · [日本語](vap/ja/index.html) · [中文](vap/zh/index.html)
+- ⚖️ **VAP-LAP — Legal AI Profile (proposed):** [vap/lap/index.html](vap/lap/index.html)
+  - [English](vap/lap/index.html) · [日本語](vap/lap/ja/index.html) · [中文](vap/lap/zh/index.html)
+  - Legal AI workflows and [AILEX as a product and use-case reference](https://veritaschain.org/vap/lap/#ailex).
+  - Based on [individual Internet-Draft -05](https://datatracker.ietf.org/doc/draft-ailex-vap-legal-ai-provenance/05/); proposal status does not establish VAP registry adoption or implementation conformance.
 - 🏛️ **VSO (Standards Organization):** [vso/index.html](vso/index.html)
 - 📜 **VSO Independence Statement:** [vso/policies/](vso/policies/)
   - 🇬🇧 English: [vso/policies/index.html](vso/policies/index.html)
