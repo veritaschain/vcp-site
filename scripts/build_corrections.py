@@ -81,7 +81,7 @@ def page(lang, data):
     items = []
     for entry in data['entries']:
         body = entry[lang]
-        records = ' '.join(f'<a href="{esc(url)}">{esc(label)}</a>' for label, url in entry['records'])
+        records = ' '.join(f'<a href="{esc(url)}">{esc(label)}</a>' for label, url in body.get('records', entry['records']))
         items.append(
             f'<li class="entry"><div class="date"><time datetime="{entry["date"]}">{entry["date"]}</time></div>'
             f'<h2>{esc(body["title"])}</h2><p>{esc(body["text"])}</p>'
