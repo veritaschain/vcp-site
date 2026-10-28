@@ -22,6 +22,19 @@ Merging this repository alone does not upload files to XServer.
   description across HTML, Open Graph and Twitter metadata. The visible
   VAP-LAP and AILEX introduction was also inspected after publication.
 
+## Subsequent GA4 publication
+
+The separate GA4 update in PR #161/#162 was published after this metadata
+deployment. A bounded recheck at **13:54:54–13:54:55 JST** fetched only the six
+targets once. All four HTML pages retain the new metadata, identical bodies
+and one shared analytics loader; both content sources retain their after
+hashes. Removing only that exact later loader tag reproduces the four prepared
+HTML hashes. All 34 checks passed, with no errors or redirects.
+
+[post-ga4-metadata-check.json](post-ga4-metadata-check.json) records the current
+hashes and observations. The original publication record remains the dated
+13:04 snapshot. No metadata file was uploaded again during this recheck.
+
 ## Reason and scope
 
 The English and Japanese homepage and Profiles bodies already introduce
