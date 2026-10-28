@@ -70,3 +70,7 @@ and the resulting hashes verified during preparation.
 See `validation.json` for the machine-readable local result. No server write,
 formal profile adoption, conformance decision, certification or new verifier
 run is represented by this package.
+
+## Superseding integrated patch — 28 October 2026
+
+Do not deploy this older baseline over the 159-test Explorer update. Use the [reviewed integrated patch](../xserver-vap-github-update-2026-10-28/) and its before/after hash manifest. The original patch remains here as a historical preparation record.
