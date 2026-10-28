@@ -11,7 +11,9 @@ manifest.json at their served paths). The script:
 2. removes the company founding date: the JSON-LD "foundingDate" key and the
    "Founded" / 「設立」 table row, in rendered pages and generator sources;
 3. removes the unregistered alias "VAP-WEB" for OAP;
-4. checks every result against its "after" SHA-256.
+4. updates the two About sitemap dates, without changing blog feed dates or
+   adding an unrelated notice to the About pages;
+5. checks every result against its "after" SHA-256.
 
 The changes are made by key and pattern, so this package does not itself
 contain the date. With --check, nothing is written.
@@ -37,6 +39,34 @@ def sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def correct(text: str, path: str, publication_date: str) -> str:
+    for pattern, replacement in RULES:
+        text = pattern.sub(replacement, text)
+    if path == 'tools/build.py':
+        marker = '\nCSS = """'
+        assert text.count(marker) == 1
+        dates = (
+            '\n# Wording correction dates used only by the sitemap; notice placement is unchanged.\n'
+            f'CONTENT_CORRECTION_UPDATED = {{"/about/": "{publication_date}", '
+            f'"/ja/about/": "{publication_date}"}}\n'
+        )
+        text = text.replace(marker, dates + marker, 1)
+        previous = 'PAGE_UPDATED.get(pg["path"], ""))'
+        updated = 'PAGE_UPDATED.get(pg["path"], ""), CONTENT_CORRECTION_UPDATED.get(pg["path"], ""))'
+        assert text.count(previous) == 1
+        text = text.replace(previous, updated, 1)
+    elif path == 'sitemap.xml':
+        pattern = re.compile(
+            r'(<loc>https://vap\.veritaschain\.org/(?:ja/)?about/</loc>\n'
+            r'    <lastmod>)[^<]*(</lastmod>)'
+        )
+        text, count = pattern.subn(
+            lambda match: match[1] + publication_date + match[2], text
+        )
+        assert count == 2
+    return text
+
+
 def main() -> int:
     if len(sys.argv) < 2:
         print(__doc__)
@@ -51,9 +81,7 @@ def main() -> int:
         if sha(data) != entry['before_sha256']:
             print(f"STOP: {entry['path']} differs from the before hash; review the server copy first")
             return 1
-        text = data.decode('utf-8')
-        for pattern, replacement in RULES:
-            text = pattern.sub(replacement, text)
+        text = correct(data.decode('utf-8'), entry['path'], manifest['publication_date'])
         out = text.encode('utf-8')
         if sha(out) != entry['after_sha256']:
             print(f"STOP: {entry['path']} does not reproduce the after hash")
