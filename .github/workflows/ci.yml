@@ -19,6 +19,11 @@ jobs:
       - name: Validate legacy URL destinations
         run: python3 scripts/build-legacy-aliases.py check
 
+      - name: Validate consent-gated analytics coverage
+        run: |
+          python3 scripts/analytics-tags.py check
+          node --check assets/js/analytics.js
+
       - name: Check progressive motion and JavaScript syntax
         run: |
           node --check assets/js/site-motion.js

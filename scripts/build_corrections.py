@@ -102,7 +102,7 @@ def page(lang, data):
         '<meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">\n'
         f'<link rel="canonical" href="{t["url"]}">\n{alternates}\n'
         f'<link rel="icon" href="/favicon.ico"><style>{STYLE}</style>\n'
-        f'<script type="application/ld+json">{ld}</script></head>\n'
+        f'<script type="application/ld+json">{ld}</script><script defer src="/assets/js/analytics.js?v=20261028"></script></head>\n'
         f'<body><header><a href="{t["home"]}">{t["back"]}</a><nav aria-label="Language">{nav}</nav></header>\n'
         f'<main><div class="eyebrow">{t["eyebrow"]} · {t["updated"]} <time datetime="{data["updated"]}">{data["updated"]}</time></div>'
         f'<h1>{t["h1"]}</h1><p class="intro">{esc(t["intro"])}</p>\n'
