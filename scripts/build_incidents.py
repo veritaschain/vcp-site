@@ -126,7 +126,7 @@ def head(lang, title, desc, url, alt_urls, ld):
         '<meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">\n'
         f'<link rel="canonical" href="{SITE}{url}">\n{alternates}\n'
         f'<link rel="icon" href="/favicon.ico"><style>{STYLE}</style>\n'
-        f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script></head>\n')
+        f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script><script defer src="/assets/js/analytics.js?v=20261028"></script></head>\n')
 
 
 def top(lang, alt_urls):

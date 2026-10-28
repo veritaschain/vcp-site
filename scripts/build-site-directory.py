@@ -125,7 +125,7 @@ def main():
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="/assets/css/site-directory.css">
   <script type="application/ld+json">{structured}</script>
-</head>
+<script defer src="/assets/js/analytics.js?v=20261028"></script></head>
 <body>
   <a class="skip-link" href="#main">Skip to directory</a>
   <header class="site-header">
