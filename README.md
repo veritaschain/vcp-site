@@ -235,7 +235,7 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 
 **Important Disclaimers:**
 
-- VSO operates independently and does not provide trading services.
+- VSO is operated by VeritasChain Co., Ltd. and does not provide trading services.
 - VSO does not endorse or certify any financial performance claims.
 - All specifications are provided "as-is" without warranties of any kind.
 
@@ -247,4 +247,4 @@ This site is maintained by VeritasChain Standards Organization (VSO) as part of 
 
 **Maintained by:** TOKACHI & Ayano
 **Created:** 2025
-**Status:** Production-Ready ✅
+**Status:** Maintained (the status of each specification and program is stated on its own page)

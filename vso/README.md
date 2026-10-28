@@ -12,7 +12,7 @@
 
 ## 📄 Overview
 
-The VSO About page presents VeritasChain Standards Organization as an independent international standards body establishing transparency, fairness, and security for algorithmic trading in global financial markets.
+The VSO About page presents VeritasChain Standards Organization, a standards organization operated by VeritasChain Co., Ltd., which develops specifications for transparency, fairness and security in algorithmic trading.
 
 **Tagline:** Encoding Trust in the Algorithmic Age
 
@@ -160,4 +160,4 @@ This page has been specifically optimized for proprietary trading firm outreach:
 
 **Maintained by:** TOKACHI & VSO Team  
 **Created:** 2025-11-23  
-**Status:** Production-Ready ✅
+**Status:** Maintained
