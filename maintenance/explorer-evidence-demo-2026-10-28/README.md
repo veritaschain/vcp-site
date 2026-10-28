@@ -1,3 +1,20 @@
+> **Historical preparation snapshot.** This README and its
+> build-manifest.json preserve the original pre-deployment state for auditability.
+> The authoritative **subsequent rollout record** is
+> [merged site PR #164](https://github.com/veritaschain/vcp-site/pull/164):
+> on 28 October 2026 the page was deployed at
+> https://veritaschain.org/explorer/app/#/evidence-demo, and Chrome
+> integration reported all three expected synthetic outcomes. This does **not**
+> prove independent reproduction or general CLI access. A separate Python
+> HTTPS probe of the API reported Cloudflare HTTP 403 / error 1010; it is not
+> a cryptographic INVALID result. The
+> [SDK offline replay CLI](https://github.com/veritaschain/vcp-sdk/blob/main/docs/EXPLORER_REPLAY_CLI.md)
+> provides a network-independent first-party recheck (after its PR is merged).
+>
+> **Do not overwrite historical status fields with a retroactive success.**
+> Preparation, deployment, browser observations and third-party reproduction
+> are distinct states.
+
 # Explorer SDK Evidence Demo — prepared static-site update
 
 **Static-site package prepared on 28 October 2026; official-site rollout is
