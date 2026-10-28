@@ -1,9 +1,35 @@
-# XServer VAP correction — founding date and "VAP-WEB" (review package)
+# XServer VAP correction — founding date and "VAP-WEB"
 
-**Prepared and locally validated; not deployed.** This package is for the separately hosted
-`https://vap.veritaschain.org/`, not this repository's main website. Merging it
-does not change the server. No server file, existing ZIP, fixed research
-distribution, tag, signed data or K3 record has been changed.
+**Deployed and publicly verified on 28 October 2026.** The separately hosted
+`https://vap.veritaschain.org/` was updated through XServer File Manager after
+the preparation package in [PR #159](https://github.com/veritaschain/vcp-site/pull/159)
+was merged. The publication check at **12:36:48–12:36:51 JST** matched all 11
+changed files to their after hashes, all 26 other checked files to their before
+hashes, and all six normal page URLs to the expected content.
+
+See [deployment.json](deployment.json) for the upload and backup record and
+[publication-verification.json](publication-verification.json) for the public
+HTTPS results. The preparation records below retain their original status and
+hashes; merging this repository alone does not deploy the XServer site.
+
+## Publication
+
+- A full server-side copy and ZIP were retained outside `public_html` before
+  publishing. The downloaded ZIP contains 191 entries; all 11 target files
+  match their before hashes.
+- XServer's ZIP extraction created a named subdirectory instead of replacing
+  the served files. The first publication check detected that no target file
+  had changed. The temporary subdirectory was moved outside `public_html`, and
+  the 11 reviewed files were uploaded individually into their seven existing
+  directories. The server then served every expected after hash.
+- The final check returned HTTP 200 without redirects for all 37 file URLs
+  and six normal page URLs. All 127 bounded content checks passed. The Japanese
+  About and Profiles pages were also inspected in a browser.
+- VAP-LAP, AILEX, Explorer notices, registered DAP/SMP aliases, links and
+  unrelated JSON-LD were preserved. Only the two About sitemap dates changed;
+  the blog feed remained byte-identical.
+- Existing deployment archives, fixed research distributions, tags, signed
+  data and K3 records were not modified by this correction.
 
 ## What it changes
 
