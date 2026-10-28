@@ -20,7 +20,7 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
   - Legal AI workflows and [AILEX as a product and use-case reference](https://veritaschain.org/vap/lap/#ailex).
   - Based on [individual Internet-Draft -05](https://datatracker.ietf.org/doc/draft-ailex-vap-legal-ai-provenance/05/); proposal status does not establish VAP registry adoption or implementation conformance.
 - 🏛️ **VSO (Standards Organization):** [vso/index.html](vso/index.html)
-- 📜 **VSO Independence Statement:** [vso/policies/](vso/policies/)
+- 📜 **VSO Neutrality, Operating Structure and Non-Endorsement Statement:** [vso/policies/](vso/policies/)
   - 🇬🇧 English: [vso/policies/index.html](vso/policies/index.html)
   - 🇯🇵 Japanese: [vso/policies/ja/index.html](vso/policies/ja/index.html)
 - 🌐 **VSO as Distributed Standards Organization:** [distributed-organization/](distributed-organization/) ⭐ NEW
@@ -67,7 +67,7 @@ vcp-site/
 │       └── main.js         # Custom JavaScript
 ├── vso/                    # VSO Pages
 │   ├── index.html          # VSO landing page
-│   ├── policies/           # VSO Independence Statement
+│   ├── policies/           # VSO Neutrality, Operating Structure and Non-Endorsement Statement
 │   │   ├── index.html      # 🇬🇧 English version (default)
 │   │   └── ja/
 │   │       └── index.html  # 🇯🇵 Japanese version
@@ -132,7 +132,7 @@ https://veritaschain.org/
 8. **VC-Certified** - Certification program details with SVG badge
 9. **Company Info** - VeritasChain Co., Ltd. structure
 10. **Contact** - Contact information with standardization inquiry
-11. **Footer** - Disclaimers, revision history, independence statement
+11. **Footer** - Disclaimers, revision history, policy statement
 
 ---
 

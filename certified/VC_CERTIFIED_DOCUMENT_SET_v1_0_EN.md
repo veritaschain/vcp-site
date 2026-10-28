@@ -2,7 +2,7 @@
 
 **The World's First Algorithmic Transparency Standard Package**
 
-> **Status note (28 October 2026).** This v1.0 document set is kept as published. It is not a production-ready package and does not certify compliance with any regulation. VC-Certified attests technical conformance to VCP only; VSO does not issue certifications itself; the scheme requires CABs independent of the scheme owner, and the only registered CAB, VeritasChain Co., Ltd., is not independent (VAP v1.2 ERRATA E-2026-10-21). There are zero external implementations of VAP or any of its profiles, and zero Evidence Packs accepted in any proceeding.
+> **Status note (28 October 2026).** This v1.0 document set is kept as published. It is not a production-ready package and does not certify compliance with any regulation. VC-Certified attests technical conformance to VCP only; VSO does not issue certifications itself; the scheme requires CABs independent of the scheme owner, and the only registered CAB, VeritasChain Co., Ltd., is not independent (VAP v1.2 ERRATA E-2026-10-21). There are zero external implementations of VAP or any of its profiles, and zero Evidence Packs accepted in any proceeding. Read “immutable” below as tamper-evident: alteration is made detectable, not impossible. “World's First” is not a substantiated claim. Status marks such as “✅ Production” and the test counts are those of the publication date, not a current claim.
 
 ---
 
