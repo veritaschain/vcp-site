@@ -1,5 +1,8 @@
 # GA4 setup — 28 October 2026
 
+**Site changes published; GA4 administrative saves still unconfirmed.**
+See [publication.json](publication.json) and [publication-hashes.json](publication-hashes.json). All 391 reviewed served-file hashes match. A full VAP backup remains outside the public webroot. The prepared manifest below is retained as a preparation record.
+
 Website implementation, not a change to VAP/VCP normative requirements.
 
 - Reuse existing property `514599945`, web stream `13062917269`, measurement ID `G-XTK1LJKRGV`.
