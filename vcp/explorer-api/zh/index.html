@@ -47,17 +47,18 @@
     <script id="site-webpage" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://veritaschain.org/vcp/explorer-api/zh/#webpage", "url": "https://veritaschain.org/vcp/explorer-api/zh/", "name": "VCP Explorer API v1.1：查询、验证与审计指南 | VSO", "description": "VCP Explorer API v1.1 - 通过密码学证明搜索、验证和审计VCP事件链", "inLanguage": "zh", "isPartOf": {"@id": "https://veritaschain.org/#website"}, "publisher": {"@id": "https://veritaschain.org/#organization"}}</script>
 
 <script defer src="/assets/js/analytics.js?v=20261028"></script>
+<link rel="stylesheet" href="/assets/css/site-readability.css?v=20261031">
 </head>
-<body>
+<body data-vso-readability="true">
     <!-- VCP Header -->
-    <vcp-header theme="dark" lang="zh" available-langs="en,ja,zh"></vcp-header>
+    <vcp-header theme="dark" lang="zh" available-langs="en,ja,zh"></vcp-header><aside class="vso-status-note" id="explorer-api-status-20261031" style="max-width:70rem;margin:2rem auto;padding:1.25rem;background:#172033;color:#e2e8f0;border:1px solid #64748b;border-radius:12px;line-height:1.8"><h2 style="font-weight:700;font-size:1.2rem">Explorer API：源代码、演示与计划接口 — 2026-10-31</h2><p>Explorer API源代码已公开。普通API路由返回模拟数据，单独的SDK Evidence Demo可在公开Explorer中使用。此处示例的生产URL与SDK规范流程并非已提供的生产服务。公开API尚未实现认证中间件。</p><p><a style="color:#93c5fd;text-decoration:underline" href="https://github.com/veritaschain/vcp-explorer-api/blob/main/README.md">API README</a> · <a style="color:#93c5fd;text-decoration:underline" href="/explorer/app/#/evidence-demo">SDK Evidence Demo</a></p><p>研究变更提案和实验扩展仍未采纳，独立复现尚未成立。VSO自有CI属于内部检查，不能视为独立复现。</p></aside>
 <aside id="integrity-review-2026-10-24" aria-label="完整性审查补充 — 2026年10月24日" style="background:#172033;color:#e2e8f0;border:1px solid #64748b;border-radius:8px;padding:1rem;max-width:1100px;margin:5rem auto 1.5rem;font:15px/1.7 system-ui,sans-serif;"><strong>完整性审查补充 — 2026年10月24日</strong><p>VCP v1.2 §6.2.1要求采用RFC 6962的树结构，但已发布的构建和证明示例存在已知不一致。仅对根签名不能认证附加的批次信息，纳秒值的精确序列化也有待审查。下文的RFC表述属于要求或历史说明，不代表每个实现均已验证符合要求。尚未确立对VAP的完全符合性。修订提案与实验性扩展仍未采纳，独立复现尚未成立。 <a style="color:#93c5fd" href="https://github.com/veritaschain/vap-spec/blob/9fa5fbc68075079b4599e16940e9078db976cd59/experiments/vcp-v1.2-integrity-alignment/README.md">查看观察记录与局限</a>.</p></aside>
 
 
     <!-- Hero Section -->
     <div class="header">
         <div class="container">
-            <h1><i class="fas fa-search-dollar"></i> VCP Explorer API v1.1</h1>
+            <h1>VCP Explorer API</h1><p style="font-weight:700;margin:1rem 0">历史接口设计示例 — 并非生产服务</p>
             <p class="subtitle">通过密码学证明搜索、验证和审计VCP事件链</p>
             <a href="https://github.com/veritaschain/vcp-explorer-api" class="btn" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-github"></i> 在GitHub查看API
@@ -108,7 +109,7 @@
                 <code>https://explorer.veritaschain.org/api/v1</code>
             </div>
             <div class="alert alert-warning">
-                <strong>注意:</strong> Explorer API尚未部署(计划中（时间未定）)。本文档仅作为实现参考,以下端点尚未上线。
+                <strong>注意:</strong> Explorer API源代码已公开。普通API路由返回模拟数据，单独的SDK Evidence Demo可在公开Explorer中使用。此处示例的生产URL与SDK规范流程并非已提供的生产服务。公开API尚未实现认证中间件。
             </div>
         </div>
     </section>
@@ -117,7 +118,7 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">认证</h2>
-            <p>所有API请求需要在请求头中使用API密钥进行认证:</p>
+            <p>下文仅为历史接口设计示例。公开API没有认证中间件，不强制此API密钥请求头；不能视为访问控制保证。</p>
             <div class="code-block">
                 <div class="code-header">
                     <span class="code-label">HTTP头</span>
@@ -145,7 +146,7 @@
                 
                 <h3 class="section-subtitle">查询参数</h3>
                 <div class="table-container">
-                    <table>
+                    <div class="vso-table-scroll" role="region" tabindex="0" aria-label="可横向滚动的数据表"><table>
                         <thead>
                             <tr>
                                 <th>参数</th>
@@ -199,7 +200,7 @@
                                 <td>20 (默认)</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <h3 class="section-subtitle">请求示例</h3>
@@ -259,7 +260,7 @@ curl -H "X-VCP-API-Key: your_api_key" \\
             <p>VCP规范v1.0定义了固定的事件类型代码以确保实现间的一致性:</p>
             
             <div class="table-container">
-                <table>
+                <div class="vso-table-scroll" role="region" tabindex="0" aria-label="可横向滚动的数据表"><table>
                     <thead>
                         <tr>
                             <th>代码</th>
@@ -336,7 +337,7 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                             <td>系统</td>
                         </tr>
                     </tbody>
-                </table>
+                </table></div>
             </div>
         </div>
     </section>
@@ -378,7 +379,7 @@ curl -H "X-VCP-API-Key: your_api_key" \\
         <div class="container">
             <h2 class="section-title">HTTP状态码</h2>
             <div class="table-container">
-                <table>
+                <div class="vso-table-scroll" role="region" tabindex="0" aria-label="可横向滚动的数据表"><table>
                     <thead>
                         <tr>
                             <th>状态</th>
@@ -418,7 +419,7 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                             <td>内部服务器错误</td>
                         </tr>
                     </tbody>
-                </table>
+                </table></div>
             </div>
         </div>
     </section>
