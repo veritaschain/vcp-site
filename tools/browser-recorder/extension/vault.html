@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>記録庫 | VAP Browser Recorder</title><link rel="stylesheet" href="style.css"></head>
+<body class="dashboard"><header><span class="mark">V</span><div><strong>VAP Browser Recorder</strong><small>AI needs a Flight Recorder</small></div><span class="badge">EXPERIMENTAL / 0.1.1</span></header>
+<main><p class="eyebrow">YOUR OBSERVATION VAULT</p><h1>記録を持つ。あとから確かめる。</h1><p class="muted">利用者が選択した画面上のテキストを、署名付きで保管する実験的ツールです。</p>
+<div class="metrics"><section><small>保存済み</small><strong id="count">—</strong><span>手動で保存した記録</span></section><section><small>保存先</small><strong>この端末</strong><span>外部への自動送信なし</span></section><section><small>外部アンカー</small><strong class="amber">未実装</strong><span>ローカル記録の整合性を検証</span></section></div>
+<div class="columns"><section class="panel"><p class="eyebrow">01 / EXPORT</p><h2>記録を書き出す</h2><p class="muted">本文・記録順・署名・MerkleルートをJSONにまとめます。検証で対応する鍵を確かめるため、照合票は別の信頼できる場所に保管してください。</p>
+<div class="actions"><button id="export" class="primary">記録JSONを書き出す</button><button id="checkpoint" class="secondary" disabled>同じ記録の照合票を保存</button></div><p class="small muted">JSONには本文が平文で含まれます。照合票には本文・秘密鍵は入りません。照合票の保存だけでは独立した時刻証明にはなりません。</p><p id="export-status" role="status"></p>
+<h3>この記録庫の鍵指紋</h3><p id="fingerprint" class="mono break">まだ記録がありません。</p>
+<h3>最近の記録</h3><ol id="records" class="records"></ol></section>
+<section class="panel"><p class="eyebrow">02 / VERIFY</p><h2>書き出した記録を検証</h2><label class="file">記録JSON<input id="pack-file" type="file" accept=".json,application/json"></label>
+<label class="file">別途保管した照合票（任意）<input id="pin-file" type="file" accept=".json,application/json"></label>
+<p class="small muted">照合票がなければ、ファイル内の公開鍵で整合性のみを検証します。攻撃者が記録と鍵を丸ごと差し替えるケースは検出できません。</p><button id="verify" class="primary">この端末で検証する</button><pre id="verify-result" role="status" aria-live="polite">記録ファイルを選んでください。</pre>
+<div class="notice"><strong>検証結果の意味</strong><p>署名が正しくても、AI提供者の発言であること・本文の正しさ・会話全体の完全性・記録時刻は証明されません。VAP準拠の認証ではありません。</p></div></section></div>
+<section class="panel danger"><h2>記録庫をリセット</h2><p class="muted">この端末の本文と署名鍵を削除し、新しい記録庫を作ります。書き出し済みのファイルは消えません。ディスクの物理消去や削除証明ではありません。</p><label class="check"><input type="checkbox" id="reset-confirm"> 必要な記録を書き出しました。現在の記録と鍵を削除します。</label><button id="reset" disabled class="secondary">削除して新しい記録庫を作成</button></section>
+<footer>VAP v1.2 Draft 3を参照した試作 · 独自形式 vap-browser-observation/0.1.0<br>暗号検証の成功と、事実・出所の確認を分けて扱います。</footer>
+</main><script type="module" src="vault.mjs"></script></body></html>

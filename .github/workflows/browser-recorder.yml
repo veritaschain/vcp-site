@@ -1,0 +1,88 @@
+name: Browser Recorder regression
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/browser-recorder/**'
+      - '.github/workflows/browser-recorder.yml'
+      - 'vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.1.zip*'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/browser-recorder/**'
+      - '.github/workflows/browser-recorder.yml'
+      - 'vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.1.zip*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-recorder-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-recorder:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+        working-directory: tools/browser-recorder
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      CHROME_EXECUTABLE: ${{ runner.temp }}/vap-recorder-chrome/chrome-linux64/chrome
+      BROWSER_EVIDENCE_DIR: ${{ runner.temp }}/browser-recorder-evidence
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+          cache: npm
+          cache-dependency-path: tools/browser-recorder/package-lock.json
+
+      - name: Install locked browser-test dependencies
+        run: |
+          mkdir -p "$BROWSER_EVIDENCE_DIR"
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install-deps chromium
+
+      - name: Download and verify the pinned Chrome for Testing binary
+        run: |
+          curl --fail --location --retry 2 --max-time 180 \
+            'https://storage.googleapis.com/chrome-for-testing-public/156.0.8078.80/linux64/chrome-linux64.zip' \
+            --output "$RUNNER_TEMP/vap-recorder-chrome.zip"
+          printf '%s  %s\n' \
+            'b711c720f774be355197f32edf37e0651418ba036d92446ee2da19ac017540a7' \
+            "$RUNNER_TEMP/vap-recorder-chrome.zip" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/vap-recorder-chrome"
+          unzip -q "$RUNNER_TEMP/vap-recorder-chrome.zip" -d "$RUNNER_TEMP/vap-recorder-chrome"
+          "$CHROME_EXECUTABLE" --version | tee "$BROWSER_EVIDENCE_DIR/chrome-version.txt"
+          node --version | tee "$BROWSER_EVIDENCE_DIR/node-version.txt"
+
+      - name: Run unit and cryptographic regression tests
+        run: npm test | tee "$BROWSER_EVIDENCE_DIR/unit-tests.txt"
+      - name: Verify versioned archive matches the reviewed source
+        run: |
+          python3 scripts/package.py --output "$RUNNER_TEMP/VAP_Browser_Recorder_v0.1.1.zip"
+          cmp "$RUNNER_TEMP/VAP_Browser_Recorder_v0.1.1.zip" ../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.1.zip
+          cd ../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads
+          sha256sum --check VAP_Browser_Recorder_v0.1.1.zip.sha256
+      - name: Run real DOM selection regression tests
+        run: npm run test:browser-capture | tee "$BROWSER_EVIDENCE_DIR/capture-browser-tests.txt"
+      - name: Run unpacked-extension lifecycle regression tests
+        run: npm run test:browser-extension | tee "$BROWSER_EVIDENCE_DIR/extension-browser-tests.txt"
+
+      # The runner writes only synthetic exported records/checkpoints, local
+      # screenshots and test metadata here. Browser profiles, keys, dependencies
+      # and the downloaded browser stay outside this artifact directory.
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: browser-recorder-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/browser-recorder-evidence/
+          if-no-files-found: warn
+          retention-days: 30
