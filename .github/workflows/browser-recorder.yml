@@ -32,8 +32,6 @@ jobs:
         working-directory: tools/browser-recorder
     env:
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
-      CHROME_EXECUTABLE: ${{ runner.temp }}/vap-recorder-chrome/chrome-linux64/chrome
-      BROWSER_EVIDENCE_DIR: ${{ runner.temp }}/browser-recorder-evidence
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -46,9 +44,12 @@ jobs:
 
       - name: Install locked browser-test dependencies
         run: |
-          mkdir -p "$BROWSER_EVIDENCE_DIR"
+          printf 'CHROME_EXECUTABLE=%s/vap-recorder-chrome/chrome-linux64/chrome\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          printf 'BROWSER_EVIDENCE_DIR=%s/browser-recorder-evidence\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/browser-recorder-evidence"
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install playwright install-deps chromium
+          sudo apt-get install --yes --no-install-recommends fonts-noto-cjk
 
       - name: Download and verify the pinned Chrome for Testing binary
         run: |
