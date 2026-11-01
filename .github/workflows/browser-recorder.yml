@@ -2,7 +2,7 @@ name: Browser Recorder regression
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, 'fix/browser-recorder-capture-011']
     paths:
       - 'tools/browser-recorder/**'
       - '.github/workflows/browser-recorder.yml'
@@ -45,10 +45,12 @@ jobs:
         working-directory: tools/browser-recorder
     env:
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      RECORDER_BASELINE: a23bfdfbc02879f2ab6d5939bcb86085d4595ec5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.22.1'
@@ -76,19 +78,45 @@ jobs:
           unzip -q "$RUNNER_TEMP/vap-recorder-chrome.zip" -d "$RUNNER_TEMP/vap-recorder-chrome"
           "$CHROME_EXECUTABLE" --version | tee "$BROWSER_EVIDENCE_DIR/chrome-version.txt"
           node --version | tee "$BROWSER_EVIDENCE_DIR/node-version.txt"
+          git rev-parse HEAD | tee "$BROWSER_EVIDENCE_DIR/checkout-commit.txt"
+
+      - name: Confirm large-page regression against the pinned previous implementation
+        run: |
+          cp extension/lib/capture.mjs "$RUNNER_TEMP/current-capture.mjs"
+          trap 'cp "$RUNNER_TEMP/current-capture.mjs" extension/lib/capture.mjs' EXIT
+          git show "$RECORDER_BASELINE:tools/browser-recorder/extension/lib/capture.mjs" > extension/lib/capture.mjs
+          set +e
+          node --test --test-name-pattern='^short selection ignores' tests/browser/large-dom.test.mjs > "$BROWSER_EVIDENCE_DIR/large-dom-baseline.txt" 2>&1
+          status=$?
+          set -e
+          cat "$BROWSER_EVIDENCE_DIR/large-dom-baseline.txt"
+          test "$status" -eq 1
+          grep -F '確認するDOMが多すぎます。' "$BROWSER_EVIDENCE_DIR/large-dom-baseline.txt"
+          grep -E '^# fail 2$' "$BROWSER_EVIDENCE_DIR/large-dom-baseline.txt"
+          cp "$RUNNER_TEMP/current-capture.mjs" extension/lib/capture.mjs
+          git diff --exit-code -- extension/lib/capture.mjs
 
       - name: Run unit and cryptographic regression tests
         if: matrix.chrome.full_suite
         run: npm test | tee "$BROWSER_EVIDENCE_DIR/unit-tests.txt"
-      - name: Verify versioned archive matches the reviewed source
+      - name: Verify historical candidate and rebuild the current source candidate
         if: matrix.chrome.full_suite
         run: |
-          python3 scripts/package.py --output "$RUNNER_TEMP/VAP_Browser_Recorder_v0.1.1.zip"
-          cmp "$RUNNER_TEMP/VAP_Browser_Recorder_v0.1.1.zip" ../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.1.zip
-          cd ../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads
-          sha256sum --check VAP_Browser_Recorder_v0.1.1.zip.sha256
+          mkdir -p "$RUNNER_TEMP/recorder-baseline"
+          git -C ../.. archive "$RECORDER_BASELINE" tools/browser-recorder | tar -x -C "$RUNNER_TEMP/recorder-baseline"
+          python3 "$RUNNER_TEMP/recorder-baseline/tools/browser-recorder/scripts/package.py" --output "$RUNNER_TEMP/recorder-historical.zip"
+          cmp "$RUNNER_TEMP/recorder-historical.zip" ../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.1.zip
+          (cd ../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads && sha256sum --check VAP_Browser_Recorder_v0.1.1.zip.sha256)
+          printf '%s  %s\n' 'd17496cf9b096da85546a1e343e791138a1c807f1a37c518b28c140e424ffcf4' '../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.0.zip' | sha256sum --check
+          python3 scripts/package.py --output "$BROWSER_EVIDENCE_DIR/VAP_Browser_Recorder_v0.1.1-dom-candidate.zip" | tee "$BROWSER_EVIDENCE_DIR/current-archive.json"
+          python3 scripts/package.py --output "$RUNNER_TEMP/recorder-current-rebuild.zip"
+          cmp "$RUNNER_TEMP/recorder-current-rebuild.zip" "$BROWSER_EVIDENCE_DIR/VAP_Browser_Recorder_v0.1.1-dom-candidate.zip"
+          python3 -m zipfile -t "$BROWSER_EVIDENCE_DIR/VAP_Browser_Recorder_v0.1.1-dom-candidate.zip"
+          (cd "$BROWSER_EVIDENCE_DIR" && sha256sum VAP_Browser_Recorder_v0.1.1-dom-candidate.zip > VAP_Browser_Recorder_v0.1.1-dom-candidate.zip.sha256)
       - name: Run real DOM selection regression tests
         run: npm run test:browser-capture | tee "$BROWSER_EVIDENCE_DIR/capture-browser-tests.txt"
+      - name: Run large-DOM selection regression tests
+        run: node --test tests/browser/large-dom.test.mjs | tee "$BROWSER_EVIDENCE_DIR/large-dom-fixed.txt"
       - name: Run unpacked-extension lifecycle regression tests
         if: matrix.chrome.full_suite
         run: npm run test:browser-extension | tee "$BROWSER_EVIDENCE_DIR/extension-browser-tests.txt"
@@ -99,9 +127,8 @@ jobs:
         if: ${{ !matrix.chrome.full_suite }}
         run: npm run test:browser-storage | tee "$BROWSER_EVIDENCE_DIR/storage-browser-tests.txt"
 
-      # The runner writes only synthetic exported records/checkpoints, local
-      # screenshots and test metadata here. Browser profiles, keys, dependencies
-      # and the downloaded browser stay outside this artifact directory.
+      # Only synthetic evidence and a reviewed-source candidate ZIP are uploaded.
+      # Browser profiles, signing keys and dependencies remain outside this folder.
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
