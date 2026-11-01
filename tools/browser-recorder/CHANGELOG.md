@@ -18,9 +18,17 @@
 - Keep the 0.1.0 observation/checkpoint byte contract, stored keys, database name
   and existing synthetic signed sample unchanged.
 
-Persistence was tested with the same 0.1.1 extension path and browser profile.
-An actual 0.1.0-to-0.1.1 installation update was not tested. Export records and
-their checkpoint before updating, and keep the existing installation path.
+Add an actual 0.1.0-to-0.1.1 unpacked-update test, using the hash-pinned original
+archive, the same installation path/profile, Developer mode enabled and
+`runtime.reload()`. Preserve keys and old records; check successful appends and
+that checkpoints remain specific to their original snapshots. A separate-path
+negative control verifies a different extension identity and empty vault.
+
+Add Chrome 137.0.7151.119 coverage for the existing ten DOM cases and one limited
+storage/export flow. The action/activeTab/consent path is still tested on Chrome
+156 only. Export records and their checkpoint before updating, retain Developer
+mode and the existing installation path. Web Store updates, manual toolbar
+interaction, other operating systems and actual service UIs remain untested.
 
 This remains an experimental, first-party implementation. Test success does not
 establish AI-provider identity, externally trusted time, complete conversation

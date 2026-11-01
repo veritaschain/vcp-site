@@ -22,16 +22,25 @@ npm test
 node verify.mjs examples/synthetic-pack.json --checkpoint examples/synthetic-checkpoint.json
 ```
 
-The real browser suites use the locked Playwright dependency and Chrome for
-Testing 156.0.8078.80. The lifecycle automation requires that browser's
-experimental DevTools extension commands. See [capture](docs/BROWSER-CAPTURE-TESTS.md)
-and [lifecycle](docs/BROWSER-EXTENSION-TESTS.md) instructions for exact scope.
+The real browser suites use the locked Playwright dependency. Chrome for
+Testing 156.0.8078.80 runs the capture, lifecycle and historical-upgrade suites.
+Chrome 137.0.7151.119 runs capture and a limited extension storage/export flow.
+The lifecycle/upgrade automation requires the newer browser's DevTools commands.
+See [capture](docs/BROWSER-CAPTURE-TESTS.md), [lifecycle](docs/BROWSER-EXTENSION-TESTS.md),
+[upgrade](docs/BROWSER-UPGRADE-TESTS.md) and [storage](docs/BROWSER-STORAGE-TESTS.md)
+instructions for exact scope. Upgrade tests also require Python 3 and the
+hash-pinned original 0.1.0 archive; standalone ZIP users set `BASELINE_ARCHIVE`.
 
 ```sh
 npm ci
 CHROME_EXECUTABLE=/path/to/chrome npm run test:browser-capture
 CHROME_EXECUTABLE=/path/to/chrome npm run test:browser-extension
+CHROME_EXECUTABLE=/path/to/chrome npm run test:browser-upgrade
+CHROME_EXECUTABLE=/path/to/chrome-137 npm run test:browser-storage
 ```
+
+The [real-service validation guide](docs/SERVICE-VALIDATION.md) remains unexecuted.
+Synthetic and module-level passes do not establish behavior on current service UIs.
 
 ## Versioned archive
 

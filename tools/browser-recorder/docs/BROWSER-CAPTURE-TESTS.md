@@ -4,6 +4,10 @@ These tests exercise the capture function in Chrome on a loopback-only synthetic
 HTML fixture. They do not load the extension, grant activeTab, test the popup or
 prove behavior on ChatGPT/Claude/Gemini. The extension-level checks are separate.
 
+The same ten cases passed on Linux in Chrome for Testing 156.0.8078.80 and
+137.0.7151.119. Results for the older browser are recorded separately in
+[the limited compatibility report](BROWSER-STORAGE-TESTS.md).
+
 ## Setup and run
 
 Use Node 22+, Playwright, and a reviewed Chrome for Testing binary. The test

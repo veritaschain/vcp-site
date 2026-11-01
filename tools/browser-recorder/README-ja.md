@@ -9,16 +9,16 @@
 ## 導入（デスクトップ版Chrome）
 
 1. ZIPを展開します。
-2. Chrome 137以降で `chrome://extensions` を開きます。対応下限は宣言値であり、そのバージョンでの実機試験は未実施です。
+2. Chrome 137以降で `chrome://extensions` を開きます。版ごとの検証範囲は下の「検証状況」を参照してください。
 3. 「デベロッパー モード」をオンにします。
 4. 「パッケージ化されていない拡張機能を読み込む」で、**manifest.jsonが入っている `extension` フォルダー**を指定します。
 5. 拡張メニューからVAP Browser Recorderを固定します。
 
 ### 0.1.0から更新する場合
 
-先に記録JSONと照合票を書き出して保管してください。Chromeで既存の拡張を読み込んだ場所を確認し、同じ場所の `extension` フォルダーを0.1.1の内容で更新して、`chrome://extensions` の再読み込みを押します。別の場所から読み込むと拡張IDが変わり、別の記録庫になる場合があります。記録が見えなくなった場合はリセットせず、読み込み元の場所を確認してください。
+先に記録JSONと照合票を書き出して保管してください。Chromeで既存の拡張を読み込んだ場所を確認し、同じ場所の `extension` フォルダーを0.1.1の内容で更新します。`chrome://extensions` でデベロッパーモードがオンであることを確認して、再読み込みを押します。別の場所から読み込むと拡張IDが変わり、別の記録庫になる場合があります。記録が見えなくなった場合はリセットせず、読み込み元の場所を確認してください。
 
-記録形式・DB名は維持しています。同じ0.1.1のインストール場所でのブラウザ再起動と記録・鍵の再利用を確認しました。0.1.0からの実インストール更新そのものは、この試験には含めていません。
+記録形式・DB名は維持しています。Linux・Chrome 156では、旧0.1.0で保存した後に、同じ場所を0.1.1へ置き換え、拡張APIで再読み込みする自動試験が成功しました。鍵・記録を保持して追加保存でき、旧書き出しも旧照合票で検証できます。画面の再読み込みボタンを手動操作する試験、Web Store経由の更新、別OS・別Chrome版での更新は未確認です。詳細は `docs/BROWSER-UPGRADE-TESTS.md` を参照してください。
 
 ## 使い方
 
@@ -85,7 +85,9 @@ node verify.mjs observations.json --checkpoint checkpoint.json
 
 `docs/TEST-REPORT.md` に実行結果と残課題を記載しています。v0.1.1ではNodeの20件、LinuxのChrome for Testing 156.0.8078.80での実DOM試験10件、拡張全体の試験7件が成功しました。拡張全体の試験は合成ページと一時プロファイルで、実際のaction・activeTab・ISOLATED world、同意と保存、再起動後の鍵と記録の再利用、同時保存、書き出し、改変拒否、CSP、リセットを自動確認しています。
 
-これは開発作業内のheadless自動試験です。手動のツールバー操作、ChatGPT・Claude・Geminiの現行画面、Windows/macOS、Chrome 137、旧版からのインストール更新は未確認です。再実行手順は `docs/BROWSER-CAPTURE-TESTS.md` と `docs/BROWSER-EXTENSION-TESTS.md` を参照してください。
+追加で、Chrome 156の旧版更新・別パスの負例2件が成功しました。Chrome 137.0.7151.119では、同じ実DOM試験10件と、署名・保存・再起動・書き出し・改変拒否を含む保存フロー1件が成功しています。Chrome 137のaction・activeTab・取得ポップアップの同意操作は確認していません。
+
+これらは開発作業内のheadless自動試験です。手動のツールバー操作、ChatGPT・Claude・Geminiの現行画面、Windows/macOS、Web Store経由の更新は未確認です。再実行手順は `docs/BROWSER-CAPTURE-TESTS.md`、`docs/BROWSER-EXTENSION-TESTS.md`、`docs/BROWSER-UPGRADE-TESTS.md`、`docs/BROWSER-STORAGE-TESTS.md` を参照してください。実サービス用の `docs/SERVICE-VALIDATION.md` は未実行の確認手順です。
 
 アプリ版は0.1.1ですが、観測記録形式・署名対象・記録庫の名前は0.1.0から変更していません。既存の書き出しJSON・照合票は引き続き検証できます。旧0.1.0配布ZIPは履歴として保持します。
 

@@ -10,6 +10,7 @@ import { tmpdir } from 'node:os';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { verifyPack } from '../../extension/lib/core.mjs';
+import { until, openExtensionAction, capture, save } from './extension-harness.mjs';
 
 const require = createRequire(import.meta.url);
 let playwright;
@@ -24,12 +25,6 @@ let profile, server, context, cdp, base, extensionId, source, vault, oldKey, exp
 let deniedRequests = 0;
 const evidence = { scope: 'FIRST_PARTY_SYNTHETIC_HEADLESS_EXTENSION', cases: [],
   real_service_adapters: 'NOT_TESTED', manual_toolbar: 'NOT_TESTED', minimum_chrome_version: 'NOT_TESTED' };
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-async function until(probe, message) {
-  const deadline = Date.now() + 8000;
-  while (Date.now() < deadline) { const result = await probe(); if (result) return result; await sleep(25); }
-  throw Error('Timed out: ' + message);
-}
 async function launch() {
   context = await playwright.chromium.launchPersistentContext(profile, {
     headless: true, acceptDownloads: true,
@@ -57,47 +52,7 @@ async function select(first = 'answer', last = first) {
     const selected = getSelection(); selected.removeAllRanges(); selected.addRange(range);
   }, [first, last]);
 }
-async function action() {
-  await source.bringToFront();
-  const tabs = await cdp.send('Target.getTargets', { filter: [{ type: 'tab', exclude: false }] });
-  const tab = tabs.targetInfos.find(target => target.url === source.url());
-  assert.ok(tab, 'source tab target exists');
-  await cdp.send('Extensions.triggerAction', { id: extensionId, targetId: tab.targetId });
-  const popup = await until(async () => (await cdp.send('Target.getTargets')).targetInfos.find(
-    target => target.url === `chrome-extension://${extensionId}/popup.html`), 'extension action popup');
-  const { sessionId } = await cdp.send('Target.attachToTarget', { targetId: popup.targetId, flatten: false });
-  let sequence = 1;
-  const raw = (method, params = {}) => new Promise((resolve, reject) => {
-    const id = sequence++;
-    const cleanup = () => { clearTimeout(timer); cdp.off('Target.receivedMessageFromTarget', listener); };
-    const listener = event => {
-      if (event.sessionId !== sessionId) return;
-      const value = JSON.parse(event.message); if (value.id !== id) return;
-      cleanup(); value.error ? reject(Error(JSON.stringify(value.error))) : resolve(value.result);
-    };
-    const timer = setTimeout(() => { cleanup(); reject(Error('Popup CDP request timed out')); }, 10000);
-    cdp.on('Target.receivedMessageFromTarget', listener);
-    cdp.send('Target.sendMessageToTarget', { sessionId, message: JSON.stringify({ id, method, params }) })
-      .catch(error => { cleanup(); reject(error); });
-  });
-  const evaluate = async expression => {
-    const value = await raw('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true });
-    if (value.exceptionDetails) throw Error(JSON.stringify(value.exceptionDetails));
-    return value.result.value;
-  };
-  await until(() => evaluate("document.readyState === 'complete' && !!document.querySelector('#capture')"), 'popup ready');
-  return { evaluate, raw, close: () => cdp.send('Target.closeTarget', { targetId: popup.targetId }) };
-}
-async function capture(popup) {
-  await popup.evaluate("document.querySelector('#capture').click()");
-  await until(() => popup.evaluate("!document.querySelector('#capture').disabled"), 'capture completed');
-  return popup.evaluate("({status:document.querySelector('#status').textContent,preview:document.querySelector('#preview').textContent,hidden:document.querySelector('#draft').hidden,disabled:document.querySelector('#save').disabled})");
-}
-async function save(popup) {
-  await popup.evaluate("document.querySelector('#consent').click();document.querySelector('#save').click()");
-  await until(() => popup.evaluate("!document.querySelector('#capture').disabled"), 'save completed');
-  assert.match(await popup.evaluate("document.querySelector('#status').textContent"), /保存しました/);
-}
+const action = () => openExtensionAction({ cdp, source, extensionId });
 before(async () => {
   profile = await mkdtemp(join(tmpdir(), 'vap-extension-lifecycle-'));
   if (evidenceDirectory) await mkdir(evidenceDirectory, { recursive: true });
