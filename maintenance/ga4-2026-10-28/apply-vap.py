@@ -4,7 +4,7 @@ import hashlib, json, sys
 from pathlib import Path
 root=Path(sys.argv[1]); check='--check' in sys.argv[2:]
 manifest=json.loads((Path(__file__).parent/'vap-manifest.json').read_text())
-tag='<script defer src="https://veritaschain.org/assets/js/analytics.js?v=20261028"></script>'
+tag='<script defer src="https://veritaschain.org/assets/js/analytics.js?v=20261103"></script>'
 changes=[]
 for item in manifest['files']:
  p=root/item['path']; data=p.read_bytes()
