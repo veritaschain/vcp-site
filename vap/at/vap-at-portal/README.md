@@ -37,7 +37,7 @@ Visit: **https://veritaschain.org/vap/at/vap-at-portal/**
 - **Evidence Pack v1.0 (JSON)** - Structured machine-readable output
 
 ### Documentation
-- Program Charter
+- [Public program overview](https://github.com/veritaschain/vap-spec/tree/main/programs/vap-at)
 - Scoring Criteria guide
 - Assessment Levels explanation
 - Governance structure
@@ -76,7 +76,7 @@ vap-at-portal/
 ├── data/
 │   └── criteria.json   # 10 criteria definitions
 ├── docs/
-│   └── VAP-AT_Program_Charter_v0.6a.md
+│   └── evidence-pack-v1.0-sample.json
 ├── assets/             # Images, logos
 └── README.md
 ```
@@ -122,3 +122,7 @@ Code licensed under [MIT License](LICENSE).
 ---
 
 *© 2025 VeritasChain Standards Organization*
+
+## Publication update — 2 November 2026
+
+The internal-review charter was removed from the current public tree and the download now links to the public program overview. This does not erase earlier Git history or approve a new charter. The portal remains a demonstration; historical roadmap dates, fee ranges and sample registry entries are not offers or completed independent assessments.

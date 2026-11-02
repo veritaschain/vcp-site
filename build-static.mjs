@@ -1,10 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+import { execFileSync, execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+function writeHTML(destination, html) {
+  const relativePath = path.relative(__dirname, destination).split(path.sep).join('/');
+  const secured = execFileSync('python3', [
+    path.join(__dirname, 'scripts/site_security.py'), 'render', relativePath
+  ], { input: html, encoding: 'utf8', cwd: __dirname });
+  fs.writeFileSync(destination, secured, 'utf-8');
+}
 
 console.log('🏗️  Building static site for GitHub Pages...\n');
 
@@ -37,7 +45,7 @@ try {
   const req = new Request('http://localhost/faq', { method: 'GET' });
   const response = await app.fetch(req, env, executionCtx);
   const html = await response.text();
-  fs.writeFileSync(path.join(docsDir, 'index.html'), html, 'utf-8');
+  writeHTML(path.join(docsDir, 'index.html'), html);
   console.log('   ✓ Generated: index.html (English FAQ)');
 } catch (error) {
   console.error('   ✗ Failed to generate index.html:', error.message);
@@ -48,7 +56,7 @@ try {
   const req = new Request('http://localhost/ja', { method: 'GET' });
   const response = await app.fetch(req, env, executionCtx);
   const html = await response.text();
-  fs.writeFileSync(path.join(docsDir, 'ja.html'), html, 'utf-8');
+  writeHTML(path.join(docsDir, 'ja.html'), html);
   console.log('   ✓ Generated: ja.html (Japanese FAQ)');
 } catch (error) {
   console.error('   ✗ Failed to generate ja.html:', error.message);
@@ -76,7 +84,7 @@ const html404 = `<!DOCTYPE html>
   <p>Redirecting to <a href="/">FAQ home</a>...</p>
 </body>
 </html>`;
-fs.writeFileSync(path.join(docsDir, '404.html'), html404, 'utf-8');
+writeHTML(path.join(docsDir, '404.html'), html404);
 console.log('   ✓ Generated: 404.html');
 
 // Create README for docs folder

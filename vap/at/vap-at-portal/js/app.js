@@ -130,7 +130,7 @@ function renderCriteria() {
         
         return `
         <div class="criterion-card" data-id="${criterion.id}">
-            <div class="criterion-header" onclick="toggleCriterion(${criterion.id})">
+            <div class="criterion-header" data-toggle-criterion="${criterion.id}">
                 <div class="criterion-number">${criterion.id}</div>
                 <div class="criterion-title">
                     <h4>${name}</h4>
@@ -151,8 +151,8 @@ function renderCriteria() {
                             ? t(`criteria.${cKey}.s${score}`)
                             : criterion.scoringGuide[score];
                         return `
-                        <label class="score-option" onclick="selectScore(${criterion.id}, ${score})">
-                            <input type="radio" name="criterion-${criterion.id}" value="${score}">
+                        <label class="score-option">
+                            <input type="radio" name="criterion-${criterion.id}" value="${score}" data-criterion-id="${criterion.id}">
                             <span class="score-dot score-${score}">${score}</span>
                             <span class="score-option-text">${scoreText}</span>
                         </label>
@@ -540,6 +540,19 @@ function initRegistryFilter() {
 
 // ===== Initialize =====
 document.addEventListener('DOMContentLoaded', () => {
+    // Keep handlers attached when translation changes rebuild the criteria HTML.
+    const criteriaList = document.getElementById('criteriaList');
+    criteriaList.addEventListener('click', (event) => {
+        const header = event.target instanceof Element ? event.target.closest('[data-toggle-criterion]') : null;
+        if (header && criteriaList.contains(header)) toggleCriterion(Number(header.dataset.toggleCriterion));
+    });
+    criteriaList.addEventListener('change', (event) => {
+        const input = event.target;
+        if (input instanceof HTMLInputElement && input.matches('input[data-criterion-id]')) {
+            selectScore(Number(input.dataset.criterionId), Number(input.value));
+        }
+    });
+
     // Initialize language first
     initLanguage();
     

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build /vso/corrections/ (EN) and /vso/corrections/ja/ (JA) from corrections.json.
+"""Build the English, Japanese and Chinese corrections pages from corrections.json.
 
 vso/corrections/corrections.json is the only source. Edit it, then run:
     python3 scripts/build_corrections.py
@@ -8,6 +8,8 @@ Entries are append-only records: correct an entry by adding a new one.
 import html
 import json
 from pathlib import Path
+
+from site_security import apply_csp
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / 'vso' / 'corrections' / 'corrections.json'
@@ -58,6 +60,23 @@ TEXT = {
         'home': '/ja/#news-container',
         'langname': '日本語',
     },
+    'zh': {
+        'url': BASE + 'zh/',
+        'html_lang': 'zh-CN',
+        'title': '更正记录 | VCP / VSO — VeritasChain',
+        'h1': '更正记录',
+        'desc': '按日期从新到旧列出VSO规范、仓库README和veritaschain.org的更正，并提供各项更改记录的链接。',
+        'eyebrow': 'VCP / VSO · 更正记录',
+        'intro': ('VSO以新增日期记录的方式更正公开表述，而不悄然改写历史。'
+                  '本页按日期从新到旧列出规范、仓库README和网站的更正，并链接至各项更改记录。'
+                  '带日期的公告和博客文章保留为当时的记录；受影响的内容附有说明。'
+                  '既有记录的中文译文于2026年11月1日补充，原始更正日期不变。'),
+        'records': '记录：',
+        'back': 'VSO公告',
+        'updated': '最近更新',
+        'home': '/zh/#news-container',
+        'langname': '简体中文',
+    },
 }
 
 
@@ -67,15 +86,17 @@ def esc(value):
 
 def page(lang, data):
     t = TEXT[lang]
+    html_lang = t.get('html_lang', lang)
     alternates = ''.join(
-        f'<link rel="alternate" hreflang="{code}" href="{TEXT[code]["url"]}">' for code in ('en', 'ja'))
+        f'<link rel="alternate" hreflang="{TEXT[code].get("html_lang", code)}" href="{TEXT[code]["url"]}">'
+        for code in TEXT)
     alternates += f'<link rel="alternate" hreflang="x-default" href="{TEXT["en"]["url"]}">'
     nav = ''.join(
-        f'<a href="{TEXT[code]["url"]}" lang="{code}"' + (' aria-current="page"' if code == lang else '') +
-        f'>{TEXT[code]["langname"]}</a>' for code in ('en', 'ja'))
+        f'<a href="{TEXT[code]["url"]}" lang="{TEXT[code].get("html_lang", code)}"' + (' aria-current="page"' if code == lang else '') +
+        f'>{TEXT[code]["langname"]}</a>' for code in TEXT)
     ld = json.dumps({
         '@context': 'https://schema.org', '@type': 'WebPage', 'name': t['h1'], 'description': t['desc'],
-        'url': t['url'], 'inLanguage': lang, 'dateModified': data['updated'],
+        'url': t['url'], 'inLanguage': html_lang, 'dateModified': data['updated'],
         'publisher': {'@type': 'Organization', 'name': 'VeritasChain Standards Organization (VSO)'},
     }, ensure_ascii=False)
     items = []
@@ -88,7 +109,7 @@ def page(lang, data):
             f'<p class="records">{t["records"]} {records}</p></li>')
     return (
         '<!DOCTYPE html>\n'
-        f'<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        f'<html lang="{html_lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f'<title>{esc(t["title"])}</title>\n'
         f'<meta name="description" content="{esc(t["desc"])}">\n'
         f'<meta property="og:title" content="{esc(t["title"])}">\n'
@@ -113,12 +134,14 @@ def page(lang, data):
 
 def main():
     data = json.loads(SRC.read_text(encoding='utf-8'))
-    out_en = ROOT / 'vso' / 'corrections' / 'index.html'
-    out_ja = ROOT / 'vso' / 'corrections' / 'ja' / 'index.html'
-    out_ja.parent.mkdir(parents=True, exist_ok=True)
-    out_en.write_text(page('en', data), encoding='utf-8')
-    out_ja.write_text(page('ja', data), encoding='utf-8')
-    print(f'Wrote {out_en.relative_to(ROOT)} and {out_ja.relative_to(ROOT)} ({len(data["entries"])} entries)')
+    for lang in TEXT:
+        directory = ROOT / 'vso' / 'corrections'
+        if lang != 'en':
+            directory /= lang
+        directory.mkdir(parents=True, exist_ok=True)
+        output = directory / 'index.html'
+        output.write_text(apply_csp(page(lang, data), output), encoding='utf-8')
+        print(f'Wrote {output.relative_to(ROOT)} ({len(data["entries"])} entries)')
 
 
 if __name__ == '__main__':
