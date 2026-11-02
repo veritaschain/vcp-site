@@ -120,10 +120,23 @@ tag: the source gate still requires a registered SRI pin for every such tag.
 The browser consent test caches a current public loader as an **unpinned test
 fixture**, records its actual digest, and runs it only through a local request
 interceptor. It verifies no vendor request before consent or after decline,
-one loader/config after acceptance, sanitized page URLs, denied advertising
-consent, and disabling/clearing cookies on withdrawal. It is not a guarantee
+one loader/config per page after acceptance, sanitized page URLs, denied advertising
+consent, and disabling/clearing cookies on withdrawal. A two-page check opens
+the homepage and privacy page in one browser context, withdraws consent in the
+privacy page, and verifies that the already open homepage is disabled and emits
+no further custom contact event. It is not a guarantee
 about future vendor code or remote account configuration. No analytics event or
 form submission is sent to a live service by the browser tests.
+
+Open pages re-read the shared consent cookie before custom events and on focus,
+page restoration and visibility changes. A same-origin `BroadcastChannel`
+notifies other open pages of withdrawal; receivers check the cookie and never
+grant consent from a message. Environments without that channel and separate
+subdomains use the lifecycle/event checks. Cookie expiry or withdrawal on a
+different subdomain is therefore detected on those checks, not instantaneously
+in an idle unchanged page. Grants in another tab take effect after navigation
+or local acceptance. The loader URL version is updated with this correction so
+newly loaded documents request the corrected code.
 
 ## Policy behavior and limits
 

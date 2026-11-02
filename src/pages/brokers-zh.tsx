@@ -6,7 +6,7 @@ export const brokersPageZh = () => html`
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: blob: https://*.google-analytics.com https://fonts.googleapis.com https://www.googletagmanager.com; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self' https://*.google-analytics.com https://*.google.com https://www.googletagmanager.com; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
-    <script defer src="/assets/js/analytics.js?v=20261028"></script>
+    <script defer src="/assets/js/analytics.js?v=20261103"></script>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
