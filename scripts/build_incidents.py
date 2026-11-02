@@ -13,6 +13,8 @@ import json
 import sys
 from pathlib import Path
 
+from site_security import apply_csp
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = 'https://veritaschain.org'
 INCIDENTS = ROOT / 'incidents' / 'incidents.json'
@@ -414,7 +416,7 @@ def limits_page(lang, limits, records):
 def write(rel, text):
     path = ROOT / rel.strip('/') / 'index.html'
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding='utf-8')
+    path.write_text(apply_csp(text, path), encoding='utf-8')
     return path.relative_to(ROOT)
 
 

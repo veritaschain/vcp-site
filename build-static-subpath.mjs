@@ -1,10 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+import { execFileSync, execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+function writeHTML(destination, html) {
+  const relativePath = path.relative(__dirname, destination).split(path.sep).join('/');
+  const secured = execFileSync('python3', [
+    path.join(__dirname, 'scripts/site_security.py'), 'render', relativePath
+  ], { input: html, encoding: 'utf8', cwd: __dirname });
+  fs.writeFileSync(destination, secured, 'utf-8');
+}
 
 console.log('🏗️  Building static site for veritaschain.org/certified/faq/...\n');
 
@@ -52,7 +60,7 @@ try {
   const response = await app.fetch(req, env, executionCtx);
   let html = await response.text();
   html = fixAssetPaths(html, 'en');
-  fs.writeFileSync(path.join(faqDir, 'index.html'), html, 'utf-8');
+  writeHTML(path.join(faqDir, 'index.html'), html);
   console.log('   ✓ Generated: certified/faq/index.html (English FAQ)');
 } catch (error) {
   console.error('   ✗ Failed to generate index.html:', error.message);
@@ -64,7 +72,7 @@ try {
   const response = await app.fetch(req, env, executionCtx);
   let html = await response.text();
   html = fixAssetPaths(html, 'ja');
-  fs.writeFileSync(path.join(faqDir, 'ja.html'), html, 'utf-8');
+  writeHTML(path.join(faqDir, 'ja.html'), html);
   console.log('   ✓ Generated: certified/faq/ja.html (Japanese FAQ)');
 } catch (error) {
   console.error('   ✗ Failed to generate ja.html:', error.message);
@@ -76,7 +84,7 @@ try {
   const response = await app.fetch(req, env, executionCtx);
   let html = await response.text();
   html = fixAssetPaths(html, 'zh');
-  fs.writeFileSync(path.join(faqDir, 'zh.html'), html, 'utf-8');
+  writeHTML(path.join(faqDir, 'zh.html'), html);
   console.log('   ✓ Generated: certified/faq/zh.html (Chinese FAQ)');
 } catch (error) {
   console.error('   ✗ Failed to generate zh.html:', error.message);
@@ -104,7 +112,7 @@ const html404 = `<!DOCTYPE html>
   <p>Redirecting to <a href="/certified/faq/">VeritasChain FAQ</a>...</p>
 </body>
 </html>`;
-fs.writeFileSync(path.join(__dirname, 'docs', '404.html'), html404, 'utf-8');
+writeHTML(path.join(__dirname, 'docs', '404.html'), html404);
 console.log('   ✓ Generated: docs/404.html');
 
 // Create README for docs folder
@@ -150,7 +158,7 @@ const rootIndex = `<!DOCTYPE html>
   <p>Redirecting to <a href="/certified/faq/">FAQ</a>...</p>
 </body>
 </html>`;
-fs.writeFileSync(path.join(__dirname, 'docs', 'index.html'), rootIndex, 'utf-8');
+writeHTML(path.join(__dirname, 'docs', 'index.html'), rootIndex);
 console.log('   ✓ Generated: docs/index.html (redirect)');
 
 console.log('\n✨ Static site generation complete!');

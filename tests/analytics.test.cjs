@@ -1,8 +1,40 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const path = require('node:path');
 const vm = require('node:vm');
 const source = fs.readFileSync('assets/js/analytics.js', 'utf8');
+
+test('all source HTML and Hono templates are free of unconditional Google Analytics tags', () => {
+  const scanned = [];
+  const failures = [];
+  function visit(directory) {
+    for (const entry of fs.readdirSync(directory, {withFileTypes: true})) {
+      if (entry.name === '.git' || entry.name === 'node_modules' || entry.name === 'dist') continue;
+      const filename = path.join(directory, entry.name);
+      if (entry.isDirectory()) visit(filename);
+      else if (entry.isFile() && (entry.name.endsWith('.html') || (directory === path.join('src', 'pages') && entry.name.endsWith('.tsx')))) {
+        const relative = path.relative('.', filename).split(path.sep).join('/');
+        const html = fs.readFileSync(filename, 'utf8');
+        scanned.push(relative);
+        if (/gtag\s*\(\s*['"]config['"]/.test(html) ||
+            /<script\b[^>]*\bsrc\s*=\s*['"]https?:\/\/(?:www\.)?googletagmanager\.com\/gtag\/js\b/i.test(html)) {
+          failures.push(relative);
+        }
+      }
+    }
+  }
+  visit('.');
+  for (const language of ['', 'ja/', 'zh/']) {
+    assert.ok(scanned.includes(`docs/brokers/${language}index.html`), 'broker documentation must be scanned');
+  }
+  for (const language of ['en', 'ja', 'zh']) {
+    const template = `src/pages/brokers-${language}.tsx`;
+    assert.ok(scanned.includes(template), 'Hono broker templates must be scanned');
+    assert.match(fs.readFileSync(template, 'utf8'), /<script defer src="\/assets\/js\/analytics\.js\?v=20261028"><\/script>/, 'Hono output must retain the shared consent loader');
+  }
+  assert.deepEqual(failures, [], 'Google Analytics must be loaded by the consent-gated loader, not source HTML or Hono templates');
+});
 
 function boot({cookie = '', url = 'https://veritaschain.org/ja/', lang = 'ja', referrer = ''} = {}) {
   const jar = new Map(cookie.split(';').filter(Boolean).map(x => x.trim().split('=')));

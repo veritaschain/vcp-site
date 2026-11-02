@@ -101,6 +101,8 @@
     // Fallback for browsers that don't support lazy loading
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js';
+    script.integrity = 'sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf+e';
+    script.crossOrigin = 'anonymous';
     document.body.appendChild(script);
   }
 

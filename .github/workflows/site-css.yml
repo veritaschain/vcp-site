@@ -1,0 +1,86 @@
+name: Compiled site CSS
+
+on:
+  pull_request:
+    paths:
+      - '**/*.html'
+      - 'src/pages/**'
+      - 'assets/js/**'
+      - 'vap/at/vap-at-portal/js/**'
+      - 'scripts/**'
+      - 'build-static*.mjs'
+      - '**/static/*.js'
+      - 'assets/css/site-tailwind.css'
+      - 'tools/site-css/**'
+      - 'tools/site-security/**'
+      - 'vcc/demo/**'
+      - 'assets/vendor/**'
+      - '.github/workflows/site-css.yml'
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - 'src/pages/**'
+      - 'assets/js/**'
+      - 'vap/at/vap-at-portal/js/**'
+      - 'scripts/**'
+      - 'build-static*.mjs'
+      - '**/static/*.js'
+      - 'assets/css/site-tailwind.css'
+      - 'tools/site-css/**'
+      - 'tools/site-security/**'
+      - 'vcc/demo/**'
+      - 'assets/vendor/**'
+      - '.github/workflows/site-css.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compiled-css:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Install locked build and test tools
+        run: |
+          npm ci --prefix tools/site-css --ignore-scripts --no-audit --no-fund
+          npm ci --prefix tools/site-security --ignore-scripts --no-audit --no-fund
+      - name: Check precompiled VCC and QR assets before scanning styles
+        run: npm run check:assets --prefix tools/site-security
+      - name: Check generated CSS and page coverage
+        run: npm run check --prefix tools/site-css
+      - name: Install browser system dependencies
+        run: node tools/site-css/node_modules/playwright/cli.js install-deps chromium
+      - name: Download and verify pinned test browser
+        run: |
+          curl --fail --show-error --location --output "$RUNNER_TEMP/css-chrome.zip" 'https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.119/linux64/chrome-linux64.zip'
+          printf '%s  %s\n' '680a672ed0cc7b8fae6ee5b21691a55273228b05e1f3f80580606c4db203994a' "$RUNNER_TEMP/css-chrome.zip" | sha256sum --check --status
+          unzip -q "$RUNNER_TEMP/css-chrome.zip" -d "$RUNNER_TEMP/css-chrome"
+      - name: Compare theme, viewport and interaction renders offline
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
+          CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
+        run: npm run test:render --prefix tools/site-css
+      - name: Preserve authored active keyframes and reject cross-page collisions
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
+        run: npm run test:animations --prefix tools/site-css
+      - name: Prove the comparator rejects an incorrect theme
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
+          CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence/negative-control
+          CSS_NEGATIVE_CONTROL: '1'
+        run: npm run test:render --prefix tools/site-css
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: compiled-css-render-comparison
+          path: ${{ runner.temp }}/css-evidence/
+          if-no-files-found: warn
+          retention-days: 14

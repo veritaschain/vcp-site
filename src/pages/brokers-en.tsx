@@ -2,18 +2,12 @@ import { html } from 'hono/html'
 
 export const brokersPageEn = () => html`
 <!DOCTYPE html>
-<html lang="en">
+<html data-tw-theme="default" lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XTK1LJKRGV"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XTK1LJKRGV');
-    </script>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: blob: https://*.google-analytics.com https://fonts.googleapis.com https://www.googletagmanager.com; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self' https://*.google-analytics.com https://*.google.com https://www.googletagmanager.com; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
+    <script defer src="/assets/js/analytics.js?v=20261028"></script>
     
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Favicon -->
@@ -167,7 +161,7 @@ export const brokersPageEn = () => html`
     }
     </script>
     
-    <script src="https://cdn.tailwindcss.com"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- VCP Common Header/Footer Components -->
@@ -238,6 +232,7 @@ export const brokersPageEn = () => html`
             background-color: #f8fafc;
         }
     </style>
+    <link rel="stylesheet" href="/assets/css/site-tailwind.css">
 </head>
 <body class="bg-slate-50">
     <!-- VCP Common Header -->

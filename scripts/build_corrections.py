@@ -9,6 +9,8 @@ import html
 import json
 from pathlib import Path
 
+from site_security import apply_csp
+
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / 'vso' / 'corrections' / 'corrections.json'
 BASE = 'https://veritaschain.org/vso/corrections/'
@@ -138,7 +140,7 @@ def main():
             directory /= lang
         directory.mkdir(parents=True, exist_ok=True)
         output = directory / 'index.html'
-        output.write_text(page(lang, data), encoding='utf-8')
+        output.write_text(apply_csp(page(lang, data), output), encoding='utf-8')
         print(f'Wrote {output.relative_to(ROOT)} ({len(data["entries"])} entries)')
 
 
