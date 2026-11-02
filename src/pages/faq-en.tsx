@@ -2,12 +2,13 @@ import { html } from 'hono/html'
 
 export const faqPageEn = () => html`
 <!DOCTYPE html>
-<html lang="en">
+<html data-tw-theme="default" lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'sha256-paNMJQ98Ske2i705zEJyjJZr0QpsN8allbraLcY1Py8='; script-src-attr 'unsafe-hashes' 'sha256-H9HYv2JJ33/zeu9NKvA8DArlSqEd3+LHMfY0E5hZHXk='; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: blob: https://fonts.googleapis.com; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - VeritasChain Certified (VC-Certified)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -116,6 +117,7 @@ export const faqPageEn = () => html`
             background-color: #f3f4f6;
         }
     </style>
+    <link rel="stylesheet" href="/assets/css/site-tailwind.css">
 </head>
 <body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
     <!-- Language Switcher -->

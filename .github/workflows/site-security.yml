@@ -1,0 +1,105 @@
+name: Site CSP and script integrity
+
+on:
+  pull_request:
+    paths:
+      - '**/*.html'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.css'
+      - 'src/**'
+      - 'scripts/**'
+      - 'build-static*.mjs'
+      - 'tools/site-css/**'
+      - 'tools/site-security/**'
+      - 'assets/vendor/**'
+      - 'vso/corrections/corrections.json'
+      - 'data/announcements/**'
+      - 'incidents/incidents.json'
+      - 'vap/limits/limits.json'
+      - 'tests/analytics.test.cjs'
+      - 'sitemap.xml'
+      - '.github/workflows/site-security.yml'
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.css'
+      - 'src/**'
+      - 'scripts/**'
+      - 'build-static*.mjs'
+      - 'tools/site-css/**'
+      - 'tools/site-security/**'
+      - 'assets/vendor/**'
+      - 'vso/corrections/corrections.json'
+      - 'data/announcements/**'
+      - 'incidents/incidents.json'
+      - 'vap/limits/limits.json'
+      - 'tests/analytics.test.cjs'
+      - 'sitemap.xml'
+      - '.github/workflows/site-security.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  site-security:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Install locked tools
+        run: |
+          npm ci --prefix tools/site-css --ignore-scripts --no-audit --no-fund
+          npm ci --prefix tools/site-security --ignore-scripts --no-audit --no-fund
+      - name: Check generated assets, policies and negative source fixtures
+        run: |
+          npm run check:assets --prefix tools/site-security
+          npm run check:policy --prefix tools/site-security
+          npm run test:policy --prefix tools/site-security
+          node --test tests/analytics.test.cjs
+      - name: Verify HTML generators preserve policies and committed output
+        run: |
+          python3 scripts/build_corrections.py
+          python3 scripts/build-announcements.py
+          python3 scripts/build-site-directory.py
+          python3 scripts/build_incidents.py
+          python3 scripts/build-legacy-aliases.py check
+          python3 scripts/site_security.py check
+          git diff --exit-code
+      - name: Install browser system dependencies
+        run: node tools/site-css/node_modules/playwright/cli.js install-deps chromium
+      - name: Download and verify pinned test browser
+        run: |
+          curl --fail --show-error --location --output "$RUNNER_TEMP/security-chrome.zip" 'https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.119/linux64/chrome-linux64.zip'
+          printf '%s  %s\n' '680a672ed0cc7b8fae6ee5b21691a55273228b05e1f3f80580606c4db203994a' "$RUNNER_TEMP/security-chrome.zip" | sha256sum --check --status
+          unzip -q "$RUNNER_TEMP/security-chrome.zip" -d "$RUNNER_TEMP/security-chrome"
+      - name: Cache public script fixtures and verify versioned asset SRI
+        env:
+          SECURITY_FIXTURE_DIR: ${{ runner.temp }}/security-fixtures
+        run: npm run cache:fixtures --prefix tools/site-security
+      - name: Exercise actual CSP, application controls and consent offline
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/security-chrome/chrome-linux64/chrome
+          SECURITY_FIXTURE_DIR: ${{ runner.temp }}/security-fixtures
+          SECURITY_EVIDENCE_DIR: ${{ runner.temp }}/security-evidence
+        run: |
+          npm run test:csp --prefix tools/site-security
+          npm run test:crawl --prefix tools/site-security
+          npm run test:benchmark --prefix tools/site-security
+          npm run test:interactions --prefix tools/site-security
+          npm run test:analytics --prefix tools/site-security
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: site-security-browser-evidence
+          path: ${{ runner.temp }}/security-evidence/
+          if-no-files-found: warn
+          retention-days: 14

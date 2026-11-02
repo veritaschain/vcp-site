@@ -6,6 +6,7 @@ are retained; individual article files are never changed by this generator.
 from pathlib import Path
 from html import escape as e
 import json,re,collections
+from site_security import apply_csp
 ROOT=Path(__file__).resolve().parents[1]
 TEXT={
 'en':dict(title='Announcements archive',latest='Latest announcements',all='View all announcements',home='VCP / VSO home',desc='Browse VSO announcements, research updates and press releases by date and category. Historical records and their original article URLs are retained.',intro='Research, specifications and organizational news from VeritasChain Standards Organization. Browse by date or topic, and open each record for its original context.',status='Experimental extensions remain unadopted; independent third-party reproduction has not been established. First-party CI and saved-evidence checks are distinct from independent fresh execution.',history='Dates below are original publication dates. Later updates are identified when recorded. Historical notices describe the status at that time; their claims are not new confirmations of adoption, conformance or certification.',month='Month',category='Category',search='Search announcements',reset='Reset filters',any='All',count='{shown} of {total} records',empty='No announcements match these filters.',original='Read the archived notice',label='Historical notice, including existing corrections',updated='Updated',cats={'research':'Research & development','announcement':'Announcements','press':'Press releases','operations':'Corrections & operations'},lang='Language',directory='Site directory'),
@@ -50,7 +51,7 @@ def page(lang,rows):
 def build():
  for lang in TEXT:
   rows=json.loads((ROOT/'data/announcements'/f'{lang}.json').read_text());assert rows==sorted(rows,key=lambda x:x['date'],reverse=True)
-  dest=ROOT/(archive_path(lang).lstrip('/')+'index.html');dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(page(lang,rows))
+  dest=ROOT/(archive_path(lang).lstrip('/')+'index.html');dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(apply_csp(page(lang,rows),dest),encoding='utf-8')
   t=TEXT[lang];home=ROOT/(homepage(lang).lstrip('/')+'index.html');s=home.read_text()
   latest=rows[:3];legacy={x:archive_path(lang)+'#'+r['id'] for r in rows[3:] for x in r['legacy_ids']}
   block='<section class="section section-news" style="background:#0f172a;padding:3rem 0"><div class="news-shell" id="news-container"><div class="news-heading"><h2>'+t['latest']+'</h2><a href="'+archive_path(lang)+'">'+t['all']+' →</a></div><aside class="news-status"><p>'+t['status']+'</p></aside><ul class="news-list">'+''.join(row_html(r,lang,new=i==0) for i,r in enumerate(latest))+'</ul><div>'+''.join(f'<span class="news-legacy-anchor" id="{e(x)}" aria-hidden="true"></span>' for x in legacy)+'<a class="news-more" href="'+archive_path(lang)+'">'+t['all']+' →</a></div></div></section>'
@@ -58,6 +59,6 @@ def build():
   s=s[:start]+block+s[end:]
   s=re.sub(r'\n?<script id="news-legacy-map" type="application/json">.*?</script>','',s,flags=re.S)
   if '/assets/css/news-archive.css' not in s:s=s.replace('</head>','<link rel="stylesheet" href="/assets/css/news-archive.css">\n<script src="/assets/js/news-archive.js" defer></script>\n</head>')
-  s=s.replace('</body>','<script id="news-legacy-map" type="application/json">'+json.dumps(legacy,ensure_ascii=False)+'</script>\n</body>');home.write_text(s)
+  s=s.replace('</body>','<script id="news-legacy-map" type="application/json">'+json.dumps(legacy,ensure_ascii=False)+'</script>\n</body>');home.write_text(apply_csp(s,home),encoding='utf-8')
   print(lang,len(rows),'archived; latest 3 on homepage')
 if __name__=='__main__':build()

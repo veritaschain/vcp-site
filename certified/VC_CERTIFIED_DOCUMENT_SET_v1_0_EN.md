@@ -1,18 +1,18 @@
 # VC-Certified Document Set v1.0
 
-**The World's First Algorithmic Transparency Standard Package**
+**Historical VCP v1.0 document inventory — reference only**
 
-> **Status note (28 October 2026).** This v1.0 document set is kept as published. It is not a production-ready package and does not certify compliance with any regulation. VC-Certified attests technical conformance to VCP only; VSO does not issue certifications itself; the scheme requires CABs independent of the scheme owner, and the only registered CAB, VeritasChain Co., Ltd., is not independent (VAP v1.2 ERRATA E-2026-10-21). There are zero external implementations of VAP or any of its profiles, and zero Evidence Packs accepted in any proceeding. Read “immutable” below as tamper-evident: alteration is made detectable, not impossible. “World's First” is not a substantiated claim. Status marks such as “✅ Production” and the test counts are those of the publication date, not a current claim.
+> **Editorial update (2 November 2026; follows the 28 October status correction).** This is a historical v1.0 inventory, not a current implementation, assessment or certification package. The earlier priority and production-readiness descriptions are withdrawn from the current text. The procedures, tier references and test counts below describe the historical document set and must not be used as current conformance criteria. VSO is operated by VeritasChain Co., Ltd.; the existing certification-status disclosure explains the absence of an independent registered CAB. See the [current specification](https://github.com/veritaschain/vcp-spec) and [certification status](https://veritaschain.org/certified/). Earlier wording remains in Git history.
 
 ---
 
 ## 🎯 Overview
 
-The VC-Certified Document Set is a complete, production-ready package for implementing, testing, and certifying compliance with the VeritasChain Protocol (VCP). This package enables:
+The historical VC-Certified Document Set grouped VCP v1.0 materials for implementation research. The following intended uses were descriptive goals, not demonstrated outcomes:
 
-- **Prop Firms**: Prove trader performance authenticity
+- **Prop Firms**: Explore evidence about trader-performance records
 - **Exchanges**: Demonstrate trade execution transparency
-- **Regulators**: Access immutable audit trails
+- **Regulators**: Inspect append-only, tamper-evident audit records
 - **Traders**: Verify their results cryptographically
 
 ---
@@ -23,30 +23,30 @@ The VC-Certified Document Set is a complete, production-ready package for implem
 
 | Document | ID | Purpose | Status |
 |----------|-----|---------|--------|
-| **VCP Specification v1.0** | VSO-SPEC-001 | Protocol definition | ✅ Production |
-| **VCP API Reference v1.1** | VSO-API-001 | REST/WebSocket API | ✅ Production |
+| **VCP Specification v1.0** | VSO-SPEC-001 | Protocol definition | Historical reference |
+| **VCP API Reference v1.1** | VSO-API-001 | REST/WebSocket API | Historical reference |
 
 ### Tier 2: Implementation Guides
 
 | Document | ID | Purpose | Status |
 |----------|-----|---------|--------|
-| **VCP SDK Specification v1.0** | VSO-SDK-SPEC-001 | SDK interface definitions | ✅ Production |
-| **VCP Sidecar Integration Guide** | VSO-INTEG-001 | FIX Protocol integration | ✅ Production |
-| **Developer Guide** | VSO-DEV-001 | Quick start for developers | ✅ Production |
+| **VCP SDK Specification v1.0** | VSO-SDK-SPEC-001 | SDK interface definitions | Historical reference |
+| **VCP Sidecar Integration Guide** | VSO-INTEG-001 | FIX Protocol integration | Historical reference |
+| **Developer Guide** | VSO-DEV-001 | Quick start for developers | Historical reference |
 
 ### Tier 3: Testing & Certification
 
 | Document | ID | Purpose | Status |
 |----------|-----|---------|--------|
-| **VCP Conformance Test Guide v1.0** | VSO-TEST-001 | 125 certification tests | ✅ Production |
-| **VCP Example Payloads v1.0** | VSO-EXAMPLES-001 | Reference implementations | ✅ Production |
+| **VCP Conformance Test Guide v1.0** | VSO-TEST-001 | 125 certification tests | Historical reference |
+| **VCP Example Payloads v1.0** | VSO-EXAMPLES-001 | Reference implementations | Historical reference |
 
 ### Tier 4: Market Intelligence
 
 | Document | ID | Purpose | Status |
 |----------|-----|---------|--------|
-| **Prop Firm Industry Crisis Report** | VSO-INTEL-001 | Market context & necessity | ✅ Production |
-| **VCP International Target List** | VSO-TARGET-001 | Regional market analysis | ✅ Production |
+| **Prop Firm Industry Crisis Report** | VSO-INTEL-001 | Market context & necessity | Historical reference |
+| **VCP International Target List** | VSO-TARGET-001 | Regional market analysis | Historical reference |
 
 ---
 
@@ -241,7 +241,8 @@ github.com/veritaschain/
 
 | Version | Date | Changes |
 |---------|------|---------|
-| v1.0.0 | 2025-11-25 | Initial release - Complete conformance package |
+| Editorial | 2026-11-02 | Withdraw priority/production assurances from current text; label the inventory and procedures as historical reference. No specification requirement changed. |
+| v1.0.0 | 2025-11-25 | Initial publication (historical description: complete conformance package) |
 
 ---
 
@@ -315,7 +316,7 @@ Everything you need to implement, test, and certify VCP compliance:
 |----------|-------------|
 | [SDK Specification](./sdk-spec) | TypeScript, Python, MQL5 interfaces |
 | [Conformance Test Guide](./conformance) | 125 certification tests |
-| [Example Payloads](./examples) | Production-ready samples |
+| [Example Payloads](./examples) | Historical sample payloads |
 | [Sidecar Integration](./sidecar) | FIX Protocol integration |
 
 **Start Here**: [Quick Start Guide →](./quickstart)
