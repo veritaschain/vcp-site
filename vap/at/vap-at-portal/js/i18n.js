@@ -105,7 +105,7 @@ const i18n = {
         },
         docs: {
             title: "Documentation",
-            download: "Download Charter (MD)",
+            download: "Public program overview",
             overview: "Overview",
             scoring: "Scoring Criteria",
             levels: "Assessment Levels",
@@ -296,7 +296,7 @@ const i18n = {
         },
         docs: {
             title: "ドキュメント",
-            download: "チャーターをダウンロード (MD)",
+            download: "公開プログラム概要",
             overview: "概要",
             scoring: "スコアリング基準",
             levels: "評価レベル",
@@ -487,7 +487,7 @@ const i18n = {
         },
         docs: {
             title: "文档",
-            download: "下载章程 (MD)",
+            download: "公开计划概述",
             overview: "概述",
             scoring: "评分标准",
             levels: "评估级别",
@@ -678,7 +678,7 @@ const i18n = {
         },
         docs: {
             title: "Documentación",
-            download: "Descargar Carta (MD)",
+            download: "Descripción pública del programa",
             overview: "Descripción General",
             scoring: "Criterios de Puntuación",
             levels: "Niveles de Evaluación",
