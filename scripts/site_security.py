@@ -47,6 +47,9 @@ RUNTIME_SOURCES = {
     'explorer/app/assets/index-CQ5DI-3r.js': {
         'connect-src': {'https://veritaschain-evidence-demo.kamimura0000.chatgpt.site'},
     },
+    'explorer/app/assets/index-DSg3jIFl.js': {
+        'connect-src': {'https://veritaschain-evidence-demo.kamimura0000.chatgpt.site'},
+    },
 }
 
 

@@ -12,7 +12,7 @@ from urllib.parse import urlsplit, unquote
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-TAG = '<script defer src="/assets/js/analytics.js?v=20261028"></script>'
+TAG = '<script defer src="/assets/js/analytics.js?v=20261103"></script>'
 SCRIPT = re.compile(r'<script\b[^>]*>.*?</script\s*>', re.I | re.S)
 EXCLUDED = {'maintenance', 'src', 'node_modules', '.git', 'docs', 'dist'}
 PUBLIC_DOC_PAGES = {

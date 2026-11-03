@@ -1,6 +1,6 @@
 # Website script integrity and CSP
 
-This migration covers **422 checked-in HTML documents and six Hono HTML
+This migration covers **425 checked-in HTML documents and six Hono HTML
 templates**. It adds an enforcing Content Security Policy (CSP), verifies pinned
 third-party scripts, and moves VCC JSX compilation out of the visitor's browser.
 The companion [CSS migration](../site-css/README.md) replaces Tailwind Play CDN
@@ -120,10 +120,23 @@ tag: the source gate still requires a registered SRI pin for every such tag.
 The browser consent test caches a current public loader as an **unpinned test
 fixture**, records its actual digest, and runs it only through a local request
 interceptor. It verifies no vendor request before consent or after decline,
-one loader/config after acceptance, sanitized page URLs, denied advertising
-consent, and disabling/clearing cookies on withdrawal. It is not a guarantee
+one loader/config per page after acceptance, sanitized page URLs, denied advertising
+consent, and disabling/clearing cookies on withdrawal. A two-page check opens
+the homepage and privacy page in one browser context, withdraws consent in the
+privacy page, and verifies that the already open homepage is disabled and emits
+no further custom contact event. It is not a guarantee
 about future vendor code or remote account configuration. No analytics event or
 form submission is sent to a live service by the browser tests.
+
+Open pages re-read the shared consent cookie before custom events and on focus,
+page restoration and visibility changes. A same-origin `BroadcastChannel`
+notifies other open pages of withdrawal; receivers check the cookie and never
+grant consent from a message. Environments without that channel and separate
+subdomains use the lifecycle/event checks. Cookie expiry or withdrawal on a
+different subdomain is therefore detected on those checks, not instantaneously
+in an idle unchanged page. Grants in another tab take effect after navigation
+or local acceptance. The loader URL version is updated with this correction so
+newly loaded documents request the corrected code.
 
 ## Policy behavior and limits
 
@@ -147,7 +160,10 @@ handlers. VCC React event listeners continue to work after precompilation.
 
 Resource directives reflect the document's real sources. Reviewed dynamic
 exceptions are explicit in `RUNTIME_SOURCES`, including the existing Explorer
-demo API base assembled through a variable. Newly introduced indirect script,
+demo API base assembled through a variable. The active bundle and retained
+historical bundle have separate entries; a source regression test checks that
+the currently linked bundle's evidence connection remains permitted after an
+asset-name change. Newly introduced indirect script,
 fetch, worker or module dependencies need a source review and interaction test;
 literal-source scanning cannot infer arbitrary JavaScript behavior.
 
@@ -193,7 +209,7 @@ response-only no-policy control must execute all four probes. DevTools evaluatio
 alone is not accepted as evidence of script-policy enforcement. Existing FAQ
 and mobile-header controls must still work.
 
-The initial-load crawl checks all 422 HTML source paths: 420 local loads and two
+The initial-load crawl checks all 425 HTML source paths: 423 local loads and two
 explicitly declared external redirects. It rejects page errors, unexpected
 policy omissions, and CSP violations. The redirect exemption requires an exact
 browser-parsed source refresh target and a source CSP; it does not assert a

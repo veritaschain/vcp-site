@@ -51,8 +51,17 @@ async function main() {
       assert.equal(call[2].ad_user_data, 'denied');
       assert.equal(call[2].ad_personalization, 'denied');
     }
-    await page.locator('#vso-cookie-settings').click();
-    await page.getByRole('button', { name: 'Decline', exact: true }).click();
+    // The privacy page shares the domain consent cookie with the already open
+    // homepage. Withdrawal must stop that existing page without a reload.
+    const privacy = await session.context.newPage();
+    privacy.on('pageerror', error => errors.push(error.message));
+    await privacy.goto(`${ORIGIN}/privacy/`, { waitUntil: 'load' });
+    await settled(privacy);
+    assert.equal(await privacy.evaluate(() => window['ga-disable-G-XTK1LJKRGV']), false);
+    const eventsBefore = await page.evaluate(() => (window.dataLayer || []).filter(item => item[0] === 'event').length);
+    await privacy.locator('#vso-cookie-settings').click();
+    await privacy.getByRole('button', { name: 'Decline', exact: true }).click();
+    await page.waitForFunction(() => window['ga-disable-G-XTK1LJKRGV'] === true);
     await settled(page);
     const withdrawn = await page.evaluate(() => ({
       disabled: window['ga-disable-G-XTK1LJKRGV'],
@@ -65,6 +74,19 @@ async function main() {
     assert.ok(!/(?:^|;\s*)_ga(?:_|=)/.test(withdrawn.cookies));
     assert.equal(withdrawn.consent[2].analytics_storage, 'denied');
     assert.deepEqual(withdrawn.violations, []);
+    await page.evaluate(() => {
+      const link = document.createElement('a');
+      link.id = 'consent-revocation-fixture';
+      link.href = 'mailto:standards@veritaschain.org';
+      link.textContent = 'Offline consent regression';
+      link.addEventListener('click', event => event.preventDefault());
+      document.body.appendChild(link);
+    });
+    await page.locator('#consent-revocation-fixture').click();
+    assert.equal(await page.evaluate(() => (window.dataLayer || []).filter(item => item[0] === 'event').length), eventsBefore,
+      'The already open homepage must not emit a custom event after withdrawal in its privacy tab');
+    assert.deepEqual(await privacy.evaluate(() => window.__cspViolations), []);
+    await privacy.close();
     assert.deepEqual(errors, []);
     report = {
       browser: browser.version(),
@@ -75,6 +97,8 @@ async function main() {
       vendorLoaderSRI: 'Unresolved: mutable Google-managed opt-in loader',
       advertisingConsent: 'denied',
       withdrawalDisablesAnalytics: withdrawn.disabled,
+      sharedTabWithdrawalDisablesAnalytics: withdrawn.disabled,
+      eventsAfterSharedTabWithdrawal: 0,
       attemptedOrigins: [...new Set(session.requests.filter(google).map(request => new URL(request.url).origin))].sort(),
       violations: withdrawn.violations,
       pageErrors: errors,

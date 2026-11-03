@@ -65,6 +65,21 @@ class PolicyGate(unittest.TestCase):
         self.assertEqual(integrity, VERIFIED_SRI[url])
         self.assertRegex(source, r"script\.crossOrigin\s*=\s*'anonymous'")
 
+    def test_active_explorer_bundle_retains_evidence_connection(self):
+        page = 'explorer/app/index.html'
+        source = (ROOT / page).read_text()
+        actual, record = policy(source, page)
+        bundles = [file for file in record['local_scripts']
+                   if file.startswith('explorer/app/assets/index-') and file.endswith('.js')]
+        self.assertEqual(len(bundles), 1)
+        origin = 'https://veritaschain-evidence-demo.kamimura0000.chatgpt.site'
+        self.assertIn(origin + '/v1', (ROOT / bundles[0]).read_text())
+        connections = next(value.split()[1:] for value in actual.split('; ')
+                           if value.startswith('connect-src '))
+        # A new hashed bundle must keep the reviewed indirect fetch destination.
+        self.assertIn(origin, connections)
+        self.assertNotIn('https://explorer.veritaschain.org', connections)
+
 
 if __name__ == '__main__':
     unittest.main()
