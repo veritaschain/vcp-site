@@ -56,6 +56,18 @@ class VCPHeader extends HTMLElement {
         // Translation data for all supported languages
         this.translations = {
             en: {
+                specsSdk: "Specs & SDK",
+                demosUsage: "Demos & use cases",
+                researchGuides: "Research & guides",
+                aboutVsoNav: "VSO",
+                vapSpec: "VAP framework (GitHub)",
+                sdk: "VCP SDK (development preview)",
+                announcements: "Latest announcements",
+                corrections: "Corrections log",
+                policies: "Policies & disclosures",
+                evidect: "EVIDECT (Japanese)",
+                mainNavigation: "Main navigation",
+                toggleNavigation: "Toggle navigation",
                 vcp: 'VCP',
                 whatIsVcp: 'What is VCP?',
                 specification: 'Specification',
@@ -126,6 +138,18 @@ class VCPHeader extends HTMLElement {
                 support: 'Support'
             },
             ja: {
+                specsSdk: "仕様・開発",
+                demosUsage: "デモ・適用",
+                researchGuides: "研究・ガイド",
+                aboutVsoNav: "VSOについて",
+                vapSpec: "VAPフレームワーク（GitHub）",
+                sdk: "VCP SDK（開発版）",
+                announcements: "最新のお知らせ",
+                corrections: "訂正ログ",
+                policies: "方針・開示",
+                evidect: "EVIDECTのサービス",
+                mainNavigation: "メインナビゲーション",
+                toggleNavigation: "メニューを開閉",
                 vcp: 'VCP',
                 whatIsVcp: 'VCPとは',
                 specification: '仕様書',
@@ -196,6 +220,18 @@ class VCPHeader extends HTMLElement {
                 support: 'サポート'
             },
             zh: {
+                specsSdk: "规范与开发",
+                demosUsage: "演示与应用",
+                researchGuides: "研究与指南",
+                aboutVsoNav: "关于VSO",
+                vapSpec: "VAP框架（GitHub）",
+                sdk: "VCP SDK（开发版）",
+                announcements: "最新公告",
+                corrections: "更正日志",
+                policies: "政策与披露",
+                evidect: "EVIDECT服务（日文）",
+                mainNavigation: "主导航",
+                toggleNavigation: "展开或收起菜单",
                 vcp: 'VCP',
                 whatIsVcp: '什么是VCP',
                 specification: '技术规范',
@@ -295,7 +331,7 @@ class VCPHeader extends HTMLElement {
             : ['en', 'ja', 'zh'];
 
         this.innerHTML = `
-        <nav class="main-nav ${themeClass}">
+        <nav class="main-nav ${themeClass}" aria-label="${t.mainNavigation}">
             <div class="nav-container">
                 <a href="${lang === 'en' ? '/' : `/${lang}/`}" class="nav-logo" aria-label="VeritasChain Standards Organization (VSO)">
                     <img class="logo-image" src="/press/logo-transparent.png" width="40" height="40" alt="" decoding="async">
@@ -303,135 +339,89 @@ class VCPHeader extends HTMLElement {
                 </a>
 
                 <!-- Mobile Menu Toggle -->
-                <button class="nav-toggle" aria-label="Toggle navigation">
+                <button class="nav-toggle" aria-label="${t.toggleNavigation}" aria-controls="vcp-nav-menu" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
 
-                <div class="nav-menu">
+                <div class="nav-menu" id="vcp-nav-menu">
                     <div class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle">
-                            ${t.vap} <i class="fas fa-chevron-down"></i>
+                            ${t.vap} <i class="fas fa-chevron-down" aria-hidden="true"></i>
                         </button>
                         <div class="dropdown-menu">
                             <a href="/vap/" class="dropdown-item">${t.vapOverview}</a>
-                            <a href="/vap/dvp/" class="dropdown-item">${t.vapDvp}</a>
-                            <a href="/vap/map/" class="dropdown-item">${t.vapMap}</a>
-                            <a href="/vap/eip/" class="dropdown-item">${t.vapEip}</a>
-                            <a href="/vap/pap/" class="dropdown-item">${t.vapPap}</a>
-                            <a href="/vap/iap/" class="dropdown-item">${t.vapIap}</a>
+                            <a href="/what-is-vcp/" class="dropdown-item">${t.whatIsVcp}</a>
                             <a href="/vap/cap/" class="dropdown-item">${t.vapCap}</a>
                             <a href="/vap/cpp/" class="dropdown-item">${t.vapCpp}</a>
                             <a href="/vap/lap/" class="dropdown-item">${t.vapLap}</a>
-                            <a href="/vap/gam/" class="dropdown-item">${t.vapGam}</a>
-                            <a href="/vap/at/" class="dropdown-item">${t.vapAt}</a>
                             <a href="/vap/limits/" class="dropdown-item">${t.vapLimits}</a>
-                            <a href="/incidents/" class="dropdown-item">${t.vapIncidents}</a>
                         </div>
                     </div>
 
                     <div class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle">
-                            ${t.vcp} <i class="fas fa-chevron-down"></i>
+                            ${t.specsSdk} <i class="fas fa-chevron-down" aria-hidden="true"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a href="/what-is-vcp/" class="dropdown-item">${t.whatIsVcp}</a>
                             <a href="/vcp/specification/" class="dropdown-item">${t.specification}</a>
-                            <a href="/explorer/" class="dropdown-item">${t.explorer}</a>
-                            <a href="/explorer/app/" class="dropdown-item dropdown-item-highlight">${t.launchExplorer}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
-                            ${t.vcCertified} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/certified/" class="dropdown-item">${t.certifiedOverview}</a>
-                            <a href="/certified/apply/" class="dropdown-item">${t.certifiedApply}</a>
-                            <a href="/certified/faq/" class="dropdown-item">${t.certifiedFaq}</a>
-                            <a href="/certified/cab/" class="dropdown-item">${t.certifiedCabs}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
-                            ${t.solutions} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/use-cases/" class="dropdown-item">${t.useCases}</a>
-                            <a href="/solutions/exchanges/" class="dropdown-item">${t.forExchanges}</a>
-                            <a href="/docs/brokers/" class="dropdown-item">${t.forBrokers}</a>
-                            <a href="/propfirms/" class="dropdown-item">${t.forPropFirms}</a>
-                            <a href="/sec/" class="dropdown-item">${t.vcpSec}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
-                            ${t.standards} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/benchmark/" class="dropdown-item">${t.benchmarks}</a>
-                            <a href="https://github.com/VeritasChain/vcp-spec" class="dropdown-item" target="_blank" rel="noopener">${t.vcpProtocol}</a>
-                            <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
+                            <a href="https://github.com/veritaschain/vap-spec" class="dropdown-item" target="_blank" rel="noopener noreferrer">${t.vapSpec}</a>
+                            <a href="https://github.com/veritaschain/vcp-sdk" class="dropdown-item" target="_blank" rel="noopener noreferrer">${t.sdk}</a>
                             <a href="/vcp/developers/" class="dropdown-item">${t.developersIntegration}</a>
+                            <a href="https://veritaschain.github.io/vcp-explorer-api/" class="dropdown-item" target="_blank" rel="noopener noreferrer">${t.explorerApi}</a>
+                            <a href="https://raw.githubusercontent.com/veritaschain/vcp-explorer-api/main/openapi.yaml" class="dropdown-item" target="_blank" rel="noopener noreferrer">${t.openApiSpec}</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle">
+                            ${t.demosUsage} <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/explorer/app/" class="dropdown-item dropdown-item-highlight">${t.launchExplorer}</a>
+                            <a href="/explorer/" class="dropdown-item">${t.explorer}</a>
                             <a href="/benchmark/app/" class="dropdown-item dropdown-item-highlight">${t.launchScorecard}</a>
                             <a href="/regtech/" class="dropdown-item">${t.tamperEvidenceDemo}</a>
+                            <a href="/use-cases/" class="dropdown-item">${t.useCases}</a>
+                            <a href="/solutions/exchanges/" class="dropdown-item">${t.forExchanges}</a>
+                            <a href="https://evidect.veritaschain.org/" class="dropdown-item" target="_blank" rel="noopener noreferrer">${t.evidect}</a>
                         </div>
                     </div>
 
                     <div class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle">
-                            ${t.developers} <i class="fas fa-chevron-down"></i>
+                            ${t.researchGuides} <i class="fas fa-chevron-down" aria-hidden="true"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a href="/vcp/developers/" class="dropdown-item">${t.about}</a>
-                            <a href="https://veritaschain.github.io/vcp-explorer-api/" class="dropdown-item" target="_blank" rel="noopener">${t.explorerApi}</a>
-                            <a href="https://raw.githubusercontent.com/veritaschain/vcp-explorer-api/main/openapi.yaml" class="dropdown-item" target="_blank" rel="noopener">${t.openApiSpec}</a>
-                            <a href="https://github.com/veritaschain/vcp-explorer-api" class="dropdown-item" target="_blank" rel="noopener">${t.github}</a>
-                            <a href="https://github.com/veritaschain/vcp-spec/tree/main/spec/v1.2" class="dropdown-item" target="_blank" rel="noopener">${t.vcpV12}</a>
-                            <a href="/v1-1/" class="dropdown-item">${t.vcpV11}</a>
-                            <a href="/vcc/" class="dropdown-item">${t.vccDemo}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
-                            ${t.about} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/overview/" class="dropdown-item">${t.overview}</a>
-                            <a href="/about/" class="dropdown-item">${t.aboutVso}</a>
-                            <a href="/distributed-organization/" class="dropdown-item">${t.distributedOrganization}</a>
-                            <a href="/vso/" class="dropdown-item">${t.vso}</a>
-                            <a href="/company/" class="dropdown-item">${t.company}</a>
-                            <a href="/partners/" class="dropdown-item">${t.partners}</a>
-                            <a href="/press/" class="dropdown-item">${t.pressKit}</a>
-                            <a href="/legal/" class="dropdown-item">${t.legal}</a>
-                            <a href="/privacy/" class="dropdown-item">${t.privacy}</a>
-                            <a href="/terms/" class="dropdown-item">${t.terms}</a>
-                            <a href="/law/" class="dropdown-item">${t.commercialLaw}</a>
-                            <a href="/impressum/" class="dropdown-item">${t.impressum}</a>
-                            <a href="/media/" class="dropdown-item">${t.mediaPress}</a>
-                            <a href="/blog/" class="dropdown-item">${t.blog}</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle">
-                            ${t.support} <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="/support/" class="dropdown-item">${t.support}</a>
+                            <a href="/vso/announcements/" class="dropdown-item">${t.announcements}</a>
                             <a href="/guides/" class="dropdown-item">${t.guides}</a>
                             <a href="/guides/ai-agent-audit-log/" class="dropdown-item">${t.aiAgentGuide}</a>
                             <a href="/guides/ai-governance/" class="dropdown-item">${t.aiGovernanceGuide}</a>
                             <a href="/guides/ai-audit-trail/" class="dropdown-item">${t.aiAuditTrailGuide}</a>
+                            <a href="/incidents/" class="dropdown-item">${t.vapIncidents}</a>
+                            <a href="/standardization/" class="dropdown-item">${t.standardizationRoadmap}</a>
+                            <a href="/vso/corrections/" class="dropdown-item">${t.corrections}</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle">
+                            ${t.aboutVsoNav} <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/about/" class="dropdown-item">${t.aboutVso}</a>
+                            <a href="/company/" class="dropdown-item">${t.company}</a>
+                            <a href="/vso/policies/" class="dropdown-item">${t.policies}</a>
+                            <a href="/certified/" class="dropdown-item">${t.applyCertification}</a>
+                            <a href="/certified/cab/" class="dropdown-item">${t.certifiedCabs}</a>
+                            <a href="/support/" class="dropdown-item">${t.support}</a>
+                            <a href="/privacy/" class="dropdown-item">${t.privacy}</a>
+                            <a href="/terms/" class="dropdown-item">${t.terms}</a>
                             <a href="/sitemap/" class="dropdown-item">${t.siteDirectory}</a>
                         </div>
                     </div>
+
                 </div>
             </div>
         </nav>
@@ -451,7 +441,7 @@ class VCPHeader extends HTMLElement {
     localizeNavigation(lang) {
         if (!['ja', 'zh'].includes(lang)) return;
         // Only route to translations that exist; English-only tools keep their working URL.
-        const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/lap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/vso/", "/what-is-vcp/"]);
+        const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/lap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/vso/", "/vso/announcements/", "/vso/corrections/", "/vso/policies/", "/what-is-vcp/"]);
         this.querySelectorAll('.dropdown-menu a[href^="/"]').forEach(link => {
             const path = link.getAttribute('href');
             if (translatedRoutes.has(path) || (lang === 'ja' && ['/guides/', '/guides/ai-agent-audit-log/', '/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/'].includes(path))) link.setAttribute('href', `${path}${lang}/`);
@@ -526,6 +516,7 @@ class VCPHeader extends HTMLElement {
             navToggle.addEventListener('click', () => {
                 navToggle.classList.toggle('active');
                 navMenu.classList.toggle('active');
+                navToggle.setAttribute('aria-expanded', String(navMenu.classList.contains('active')));
 
                 // Reset expanded sections when the mobile panel is closed.
                 if (!navMenu.classList.contains('active')) {
@@ -595,6 +586,7 @@ class VCPHeader extends HTMLElement {
                 if (navToggle && navMenu) {
                     navToggle.classList.remove('active');
                     navMenu.classList.remove('active');
+                    navToggle.setAttribute('aria-expanded', 'false');
                 }
             }
         });

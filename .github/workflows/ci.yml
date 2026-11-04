@@ -13,6 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate incident evidence metadata, snapshots and planned DVP wording
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
+          python3 -O -m unittest discover -s tests -p 'test_incident_evidence.py' -v
+          python3 scripts/build_incidents.py --check
+
       - name: Validate canonical metadata and multilingual sitemap
         run: python3 scripts/seo.py check
 

@@ -62,11 +62,22 @@ jobs:
           curl --fail --show-error --location --output "$RUNNER_TEMP/css-chrome.zip" 'https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.119/linux64/chrome-linux64.zip'
           printf '%s  %s\n' '680a672ed0cc7b8fae6ee5b21691a55273228b05e1f3f80580606c4db203994a' "$RUNNER_TEMP/css-chrome.zip" | sha256sum --check --status
           unzip -q "$RUNNER_TEMP/css-chrome.zip" -d "$RUNNER_TEMP/css-chrome"
+      - name: Verify multilingual homepage layout and navigation
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
+          CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
+        run: node tools/site-css/homepage-check.cjs
       - name: Compare theme, viewport and interaction renders offline
         env:
           CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
           CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
         run: npm run test:render --prefix tools/site-css
+      - name: Record full-page capture controls
+        if: always()
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
+          CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
+        run: node tools/site-css/capture-control.cjs
       - name: Preserve authored active keyframes and reject cross-page collisions
         env:
           CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
