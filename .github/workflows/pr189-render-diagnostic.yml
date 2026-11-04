@@ -2,7 +2,9 @@ name: Inspect PR189 render stability
 on:
   push:
     branches: [diagnostics/pr189-render-20261104]
-    paths: [.github/workflows/pr189-render-diagnostic.yml]
+    paths:
+      - .github/workflows/pr189-render-diagnostic.yml
+      - .github/diagnostics/pr189-render-controls.cjs
 permissions:
   contents: read
 jobs:
@@ -24,75 +26,11 @@ jobs:
           curl --fail --show-error --location --output "$RUNNER_TEMP/css-chrome.zip" 'https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.119/linux64/chrome-linux64.zip'
           printf '%s  %s\n' '680a672ed0cc7b8fae6ee5b21691a55273228b05e1f3f80580606c4db203994a' "$RUNNER_TEMP/css-chrome.zip" | sha256sum --check --status
           unzip -q "$RUNNER_TEMP/css-chrome.zip" -d "$RUNNER_TEMP/css-chrome"
-      - name: Fixed-count same-CSS controls and strict original comparisons
+      - name: Fixed-count same-CSS controls using unchanged acceptance criteria
         env:
           CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
           CSS_EVIDENCE_DIR: ${{ runner.temp }}/pr189-diagnostic
-        run: |
-          node <<'JS'
-          'use strict';
-          const fs = require('node:fs'), path = require('node:path'), Module = require('node:module');
-          const dir = path.resolve('tools/site-css');
-          const file = path.join(dir, 'render-check.cjs');
-          const source = fs.readFileSync(file, 'utf8');
-          const helper = new Module(file, module);
-          helper.filename = file;
-          helper.paths = Module._nodeModulePaths(dir);
-          // Expose existing helpers only in memory; do not change checked-in tests.
-          helper._compile(source + '\nmodule.exports = {...module.exports, openPage, settle, snapshot, stableScreenshot};\n', file);
-          const {openPage, settle, snapshot, stableScreenshot, comparePixels, languageCornerGeometry, withinRasterNoiseBudget} = helper.exports;
-          const {manifest, read, compileTheme, compact, sha256} = require(path.join(dir, 'lib.cjs'));
-          const {chromium} = require(path.join(dir, 'node_modules/playwright'));
-          const output = process.env.CSS_EVIDENCE_DIR;
-          fs.mkdirSync(output, {recursive: true});
-          const target = 'blog/posts/2026-01-17-vcp-v1-1-regulatory-compliance-solutions/index.html';
-          const man = manifest();
-          const id = Object.keys(man.themes).find(key => man.themes[key].pages.includes(target));
-          if (!id) throw new Error('target theme missing');
-          const theme = man.themes[id];
-          async function describe(page) {
-            return page.evaluate(() => {
-              const nodes = new Set([...document.elementsFromPoint(965,30), ...document.querySelectorAll('vcp-header .language-switcher, vcp-header .lang-link')]);
-              return [...nodes].map(el => ({tag:el.tagName, cls:el.getAttribute('class'), text:el.textContent.slice(0,100), rect:el.getBoundingClientRect().toJSON(), style:Object.fromEntries([...getComputedStyle(el)].map(p=>[p,getComputedStyle(el).getPropertyValue(p)])), before:{content:getComputedStyle(el,'::before').content,style:Object.fromEntries([...getComputedStyle(el,'::before')].map(p=>[p,getComputedStyle(el,'::before').getPropertyValue(p)]))}}));
-            });
-          }
-          async function main() {
-            const baseline = await compact(await compileTheme(theme.config, theme.plugins, [read(target), ...man.dynamicSources.map(read)]));
-            const browser = await chromium.launch({headless:true, executablePath:process.env.CSS_BROWSER_PATH,args:['--no-sandbox']});
-            const rows=[];
-            try {
-              const plans=[['reference-reference',true,true],['compiled-compiled',false,false],['reference-compiled',true,false]];
-              for (const [label,left,right] of plans) for(let trial=1;trial<=3;trial++) {
-                const instances=[];
-                try {
-                  for(const ref of [left,right]) {
-                    const inst=await openPage(browser,target,id,ref,{width:1440,height:900},baseline);
-                    instances.push(inst);
-                    await settle(inst.page);
-                    inst.png=await stableScreenshot(inst.page);
-                    await settle(inst.page);
-                    inst.snap=await snapshot(inst.page);
-                    inst.corners=await languageCornerGeometry(inst.page);
-                    inst.details=await describe(inst.page);
-                  }
-                  const [a,b]=instances;
-                  const pc=comparePixels(a.png,b.png);
-                  const diff=[];
-                  for(let i=0;i<Math.max(a.snap.length,b.snap.length);i++) if(JSON.stringify(a.snap[i])!==JSON.stringify(b.snap[i])) diff.push(i);
-                  const allowance=withinRasterNoiseBudget(pc,diff.length,a.errors,b.errors,a.corners.regions,JSON.stringify(a.corners)===JSON.stringify(b.corners));
-                  const prefix=`${label}-${trial}`;
-                  for(let k=0;k<2;k++) fs.writeFileSync(path.join(output,`${prefix}-${k}.png`),instances[k].png);
-                  fs.writeFileSync(path.join(output,`${prefix}-details.json`),JSON.stringify(instances.map(i=>i.details),null,2));
-                  const row={label,trial,differences:diff.length,pixelComparison:pc,allowance,referenceErrors:a.errors,compiledErrors:b.errors,fullTargetStylesEqual:JSON.stringify(a.details)===JSON.stringify(b.details),screenshotSha256:[sha256(a.png),sha256(b.png)]};
-                  rows.push(row);
-                  console.log('CONTROL_RESULT='+JSON.stringify(row));
-                  if(label==='reference-reference' && trial===1) console.log('TARGET_GEOMETRY='+JSON.stringify(a.details.map(d=>({tag:d.tag,cls:d.cls,text:d.text,rect:d.rect,backdrop:d.style['backdrop-filter'],filter:d.style.filter,opacity:d.style.opacity,bg:d.style['background-color']}))));
-                } finally {for(const instance of instances) await instance.context.close();}
-              }
-            } finally {await browser.close(); fs.writeFileSync(path.join(output,'diagnostic.json'),JSON.stringify(rows,null,2));}
-          }
-          main().catch(error=>{console.error(error);process.exitCode=1;});
-          JS
+        run: node .github/diagnostics/pr189-render-controls.cjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
