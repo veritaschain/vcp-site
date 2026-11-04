@@ -1,0 +1,60 @@
+name: Inspect second retained PR189 failure
+on:
+  push:
+    branches: [diagnostics/pr189-render-20261104]
+    paths: [.github/workflows/pr189-second-evidence.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Verify retained archive and inspect only failed cases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, tempfile, urllib.request, urllib.error, zipfile
+          from pathlib import Path
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+          url='https://api.github.com/repos/veritaschain/vcp-site/actions/artifacts/13285154604/zip'
+          expected='d3c37b861ff95c47a1caa4c5dbf9496caba5efb052950a7343e8df87378ee7a5'
+          req=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+          try:
+              response=urllib.request.build_opener(NoRedirect).open(req,timeout=30)
+          except urllib.error.HTTPError as error:
+              if error.code not in (301,302,303,307,308): raise
+              target=error.headers['Location']
+              if not target.startswith('https://'): raise RuntimeError('insecure redirect')
+              response=urllib.request.urlopen(target,timeout=60)
+          with tempfile.TemporaryDirectory() as temp:
+              archive=Path(temp)/'evidence.zip'
+              sha=hashlib.sha256(); size=0
+              with response,archive.open('wb') as stream:
+                  while block:=response.read(1024*1024):
+                      size+=len(block)
+                      if size>500_000_000: raise RuntimeError('archive too large')
+                      sha.update(block); stream.write(block)
+              if sha.hexdigest()!=expected: raise RuntimeError('archive digest mismatch')
+              print('RETAINED_SHA256='+sha.hexdigest())
+              with zipfile.ZipFile(archive) as z:
+                  for name in z.namelist():
+                      if name.endswith('/report.json') or name=='report.json':
+                          report=json.loads(z.read(name))
+                          rows=report.get('cases',[]) if isinstance(report,dict) else report
+                          if isinstance(report,dict): print('METADATA='+json.dumps({k:v for k,v in report.items() if k!='cases'},ensure_ascii=True))
+                          failed=[r for r in rows if r.get('differences') or (not r.get('pixelsEqual') and not r.get('rasterNoiseAllowance')) or not r.get('errorsEqual')]
+                          print('COUNTS='+json.dumps({'total':len(rows),'failed':len(failed)}))
+                          for row in failed:
+                              print('FAILED_CASE='+json.dumps(row,ensure_ascii=True))
+                              suffix=row['evidence']+'-differences.json'
+                              matches=[n for n in z.namelist() if n.endswith(suffix)]
+                              for diff_name in matches:
+                                  text=z.read(diff_name).decode('utf-8')
+                                  if len(text)>100000: raise RuntimeError('difference needs bounded follow-up')
+                                  print('DIFFERENCES='+json.dumps(json.loads(text),ensure_ascii=True))
+          PY
