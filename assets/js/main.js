@@ -8,6 +8,8 @@
 
   // ===== Smooth Scroll =====
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    // Native fragment navigation moves keyboard focus to the skip-link target.
+    if (anchor.classList.contains('home-skip')) return;
     anchor.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
       if (href === '#' || !href) return;

@@ -70,6 +70,28 @@ Without `CSS_BROWSER_PATH`, Playwright uses its installed Chromium. The CI job
 pins a Chrome for Testing build and verifies the downloaded archive's SHA-256.
 The initial local validation used Chrome **137.0.7151.119**.
 
+Before a full-page capture, both sides visit the visible backdrop-filter
+surfaces in actual viewports and restore their requested scroll position. This
+gives those offscreen composited layers the same paint opportunity before
+interactions run, without rasterizing every unrelated page region. The
+capture does not change page styles or loosen comparison thresholds. In the
+previous main artifact, two offscreen backdrop-filter cards on the Chinese
+VeraSnap page were absent from one full-page PNG even though the recorded DOM
+geometry and styles matched. Repeating that missing paint was not sufficient
+evidence of a correct screenshot.
+
+`node tools/site-css/capture-control.cjs` records unprepared and prepared
+reference/compiled pairs, same-CSS pairs, the affected cards in their actual
+viewport, and every computed property in those cards. Results and PNGs remain
+in the CI artifact. The regular comparator also records filter, backdrop,
+clipping, containment and compositing properties.
+
+`node tools/site-css/homepage-check.cjs` checks the English, Japanese and Chinese
+homepages at 1440, 390 and 360 pixels. It verifies content and primary actions,
+available-language routes, keyboard navigation through all five menu groups,
+mobile open/close state, FAQ operation, and horizontal overflow. Screenshots
+and a separate report are saved in the `homepage` evidence subdirectory.
+
 The suite renders one representative of every configuration plus default at
 1440 px and 390 px, three-language broker/blog/FAQ pages, the three blog articles
 with dynamic classes, the changed law/press pages, and interactive mobile-menu,
