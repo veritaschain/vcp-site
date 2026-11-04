@@ -29,6 +29,17 @@ async function assertNoHorizontalOverflow(page, label) {
   return dimensions;
 }
 
+async function checkSkipLink(page) {
+  await page.keyboard.press('Tab');
+  assert.equal(await page.locator('.home-skip').evaluate(element => element === document.activeElement), true, 'Skip link is the first keyboard stop');
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(() => document.activeElement === document.querySelector('#main-content'));
+  assert.equal(new URL(page.url()).hash, '#main-content', 'Skip link retains the native fragment destination');
+  await page.keyboard.press('Tab');
+  assert.equal(await page.locator('.home-actions a').first().evaluate(element => element === document.activeElement), true, 'Tab after skipping reaches the primary hero action');
+  return 'native target focus and next Tab to primary action passed';
+}
+
 async function checkNavigation(page, language, viewport, name) {
   const dropdowns = page.locator('vcp-header .nav-item.dropdown');
   assert.equal(await dropdowns.count(), 5, 'Five navigation groups');
@@ -109,6 +120,7 @@ async function checkPage(browser, language, viewport) {
     assert.equal(await page.locator('.section-news .news-row').count(), 3, 'Latest three announcements');
     assert.equal(await page.locator('.home-profile-table tbody tr').count(), 4, 'Four principal domain profile entries');
 
+    result.skipLink = await checkSkipLink(page);
     result.navigation = await checkNavigation(page, language, viewport, name);
     const status = page.locator('#current-status');
     await status.scrollIntoViewIfNeeded();
@@ -145,7 +157,7 @@ async function main() {
   const report = {
     browser: browser.version(),
     network: 'All requests intercepted by openPage; local files only, external fonts/icons omitted.',
-    scope: 'EN/JA/ZH at 1440, 390 and 360 pixels; content, routes, keyboard navigation, mobile menu, FAQ and horizontal overflow.',
+    scope: 'EN/JA/ZH at 1440, 390 and 360 pixels; content, routes, native skip-link focus, keyboard navigation, mobile menu, FAQ and horizontal overflow.',
     cases: []
   };
   try {

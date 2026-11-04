@@ -70,9 +70,10 @@ Without `CSS_BROWSER_PATH`, Playwright uses its installed Chromium. The CI job
 pins a Chrome for Testing build and verifies the downloaded archive's SHA-256.
 The initial local validation used Chrome **137.0.7151.119**.
 
-Before a full-page capture, both sides visit and rasterize each viewport and
-restore their requested scroll position. This gives offscreen composited layers
-and native lazy images the same paint opportunity before interactions run. The
+Before a full-page capture, both sides visit the visible backdrop-filter
+surfaces in actual viewports and restore their requested scroll position. This
+gives those offscreen composited layers the same paint opportunity before
+interactions run, without rasterizing every unrelated page region. The
 capture does not change page styles or loosen comparison thresholds. In the
 previous main artifact, two offscreen backdrop-filter cards on the Chinese
 VeraSnap page were absent from one full-page PNG even though the recorded DOM

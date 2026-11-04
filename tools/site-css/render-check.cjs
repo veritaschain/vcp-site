@@ -29,17 +29,28 @@ async function settle(page) {
 
 // A full-page screenshot expands the capture beyond the visible viewport, but
 // that does not guarantee that offscreen composited layers have been painted.
-// Visit and capture each viewport first, then restore the requested position.
-// This also gives native lazy images the same load/decode opportunity on both
-// sides. No page styles or comparison tolerances are changed.
+// Visit the backdrop-filter surfaces in a real viewport first, then restore
+// the requested position. Other page regions need no extra raster passes.
+// No page styles or comparison tolerances are changed.
 async function paintDocument(page) {
   const original = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
   try {
-    const { height, step } = await page.evaluate(() => ({
-      height: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
-      step: Math.max(1, innerHeight - 64)
-    }));
-    for (let y = 0; y < height; y += step) {
+    const positions = await page.evaluate(() => {
+      const stops = new Set();
+      const step = Math.max(1, innerHeight - 128);
+      for (const element of [document.body, ...document.body.querySelectorAll('*')]) {
+        const style = getComputedStyle(element);
+        const filter = style.backdropFilter || style.webkitBackdropFilter;
+        if (!filter || filter === 'none' || style.visibility !== 'visible') continue;
+        const rect = element.getBoundingClientRect();
+        if (!rect.width || !rect.height) continue;
+        const top = Math.max(0, Math.floor(rect.top + scrollY - 64));
+        const bottom = rect.bottom + scrollY;
+        for (let y = top; y < bottom; y += step) stops.add(y);
+      }
+      return [...stops].sort((a, b) => a - b);
+    });
+    for (const y of positions) {
       await page.evaluate(top => scrollTo(0, top), y);
       await settle(page);
       await page.screenshot({ animations: 'disabled' });

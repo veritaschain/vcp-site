@@ -10,7 +10,7 @@ on:
       - 'scripts/**'
       - 'build-static*.mjs'
       - '**/static/*.js'
-      - 'assets/css/site-tailwind.css'
+      - 'assets/css/**'
       - 'tools/site-css/**'
       - 'tools/site-security/**'
       - 'vcc/demo/**'
@@ -26,7 +26,7 @@ on:
       - 'scripts/**'
       - 'build-static*.mjs'
       - '**/static/*.js'
-      - 'assets/css/site-tailwind.css'
+      - 'assets/css/**'
       - 'tools/site-css/**'
       - 'tools/site-security/**'
       - 'vcc/demo/**'
@@ -62,22 +62,16 @@ jobs:
           curl --fail --show-error --location --output "$RUNNER_TEMP/css-chrome.zip" 'https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.119/linux64/chrome-linux64.zip'
           printf '%s  %s\n' '680a672ed0cc7b8fae6ee5b21691a55273228b05e1f3f80580606c4db203994a' "$RUNNER_TEMP/css-chrome.zip" | sha256sum --check --status
           unzip -q "$RUNNER_TEMP/css-chrome.zip" -d "$RUNNER_TEMP/css-chrome"
-      - name: Verify multilingual homepage layout and navigation
+      - name: Record full-page capture controls
         env:
           CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
           CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
-        run: node tools/site-css/homepage-check.cjs
+        run: node tools/site-css/capture-control.cjs
       - name: Compare theme, viewport and interaction renders offline
         env:
           CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
           CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
         run: npm run test:render --prefix tools/site-css
-      - name: Record full-page capture controls
-        if: always()
-        env:
-          CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
-          CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
-        run: node tools/site-css/capture-control.cjs
       - name: Preserve authored active keyframes and reject cross-page collisions
         env:
           CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
@@ -94,4 +88,36 @@ jobs:
           name: compiled-css-render-comparison
           path: ${{ runner.temp }}/css-evidence/
           if-no-files-found: warn
+          retention-days: 14
+
+  homepage-layout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Install locked browser test tools
+        run: npm ci --prefix tools/site-css --ignore-scripts --no-audit --no-fund
+      - name: Install browser system dependencies
+        run: node tools/site-css/node_modules/playwright/cli.js install-deps chromium
+      - name: Download and verify pinned test browser
+        run: |
+          curl --fail --show-error --location --output "$RUNNER_TEMP/homepage-chrome.zip" 'https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.119/linux64/chrome-linux64.zip'
+          printf '%s  %s\n' '680a672ed0cc7b8fae6ee5b21691a55273228b05e1f3f80580606c4db203994a' "$RUNNER_TEMP/homepage-chrome.zip" | sha256sum --check --status
+          unzip -q "$RUNNER_TEMP/homepage-chrome.zip" -d "$RUNNER_TEMP/homepage-chrome"
+      - name: Verify multilingual homepage layout and navigation
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/homepage-chrome/chrome-linux64/chrome
+          CSS_EVIDENCE_DIR: ${{ runner.temp }}/homepage-evidence
+        run: node tools/site-css/homepage-check.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: homepage-layout-evidence
+          path: ${{ runner.temp }}/homepage-evidence/homepage/
+          if-no-files-found: error
           retention-days: 14
