@@ -1,81 +1,102 @@
-name: Inspect retained PR189 render evidence
+name: Inspect PR189 render stability
 on:
   push:
     branches: [diagnostics/pr189-render-20261104]
     paths: [.github/workflows/pr189-render-diagnostic.yml]
 permissions:
   contents: read
-  actions: read
 jobs:
   inspect:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 12
     steps:
-      - name: Verify retained artifact and report the failed case
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.22.1
+      - name: Install locked test tools
+        run: npm ci --prefix tools/site-css --ignore-scripts --no-audit --no-fund
+      - name: Prepare the same pinned browser
         run: |
-          python3 - <<'PY'
-          import hashlib, json, os, tempfile, urllib.request, urllib.error, zipfile
-          from pathlib import Path
-          url = 'https://api.github.com/repos/veritaschain/vcp-site/actions/artifacts/13285015380/zip'
-          expected = 'fd465adcd668cf0069a89783251add174407dbf6df4e5c31b70c4efc78823f1e'
-          class NoRedirect(urllib.request.HTTPRedirectHandler):
-              def redirect_request(self, req, fp, code, msg, headers, newurl):
-                  return None
-          req = urllib.request.Request(url, headers={
-              'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
-              'Accept': 'application/vnd.github+json',
-              'X-GitHub-Api-Version': '2022-11-28'})
-          try:
-              response = urllib.request.build_opener(NoRedirect).open(req, timeout=30)
-          except urllib.error.HTTPError as error:
-              if error.code not in (301, 302, 303, 307, 308):
-                  raise
-              target = error.headers['Location']
-              if not target.startswith('https://'):
-                  raise RuntimeError('non-HTTPS artifact redirect')
-              # The signed redirect is fetched WITHOUT forwarding the GitHub token.
-              response = urllib.request.urlopen(target, timeout=60)
-          with tempfile.TemporaryDirectory() as temp:
-              archive = Path(temp) / 'evidence.zip'
-              sha = hashlib.sha256()
-              size = 0
-              with response, archive.open('wb') as stream:
-                  while block := response.read(1024 * 1024):
-                      size += len(block)
-                      if size > 500_000_000:
-                          raise RuntimeError('artifact exceeds bounded download')
-                      sha.update(block)
-                      stream.write(block)
-              if sha.hexdigest() != expected:
-                  raise RuntimeError('retained artifact digest mismatch')
-              print('RETAINED_ARTIFACT_SHA256=' + sha.hexdigest())
-              def visit(value):
-                  if isinstance(value, dict):
-                      if value.get('file') == 'blog/posts/2026-01-17-vcp-v1-1-regulatory-compliance-solutions/index.html':
-                          print('TARGET_REPORT=' + json.dumps(value, ensure_ascii=True))
-                      for child in value.values():
-                          visit(child)
-                  elif isinstance(value, list):
-                      for child in value:
-                          visit(child)
-              with zipfile.ZipFile(archive) as z:
-                  names = z.namelist()
-                  reports = [n for n in names if n.endswith('report.json')]
-                  if not reports:
-                      raise RuntimeError('retained report missing')
-                  for name in reports:
-                      report = json.loads(z.read(name))
-                      print('REPORT_FILE=' + json.dumps(name))
-                      print('REPORT_KEYS=' + json.dumps(list(report) if isinstance(report, dict) else ['array']))
-                      visit(report)
-                  diffs = [n for n in names if '2026-01-17-vcp-v1-1-regulatory-compliance-solutions' in n and n.endswith('-differences.json')]
-                  for name in diffs:
-                      detail = z.read(name).decode('utf-8')
-                      print('DIFFERENCE_FILE=' + json.dumps(name))
-                      if len(detail) > 60000:
-                          raise RuntimeError('difference report requires bounded follow-up inspection')
-                      print('DIFFERENCE_REPORT=' + json.dumps(json.loads(detail), ensure_ascii=True))
-          PY
+          node tools/site-css/node_modules/playwright/cli.js install-deps chromium
+          curl --fail --show-error --location --output "$RUNNER_TEMP/css-chrome.zip" 'https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.119/linux64/chrome-linux64.zip'
+          printf '%s  %s\n' '680a672ed0cc7b8fae6ee5b21691a55273228b05e1f3f80580606c4db203994a' "$RUNNER_TEMP/css-chrome.zip" | sha256sum --check --status
+          unzip -q "$RUNNER_TEMP/css-chrome.zip" -d "$RUNNER_TEMP/css-chrome"
+      - name: Fixed-count same-CSS controls and strict original comparisons
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
+          CSS_EVIDENCE_DIR: ${{ runner.temp }}/pr189-diagnostic
+        run: |
+          node <<'JS'
+          'use strict';
+          const fs = require('node:fs'), path = require('node:path'), Module = require('node:module');
+          const dir = path.resolve('tools/site-css');
+          const file = path.join(dir, 'render-check.cjs');
+          const source = fs.readFileSync(file, 'utf8');
+          const helper = new Module(file, module);
+          helper.filename = file;
+          helper.paths = Module._nodeModulePaths(dir);
+          // Expose existing helpers only in memory; do not change checked-in tests.
+          helper._compile(source + '\nmodule.exports = {...module.exports, openPage, settle, snapshot, stableScreenshot};\n', file);
+          const {openPage, settle, snapshot, stableScreenshot, comparePixels, languageCornerGeometry, withinRasterNoiseBudget} = helper.exports;
+          const {manifest, read, compileTheme, compact, sha256} = require(path.join(dir, 'lib.cjs'));
+          const {chromium} = require(path.join(dir, 'node_modules/playwright'));
+          const output = process.env.CSS_EVIDENCE_DIR;
+          fs.mkdirSync(output, {recursive: true});
+          const target = 'blog/posts/2026-01-17-vcp-v1-1-regulatory-compliance-solutions/index.html';
+          const man = manifest();
+          const id = Object.keys(man.themes).find(key => man.themes[key].pages.includes(target));
+          if (!id) throw new Error('target theme missing');
+          const theme = man.themes[id];
+          async function describe(page) {
+            return page.evaluate(() => {
+              const nodes = new Set([...document.elementsFromPoint(965,30), ...document.querySelectorAll('vcp-header .language-switcher, vcp-header .lang-link')]);
+              return [...nodes].map(el => ({tag:el.tagName, cls:el.getAttribute('class'), text:el.textContent.slice(0,100), rect:el.getBoundingClientRect().toJSON(), style:Object.fromEntries([...getComputedStyle(el)].map(p=>[p,getComputedStyle(el).getPropertyValue(p)])), before:{content:getComputedStyle(el,'::before').content,style:Object.fromEntries([...getComputedStyle(el,'::before')].map(p=>[p,getComputedStyle(el,'::before').getPropertyValue(p)]))}}));
+            });
+          }
+          async function main() {
+            const baseline = await compact(await compileTheme(theme.config, theme.plugins, [read(target), ...man.dynamicSources.map(read)]));
+            const browser = await chromium.launch({headless:true, executablePath:process.env.CSS_BROWSER_PATH,args:['--no-sandbox']});
+            const rows=[];
+            try {
+              const plans=[['reference-reference',true,true],['compiled-compiled',false,false],['reference-compiled',true,false]];
+              for (const [label,left,right] of plans) for(let trial=1;trial<=3;trial++) {
+                const instances=[];
+                try {
+                  for(const ref of [left,right]) {
+                    const inst=await openPage(browser,target,id,ref,{width:1440,height:900},baseline);
+                    instances.push(inst);
+                    await settle(inst.page);
+                    inst.png=await stableScreenshot(inst.page);
+                    await settle(inst.page);
+                    inst.snap=await snapshot(inst.page);
+                    inst.corners=await languageCornerGeometry(inst.page);
+                    inst.details=await describe(inst.page);
+                  }
+                  const [a,b]=instances;
+                  const pc=comparePixels(a.png,b.png);
+                  const diff=[];
+                  for(let i=0;i<Math.max(a.snap.length,b.snap.length);i++) if(JSON.stringify(a.snap[i])!==JSON.stringify(b.snap[i])) diff.push(i);
+                  const allowance=withinRasterNoiseBudget(pc,diff.length,a.errors,b.errors,a.corners.regions,JSON.stringify(a.corners)===JSON.stringify(b.corners));
+                  const prefix=`${label}-${trial}`;
+                  for(let k=0;k<2;k++) fs.writeFileSync(path.join(output,`${prefix}-${k}.png`),instances[k].png);
+                  fs.writeFileSync(path.join(output,`${prefix}-details.json`),JSON.stringify(instances.map(i=>i.details),null,2));
+                  const row={label,trial,differences:diff.length,pixelComparison:pc,allowance,referenceErrors:a.errors,compiledErrors:b.errors,fullTargetStylesEqual:JSON.stringify(a.details)===JSON.stringify(b.details),screenshotSha256:[sha256(a.png),sha256(b.png)]};
+                  rows.push(row);
+                  console.log('CONTROL_RESULT='+JSON.stringify(row));
+                  if(label==='reference-reference' && trial===1) console.log('TARGET_GEOMETRY='+JSON.stringify(a.details.map(d=>({tag:d.tag,cls:d.cls,text:d.text,rect:d.rect,backdrop:d.style['backdrop-filter'],filter:d.style.filter,opacity:d.style.opacity,bg:d.style['background-color']}))));
+                } finally {for(const instance of instances) await instance.context.close();}
+              }
+            } finally {await browser.close(); fs.writeFileSync(path.join(output,'diagnostic.json'),JSON.stringify(rows,null,2));}
+          }
+          main().catch(error=>{console.error(error);process.exitCode=1;});
+          JS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pr189-fixed-count-render-controls-${{ github.run_id }}
+          path: ${{ runner.temp }}/pr189-diagnostic/
+          retention-days: 14
+          if-no-files-found: error
