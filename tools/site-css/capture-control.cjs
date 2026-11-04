@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require('playwright');
 const { manifest, compileTheme, compact, sha256 } = require('./lib.cjs');
-const { openPage, snapshot, settle, paintDocument, comparePixels } = require('./render-check.cjs');
+const { openPage, snapshot, settle, paintDocument, captureDocument, comparePixels, pixelSummary } = require('./render-check.cjs');
 
 async function main() {
   const file = 'vap/cpp/verasnap/zh/index.html';
@@ -17,7 +17,7 @@ async function main() {
   fs.mkdirSync(output, { recursive: true });
   const browser = await chromium.launch({ executablePath: process.env.CSS_BROWSER_PATH || undefined,
     headless: true, args: ['--no-sandbox', '--hide-scrollbars', '--disable-lcd-text', '--force-color-profile=srgb'] });
-  const report = { file, browser: browser.version(), pairs: [] };
+  const report = { file, browser: browser.version(), pairs: [], repeatedCaptures: [] };
   const modes = [
     { name: 'unpainted-reference-compiled', sides: [true, false], painted: false },
     { name: 'unpainted-compiled-compiled', sides: [false, false], painted: false },
@@ -57,6 +57,40 @@ async function main() {
       report.pairs.push(result);
       fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2) + '\n');
       console.log(JSON.stringify(result));
+    }
+    // A one-frame pair cannot observe a later screenshot dropping an already
+    // painted surface. Compare fixed four-frame sequences on identical CSS.
+    // The original path stays as a diagnostic, not a retry-until-green loop.
+    for (const prepareEachFrame of [false, true]) {
+      const name = prepareEachFrame ? 'repeat-prepare-each-frame' : 'repeat-prepare-once';
+      const instance = await openPage(browser, file, id, false, { width: 1440, height: 900 }, css);
+      try {
+        await paintDocument(instance.page);
+        const before = await snapshot(instance.page);
+        const started = Date.now();
+        const frames = [], comparisons = [];
+        let previous;
+        for (let frame = 0; frame < 4; frame++) {
+          await settle(instance.page);
+          const png = prepareEachFrame ? await captureDocument(instance.page)
+            : await instance.page.screenshot({ fullPage: true, animations: 'disabled' });
+          const filename = name + '-' + frame + '.png';
+          fs.writeFileSync(path.join(output, filename), png);
+          frames.push({ file: filename, sha256: sha256(png) });
+          if (previous) comparisons.push(pixelSummary(comparePixels(previous, png)));
+          previous = png;
+        }
+        const result = { name, captures: 4, comparisons, frames, durationMs: Date.now() - started,
+          snapshotsEqual: JSON.stringify(before) === JSON.stringify(await snapshot(instance.page)),
+          errors: instance.errors };
+        // Separate actual-viewport observation, after all four full-page frames.
+        await instance.page.locator('#world-first .grid').first().screenshot({
+          path: path.join(output, name + '-cards.png'), animations: 'disabled'
+        });
+        report.repeatedCaptures.push(result);
+        fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2) + '\n');
+        console.log(JSON.stringify(result));
+      } finally { await instance.context.close(); }
     }
   } finally { await browser.close(); }
 }

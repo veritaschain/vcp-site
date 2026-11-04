@@ -206,11 +206,11 @@ function saveScreenshotFailure(prefix, metadata, previous, current, comparison) 
 }
 
 async function stableScreenshot(page, evidence) {
-  let previous = await page.screenshot({ fullPage: true, animations: 'disabled' });
+  let previous = await captureDocument(page);
   let penultimate, comparison;
   for (let attempt = 0; attempt < 3; attempt++) {
     await settle(page);
-    const current = await page.screenshot({ fullPage: true, animations: 'disabled' });
+    const current = await captureDocument(page);
     comparison = comparePixels(previous, current);
     if (comparison.aboveTolerancePixels === 0) return current;
     penultimate = previous;
@@ -225,6 +225,14 @@ async function stableScreenshot(page, evidence) {
   const prefix = path.join(OUTPUT, `${evidence.name}-${evidence.side}-unstable`);
   saveScreenshotFailure(prefix, { ...evidence, captures: 4, comparisons: 3, dom, images }, penultimate, previous, comparison);
   throw new Error(`Full-page screenshot did not stabilize across repeated paints: ${evidence.name} ${evidence.side}; evidence: ${prefix}.json`);
+}
+
+async function captureDocument(page) {
+  // Recorded CI lost a backdrop surface during consecutive beyond-viewport
+  // captures after the initial paint. Give every compared frame the same
+  // viewport preparation; keep four full-page frames and their thresholds.
+  await paintDocument(page);
+  return page.screenshot({ fullPage: true, animations: 'disabled' });
 }
 
 async function openPage(browser, file, id, reference, viewport, baselineCss) {
@@ -420,4 +428,4 @@ async function main() {
 
 if (require.main === module) main().catch(error => { console.error(error); process.exitCode = 1; });
 module.exports = { openPage, snapshot, settle, paintDocument, comparePixels, withinRasterNoiseBudget, languageCornerGeometry,
-  prepareDocumentImages, waitForImages, pixelSummary, saveScreenshotFailure, stableScreenshot, main };
+  prepareDocumentImages, waitForImages, pixelSummary, saveScreenshotFailure, captureDocument, stableScreenshot, main };
