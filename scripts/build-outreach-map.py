@@ -115,8 +115,8 @@ def main():
     raw = Path(sys.argv[1]).read_bytes()
     assert hashlib.sha256(raw).hexdigest() == SOURCE_SHA256, "Unexpected Natural Earth version"
     features = json.loads(raw)["features"]
-    homepage = (ROOT / "index.html").read_text()
-    cards = homepage[homepage.index('<!-- World Map -->'):homepage.index('id="news-container"')]
+    archive = (ROOT / "standardization/index.html").read_text()
+    cards = archive.split('<!-- Archived outreach snapshot: begin -->', 1)[1].split('<!-- Archived outreach snapshot: end -->', 1)[0]
     listed = set(re.findall(r'assets/nationalflag/([A-Z]{2})\.(?:png|svg)', cards)) - {"EU"}
     assert set(re.findall(r'data-outreach-date="2026-10-26" data-country="([A-Z]{2})"', cards)) == NEW
     output = ROOT / "assets/maps"

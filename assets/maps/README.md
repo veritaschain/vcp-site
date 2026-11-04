@@ -1,6 +1,6 @@
 # Regulatory outreach maps
 
-The SVGs are data visualizations generated from Natural Earth country boundaries and the country/territory cards on the English homepage. They do not modify the former raster image.
+The SVGs are data visualizations generated from Natural Earth country boundaries and the country/territory cards preserved at [the standardization page's outreach archive](https://veritaschain.org/standardization/#regulatory-outreach). The archive retains the self-reported homepage listing from [commit `dfec3b6`, dated 3 November 2026](https://github.com/veritaschain/vcp-site/blob/dfec3b6802b04d9f177f54169eb6000b2c175a55/index.html), including its original qualifications. Relocating it does not newly verify any outreach, receipt, technical review or approval. The SVGs and former raster image are unchanged.
 
 - Cyan: the 26 individually recorded country contacts of 26 October 2026: FR, IT, NL, ES, IE, SE, DK, PT, CZ, SK, BE, HR, RO, LV, HU, IS, BG, GR, CY, SI, MU, GE, AT, KZ, RW, LK. There are 25 sent emails and one Bank of Greece form submission with receipt confirmed. Austria used the FMA general mailbox after form connection failures; Kazakhstan outreach was to AFSA within the AIFC.
 - Green: the remaining country and territory cards in the historical outreach list, still under reconciliation.
@@ -25,4 +25,4 @@ Download that source, then run:
 python3 scripts/build-outreach-map.py /path/to/ne_50m_admin_0_countries.geojson
 ```
 
-The generator verifies the source checksum, checks that all listed countries/territories are represented, and checks the exact 26 new country codes against the homepage cards. It uses a Mercator projection with Antarctica omitted and simplifies boundaries in screen coordinates. The European inset includes Iceland and Cyprus and labels the 21 highlighted countries within its extent with ISO two-letter codes.
+The generator reads only the preserved English section between the `Archived outreach snapshot` markers in `standardization/index.html`. It verifies the source checksum, checks that all listed countries/territories are represented, and checks the exact 26 new country codes against those archived cards. It uses a Mercator projection with Antarctica omitted and simplifies boundaries in screen coordinates. The European inset includes Iceland and Cyprus and labels the 21 highlighted countries within its extent with ISO two-letter codes.

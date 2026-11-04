@@ -1,8 +1,8 @@
-# VeritasChain Protocol (VCP) - Official Landing Page
+# VeritasChain Standards Organization (VSO) — VAP / VCP Website
 
-**Open audit-trail specification for algorithmic and AI-driven trading**
+**AI audit trails, public evidence and open specifications**
 
-Official website for VeritasChain Protocol (VCP) - An open standard for recording decision-making and execution results of algorithmic and AI-driven trading in a tamper-evident and verifiable format.
+Source for the official VeritasChain Standards Organization (VSO) website. The homepage introduces VAP (Verifiable AI Provenance Framework) for AI evidence and domain specifications including VeritasChain Protocol (VCP) for algorithmic and AI-driven trading. It connects visitors to public demos, specifications, SDK resources and current implementation and certification disclosures.
 
 ---
 
@@ -12,7 +12,7 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 
 ### Available Pages
 
-- 🏠 **VCP Protocol Landing:** [index.html](index.html)
+- 🏠 **VSO Homepage — VAP / VCP:** [index.html](index.html)
 - 🌐 **VAP Framework and Domain Profiles:** [vap/index.html](vap/index.html)
   - [English](vap/index.html) · [日本語](vap/ja/index.html) · [中文](vap/zh/index.html)
 - ⚖️ **VAP-LAP — Legal AI Profile (proposed):** [vap/lap/index.html](vap/lap/index.html)
@@ -36,7 +36,7 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
   - 🇯🇵 Japanese: [propfirms/ja/index.html](propfirms/ja/index.html)
   - Trust recovery solution for proprietary trading firms
 
-### Available Languages (VCP Landing)
+### Available Languages (VSO Homepage)
 
 - 🇬🇧 **English:** [index.html](index.html)
 - 🇯🇵 **日本語:** [ja/index.html](ja/index.html)
@@ -48,11 +48,11 @@ Official website for VeritasChain Protocol (VCP) - An open standard for recordin
 
 ```
 vcp-site/
-├── index.html              # 🇬🇧 VCP Protocol landing (English)
+├── index.html              # 🇬🇧 VSO homepage: VAP / VCP (English)
 ├── ja/
-│   └── index.html          # 🇯🇵 Japanese version
+│   └── index.html          # 🇯🇵 Japanese homepage
 ├── zh/
-│   └── index.html          # 🇨🇳 Chinese (Simplified) version
+│   └── index.html          # 🇨🇳 Chinese (Simplified) homepage
 ├── certified/              # ⭐ VC-Certified Program (NEW)
 │   ├── index.html          # 🇬🇧 Certification program page
 │   └── static/
@@ -74,12 +74,16 @@ vcp-site/
 │   └── README.md           # VSO documentation
 ├── assets/
 │   ├── css/
-│   │   └── main.css        # Custom styles
+│   │   ├── homepage.css    # Current EN / JA / ZH homepage layout
+│   │   ├── news-archive.css # Shared announcement styles
+│   │   └── main.css        # Existing landing-page styles
 │   ├── img/
 │   │   ├── logo.png        # VSO logo
 │   │   └── vso-badge.png   # VSO badge
 │   └── js/
-│       └── main.js         # Custom JavaScript
+│       ├── vcp-header.js   # Shared navigation and language routes
+│       ├── vcp-footer.js   # Shared footer
+│       └── main.js         # Shared page behavior
 └── README.md               # This file
 ```
 
@@ -115,24 +119,23 @@ https://veritaschain.org/
 
 ### Technical Highlights
 
-- ✅ **Zero dependencies** - Pure HTML/CSS/JS
+- ✅ **Static delivery** - Committed HTML/CSS/JS; development checks use Node.js and Python
 - ✅ **Fast loading** - Optimized assets, CDN fonts
 - ✅ **SEO optimized** - Meta tags, Open Graph, language alternates
 - ✅ **Multi-language** - Full i18n support with language switcher
 
 ### Content Sections
 
-1. **Hero Section** - Protocol introduction with VSO badge
-2. **What is VCP?** - Protocol explanation with FIX comparison
-3. **Why Now?** - Regulatory landscape explanation (MiFID II, EU AI Act, CAT, APAC)
-4. **Key Features** - 6 feature cards with crypto agility, multi-tier support
-5. **Technology Stack** - Technical specifications (UUIDv7, Ed25519, Merkle Tree, PTP/NTP)
-6. **Use Cases** - 6 application scenarios (HFT, CEX, DeFi, On-Chain Proofs)
-7. **Get Started** - Target-specific CTAs (Developers, Exchanges, Regulators)
-8. **VC-Certified** - Certification program details with SVG badge
-9. **Company Info** - VeritasChain Co., Ltd. structure
-10. **Contact** - Contact information with standardization inquiry
-11. **Footer** - Disclaimers, revision history, policy statement
+Each homepage has eight sections inside `<main>`, with shared navigation and footer components:
+
+1. **Hero** - VSO, VAP and VCP introduction; primary links to the verification demo and specification / SDK resources
+2. **How it works** - Record, detect changes and verify, with the limits of record-integrity evidence stated
+3. **Public demo and SDK** - Sample evidence in VCP Explorer, SDK source and examples, and related research references
+4. **Framework and profiles** - VAP and the published or proposed status of VCP, CAP, CPP and VAP-LAP
+5. **Choose your starting point** - Integration, application evaluation and research routes, plus practical guides and the EVIDECT service reference
+6. **Latest announcements** - Three recent updates, the full archive and retained announcement anchors
+7. **Current status and evidence** - Implementation limits, independent verification, certification availability, corrections and common questions
+8. **About VSO** - Operator, founder, company and policy links, contact details, privacy and terms
 
 ---
 
@@ -244,6 +247,31 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 ## 🛠️ Development
 
 This site is maintained by VeritasChain Standards Organization (VSO) as part of an international standardization initiative for auditability and AI governance.
+
+### Homepage maintenance
+
+Update [English](index.html), [Japanese](ja/index.html) and [Chinese](zh/index.html) together. The homepage layout is in [assets/css/homepage.css](assets/css/homepage.css); announcements use [assets/css/news-archive.css](assets/css/news-archive.css), and shared navigation is in [assets/js/vcp-header.js](assets/js/vcp-header.js). Keep existing fragment destinations and the visible FAQ aligned with its structured data.
+
+Run from the repository root with Python 3 and Node.js 24. After HTML or script changes, regenerate the Content Security Policy (CSP), review the generated changes, and run the source checks:
+
+```sh
+python3 scripts/site_security.py build
+python3 scripts/site_security.py check
+node --test tests/*.test.cjs
+```
+
+For the homepage browser check, install the locked tools and provide an installed Chrome / Chromium executable:
+
+```sh
+npm ci --prefix tools/site-css --ignore-scripts --no-audit --no-fund
+CSS_BROWSER_PATH=/absolute/path/to/chrome \
+CSS_EVIDENCE_DIR=/tmp/vcp-site-homepage \
+node tools/site-css/homepage-check.cjs
+```
+
+The check covers EN / JA / ZH at 1440, 390 and 360 pixels: page structure, primary actions, language routes, skip-link focus, keyboard navigation, mobile menu state, FAQ behavior and horizontal overflow. Screenshots and `report.json` are saved under `$CSS_EVIDENCE_DIR/homepage/`. The [CSS workflow](.github/workflows/site-css.yml) documents the pinned CI browser and required system dependencies; omitting `CSS_BROWSER_PATH` uses Playwright's installed Chromium.
+
+Browser requests are intercepted and served from local files or pinned fixtures. External fonts and icon stylesheets are omitted, and no live analytics, form submission or service request is sent. These checks cover the local homepage behavior; external resource availability and live service behavior require separate verification. See the [CSS checks](tools/site-css/README.md) and [site security checks](tools/site-security/README.md) for broader coverage and limits.
 
 **Maintained by:** TOKACHI & Ayano
 **Created:** 2025

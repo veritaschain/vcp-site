@@ -114,10 +114,22 @@ jobs:
           CSS_BROWSER_PATH: ${{ runner.temp }}/homepage-chrome/chrome-linux64/chrome
           CSS_EVIDENCE_DIR: ${{ runner.temp }}/homepage-evidence
         run: node tools/site-css/homepage-check.cjs
+      - name: Verify preserved outreach archives and map rendering
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/homepage-chrome/chrome-linux64/chrome
+          CSS_EVIDENCE_DIR: ${{ runner.temp }}/homepage-evidence
+        run: node tools/site-css/outreach-check.cjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: homepage-layout-evidence
           path: ${{ runner.temp }}/homepage-evidence/homepage/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: outreach-archive-evidence
+          path: ${{ runner.temp }}/homepage-evidence/outreach/
           if-no-files-found: error
           retention-days: 14
