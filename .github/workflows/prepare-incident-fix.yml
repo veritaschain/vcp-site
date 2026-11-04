@@ -1,0 +1,57 @@
+name: Prepare scoped incident correction branch
+on:
+  push:
+    branches: [fix/dvp-incident-evidence-20261104]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    if: github.repository == 'veritaschain/vcp-site' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          ref: fix/dvp-incident-evidence-20261104
+      - name: Apply hash-locked reviewed text changes
+        shell: python
+        run: |
+          import hashlib, json, pathlib, subprocess
+          base = subprocess.check_output(['git', 'rev-parse', 'HEAD^']).decode().strip()
+          if base != 'dfec3b6802b04d9f177f54169eb6000b2c175a55':
+              raise SystemExit('Unexpected base; refuse migration')
+          edits = json.loads(pathlib.Path('scripts/_migration_20261104.json').read_text())
+          allowed = {'incidents/incidents.json', 'scripts/build_incidents.py', 'vap/dvp/index.html', 'vap/dvp/ja/index.html', 'vap/dvp/zh/index.html'}
+          if set(edits) != allowed:
+              raise SystemExit('Unexpected edit paths')
+          pending = {}
+          for name, change in edits.items():
+              path = pathlib.Path(name)
+              original = path.read_bytes()
+              if hashlib.sha256(original).hexdigest() != change['before']:
+                  raise SystemExit('Unexpected original: ' + name)
+              lines = original.decode().splitlines(True)
+              for start, end, replacement in reversed(change['edits']):
+                  lines[start:end] = [replacement]
+              result = ''.join(lines).encode()
+              if hashlib.sha256(result).hexdigest() != change['after']:
+                  raise SystemExit('Unexpected result: ' + name)
+              pending[path] = result
+          for path, result in pending.items():
+              path.write_bytes(result)
+      - name: Generate and run complete source checks
+        run: |
+          python3 scripts/build_incidents.py
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
+          python3 -O -m unittest discover -s tests -p 'test_incident_evidence.py' -v
+          python3 scripts/build_incidents.py --check
+          python3 scripts/seo.py check
+          python3 scripts/build-legacy-aliases.py check
+          python3 scripts/analytics-tags.py check
+          node --test tests/*.test.cjs
+          git diff --check
+      - name: Commit only verified source and generated outputs on this branch
+        run: |
+          git add incidents/incidents.json scripts/build_incidents.py vap/dvp/index.html vap/dvp/ja/index.html vap/dvp/zh/index.html incidents/index.html incidents/ja/index.html
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix: scope DVP claims and surface source-bound incident follow-ups'
+          git push origin HEAD:refs/heads/fix/dvp-incident-evidence-20261104
