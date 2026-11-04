@@ -292,7 +292,12 @@ def apply_csp(text: str, page: str | Path) -> str:
 
 
 def source_pages() -> list[Path]:
-    pages = [path for path in ROOT.rglob('*.html') if not SKIP.intersection(path.relative_to(ROOT).parts)]
+    # Match the targeted Jekyll exclusion; extension HTML has its own security
+    # context and synthetic fixtures are not public website documents.
+    recorder_source = ROOT / 'tools/browser-recorder'
+    pages = [path for path in ROOT.rglob('*.html')
+             if not SKIP.intersection(path.relative_to(ROOT).parts)
+             and not path.is_relative_to(recorder_source)]
     pages += sorted((ROOT / 'src/pages').glob('*.tsx'))
     return sorted(pages)
 

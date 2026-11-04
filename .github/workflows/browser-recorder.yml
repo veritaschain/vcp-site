@@ -1,0 +1,111 @@
+name: Browser Recorder regression
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/browser-recorder/**'
+      - '.github/workflows/browser-recorder.yml'
+      - 'vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.1.zip*'
+      - 'vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.0.zip'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/browser-recorder/**'
+      - '.github/workflows/browser-recorder.yml'
+      - 'vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.1.zip*'
+      - 'vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.0.zip'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-recorder-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-recorder:
+    name: Browser Recorder / Chrome ${{ matrix.chrome.version }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        chrome:
+          - version: '156.0.8078.80'
+            sha256: 'b711c720f774be355197f32edf37e0651418ba036d92446ee2da19ac017540a7'
+            full_suite: true
+          - version: '137.0.7151.119'
+            sha256: '680a672ed0cc7b8fae6ee5b21691a55273228b05e1f3f80580606c4db203994a'
+            full_suite: false
+    defaults:
+      run:
+        shell: bash
+        working-directory: tools/browser-recorder
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+          cache: npm
+          cache-dependency-path: tools/browser-recorder/package-lock.json
+
+      - name: Install locked browser-test dependencies
+        run: |
+          printf 'CHROME_EXECUTABLE=%s/vap-recorder-chrome/chrome-linux64/chrome\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          printf 'BROWSER_EVIDENCE_DIR=%s/browser-recorder-evidence\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/browser-recorder-evidence"
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install playwright install-deps chromium
+          sudo apt-get install --yes --no-install-recommends fonts-noto-cjk
+
+      - name: Download and verify the pinned Chrome for Testing binary
+        run: |
+          curl --fail --location --retry 2 --max-time 180 \
+            'https://storage.googleapis.com/chrome-for-testing-public/${{ matrix.chrome.version }}/linux64/chrome-linux64.zip' \
+            --output "$RUNNER_TEMP/vap-recorder-chrome.zip"
+          printf '%s  %s\n' \
+            '${{ matrix.chrome.sha256 }}' \
+            "$RUNNER_TEMP/vap-recorder-chrome.zip" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/vap-recorder-chrome"
+          unzip -q "$RUNNER_TEMP/vap-recorder-chrome.zip" -d "$RUNNER_TEMP/vap-recorder-chrome"
+          "$CHROME_EXECUTABLE" --version | tee "$BROWSER_EVIDENCE_DIR/chrome-version.txt"
+          node --version | tee "$BROWSER_EVIDENCE_DIR/node-version.txt"
+
+      - name: Run unit and cryptographic regression tests
+        if: matrix.chrome.full_suite
+        run: npm test | tee "$BROWSER_EVIDENCE_DIR/unit-tests.txt"
+      - name: Verify versioned archive matches the reviewed source
+        if: matrix.chrome.full_suite
+        run: |
+          python3 scripts/package.py --output "$RUNNER_TEMP/VAP_Browser_Recorder_v0.1.1.zip"
+          cmp "$RUNNER_TEMP/VAP_Browser_Recorder_v0.1.1.zip" ../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.1.zip
+          cd ../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads
+          sha256sum --check VAP_Browser_Recorder_v0.1.1.zip.sha256
+      - name: Run real DOM selection regression tests
+        run: npm run test:browser-capture | tee "$BROWSER_EVIDENCE_DIR/capture-browser-tests.txt"
+      - name: Run unpacked-extension lifecycle regression tests
+        if: matrix.chrome.full_suite
+        run: npm run test:browser-extension | tee "$BROWSER_EVIDENCE_DIR/extension-browser-tests.txt"
+      - name: Run historical unpacked-extension upgrade tests
+        if: matrix.chrome.full_suite
+        run: npm run test:browser-upgrade | tee "$BROWSER_EVIDENCE_DIR/upgrade-browser-tests.txt"
+      - name: Run minimum-version extension storage and export flow
+        if: ${{ !matrix.chrome.full_suite }}
+        run: npm run test:browser-storage | tee "$BROWSER_EVIDENCE_DIR/storage-browser-tests.txt"
+
+      # The runner writes only synthetic exported records/checkpoints, local
+      # screenshots and test metadata here. Browser profiles, keys, dependencies
+      # and the downloaded browser stay outside this artifact directory.
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: browser-recorder-${{ matrix.chrome.version }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/browser-recorder-evidence/
+          if-no-files-found: warn
+          retention-days: 30

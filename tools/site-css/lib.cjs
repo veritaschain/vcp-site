@@ -14,6 +14,8 @@ const SOURCE = '@tailwind base;\n@tailwind components;\n@tailwind utilities;\n';
 const SKIP = new Set(['.git', 'node_modules', 'dist', 'maintenance']);
 
 function filesUnder(dir = ROOT) {
+  // Match the Jekyll exclusion without hiding other tools or public downloads.
+  if (dir === path.join(ROOT, 'tools/browser-recorder')) return [];
   return fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name, 'en')).flatMap(entry => {
     if (SKIP.has(entry.name)) return [];
     const file = path.join(dir, entry.name);
