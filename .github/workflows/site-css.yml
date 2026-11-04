@@ -67,6 +67,12 @@ jobs:
           CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
           CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
         run: npm run test:render --prefix tools/site-css
+      - name: Record full-page capture controls
+        if: always()
+        env:
+          CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
+          CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
+        run: node tools/site-css/capture-control.cjs
       - name: Preserve authored active keyframes and reject cross-page collisions
         env:
           CSS_BROWSER_PATH: ${{ runner.temp }}/css-chrome/chrome-linux64/chrome
