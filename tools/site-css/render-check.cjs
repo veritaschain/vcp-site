@@ -27,6 +27,54 @@ async function settle(page) {
   });
 }
 
+// This function runs in the page. Native lazy images must be requested before
+// a full-page capture; waiting only for already-complete images misses them.
+async function prepareDocumentImages(timeoutMs) {
+  return Promise.all([...document.images].filter(img => img.currentSrc || img.getAttribute('src') || img.getAttribute('srcset')).map(async (img, index) => {
+    const loading = img.getAttribute('loading');
+    let timer, onLoad, onError, phase = 'load';
+    try {
+      const loaded = new Promise(resolve => {
+        onLoad = () => resolve(img.naturalWidth > 0);
+        onError = () => resolve(false);
+        img.addEventListener('load', onLoad);
+        img.addEventListener('error', onError);
+        if (img.complete) onLoad();
+        else if (img.loading === 'lazy') img.loading = 'eager';
+      });
+      const ready = loaded.then(async success => {
+        if (!success) return { status: 'error', phase, error: 'Image load failed' };
+        phase = 'decode';
+        try {
+          await img.decode();
+          return { status: 'decoded' };
+        } catch (error) { return { status: 'error', phase, error: error.message }; }
+      });
+      const result = await Promise.race([ready, new Promise(resolve => {
+        timer = setTimeout(() => resolve({ status: 'timeout', phase, timeoutMs }), timeoutMs);
+      })]);
+      return { index, src: img.getAttribute('src'), currentSrc: img.currentSrc, loading,
+        complete: img.complete, naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight, ...result };
+    } finally {
+      clearTimeout(timer);
+      img.removeEventListener('load', onLoad);
+      img.removeEventListener('error', onError);
+      if (loading === null) img.removeAttribute('loading');
+      else img.setAttribute('loading', loading);
+    }
+  }));
+}
+
+async function waitForImages(page) {
+  const images = await page.evaluate(prepareDocumentImages, 10000);
+  if (images.some(img => img.status === 'timeout')) {
+    const error = new Error('Image load/decode timed out before full-page capture');
+    error.imagePreparation = images;
+    throw error;
+  }
+  return images;
+}
+
 // A full-page screenshot expands the capture beyond the visible viewport, but
 // that does not guarantee that offscreen composited layers have been painted.
 // Visit the backdrop-filter surfaces in a real viewport first, then restore
@@ -35,6 +83,7 @@ async function settle(page) {
 async function paintDocument(page) {
   const original = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
   try {
+    const images = await waitForImages(page);
     const positions = await page.evaluate(() => {
       const stops = new Set();
       const step = Math.max(1, innerHeight - 128);
@@ -55,10 +104,7 @@ async function paintDocument(page) {
       await settle(page);
       await page.screenshot({ animations: 'disabled' });
     }
-    await page.evaluate(async () => {
-      await Promise.all([...document.images].filter(img => img.complete && img.naturalWidth)
-        .map(img => img.decode().catch(() => {})));
-    });
+    return images;
   } finally {
     await page.evaluate(({ x, y }) => scrollTo(x, y), original);
     await settle(page);
@@ -137,15 +183,48 @@ async function languageCornerGeometry(page) {
   });
 }
 
-async function stableScreenshot(page) {
+function pixelSummary(comparison) {
+  const { aboveTolerancePoints = [], ...summary } = comparison;
+  let bounds = null;
+  for (const { x, y } of aboveTolerancePoints) {
+    if (!bounds) bounds = { left: x, top: y, right: x, bottom: y };
+    else {
+      bounds.left = Math.min(bounds.left, x); bounds.top = Math.min(bounds.top, y);
+      bounds.right = Math.max(bounds.right, x); bounds.bottom = Math.max(bounds.bottom, y);
+    }
+  }
+  return { ...summary, aboveToleranceBounds: bounds };
+}
+
+function saveScreenshotFailure(prefix, metadata, previous, current, comparison) {
+  fs.mkdirSync(path.dirname(prefix), { recursive: true });
+  fs.writeFileSync(`${prefix}-previous.png`, previous);
+  fs.writeFileSync(`${prefix}-current.png`, current);
+  fs.writeFileSync(`${prefix}.json`, JSON.stringify({ ...metadata, pixels: pixelSummary(comparison),
+    screenshots: { previous: { file: path.basename(`${prefix}-previous.png`), sha256: sha256(previous) },
+      current: { file: path.basename(`${prefix}-current.png`), sha256: sha256(current) } } }, null, 2) + '\n');
+}
+
+async function stableScreenshot(page, evidence) {
   let previous = await page.screenshot({ fullPage: true, animations: 'disabled' });
+  let penultimate, comparison;
   for (let attempt = 0; attempt < 3; attempt++) {
     await settle(page);
     const current = await page.screenshot({ fullPage: true, animations: 'disabled' });
-    if (comparePixels(previous, current).aboveTolerancePixels === 0) return current;
+    comparison = comparePixels(previous, current);
+    if (comparison.aboveTolerancePixels === 0) return current;
+    penultimate = previous;
     previous = current;
   }
-  throw new Error('Full-page screenshot did not stabilize across repeated paints');
+  const dom = await snapshot(page).catch(error => ({ error: error.message }));
+  const images = await page.evaluate(() => [...document.images].map(img => ({
+    src: img.getAttribute('src'), currentSrc: img.currentSrc, loading: img.getAttribute('loading'),
+    complete: img.complete, naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight,
+    rect: img.getBoundingClientRect().toJSON(),
+  }))).catch(error => ({ error: error.message }));
+  const prefix = path.join(OUTPUT, `${evidence.name}-${evidence.side}-unstable`);
+  saveScreenshotFailure(prefix, { ...evidence, captures: 4, comparisons: 3, dom, images }, penultimate, previous, comparison);
+  throw new Error(`Full-page screenshot did not stabilize across repeated paints: ${evidence.name} ${evidence.side}; evidence: ${prefix}.json`);
 }
 
 async function openPage(browser, file, id, reference, viewport, baselineCss) {
@@ -211,11 +290,16 @@ async function compare(browser, entry, referenceCss) {
   try {
     for (const reference of [true, false]) {
       const instance = await openPage(browser, file, id, reference, viewport, referenceCss.get(file));
+      instance.side = reference ? 'reference' : 'compiled';
       instances.push(instance);
-      await paintDocument(instance.page);
-      if (entry.action) await entry.action(instance.page);
+      instance.imagePreparation = await paintDocument(instance.page);
+      if (entry.action) {
+        await entry.action(instance.page);
+        instance.imagePreparation = await waitForImages(instance.page);
+      }
       await settle(instance.page);
-      instance.png = await stableScreenshot(instance.page);
+      instance.png = await stableScreenshot(instance.page, { name, file, theme: id, viewport,
+        state: state || 'initial', side: instance.side, imagePreparation: instance.imagePreparation });
       await settle(instance.page);
       instance.snapshot = await snapshot(instance.page);
       instance.languageCorners = await languageCornerGeometry(instance.page);
@@ -235,7 +319,18 @@ async function compare(browser, entry, referenceCss) {
     return { file, theme: id, viewport, state: state || 'initial', elements: a.snapshot.length, differences: differences.length, pixelsEqual, rasterNoiseAllowance, pixelComparison, errorsEqual,
       languageCornerRegions: a.languageCorners.regions, languageCornerStylesEqual, languageCornerStyleSha256: sha256(JSON.stringify(a.languageCorners.targets)),
       referenceScreenshotSha256: sha256(a.png), compiledScreenshotSha256: sha256(b.png), existingPageErrors: a.errors,
+      imageErrors: { reference: a.imagePreparation.filter(img => img.status === 'error'), compiled: b.imagePreparation.filter(img => img.status === 'error') },
       blockedOrigins: [...new Set([...a.blocked, ...b.blocked])].sort(), evidence: name };
+  } catch (error) {
+    if (error.imagePreparation) {
+      const instance = instances.at(-1);
+      const dom = await snapshot(instance.page).catch(caught => ({ error: caught.message }));
+      fs.writeFileSync(path.join(OUTPUT, `${name}-${instance.side}-image-timeout.json`), JSON.stringify({
+        file, theme: id, viewport, state: state || 'initial', side: instance.side,
+        error: error.message, imagePreparation: error.imagePreparation, dom,
+      }, null, 2) + '\n');
+    }
+    throw error;
   } finally { for (const instance of instances) await instance.context.close(); }
 }
 
@@ -324,4 +419,5 @@ async function main() {
 }
 
 if (require.main === module) main().catch(error => { console.error(error); process.exitCode = 1; });
-module.exports = { openPage, snapshot, settle, paintDocument, comparePixels, withinRasterNoiseBudget, languageCornerGeometry, main };
+module.exports = { openPage, snapshot, settle, paintDocument, comparePixels, withinRasterNoiseBudget, languageCornerGeometry,
+  prepareDocumentImages, waitForImages, pixelSummary, saveScreenshotFailure, stableScreenshot, main };
