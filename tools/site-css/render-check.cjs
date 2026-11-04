@@ -13,6 +13,10 @@ const { ROOT, ASSET, LINK, read, sha256, manifest, compileTheme, compact } = req
 
 const OUTPUT = process.env.CSS_EVIDENCE_DIR || path.join(os.tmpdir(), 'vcp-site-css-render');
 const ORIGIN = 'https://site.test';
+const BASE_BROWSER_ARGS = Object.freeze(['--no-sandbox', '--hide-scrollbars', '--disable-lcd-text', '--force-color-profile=srgb']);
+// Chromium's compositor-stage completion control; page styles are unchanged.
+// https://chromium.googlesource.com/chromium/src/+/HEAD/components/viz/common/switches.cc
+const CAPTURE_BROWSER_ARGS = Object.freeze([...BASE_BROWSER_ARGS, '--run-all-compositor-stages-before-draw']);
 const TYPE = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2' };
 const FIXTURES = new Map([
   ['https://unpkg.com/react@18.3.1/umd/react.production.min.js', path.join(__dirname, 'node_modules/react/umd/react.production.min.js')],
@@ -206,11 +210,11 @@ function saveScreenshotFailure(prefix, metadata, previous, current, comparison) 
 }
 
 async function stableScreenshot(page, evidence) {
-  let previous = await page.screenshot({ fullPage: true, animations: 'disabled' });
+  let previous = await captureDocument(page);
   let penultimate, comparison;
   for (let attempt = 0; attempt < 3; attempt++) {
     await settle(page);
-    const current = await page.screenshot({ fullPage: true, animations: 'disabled' });
+    const current = await captureDocument(page);
     comparison = comparePixels(previous, current);
     if (comparison.aboveTolerancePixels === 0) return current;
     penultimate = previous;
@@ -225,6 +229,14 @@ async function stableScreenshot(page, evidence) {
   const prefix = path.join(OUTPUT, `${evidence.name}-${evidence.side}-unstable`);
   saveScreenshotFailure(prefix, { ...evidence, captures: 4, comparisons: 3, dom, images }, penultimate, previous, comparison);
   throw new Error(`Full-page screenshot did not stabilize across repeated paints: ${evidence.name} ${evidence.side}; evidence: ${prefix}.json`);
+}
+
+async function captureDocument(page) {
+  // Recorded CI lost a backdrop surface during consecutive beyond-viewport
+  // captures after the initial paint. Give every compared frame the same
+  // viewport preparation; keep four full-page frames and their thresholds.
+  await paintDocument(page);
+  return page.screenshot({ fullPage: true, animations: 'disabled' });
 }
 
 async function openPage(browser, file, id, reference, viewport, baselineCss) {
@@ -400,7 +412,7 @@ async function main() {
   }
   // Overlay-scrollbar fade and LCD text rasterization vary with paint timing,
   // independently of layout. Disable those browser effects, not page styling.
-  const browserArgs = ['--no-sandbox', '--hide-scrollbars', '--disable-lcd-text', '--force-color-profile=srgb'];
+  const browserArgs = [...CAPTURE_BROWSER_ARGS];
   const browser = await chromium.launch({ executablePath: process.env.CSS_BROWSER_PATH || undefined, headless: true, args: browserArgs });
   const report = { baseline: 'Original per-page configurations compiled independently by pinned Tailwind 3.4.17; no captured production CDN bytes', capturedFromCommit: man.capturedFromCommit,
     cssSha256: sha256(read(ASSET)), browser: browser.version(), browserArgs, negativeControl, pixelTolerance: 'Base: maximum 1 of 255 per channel. Proven same-CSS raster-noise allowance: at most 1 pixel per distinct active-language-link rounded corner (4 total), maximum channel delta 5, with identical dimensions/geometry/all target styles and zero JavaScript errors. Raw counts and allowance use retained.', externalRequests: 'All network intercepted; local resources and exact pinned React fixtures only. External fonts/icons omitted equally.', cases: [] };
@@ -420,4 +432,5 @@ async function main() {
 
 if (require.main === module) main().catch(error => { console.error(error); process.exitCode = 1; });
 module.exports = { openPage, snapshot, settle, paintDocument, comparePixels, withinRasterNoiseBudget, languageCornerGeometry,
-  prepareDocumentImages, waitForImages, pixelSummary, saveScreenshotFailure, stableScreenshot, main };
+  prepareDocumentImages, waitForImages, pixelSummary, saveScreenshotFailure, captureDocument, stableScreenshot,
+  BASE_BROWSER_ARGS, CAPTURE_BROWSER_ARGS, main };

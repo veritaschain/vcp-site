@@ -11,14 +11,16 @@ const file = path.resolve(__dirname, '../tools/site-css/render-check.cjs');
 
 // The regular CI job has no browser/build dependencies. Load the real capture
 // helpers with only those unused dependencies stubbed; no browser is launched.
-function helpers(images = [], outputDir) {
+function helpers(images = [], outputDir, backdrop = false) {
   const module = { exports: {} };
   const element = { tagName: 'BODY', id: 'synthetic-dom', className: '', querySelectorAll: () => [],
-    getBoundingClientRect: () => ({ x: 0, y: 0, width: 10, height: 10 }) };
+    getBoundingClientRect: () => ({ x: 0, y: 0, top: 0, bottom: 10, width: 10, height: 10 }) };
   vm.runInNewContext(fs.readFileSync(file, 'utf8'), {
     module, exports: module.exports, __dirname: path.dirname(file),
     process: { env: { ...process.env, ...(outputDir && { CSS_EVIDENCE_DIR: outputDir }) } },
-    setTimeout, clearTimeout, requestAnimationFrame: callback => queueMicrotask(callback), getComputedStyle: () => ({}),
+    setTimeout, clearTimeout, requestAnimationFrame: callback => queueMicrotask(callback),
+    getComputedStyle: () => backdrop ? { backdropFilter: 'blur(8px)', visibility: 'visible' } : ({}),
+    scrollX: 0, scrollY: 0, innerHeight: 900, scrollTo: () => {},
     document: { images, fonts: { ready: Promise.resolve() }, documentElement: element, body: element },
     require(name) {
       if (name === 'playwright') return { chromium: {} };
@@ -176,5 +178,23 @@ test('unstable capture still stops after four frames and saves exactly its last 
     assert.equal(saved.pixels.maxChannelDelta, 2);
     assert.equal(saved.dom[0].id, 'synthetic-dom');
     assert.deepEqual(saved.images, []);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('every compared full-page frame has its own backdrop viewport paint without increasing attempts', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vcp-per-frame-paint-test-'));
+  try {
+    const frames = [0, 2, 4, 6].map(red => Buffer.from(JSON.stringify({ width: 1, height: 1, data: [red, 0, 0, 255] })));
+    let captures = 0, paints = 0;
+    const page = { evaluate: async (fn, arg) => fn(arg), screenshot: async options => {
+      if (!options.fullPage) { paints++; return Buffer.from('synthetic viewport paint'); }
+      assert.equal(paints, captures + 1, 'Prepare anew before each full-page frame');
+      return frames[captures++];
+    } };
+    await assert.rejects(helpers([], dir, true).stableScreenshot(page, {
+      name: 'synthetic-backdrop', file: 'synthetic/index.html', side: 'compiled', viewport: { width: 1440, height: 900 },
+    }), /did not stabilize/);
+    assert.equal(captures, 4);
+    assert.equal(paints, 4);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
