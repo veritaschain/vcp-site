@@ -47,9 +47,9 @@ validation. An exported checkpoint is not an externally anchored commitment.
 ## Boundaries
 
 - This is first-party headless automation, not a manual toolbar evaluation.
-- The suite tests 0.1.1 persistence at the same extension path; it does not test
-  installing 0.1.1 over an existing 0.1.0 installation. That separate two-case
-  flow is documented in [the upgrade tests](BROWSER-UPGRADE-TESTS.md).
+- The suite tests current-version persistence at the same extension path; it
+  does not test installation over a historical version. Separate two-case
+  flows for 0.1.0 and 0.1.1 are documented in [the upgrade tests](BROWSER-UPGRADE-TESTS.md).
 - Current ChatGPT, Claude and Gemini pages, Windows/macOS, Chrome 137, browser
   sync, external anchors and provider-signed records are outside this run.
   [Chrome 137 storage checks](BROWSER-STORAGE-TESTS.md) are a separate limited

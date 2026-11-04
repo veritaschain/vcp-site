@@ -1,5 +1,21 @@
 # VAP Browser Recorder changes
 
+## 0.1.2 — 2026-11-05
+
+- Count only elements intersecting the selected Range against the 20,000-element
+  budget and prune unrelated subtrees. Short selections on large pages remain
+  usable while selected editors, shadow hosts and frames are still rejected.
+- Add seven real-browser large-DOM cases and two unit budget regressions.
+- Publish a new deterministic 0.1.2 ZIP, checksum and synchronized EN/JA/ZH
+  download routes; keep both fixed historical archive identities unchanged.
+- Check archive/source equality, version parity and unchanged contract bytes.
+- Gate publication on the pinned-browser workflow for the exact candidate;
+  test real 0.1.0 and 0.1.1 archive upgrades separately, including the large-page
+  repair through the installed extension action. Historical test outputs stay
+  identified as historical. No current local browser execution is claimed.
+- Preserve signing/canonicalization, storage, permissions, record format and
+  original signed examples. See docs/TEST-REPORT.md for evidence boundaries.
+
 ## 0.1.1 — 2026-11-01
 
 - Reject light-DOM selections that cross an input, textarea or contenteditable

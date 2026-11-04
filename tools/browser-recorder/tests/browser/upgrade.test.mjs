@@ -1,4 +1,4 @@
-// Actual 0.1.0 unpacked installation -> 0.1.1 via runtime.reload().
+// Actual hash-pinned 0.1.0 / 0.1.1 unpacked installation -> 0.1.2 via runtime.reload().
 // Uses only the hash-pinned historical archive, synthetic text and a temporary
 // profile. A separate installation path is the storage-isolation negative control.
 import test, { before, after } from 'node:test';
@@ -21,9 +21,16 @@ catch (error) {
   if (process.env.PW_MODULE || !process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES) throw error;
   playwright = require(join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright'));
 }
-const BASELINE_SHA = 'd17496cf9b096da85546a1e343e791138a1c807f1a37c518b28c140e424ffcf4';
+const BASELINE_VERSION = process.env.BASELINE_VERSION || '0.1.0';
+const BASELINE_HASHES = {
+  '0.1.0': 'd17496cf9b096da85546a1e343e791138a1c807f1a37c518b28c140e424ffcf4',
+  '0.1.1': '3a3e4a9fdd91b990b0361fa30234eec724a7a2e557fd2cb2bd2cedcbb13dbbb3',
+};
+assert.ok(Object.hasOwn(BASELINE_HASHES, BASELINE_VERSION), 'use one of the two retained historical archives');
+const BASELINE_SHA = BASELINE_HASHES[BASELINE_VERSION];
+const CURRENT_VERSION = '0.1.2';
 const baselineArchive = process.env.BASELINE_ARCHIVE ? resolve(process.env.BASELINE_ARCHIVE) : fileURLToPath(
-  new URL('../../../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v0.1.0.zip', import.meta.url));
+  new URL(`../../../../vso/announcements/2026-10-31-vap-browser-recorder-preview/downloads/VAP_Browser_Recorder_v${BASELINE_VERSION}.zip`, import.meta.url));
 const currentExtension = fileURLToPath(new URL('../../extension/', import.meta.url));
 const evidenceDirectory = process.env.BROWSER_EVIDENCE_DIR ? resolve(process.env.BROWSER_EVIDENCE_DIR) : null;
 const legacyText = '旧版で保存した合成テキストです。🙂';
@@ -32,7 +39,7 @@ let work, installation, context, cdp, server, source, vault, base, extensionId;
 let previousPack, previousPin, updatedPack, updatedPin, originalFingerprint;
 const evidence = {
   scope: 'FIRST_PARTY_SYNTHETIC_HEADLESS_UNPACKED_UPGRADE',
-  from_version: '0.1.0', to_version: '0.1.1', baseline_archive_sha256: BASELINE_SHA,
+  from_version: BASELINE_VERSION, to_version: CURRENT_VERSION, baseline_archive_sha256: BASELINE_SHA,
   update_mechanism: 'SAME_PATH_RUNTIME_RELOAD', node_version: process.version,
   cases: [], status: 'NOT_COMPLETED',
   manual_extension_manager: 'NOT_TESTED', web_store_update: 'NOT_TESTED',
@@ -116,7 +123,7 @@ before(async () => {
   if (evidenceDirectory) await mkdir(evidenceDirectory, { recursive: true });
   const archiveBytes = await readFile(baselineArchive);
   assert.equal(createHash('sha256').update(archiveBytes).digest('hex'), BASELINE_SHA, 'historical ZIP checksum');
-  // Extract only the original extension bytes. No reconstructed 0.1.0 fixture,
+  // Extract only the original extension bytes. No reconstructed historical fixture,
   // symlinks, traversal paths, repository source or user profile is involved.
   execFileSync('python3', ['-c', `
 from pathlib import Path, PurePosixPath
@@ -137,8 +144,8 @@ with zipfile.ZipFile(sys.argv[1]) as archive:
 if count == 0:
     raise ValueError('No legacy extension files')
 `, baselineArchive, installation], { stdio: 'pipe' });
-  assert.equal(JSON.parse(await readFile(join(installation, 'manifest.json'), 'utf8')).version, '0.1.0');
-  assert.equal(JSON.parse(await readFile(join(currentExtension, 'manifest.json'), 'utf8')).version, '0.1.1');
+  assert.equal(JSON.parse(await readFile(join(installation, 'manifest.json'), 'utf8')).version, BASELINE_VERSION);
+  assert.equal(JSON.parse(await readFile(join(currentExtension, 'manifest.json'), 'utf8')).version, CURRENT_VERSION);
   server = createServer((_request, response) => {
     response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
     response.end(`<!doctype html><title>Synthetic upgrade fixture</title>
@@ -184,12 +191,12 @@ after(async () => {
   if (cleanupErrors.length) throw new AggregateError(cleanupErrors, 'Upgrade test cleanup failed');
 });
 
-test('historical 0.1.0 updates in place to 0.1.1 and retains its key, records and usable exports', { timeout: 60000 }, async () => {
+test(`historical ${BASELINE_VERSION} updates in place to ${CURRENT_VERSION} and retains its key, records and usable exports`, { timeout: 60000 }, async () => {
   const registered = (await cdp.send('Extensions.getExtensions')).extensions.find(item => item.id === extensionId);
-  assert.equal(registered.enabled, true); assert.equal(registered.version, '0.1.0');
+  assert.equal(registered.enabled, true); assert.equal(registered.version, BASELINE_VERSION);
   await captureAndSave('legacy', legacyText);
   vault = await openVault(extensionId);
-  assert.equal(await vault.evaluate(() => chrome.runtime.getManifest().version), '0.1.0');
+  assert.equal(await vault.evaluate(() => chrome.runtime.getManifest().version), BASELINE_VERSION);
   assert.equal(await vault.locator('#count').innerText(), '1');
   originalFingerprint = await vault.locator('#fingerprint').innerText();
   const originalKey = await checkStoredKey(vault);
@@ -214,15 +221,15 @@ test('historical 0.1.0 updates in place to 0.1.1 and retains its key, records an
   try {
     await until(async () => {
       registeredAfterReload = (await cdp.send('Extensions.getExtensions')).extensions;
-      return registeredAfterReload.some(item => item.id === extensionId && item.enabled && item.version === '0.1.1');
-    }, 'same extension updated to 0.1.1');
+      return registeredAfterReload.some(item => item.id === extensionId && item.enabled && item.version === CURRENT_VERSION);
+    }, `same extension updated to ${CURRENT_VERSION}`);
   } catch (error) {
     error.message += '\nRegistered extensions after reload: ' + JSON.stringify(registeredAfterReload);
     throw error;
   }
   if (!vault.isClosed()) await vault.close();
   vault = await openVault(extensionId);
-  assert.equal(await vault.evaluate(() => chrome.runtime.getManifest().version), '0.1.1');
+  assert.equal(await vault.evaluate(() => chrome.runtime.getManifest().version), CURRENT_VERSION);
   assert.equal(await vault.evaluate(() => chrome.runtime.id), extensionId);
   assert.equal(await vault.locator('#count').innerText(), '1');
   assert.equal(await vault.locator('#fingerprint').innerText(), originalFingerprint);
@@ -231,7 +238,7 @@ test('historical 0.1.0 updates in place to 0.1.1 and retains its key, records an
   assert.deepEqual(carriedPack, previousPack, 'the old signed pack is unchanged before appending');
   await verifyInVault(vault, previousPack, previousPin);
 
-  // Version metadata alone is insufficient: exercise the 0.1.1 capture repair.
+  // Version metadata alone is insufficient: exercise the inherited editor repair.
   await select('before', 'after');
   const rejected = await openExtensionAction({ cdp, source, extensionId });
   try {
@@ -239,6 +246,31 @@ test('historical 0.1.0 updates in place to 0.1.1 and retains its key, records an
     assert.match(result.status, /編集領域/);
     assert.equal(result.hidden, true); assert.equal(result.disabled, true);
   } finally { await rejected.close(); }
+  assert.equal(await vault.evaluate(async () => (await (await import('./lib/store.mjs')).getState()).events.length), 1);
+
+  // Exercise 0.1.2's large-page fix through the installed action / ISOLATED path.
+  // The unrelated nodes are ordinary light DOM, and no extra observation is saved.
+  await source.evaluate(() => {
+    const scope = document.createElement('section'); scope.id = 'large-scope';
+    for (const id of ['large-first', 'large-last']) {
+      const paragraph = document.createElement('p'); paragraph.id = id;
+      paragraph.textContent = 'Synthetic large-page answer ' + id; scope.append(paragraph);
+    }
+    for (const side of ['before', 'after']) {
+      const unrelated = document.createElement('section');
+      for (let i = 0; i < 25001; i++) unrelated.append(document.createElement('span'));
+      side === 'before' ? scope.prepend(unrelated) : scope.append(unrelated);
+    }
+    document.body.append(scope);
+  });
+  await select('large-first', 'large-last');
+  const selectedLargeText = await source.evaluate(() => getSelection().toString());
+  const largePopup = await openExtensionAction({ cdp, source, extensionId });
+  try {
+    const result = await capture(largePopup);
+    assert.equal(result.hidden, false); assert.equal(result.disabled, true);
+    assert.equal(result.preview, selectedLargeText);
+  } finally { await largePopup.close(); }
   assert.equal(await vault.evaluate(async () => (await (await import('./lib/store.mjs')).getState()).events.length), 1);
 
   await captureAndSave('updated', updatedText);
@@ -273,7 +305,7 @@ test('a separately loaded path has a different identity and empty vault without 
   const { id } = await cdp.send('Extensions.loadUnpacked', { path: separateInstallation });
   assert.notEqual(id, extensionId);
   const separateVault = await openVault(id, false);
-  assert.equal(await separateVault.evaluate(() => chrome.runtime.getManifest().version), '0.1.1');
+  assert.equal(await separateVault.evaluate(() => chrome.runtime.getManifest().version), CURRENT_VERSION);
   assert.equal(await separateVault.locator('#count').innerText(), '0');
   assert.equal(await separateVault.evaluate(async () => (await import('./lib/store.mjs')).getState()), null);
   assert.match(await separateVault.locator('#fingerprint').innerText(), /まだ記録がありません/);

@@ -22,8 +22,21 @@ function page({ protocol = 'https:', text = '合成テキスト', collapsed = fa
   const middle = interior.map(item => ({ element: element(item), intersects: item.intersects !== false }));
   const common = element({ tag: 'main' });
   common.querySelectorAll = () => middle.map(item => item.element);
+  const intersections = new Map(middle.map(item => [item.element, item.intersects]));
   const range = { startContainer: first, startOffset: 0, endContainer: last, endOffset: 1,
-    commonAncestorContainer: common, intersectsNode: candidate => middle.find(item => item.element === candidate).intersects };
+    commonAncestorContainer: common, intersectsNode: candidate => intersections.get(candidate) };
+  globalThis.NodeFilter = { SHOW_ELEMENT: 1, FILTER_ACCEPT: 1, FILTER_REJECT: 2 };
+  document.createTreeWalker = (scope, whatToShow, filter) => {
+    assert.equal(scope, common); assert.equal(whatToShow, NodeFilter.SHOW_ELEMENT);
+    let cursor = 0;
+    return { nextNode() {
+      while (cursor < middle.length) {
+        const node = middle[cursor++].element;
+        if (filter.acceptNode(node) === NodeFilter.FILTER_ACCEPT) return node;
+      }
+      return null;
+    } };
+  };
   globalThis.window = { getSelection: () => ({ isCollapsed: collapsed, rangeCount,
     anchorNode: first, focusNode: last, getRangeAt: () => range,
     getComposedRanges: () => [{ ...range, ...(composedMismatch ? { startOffset: 1 } : {}) }],
@@ -70,4 +83,14 @@ test('capture rejects protected schemes and oversized UTF-8 text', () => {
   for (const opts of [{ protocol: 'chrome:' }, { protocol: 'file:' }, { text: 'あ'.repeat(12000) }]) {
     page(opts); assert.throws(captureSelection);
   }
+});
+test('unselected elements do not consume the selected-element budget', () => {
+  page({ interior: [...Array.from({ length: 20001 }, () => ({ intersects: false })), {}] });
+  assert.equal(captureSelection().text, '合成テキスト');
+});
+test('20000 selected descendants are accepted but 20001 are rejected', () => {
+  page({ interior: Array.from({ length: 20000 }, () => ({})) });
+  assert.equal(captureSelection().text, '合成テキスト');
+  page({ interior: Array.from({ length: 20001 }, () => ({})) });
+  assert.throws(captureSelection, /DOMが多すぎ/);
 });
