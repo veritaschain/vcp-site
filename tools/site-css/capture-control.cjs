@@ -6,7 +6,79 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require('playwright');
 const { manifest, compileTheme, compact, sha256 } = require('./lib.cjs');
-const { openPage, snapshot, settle, paintDocument, captureDocument, comparePixels, pixelSummary } = require('./render-check.cjs');
+const { openPage, snapshot, settle, paintDocument, captureDocument, comparePixels, pixelSummary,
+  BASE_BROWSER_ARGS, CAPTURE_BROWSER_ARGS } = require('./render-check.cjs');
+
+async function paintState(page) {
+  return page.evaluate(() => {
+    const targets = new Set(document.querySelectorAll(
+      '.code-block, .code-block pre, vcp-header .language-switcher, vcp-header .language-switcher .lang-link.active'));
+    for (const element of [...targets]) if (element.parentElement) targets.add(element.parentElement);
+    return {
+      viewport: { width: innerWidth, height: innerHeight, devicePixelRatio, scrollX, scrollY },
+      targets: [...targets].map(element => {
+        const style = getComputedStyle(element);
+        return { tag: element.tagName, id: element.id, class: element.className,
+          rect: element.getBoundingClientRect().toJSON(),
+          client: { width: element.clientWidth, height: element.clientHeight },
+          scroll: { width: element.scrollWidth, height: element.scrollHeight, x: element.scrollLeft, y: element.scrollTop },
+          computed: Object.fromEntries([...style].map(name => [name, style.getPropertyValue(name)])) };
+      }),
+    };
+  });
+}
+
+async function rendererControls(man, output, report) {
+  const files = ['vap/cpp/verasnap/ja/index.html', 'vap/cap/srp/zh/index.html', 'vap/cap/srp/ja/index.html'];
+  // Two fresh contexts and exactly four captures each. These are observations,
+  // never a search for a passing frame or a replacement for the full comparator.
+  for (const mode of [{ name: 'current-pipeline', args: BASE_BROWSER_ARGS },
+    { name: 'complete-pipeline', args: CAPTURE_BROWSER_ARGS }]) {
+    const browser = await chromium.launch({ executablePath: process.env.CSS_BROWSER_PATH || undefined,
+      headless: true, args: [...mode.args] });
+    try {
+      for (const file of files) {
+        const id = Object.keys(man.themes).find(id => man.themes[id].pages.includes(file));
+        const sequences = [];
+        for (let contextIndex = 0; contextIndex < 2; contextIndex++) {
+          const instance = await openPage(browser, file, id, false, { width: 390, height: 844 }, '');
+          const name = 'renderer-' + mode.name + '-' + file.replace('/index.html', '').replaceAll('/', '-') + '-' + contextIndex;
+          try {
+            await paintDocument(instance.page);
+            const buffers = [], states = [], frames = [], comparisons = [];
+            const started = Date.now();
+            for (let frame = 0; frame < 4; frame++) {
+              await settle(instance.page);
+              const before = await paintState(instance.page);
+              const png = await captureDocument(instance.page);
+              const after = await paintState(instance.page);
+              const imageFile = name + '-' + frame + '.png';
+              const stateFile = name + '-' + frame + '-state.json';
+              fs.writeFileSync(path.join(output, imageFile), png);
+              fs.writeFileSync(path.join(output, stateFile), JSON.stringify({ before, after }, null, 2) + '\n');
+              frames.push({ file: imageFile, sha256: sha256(png), stateFile,
+                stateUnchanged: JSON.stringify(before) === JSON.stringify(after) });
+              if (buffers.length) comparisons.push(pixelSummary(comparePixels(buffers.at(-1), png)));
+              buffers.push(png);
+              states.push({ before, after });
+            }
+            sequences.push({ contextIndex, frames, comparisons, durationMs: Date.now() - started,
+              errors: instance.errors, buffers, states });
+          } finally { await instance.context.close(); }
+        }
+        const result = { name: mode.name, browser: browser.version(), browserArgs: mode.args, file,
+          viewport: { width: 390, height: 844 }, contexts: sequences.map(({ buffers, states, ...record }) => record),
+          betweenContexts: sequences[0].buffers.map((png, index) => ({
+            frame: index, pixels: pixelSummary(comparePixels(png, sequences[1].buffers[index])),
+            rawStatesEqual: JSON.stringify(sequences[0].states[index]) === JSON.stringify(sequences[1].states[index]),
+          })) };
+        report.rendererControls.push(result);
+        fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2) + '\n');
+        console.log(JSON.stringify(result));
+      }
+    } finally { await browser.close(); }
+  }
+}
 
 async function main() {
   const file = 'vap/cpp/verasnap/zh/index.html';
@@ -16,8 +88,9 @@ async function main() {
   const output = path.join(process.env.CSS_EVIDENCE_DIR || '/tmp/vcp-site-css-render', 'capture-controls');
   fs.mkdirSync(output, { recursive: true });
   const browser = await chromium.launch({ executablePath: process.env.CSS_BROWSER_PATH || undefined,
-    headless: true, args: ['--no-sandbox', '--hide-scrollbars', '--disable-lcd-text', '--force-color-profile=srgb'] });
-  const report = { file, browser: browser.version(), pairs: [], repeatedCaptures: [] };
+    headless: true, args: [...BASE_BROWSER_ARGS] });
+  const report = { file, browser: browser.version(), browserArgs: BASE_BROWSER_ARGS,
+    pairs: [], repeatedCaptures: [], rendererControls: [] };
   const modes = [
     { name: 'unpainted-reference-compiled', sides: [true, false], painted: false },
     { name: 'unpainted-compiled-compiled', sides: [false, false], painted: false },
@@ -92,6 +165,7 @@ async function main() {
         console.log(JSON.stringify(result));
       } finally { await instance.context.close(); }
     }
+    await rendererControls(man, output, report);
   } finally { await browser.close(); }
 }
 
