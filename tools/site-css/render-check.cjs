@@ -14,9 +14,9 @@ const { ROOT, ASSET, LINK, read, sha256, manifest, compileTheme, compact } = req
 const OUTPUT = process.env.CSS_EVIDENCE_DIR || path.join(os.tmpdir(), 'vcp-site-css-render');
 const ORIGIN = 'https://site.test';
 const BASE_BROWSER_ARGS = Object.freeze(['--no-sandbox', '--hide-scrollbars', '--disable-lcd-text', '--force-color-profile=srgb']);
-// Chromium's compositor-stage completion control; page styles are unchanged.
-// https://chromium.googlesource.com/chromium/src/+/HEAD/components/viz/common/switches.cc
-const CAPTURE_BROWSER_ARGS = Object.freeze([...BASE_BROWSER_ARGS, '--run-all-compositor-stages-before-draw']);
+const CAPTURE_BROWSER_ARGS = BASE_BROWSER_ARGS;
+const BASE_PAINT_OPTIONS = Object.freeze({ includeOverflowClips: false, paintRestoredViewport: false, coalesceStops: false });
+const CAPTURE_PAINT_OPTIONS = Object.freeze({ includeOverflowClips: true, paintRestoredViewport: true, coalesceStops: true });
 const TYPE = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2' };
 const FIXTURES = new Map([
   ['https://unpkg.com/react@18.3.1/umd/react.production.min.js', path.join(__dirname, 'node_modules/react/umd/react.production.min.js')],
@@ -79,40 +79,107 @@ async function waitForImages(page) {
   return images;
 }
 
-// A full-page screenshot expands the capture beyond the visible viewport, but
-// that does not guarantee that offscreen composited layers have been painted.
-// Visit the backdrop-filter surfaces in a real viewport first, then restore
-// the requested position. Other page regions need no extra raster passes.
-// No page styles or comparison tolerances are changed.
-async function paintDocument(page) {
+function normalizePaintStops(stops, maxScrollY) {
+  return [...new Set(stops.map(y => Math.min(maxScrollY, Math.max(0, y))))].sort((a, b) => a - b);
+}
+
+// Select only existing, clamped stops. A newly combined gap keeps the original
+// 128px viewport overlap; larger gaps survive only when already adjacent.
+// The complete original viewport union, including each far edge, is retained.
+function coalescePaintStops(stops, viewportHeight, maxScrollY) {
+  const original = normalizePaintStops(stops, maxScrollY);
+  const selected = [];
+  const step = Math.max(1, viewportHeight - 128);
+  let index = 0;
+  while (index < original.length) {
+    const first = original[index++];
+    selected.push(first);
+    let nextLimit = first + step;
+    while (index < original.length && original[index] <= nextLimit) {
+      let furthest;
+      while (index < original.length && original[index] <= nextLimit) furthest = original[index++];
+      selected.push(furthest);
+      nextLimit = furthest + step;
+    }
+  }
+  return selected;
+}
+
+// A beyond-viewport capture can omit composited surfaces or the final raster
+// row of a rounded overflow clip despite unchanged DOM/computed styles.
+// Paint the selected surfaces in actual viewports and optionally paint once
+// more at the restored position. Page styles and pixel tolerances stay intact.
+async function paintDocument(page, options = CAPTURE_PAINT_OPTIONS, trace) {
   const original = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
+  let prepared = false;
   try {
     const images = await waitForImages(page);
-    const positions = await page.evaluate(() => {
+    const plan = await page.evaluate(({ includeOverflowClips }) => {
       const stops = new Set();
+      const targets = [];
       const step = Math.max(1, innerHeight - 128);
       for (const element of [document.body, ...document.body.querySelectorAll('*')]) {
         const style = getComputedStyle(element);
         const filter = style.backdropFilter || style.webkitBackdropFilter;
-        if (!filter || filter === 'none' || style.visibility !== 'visible') continue;
+        const backdrop = filter && filter !== 'none';
+        const rounded = ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius']
+          .some(property => parseFloat(style[property]) > 0);
+        const clippedOverflow = includeOverflowClips && rounded &&
+          ((style.overflowX !== 'visible' && element.scrollWidth > element.clientWidth) ||
+           (style.overflowY !== 'visible' && element.scrollHeight > element.clientHeight));
+        if ((!backdrop && !clippedOverflow) || style.visibility !== 'visible') continue;
         const rect = element.getBoundingClientRect();
         if (!rect.width || !rect.height) continue;
         const top = Math.max(0, Math.floor(rect.top + scrollY - 64));
         const bottom = rect.bottom + scrollY;
         for (let y = top; y < bottom; y += step) stops.add(y);
+        targets.push({ tag: element.tagName, id: element.id, class: element.getAttribute('class'),
+          rect: rect.toJSON(), backdrop: Boolean(backdrop), clippedOverflow: Boolean(clippedOverflow) });
       }
-      return [...stops].sort((a, b) => a - b);
-    });
+      return { stops: [...stops].sort((a, b) => a - b), targets, viewportHeight: innerHeight,
+        maxScrollY: Math.max(0, document.documentElement.scrollHeight - innerHeight) };
+    }, options);
+    const normalizedStops = normalizePaintStops(plan.stops, plan.maxScrollY);
+    const positions = options.coalesceStops
+      ? coalescePaintStops(plan.stops, plan.viewportHeight, plan.maxScrollY) : plan.stops;
+    if (trace) Object.assign(trace, { options, original, ...plan, normalizedStops, selectedStops: positions, visitedStops: [] });
     for (const y of positions) {
       await page.evaluate(top => scrollTo(0, top), y);
       await settle(page);
+      if (trace) trace.visitedStops.push(await page.evaluate(() => ({ x: scrollX, y: scrollY })));
       await page.screenshot({ animations: 'disabled' });
     }
+    prepared = true;
     return images;
   } finally {
     await page.evaluate(({ x, y }) => scrollTo(x, y), original);
     await settle(page);
+    if (trace) trace.restored = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
+    if (prepared && options.paintRestoredViewport) await page.screenshot({ animations: 'disabled' });
   }
+}
+
+async function paintTargetState(page) {
+  return page.evaluate(() => {
+    const targets = new Set(document.querySelectorAll(
+      '.code-block, .code-block pre, vcp-header .language-switcher, vcp-header .language-switcher .lang-link.active, a.btn.btn-secondary, .faq-answer.active'));
+    const firstFaq = document.querySelector('button[onclick="toggleFAQ(this)"]');
+    if (firstFaq) targets.add(firstFaq);
+    for (const element of [...targets]) if (element.parentElement) targets.add(element.parentElement);
+    const properties = style => Object.fromEntries([...style].map(name => [name, style.getPropertyValue(name)]));
+    return {
+      viewport: { width: innerWidth, height: innerHeight, devicePixelRatio, scrollX, scrollY },
+      targets: [...targets].map(element => ({
+        tag: element.tagName, id: element.id, class: element.getAttribute('class'),
+        rect: element.getBoundingClientRect().toJSON(),
+        client: { width: element.clientWidth, height: element.clientHeight },
+        scroll: { width: element.scrollWidth, height: element.scrollHeight, x: element.scrollLeft, y: element.scrollTop },
+        computed: properties(getComputedStyle(element)),
+        before: properties(getComputedStyle(element, '::before')),
+        after: properties(getComputedStyle(element, '::after')),
+      })),
+    };
+  });
 }
 
 async function snapshot(page) {
@@ -210,32 +277,40 @@ function saveScreenshotFailure(prefix, metadata, previous, current, comparison) 
 }
 
 async function stableScreenshot(page, evidence) {
-  let previous = await captureDocument(page);
+  const paintPlans = [];
+  const capture = async () => {
+    const trace = {};
+    const png = await captureDocument(page, CAPTURE_PAINT_OPTIONS, trace);
+    paintPlans.push(trace);
+    return png;
+  };
+  let previous = await capture();
   let penultimate, comparison;
   for (let attempt = 0; attempt < 3; attempt++) {
     await settle(page);
-    const current = await captureDocument(page);
+    const current = await capture();
     comparison = comparePixels(previous, current);
     if (comparison.aboveTolerancePixels === 0) return current;
     penultimate = previous;
     previous = current;
   }
   const dom = await snapshot(page).catch(error => ({ error: error.message }));
+  const targetState = await paintTargetState(page).catch(error => ({ error: error.message }));
   const images = await page.evaluate(() => [...document.images].map(img => ({
     src: img.getAttribute('src'), currentSrc: img.currentSrc, loading: img.getAttribute('loading'),
     complete: img.complete, naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight,
     rect: img.getBoundingClientRect().toJSON(),
   }))).catch(error => ({ error: error.message }));
   const prefix = path.join(OUTPUT, `${evidence.name}-${evidence.side}-unstable`);
-  saveScreenshotFailure(prefix, { ...evidence, captures: 4, comparisons: 3, dom, images }, penultimate, previous, comparison);
+  saveScreenshotFailure(prefix, { ...evidence, captures: 4, comparisons: 3, dom, targetState, images, paintPlans }, penultimate, previous, comparison);
   throw new Error(`Full-page screenshot did not stabilize across repeated paints: ${evidence.name} ${evidence.side}; evidence: ${prefix}.json`);
 }
 
-async function captureDocument(page) {
+async function captureDocument(page, options = CAPTURE_PAINT_OPTIONS, trace) {
   // Recorded CI lost a backdrop surface during consecutive beyond-viewport
   // captures after the initial paint. Give every compared frame the same
   // viewport preparation; keep four full-page frames and their thresholds.
-  await paintDocument(page);
+  await paintDocument(page, options, trace);
   return page.screenshot({ fullPage: true, animations: 'disabled' });
 }
 
@@ -315,6 +390,7 @@ async function compare(browser, entry, referenceCss) {
       await settle(instance.page);
       instance.snapshot = await snapshot(instance.page);
       instance.languageCorners = await languageCornerGeometry(instance.page);
+      instance.targetState = await paintTargetState(instance.page);
       fs.writeFileSync(path.join(OUTPUT, `${name}-${reference ? 'reference' : 'compiled'}.png`), instance.png);
     }
     const [a, b] = instances;
@@ -327,9 +403,14 @@ async function compare(browser, entry, referenceCss) {
     const errorsEqual = JSON.stringify(a.errors) === JSON.stringify(b.errors);
     const languageCornerStylesEqual = JSON.stringify(a.languageCorners) === JSON.stringify(b.languageCorners);
     const rasterNoiseAllowance = withinRasterNoiseBudget(pixelComparison, differences.length, a.errors, b.errors, a.languageCorners.regions, languageCornerStylesEqual);
-    if (differences.length || !pixelsEqual || !errorsEqual) fs.writeFileSync(path.join(OUTPUT, `${name}-differences.json`), JSON.stringify({ differences, referenceErrors: a.errors, compiledErrors: b.errors, pixelsEqual }, null, 2));
+    if (differences.length || !pixelsEqual || !errorsEqual) fs.writeFileSync(path.join(OUTPUT, `${name}-differences.json`), JSON.stringify({
+      differences, referenceErrors: a.errors, compiledErrors: b.errors, pixelsEqual,
+      targetStates: { reference: a.targetState, compiled: b.targetState },
+    }, null, 2));
     return { file, theme: id, viewport, state: state || 'initial', elements: a.snapshot.length, differences: differences.length, pixelsEqual, rasterNoiseAllowance, pixelComparison, errorsEqual,
       languageCornerRegions: a.languageCorners.regions, languageCornerStylesEqual, languageCornerStyleSha256: sha256(JSON.stringify(a.languageCorners.targets)),
+      targetStatesEqual: JSON.stringify(a.targetState) === JSON.stringify(b.targetState),
+      targetStateSha256: { reference: sha256(JSON.stringify(a.targetState)), compiled: sha256(JSON.stringify(b.targetState)) },
       referenceScreenshotSha256: sha256(a.png), compiledScreenshotSha256: sha256(b.png), existingPageErrors: a.errors,
       imageErrors: { reference: a.imagePreparation.filter(img => img.status === 'error'), compiled: b.imagePreparation.filter(img => img.status === 'error') },
       blockedOrigins: [...new Set([...a.blocked, ...b.blocked])].sort(), evidence: name };
@@ -433,4 +514,5 @@ async function main() {
 if (require.main === module) main().catch(error => { console.error(error); process.exitCode = 1; });
 module.exports = { openPage, snapshot, settle, paintDocument, comparePixels, withinRasterNoiseBudget, languageCornerGeometry,
   prepareDocumentImages, waitForImages, pixelSummary, saveScreenshotFailure, captureDocument, stableScreenshot,
-  BASE_BROWSER_ARGS, CAPTURE_BROWSER_ARGS, main };
+  BASE_BROWSER_ARGS, CAPTURE_BROWSER_ARGS, BASE_PAINT_OPTIONS, CAPTURE_PAINT_OPTIONS,
+  normalizePaintStops, coalescePaintStops, paintTargetState, main };
