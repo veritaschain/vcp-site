@@ -66,9 +66,11 @@ CSS_EVIDENCE_DIR=/tmp/vcp-site-css-render \
 npm run test:render --prefix tools/site-css
 ```
 
-Without `CSS_BROWSER_PATH`, Playwright uses its installed Chromium. The CI job
-pins a Chrome for Testing build and verifies the downloaded archive's SHA-256.
-The initial local validation used Chrome **137.0.7151.119**.
+Without `CSS_BROWSER_PATH`, Playwright uses its installed Chromium. The three
+regular CI jobs pin Chrome for Testing **156.0.8078.80** and verify its archive's
+SHA-256, using the same download and checksum as the Browser Recorder workflow.
+The initial local validation used Chrome **137.0.7151.119**; the Chrome 156
+candidate still requires the complete gates described below at its own commit.
 
 Every compared full-page frame prepares images, visits visible backdrop-filter
 surfaces and rounded clips with actual overflow in real viewports, restores the
@@ -101,10 +103,12 @@ sequence using the candidate preparation.
 Each group uploads its own `compiled-css-capture-controls-{group}` artifact
 independently of the full comparison. PNG hashes and unrounded target geometry,
 all computed properties including pseudo-elements, actual viewport/scroll state,
-and paint plans are retained. Regular comparison differences save both full
-reference/compiled target states; unstable-frame evidence saves the available
-side's target state. These
-new preparation modes remain browser candidates until their controls demonstrate
+and paint plans are retained. Computed-style property names are sorted before
+serialization without changing their values. Regular comparison differences
+and unequal target-state metadata save both full reference/compiled states;
+unstable-frame evidence saves the available side. A `*-differences.json` file
+can therefore accompany a pixel-pass case; the report determines its outcome.
+These preparation modes remain browser candidates until their controls demonstrate
 the intended effect and the complete render, animation and wrong-theme gates
 pass; a completed diagnostic step alone does not establish equivalence.
 
@@ -117,24 +121,29 @@ budget change. The image load/decode timeout, four-frame/three-comparison limit,
 pixel thresholds, 110-case coverage, active-animation check and deliberate
 wrong-theme rejection are unchanged.
 
-A separate `chrome-156-diagnostics` job compares the same capture code on Chrome
-**156.0.8078.80**, using the Browser Recorder workflow's pinned download and
-SHA-256. It runs the existing `mobile-clips` group (120 renderer frames plus
-the retained Chinese VeraSnap controls), then uses `CSS_TEST_FILTER` for the
-eight previous failing page/state combinations: five initial pages at both
-widths and three open-FAQ states, giving 13 comparisons. PNGs, raw target states
-and reports are kept in separate `controls` and `comparisons` directories in
-the `compiled-css-chrome-156-diagnostics` artifact, uploaded even on failure.
-If browser preparation succeeded, the filtered comparison also runs after a
-control-step failure; that failure remains a failed job.
+The completed [Chrome 156 diagnostic](https://github.com/veritaschain/vcp-site/actions/runs/41945177019/job/126975490853)
+used the same capture code for eight previously failing page/state combinations:
+five initial pages at both widths and three open-FAQ states, giving **13
+comparisons, zero failures and zero raster-noise allowances**. Twelve PNG pairs
+were byte-identical; the Japanese open-FAQ pair differed at eight pixels by one
+channel level, within the unchanged base tolerance. These results cover the
+filtered cases only, not all 110 comparisons.
 
-This diagnostic has a 20-minute job budget: the latest
-[137 mobile controls took 6:26](https://github.com/veritaschain/vcp-site/actions/runs/41943097835/job/126968518967),
-and the observed browser-dependency setup above took 4:32, before adding the
-filtered comparisons and artifact transfer. Chrome 137 remains the regular
-comparison browser. Diagnostic results do not replace its complete render,
-animation and wrong-theme gates or change any pixel, frame or image-timeout
-threshold.
+Its 120 mobile renderer frames showed no recurrence of the 278-pixel code-block
+bottom-row difference, and corresponding cross-context frames were exact.
+Saved mobile target values, geometry and scroll state matched despite property
+enumeration order affecting the original serialized-equality flags. The artifact
+is `compiled-css-chrome-156-diagnostics`; successful paired comparisons did not
+retain full target states, so those cases' metadata equality was not established
+from that artifact.
+
+The temporary filtered diagnostic job is now removed because the regular
+comparison, all three capture-control groups and homepage checks use the same
+Chrome 156 pin. This is a candidate browser update: the complete 110-case render
+suite, active-animation check, deliberate wrong-theme rejection and homepage
+checks still need to pass on the candidate commit. No pixel, frame or
+image-timeout threshold changed, and the filtered diagnostic does not substitute
+for those gates.
 
 `node tools/site-css/homepage-check.cjs` checks the English, Japanese and Chinese
 homepages at 1440, 390 and 360 pixels. It verifies content and primary actions,

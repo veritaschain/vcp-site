@@ -166,7 +166,7 @@ async function paintTargetState(page) {
     const firstFaq = document.querySelector('button[onclick="toggleFAQ(this)"]');
     if (firstFaq) targets.add(firstFaq);
     for (const element of [...targets]) if (element.parentElement) targets.add(element.parentElement);
-    const properties = style => Object.fromEntries([...style].map(name => [name, style.getPropertyValue(name)]));
+    const properties = style => Object.fromEntries([...style].sort().map(name => [name, style.getPropertyValue(name)]));
     return {
       viewport: { width: innerWidth, height: innerHeight, devicePixelRatio, scrollX, scrollY },
       targets: [...targets].map(element => ({
@@ -237,7 +237,7 @@ async function languageCornerGeometry(page) {
     for (const element of document.querySelectorAll('vcp-header .language-switcher, vcp-header .language-switcher .lang-link.active')) {
       const style = getComputedStyle(element), rect = element.getBoundingClientRect();
       if (style.visibility !== 'visible' || !rect.width || !rect.height) continue;
-      targets.push({ class: element.className, rect: [rect.x, rect.y, rect.width, rect.height], computed: Object.fromEntries([...style].map(name => [name, style.getPropertyValue(name)])) });
+      targets.push({ class: element.className, rect: [rect.x, rect.y, rect.width, rect.height], computed: Object.fromEntries([...style].sort().map(name => [name, style.getPropertyValue(name)])) });
       if (!element.classList.contains('lang-link')) continue;
       for (const [property, right, bottom] of [
         ['borderTopLeftRadius', false, false], ['borderTopRightRadius', true, false],
@@ -402,14 +402,15 @@ async function compare(browser, entry, referenceCss) {
     const pixelsEqual = pixelComparison.aboveTolerancePixels === 0;
     const errorsEqual = JSON.stringify(a.errors) === JSON.stringify(b.errors);
     const languageCornerStylesEqual = JSON.stringify(a.languageCorners) === JSON.stringify(b.languageCorners);
+    const targetStatesEqual = JSON.stringify(a.targetState) === JSON.stringify(b.targetState);
     const rasterNoiseAllowance = withinRasterNoiseBudget(pixelComparison, differences.length, a.errors, b.errors, a.languageCorners.regions, languageCornerStylesEqual);
-    if (differences.length || !pixelsEqual || !errorsEqual) fs.writeFileSync(path.join(OUTPUT, `${name}-differences.json`), JSON.stringify({
-      differences, referenceErrors: a.errors, compiledErrors: b.errors, pixelsEqual,
+    if (differences.length || !pixelsEqual || !errorsEqual || !targetStatesEqual) fs.writeFileSync(path.join(OUTPUT, `${name}-differences.json`), JSON.stringify({
+      differences, referenceErrors: a.errors, compiledErrors: b.errors, pixelsEqual, targetStatesEqual,
       targetStates: { reference: a.targetState, compiled: b.targetState },
     }, null, 2));
     return { file, theme: id, viewport, state: state || 'initial', elements: a.snapshot.length, differences: differences.length, pixelsEqual, rasterNoiseAllowance, pixelComparison, errorsEqual,
       languageCornerRegions: a.languageCorners.regions, languageCornerStylesEqual, languageCornerStyleSha256: sha256(JSON.stringify(a.languageCorners.targets)),
-      targetStatesEqual: JSON.stringify(a.targetState) === JSON.stringify(b.targetState),
+      targetStatesEqual,
       targetStateSha256: { reference: sha256(JSON.stringify(a.targetState)), compiled: sha256(JSON.stringify(b.targetState)) },
       referenceScreenshotSha256: sha256(a.png), compiledScreenshotSha256: sha256(b.png), existingPageErrors: a.errors,
       imageErrors: { reference: a.imagePreparation.filter(img => img.status === 'error'), compiled: b.imagePreparation.filter(img => img.status === 'error') },

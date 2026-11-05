@@ -11,13 +11,13 @@ const file = path.resolve(__dirname, '../tools/site-css/render-check.cjs');
 
 // The regular CI job has no browser/build dependencies. Load the real capture
 // helpers with only those unused dependencies stubbed; no browser is launched.
-function helpers(images = [], outputDir, backdrop = false) {
+function helpers(images = [], outputDir, backdrop = false, { globals = {}, adapters = {} } = {}) {
   const module = { exports: {} };
   const element = { tagName: 'BODY', id: 'synthetic-dom', className: '', querySelectorAll: () => [],
     getAttribute: () => '', scrollHeight: 900, clientHeight: 900, scrollWidth: 10, clientWidth: 10,
     getBoundingClientRect: () => ({ x: 0, y: 0, top: 0, bottom: 10, width: 10, height: 10,
       toJSON() { return { x: this.x, y: this.y, top: this.top, bottom: this.bottom, width: this.width, height: this.height }; } }) };
-  vm.runInNewContext(fs.readFileSync(file, 'utf8'), {
+  const context = {
     module, exports: module.exports, __dirname: path.dirname(file),
     process: { env: { ...process.env, ...(outputDir && { CSS_EVIDENCE_DIR: outputDir }) } },
     setTimeout, clearTimeout, requestAnimationFrame: callback => queueMicrotask(callback),
@@ -25,6 +25,7 @@ function helpers(images = [], outputDir, backdrop = false) {
     scrollX: 0, scrollY: 0, innerWidth: 1440, innerHeight: 900, devicePixelRatio: 1, scrollTo: () => {},
     document: { images, fonts: { ready: Promise.resolve() }, documentElement: element, body: element,
       querySelectorAll: () => [], querySelector: () => null },
+    ...globals,
     require(name) {
       if (name === 'playwright') return { chromium: {} };
       if (name === 'pngjs') return { PNG: { sync: { read: bytes => JSON.parse(bytes.toString()) } } };
@@ -33,8 +34,10 @@ function helpers(images = [], outputDir, backdrop = false) {
       };
       return require(name);
     },
-  }, { filename: file });
-  return module.exports;
+  };
+  vm.runInNewContext(fs.readFileSync(file, 'utf8'), context, { filename: file });
+  Object.assign(context, adapters);
+  return { ...module.exports, compare: context.compare };
 }
 
 class ImageDouble extends EventTarget {
@@ -274,4 +277,73 @@ test('the baseline and candidate preparation retain their separate fixed viewpor
     assert.deepEqual(JSON.parse(JSON.stringify(trace.restored)), { x: 0, y: 0 });
     assert.equal(trace.options, options);
   }
+});
+
+test('computed-style evidence ignores enumeration order while retaining every value and value change', async () => {
+  const values = { '--tw-ordinal': '  ', '--vcp-shadow-lg': '0 12px 24px rgb(0 0 0 / 0.15)',
+    visibility: 'visible', borderTopLeftRadius: '6px', borderTopRightRadius: '6px',
+    borderBottomLeftRadius: '6px', borderBottomRightRadius: '6px' };
+  const element = { tagName: 'A', id: '', className: 'lang-link active',
+    classList: { contains: name => name === 'lang-link' },
+    getAttribute: () => 'lang-link active', clientWidth: 30, clientHeight: 20,
+    scrollWidth: 30, scrollHeight: 20, scrollLeft: 0, scrollTop: 0,
+    getBoundingClientRect: () => ({ x: 10, y: 20, left: 10, top: 20, right: 40, bottom: 40,
+      width: 30, height: 20, toJSON() { return { x: 10, y: 20, width: 30, height: 20 }; } }) };
+  async function capture(order, changedValues = values) {
+    const api = helpers([], undefined, false, { globals: {
+      window: { devicePixelRatio: 1, scrollX: 0, scrollY: 0 },
+      document: { querySelectorAll: () => [element], querySelector: () => null },
+      getComputedStyle: () => ({ ...changedValues, [Symbol.iterator]: () => order[Symbol.iterator](),
+        getPropertyValue: name => changedValues[name] }),
+    } });
+    const page = { evaluate: async fn => fn() };
+    return { target: await api.paintTargetState(page), corners: await api.languageCornerGeometry(page) };
+  }
+  const order = Object.keys(values);
+  const first = await capture(order);
+  const reordered = await capture([...order].reverse());
+  assert.equal(JSON.stringify(first), JSON.stringify(reordered),
+    'CSSStyleDeclaration enumeration order must not change saved evidence');
+  for (const computed of [first.target.targets[0].computed, first.target.targets[0].before,
+    first.target.targets[0].after, first.corners.targets[0].computed]) {
+    assert.deepEqual(JSON.parse(JSON.stringify(computed)), values, 'Keep every property and its exact value');
+  }
+  const changed = await capture([...order].reverse(), { ...values, '--tw-ordinal': 'ordinal' });
+  assert.notEqual(JSON.stringify(first.target), JSON.stringify(changed.target), 'Do not hide changed custom properties');
+  assert.notEqual(JSON.stringify(first.corners), JSON.stringify(changed.corners), 'Keep real language-target style differences');
+  assert.deepEqual(JSON.parse(JSON.stringify(first.corners.regions)), JSON.parse(JSON.stringify(changed.corners.regions)));
+});
+
+test('a pixel-equal comparison saves both complete target states when a captured value differs', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vcp-target-state-evidence-test-'));
+  try {
+    const reference = { viewport: { width: 390, height: 844, devicePixelRatio: 1, scrollX: 0, scrollY: 936 },
+      targets: [{ class: 'lang-link active', rect: { x: 200, y: 84, width: 71, height: 26 },
+        computed: { '--tw-ordinal': ' ', '--vcp-shadow-lg': 'none' }, before: { content: 'none' }, after: { content: 'none' } }] };
+    const compiled = structuredClone(reference);
+    compiled.targets[0].computed['--tw-ordinal'] = 'ordinal';
+    const states = [reference, compiled];
+    let opened = 0, closed = 0;
+    const png = Buffer.from(JSON.stringify({ width: 1, height: 1, data: [0, 0, 0, 255] }));
+    const api = helpers([], dir, false, { adapters: {
+      openPage: async () => ({ page: { state: states[opened++] }, errors: [], blocked: new Set(),
+        context: { close: async () => { closed++; } } }),
+      paintDocument: async () => [], settle: async () => {}, stableScreenshot: async () => png,
+      snapshot: async () => [{ id: 'same-dom' }], languageCornerGeometry: async () => ({ regions: [], targets: [] }),
+      paintTargetState: async page => page.state,
+    } });
+    const result = await api.compare({}, { file: 'synthetic/index.html', id: 'default', state: 'faq-open',
+      viewport: { width: 390, height: 844 } }, new Map());
+    assert.equal(result.differences, 0);
+    assert.equal(result.pixelsEqual, true);
+    assert.equal(result.errorsEqual, true);
+    assert.equal(result.targetStatesEqual, false);
+    assert.notEqual(result.targetStateSha256.reference, result.targetStateSha256.compiled);
+    assert.equal(closed, 2);
+    const saved = JSON.parse(fs.readFileSync(path.join(dir, 'default-synthetic-390-faq-open-differences.json'), 'utf8'));
+    assert.equal(saved.pixelsEqual, true);
+    assert.equal(saved.targetStatesEqual, false);
+    assert.deepEqual(saved.differences, []);
+    assert.deepEqual(saved.targetStates, { reference, compiled });
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
