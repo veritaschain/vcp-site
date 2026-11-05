@@ -30,7 +30,7 @@ async function main() {
       for (const [i, reference] of mode.sides.entries()) {
         const instance = await openPage(browser, file, id, reference, { width: 1440, height: 900 }, css);
         try {
-          if (mode.painted) await paintDocument(instance.page);
+          const imagePreparation = mode.painted ? await paintDocument(instance.page) : null;
           await settle(instance.page);
           const png = await instance.page.screenshot({ fullPage: true, animations: 'disabled' });
           fs.writeFileSync(path.join(output, `${mode.name}-${i}.png`), png);
@@ -45,7 +45,7 @@ async function main() {
           await instance.page.locator('#world-first .grid').first().screenshot({
             path: path.join(output, `${mode.name}-${i}-cards.png`), animations: 'disabled'
           });
-          captures.push({ png, dom, styles, errors: instance.errors });
+          captures.push({ png, dom, styles, errors: instance.errors, imagePreparation });
         } finally { await instance.context.close(); }
       }
       const [a, b] = captures;
@@ -53,7 +53,8 @@ async function main() {
       delete pixels.aboveTolerancePoints;
       const result = { name: mode.name, pixels, snapshotsEqual: JSON.stringify(a.dom) === JSON.stringify(b.dom),
         allCardComputedStylesEqual: JSON.stringify(a.styles) === JSON.stringify(b.styles),
-        stylesSha256: captures.map(c => sha256(JSON.stringify(c.styles))), errors: captures.map(c => c.errors) };
+        stylesSha256: captures.map(c => sha256(JSON.stringify(c.styles))), errors: captures.map(c => c.errors),
+        imagePreparation: captures.map(c => c.imagePreparation) };
       report.pairs.push(result);
       fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2) + '\n');
       console.log(JSON.stringify(result));

@@ -80,6 +80,24 @@ VeraSnap page were absent from one full-page PNG even though the recorded DOM
 geometry and styles matched. Repeating that missing paint was not sufficient
 evidence of a correct screenshot.
 
+Image readiness is checked **before** choosing those viewport positions. The
+previous preparation only decoded images that were already complete, leaving
+native lazy images to load during the first full-page captures. Local controls
+on Chrome 137 and 156 reproduced changing screenshot dimensions after the
+initial paint. A late layout change can invalidate the positions and composited
+surfaces prepared from the earlier layout; equal repeated frames alone do not
+prove that the page was ready.
+
+The test temporarily requests native lazy images eagerly, waits for their load
+and decode, and restores each original `loading` attribute. A 10-second timeout
+fails the check. Load/decode errors are recorded separately from decoded images
+in both the ordinary report and prepared capture controls; this remains an
+equivalence check, not a comprehensive broken-image audit. The public HTML,
+image loading behavior, CSS, browser version, comparison thresholds and masks,
+four-frame limit, 110 comparison cases and negative controls are unchanged.
+`node --test tests/css-image-readiness.test.cjs` checks delayed load/decode,
+errors, timeout rejection and attribute/listener cleanup without a browser.
+
 `node tools/site-css/capture-control.cjs` records unprepared and prepared
 reference/compiled pairs, same-CSS pairs, the affected cards in their actual
 viewport, and every computed property in those cards. Results and PNGs remain

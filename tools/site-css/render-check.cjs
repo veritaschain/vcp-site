@@ -27,6 +27,55 @@ async function settle(page) {
   });
 }
 
+// This function runs in the page. Native lazy images must be requested before
+// a full-page capture; waiting only for already-complete images misses them.
+async function prepareDocumentImages(timeoutMs) {
+  return Promise.all([...document.images].filter(img => img.currentSrc || img.getAttribute('src') || img.getAttribute('srcset')).map(async (img, index) => {
+    const loading = img.getAttribute('loading');
+    let timer, onLoad, onError, phase = 'load';
+    try {
+      const loaded = new Promise(resolve => {
+        onLoad = () => resolve(img.naturalWidth > 0);
+        onError = () => resolve(false);
+        img.addEventListener('load', onLoad);
+        img.addEventListener('error', onError);
+        if (img.complete) onLoad();
+        else if (img.loading === 'lazy') img.loading = 'eager';
+      });
+      const ready = loaded.then(async success => {
+        if (!success) return { status: 'error', phase, error: 'Image load failed' };
+        phase = 'decode';
+        try {
+          await img.decode();
+          return { status: 'decoded' };
+        } catch (error) { return { status: 'error', phase, error: error.message }; }
+      });
+      const result = await Promise.race([ready, new Promise(resolve => {
+        timer = setTimeout(() => resolve({ status: 'timeout', phase, timeoutMs }), timeoutMs);
+      })]);
+      return { index, src: img.getAttribute('src'), currentSrc: img.currentSrc, loading,
+        complete: img.complete, naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight, ...result };
+    } finally {
+      clearTimeout(timer);
+      img.removeEventListener('load', onLoad);
+      img.removeEventListener('error', onError);
+      if (loading === null) img.removeAttribute('loading');
+      else img.setAttribute('loading', loading);
+    }
+  }));
+}
+
+async function waitForImages(page) {
+  const images = await page.evaluate(prepareDocumentImages, 10000);
+  if (images.some(img => img.status === 'timeout')) {
+    const error = new Error('Image load/decode timed out before full-page capture');
+    error.imagePreparation = images;
+    throw error;
+  }
+  return images;
+}
+
+
 // A full-page screenshot expands the capture beyond the visible viewport, but
 // that does not guarantee that offscreen composited layers have been painted.
 // Visit the backdrop-filter surfaces in a real viewport first, then restore
@@ -35,6 +84,7 @@ async function settle(page) {
 async function paintDocument(page) {
   const original = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
   try {
+    const images = await waitForImages(page);
     const positions = await page.evaluate(() => {
       const stops = new Set();
       const step = Math.max(1, innerHeight - 128);
@@ -55,10 +105,7 @@ async function paintDocument(page) {
       await settle(page);
       await page.screenshot({ animations: 'disabled' });
     }
-    await page.evaluate(async () => {
-      await Promise.all([...document.images].filter(img => img.complete && img.naturalWidth)
-        .map(img => img.decode().catch(() => {})));
-    });
+    return images;
   } finally {
     await page.evaluate(({ x, y }) => scrollTo(x, y), original);
     await settle(page);
@@ -212,7 +259,7 @@ async function compare(browser, entry, referenceCss) {
     for (const reference of [true, false]) {
       const instance = await openPage(browser, file, id, reference, viewport, referenceCss.get(file));
       instances.push(instance);
-      await paintDocument(instance.page);
+      instance.imagePreparation = await paintDocument(instance.page);
       if (entry.action) await entry.action(instance.page);
       await settle(instance.page);
       instance.png = await stableScreenshot(instance.page);
@@ -235,6 +282,7 @@ async function compare(browser, entry, referenceCss) {
     return { file, theme: id, viewport, state: state || 'initial', elements: a.snapshot.length, differences: differences.length, pixelsEqual, rasterNoiseAllowance, pixelComparison, errorsEqual,
       languageCornerRegions: a.languageCorners.regions, languageCornerStylesEqual, languageCornerStyleSha256: sha256(JSON.stringify(a.languageCorners.targets)),
       referenceScreenshotSha256: sha256(a.png), compiledScreenshotSha256: sha256(b.png), existingPageErrors: a.errors,
+      imagePreparation: { reference: a.imagePreparation, compiled: b.imagePreparation },
       blockedOrigins: [...new Set([...a.blocked, ...b.blocked])].sort(), evidence: name };
   } finally { for (const instance of instances) await instance.context.close(); }
 }
@@ -324,4 +372,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch(error => { console.error(error); process.exitCode = 1; });
-module.exports = { openPage, snapshot, settle, paintDocument, comparePixels, withinRasterNoiseBudget, languageCornerGeometry, main };
+module.exports = { prepareDocumentImages, waitForImages, openPage, snapshot, settle, paintDocument, comparePixels, withinRasterNoiseBudget, languageCornerGeometry, main };
