@@ -121,7 +121,7 @@ async function legacyControls(man, output, report) {
           const styles = await instance.page.locator('#world-first').evaluate(section =>
             [section, ...section.querySelectorAll('*')].map(element => {
               const style = getComputedStyle(element);
-              return Object.fromEntries([...style].map(name => [name, style.getPropertyValue(name)]));
+              return Object.fromEntries([...style].sort().map(name => [name, style.getPropertyValue(name)]));
             }));
           // Capture the affected cards in their actual viewport as a separate
           // observation; this happens only after the original full-page PNG.
