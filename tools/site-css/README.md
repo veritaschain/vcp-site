@@ -68,7 +68,10 @@ npm run test:render --prefix tools/site-css
 
 Without `CSS_BROWSER_PATH`, Playwright uses its installed Chromium. The CI job
 pins a Chrome for Testing build and verifies the downloaded archive's SHA-256.
-The initial local validation used Chrome **137.0.7151.119**.
+The original migration used Chrome **137.0.7151.119**. The current CI pin is
+Chrome **156.0.8078.80**, using the same reviewed archive/hash already used by
+the Browser Recorder workflow. The old browser remains represented by retained
+CI artifacts; it is not used to lower or reinterpret the comparison criteria.
 
 Before a full-page capture, both sides visit the visible backdrop-filter
 surfaces in actual viewports and restore their requested scroll position. This
@@ -82,18 +85,19 @@ evidence of a correct screenshot.
 
 Image readiness is checked **before** choosing those viewport positions. The
 previous preparation only decoded images that were already complete, leaving
-native lazy images to load during the first full-page captures. Local controls
-on Chrome 137 and 156 reproduced changing screenshot dimensions after the
-initial paint. A late layout change can invalidate the positions and composited
-surfaces prepared from the earlier layout; equal repeated frames alone do not
-prove that the page was ready.
+native lazy images to load during the first full-page captures. Local controls reproduced changing screenshot dimensions even after image
+readiness; image readiness alone does not establish capture correctness. The
+old Chrome 137 CI also omitted backdrop-card contents despite equal DOM/styles.
+Separate Chrome 156 diagnostics matched all 13 previously affected page/state
+cases, motivating the updated pin; the complete 110-case gate remains required.
+Equal repeated frames alone do not prove that the page was ready.
 
 The test temporarily requests native lazy images eagerly, waits for their load
 and decode, and restores each original `loading` attribute. A 10-second timeout
 fails the check. Load/decode errors are recorded separately from decoded images
 in both the ordinary report and prepared capture controls; this remains an
 equivalence check, not a comprehensive broken-image audit. The public HTML,
-image loading behavior, CSS, browser version, comparison thresholds and masks,
+image loading behavior, CSS, comparison thresholds and masks,
 four-frame limit, 110 comparison cases and negative controls are unchanged.
 `node --test tests/css-image-readiness.test.cjs` checks delayed load/decode,
 errors, timeout rejection and attribute/listener cleanup without a browser.
