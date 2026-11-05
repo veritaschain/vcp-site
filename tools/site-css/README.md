@@ -102,6 +102,19 @@ four-frame limit, 110 comparison cases and negative controls are unchanged.
 `node --test tests/css-image-readiness.test.cjs` checks delayed load/decode,
 errors, timeout rejection and attribute/listener cleanup without a browser.
 
+The first Chrome 156 full run still stopped at the mobile CAP page because its
+consecutive full-page frames were unstable. Therefore browser/image readiness
+is combined with preparation before **each** compared frame: paint the visible
+backdrop surfaces and rounded overflow clips, then restore and paint the
+requested viewport. No styles are suppressed. Paint-stop coalescing selects
+only existing positions, preserves their complete viewport union, and keeps
+the original overlap for combined gaps; regression tests check those bounds.
+The same four full-page frames and three comparisons remain the limit. On
+failure, the actual last pair, pixel bounds, DOM, image readiness and visited
+positions are saved, rather than replacing the failed run with a retry. The
+job has a 35-minute resource budget for the extra viewport paints; image
+timeouts, capture attempts and pass/fail criteria are unchanged.
+
 `node tools/site-css/capture-control.cjs` records unprepared and prepared
 reference/compiled pairs, same-CSS pairs, the affected cards in their actual
 viewport, and every computed property in those cards. Results and PNGs remain

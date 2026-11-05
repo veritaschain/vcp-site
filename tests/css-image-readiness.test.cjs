@@ -134,3 +134,144 @@ test('an image without a source does not create an artificial timeout', async ()
   assert.equal((await helpers([image]).prepareDocumentImages(5)).length, 0);
 });
 
+test('failure evidence preserves both supplied frames, exact pixel counts/bounds and case state', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vcp-capture-evidence-test-'));
+  try {
+    const prefix = path.join(dir, 'synthetic-compiled-unstable');
+    const previous = Buffer.from('synthetic penultimate PNG bytes');
+    const current = Buffer.from('synthetic final PNG bytes');
+    const metadata = { file: 'synthetic/index.html', side: 'compiled', viewport: { width: 1440, height: 900 },
+      captures: 4, comparisons: 3, dom: [{ id: 'target', rect: [0, 0, 10, 10] }], images: [{ complete: true }] };
+    helpers().saveScreenshotFailure(prefix, metadata, previous, current, {
+      changedPixels: 4, aboveTolerancePixels: 3, maxChannelDelta: 7,
+      aboveTolerancePoints: [{ x: 30, y: 20 }, { x: 12, y: 27 }, { x: 16, y: 23 }],
+    });
+    assert.deepEqual(fs.readFileSync(prefix + '-previous.png'), previous);
+    assert.deepEqual(fs.readFileSync(prefix + '-current.png'), current);
+    const saved = JSON.parse(fs.readFileSync(prefix + '.json', 'utf8'));
+    assert.equal(saved.file, metadata.file);
+    assert.equal(saved.side, 'compiled');
+    assert.deepEqual(saved.dom, metadata.dom);
+    assert.deepEqual(saved.images, metadata.images);
+    assert.deepEqual(saved.pixels, { changedPixels: 4, aboveTolerancePixels: 3, maxChannelDelta: 7,
+      aboveToleranceBounds: { left: 12, top: 20, right: 30, bottom: 27 } });
+    assert.equal(saved.screenshots.previous.sha256, crypto.createHash('sha256').update(previous).digest('hex'));
+    assert.equal(saved.screenshots.current.sha256, crypto.createHash('sha256').update(current).digest('hex'));
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('unstable capture still stops after four frames and saves exactly its last pair', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vcp-unstable-capture-test-'));
+  try {
+    // Synthetic decoded PNG payloads exercise the real pixel comparator and
+    // capture loop without requiring a browser or a PNG dependency in base CI.
+    const frames = [0, 2, 4, 6].map(red => Buffer.from(JSON.stringify({ width: 1, height: 1, data: [red, 0, 0, 255] })));
+    let captures = 0;
+    const page = { screenshot: async options => options.fullPage ? frames[captures++] : Buffer.from('synthetic viewport paint'),
+      evaluate: async (fn, arg) => fn(arg) };
+    await assert.rejects(helpers([], dir).stableScreenshot(page, {
+      name: 'synthetic-1440-initial', file: 'synthetic/index.html', side: 'compiled', viewport: { width: 1440, height: 900 },
+    }), /did not stabilize.*synthetic-1440-initial compiled/);
+    assert.equal(captures, 4, 'Do not increase capture attempts to hide instability');
+    const prefix = path.join(dir, 'synthetic-1440-initial-compiled-unstable');
+    assert.deepEqual(fs.readFileSync(prefix + '-previous.png'), frames[2]);
+    assert.deepEqual(fs.readFileSync(prefix + '-current.png'), frames[3]);
+    const saved = JSON.parse(fs.readFileSync(prefix + '.json', 'utf8'));
+    assert.equal(saved.comparisons, 3);
+    assert.equal(saved.pixels.aboveTolerancePixels, 1);
+    assert.equal(saved.pixels.maxChannelDelta, 2);
+    assert.equal(saved.dom[0].id, 'synthetic-dom');
+    assert.deepEqual(saved.images, []);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('every compared full-page frame paints its backdrop and restored viewport without increasing attempts', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vcp-per-frame-paint-test-'));
+  try {
+    const frames = [0, 2, 4, 6].map(red => Buffer.from(JSON.stringify({ width: 1, height: 1, data: [red, 0, 0, 255] })));
+    let captures = 0, paints = 0;
+    const page = { evaluate: async (fn, arg) => fn(arg), screenshot: async options => {
+      if (!options.fullPage) { paints++; return Buffer.from('synthetic viewport paint'); }
+      assert.equal(paints, (captures + 1) * 2, 'Prepare the surface and restored viewport before every full-page frame');
+      return frames[captures++];
+    } };
+    await assert.rejects(helpers([], dir, true).stableScreenshot(page, {
+      name: 'synthetic-backdrop', file: 'synthetic/index.html', side: 'compiled', viewport: { width: 1440, height: 900 },
+    }), /did not stabilize/);
+    assert.equal(captures, 4);
+    assert.equal(paints, 8);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+function viewportUnion(stops, height) {
+  const ranges = [];
+  for (const y of [...stops].sort((a, b) => a - b)) {
+    const previous = ranges.at(-1);
+    if (previous && y <= previous[1]) previous[1] = Math.max(previous[1], y + height);
+    else ranges.push([y, y + height]);
+  }
+  return ranges;
+}
+
+test('paint-stop coalescing preserves overlap edges, gaps and clamped document boundaries', () => {
+  const api = helpers();
+  for (const [stops, height, maxScroll, expected] of [
+    [[0, 500], 844, 2000, [0, 500]],
+    [[0, 200, 500], 844, 2000, [0, 500]],
+    [[0, 400, 800], 844, 2000, [0, 400, 800]],
+    [[0, 850], 844, 2000, [0, 850]],
+    [[0, 100, 200, 900, 1000, 2500], 844, 3000, [0, 200, 900, 1000, 2500]],
+    [[1600, 900, 0, 500, -50, 900], 844, 900, [0, 500, 900]],
+    [[0, 500, 900], 844, 0, [0]],
+    [[], 844, 900, []],
+  ]) {
+    const actual = Array.from(api.coalescePaintStops(stops, height, maxScroll));
+    const original = Array.from(api.normalizePaintStops(stops, maxScroll));
+    assert.deepEqual(actual, expected);
+    assert.ok(actual.every(y => original.includes(y)), 'Never synthesize a new viewport position');
+    assert.deepEqual(viewportUnion(actual, height), viewportUnion(original, height));
+  }
+});
+
+test('paint-stop selection preserves the complete original viewport union over varied geometry', () => {
+  const api = helpers();
+  let seed = 893714;
+  const random = () => ((seed = (1664525 * seed + 1013904223) >>> 0) / 4294967296);
+  for (const height of [1, 64, 128, 844, 900, 1440]) {
+    for (const maxScroll of [0, 1, 100, 850, 5000, 20000]) {
+      for (let sample = 0; sample < 30; sample++) {
+        const stops = Array.from({ length: 1 + Math.floor(random() * 40) },
+          () => Math.floor((random() * 1.4 - 0.2) * (maxScroll + height)));
+        const original = Array.from(api.normalizePaintStops(stops, maxScroll));
+        const selected = Array.from(api.coalescePaintStops(stops, height, maxScroll));
+        assert.ok(selected.every(y => original.includes(y)));
+        assert.deepEqual(viewportUnion(selected, height), viewportUnion(original, height));
+        for (let index = 1; index < selected.length; index++) {
+          if (selected[index] - selected[index - 1] > Math.max(1, height - 128)) {
+            assert.equal(original.indexOf(selected[index]), original.indexOf(selected[index - 1]) + 1,
+              'Coalescing must not introduce a gap wider than the original viewport-overlap step');
+          }
+        }
+      }
+    }
+  }
+});
+
+test('the baseline and candidate preparation retain their separate fixed viewport-paint policies', async () => {
+  const api = helpers([], undefined, true);
+  for (const [options, expectedPaints] of [[api.BASE_PAINT_OPTIONS, 1], [api.CAPTURE_PAINT_OPTIONS, 2]]) {
+    let viewportPaints = 0, fullPagePaints = 0;
+    const trace = {};
+    const page = { evaluate: async (fn, arg) => fn(arg), screenshot: async options => {
+      if (options.fullPage) fullPagePaints++;
+      else viewportPaints++;
+      return Buffer.from('synthetic paint');
+    } };
+    await api.captureDocument(page, options, trace);
+    assert.equal(viewportPaints, expectedPaints);
+    assert.equal(fullPagePaints, 1);
+    assert.deepEqual(JSON.parse(JSON.stringify(trace.original)), { x: 0, y: 0 });
+    assert.deepEqual(JSON.parse(JSON.stringify(trace.restored)), { x: 0, y: 0 });
+    assert.equal(trace.options, options);
+  }
+});
