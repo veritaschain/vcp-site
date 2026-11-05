@@ -66,25 +66,84 @@ CSS_EVIDENCE_DIR=/tmp/vcp-site-css-render \
 npm run test:render --prefix tools/site-css
 ```
 
-Without `CSS_BROWSER_PATH`, Playwright uses its installed Chromium. The CI job
-pins a Chrome for Testing build and verifies the downloaded archive's SHA-256.
-The initial local validation used Chrome **137.0.7151.119**.
+Without `CSS_BROWSER_PATH`, Playwright uses its installed Chromium. The three
+regular CI jobs pin Chrome for Testing **156.0.8078.80** and verify its archive's
+SHA-256, using the same download and checksum as the Browser Recorder workflow.
+The initial local validation used Chrome **137.0.7151.119**; the Chrome 156
+candidate still requires the complete gates described below at its own commit.
 
-Before a full-page capture, both sides visit the visible backdrop-filter
-surfaces in actual viewports and restore their requested scroll position. This
-gives those offscreen composited layers the same paint opportunity before
-interactions run, without rasterizing every unrelated page region. The
-capture does not change page styles or loosen comparison thresholds. In the
-previous main artifact, two offscreen backdrop-filter cards on the Chinese
-VeraSnap page were absent from one full-page PNG even though the recorded DOM
-geometry and styles matched. Repeating that missing paint was not sufficient
-evidence of a correct screenshot.
+Every compared full-page frame prepares images, visits visible backdrop-filter
+surfaces and rounded clips with actual overflow in real viewports, restores the
+requested scroll position, and captures that restored viewport before the
+full-page PNG. This preparation also runs before interactions. It changes no
+page styles, comparison thresholds, masks or interaction states. The original
+Chinese VeraSnap failure omitted two offscreen cards despite unchanged DOM and
+styles; later same-CSS controls reproduced single-row clip and rounded-corner
+differences. The tested compositor-stage flag did not remove those differences
+and is no longer used.
 
-`node tools/site-css/capture-control.cjs` records unprepared and prepared
-reference/compiled pairs, same-CSS pairs, the affected cards in their actual
-viewport, and every computed property in those cards. Results and PNGs remain
-in the CI artifact. The regular comparator also records filter, backdrop,
-clipping, containment and compositing properties.
+Viewport stops are clamped to the document's scroll range. Coalescing selects
+only original stops, preserves their complete viewport interval union, and
+keeps the original 128-pixel overlap when combining gaps. Larger gaps remain
+only when the original stops were already adjacent. Each traced capture records
+requested, normalized and selected stops, actual scroll positions immediately
+before viewport screenshots, and the original/restored scroll position.
+
+`node tools/site-css/capture-control.cjs` records fixed same-CSS observations;
+it does not search for a passing frame. CI runs three parallel 15-minute groups
+selected by `CSS_CAPTURE_CONTROL_GROUP`: `mobile-clips`, `page-clips`, and
+`scrolled-faq`. Across eight affected cases, five modes compare backdrop-only,
+added clips, added restored-viewport paint, both additions, and both with stop
+coalescing. Two fresh contexts and four frames per mode/case produce **320
+frames**. The final mode uses exactly the regular comparator's preparation.
+The mobile group also retains the Chinese VeraSnap reference/compiled and
+same-CSS pairs, original four-frame preparation controls, and a four-frame
+sequence using the candidate preparation.
+
+Each group uploads its own `compiled-css-capture-controls-{group}` artifact
+independently of the full comparison. PNG hashes and unrounded target geometry,
+all computed properties including pseudo-elements, actual viewport/scroll state,
+and paint plans are retained. Computed-style property names are sorted before
+serialization without changing their values. Regular comparison differences
+and unequal target-state metadata save both full reference/compiled states;
+unstable-frame evidence saves the available side. A `*-differences.json` file
+can therefore accompany a pixel-pass case; the report determines its outcome.
+These preparation modes remain browser candidates until their controls demonstrate
+the intended effect and the complete render, animation and wrong-theme gates
+pass; a completed diagnostic step alone does not establish equivalence.
+
+The full comparison job has a 35-minute execution budget: the measured
+[110-case comparison took 21:04](https://github.com/veritaschain/vcp-site/actions/runs/41936887494),
+while a prior successful run spent
+[4:32 installing browser dependencies](https://github.com/veritaschain/vcp-site/actions/runs/41930914037).
+Together those stages already exceed 25 minutes. This is only a job-resource
+budget change. The image load/decode timeout, four-frame/three-comparison limit,
+pixel thresholds, 110-case coverage, active-animation check and deliberate
+wrong-theme rejection are unchanged.
+
+The completed [Chrome 156 diagnostic](https://github.com/veritaschain/vcp-site/actions/runs/41945177019/job/126975490853)
+used the same capture code for eight previously failing page/state combinations:
+five initial pages at both widths and three open-FAQ states, giving **13
+comparisons, zero failures and zero raster-noise allowances**. Twelve PNG pairs
+were byte-identical; the Japanese open-FAQ pair differed at eight pixels by one
+channel level, within the unchanged base tolerance. These results cover the
+filtered cases only, not all 110 comparisons.
+
+Its 120 mobile renderer frames showed no recurrence of the 278-pixel code-block
+bottom-row difference, and corresponding cross-context frames were exact.
+Saved mobile target values, geometry and scroll state matched despite property
+enumeration order affecting the original serialized-equality flags. The artifact
+is `compiled-css-chrome-156-diagnostics`; successful paired comparisons did not
+retain full target states, so those cases' metadata equality was not established
+from that artifact.
+
+The temporary filtered diagnostic job is now removed because the regular
+comparison, all three capture-control groups and homepage checks use the same
+Chrome 156 pin. This is a candidate browser update: the complete 110-case render
+suite, active-animation check, deliberate wrong-theme rejection and homepage
+checks still need to pass on the candidate commit. No pixel, frame or
+image-timeout threshold changed, and the filtered diagnostic does not substitute
+for those gates.
 
 `node tools/site-css/homepage-check.cjs` checks the English, Japanese and Chinese
 homepages at 1440, 390 and 360 pixels. It verifies content and primary actions,
