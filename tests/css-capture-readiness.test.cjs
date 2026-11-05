@@ -14,14 +14,17 @@ const file = path.resolve(__dirname, '../tools/site-css/render-check.cjs');
 function helpers(images = [], outputDir, backdrop = false) {
   const module = { exports: {} };
   const element = { tagName: 'BODY', id: 'synthetic-dom', className: '', querySelectorAll: () => [],
-    getBoundingClientRect: () => ({ x: 0, y: 0, top: 0, bottom: 10, width: 10, height: 10 }) };
+    getAttribute: () => '', scrollHeight: 900, clientHeight: 900, scrollWidth: 10, clientWidth: 10,
+    getBoundingClientRect: () => ({ x: 0, y: 0, top: 0, bottom: 10, width: 10, height: 10,
+      toJSON() { return { x: this.x, y: this.y, top: this.top, bottom: this.bottom, width: this.width, height: this.height }; } }) };
   vm.runInNewContext(fs.readFileSync(file, 'utf8'), {
     module, exports: module.exports, __dirname: path.dirname(file),
     process: { env: { ...process.env, ...(outputDir && { CSS_EVIDENCE_DIR: outputDir }) } },
     setTimeout, clearTimeout, requestAnimationFrame: callback => queueMicrotask(callback),
     getComputedStyle: () => backdrop ? { backdropFilter: 'blur(8px)', visibility: 'visible' } : ({}),
-    scrollX: 0, scrollY: 0, innerHeight: 900, scrollTo: () => {},
-    document: { images, fonts: { ready: Promise.resolve() }, documentElement: element, body: element },
+    scrollX: 0, scrollY: 0, innerWidth: 1440, innerHeight: 900, devicePixelRatio: 1, scrollTo: () => {},
+    document: { images, fonts: { ready: Promise.resolve() }, documentElement: element, body: element,
+      querySelectorAll: () => [], querySelector: () => null },
     require(name) {
       if (name === 'playwright') return { chromium: {} };
       if (name === 'pngjs') return { PNG: { sync: { read: bytes => JSON.parse(bytes.toString()) } } };
@@ -164,7 +167,8 @@ test('unstable capture still stops after four frames and saves exactly its last 
     // capture loop without requiring a browser or a PNG dependency in base CI.
     const frames = [0, 2, 4, 6].map(red => Buffer.from(JSON.stringify({ width: 1, height: 1, data: [red, 0, 0, 255] })));
     let captures = 0;
-    const page = { screenshot: async () => frames[captures++], evaluate: async (fn, arg) => fn(arg) };
+    const page = { screenshot: async options => options.fullPage ? frames[captures++] : Buffer.from('synthetic viewport paint'),
+      evaluate: async (fn, arg) => fn(arg) };
     await assert.rejects(helpers([], dir).stableScreenshot(page, {
       name: 'synthetic-1440-initial', file: 'synthetic/index.html', side: 'compiled', viewport: { width: 1440, height: 900 },
     }), /did not stabilize.*synthetic-1440-initial compiled/);
@@ -181,20 +185,93 @@ test('unstable capture still stops after four frames and saves exactly its last 
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
-test('every compared full-page frame has its own backdrop viewport paint without increasing attempts', async () => {
+test('every compared full-page frame paints its backdrop and restored viewport without increasing attempts', async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vcp-per-frame-paint-test-'));
   try {
     const frames = [0, 2, 4, 6].map(red => Buffer.from(JSON.stringify({ width: 1, height: 1, data: [red, 0, 0, 255] })));
     let captures = 0, paints = 0;
     const page = { evaluate: async (fn, arg) => fn(arg), screenshot: async options => {
       if (!options.fullPage) { paints++; return Buffer.from('synthetic viewport paint'); }
-      assert.equal(paints, captures + 1, 'Prepare anew before each full-page frame');
+      assert.equal(paints, (captures + 1) * 2, 'Prepare the surface and restored viewport before every full-page frame');
       return frames[captures++];
     } };
     await assert.rejects(helpers([], dir, true).stableScreenshot(page, {
       name: 'synthetic-backdrop', file: 'synthetic/index.html', side: 'compiled', viewport: { width: 1440, height: 900 },
     }), /did not stabilize/);
     assert.equal(captures, 4);
-    assert.equal(paints, 4);
+    assert.equal(paints, 8);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+function viewportUnion(stops, height) {
+  const ranges = [];
+  for (const y of [...stops].sort((a, b) => a - b)) {
+    const previous = ranges.at(-1);
+    if (previous && y <= previous[1]) previous[1] = Math.max(previous[1], y + height);
+    else ranges.push([y, y + height]);
+  }
+  return ranges;
+}
+
+test('paint-stop coalescing preserves overlap edges, gaps and clamped document boundaries', () => {
+  const api = helpers();
+  for (const [stops, height, maxScroll, expected] of [
+    [[0, 500], 844, 2000, [0, 500]],
+    [[0, 200, 500], 844, 2000, [0, 500]],
+    [[0, 400, 800], 844, 2000, [0, 400, 800]],
+    [[0, 850], 844, 2000, [0, 850]],
+    [[0, 100, 200, 900, 1000, 2500], 844, 3000, [0, 200, 900, 1000, 2500]],
+    [[1600, 900, 0, 500, -50, 900], 844, 900, [0, 500, 900]],
+    [[0, 500, 900], 844, 0, [0]],
+    [[], 844, 900, []],
+  ]) {
+    const actual = Array.from(api.coalescePaintStops(stops, height, maxScroll));
+    const original = Array.from(api.normalizePaintStops(stops, maxScroll));
+    assert.deepEqual(actual, expected);
+    assert.ok(actual.every(y => original.includes(y)), 'Never synthesize a new viewport position');
+    assert.deepEqual(viewportUnion(actual, height), viewportUnion(original, height));
+  }
+});
+
+test('paint-stop selection preserves the complete original viewport union over varied geometry', () => {
+  const api = helpers();
+  let seed = 893714;
+  const random = () => ((seed = (1664525 * seed + 1013904223) >>> 0) / 4294967296);
+  for (const height of [1, 64, 128, 844, 900, 1440]) {
+    for (const maxScroll of [0, 1, 100, 850, 5000, 20000]) {
+      for (let sample = 0; sample < 30; sample++) {
+        const stops = Array.from({ length: 1 + Math.floor(random() * 40) },
+          () => Math.floor((random() * 1.4 - 0.2) * (maxScroll + height)));
+        const original = Array.from(api.normalizePaintStops(stops, maxScroll));
+        const selected = Array.from(api.coalescePaintStops(stops, height, maxScroll));
+        assert.ok(selected.every(y => original.includes(y)));
+        assert.deepEqual(viewportUnion(selected, height), viewportUnion(original, height));
+        for (let index = 1; index < selected.length; index++) {
+          if (selected[index] - selected[index - 1] > Math.max(1, height - 128)) {
+            assert.equal(original.indexOf(selected[index]), original.indexOf(selected[index - 1]) + 1,
+              'Coalescing must not introduce a gap wider than the original viewport-overlap step');
+          }
+        }
+      }
+    }
+  }
+});
+
+test('the baseline and candidate preparation retain their separate fixed viewport-paint policies', async () => {
+  const api = helpers([], undefined, true);
+  for (const [options, expectedPaints] of [[api.BASE_PAINT_OPTIONS, 1], [api.CAPTURE_PAINT_OPTIONS, 2]]) {
+    let viewportPaints = 0, fullPagePaints = 0;
+    const trace = {};
+    const page = { evaluate: async (fn, arg) => fn(arg), screenshot: async options => {
+      if (options.fullPage) fullPagePaints++;
+      else viewportPaints++;
+      return Buffer.from('synthetic paint');
+    } };
+    await api.captureDocument(page, options, trace);
+    assert.equal(viewportPaints, expectedPaints);
+    assert.equal(fullPagePaints, 1);
+    assert.deepEqual(JSON.parse(JSON.stringify(trace.original)), { x: 0, y: 0 });
+    assert.deepEqual(JSON.parse(JSON.stringify(trace.restored)), { x: 0, y: 0 });
+    assert.equal(trace.options, options);
+  }
 });
