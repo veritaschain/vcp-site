@@ -76,7 +76,7 @@ after(async () => {
 
 test('real action grants activeTab, previews the selected text and requires consent before save', { timeout: 20000 }, async () => {
   const registered = (await cdp.send('Extensions.getExtensions')).extensions.find(item => item.id === extensionId);
-  assert.equal(registered.enabled, true); assert.equal(registered.version, '0.1.1');
+  assert.equal(registered.enabled, true); assert.equal(registered.version, '0.1.2');
   await select(); const popup = await action(); const result = await capture(popup);
   assert.equal(result.preview, '合成の回答です。🙂'); assert.equal(result.hidden, false); assert.equal(result.disabled, true);
   assert.equal(await popup.evaluate("document.querySelector('#origin').textContent"), base);

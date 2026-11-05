@@ -48,10 +48,18 @@ export function captureSelection({ structuredResult = false } = {}) {
   // outside the selection must not prevent capturing an ordinary answer.
   const root = range.commonAncestorContainer;
   const scope = root.nodeType === 1 || root.nodeType === 9 ? root : root.parentElement;
+  // FILTER_REJECT prunes unselected subtrees. The budget counts only selected
+  // descendants, not unrelated content elsewhere under the common ancestor.
+  // Flat unselected siblings still need an intersection check, but cannot
+  // exhaust the selected-element budget. Ancestors were checked above.
+  const walker = document.createTreeWalker(scope, NodeFilter.SHOW_ELEMENT, {
+    acceptNode: element => range.intersectsNode(element)
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+  });
   let scanned = 0;
-  for (const element of scope.querySelectorAll('*')) {
+  for (let element = walker.nextNode(); element; element = walker.nextNode()) {
     if (++scanned > 20000) throw Error('確認するDOMが多すぎます。選択範囲を狭くしてください。');
-    if (range.intersectsNode(element)) checkElement(element);
+    checkElement(element);
   }
   const text = selected.toString();
   if (!text.trim() || new TextEncoder().encode(text).length > 32768)

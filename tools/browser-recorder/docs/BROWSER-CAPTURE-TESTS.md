@@ -4,9 +4,11 @@ These tests exercise the capture function in Chrome on a loopback-only synthetic
 HTML fixture. They do not load the extension, grant activeTab, test the popup or
 prove behavior on ChatGPT/Claude/Gemini. The extension-level checks are separate.
 
-The same ten cases passed on Linux in Chrome for Testing 156.0.8078.80 and
-137.0.7151.119. Results for the older browser are recorded separately in
-[the limited compatibility report](BROWSER-STORAGE-TESTS.md).
+The same ten cases passed for the historical source predecessor on Linux in
+Chrome for Testing 156.0.8078.80 and 137.0.7151.119. The current release gate
+reruns them together with the seven large-DOM cases. Consult
+[the versioned validation record](TEST-REPORT.md) for the distinction between
+previous executions and the current candidate commit.
 
 ## Setup and run
 
@@ -18,6 +20,7 @@ No credentials or real conversation data are needed.
 
 ```sh
 CHROME_EXECUTABLE=/path/to/chrome npm run test:browser-capture
+CHROME_EXECUTABLE=/path/to/chrome npm run test:browser-large-dom
 ```
 
 The runner binds an ephemeral port on 127.0.0.1, opens the synthetic fixture,
