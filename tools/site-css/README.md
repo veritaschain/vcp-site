@@ -117,6 +117,25 @@ budget change. The image load/decode timeout, four-frame/three-comparison limit,
 pixel thresholds, 110-case coverage, active-animation check and deliberate
 wrong-theme rejection are unchanged.
 
+A separate `chrome-156-diagnostics` job compares the same capture code on Chrome
+**156.0.8078.80**, using the Browser Recorder workflow's pinned download and
+SHA-256. It runs the existing `mobile-clips` group (120 renderer frames plus
+the retained Chinese VeraSnap controls), then uses `CSS_TEST_FILTER` for the
+eight previous failing page/state combinations: five initial pages at both
+widths and three open-FAQ states, giving 13 comparisons. PNGs, raw target states
+and reports are kept in separate `controls` and `comparisons` directories in
+the `compiled-css-chrome-156-diagnostics` artifact, uploaded even on failure.
+If browser preparation succeeded, the filtered comparison also runs after a
+control-step failure; that failure remains a failed job.
+
+This diagnostic has a 20-minute job budget: the latest
+[137 mobile controls took 6:26](https://github.com/veritaschain/vcp-site/actions/runs/41943097835/job/126968518967),
+and the observed browser-dependency setup above took 4:32, before adding the
+filtered comparisons and artifact transfer. Chrome 137 remains the regular
+comparison browser. Diagnostic results do not replace its complete render,
+animation and wrong-theme gates or change any pixel, frame or image-timeout
+threshold.
+
 `node tools/site-css/homepage-check.cjs` checks the English, Japanese and Chinese
 homepages at 1440, 390 and 360 pixels. It verifies content and primary actions,
 available-language routes, keyboard navigation through all five menu groups,
