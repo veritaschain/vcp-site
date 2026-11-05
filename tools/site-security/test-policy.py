@@ -4,15 +4,41 @@ import re
 import sys
 import unittest
 from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from site_security import Sources, VERIFIED_SRI, apply_csp, digest, policy
+import site_security
 
 
 class PolicyGate(unittest.TestCase):
     def document(self, body):
         return '<!doctype html><html><head><meta charset="utf-8">' + body + '</head><body></body></html>'
+
+    def test_source_scope_excludes_recorder_development_html_only(self):
+        public = {
+            'index.html', 'tools/another-tool/index.html',
+            'tools/browser-recorder-public/index.html',
+            'research/browser-recorder/index.html',
+            'vso/announcements/2026-10-31-vap-browser-recorder-preview/index.html',
+            'src/pages/fixture.tsx',
+        }
+        excluded = {
+            'tools/browser-recorder/extension/popup.html',
+            'tools/browser-recorder/tests/browser/selection-fixture.html',
+            'maintenance/fixture.html', 'node_modules/fixture.html',
+        }
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            for relative in public | excluded:
+                page = root / relative
+                page.parent.mkdir(parents=True, exist_ok=True)
+                page.write_text('fixture')
+            with patch.object(site_security, 'ROOT', root):
+                collected = {page.relative_to(root).as_posix() for page in site_security.source_pages()}
+            self.assertEqual(collected, public)
 
     def test_verified_external_pin_and_negative_variants(self):
         url = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
