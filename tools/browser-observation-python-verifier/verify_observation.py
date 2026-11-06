@@ -24,6 +24,16 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 FORMAT = "vap-browser-observation/0.1.0"
 POLICY = "org.veritaschain.experimental.browser-selected-text.v1"
 MAX_BYTES = 4 * 1024 * 1024
+# Match the shipped browser format's ECMAScript String.prototype.trim predicate:
+# WhiteSpace plus LineTerminator. Python's default strip also removes U+0085 and
+# U+001C..U+001F, but leaves U+FEFF. Keep this set explicit rather than depending
+# on Python's Unicode whitespace tables. It only tests emptiness; signed text
+# must never be trimmed or otherwise normalized.
+BROWSER_TRIM_CHARACTERS = (
+    "\u0009\u000a\u000b\u000c\u000d\u0020\u00a0\u1680"
+    "\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a"
+    "\u2028\u2029\u202f\u205f\u3000\ufeff"
+)
 UUID4 = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 ISO_MILLIS = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$")
@@ -188,7 +198,8 @@ def check_body(body) -> None:
     check_time(body["captured_at"])
     text = body["text"]
     string(text)
-    require(bool(text.strip()) and len(text.encode("utf-8")) <= 32768, "Invalid text")
+    require(bool(text.strip(BROWSER_TRIM_CHARACTERS))
+            and len(text.encode("utf-8")) <= 32768, "Invalid text")
 
 
 def merkle_root(events) -> str:

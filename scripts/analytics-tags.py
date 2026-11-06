@@ -2,6 +2,7 @@
 """Install/check one consent-gated analytics loader on public content pages.
 
 No app/demo, redirect, source, maintenance or fixed distribution is instrumented.
+The live docs/brokers landing pages are public content, not fixed distributions.
 Run after page generators: python3 scripts/analytics-tags.py write | check
 """
 import re
@@ -11,13 +12,19 @@ from urllib.parse import urlsplit, unquote
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-TAG = '<script defer src="/assets/js/analytics.js?v=20261028"></script>'
+TAG = '<script defer src="/assets/js/analytics.js?v=20261103"></script>'
 SCRIPT = re.compile(r'<script\b[^>]*>.*?</script\s*>', re.I | re.S)
 EXCLUDED = {'maintenance', 'src', 'node_modules', '.git', 'docs', 'dist'}
+PUBLIC_DOC_PAGES = {
+    'docs/brokers/index.html',
+    'docs/brokers/ja/index.html',
+    'docs/brokers/zh/index.html',
+}
 
 def eligible(path):
     rel = path.relative_to(ROOT)
-    if any(x in EXCLUDED for x in rel.parts) or 'app' in rel.parts or 'demo' in rel.parts:
+    excluded = EXCLUDED - {'docs'} if rel.as_posix() in PUBLIC_DOC_PAGES else EXCLUDED
+    if any(x in excluded for x in rel.parts) or 'app' in rel.parts or 'demo' in rel.parts:
         return False
     text = path.read_text(encoding='utf-8')
     if re.search(r'<meta\b[^>]*http-equiv=[\"\x27]refresh', text, re.I):

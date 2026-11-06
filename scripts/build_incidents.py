@@ -8,10 +8,14 @@ Sources (edit these, then run `python3 scripts/build_incidents.py`):
 Each record states what VSO verified on the date shown. Correct a record by
 editing it and adding a dated entry to its "corrections" list.
 """
+import argparse
 import html
 import json
 import sys
 from pathlib import Path
+
+from site_security import apply_csp
+from incident_evidence import binding_html, followups_html, source_id, validate_evidence_metadata
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = 'https://veritaschain.org'
@@ -126,7 +130,7 @@ def head(lang, title, desc, url, alt_urls, ld):
         '<meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">\n'
         f'<link rel="canonical" href="{SITE}{url}">\n{alternates}\n'
         f'<link rel="icon" href="/favicon.ico"><style>{STYLE}</style>\n'
-        f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script><script defer src="/assets/js/analytics.js?v=20261028"></script></head>\n')
+        f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script><script defer src="/assets/js/analytics.js?v=20261103"></script></head>\n')
 
 
 def top(lang, alt_urls):
@@ -170,8 +174,8 @@ INC = {
                   'can obtain them — court filings, regulators’ releases and the parties’ own statements — and otherwise '
                   'against the most reliable reporting, and each record says which. This page publishes the records of '
                   'those checks. Each record states what VSO verified on the date shown and is not updated as a live case '
-                  'tracker. Listing an incident is not a claim about VAP: none of these incidents involved a VAP '
-                  'implementation, and each record states what VAP would not have done.'),
+                  'tracker. These source reviews do not establish VAP implementation or effectiveness in the reported '
+                  'incidents. Each record states the limits of the proposed VAP relevance.'),
         'rules_h': 'How to read a record',
         'rules': [
             'Litigation: every claim made in a case is an untested allegation unless a court has decided it.',
@@ -221,7 +225,7 @@ INC = {
         'intro': ('VSO は、報じられた AI 事件について書く前に、その内容を裁判書類、規制当局の発表、当事者自身の声明などの一次情報と照合し、'
                   '一次情報を取得できない場合は最も信頼できる報道と照合して、その別を各記録に示しています。'
                   'このページはその照合の記録を公開します。各記録は表示した日付時点で VSO が検証した内容であり、事件の進行を随時追うものではありません。'
-                  '掲載は VAP についての主張ではありません。いずれの事件にも VAP の実装は関わっておらず、各記録に「VAPにできないこと」を記しています。'),
+                  'これらの出典確認は、各事件における VAP の実装や有効性を立証するものではありません。各記録に、提案する VAP との関連性の限界を記しています。'),
         'rules_h': '記録の読み方',
         'rules': [
             '訴訟：裁判所が判断していない限り、事件で主張されている内容はすべて未検証の主張です。',
@@ -263,6 +267,7 @@ INC = {
 
 
 def validate_incidents(data):
+    validate_evidence_metadata(data)
     ids = set()
     for r in data['records']:
         rid = r['id']
@@ -289,8 +294,11 @@ def record_html(lang, r):
     for party in r.get('ai_provider_party') or []:
         key = 'party_note' if party in VSO_USES_MODELS_FROM else 'party_other'
         badges.append(f'<span class="badge note">{esc(t[key].format(p=party))}</span>')
-    claims = ''.join(f'<tr><td>{esc(c["claim"][lang])}</td><td class="v">{esc(c["verdict"])}</td></tr>' for c in r['claims'])
-    sources = ''.join(f'<li>{a(s["label"], s["url"])} <span class="small">({t[s["kind"]]})</span></li>' for s in r['sources'])
+    claims = ''.join(f'<tr><td>{esc(c["claim"][lang])}{binding_html(r, c, lang)}</td><td class="v">{esc(c["verdict"])}</td></tr>' for c in r['claims'])
+    sources = ''.join(
+        '<li' + (f' id="{esc(source_id(r["id"], source["id"]))}"' if source.get("id") else '') + ' >'
+        + f'{a(source["label"], source["url"])} <span class="small">({t[source["kind"]]})</span></li>'
+        for source in r['sources'])
     sources += ''.join(f'<li>{esc(x)} <span class="small">({t["no_link"]})</span></li>' for x in r.get('references_without_url', []))
     corr = ''.join(f'<li><time datetime="{esc(c["date"])}">{esc(c["date"])}</time> — {esc(c[lang])}</li>'
                    for c in r.get('corrections', []))
@@ -300,7 +308,9 @@ def record_html(lang, r):
            + (f' ({t["rechecked"]} <time datetime="{esc(r["rechecked"])}">{esc(r["rechecked"])}</time>)' if r.get('rechecked') else '')
            + f' · {esc(r["jurisdiction"][lang])}</div>'
            f'<h2>{esc(r["title"][lang])}</h2><div class="badges">{"".join(badges)}</div>'
-           f'<p>{esc(r["summary"][lang])}</p>')
+           + followups_html(r, lang)
+           + (f'<h3>{"初回の検証記録" if lang == "ja" else "Initial verification snapshot"} ({esc(r["verified"])})</h3>' if r.get('later') else '')
+           + f'<p>{esc(r["summary"][lang])}</p>')
     if claims:
         out += f'<h3>{t["claims"]}</h3><table>{claims}</table>'
     if r.get('vap_relevance', {}).get(lang, '').strip():
@@ -308,10 +318,6 @@ def record_html(lang, r):
     out += f'<h3>{t["would_not"]}</h3><p>{esc(r["vap_would_not"][lang])}</p>'
     if sources:
         out += f'<h3>{t["sources"]}</h3><ul class="src">{sources}</ul>'
-    later = ''.join(f'<li><time datetime="{esc(x["date"])}">{esc(x["date"])}</time> — {esc(x[lang])}'
-                    + (f' ({a(t["src_label"], x["url"])})' if x.get('url') else '') + '</li>' for x in r.get('later', []))
-    if later:
-        out += f'<h3>{t["later"]}</h3><ul class="src">{later}</ul>'
     if corr:
         out += f'<h3>{t["corr"]}</h3><ul class="src">{corr}</ul>'
     return out + '</li>'
@@ -411,14 +417,22 @@ def limits_page(lang, limits, records):
     return head(lang, t['title'], t['desc'], t['url'], alt, ld) + top(lang, alt) + body + footer()
 
 
-def write(rel, text):
+def write(rel, text, check=False):
     path = ROOT / rel.strip('/') / 'index.html'
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding='utf-8')
+    expected = apply_csp(text, path)
+    if check:
+        if not path.exists() or path.read_text(encoding='utf-8') != expected:
+            raise SystemExit(f'Stale generated page: {path.relative_to(ROOT)}; run python3 scripts/build_incidents.py')
+    else:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(expected, encoding='utf-8')
     return path.relative_to(ROOT)
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--check', action='store_true', help='Check generated pages without writing them')
+    args = parser.parse_args()
     data = json.loads(INCIDENTS.read_text(encoding='utf-8'))
     limits = json.loads(LIMITS.read_text(encoding='utf-8'))
     ids = validate_incidents(data)
@@ -427,9 +441,9 @@ def main():
         for e in p['examples']:
             if e['record'] not in ids:
                 sys.exit(f'limits.json: pattern {p["id"]} cites unknown record {e["record"]}')
-    out = [write(INC[lang]['url'], incidents_page(lang, data)) for lang in ('en', 'ja')]
-    out += [write(LIM[lang]['url'], limits_page(lang, limits, records)) for lang in ('en', 'ja')]
-    print('Wrote ' + ', '.join(str(p) for p in out) + f' ({len(ids)} records)')
+    out = [write(INC[lang]['url'], incidents_page(lang, data), args.check) for lang in ('en', 'ja')]
+    out += [write(LIM[lang]['url'], limits_page(lang, limits, records), args.check) for lang in ('en', 'ja')]
+    print(('Checked ' if args.check else 'Wrote ') + ', '.join(str(p) for p in out) + f' ({len(ids)} records)')
 
 
 if __name__ == '__main__':

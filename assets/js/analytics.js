@@ -18,6 +18,7 @@
   let started = false;
   let panel;
   let settings;
+  let consentChannel;
   window['ga-disable-' + ID] = choice !== 'granted';
 
   function readChoice() {
@@ -78,6 +79,24 @@
     });
   }
 
+  function disableAnalytics() {
+    window['ga-disable-' + ID] = true;
+    if (started) gtag('consent', 'update', {analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'});
+    clearCookies();
+  }
+
+  // A sibling tab may withdraw consent, or the cookie may expire while this
+  // page remains open. Messages only request a cookie check; they cannot grant
+  // consent. Other tabs' grants take effect on navigation or local acceptance.
+  function syncChoice() {
+    const current = readChoice();
+    if (current === 'granted' || current === choice) return;
+    choice = current;
+    disableAnalytics();
+    panel.hidden = Boolean(choice);
+    settings.hidden = !choice;
+  }
+
   function choose(value) {
     choice = value;
     document.cookie = CONSENT + '=' + value + '; Max-Age=15552000; Path=/; SameSite=Lax' +
@@ -87,9 +106,10 @@
       if (started) gtag('consent', 'update', {analytics_storage: 'granted'});
       else start();
     } else {
-      window['ga-disable-' + ID] = true;
-      if (started) gtag('consent', 'update', {analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'});
-      clearCookies();
+      disableAnalytics();
+      // This is same-origin notification only; lifecycle checks also cover the
+      // shared consent cookie on the main site and VAP subdomain.
+      try { if (consentChannel) consentChannel.postMessage('withdrawn'); } catch (_) { /* Lifecycle checks remain available. */ }
     }
     panel.hidden = true;
     settings.hidden = false;
@@ -119,8 +139,18 @@
     settings.type = 'button'; settings.textContent = copy.settings; settings.hidden = !choice;
     settings.addEventListener('click', () => { panel.hidden = false; settings.hidden = true; no.focus(); });
     document.body.append(panel, settings);
+    window.addEventListener('focus', syncChoice);
+    window.addEventListener('pageshow', syncChoice);
+    document.addEventListener('visibilitychange', syncChoice);
+    try {
+      if (typeof window.BroadcastChannel === 'function') {
+        consentChannel = new window.BroadcastChannel('vso-analytics-consent-v1');
+        consentChannel.addEventListener('message', syncChoice);
+      }
+    } catch (_) { /* Cookie checks still work when channel access is unavailable. */ }
     // Do not turn a click, an attempted submission or a thank-you page view into a lead.
     document.addEventListener('click', event => {
+      syncChoice();
       if (choice !== 'granted' || !started || window['ga-disable-' + ID]) return;
       const link = event.target.closest && event.target.closest('a[href]');
       if (!link) return;
@@ -137,6 +167,7 @@
       }
     });
     if (choice === 'denied') clearCookies();
+    syncChoice();
     start();
   }
 

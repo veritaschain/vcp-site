@@ -1,10 +1,42 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const path = require('node:path');
 const vm = require('node:vm');
 const source = fs.readFileSync('assets/js/analytics.js', 'utf8');
 
-function boot({cookie = '', url = 'https://veritaschain.org/ja/', lang = 'ja', referrer = ''} = {}) {
+test('all source HTML and Hono templates are free of unconditional Google Analytics tags', () => {
+  const scanned = [];
+  const failures = [];
+  function visit(directory) {
+    for (const entry of fs.readdirSync(directory, {withFileTypes: true})) {
+      if (entry.name === '.git' || entry.name === 'node_modules' || entry.name === 'dist') continue;
+      const filename = path.join(directory, entry.name);
+      if (entry.isDirectory()) visit(filename);
+      else if (entry.isFile() && (entry.name.endsWith('.html') || (directory === path.join('src', 'pages') && entry.name.endsWith('.tsx')))) {
+        const relative = path.relative('.', filename).split(path.sep).join('/');
+        const html = fs.readFileSync(filename, 'utf8');
+        scanned.push(relative);
+        if (/gtag\s*\(\s*['"]config['"]/.test(html) ||
+            /<script\b[^>]*\bsrc\s*=\s*['"]https?:\/\/(?:www\.)?googletagmanager\.com\/gtag\/js\b/i.test(html)) {
+          failures.push(relative);
+        }
+      }
+    }
+  }
+  visit('.');
+  for (const language of ['', 'ja/', 'zh/']) {
+    assert.ok(scanned.includes(`docs/brokers/${language}index.html`), 'broker documentation must be scanned');
+  }
+  for (const language of ['en', 'ja', 'zh']) {
+    const template = `src/pages/brokers-${language}.tsx`;
+    assert.ok(scanned.includes(template), 'Hono broker templates must be scanned');
+    assert.match(fs.readFileSync(template, 'utf8'), /<script defer src="\/assets\/js\/analytics\.js\?v=20261103"><\/script>/, 'Hono output must retain the shared consent loader');
+  }
+  assert.deepEqual(failures, [], 'Google Analytics must be loaded by the consent-gated loader, not source HTML or Hono templates');
+});
+
+function boot({cookie = '', url = 'https://veritaschain.org/ja/', lang = 'ja', referrer = '', BroadcastChannel} = {}) {
   const jar = new Map(cookie.split(';').filter(Boolean).map(x => x.trim().split('=')));
   class Element {
     constructor(tag) { this.tag = tag; this.children = []; this.events = {}; this.hidden = false; }
@@ -23,7 +55,9 @@ function boot({cookie = '', url = 'https://veritaschain.org/ja/', lang = 'ja', r
       if (/Max-Age=0(?:;|$)/.test(value)) jar.delete(pair.slice(0,i));
       else jar.set(pair.slice(0,i),pair.slice(i+1)); }
   });
-  const context = vm.createContext({document:doc, location:new URL(url), URL, Date});
+  const windowEvents = {};
+  const context = vm.createContext({document:doc, location:new URL(url), URL, Date, BroadcastChannel,
+    addEventListener(name, handler) { windowEvents[name] = handler; }});
   context.window = context;
   vm.runInContext(source, context);
   const find = id => [...doc.body.children, ...doc.body.children.flatMap(x=>x.children)].find(x=>x.id===id);
@@ -31,7 +65,7 @@ function boot({cookie = '', url = 'https://veritaschain.org/ja/', lang = 'ja', r
   const buttons = panel.children.find(x => x.className === 'vso-consent-actions').children;
   const calls = () => (context.dataLayer || []).map(x=>Array.from(x));
   const tags = () => doc.head.children.filter(x => x.tag==='script');
-  return {doc, context, panel, accept:()=>buttons[1].click(), decline:()=>buttons[0].click(), settings:find('vso-cookie-settings'), calls, tags,
+  return {doc, context, panel, windowEvents, accept:()=>buttons[1].click(), decline:()=>buttons[0].click(), settings:find('vso-cookie-settings'), calls, tags,
     config:()=>calls().find(x=>x[0]==='config')?.[2], repeat:()=>vm.runInContext(source,context)};
 }
 
@@ -75,6 +109,54 @@ test('withdrawal disables further events and can be changed using keyboard-acces
   assert.equal(b.context['ga-disable-G-XTK1LJKRGV'],true);assert.equal(b.settings.focused,true);
   b.doc.events.click({target:{closest:()=>({getAttribute:()=> 'mailto:private@example.org'})}});
   assert.equal(b.calls().filter(x=>x[0]==='event').length,0);
+});
+test('withdrawal in another tab is checked before custom analytics events',()=>{
+  const b=boot({cookie:'vso_analytics_consent_v1=granted'});
+  b.doc.cookie='vso_analytics_consent_v1=denied';
+  b.doc.events.click({target:{closest:()=>({getAttribute:()=> 'mailto:standards@veritaschain.org'})}});
+  assert.equal(b.context['ga-disable-G-XTK1LJKRGV'],true);
+  assert.equal(b.calls().filter(x=>x[0]==='event').length,0);
+  assert.equal(b.calls().filter(x=>x[0]==='consent').at(-1)[2].analytics_storage,'denied');
+});
+test('expired consent is checked before custom analytics events',()=>{
+  const b=boot({cookie:'vso_analytics_consent_v1=granted; _ga=old; _ga_XTK1LJKRGV=old'});
+  b.doc.cookie='vso_analytics_consent_v1=; Max-Age=0';
+  b.doc.events.click({target:{closest:()=>({getAttribute:()=> 'https://github.com/veritaschain/vap-spec'})}});
+  assert.equal(b.context['ga-disable-G-XTK1LJKRGV'],true);
+  assert.equal(b.calls().filter(x=>x[0]==='event').length,0);
+  assert.equal(b.doc.cookie.includes('_ga='),false);
+  assert.equal(b.panel.hidden,false);
+});
+test('resumed pages recheck denied or expired consent without a custom event',()=>{
+  for (const signal of ['focus','pageshow','visibilitychange']) {
+    const b=boot({cookie:'vso_analytics_consent_v1=granted'});
+    b.doc.cookie='vso_analytics_consent_v1=; Max-Age=0';
+    (signal==='visibilitychange' ? b.doc.events : b.windowEvents)[signal]();
+    assert.equal(b.context['ga-disable-G-XTK1LJKRGV'],true,signal);
+    assert.equal(b.panel.hidden,false,signal);
+  }
+});
+test('consent channel messages only trigger a cookie reread and never grant consent',()=>{
+  let receive;
+  class Channel { addEventListener(name,handler) { receive=handler; } postMessage() {} }
+  const b=boot({cookie:'vso_analytics_consent_v1=denied',BroadcastChannel:Channel});
+  receive({data:{choice:'granted'}});
+  assert.equal(b.tags().length,0);
+  assert.equal(b.context['ga-disable-G-XTK1LJKRGV'],true);
+  b.accept();
+  receive({data:'withdrawn'});
+  assert.equal(b.context['ga-disable-G-XTK1LJKRGV'],false,'message alone cannot alter the persisted choice');
+  b.doc.cookie='vso_analytics_consent_v1=denied';
+  receive({data:'withdrawn'});
+  assert.equal(b.context['ga-disable-G-XTK1LJKRGV'],true);
+});
+test('blocked consent channel access does not break local consent or lifecycle checks',()=>{
+  class BlockedChannel { constructor() { throw new Error('blocked'); } }
+  const b=boot({BroadcastChannel:BlockedChannel});
+  b.accept();
+  b.doc.cookie='vso_analytics_consent_v1=denied';
+  b.windowEvents.focus();
+  assert.equal(b.context['ga-disable-G-XTK1LJKRGV'],true);
 });
 test('email click records intent without address, subject or message',()=>{
   const b=boot();b.accept();b.doc.events.click({target:{closest:()=>({getAttribute:()=> 'mailto:standards@veritaschain.org?subject=secret&body=private'})}});

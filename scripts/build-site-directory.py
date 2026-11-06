@@ -10,6 +10,7 @@ from collections import OrderedDict
 from urllib.parse import urlsplit
 
 from seo import ORIGIN, NS, ROOT, Page, page_path, sitemap_entries
+from site_security import apply_csp
 
 URL = ORIGIN + '/sitemap/'
 TITLE = 'Site Directory | VeritasChain Protocol (VCP) & VSO'
@@ -125,7 +126,7 @@ def main():
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="/assets/css/site-directory.css">
   <script type="application/ld+json">{structured}</script>
-<script defer src="/assets/js/analytics.js?v=20261028"></script></head>
+<script defer src="/assets/js/analytics.js?v=20261103"></script></head>
 <body>
   <a class="skip-link" href="#main">Skip to directory</a>
   <header class="site-header">
@@ -146,7 +147,7 @@ def main():
 '''
     destination = ROOT / 'sitemap/index.html'
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(output, encoding='utf-8')
+    destination.write_text(apply_csp(output, destination), encoding='utf-8')
     print(f'Wrote {destination.relative_to(ROOT)} with {len(entries)} canonical pages')
 
 

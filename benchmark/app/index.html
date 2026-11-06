@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'sha256-+R/WO1kri2U4CknPUeGtXMUgyPCxYqTEmm40Pn7mOpQ=' 'sha256-VuZMt+76yYk9uGpuYfS/4owkbag150+GuiQq3W6QqNk=' 'sha256-l8fjTT0aChknI6bHHklgzCV+GSvN9AFbGOVLjVC4ums='; script-src-attr 'unsafe-hashes' 'sha256-0pFYZU5czSNqo+xvV5z7B0vP/kh1lvp51QWu+iNMIQc=' 'sha256-3q8+GjEMnSrdiRWiw/Xyn4D6flf/APz2/qQW00Zgv7E=' 'sha256-8GM4jSFZlIJDiPupufzSR+REybtzhq7hu0EospV0C24=' 'sha256-ALeYtBT3XJb35M+OJM+adoIinuZJX23yDQMwYu+WuLc=' 'sha256-AUkMp7x1gsKM9ZUn/sYZaSXlm6gQ4ALXbJmhnCMNx4Y=' 'sha256-Or58HqYUbxyrxunzBKXbE4CtegpqiFUr82eSeunGdw8=' 'sha256-UYDBCbcP50TowP10amT/QYRxVpzh8NtkVhOfqyI084U=' 'sha256-Wih2xcYHwcGEepXs7IuVvwfl1nOhIbjfqEG6H55WqBo=' 'sha256-msbfreeVo5FSZP4pdD0vrpmRCZDcff6NCBPGyypU6eM=' 'sha256-wMRJNQadXsNBC1uTYHgebLk1Hu3R0HUy9zuxJxtKY3g=' 'sha256-ylW6PBZhpRAdUA0EbrmGnD9qdI+atw+6E6TCug0vhTw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VAP Scorecard Explorer: Auditability Self-Assessment | VSO</title>
     <style>
@@ -1127,7 +1128,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         document.getElementById('modalLangJa').classList.toggle('active',savedLang==='ja');
         document.getElementById('modalLangZh').classList.toggle('active',savedLang==='zh');
         if(savedLang!=='en')setModalLang(savedLang);
-      }document.getElementById('langSelect').value=state.lang;applyLanguage();renderCriteria();updateScoreSummary();renderFileList();setupFileHandlers();if(!document.getElementById('assessmentDate').value)document.getElementById('assessmentDate').valueAsDate=new Date();}
+      }document.getElementById('langSelect').value=state.lang;applyLanguage();renderCriteria();updateScoreSummary();renderFileList();setupFileHandlers();setupDynamicHandlers();if(!document.getElementById('assessmentDate').value)document.getElementById('assessmentDate').valueAsDate=new Date();}
     function updateModalLang(){
         const t=i18n[state.lang]||i18n.en;
         document.getElementById('modalTitle').textContent=t.modalTitle;
@@ -1160,14 +1161,44 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       updateScoreSummary();
       if(viewMode==='executive')updateChecklistSummary();
     }
-    function renderCriteria(){const profile=document.getElementById('regProfile').value;const lang=state.lang;const container=document.getElementById('criteriaList');container.innerHTML=criteria.map(c=>{const isHighlighted=c.profiles.includes(profile);const name=c.name[lang]||c.name.en;const question=c.question[lang]||c.question.en;return`<div class="criterion" id="criterion-${c.id}"><div class="criterion-header" onclick="toggleCriterion(${c.id})"><div class="criterion-number">${c.id}</div><div class="criterion-info"><div class="criterion-name">${name}</div><div class="criterion-question">${question}</div><div class="why-matters" title="${c.whyMatters[lang]||c.whyMatters.en}">💡 ${c.whyMatters[lang]||c.whyMatters.en}</div>${isHighlighted?`<div class="criterion-badges"><span class="criterion-badge">${t('emphasized')}</span></div>`:''}</div><div class="criterion-score-selector"><button class="score-btn score-na ${state.scores[c.id]==='na'?'active':''}" title="${t('naTooltip')}" onclick="event.stopPropagation();setScore(${c.id},'na')">?</button>${[0,1,2].map(score=>`<button class="score-btn score-${score} ${state.scores[c.id]==score&&state.scores[c.id]!=='na'?'active':''}" onclick="event.stopPropagation();setScore(${c.id},${score})">${score}</button>`).join('')}</div></div><div class="criterion-body">${viewMode==='executive'&&execSummaries[c.id]?`<div class="exec-summary"><span class="exec-summary-icon">💡</span>${execSummaries[c.id][lang]||execSummaries[c.id].en}</div>`:''}<div class="evidence-label">${t('evidenceLabel')}</div><textarea class="evidence-input" placeholder="${t('evidencePlaceholder')}" onchange="setEvidence(${c.id},this.value)">${state.evidence[c.id]||''}</textarea><div class="rubric-hints">${c.rubric.map(r=>`<div class="rubric-hint"><span class="rubric-score r-${r.score}">${r.score}:</span><span>${r[lang]||r.en}</span></div>`).join('')}</div>${c.examples?`<div class="examples-hint"><span class="examples-label">${t('examplesLabel')}</span> ${c.examples[lang]||c.examples.en}</div>`:''}
+    function renderCriteria(){const profile=document.getElementById('regProfile').value;const lang=state.lang;const container=document.getElementById('criteriaList');container.innerHTML=criteria.map(c=>{const isHighlighted=c.profiles.includes(profile);const name=c.name[lang]||c.name.en;const question=c.question[lang]||c.question.en;return`<div class="criterion" id="criterion-${c.id}"><div class="criterion-header" data-criterion-toggle="${c.id}"><div class="criterion-number">${c.id}</div><div class="criterion-info"><div class="criterion-name">${name}</div><div class="criterion-question">${question}</div><div class="why-matters" title="${c.whyMatters[lang]||c.whyMatters.en}">💡 ${c.whyMatters[lang]||c.whyMatters.en}</div>${isHighlighted?`<div class="criterion-badges"><span class="criterion-badge">${t('emphasized')}</span></div>`:''}</div><div class="criterion-score-selector"><button class="score-btn score-na ${state.scores[c.id]==='na'?'active':''}" title="${t('naTooltip')}" data-score-criterion="${c.id}" data-score="na">?</button>${[0,1,2].map(score=>`<button class="score-btn score-${score} ${state.scores[c.id]==score&&state.scores[c.id]!=='na'?'active':''}" data-score-criterion="${c.id}" data-score="${score}">${score}</button>`).join('')}</div></div><div class="criterion-body">${viewMode==='executive'&&execSummaries[c.id]?`<div class="exec-summary"><span class="exec-summary-icon">💡</span>${execSummaries[c.id][lang]||execSummaries[c.id].en}</div>`:''}<div class="evidence-label">${t('evidenceLabel')}</div><textarea class="evidence-input" placeholder="${t('evidencePlaceholder')}" data-evidence-criterion="${c.id}">${state.evidence[c.id]||''}</textarea><div class="rubric-hints">${c.rubric.map(r=>`<div class="rubric-hint"><span class="rubric-score r-${r.score}">${r.score}:</span><span>${r[lang]||r.en}</span></div>`).join('')}</div>${c.examples?`<div class="examples-hint"><span class="examples-label">${t('examplesLabel')}</span> ${c.examples[lang]||c.examples.en}</div>`:''}
                 <div class="evidence-req">
                   <div class="evidence-req-title">${lang==='ja'?'満点（2点）のエビデンス要件':'Evidence for Full Score (2)'}</div>
                   <div class="evidence-req-item"><span class="evidence-req-label">Artifact:</span><span>${evidenceRequirements[c.id].artifact[lang]||evidenceRequirements[c.id].artifact.en}</span></div>
                   <div class="evidence-req-item"><span class="evidence-req-label">Proof:</span><span>${evidenceRequirements[c.id].proof[lang]||evidenceRequirements[c.id].proof.en}</span></div>
                   <div class="evidence-req-item"><span class="evidence-req-label">Process:</span><span>${evidenceRequirements[c.id].process[lang]||evidenceRequirements[c.id].process.en}</span></div>
-                </div>${viewMode==='executive'&&verificationChecklists[c.id]?`<div class="verification-checklist"><div class="verification-title">${t('howToVerifyTitle')}</div>${(verificationChecklists[c.id][lang]||verificationChecklists[c.id].en).map((item,idx)=>`<div class="verification-item" onclick="toggleChecklistItem(${c.id},${idx},this.querySelector('.verification-checkbox'))"><div class="verification-checkbox ${(state.checklists[c.id]&&state.checklists[c.id][idx]===1)?'checked':(state.checklists[c.id]&&state.checklists[c.id][idx]===2)?'partial':''}" data-criterion="${c.id}" data-idx="${idx}">${(state.checklists[c.id]&&state.checklists[c.id][idx]===1)?'✓':(state.checklists[c.id]&&state.checklists[c.id][idx]===2)?'~':''}</div><div class="verification-text">${item}</div></div>`).join('')}</div>`:''}<div style="display:none">
+                </div>${viewMode==='executive'&&verificationChecklists[c.id]?`<div class="verification-checklist"><div class="verification-title">${t('howToVerifyTitle')}</div>${(verificationChecklists[c.id][lang]||verificationChecklists[c.id].en).map((item,idx)=>`<div class="verification-item" data-checklist-criterion="${c.id}" data-checklist-index="${idx}"><div class="verification-checkbox ${(state.checklists[c.id]&&state.checklists[c.id][idx]===1)?'checked':(state.checklists[c.id]&&state.checklists[c.id][idx]===2)?'partial':''}" data-criterion="${c.id}" data-idx="${idx}">${(state.checklists[c.id]&&state.checklists[c.id][idx]===1)?'✓':(state.checklists[c.id]&&state.checklists[c.id][idx]===2)?'~':''}</div><div class="verification-text">${item}</div></div>`).join('')}</div>`:''}<div style="display:none">
                 </div></div></div>`;}).join('');}
+    // Keep regenerated controls compatible with the per-page hash CSP.
+    function setupDynamicHandlers(){
+      const criteriaList=document.getElementById('criteriaList');
+      criteriaList.addEventListener('click',event=>{
+        if(!(event.target instanceof Element))return;
+        const control=event.target.closest('[data-score-criterion],[data-checklist-criterion],[data-criterion-toggle]');
+        if(!control||!criteriaList.contains(control))return;
+        if(control.hasAttribute('data-score-criterion')){
+          event.stopPropagation();
+          const score=control.dataset.score;
+          setScore(Number(control.dataset.scoreCriterion),score==='na'?'na':Number(score));
+        }else if(control.hasAttribute('data-checklist-criterion')){
+          toggleChecklistItem(Number(control.dataset.checklistCriterion),Number(control.dataset.checklistIndex),control.querySelector('.verification-checkbox'));
+        }else{
+          toggleCriterion(Number(control.dataset.criterionToggle));
+        }
+      });
+      criteriaList.addEventListener('change',event=>{
+        const control=event.target;
+        if(control instanceof HTMLTextAreaElement&&control.hasAttribute('data-evidence-criterion')){
+          setEvidence(Number(control.dataset.evidenceCriterion),control.value);
+        }
+      });
+      const fileList=document.getElementById('fileList');
+      fileList.addEventListener('click',event=>{
+        if(!(event.target instanceof Element))return;
+        const control=event.target.closest('[data-remove-file]');
+        if(control&&fileList.contains(control))removeFile(Number(control.dataset.removeFile));
+      });
+    }
     function toggleCriterion(id){document.getElementById(`criterion-${id}`).classList.toggle('expanded');}
     function setScore(id,score){state.scores[id]=score;const btns=document.querySelectorAll(`#criterion-${id} .score-btn`);btns.forEach((btn,i)=>{if(i===0)btn.classList.toggle('active',score==='na');else btn.classList.toggle('active',score===i-1);});updateScoreSummary();autoSave();}
     function setEvidence(id,text){state.evidence[id]=text;autoSave();}
@@ -1176,7 +1207,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     async function handleFiles(files){for(const file of files){const hash=await computeSHA256(file);state.files.push({name:file.name,size:file.size,type:file.type||'application/octet-stream',hash:hash,data:file});}renderFileList();autoSave();}
     async function computeSHA256(file){const buffer=await file.arrayBuffer();const hashBuffer=await crypto.subtle.digest('SHA-256',buffer);const hashArray=Array.from(new Uint8Array(hashBuffer));return hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');}
     function removeFile(index){state.files.splice(index,1);renderFileList();autoSave();}
-    function renderFileList(){const container=document.getElementById('fileList');if(state.files.length===0){container.innerHTML='';return;}container.innerHTML=state.files.map((f,i)=>`<div class="file-item"><span class="file-item-icon">📄</span><div class="file-item-info"><div class="file-item-name">${f.name}</div><div class="file-item-meta">${formatBytes(f.size)} • ${f.type}</div><div class="file-item-hash">SHA-256: ${f.hash.substring(0,32)}...</div></div><button class="file-item-remove" onclick="removeFile(${i})">×</button></div>`).join('');}
+    function renderFileList(){const container=document.getElementById('fileList');if(state.files.length===0){container.innerHTML='';return;}container.innerHTML=state.files.map((f,i)=>`<div class="file-item"><span class="file-item-icon">📄</span><div class="file-item-info"><div class="file-item-name">${f.name}</div><div class="file-item-meta">${formatBytes(f.size)} • ${f.type}</div><div class="file-item-hash">SHA-256: ${f.hash.substring(0,32)}...</div></div><button class="file-item-remove" data-remove-file="${i}">×</button></div>`).join('');}
     function formatBytes(bytes){if(bytes===0)return'0 B';const k=1024;const sizes=["B','KB','MB','GB"];const i=Math.floor(Math.log(bytes)/Math.log(k));return parseFloat((bytes/Math.pow(k,i)).toFixed(1))+' '+sizes[i];}
     let saveTimeout;function autoSave(){clearTimeout(saveTimeout);saveTimeout=setTimeout(()=>saveToLocal(true),1000);}
     function saveToLocal(silent=false){const data={lang:state.lang,scores:state.scores,evidence:state.evidence,checklists:state.checklists,orgName:document.getElementById('orgName').value,systemName:document.getElementById('systemName').value,assessorName:document.getElementById('assessorName').value,assessmentDate:document.getElementById('assessmentDate').value,jurisdiction:document.getElementById('jurisdiction').value,regProfile:document.getElementById('regProfile').value};localStorage.setItem('vap-scorecard-offline-v2',JSON.stringify(data));if(!silent)showToast(state.lang==='ja'?'✓ 保存しました':state.lang==='zh'?'✓ 已保存':'✓ Saved');}
