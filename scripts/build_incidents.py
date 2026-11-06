@@ -174,8 +174,8 @@ INC = {
                   'can obtain them — court filings, regulators’ releases and the parties’ own statements — and otherwise '
                   'against the most reliable reporting, and each record says which. This page publishes the records of '
                   'those checks. Each record states what VSO verified on the date shown and is not updated as a live case '
-                  'tracker. Listing an incident is not a claim about VAP: none of these incidents involved a VAP '
-                  'implementation, and each record states what VAP would not have done.'),
+                  'tracker. These source reviews do not establish VAP implementation or effectiveness in the reported '
+                  'incidents. Each record states the limits of the proposed VAP relevance.'),
         'rules_h': 'How to read a record',
         'rules': [
             'Litigation: every claim made in a case is an untested allegation unless a court has decided it.',
@@ -225,7 +225,7 @@ INC = {
         'intro': ('VSO は、報じられた AI 事件について書く前に、その内容を裁判書類、規制当局の発表、当事者自身の声明などの一次情報と照合し、'
                   '一次情報を取得できない場合は最も信頼できる報道と照合して、その別を各記録に示しています。'
                   'このページはその照合の記録を公開します。各記録は表示した日付時点で VSO が検証した内容であり、事件の進行を随時追うものではありません。'
-                  '掲載は VAP についての主張ではありません。いずれの事件にも VAP の実装は関わっておらず、各記録に「VAPにできないこと」を記しています。'),
+                  'これらの出典確認は、各事件における VAP の実装や有効性を立証するものではありません。各記録に、提案する VAP との関連性の限界を記しています。'),
         'rules_h': '記録の読み方',
         'rules': [
             '訴訟：裁判所が判断していない限り、事件で主張されている内容はすべて未検証の主張です。',
