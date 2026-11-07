@@ -40,3 +40,7 @@ python3 -m unittest discover -s tests -p 'test_incident_evidence.py' -v
 python3 -O -m unittest discover -s tests -p 'test_incident_evidence.py' -v
 python3 scripts/build_incidents.py --check
 ```
+
+## Pending source review
+
+- [Claude Code approval-file report — primary article unavailable, 8 November 2026](reviews/2026-11-08-claude-code-secrets.md). This review note is not a verified incident record and does not change historical exclusion counters.
