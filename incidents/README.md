@@ -41,6 +41,7 @@ python3 -O -m unittest discover -s tests -p 'test_incident_evidence.py' -v
 python3 scripts/build_incidents.py --check
 ```
 
-## Pending source review
+## Source review notes
 
 - [Claude Code approval-file report — primary article unavailable, 8 November 2026](reviews/2026-11-08-claude-code-secrets.md). This review note is not a verified incident record and does not change historical exclusion counters.
+- [Retail, autonomous-driving and agent-scope reports — 8 November 2026](reviews/2026-11-08-retail-autonomy-agent-scope.md). H-E-B remains on hold; Grab and Railway records preserve attributed accounts and evidentiary limits. The H-E-B note does not add a verified incident or change historical exclusion counters.
