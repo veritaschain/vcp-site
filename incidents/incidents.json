@@ -1,5 +1,5 @@
 {
- "as_of": "2026-11-08",
+ "as_of": "2026-11-09",
  "license": "CC BY 4.0",
  "excluded_counts": [
   {
@@ -4903,6 +4903,223 @@
      "id": "vap-spec-v12-8ca7b6f",
      "label": "VAP v1.2 framework, sections 1.6, 4.4.4, 4.5.2 — commit 8ca7b6f, checked 8 November 2026",
      "url": "https://github.com/veritaschain/vap-spec/blob/8ca7b6fdc278227a1d3664550d651024a53a2110/spec/v1.2/VAP_Framework_Specification.md",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1104CHAINALYSIS",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Chainalysis updates October incident: password-hash and live-token exposure affecting all users",
+    "ja": "Chainalysis続報：全ユーザーに関係するパスワードハッシュ・有効トークン等の露出"
+   },
+   "event_date": "2026-10 (detection; exact intrusion date undisclosed)",
+   "verified": "2026-11-09",
+   "jurisdiction": {
+    "en": "Affected jurisdictions not comprehensively stated",
+    "ja": "被害地域の全体像は未公表"
+   },
+   "category": "security incident update",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CAVEATS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "A material update to the incident disclosed on 30 October, first entered in this site ledger on 9 November. Later findings supersede the initial credential/token assessment; this entry is not a second intrusion.",
+    "ja": "10月30日に公表された同一事件の重大な続報で、11月9日に本サイト台帳へ初掲載しました。認証情報・トークンに関する初報の評価は後続の発表で更新されており、別の新規侵入として数えません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "The 4 November 23:00 EST update says exposure of names, usernames, password hashes and live tokens for all users was discovered on 2 November.",
+      "ja": "11月4日23:00 EST（日本時間11月5日13:00）の更新によると、全ユーザーに関係する氏名・ユーザー名・パスワードハッシュ・有効トークンの露出を11月2日に発見。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "chainalysis-notice"
+     ],
+     "claim_as_of": "2026-11-09"
+    },
+    {
+     "claim": {
+      "en": "An on-path attack exposed a subset of customer passwords; some KYT accounts appeared to have been accessed without authorization.",
+      "ja": "通信経路上の攻撃で一部顧客のパスワードが露出し、一部のKYTアカウントには不正アクセスが疑われると説明。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "chainalysis-notice"
+     ],
+     "claim_as_of": "2026-11-09"
+    },
+    {
+     "claim": {
+      "en": "The notice reports no evidence of investigation-data access or attribution-data manipulation.",
+      "ja": "公告は、調査データへのアクセスや帰属データの改ざんの証拠はないと説明。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "chainalysis-notice"
+     ],
+     "claim_as_of": "2026-11-09",
+     "evidence_note": {
+      "en": "An attributed investigation status, not proof that no such access occurred.",
+      "ja": "同社が公表した調査状況であり、該当するアクセスがなかったことの証明ではありません。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The 7 November 13:50 EST update confirms Reactor, KYT UI/API and Address Screening restoration.",
+      "ja": "11月7日13:50 EST（日本時間11月8日03:50）の更新は、Reactor・KYTのUI/API・Address Screeningの復旧を確認。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "chainalysis-notice"
+     ],
+     "claim_as_of": "2026-11-09"
+    },
+    {
+     "claim": {
+      "en": "Every plaintext password or MFA secret was exposed, all products recovered, or ARTEX was identified.",
+      "ja": "全員の平文パスワード・MFA秘密が露出した、全製品が復旧した、またはARTEXが使用されたと特定できる。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "chainalysis-notice"
+     ],
+     "claim_as_of": "2026-11-09",
+     "evidence_note": {
+      "en": "The company reports agentic techniques, without a named model or detailed autonomy trace.",
+      "ja": "同社はエージェント型の手法を報告していますが、使用モデル名や自律実行の詳細は示していません。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "VSO design inference: correlate issuer/tenant-qualified opaque credential and session references, issue/expiry observations, privilege changes, operation-specific authorization, API results and observed revocation effect. Parent-key rotation and descendant-session invalidation need separate evidence. Preserve collection gaps and clock uncertainty. Minimize and protect evidence before signing; never copy reusable secrets into a shared record.",
+    "ja": "VSOの設計上の示唆：発行者・テナントと対応付けた秘密値を含まない認証情報・セッション参照、発行・期限の観測、権限変更、個別操作の認可、API結果、観測された失効の反映を関連付けます。親の鍵の更新と派生セッションの無効化は別々の証拠が必要です。収集漏れと時刻の不確かさを残し、署名前に証跡を最小化・保護して、再利用可能な秘密値を共有記録へ複製しません。"
+   },
+   "vap_would_not": {
+    "en": "Accepted credentials or valid signatures do not establish the legitimate operator or business permission. Evidence alone does not revoke sessions, stop misuse or establish complete collection. This source review establishes neither VAP deployment nor preventive effectiveness; current VCP scope is not automatically extended to every authentication service.",
+    "ja": "認証情報の受理や署名の有効性だけでは、正当な操作者や業務上の許可は確定しません。証跡だけではセッションを失効させず、不正利用を止めず、収集の網羅性も確立しません。本レビューはVAPの導入や防止効果を確認するものではなく、現行VCPの範囲をすべての認証サービスへ自動的に拡張しません。"
+   },
+   "sources": [
+    {
+     "id": "chainalysis-notice",
+     "label": "Chainalysis — 30 October notice and dated updates through 7 November 2026, checked 9 November JST",
+     "url": "https://www.chainalysis.com/blog/security-incident-october-30/",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": [
+    {
+     "date": "2026-11-09",
+     "en": "Recorded as an update to the October incident. The earlier EVIDECT note is a dated 1 November assessment; its credential/token non-access assessment must not be reused as current. Discovery, disclosure and restoration dates are kept separate.",
+     "ja": "10月の事件の続報として記録しました。EVIDECTの先行メモは11月1日時点の評価であり、認証情報・トークンへのアクセスの兆候がないという初報の評価を現在の状況として再利用しません。発見日、公表日、復旧日を分けています。"
+    }
+   ]
+  },
+  {
+   "id": "V1106STORM3358",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Microsoft reports Storm-3358 using ARTEX against financial organisations",
+    "ja": "Microsoft、Storm-3358によるARTEXを用いた金融機関への攻撃を報告"
+   },
+   "event_date": "2026-10 onward (campaign activity)",
+   "verified": "2026-11-09",
+   "jurisdiction": {
+    "en": "Primarily Southeast Asia, with some financial organisations elsewhere",
+    "ja": "主に東南アジア・ほかの地域の金融機関にも言及"
+   },
+   "category": "security incident campaign report",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CAVEATS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "Microsoft's 6 November report describes financially motivated Storm-3358, assessed as Cambodia-based, using ARTEX alongside conventional automation from October. It is recorded separately from the 5 November exposed-secret report (V1105AZURE).",
+    "ja": "Microsoftの11月6日の報告は、カンボジアを拠点とすると評価する金銭目的のStorm-3358が、10月からARTEXと従来の自動化ツールを併用したと説明しています。11月5日の公開認証情報悪用の報告（V1105AZURE）とは別の記録として扱います。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Microsoft observed public-system scanning, anonymous-upload/SSRF exploitation and WISP, vshell and AdaptixC2 deployment.",
+      "ja": "Microsoftは公開システムの探索、匿名アップロード・SSRFの悪用、WISP・vshell・AdaptixC2の設置を観測したと報告。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "microsoft-storm3358"
+     ],
+     "claim_as_of": "2026-11-09"
+    },
+    {
+     "claim": {
+      "en": "Microsoft observed ARTEX agents using curl and netcat to retrieve remote-access tools on compromised systems.",
+      "ja": "MicrosoftはARTEXエージェントがcurlやnetcatを使い、侵害済みシステムへ遠隔操作ツールを取得する動作を観測したと報告。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "microsoft-storm3358"
+     ],
+     "claim_as_of": "2026-11-09"
+    },
+    {
+     "claim": {
+      "en": "The public report establishes victim totals, losses, exfiltration volume or a fully autonomous end-to-end trace.",
+      "ja": "公開報告から被害組織総数、損失額、情報流出量、攻撃全体の完全自律実行の詳細を確定できる。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "microsoft-storm3358"
+     ],
+     "claim_as_of": "2026-11-09"
+    },
+    {
+     "claim": {
+      "en": "The five-minute GitHub-to-Key-Vault example or the Storm-0940 campaign can be attributed to Storm-3358.",
+      "ja": "GitHubからKey Vaultまで5分だった事例や、Storm-0940のキャンペーンをStorm-3358へ帰属できる。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "microsoft-storm3358",
+      "microsoft-exposed-secrets",
+      "microsoft-storm0940"
+     ],
+     "claim_as_of": "2026-11-09",
+     "evidence_note": {
+      "en": "These reports do not establish that linkage. Shared tools or utilities alone do not identify an actor or AI involvement.",
+      "ja": "確認した報告はその関連を立証していません。共通のツールやコマンドだけで攻撃主体やAIの関与を特定できません。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "VSO design inference: correlate authorised defender-side identity, gateway, process, network and provider observations with their source, clock uncertainty and concrete request/process references. Keep observed execution separate from threat-intelligence attribution and inferred intent. Protect sensitive command arguments before producing shareable signed evidence. Missing records remain unknown.",
+    "ja": "VSOの設計上の示唆：正当に取得した防御側の認証・ゲートウェイ・プロセス・通信・サービス側の観測を、観測元、時刻の不確かさ、具体的な要求・プロセスの参照と対応付けます。観測した実行と、脅威情報による帰属や意図の推測を分け、機微なコマンド引数は共有用の署名付き証跡を作る前に保護します。欠けた記録は不明のまま扱います。"
+   },
+   "vap_would_not": {
+    "en": "Defender evidence cannot reveal unobserved attacker model reasoning. VAP/VCP alone does not patch applications, block RAT execution or enforce access decisions. Real-time detection and independent authorization controls require separate implementation and assessment; these incidents do not validate a new VCP security profile.",
+    "ja": "防御側の証跡から、観測していない攻撃者のモデル内部の判断は取得できません。VAP/VCP単独ではアプリを修正せず、RATの実行やアクセスを制御しません。実行時の検知と独立した認可制御は別途実装・評価が必要であり、この事例は新しいVCPセキュリティプロファイルを検証するものではありません。"
+   },
+   "sources": [
+    {
+     "id": "microsoft-storm3358",
+     "label": "Microsoft Threat Intelligence — ARTEX abuse expands as cybercriminals target financial sector (6 November 2026)",
+     "url": "https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/",
+     "kind": "primary"
+    },
+    {
+     "id": "microsoft-exposed-secrets",
+     "label": "Microsoft — distinct exposed-secret report (5 November 2026)",
+     "url": "https://www.microsoft.com/en-us/security/blog/2026/11/05/threat-actors-use-agentic-ai-tooling-to-find-and-abuse-exposed-secrets/",
+     "kind": "primary"
+    },
+    {
+     "id": "microsoft-storm0940",
+     "label": "Microsoft — distinct Storm-0940 report (21 October 2026)",
+     "url": "https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/",
      "kind": "primary"
     }
    ],
