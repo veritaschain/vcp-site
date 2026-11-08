@@ -41,10 +41,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24.22.1'
       - name: Install locked build and test tools
@@ -77,7 +77,7 @@ jobs:
           CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence/negative-control
           CSS_NEGATIVE_CONTROL: '1'
         run: npm run test:render --prefix tools/site-css
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: compiled-css-render-comparison
@@ -93,10 +93,10 @@ jobs:
       matrix:
         group: [mobile-clips, page-clips, scrolled-faq]
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24.22.1'
       - name: Install locked browser test tools
@@ -114,7 +114,7 @@ jobs:
           CSS_EVIDENCE_DIR: ${{ runner.temp }}/css-evidence
           CSS_CAPTURE_CONTROL_GROUP: ${{ matrix.group }}
         run: node tools/site-css/capture-control.cjs
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: compiled-css-capture-controls-${{ matrix.group }}
@@ -126,10 +126,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24.22.1'
       - name: Install locked browser test tools
@@ -151,14 +151,14 @@ jobs:
           CSS_BROWSER_PATH: ${{ runner.temp }}/homepage-chrome/chrome-linux64/chrome
           CSS_EVIDENCE_DIR: ${{ runner.temp }}/homepage-evidence
         run: node tools/site-css/outreach-check.cjs
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: homepage-layout-evidence
           path: ${{ runner.temp }}/homepage-evidence/homepage/
           if-no-files-found: error
           retention-days: 14
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: outreach-archive-evidence
