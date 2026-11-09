@@ -132,8 +132,8 @@ This page has been specifically optimized for proprietary trading firm outreach:
 ## 🔗 Related Pages
 
 - **VCP Protocol Landing:** [/](../)
-- **VCP Specification:** [/vcp-spec](../vcp-spec/) (planned)
-- **Pilot Program:** [/pilot-program](../pilot-program/) (planned)
+- **VCP Specification:** [veritaschain/vcp-spec](https://github.com/veritaschain/vcp-spec)
+- **Pilot inquiries:** [Contact VSO](../contact/) — inquiry route; availability and terms require confirmation
 - **VSO About:** [/vso/](.) (this page)
 
 ---
