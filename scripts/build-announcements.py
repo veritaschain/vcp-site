@@ -14,21 +14,24 @@ TEXT={
 'zh':dict(title='公告归档',latest='最新公告',all='查看全部公告',home='VCP / VSO 首页',desc='按年月和类别浏览VSO公告、研究更新及新闻稿。保留历史记录与原文章网址。',intro='VeritasChain Standards Organization（VSO）的研究、规范与组织动态。按日期或类别查找公告，并阅读原始记录。',status='实验性扩展仍未采纳，独立第三方复现尚未成立。自有CI及保存证据的复核，与独立的新执行明确区分。',history='日期为原始发布日期；已记录的后续更新日期另行标注。历史公告反映当时状态，不代表重新确认当前采纳、符合性或认证。',month='年月',category='类别',search='关键词',reset='清除筛选',any='全部',count='显示 {shown} / {total} 条',empty='没有符合条件的公告。',original='阅读当时的公告',label='历史公告（包括已有更正）',updated='更新',cats={'research':'研究与开发','announcement':'公告','press':'新闻稿','operations':'更正与运营'},lang='语言',directory='网站目录')}
 def archive_path(lang):return '/vso/announcements/'+('' if lang=='en' else lang+'/')
 def homepage(lang):return '/' if lang=='en' else '/'+lang+'/'
+HOME_LIMIT={'en':260}
 def compact_summary(row,lang,limit=180):
+ # Archive excerpts keep the 180-character limit. The homepage passes HOME_LIMIT for English, so that the
+ # status caveat at the end of a summary is not cut off mid-sentence.
  s=row['summary']
  if len(s)<=limit:return s
  return s[:limit].rsplit(' ',1)[0]+'…' if lang=='en' and ' ' in s[:limit] else s[:limit]+'…'
 def raw_record(row):
  # Resolve original anchor IDs to the outer archive row; keep descendant IDs unique.
  return re.sub(r'\bid=([\"\x27])(.*?)\1',lambda m:'id='+m[1]+'record-'+row['id']+'-'+m[2]+m[1],row['html'])
-def row_html(row,lang,archive=False,new=False):
+def row_html(row,lang,archive=False,new=False,limit=180):
  t=TEXT[lang]; ident=row['id'];url=row['url'] or (archive_path(lang)+'#'+ident+'-record')
  out=f'<li class="news-row" id="{e(ident)}"'+(f' data-news-record data-month="{row["date"][:7]}" data-category="{row["category"]}"' if archive else '')+'>'
  out+=f'<div class="news-meta"><time datetime="{row["date"]}">{row["date"]}</time><span class="news-category">{t["cats"][row["category"]]}</span>'
  if new:out+='<span class="news-new">NEW</span>'
  if row['updated']:out+=f'<span>{t["updated"]} {row["updated"]}</span>'
  out+='</div><div class="news-content">'
- out+=f'<h3><a href="{e(url)}">{e(row["title"])}</a></h3><p class="news-summary">{e(compact_summary(row,lang))}</p>'
+ out+=f'<h3><a href="{e(url)}">{e(row["title"])}</a></h3><p class="news-summary">{e(compact_summary(row,lang,limit))}</p>'
  if archive:out+=f'<details class="archive-record" id="{e(ident)}-record"><summary>{t["original"]}</summary><p class="archive-history-label">{t["label"]}</p><div class="archive-original">{raw_record(row)}</div></details>'
  return out+'</div></li>\n'
 def page(lang,rows):
@@ -54,7 +57,7 @@ def build():
   dest=ROOT/(archive_path(lang).lstrip('/')+'index.html');dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(apply_csp(page(lang,rows),dest),encoding='utf-8')
   t=TEXT[lang];home=ROOT/(homepage(lang).lstrip('/')+'index.html');s=home.read_text()
   latest=rows[:3];legacy={x:archive_path(lang)+'#'+r['id'] for r in rows[3:] for x in r['legacy_ids']}
-  block='<section class="section section-news" style="background:#0f172a;padding:3rem 0"><div class="news-shell" id="news-container"><div class="news-heading"><h2>'+t['latest']+'</h2><a href="'+archive_path(lang)+'">'+t['all']+' →</a></div><aside class="news-status"><p>'+t['status']+'</p></aside><ul class="news-list">'+''.join(row_html(r,lang,new=i==0) for i,r in enumerate(latest))+'</ul><div>'+''.join(f'<span class="news-legacy-anchor" id="{e(x)}" aria-hidden="true"></span>' for x in legacy)+'<a class="news-more" href="'+archive_path(lang)+'">'+t['all']+' →</a></div></div></section>'
+  block='<section class="section section-news" style="background:#0f172a;padding:3rem 0"><div class="news-shell" id="news-container"><div class="news-heading"><h2>'+t['latest']+'</h2><a href="'+archive_path(lang)+'">'+t['all']+' →</a></div><aside class="news-status"><p>'+t['status']+'</p></aside><ul class="news-list">'+''.join(row_html(r,lang,new=i==0,limit=HOME_LIMIT.get(lang,180)) for i,r in enumerate(latest))+'</ul><div>'+''.join(f'<span class="news-legacy-anchor" id="{e(x)}" aria-hidden="true"></span>' for x in legacy)+'<a class="news-more" href="'+archive_path(lang)+'">'+t['all']+' →</a></div></div></section>'
   start=s.index('<section class="section section-news"');end=s.index('</section>',start)+len('</section>')
   s=s[:start]+block+s[end:]
   s=re.sub(r'\n?<script id="news-legacy-map" type="application/json">.*?</script>','',s,flags=re.S)
