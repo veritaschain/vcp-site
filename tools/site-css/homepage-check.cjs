@@ -118,7 +118,9 @@ async function checkPage(browser, language, viewport) {
     const heroLinks = await page.locator('.home-actions a').evaluateAll(links => links.map(link => link.getAttribute('href')));
     assert.deepEqual(heroLinks, ['/explorer/app/', routeFor('/vcp/developers/', language)], 'Primary actions are demo and localized implementation resources');
     assert.equal(await page.locator('.section-news .news-row').count(), 3, 'Latest three announcements');
-    assert.equal(await page.locator('.home-profile-table tbody tr').count(), 4, 'Four principal domain profile entries');
+    assert.equal(await page.locator('.home-profile-table tbody tr').count(), 3, 'Three principal domain profile entries');
+    assert.equal(await page.locator('.home-profile-table a[href*="/vap/lap/"]').count(), 0, 'External LAP proposal is outside the profile table');
+    assert.equal(await page.locator('#related-lap-proposal a[href*="/vap/lap/"]').count(), 1, 'Related external LAP proposal remains linked separately');
 
     result.skipLink = await checkSkipLink(page);
     result.navigation = await checkNavigation(page, language, viewport, name);
