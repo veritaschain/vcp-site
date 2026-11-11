@@ -185,6 +185,12 @@ INC = {
             'Registered — entered in VSO’s incident ledger. Verified, pending registration — checked against sources, not yet entered in the ledger.',
         ],
         'method_h': 'Method',
+        'registration_h': 'What changes a record to registered?',
+        'registration': ('Publication on this website is not itself ledger registration. Before a pending record is relabelled, '
+                         'a dated, versioned VSO ledger must include its stable record ID, source-review scope and caveats; '
+                         'the maintainer’s registration decision and a public reference to that ledger version must also be recorded. '
+                         'Until that publication exists, the record remains pending. Ledger v1.3 is not asserted as published here. '
+                         'These are site-publication requirements, not a regulatory approval, cryptographic verification or endorsement of an incident claim.'),
         'method': ('VSO’s verification is AI-assisted: VSO uses AI models, including Anthropic’s Claude, to search for and '
                    'compare sources. Each record lists the sources it relies on, linked wherever VSO has confirmed the address, '
                    'so that readers can check them. Several records involve AI developers. They are held to the same rules '
@@ -235,6 +241,11 @@ INC = {
             '登録済み：VSO の事件台帳に登録したもの。検証済み・登録待ち：情報源と照合済みで、台帳への登録前のもの。',
         ],
         'method_h': '方法',
+        'registration_h': '「登録済み」へ変更する条件',
+        'registration': ('本サイトへの掲載だけでは台帳登録になりません。登録待ちの記録の表示を変更するには、日付と版を明示したVSO台帳に、'
+                         '固定の記録ID、出典確認の範囲、留保事項を収録し、管理者の登録判断と、その台帳版を参照できる公開先を記録する必要があります。'
+                         'それまでは登録待ちのままです。ここで台帳v1.3を発行済みとは扱いません。これはサイト上の掲載要件であり、'
+                         '規制当局の承認、暗号学的な検証、事件の主張へのお墨付きを意味しません。'),
         'method': ('VSO の検証は AI の支援を受けています。Anthropic の Claude を含む AI モデルを、情報源の検索と照合に使っています。'
                    '各記録には根拠とした情報源を挙げ、所在を確認できたものにはリンクを付けて、読み手が自ら確かめられるようにしています。'
                    'いくつかの記録には AI 開発者が関わっています。それらにも同じ規則を当てて印を付けています。印を付けるのは、問題の AI システムの開発者・提供者としての立場で当事者である場合か、そのモデルやツールが記録の中心にある場合です。'
@@ -344,6 +355,7 @@ def incidents_page(lang, data):
             f'<p class="intro">{esc(t["intro"])}</p>'
             f'<p class="small">{a(t["data"], "/incidents/incidents.json")} · {a(*c["limits_page"])} · {a(*c["corrections"])}</p>\n'
             f'<section class="box"><h3>{t["rules_h"]}</h3><ul>{rules}</ul>'
+            f'<h3 id="registration-criteria">{t["registration_h"]}</h3><p>{esc(t["registration"])}</p>'
             f'<h3>{t["method_h"]}</h3><p>{esc(t["method"])}</p>'
             + (f'<p class="small">{esc(t["excluded"].format(items=items))}</p>' if items else '') +
             '</section>\n' + section_16(lang) + status(lang) +
@@ -367,6 +379,7 @@ LIM = {
                   'pattern, with the clauses of VAP v1.2 that state them. It does not say what VAP would have done in any incident.'),
         'basis': 'Basis in the specification',
         'examples': 'Verified examples',
+        'illustration': 'Synthetic illustration — not an incident finding',
     },
     'ja': {
         'url': '/vap/limits/ja/',
@@ -380,6 +393,7 @@ LIM = {
                   '根拠となる VAP v1.2 の条項とともに示します。どの事件についても、VAP の効果を仮定して述べるものではありません。'),
         'basis': '仕様上の根拠',
         'examples': '検証済みの例',
+        'illustration': '架空の説明例 — 実際の事件の認定ではありません',
     },
 }
 
@@ -404,6 +418,8 @@ def limits_page(lang, limits, records):
                 f'<li>{a(e["record"] + " " + records[e["record"]]["title"][lang], rec_base + "#" + e["record"])} — {esc(e[lang])}</li>'
                 for e in p['examples'])
             ex = f'<h3>{t["examples"]}</h3><ul class="src">{lis}</ul>'
+        if p.get('illustration'):
+            ex += f'<h3>{t["illustration"]}</h3><p>{esc(p["illustration"][lang])}</p>'
         items.append(f'<li class="entry" id="{esc(p["id"])}"><h2>{esc(p["title"][lang])}</h2><p>{esc(p["text"][lang])}</p>'
                      f'<p class="small">{t["basis"]}：{esc(p["basis"][lang])}</p>{ex}</li>'
                      if lang == 'ja' else
