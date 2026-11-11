@@ -1,8 +1,15 @@
 # VAP site external-proposal wording — 11 November 2026 (rebuilt)
 
-**Status: prepared, not deployed.** This package targets `vap.veritaschain.org`
-(XServer), which is not served from this repository. Nothing on that host is
-changed by merging this record.
+**Deployed and publicly verified on 11 November 2026.** The separately hosted
+`https://vap.veritaschain.org/` was updated through XServer File Manager between
+14:29 and 14:33 JST. The publication check at 14:33-14:34 JST matched all eight
+changed files to their after hashes, found the two About pages and
+`tools/build.py` unchanged, and returned HTTP 200 without redirects for all 28
+sitemap URLs. See [deployment.json](deployment.json) and
+[publication-verification.json](publication-verification.json). Merging this
+record does not change that host.
+
+The sections below are the preparation record and keep their original wording.
 
 ## What happened to the first package
 
@@ -94,8 +101,9 @@ separate owner decision and is not changed here.
 
 - The generator was not executed, so equality between a fresh generator run and
   the patched pages was not observed.
-- No rendering check, deployment or post-deployment hash verification was
-  performed.
+- At preparation time no rendering check, deployment or post-deployment hash
+  verification had been performed; deployment.json records what was done
+  afterwards.
 - Who applied the 13:11–13:16 JST About correction, and from which source, was
   not established from the public files.
 - First-party preparation; not an independent review.
