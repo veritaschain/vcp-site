@@ -5,6 +5,21 @@ pages. Edit the JSON, add a dated correction when changing an existing account,
 then run `python3 scripts/build_incidents.py`. CI uses `--check` to detect stale
 output without overwriting it.
 
+## Registration labels
+
+Website publication and source review do not by themselves register a record in
+the separately versioned VSO incident ledger. Before changing a pending label,
+publish a dated ledger version containing the stable record ID, source-review
+scope and caveats, and retain both the maintainer's registration decision and a
+public reference to that version. Until then, preserve `verified, pending
+registration`. The website does not assert that ledger v1.3 has been published.
+This is a site-publication requirement, not regulatory approval, cryptographic
+verification or endorsement of a claim. The same explanation is rendered on
+the English and Japanese record pages at `#registration-criteria`.
+
+The dataset's `as_of` is its last edit date. An editorial clarification does not
+refresh any record's source-verification date or remove a pending registration.
+
 ## Historical snapshots and follow-ups
 
 A record's title, event date, summary, verification date and claim verdicts describe
