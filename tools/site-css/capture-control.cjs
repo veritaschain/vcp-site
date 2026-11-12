@@ -6,7 +6,7 @@ const path = require('node:path');
 const { chromium } = require('playwright');
 const { manifest, compileTheme, compact, sha256 } = require('./lib.cjs');
 const { openPage, snapshot, settle, waitForImages, paintDocument, captureDocument, comparePixels, pixelSummary,
-  paintTargetState, BASE_BROWSER_ARGS, BASE_PAINT_OPTIONS, CAPTURE_PAINT_OPTIONS } = require('./render-check.cjs');
+  paintTargetState, BASE_BROWSER_ARGS, CAPTURE_BROWSER_ARGS, BASE_PAINT_OPTIONS, CAPTURE_PAINT_OPTIONS } = require('./render-check.cjs');
 
 const MOBILE = Object.freeze({ width: 390, height: 844 });
 const CONTROL_GROUPS = Object.freeze({
@@ -37,8 +37,9 @@ async function rendererControls(man, output, report, entries) {
   // Two fresh contexts and exactly four captures each. These are observations,
   // never a search for a passing frame or a replacement for the full comparator.
   for (const mode of PAINT_MODES) {
+    const browserArgs = mode.name === 'with-both-coalesced' ? CAPTURE_BROWSER_ARGS : BASE_BROWSER_ARGS;
     const browser = await chromium.launch({ executablePath: process.env.CSS_BROWSER_PATH || undefined,
-      headless: true, args: [...BASE_BROWSER_ARGS] });
+      headless: true, args: [...browserArgs] });
     try {
       for (const entry of entries) {
         const { file, viewport, state = 'initial' } = entry;
@@ -79,7 +80,7 @@ async function rendererControls(man, output, report, entries) {
               errors: instance.errors, buffers, states });
           } finally { await instance.context.close(); }
         }
-        const result = { name: mode.name, browser: browser.version(), browserArgs: BASE_BROWSER_ARGS,
+        const result = { name: mode.name, browser: browser.version(), browserArgs,
           paintOptions: mode.options, file, viewport, state,
           contexts: sequences.map(({ buffers, states, ...record }) => record),
           betweenContexts: sequences[0].buffers.map((png, index) => ({
@@ -189,7 +190,8 @@ async function main() {
   const man = manifest();
   const output = path.join(process.env.CSS_EVIDENCE_DIR || '/tmp/vcp-site-css-render', 'capture-controls');
   fs.mkdirSync(output, { recursive: true });
-  const report = { group, browserArgs: BASE_BROWSER_ARGS, expectedRendererFrames: entries.length * PAINT_MODES.length * 2 * 4,
+  const report = { group, browserArgs: BASE_BROWSER_ARGS, candidateBrowserArgs: CAPTURE_BROWSER_ARGS,
+    expectedRendererFrames: entries.length * PAINT_MODES.length * 2 * 4,
     pairs: [], repeatedCaptures: [], rendererControls: [] };
   fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2) + '\n');
   if (group === 'all' || group === 'mobile-clips') await legacyControls(man, output, report);

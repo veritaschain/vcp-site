@@ -1,8 +1,15 @@
-name: CSS backdrop diagnostic
+name: CSS backdrop capture controls
 on:
   pull_request:
     paths:
       - 'tools/site-css/backdrop-control.cjs'
+      - 'tools/site-css/render-check.cjs'
+      - '.github/workflows/css-backdrop-diagnostic.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/site-css/backdrop-control.cjs'
+      - 'tools/site-css/render-check.cjs'
       - '.github/workflows/css-backdrop-diagnostic.yml'
 permissions:
   contents: read
@@ -13,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [baseline, no-partial-raster]
+        mode: [baseline, candidate]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:

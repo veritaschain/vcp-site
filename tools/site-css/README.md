@@ -60,6 +60,16 @@ not public product concepts.
 
 ## Render comparisons
 
+**13 November 2026 capture correction:** the current comparison adds
+`--disable-partial-raster` to the pinned browser's launch arguments. Fixed
+same-CSS controls reproduced both earlier blog failure PNG pairs exactly;
+disabling partial raster removed their differences without altering page CSS
+or the comparator. See the [diagnosis and preserved baseline results](../../maintenance/css-backdrop-capture-2026-11-13/README.md).
+The older observations below remain historical records. The new dedicated
+`backdrop-control.cjs` retains those baseline observations and requires all
+candidate pairs to match at the original base tolerance. Full render, animation,
+wrong-theme and homepage gates remain required at the fix commit.
+
 ```sh
 CSS_BROWSER_PATH=/absolute/path/to/chrome \
 CSS_EVIDENCE_DIR=/tmp/vcp-site-css-render \
@@ -95,7 +105,9 @@ selected by `CSS_CAPTURE_CONTROL_GROUP`: `mobile-clips`, `page-clips`, and
 `scrolled-faq`. Across eight affected cases, five modes compare backdrop-only,
 added clips, added restored-viewport paint, both additions, and both with stop
 coalescing. Two fresh contexts and four frames per mode/case produce **320
-frames**. The final mode uses exactly the regular comparator's preparation.
+frames**. The final mode uses exactly the regular comparator's preparation and
+browser arguments. Earlier modes retain their baseline browser arguments; both
+sets are recorded in the report.
 The mobile group also retains the Chinese VeraSnap reference/compiled and
 same-CSS pairs, original four-frame preparation controls, and a four-frame
 sequence using the candidate preparation.
