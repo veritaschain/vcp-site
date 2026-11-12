@@ -14,7 +14,10 @@ const { ROOT, ASSET, LINK, read, sha256, manifest, compileTheme, compact } = req
 const OUTPUT = process.env.CSS_EVIDENCE_DIR || path.join(os.tmpdir(), 'vcp-site-css-render');
 const ORIGIN = 'https://site.test';
 const BASE_BROWSER_ARGS = Object.freeze(['--no-sandbox', '--hide-scrollbars', '--disable-lcd-text', '--force-color-profile=srgb']);
-const CAPTURE_BROWSER_ARGS = BASE_BROWSER_ARGS;
+// Same-CSS Chrome 156 controls reproduced both failing blog PNG pairs exactly.
+// The partial-raster path produced different rounded backdrop-edge pixels;
+// disabling it removed that difference without changing CSS or pixel thresholds.
+const CAPTURE_BROWSER_ARGS = Object.freeze([...BASE_BROWSER_ARGS, '--disable-partial-raster']);
 const BASE_PAINT_OPTIONS = Object.freeze({ includeOverflowClips: false, paintRestoredViewport: false, coalesceStops: false });
 const CAPTURE_PAINT_OPTIONS = Object.freeze({ includeOverflowClips: true, paintRestoredViewport: true, coalesceStops: true });
 const TYPE = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2' };
