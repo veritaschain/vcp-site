@@ -47,3 +47,14 @@ verified separately during publication. No thresholds or CI tests are changed.
 
 No normative requirement, research implementation, signed data, fixed release,
 K3 input/result or historical test record is edited.
+
+## Public-face observation, 13 November 2026
+
+[`publication-verification.json`](publication-verification.json) records the
+SHA-256 of each manifest path as served by `vap.veritaschain.org` at 14:11 JST
+on 13 November 2026. Five files match this package's `after_sha256`. The other
+six match the `after_sha256` of the later
+[13 November package](../main-ci-news-2026-11-13/README.md), which was built on
+this package's output. The record is a first-party observation of served bytes.
+It does not record who deployed the files, when, or the server-side backup, and
+it is not a layout check.
