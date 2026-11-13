@@ -30,3 +30,12 @@ Publication is a separate operation: compare current bytes, retain the existing
 files and a server-side copy outside `public_html`, apply only this patch, then
 verify served hashes and desktop/mobile layouts. It does not declare publication
 complete merely because this document has been merged.
+
+## Public-face observation, 13 November 2026
+
+[`publication-verification.json`](publication-verification.json) records the
+SHA-256 of each manifest path as served by `vap.veritaschain.org` at 14:11 JST
+on 13 November 2026. All six files match this package's `after_sha256`. The
+record is a first-party observation of served bytes. It does not record who
+deployed the files, when, or the server-side backup, and it is not a layout
+check.
