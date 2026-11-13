@@ -1,5 +1,12 @@
 # VSO (VeritasChain Standards Organization) - About Page
 
+> **Status note — 13 November 2026 (JST).** This file is an internal description
+> of an earlier version of the `/vso/` page. Several items below (for example the
+> "GLOBAL FINANCIAL STANDARDS" badge, the "Global Standard" pillar,
+> "dispute-proof" and the 2025 roadmap phases) no longer appear on that page and
+> are not current VSO claims. The current wording is in `vso/index.html` and its
+> `ja/` and `zh/` versions. This file is excluded from the website build.
+
 **Official VSO landing page explaining the organization's mission, the VeritasChain Protocol (VCP), and its applications**
 
 ---
