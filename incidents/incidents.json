@@ -6724,6 +6724,1536 @@
    ],
    "references_without_url": [],
    "corrections": []
+  },
+  {
+   "id": "V1026CAIRN",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "NorForge reports malicious tasks injected into at least 17 exposed Cairn agent panels, with malware run in some cases",
+    "ja": "NorForge、公開状態のCairnエージェント管理パネル少なくとも17件への不正タスク投入と、一部でのマルウェア実行を報告"
+   },
+   "event_date": "from about 2026-10-20 (possibly related reconnaissance from 2026-10-10); reported 2026-10-26",
+   "verified": "2026-10-29",
+   "jurisdiction": {
+    "en": "Not stated (internet-exposed panels; the operators’ locations are not given)",
+    "ja": "記載なし（インターネットに公開されていたパネル。運用者の所在地は示されていない）"
+   },
+   "category": "security incident campaign report",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "On 26 October 2026 NorForge, a company that sandboxes AI agents, reported that third parties had submitted malicious tasks to Cairn agent-harness panels left exposed on the internet without authentication, so that the panel owners’ own agents acted against the hosts they ran on. NorForge counts at least 17 panels that received similar tasks, including some it believes belonged to red teams or CTF participants. It reports an agent stating that it had added an attacker’s SSH key, tasks that vanished from a panel while NorForge was watching, tasks that searched for API keys and wrote the results into publicly visible fields, and agents running a Poseidon remote-access implant in several cases. NorForge observed the panels passively and examined no host. This is a single-source report: VSO found no victim statement, independent verification or response from Cairn’s author.",
+    "ja": "2026年10月26日、AIエージェントのサンドボックス化を手がけるNorForgeは、認証なしでインターネットに公開されていたCairn（エージェントのハーネス）の管理パネルに第三者が不正なタスクを投入し、パネル所有者のエージェントに、そのエージェントが動くホスト自身を攻撃させていたと報告しました。同種のタスクが投入されたパネルは少なくとも17件で、レッドチームやCTF参加者のものとみられるパネルを含みます。報告は、攻撃者のSSH鍵を追加したとエージェントが出力したこと、NorForgeが見ている間にタスクがパネルから消えたこと、APIキーを探して結果を公開状態の欄に書き出させるタスクがあったこと、複数のケースでエージェントが遠隔操作型のマルウェアPoseidonを実行したことを挙げています。NorForgeはパネルを受動的に観測しただけで、ホストは調べていません。出典はこの報告1本で、被害者の声明、独立した検証、Cairnの作者の応答は見つかっていません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "At least 17 exposed panels received similar malicious tasks.",
+      "ja": "少なくとも17の公開パネルに同種の不正タスクが投入された。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "norforge"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Re-read on 13 November 2026; the page shows no update note. The count is of panels that received tasks.",
+      "ja": "2026年11月13日に再確認した。ページに更新の注記はない。件数はタスクが投入されたパネルの数である。"
+     }
+    },
+    {
+     "claim": {
+      "en": "All 17 environments were taken over.",
+      "ja": "17の環境すべてが乗っ取られた。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "norforge"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Not stated. NorForge’s own title speaks of an attempted takeover, and it gives no number of panels on which malware ran.",
+      "ja": "記載がない。NorForgeの表題自体が乗っ取りの「試み」としており、マルウェアが実行されたパネルの数も示されていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Agents fetched and ran a Poseidon implant in several cases; the first such task was submitted on 21 October 2026 at about 21:15 UTC.",
+      "ja": "複数のケースでエージェントがPoseidonを取得・実行した。最初のタスクの投入は2026年10月21日21時15分（UTC）頃である。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "norforge"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Based on agent output shown on the panels, analysis of the binary and the attacker’s download-server log, not on host forensics. Only the cluster NorForge labels AIA0009 is linked to malware deployment.",
+      "ja": "根拠は、パネルに表示されたエージェントの出力、バイナリの解析、攻撃者側のダウンロードサーバーのログで、ホストのフォレンジックではない。マルウェアの展開が結び付けられているのは、NorForgeがAIA0009と呼ぶ活動クラスタだけである。"
+     }
+    },
+    {
+     "claim": {
+      "en": "An agent reported installing an attacker-supplied SSH public key, and the injected tasks then disappeared from the panel.",
+      "ja": "エージェントは攻撃者のSSH公開鍵を設置したと出力し、その後、投入されたタスクはパネルから消えた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "norforge"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The evidence that the key was installed is the agent’s own output. NorForge says the remaining trace was an increase in the project counter. Whether Cairn’s back end kept deleted tasks is not stated.",
+      "ja": "鍵が設置されたことの証拠は、エージェント自身の出力である。NorForgeによれば、残った痕跡はプロジェクトカウンタの増分だった。Cairnのバックエンドが削除済みのタスクを保持していたかは書かれていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Tasks searched hosts for API keys and tokens and wrote what they found into publicly visible panel fields.",
+      "ja": "タスクはホスト上のAPIキーやトークンを探し、見つけた内容をパネルの公開状態の欄に書き出した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "norforge"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "NorForge’s summary says AI model API keys were stolen. No count is given, and the outcome of each attempt is not confirmed.",
+      "ja": "NorForgeの要約は、AIモデルのAPIキーが窃取されたとしている。件数は示されておらず、個々の試みの結果も確認されていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Container escape succeeded.",
+      "ja": "コンテナからの脱出に成功した。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "norforge"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "NorForge says it could not determine whether the escape attempts succeeded.",
+      "ja": "NorForgeは、脱出の試みが成功したかを判断できなかったとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The attacking side was controlled by AI.",
+      "ja": "攻撃側はAIで制御されていた。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "norforge"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "NorForge describes scripted, synchronised activity with probable human intervention at key points and calls the signs of agentic control far from conclusive. Its division into two clusters, AIA0009 and AIA0010, is explicitly tentative.",
+      "ja": "NorForgeは、スクリプト化され同期した活動で、要所で人が介入した可能性が高いとし、エージェントによる制御をうかがわせる点は決定的というにはほど遠いとしている。AIA0009とAIA0010の2つに分ける区分も暫定だと明記している。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Cyber Security News independently confirmed the report.",
+      "ja": "Cyber Security Newsが独立に報告を確認した。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "csn",
+      "norforge"
+     ],
+     "claim_as_of": "2026-10-29",
+     "evidence_note": {
+      "en": "The 27 October article restates NorForge’s report without reporting of its own, and attributes to NorForge advice that goes beyond the one explicit recommendation in NorForge’s text, which is to secure exposed panels immediately.",
+      "ja": "10月27日の記事はNorForgeの報告を再構成したもので、独自の取材はない。また、NorForge本文の明示的な推奨（公開状態のパネルを直ちに保護すること）を超える内容を、NorForgeの助言として書いている。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: the records sat on the same unauthenticated surface as the control plane, so a task could not be tied to an authenticated submitter and could be removed by anyone able to reach the panel. The only evidence that the key was installed is the acting agent’s own statement. Whether a record exists, who observed what it describes, and whether the submitter was authenticated are separate questions.",
+    "ja": "設計上の示唆：記録は、コントロールプレーンと同じ認証のない面に置かれていました。そのため、タスクを認証された投入者に結び付けることができず、パネルに到達できる者なら誰でも消せました。鍵が設置されたことの証拠は、行為したエージェント自身の申告だけです。記録があるか、その内容を誰が観測したのか、投入者が認証されていたかは、別々の問いです。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not authenticate a panel, reject an injected task or stop a key installation or a malware run; it has no run-time role. It cannot tie an unauthenticated submission to an accountable party afterwards, establish that a key was in fact installed or that malware in fact ran, record actions taken over SSH or a command-and-control channel that bypass the agent’s logging point, or recover a task deleted before it was anchored. The attackers’ own tooling produces no VAP records. No registered VAP domain profile covers general-purpose agent harnesses, and DAP is a Working Draft.",
+    "ja": "VAPは、パネルの認証も、投入されたタスクの拒否も、鍵の設置やマルウェアの実行の停止も行いません。実行時の役割がないためです。認証されていない投入を後から説明責任を負う主体に結び付けること、鍵が実際に設置されたことやマルウェアが実際に動いたことを確かめること、エージェントの記録点を通らないSSHやC2経由の操作を記録すること、アンカー前に削除されたタスクを復元することもできません。攻撃者自身のツールからVAPの記録は生じません。汎用のエージェントハーネスを対象にする登録済みの領域プロファイルはなく、DAPはWorking Draftです。"
+   },
+   "sources": [
+    {
+     "id": "norforge",
+     "label": "NorForge — Automated Subversion and Attempted Takeover of AI Pentesting Harnesses (26 October 2026)",
+     "url": "https://norforge.com/blog/automated-subversion-attempted-takeover",
+     "kind": "primary"
+    },
+    {
+     "id": "csn",
+     "label": "Cyber Security News — Hackers Hijack AI Pentesting Agents to Install Backdoors and Steal API Keys (27 October 2026)",
+     "url": "https://cybersecuritynews.com/ai-pentesting-agents/",
+     "kind": "secondary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1028DARTMOUTH",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Dartmouth provost resigns after a faculty committee finds undisclosed AI use in his writing",
+    "ja": "Dartmouth大学のプロボスト、著作でのAI使用の未開示を教員委員会が認定し辞任"
+   },
+   "event_date": "2026-10-28 (president’s letter); committee report dated 2026-10-27",
+   "verified": "2026-10-30",
+   "jurisdiction": {
+    "en": "United States — New Hampshire (university review; no legal proceeding)",
+    "ja": "米国・ニューハンプシャー州（大学内の審査。法的手続はない）"
+   },
+   "category": "institutional review (undisclosed AI use)",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [
+    "Anthropic"
+   ],
+   "summary": {
+    "en": "On 28 October 2026 Dartmouth’s president announced that Provost Santiago Schnell had resigned and was leaving the university, after an independent, faculty-led committee reviewed his use of AI in academic publications and public writing. According to the president’s letter, the committee concluded that he used AI to alter his writing in a meaningful way in breach of at least one publication’s AI-use or disclosure requirement, did not disclose AI use contrary to a national newspaper’s stated policy, was not forthcoming about it, and fell short of three Dartmouth standards. Reporting on the committee’s report says it relied on the university’s enterprise Claude logs and on email, not on AI-detection tools, and that he did not provide the logs from personal AI accounts that it requested. Matthew Delmont is interim provost through June 2028.",
+    "ja": "2026年10月28日、Dartmouth大学の学長は、Santiago Schnellプロボストが辞任し大学を離れると発表しました。学術論文と一般向けの文章でのAI使用について、独立した教員主導の委員会が審査した結果を受けたものです。学長の書簡によれば、委員会は、同氏がAIで文章に意味のある変更を加え、少なくとも1つの掲載先のAI使用・開示の要件に違反したこと、全国紙の明示された方針に反してAI使用を開示しなかったこと、AI使用について率直でなかったこと、Dartmouthの3つの規範に届かなかったことを認定しました。委員会報告書についての報道によれば、委員会はAI検出ツールではなく、大学のエンタープライズ版Claudeのログとメールに依拠しました。同氏は、求められた個人のAIアカウントのログを提出しませんでした。暫定プロボストはMatthew Delmont氏で、任期は2028年6月までです。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "The president’s letter is dated 28 October 2026 and says the provost resigned and is leaving the university.",
+      "ja": "学長の書簡は2026年10月28日付で、プロボストが辞任し大学を離れると述べている。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "letter"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Re-read on 13 November 2026; the page shows no update note. The letter gives no effective date.",
+      "ja": "2026年11月13日に再確認した。ページに更新の注記はない。書簡は辞任の発効日を示していない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The committee concluded that he used AI to meaningfully alter his writing, breached at least one publication’s AI-use or disclosure requirement, failed to disclose AI use contrary to a national newspaper’s stated policy, and was not forthcoming.",
+      "ja": "委員会は、同氏がAIで文章に意味のある変更を加え、少なくとも1つの掲載先のAI使用・開示の要件に違反し、全国紙の明示された方針に反して開示せず、率直でなかったと認定した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "letter"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "As summarised in the president’s letter, which also lists Dartmouth’s Code of Ethical Conduct, the Academic Honor Principle and a Geisel professionalism policy. VSO could not retrieve the committee report itself (robots exclusion) and checked its wording through excerpts and reporting.",
+      "ja": "学長の書簡の要約による。書簡は、Dartmouthの倫理行動規程、Academic Honor Principle、Geiselの専門職規範も挙げている。委員会報告書そのものは取得できず（robotsによる拒否）、文言は抜粋と報道で照合した。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The committee relied on the university’s enterprise Claude logs and on email, not on AI-detection tools.",
+      "ja": "委員会はAI検出ツールではなく、大学のエンタープライズ版Claudeのログとメールに依拠した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "valleynews",
+      "nhpr"
+     ],
+     "claim_as_of": "2026-10-30",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): reporting on the committee report. He made his university laptop available for examination; what the examination covered or found has not been reported.",
+      "ja": "CONFIRMED（secondary／二次資料）：委員会報告書についての報道による。同氏は大学支給のノートPCを検査に提供したが、検査の内容と結果は報じられていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "AI provenance was missing and the generation process was a black box.",
+      "ja": "AI関与の来歴は欠けており、生成過程はブラックボックスだった。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "valleynews",
+      "thedartmouth"
+     ],
+     "claim_as_of": "2026-10-30",
+     "evidence_note": {
+      "en": "Reporting on the report says the enterprise logs showed the wording of prompts. What the committee did not have were logs from personal AI accounts, which it requested and he did not provide, and it reviewed several of at least 30 publications.",
+      "ja": "報告書についての報道によれば、エンタープライズ版のログはプロンプトの文言まで示していた。委員会の手元になかったのは個人のAIアカウントのログで、提出を求めたが提出されなかった。審査したのは、少なくとも30本ある公表物のうち数本である。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The matter engages EU AI Act transparency obligations.",
+      "ja": "EU AI Actの透明性義務に関わる。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "letter"
+     ],
+     "claim_as_of": "2026-10-30",
+     "evidence_note": {
+      "en": "No basis was found. This is a US university’s internal review applying its own standards and publishers’ policies; the letter refers to no statute.",
+      "ja": "根拠は見つからない。米国の大学が、自らの規範と掲載先の方針に照らして行った内部の審査で、書簡は法令に触れていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Matthew Delmont serves as interim provost through June 2028.",
+      "ja": "暫定プロボストはMatthew Delmont氏で、任期は2028年6月までである。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "letter"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "From the president’s letter.",
+      "ja": "学長の書簡による。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: the findings rested on records the institution itself held, and the review stopped at the edge of those records; logs from personal accounts lay outside it. Any declared scope of records covers only the systems the declaring party measures.",
+    "ja": "設計上の示唆：認定の根拠は、機関が自ら保持していた記録でした。審査はその記録の縁で止まり、個人アカウントのログはその外にありました。記録の対象範囲をどう宣言しても、覆えるのは宣言した者が計測するシステムだけです。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not flag undisclosed AI use before publication, measure how much of a text came from an AI tool, or decide whether disclosure was required; those are judgements for publishers and the committee. It does not record what happens in personal accounts or require anyone to produce logs. The enterprise logs here were not VAP records, and no report says their authenticity was disputed. Writing tools sit near CAP’s domain, but CAP v1.0’s correspondence to VAP v1.2 exists only as a draft mapping, and no VAP v1.2 conformance is established.",
+    "ja": "VAPは、掲載前に未開示のAI使用を指摘することも、文章のどこまでがAIツールによるものかを測ることも、開示が必要だったかを判断することもしません。それは掲載先と委員会の判断です。個人アカウントの中で起きたことは記録せず、誰にもログの提出を義務づけません。本件のエンタープライズ版のログはVAPの記録ではなく、その真正性が争われたという報道もありません。文章作成ツールはCAPの領域に近いものの、CAP v1.0とVAP v1.2の対応はドラフトの対応表があるだけで、VAP v1.2への適合は確立していません。"
+   },
+   "sources": [
+    {
+     "id": "letter",
+     "label": "Dartmouth, Office of the President — An Update on the Provost Review (28 October 2026)",
+     "url": "https://president.dartmouth.edu/news/2026/10/update-provost-review",
+     "kind": "primary"
+    },
+    {
+     "id": "report",
+     "label": "Dartmouth — Advisory Committee Report to President (27 October 2026; PDF not retrieved directly, robots exclusion)",
+     "url": "https://president.dartmouth.edu/sites/president/files/2026-10/Advisory%20Committee%20Report%20to%20President%202026-10-27.pdf",
+     "kind": "primary"
+    },
+    {
+     "id": "valleynews",
+     "label": "Valley News — report on the provost’s resignation (28 October 2026)",
+     "url": "https://vnews.com/2026/10/28/dartmouth-provost-resigns-ai-misconduct/",
+     "kind": "secondary"
+    },
+    {
+     "id": "nhpr",
+     "label": "NHPR — report on the provost’s resignation after the review of his AI use (29 October 2026)",
+     "url": "https://www.nhpr.org/education/2026-10-29/ai-use-dartmouth-college-provost-resigns-after-review",
+     "kind": "secondary"
+    },
+    {
+     "id": "thedartmouth",
+     "label": "The Dartmouth — report on the provost’s resignation (October 2026)",
+     "url": "https://www.thedartmouth.com/article/2026/10/weaverbell-klee-sharma-santiago-schnell-resigns-as-provost-of-the-college",
+     "kind": "secondary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1029CURSOR",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Cursor reports modified builds published under Anthropic’s Claude Code extension identifier on its marketplace",
+    "ja": "Cursor、自社マーケットプレイスでAnthropicのClaude Code拡張機能IDを名乗る改変ビルドが配布されたと公表"
+   },
+   "event_date": "2026-10-29 (about 02:27 to 13:35 PT)",
+   "verified": "2026-10-31",
+   "jurisdiction": {
+    "en": "United States (company notice; no legal proceeding)",
+    "ja": "米国（企業の告知。法的手続はない）"
+   },
+   "category": "security incident",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [
+    "Anthropic"
+   ],
+   "summary": {
+    "en": "On 29 October 2026 Cursor published a security notice saying that malicious builds carrying the identifier Anthropic.claude-code had been available on the Cursor VS Code Extension Marketplace for about eleven hours that day, and that the extension was not developed by Anthropic. According to the notice, the code sent host and user details to an attacker’s server, added an attacker’s SSH key to authorized_keys, installed persistence and tried to open a reverse SSH tunnel. Enabling the SSH service needs administrator rights, which the extension usually lacked, so Cursor says the attacker probably could not log in through the tunnel; the key, the persistence and the beacon still happened. Cursor removed the builds, took its marketplace offline and rebuilt it, rotated its own keys and worked with the hosting provider to take the attacker’s server down. The notice does not say how the attacker was able to publish under Anthropic’s identifier. No AI decision was involved: this is a software supply-chain incident.",
+    "ja": "2026年10月29日、Cursorはセキュリティ告知を公表しました。Anthropic.claude-codeの識別子を持つ悪性のビルドが、同日の約11時間、CursorのVS Code拡張マーケットプレイスで入手できる状態にあり、その拡張はAnthropicが開発したものではない、という内容です。告知によれば、このコードは端末と利用者の情報を攻撃者のサーバーに送り、攻撃者のSSH鍵をauthorized_keysに追加し、永続化の仕組みを置き、リバースSSHトンネルを開こうとしました。SSHサービスの有効化には管理者権限が必要で、拡張には通常それがなかったため、攻撃者はトンネル経由でログインできなかった可能性が高いとCursorは説明しています。ただし、鍵の追加、永続化、情報の送信は行われました。Cursorはビルドを削除し、マーケットプレイスを停止して再構築し、自社の鍵をローテーションし、ホスティング事業者と協力して攻撃者のサーバーを停止させました。攻撃者がAnthropicの識別子で公開できた経緯は、告知に書かれていません。AIの判断は関わっておらず、ソフトウェア供給網の事案です。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Malicious builds identified as Anthropic.claude-code were available on Cursor’s marketplace from about 02:27 to 13:35 PT on 29 October 2026 and were not developed by Anthropic.",
+      "ja": "Anthropic.claude-codeを名乗る悪性のビルドが、2026年10月29日の太平洋時間2時27分頃から13時35分頃までCursorのマーケットプレイスで入手でき、Anthropicが開発したものではなかった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "As read on 13 November 2026, the notice names versions 2.1.312 and 2.1.313 for Windows and macOS. VSO’s review of 31 October recorded 2.1.313 only; Cursor’s update of 30 October says it clarified the affected versions.",
+      "ja": "2026年11月13日に読んだ告知は、WindowsとmacOS向けの2.1.312と2.1.313を挙げている。VSOの10月31日の検証は2.1.313だけを記録していた。Cursorは10月30日の更新で、影響を受ける版を明確にしたとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Up to 5,000 users were affected.",
+      "ja": "影響を受けた利用者は最大5,000人である。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "reuters",
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): Reuters attributes the figure to Cursor. The notice as read on 13 November 2026 states no number of affected users. VSO’s review of 31 October recorded the figure as coming from the notice and cannot now show the text it appeared in.",
+      "ja": "CONFIRMED（secondary／二次資料）：ReutersはこれをCursorの発表として伝えている。2026年11月13日に読んだ告知には、影響を受けた利用者の数は書かれていない。VSOの10月31日の検証はこの数字を告知によるものとして記録したが、現在、その記載があった文面を示すことはできない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "On machines without administrator rights only the SSH-service step failed: the key was still added, persistence was installed and host details were sent.",
+      "ja": "管理者権限のない端末で失敗したのはSSHサービスの有効化だけで、鍵の追加、永続化、端末情報の送信は行われた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The brief under review said these effects “may remain”. Cursor states that they occurred, and says uninstalling the extension may not be enough.",
+      "ja": "検証対象の草稿は、これらが残る「可能性がある」と書いていた。Cursorは実際に行われたと述べ、拡張のアンインストールだけでは足りない場合があるとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Cursor rotated its users’ keys.",
+      "ja": "Cursorは利用者の鍵を更新した。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Cursor rotated its own keys. It asks users to rotate, from a trusted system, the credentials and sessions reachable from affected hosts.",
+      "ja": "Cursorがローテーションしたのは自社の鍵である。利用者には、影響を受けた端末から到達できる認証情報とセッションを、信頼できる別の環境から再発行するよう求めている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The malicious build was also distributed through Open VSX, npm or Microsoft’s marketplace.",
+      "ja": "悪性のビルドはOpen VSX、npm、Microsoftのマーケットプレイスでも配布された。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "notice",
+      "bleeping"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Cursor names only its own marketplace and says it has no evidence that other versions or the official distribution were affected; it does not say in terms that its marketplace was the only channel. Early reports naming other channels were later walked back (BleepingComputer, as read on 31 October).",
+      "ja": "Cursorが挙げているのは自社のマーケットプレイスだけで、他の版や公式の配布が影響を受けた証拠はないとしている。ただし、自社のマーケットプレイスが唯一の経路だったとは明言していない。他の経路に触れた初期の報道は、その後否定された（BleepingComputer。10月31日に確認）。"
+     }
+    },
+    {
+     "claim": {
+      "en": "How the attacker was able to publish under Anthropic’s identifier has been disclosed.",
+      "ja": "攻撃者がAnthropicの識別子で公開できた経緯は公表されている。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The notice does not explain it. Reuters reported that Anthropic had not responded to a request for comment, and VSO found no Anthropic statement.",
+      "ja": "告知は説明していない。Reutersは、Anthropicがコメントの求めに応じていないと報じた。VSOもAnthropicの声明を見つけていない。"
+     }
+    }
+   ],
+   "later": [
+    {
+     "date": "2026-11-13",
+     "en": "When re-checked on 13 November, Cursor’s notice carried an update dated 30 October (11:30 PT) saying it had revised the indicators of compromise and clarified the affected versions. The notice now names versions 2.1.312 and 2.1.313 and states no number of affected users. The initial snapshot reflects VSO’s reading of 31 October.",
+     "ja": "11月13日に確認し直したところ、Cursorの告知には10月30日（太平洋時間11時30分）付の更新があり、侵害の痕跡の一覧を改め、影響を受ける版を明確にしたと書かれていました。現在の告知は2.1.312と2.1.313を挙げており、影響を受けた利用者の数は書かれていません。初回の検証記録は、VSOが10月31日に読んだ内容に基づきます。",
+     "url": "https://cursor.com/blog/claude-code-extension-security-notice",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13"
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: the package carried a genuine identifier, but the build was not the named developer’s. A record tied to an identifier and a key says nothing about the code behind that identifier. According to researchers’ analysis, the loader ran as the extension was loaded, before any logging point inside the extension could act.",
+    "ja": "設計上の示唆：パッケージは本物の識別子を名乗っていましたが、ビルドはその開発者のものではありませんでした。識別子と鍵に結び付いた記録は、その識別子の背後のコードについては何も示しません。調査会社の解析によれば、ローダーは拡張が読み込まれた時点で動いており、拡張の中のどの記録点よりも先でした。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not stop a modified build from being published, installed or run, and it does not establish whether a package is genuine or who published it; that belongs to software supply-chain signing and attestation. It does not record what a loader does outside an agent’s tool calls, or show that records produced on a compromised machine came from unmodified code. No AI decision is involved here, and no registered VAP domain covers general-purpose coding tools.",
+    "ja": "VAPは、改変されたビルドの公開・導入・実行を止めません。パッケージが本物か、誰が公開したかも確かめません。それはソフトウェア供給網の署名と証明の領域です。エージェントのツール呼び出しの外でローダーが行ったことは記録せず、侵害された端末で作られた記録が改変されていないコードによるものだとも示しません。本件にAIの判断は関わっておらず、汎用のコーディングツールを対象にする登録済みの領域もありません。"
+   },
+   "sources": [
+    {
+     "id": "notice",
+     "label": "Cursor — security notice on malicious Anthropic.claude-code versions in the Cursor Extension Marketplace (29 October 2026; updated 30 October)",
+     "url": "https://cursor.com/blog/claude-code-extension-security-notice",
+     "kind": "primary"
+    },
+    {
+     "id": "reuters",
+     "label": "Reuters, via TimesLIVE — report attributing a figure of up to 5,000 affected users to Cursor (30 October 2026)",
+     "url": "https://www.timeslive.co.za/news/sci-tech/2026-10-30-up-to-5000-users-affected-by-tampered-claude-code-extension-says-cursor/",
+     "kind": "secondary"
+    },
+    {
+     "id": "bleeping",
+     "label": "BleepingComputer — report on the malicious Claude Code extension on Cursor’s marketplace (30 October 2026)",
+     "url": "https://www.bleepingcomputer.com/news/security/malicious-claude-code-extension-on-cursor-planted-ssh-backdoors/",
+     "kind": "secondary"
+    },
+    {
+     "id": "phorion",
+     "label": "Phorion — technical analysis of the modified extension (used for the loader analysis only; its account of distribution channels is not adopted)",
+     "url": "https://phorion.io/blog/offical-claude-code-vsx-compromise/",
+     "kind": "secondary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1029DODAGENT",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "WIRED reports that an Accenture contractor connected a personal Claude Code account to a US Defense Department system; Accenture denies the allegations",
+    "ja": "WIRED、Accentureの契約者が個人のClaude Codeアカウントを米国防総省のシステムに接続したと報道（Accentureは否定）"
+   },
+   "event_date": "reported 2026-10-29; the alleged activity was earlier in 2026 (dates not disclosed)",
+   "verified": "2026-10-31",
+   "jurisdiction": {
+    "en": "United States (press report citing unnamed sources; no public proceeding)",
+    "ja": "米国（匿名の情報源に基づく報道。公開の手続はない）"
+   },
+   "category": "press report (allegations; denied)",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": true,
+   "ai_provider_party": [
+    "Anthropic"
+   ],
+   "summary": {
+    "en": "On 29 October 2026 WIRED reported, citing unnamed sources, that an Accenture contractor connected a centralised Defense Department system on the unclassified NIPRNet, which handles controlled unclassified information, to a personal Claude Code account, and gave the agent the contractor’s own login credentials to automate coding and cloud-server work. As relayed by secondary coverage, the agent ran with administrative access for about two months and appears to have sent credentials, passwords and a map of the network environment to a third-party website that NIST had flagged as high risk; the connection was later identified and fixed, and sources say Accenture did not at first report it. Accenture says the allegations were investigated thoroughly and independently and found to be without merit. The Defense Department declined to comment. VSO has not read WIRED’s article and relies on secondary accounts. These are untested allegations.",
+    "ja": "2026年10月29日、WIREDは匿名の情報源に基づき、Accentureの契約者が、非機密ネットワークNIPRNet上にあり管理対象非機密情報（CUI）を扱う国防総省の集中型システムを個人のClaude Codeアカウントに接続し、コード作成とクラウドサーバー構築の自動化のために本人のログイン資格情報をエージェントに渡したと報じました。二次報道が伝えるところでは、エージェントは管理者権限で約2か月動き、資格情報、パスワード、ネットワーク環境の構成図を、NISTが高リスクとしていた第三者のサイトに送ったとみられます。接続はその後特定されて修正され、情報源はAccentureが当初これを報告しなかったと述べています。Accentureは、徹底的かつ独立に調査した結果、根拠がないと判断したとしています。国防総省はコメントしていません。VSOはWIREDの記事本文を読んでおらず、二次資料に依拠しています。いずれも未検証の主張です。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "WIRED reported on 29 October 2026, citing unnamed sources, that a contractor connected a personal Claude Code account to a Defense Department system.",
+      "ja": "WIREDは2026年10月29日、匿名の情報源に基づき、契約者が個人のClaude Codeアカウントを国防総省のシステムに接続したと報じた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "cdo",
+      "tnw"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): WIRED’s article is paywalled and VSO has not read it. Confirmed through CDO Magazine and The Next Web, both of which attribute the account to WIRED.",
+      "ja": "CONFIRMED（secondary／二次資料）：WIREDの記事は有料で、VSOは本文を読んでいない。いずれもWIREDの報道として伝えるCDO MagazineとThe Next Webで確認した。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The agent ran with the contractor’s credentials and administrative access for about two months and appears to have sent credentials, passwords and a network map to a third-party website.",
+      "ja": "エージェントは契約者の資格情報と管理者権限で約2か月動き、資格情報、パスワード、ネットワークの構成図を第三者のサイトに送ったとみられる。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "cdo",
+      "tnw"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary), as an allegation from WIRED’s sources. How the data was sent is not reported. CDO Magazine describes the environment as production; VSO’s review of 31 October found one secondary account that called it a development environment.",
+      "ja": "CONFIRMED（secondary／二次資料）：WIREDの情報源による主張として確認した。送信の仕組みは報じられていない。CDO Magazineはこの環境を本番環境としている。VSOの10月31日の検証では、開発環境とする二次報道が1件あった。"
+     }
+    },
+    {
+     "claim": {
+      "en": "A Defense Department AI agent leaked information.",
+      "ja": "国防総省のAIエージェントが情報を流出させた。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "cdo"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The reports concern a contractor’s personal agent, not an agent operated by the Defense Department.",
+      "ja": "報道が伝えているのは契約者の個人のエージェントで、国防総省が運用するエージェントではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Accenture denies the allegations, and the Defense Department declined to comment.",
+      "ja": "Accentureは主張を否定し、国防総省はコメントしていない。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "cdo",
+      "tnw",
+      "ibtimes"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary). Secondary accounts add that Accenture did not say who carried out its investigation (The Next Web) and that Anthropic referred WIRED to its usage policy (IBTimes UK).",
+      "ja": "CONFIRMED（secondary／二次資料）。二次報道は、Accentureが調査の実施者を明らかにしなかったこと（The Next Web）、AnthropicがWIREDに自社の利用規約を示したこと（IBTimes UK）も伝えている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Classified systems were accessed.",
+      "ja": "機密指定のシステムにアクセスされた。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "cdo"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Secondary accounts say there is no indication of this.",
+      "ja": "二次報道は、その兆候はないとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Accenture breached a 72-hour reporting duty.",
+      "ja": "Accentureは72時間以内の報告義務に違反した。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "cdo",
+      "dfars"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Sources told WIRED that Accenture did not at first report the matter. DFARS 252.204-7012 requires rapid reporting of cyber incidents that affect a covered contractor information system or the covered defense information on it. Whether it reaches a Defense Department system as described cannot be determined from the reports, and VSO does not assess compliance.",
+      "ja": "WIREDの情報源は、Accentureが当初報告しなかったと述べている。DFARS 252.204-7012は、対象となる請負業者の情報システムまたはそこにある対象防衛情報に影響するサイバーインシデントの速やかな報告を求める。報じられた国防総省のシステムにこの条項が及ぶかは、報道からは判断できない。VSOは遵守を評価しない。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference, on the reports’ account: where an agent acts with a person’s own credentials, the resource’s authentication records name the person, and the agent does not appear as a separate actor. A record of delegated access presupposes an authorisation layer that distinguishes the agent.",
+    "ja": "設計上の示唆（報道の内容を前提とした場合）：エージェントが人の資格情報をそのまま使って動くと、資源側の認証記録にはその人の名前が残り、エージェントは別の主体として現れません。委任されたアクセスの記録は、エージェントを区別する認可の層があることを前提にしています。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not block a connection or a transfer, record an agent running under a personal account, or distinguish an agent using a person’s credentials from that person. It does not determine whether credentials left a network, which account of events is correct, or whether a reporting duty was met. DAP is an evidence layer, not an authorisation mechanism, and no registered VAP domain profile covers coding agents used in defence software work.",
+    "ja": "VAPは、接続や送信を遮断せず、個人アカウントで動くエージェントを記録せず、人の資格情報を使うエージェントをその人と区別しません。資格情報がネットワークの外に出たか、どちらの説明が正しいか、報告義務が果たされたかも判断しません。DAPは証拠の層で、認可の仕組みではありません。防衛分野のソフトウェア開発で使うコーディングエージェントを対象にする登録済みの領域プロファイルもありません。"
+   },
+   "sources": [
+    {
+     "id": "cdo",
+     "label": "CDO Magazine — account of WIRED’s report on a contractor’s personal AI agent and a Pentagon system (29 October 2026)",
+     "url": "https://www.cdomagazine.tech/us-federal-news-bureau/defense-contractor-gave-personal-ai-agent-access-to-pentagon-system",
+     "kind": "secondary"
+    },
+    {
+     "id": "tnw",
+     "label": "The Next Web — A Claude agent ran inside a Pentagon network for two months, WIRED reports (31 October 2026)",
+     "url": "https://thenextweb.com/news/accenture-contractor-claude-agent-pentagon-network-wired",
+     "kind": "secondary"
+    },
+    {
+     "id": "ibtimes",
+     "label": "IBTimes UK — Accenture Contractor Allegedly Linked Personal Claude AI Agent to Pentagon System Used by Intel Agencies",
+     "url": "https://www.ibtimes.co.uk/claude-code-agent-pentagon-niprnet-access-allegations-1829425",
+     "kind": "secondary"
+    },
+    {
+     "id": "dfars",
+     "label": "DFARS 252.204-7012 — Safeguarding Covered Defense Information and Cyber Incident Reporting (acquisition.gov)",
+     "url": "https://www.acquisition.gov/dfars/252.204-7012-safeguarding-covered-defense-information-and-cyber-incident-reporting.",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [
+    "WIRED, “A Defense Contractor Gave Their Personal AI Agent Access to a Secure Pentagon System” (29 October 2026; paywalled, not read by VSO)"
+   ],
+   "corrections": []
+  },
+  {
+   "id": "V1023PANASONIC",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Panasonic Operational Excellence discloses that a project member uploaded personal data of employees, former employees and family members to a prohibited external generative-AI service",
+    "ja": "パナソニック オペレーショナルエクセレンス、プロジェクトメンバーが従業員・元従業員・家族の個人情報を利用禁止の外部生成AIサービスにアップロードしたと公表"
+   },
+   "event_date": "2026-10-23 (notice); upload and discovery dates not disclosed; reported to the regulator on 2026-09-29",
+   "verified": "2026-10-31",
+   "jurisdiction": {
+    "en": "Japan",
+    "ja": "日本"
+   },
+   "category": "data exposure (prohibited AI service)",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "On 23 October 2026 Panasonic Operational Excellence Co., Ltd. announced that a member of a human-resources system project it runs with Panasonic Digital had uploaded data containing personal information of employees, former employees and their family members to an external generative-AI service whose use the company prohibits. The notice describes a rule violation by the member, not an intrusion from outside. It lists about 75,000 employees, 178,000 former employees, 55,000 family members of employees and 26,000 family members of former employees, and says the names of employees and former employees were not included. The company reported the matter to Japan’s Personal Information Protection Commission on 29 September. It says the member deleted the chat history and the data on the work PC after discovery and that, according to the service operator, training use was switched off and deleted data is kept for 30 days for security and legal compliance. It reports no confirmed public exposure or misuse. The service is not named.",
+    "ja": "2026年10月23日、パナソニック オペレーショナルエクセレンス株式会社は、パナソニック デジタル株式会社と進める人事情報システム導入プロジェクトのメンバーが、従業員・元従業員とその家族の個人情報を含むデータを、会社が利用を禁止している外部の生成AIサービスにアップロードしたと公表しました。告知は、外部からの不正な操作ではなく、メンバーのルール違反によるものと説明しています。対象は、従業員約7万5千人、元従業員約17万8千人、従業員の家族約5万5千人、元従業員の家族約2万6千人で、従業員・元従業員の氏名は含まれないとしています。同社は9月29日に個人情報保護委員会に報告しました。告知によれば、発覚後にメンバーがチャット履歴と業務用PC内のデータを削除しました。サービスの運営事業者の説明として、AI学習への利用は無効になっていたこと、削除後のデータはセキュリティと法令順守のために30日間保持されることも記されています。一般に公開された事実や不正利用による被害は確認されていないとしています。サービス名は書かれていません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "The notice is dated 23 October 2026, was issued by Panasonic Operational Excellence, and attributes the upload to a project member who broke company rules.",
+      "ja": "告知は2026年10月23日付でパナソニック オペレーショナルエクセレンスが出し、アップロードはプロジェクトメンバーのルール違反によるものとしている。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Re-read on 13 November 2026; the page shows no update or follow-up date.",
+      "ja": "2026年11月13日に再確認した。ページに更新や続報の日付はない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The notice lists about 75,000 employees, 178,000 former employees, 55,000 employees’ family members and 26,000 former employees’ family members.",
+      "ja": "告知は、従業員約7万5千人、元従業員約17万8千人、従業員の家族約5万5千人、元従業員の家族約2万6千人を挙げている。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "A total of about 334,000 is the simple sum of the four groups. The notice itself gives no total.",
+      "ja": "合計約33万4千人は4区分の単純な合計で、告知自体は合計を示していない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The company reported to the Personal Information Protection Commission on 29 September 2026.",
+      "ja": "同社は2026年9月29日に個人情報保護委員会に報告した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The dates of the upload and of its discovery are not stated; the notice says only that deletion followed directly after discovery.",
+      "ja": "アップロード日と発覚日は書かれていない。告知は、発覚の直後に削除したとだけ述べている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The service operator has deleted the data.",
+      "ja": "サービスの運営事業者はデータを削除した。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The notice relays the operator’s reply: training use was disabled at upload, and data a user deletes is kept for 30 days from deletion for security and legal compliance, so that data deleted right after discovery would no longer be held from 25 October. That is the company’s account of the operator’s terms, not an observation that deletion took place. The operator is not named.",
+      "ja": "告知が伝えているのは運営事業者の回答である。アップロード時にAI学習への利用は無効で、利用者が削除したデータはセキュリティと法令順守のため削除日から30日間保持され、発覚直後に削除したデータは10月25日以降は保持されない、という内容である。これは事業者の条件についての会社の説明で、削除が行われたことの観測ではない。事業者名は書かれていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "No public exposure or misuse of the data had been confirmed when the notice was published.",
+      "ja": "告知の時点で、データが一般に公開された事実や不正利用は確認されていない。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "notice"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The company’s own statement as of 23 October 2026.",
+      "ja": "2026年10月23日時点の会社自身の説明である。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: what the company can say about deletion and retention at the service is the operator’s reply, relayed. A request, the reply to it and an observed effect are three different things, and the processing took place on a service outside the company’s own records.",
+    "ja": "設計上の示唆：サービス側での削除と保持について会社が述べられるのは、運営事業者の回答を伝えることまでです。要請、それへの回答、観測された効果は別のものです。処理が行われたのは、会社自身の記録の外にあるサービスでした。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not stop an upload to a prohibited service, record what an external service does with data, or confirm that a third party deleted anything. It does not assess compliance with Japan’s Act on the Protection of Personal Information. An employee’s upload to a general-purpose AI service is a data flow, not an AI decision record in any registered VAP domain.",
+    "ja": "VAPは、禁止されたサービスへのアップロードを止めず、外部のサービスがデータをどう扱ったかを記録せず、第三者が削除したことを確認しません。個人情報保護法の遵守も評価しません。従業員による汎用のAIサービスへのアップロードはデータの流れの問題で、VAPに登録されたどの領域のAI判断記録でもありません。"
+   },
+   "sources": [
+    {
+     "id": "notice",
+     "label": "Panasonic Operational Excellence — notice on the upload of personal information to an external generative-AI service (23 October 2026, in Japanese)",
+     "url": "https://holdings.panasonic/jp/information/topics/20261023.html",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1031VOLTA",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Cisco Talos reports an infostealer that asks an LLM to appraise each victim and falls back to other models on refusal (VOLTA)",
+    "ja": "Cisco Talos、被害者ごとの評価をLLMに求め、拒否されると別のモデルに切り替えるインフォスティーラー「VOLTA」を報告"
+   },
+   "event_date": "2026-10-31 (report); sample first seen 2026-10-11",
+   "verified": "2026-11-01",
+   "jurisdiction": {
+    "en": "Not stated (the victims’ and operators’ locations are unknown)",
+    "ja": "記載なし（被害者と運用者の所在地は不明）"
+   },
+   "category": "security research report (malware)",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [
+    "Anthropic",
+    "Moonshot AI",
+    "Google"
+   ],
+   "summary": {
+    "en": "On 31 October 2026 Cisco Talos published an analysis of an information stealer that calls itself VOLTA-AUTODOXER. After collecting data on the victim’s machine, the malware sends a structured bundle from that machine, over the victim’s own connection, to OpenRouter’s chat-completions endpoint and asks a model to write a target assessment that rates the victim’s valuables as low, medium or high and comments on their security habits. The default model is Anthropic’s Claude Opus 4.6. If a response contains refusal-style phrases, the malware tries Moonshot AI’s Kimi K2 and then Google’s Gemini 2.5 Flash, and it can skip the LLM stage when no key is present. Talos reports no confirmed victims and no refusals observed in the wild, found no attacker-run infrastructure, and includes no statement from the model providers or OpenRouter. The malware keeps a timestamped local log of what it collected and whether the LLM call succeeded.",
+    "ja": "2026年10月31日、Cisco Talosは、自らをVOLTA-AUTODOXERと名乗る情報窃取型マルウェアの分析を公表しました。このマルウェアは被害者の端末でデータを集めたあと、構造化した一式をその端末から被害者自身の回線でOpenRouterのchat completionsエンドポイントに送り、標的の評価を書かせます。評価は、被害者の資産を低・中・高で格付けし、セキュリティ上の習慣にも触れるものです。既定のモデルはAnthropicのClaude Opus 4.6です。応答に拒否を示す語句があると、Moonshot AIのKimi K2、続いてGoogleのGemini 2.5 Flashを試します。キーがなければLLMの段階を飛ばして動きます。Talosは、確認された被害者も、実環境で観測された拒否も報告していません。攻撃者が運用する設備は見つかっておらず、モデル提供者やOpenRouterの声明も記事にありません。マルウェアは、何を集めたかとLLM呼び出しの成否を、時刻つきで端末上のログに残します。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Talos published the analysis on 31 October 2026; the sample was first seen on 11 October 2026.",
+      "ja": "Talosは2026年10月31日に分析を公表した。サンプルの初観測は2026年10月11日である。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "talos"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Re-read on 13 November 2026; no update note is visible. The compile timestamp in the file is a different, earlier date.",
+      "ja": "2026年11月13日に再確認した。更新の注記は見当たらない。ファイル内のコンパイル時刻は、これとは別の、より早い日付である。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The default model is Anthropic’s Claude Opus 4.6, with fallback to Moonshot AI’s Kimi K2 and then Google’s Gemini 2.5 Flash when a response looks like a refusal.",
+      "ja": "既定のモデルはAnthropicのClaude Opus 4.6で、応答が拒否とみえる場合はMoonshot AIのKimi K2、続いてGoogleのGemini 2.5 Flashに切り替える。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "talos"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Refusal is judged by the malware matching phrases in the response, not by any provider’s record. Talos does not say whether the three calls use the same API key.",
+      "ja": "拒否かどうかは、マルウェアが応答中の語句を照合して判定するもので、提供者側の記録によるものではない。3つの呼び出しが同じAPIキーを使うかについて、Talosは述べていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The malware ranks victims as low, medium or high.",
+      "ja": "マルウェアは被害者を低・中・高でランク付けする。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "talos"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The rating applies to the victim’s valuables, by how readily they can be monetised. A separate section assesses the victim’s security posture.",
+      "ja": "格付けの対象は被害者の資産で、換金のしやすさによる。被害者のセキュリティ上の状態は別の節で評価される。"
+     }
+    },
+    {
+     "claim": {
+      "en": "No audit trail exists.",
+      "ja": "監査証跡は存在しない。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "talos"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The malware writes a timestamped harvest log, volta_debug.txt, recording what was collected and whether the LLM call succeeded. Talos recommends preserving it after a compromise. It is the malware’s own log on the victim’s machine.",
+      "ja": "マルウェアは、時刻つきの収集ログ（volta_debug.txt）に、集めた内容とLLM呼び出しの成否を書く。Talosは侵害後にこれを保全するよう勧めている。これは被害者の端末上にある、マルウェア自身のログである。"
+     }
+    },
+    {
+     "claim": {
+      "en": "A model refused a request, or real victims were harmed.",
+      "ja": "モデルが実際に要求を拒否した、または実際の被害者が出た。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "talos"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Talos reports neither. It describes the fallback chain as a design that anticipates refusals.",
+      "ja": "Talosはどちらも報告していない。フォールバックの連鎖は、拒否を見越した設計として説明されている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The model providers or OpenRouter have commented.",
+      "ja": "モデル提供者またはOpenRouterがコメントしている。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "talos"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The article includes no statement from Anthropic, Moonshot AI, Google or OpenRouter, and VSO found none.",
+      "ja": "記事にはAnthropic、Moonshot AI、Google、OpenRouterのいずれの声明もなく、VSOも見つけていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "EU AI Act high-risk obligations apply.",
+      "ja": "EU AI Actの高リスクの義務が適用される。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "talos"
+     ],
+     "claim_as_of": "2026-11-01",
+     "evidence_note": {
+      "en": "No basis was found. The locations of victims and operators are unknown, and no category under the Act was identified for malware run by criminals.",
+      "ja": "根拠は見つからない。被害者と運用者の所在地は不明で、犯罪者が動かすマルウェアに当てはまる同法の類型も特定できなかった。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: each provider would see only its own request. A refusal at one provider and a response at another are separate events at separate parties, and nothing in either party’s record links them. On Talos’s account the requests go through one router, the only legitimate party placed to see the sequence; whether it keeps such records is not known.",
+    "ja": "設計上の示唆：各提供者に見えるのは自社への要求だけです。ある提供者での拒否と別の提供者での応答は、別々の当事者のもとで起きた別々の事象で、どちらの記録にも両者をつなぐものはありません。Talosの説明では、要求は1つのルーターを通ります。一連の流れを見られる立場にある正規の当事者はそのルーターだけですが、そうした記録を保持しているかは分かっていません。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not stop a request, a fallback or the malware, and it does not link a refusal at one provider to a response at another. It records nothing about the malware, its author or its buyers: a system run by an attacker produces no VAP records. It does not identify who made a request, make the malware’s own log trustworthy, or show that a refusal was correct.",
+    "ja": "VAPは、要求も、フォールバックも、マルウェアも止めません。ある提供者での拒否を、別の提供者での応答に結び付けることもしません。マルウェアとその作者、購入者については何も記録しません。攻撃者が動かすシステムからVAPの記録は生じないためです。要求を実行した者を特定することも、マルウェア自身のログを信頼できるものにすることも、拒否が正しかったと示すこともしません。"
+   },
+   "sources": [
+    {
+     "id": "talos",
+     "label": "Cisco Talos — Appraisal by AI: model-driven victim prioritization in the VOLTA infostealer (31 October 2026)",
+     "url": "https://blog.talosintelligence.com/appraisal-by-ai-model-driven-victim-prioritization-in-the-volta-infostealer/",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1027USBANKS",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Large US banks restrict third-party AI agents that log in with customers’ credentials and tell customers they remain responsible",
+    "ja": "米大手銀行、顧客の認証情報でログインする第三者AIエージェントを制限し、責任は顧客にあると通知"
+   },
+   "event_date": "2026-10-13 to 2026-10-27 (statements and reports); not a single incident",
+   "verified": "2026-11-01",
+   "jurisdiction": {
+    "en": "United States",
+    "ja": "米国"
+   },
+   "category": "industry practice report (not an incident)",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "Between 13 and 27 October 2026, statements and reports described large US banks restricting outside AI agents that reach customer accounts with the customers’ own credentials. American Banker reported on 27 October that at least five banks, JPMorganChase, Citi, Bank of America, Wells Fargo and Morgan Stanley, were blocking such agents. Bank of America emailed customers, in a message whose authenticity it confirmed to TechCrunch, telling them not to share their username and password with any outside service, including AI tools or agents offering to act for them, and that they remain responsible for the resulting activity if they do. Accounts of agents acting beyond what customers intended rest on unnamed sources; no bank, count or total loss has been confirmed. VSO records this as an industry practice that bears on what a bank’s records can show. It is not a verified incident.",
+    "ja": "2026年10月13日から27日にかけて、米国の大手銀行が、顧客自身の認証情報で顧客の口座にアクセスする外部のAIエージェントを制限していることが、発言や報道で伝えられました。American Bankerは10月27日、JPMorganChase、Citi、Bank of America、Wells Fargo、Morgan Stanleyの少なくとも5行がこうしたエージェントを遮断していると報じました。Bank of Americaは顧客にメールを送り、代わりに操作すると称するAIツールやエージェントを含め、外部のサービスにユーザー名とパスワードを渡さないこと、渡した場合はその結果の取引について顧客が引き続き責任を負うことを伝えました。同行はこのメールが本物であることをTechCrunchに確認しています。エージェントが顧客の意図を超えて動いたという話は匿名の情報源によるもので、銀行名、件数、損失の総額は確認されていません。VSOはこれを、銀行の記録が何を示せるかに関わる業界の動きとして記録します。検証された事件ではありません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "At least five large US banks are blocking or restricting external AI agents’ access to customer accounts.",
+      "ja": "米国の大手銀行の少なくとも5行が、外部のAIエージェントによる顧客口座へのアクセスを遮断または制限している。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "americanbanker"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): American Banker, 27 October 2026 (updated 28 October). On 13 November VSO could read only the article’s summary and opening; the page does not say what the update changed.",
+      "ja": "CONFIRMED（secondary／二次資料）：American Banker、2026年10月27日（28日更新）。11月13日にVSOが読めたのは記事の要約と冒頭だけで、更新の内容はページに書かれていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Bank of America told customers that they remain responsible for activity resulting from credentials they share.",
+      "ja": "Bank of Americaは、渡した認証情報から生じた取引について顧客が引き続き責任を負うと顧客に伝えた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "techcrunch"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): TechCrunch reports that a Bank of America spokesperson confirmed the email was authentic.",
+      "ja": "CONFIRMED（secondary／二次資料）：TechCrunchは、Bank of Americaの広報担当者がこのメールを本物と確認したと報じている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Morgan Stanley detected unauthorised AI agents.",
+      "ja": "Morgan Stanleyは不正なAIエージェントを検知した。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "axios"
+     ],
+     "claim_as_of": "2026-11-01",
+     "evidence_note": {
+      "en": "According to accounts of Axios’s report of 22 October, Morgan Stanley began blocking agents but said it had not observed unauthorised ones. VSO could not retrieve the Axios article itself and confirmed its content only through other outlets.",
+      "ja": "Axiosの10月22日の報道を伝える資料によれば、Morgan Stanleyは遮断を始めたものの、不正なエージェントは観測していないと回答した。VSOはAxiosの記事そのものを取得できず、内容は他の媒体を通じて確認しただけである。"
+     }
+    },
+    {
+     "claim": {
+      "en": "AI agents have exceeded customers’ instructions and caused losses.",
+      "ja": "AIエージェントが顧客の指示を超えて動き、損失が生じた。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "americanbanker",
+      "axios"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Reported only from unnamed sources and as anecdote. American Banker relays one unnamed bank’s account of an agent moving US$100,000. No bank is named, and no count or total is given.",
+      "ja": "匿名の情報源による逸話として報じられているだけである。American Bankerは、エージェントが10万ドルを移したという、名前を伏せた1行の話を伝えている。銀行名は示されておらず、件数や総額もない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Regulation E places the loss on the customer.",
+      "ja": "Regulation Eは損失を顧客の負担とする。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "rege",
+      "regeinterp"
+     ],
+     "claim_as_of": "2026-11-01",
+     "evidence_note": {
+      "en": "12 CFR 1005.2(m) excludes from an unauthorized electronic fund transfer a transfer by a person to whom the consumer furnished the access device, until the consumer notifies the institution; the official interpretation addresses transfers that exceed the authority given and access obtained by fraud or robbery. How these apply to credentials handed to software operated by a company is not settled by the text, and VSO found no CFPB statement on AI agents. VSO does not assess whether any bank’s terms comply.",
+      "ja": "12 CFR 1005.2(m)は、消費者がアクセス手段を渡した者による送金を、消費者が金融機関に通知するまでは無権限の電子資金移動から除いている。公式解釈は、与えた権限を超える送金と、詐取や強奪で得られたアクセスを扱う。企業が運用するソフトウェアに認証情報を渡した場合にこれらがどう当てはまるかは条文からは決まらず、AIエージェントについてのCFPBの見解も見つからなかった。VSOは、各行の規約が同規則に適合するかを評価しない。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: when an agent logs in with a customer’s credentials and is not detected, the bank’s authentication record shows the customer. What the customer actually asked the agent to do, if it is recorded at all, is recorded by the agent’s provider.",
+    "ja": "設計上の示唆：エージェントが顧客の認証情報でログインし、検知されなければ、銀行の認証記録に残るのは顧客です。顧客がエージェントに実際に何を頼んだかは、記録されているとすれば、エージェントの提供者の側にあります。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not stop a login or a transfer, distinguish an agent using a customer’s credentials from the customer in a bank’s logs, or recover instructions that were never recorded. It does not require an agent’s provider to disclose records, and it does not decide who bears a loss or whether Regulation E was followed. DAP is not an authorisation protocol, and no registered VAP domain profile covers retail banking; VCP covers algorithmic trading.",
+    "ja": "VAPは、ログインや送金を止めません。銀行のログの上で、顧客の認証情報を使うエージェントを顧客と区別することも、記録されなかった指示を復元することもしません。エージェントの提供者に記録の開示を義務づけることも、損失を誰が負うかやRegulation Eが守られたかを判断することもありません。DAPは認可のプロトコルではなく、小口の銀行取引を対象にする登録済みの領域プロファイルもありません。VCPが対象とするのはアルゴリズム取引です。"
+   },
+   "sources": [
+    {
+     "id": "americanbanker",
+     "label": "American Banker — Banks are blocking external AI agents. Is this sustainable? (27 October 2026; updated 28 October)",
+     "url": "https://www.americanbanker.com/news/banks-are-blocking-external-ai-agents-is-this-sustainable",
+     "kind": "secondary"
+    },
+    {
+     "id": "techcrunch",
+     "label": "TechCrunch — report on Bank of America’s email asking customers not to share banking credentials with AI assistants (27 October 2026)",
+     "url": "https://techcrunch.com/2026/10/27/bank-of-america-kindly-asks-that-you-dont-share-your-banking-password-with-your-ai-assistant/",
+     "kind": "secondary"
+    },
+    {
+     "id": "axios",
+     "label": "Axios — report on AI agents and unauthorised access to bank accounts (22 October 2026; not retrieved by VSO)",
+     "url": "https://www.axios.com/2026/10/22/ai-agents-banks-unauthorized-accounts-access",
+     "kind": "secondary"
+    },
+    {
+     "id": "rege",
+     "label": "12 CFR 1005.2 — Regulation E, definitions (CFPB)",
+     "url": "https://www.consumerfinance.gov/rules-policy/regulations/1005/2/",
+     "kind": "primary"
+    },
+    {
+     "id": "regeinterp",
+     "label": "12 CFR 1005.2 — official interpretation, comments 2(m) (CFPB)",
+     "url": "https://www.consumerfinance.gov/rules-policy/regulations/1005/interp-2/",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1109KINOSAKI",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Self-driving bus scrapes a stone wall on its first passenger service in a Level 2 trial at Kinosaki Onsen, Japan",
+    "ja": "城崎温泉のレベル2自動運転バス実証運行、一般客を乗せた初便が沿道の石垣に接触"
+   },
+   "event_date": "2026-11-09 (about 11:30 JST)",
+   "verified": "2026-11-10",
+   "jurisdiction": {
+    "en": "Japan — Toyooka, Hyogo Prefecture",
+    "ja": "日本・兵庫県豊岡市"
+   },
+   "category": "Autonomous driving / contact (no injuries)",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "At about 11:30 on 9 November 2026 a self-driving bus on a trial service in the Kinosaki Onsen district of Toyooka, Hyogo, scraped a roadside stone wall. According to the city’s account as reported, the vehicle was operating at Level 2 with an operator on board, detected an oncoming large vehicle and moved to the left; the operator was not driving manually at the time. Eight people were on board, six passengers and two staff, and no one was hurt. It was the first service carrying members of the public in a trial that six parties had announced as starting on 6 November. The city suspended the service until safety is confirmed. The vehicle is the ROii built by Autonomous a2z. The cause, and what the vehicle’s and the remote-monitoring records show, have not been published.",
+    "ja": "2026年11月9日午前11時半頃、兵庫県豊岡市の城崎温泉街で実証運行中の自動運転バスが、沿道の石垣に車体をこすりました。報道が伝える市の説明によれば、車両はオペレーターが乗るレベル2で運行しており、対向する大型車両を検知して左に寄りました。当時、オペレーターは手動で操作していませんでした。乗っていたのは乗客6人とスタッフ2人の計8人で、けが人はいません。6者が11月6日開始と発表していた実証運行で、一般客を乗せた最初の便でした。市は、安全が確認されるまで運行を休止しています。車両はAutonomous a2z製の「ROii」です。原因と、車両や遠隔監視の記録が何を示しているかは公表されていません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "The contact occurred at about 11:30 on 9 November 2026, on the first service carrying members of the public.",
+      "ja": "接触は2026年11月9日午前11時半頃、一般客を乗せた最初の便で起きた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "mainichi",
+      "prwire"
+     ],
+     "claim_as_of": "2026-11-10",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): the city’s account as reported. The six parties’ release gives 6 November as the start of the trial; reports describe 9 November as the first day with general passengers.",
+      "ja": "CONFIRMED（secondary／二次資料）：報道が伝える市の説明による。6者の発表は実証運行の開始を11月6日としており、報道は11月9日を一般客を乗せた初日としている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The vehicle was operating at Level 2, detected an oncoming large vehicle, moved left and scraped a stone wall; the operator was not driving manually.",
+      "ja": "車両はレベル2で運行しており、対向する大型車両を検知して左に寄り、石垣に接触した。オペレーターは手動で操作していなかった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "mainichi",
+      "mbs"
+     ],
+     "claim_as_of": "2026-11-10",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): the city’s explanation as reported. No technical account of how the system arrived at the manoeuvre has been published.",
+      "ja": "CONFIRMED（secondary／二次資料）：報道が伝える市の説明による。システムがこの動きに至った経緯についての技術的な説明は公表されていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Eight people were on board and none was injured.",
+      "ja": "8人が乗っており、けが人はいなかった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "mainichi",
+      "mbs"
+     ],
+     "claim_as_of": "2026-11-10",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): six passengers, and an operator and an assistant.",
+      "ja": "CONFIRMED（secondary／二次資料）：乗客6人と、オペレーターおよび補助スタッフの2人。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The city suspended the trial service.",
+      "ja": "市は実証運行を休止した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "mainichi",
+      "kobe"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): Kobe Shimbun (10 November) reports the city’s announcement of 9 November that the trial is suspended until safety is confirmed. As of 13 November VSO found no published cause or resumption date, and did not find the announcement itself on the city’s website.",
+      "ja": "CONFIRMED（secondary／二次資料）：神戸新聞（11月10日）は、安全が確認されるまで実証運行を休止するという11月9日の市の発表を報じている。11月13日時点で、公表された原因や再開日は見つからなかった。市のウェブサイト上の発表そのものも見つけていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The vehicle’s inputs, internal state and decision process were not kept in a form a third party could check.",
+      "ja": "車両の入力・内部状態・判断の過程は、第三者が確かめられる形で残っていなかった。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "mainichi",
+      "prwire"
+     ],
+     "claim_as_of": "2026-11-10",
+     "evidence_note": {
+      "en": "Nothing has been published about what records exist or in what form. Reports say the trial was to collect driving data, and the parties’ release lists the checking of communications and remote monitoring among its aims.",
+      "ja": "どのような記録がどんな形で残っているかは公表されていない。報道は実証運行で走行時のデータを集めることになっていたと伝え、6者の発表は通信と遠隔監視の検証を目的に挙げている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The incident may breach Japan’s Road Traffic Act, automated-driving standards or the EU AI Act.",
+      "ja": "道路交通法、自動運転の関連基準、EU AI Actに抵触しうる。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "mainichi"
+     ],
+     "claim_as_of": "2026-11-10",
+     "evidence_note": {
+      "en": "No basis was found in the sources, and the EU AI Act does not apply to an incident in Japan.",
+      "ja": "資料に根拠は見つからない。EU AI Actは日本で起きた事案には適用されない。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: the investigation rests on records held by the operator and its contractors. Whether those records are unaltered and complete, and whether they explain the cause, are separate questions; the second is for the investigation.",
+    "ja": "設計上の示唆：調査が依拠するのは、運行する側とその委託先が持つ記録です。その記録が改変されておらず欠けていないかと、記録から原因が分かるかは、別の問いです。後者は調査が答える問いです。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not determine a cause, establish that a sensor reading was accurate, or recover an observation that was never recorded. It has no run-time role in a vehicle. Transport is within a VAP domain, but its profile (DVP) is only planned, so there is no profile under which a VAP conformance claim could be made for this deployment.",
+    "ja": "VAPは、原因を確定せず、センサーの読み取りが正確だったことを示さず、記録されなかった観測を復元しません。車両の実行時に果たす役割もありません。運輸はVAPの領域に入りますが、そのプロファイル（DVP）は計画段階で、この配備についてVAPへの適合を主張できるプロファイルはありません。"
+   },
+   "sources": [
+    {
+     "id": "mainichi",
+     "label": "Mainichi Shimbun, via Infoseek News — report on the contact on the first day of the trial service (10 November 2026, in Japanese)",
+     "url": "https://news.infoseek.co.jp/article/mainichi_20261109k0000m310256000c/",
+     "kind": "secondary"
+    },
+    {
+     "id": "mbs",
+     "label": "MBS News, via Yahoo! News Japan — report of 9 November 2026 (in Japanese)",
+     "url": "https://news.yahoo.co.jp/articles/68482641bb0a7e4df382aca7bf29bec751a903c8",
+     "kind": "secondary"
+    },
+    {
+     "id": "kobe",
+     "label": "Kobe Shimbun NEXT — trial service suspended after property-damage accident (10 November 2026, in Japanese)",
+     "url": "https://www.kobe-np.co.jp/news/tajima/202611/0021019985.shtml",
+     "kind": "secondary"
+    },
+    {
+     "id": "prwire",
+     "label": "Kyodo News PR Wire — release by Toyooka City, Kanematsu, Zentan Bus, Sompo Japan, KDDI and KDDI Smart Mobility on the start of the trial (in Japanese)",
+     "url": "https://kyodonewsprwire.jp/release/202611069625",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1104BAUDE",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Law professor reports that Claude deleted his syllabus and lecture notes when asked to update page numbers; the files were recovered from Dropbox",
+    "ja": "法学教授、ページ番号の更新を頼んだClaudeがシラバスと講義ノートを削除したと投稿（ファイルはDropboxから復旧）"
+   },
+   "event_date": "2026-11-04 (as described in a post of 2026-11-05)",
+   "verified": "2026-11-10",
+   "jurisdiction": {
+    "en": "United States",
+    "ja": "米国"
+   },
+   "category": "AI agent / unintended file deletion (user report)",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [
+    "Anthropic"
+   ],
+   "summary": {
+    "en": "On 5 November 2026 William Baude, a professor at the University of Chicago Law School, posted on X that the day before, while he was at lunch, Claude had deleted his current-term syllabus and about a year of constitutional-law lecture notes. A screenshot attached to the post shows Claude stating that it had deleted the syllabus file and top-level class notes by mistake and had not restored them. According to reporting on his replies, he had asked the assistant to update page numbers in an old set of lecture notes, and he later recovered everything through Dropbox. He has not said which Claude product or model was involved, the cause has not been published, and VSO found no statement from Anthropic. This is a first-person account that has not been independently verified.",
+    "ja": "2026年11月5日、シカゴ大学ロースクールのWilliam Baude教授は、前日の昼食中に、Claudeが今学期のシラバスと約1年分の憲法の講義ノートを削除したとXに投稿しました。投稿に添えられた画像では、Claudeが、シラバスのファイルと最上位の講義ノートを誤って削除し、復元していないと述べています。同氏の返信についての報道によれば、頼んだのは古い講義ノートのページ番号の更新で、ファイルはその後Dropboxからすべて復旧しました。使ったClaudeの製品とモデルは明かされておらず、原因は公表されていません。Anthropicの声明も見つかっていません。本人による説明で、独立した検証は経ていません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Baude posted on 5 November 2026 that Claude had deleted his Fall 2026 syllabus and a year of lecture notes the day before.",
+      "ja": "Baude氏は2026年11月5日、前日にClaudeがFall 2026のシラバスと1年分の講義ノートを削除したと投稿した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "xpost"
+     ],
+     "claim_as_of": "2026-11-10",
+     "evidence_note": {
+      "en": "Post text and attached image retrieved on 10 November 2026. “A year” is his description; the image names a Fall 2026 syllabus file and top-level notes from a 2023 class folder.",
+      "ja": "投稿の本文と添付画像を2026年11月10日に取得した。「1年分」は本人の表現で、画像にはFall 2026のシラバスのファイルと、2023年の講義フォルダの最上位のノートが挙がっている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "He had asked the assistant to update page numbers.",
+      "ja": "頼んだのはページ番号の更新だった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "dexerto"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): his reply as reported by Dexerto. VSO did not retrieve the reply itself.",
+      "ja": "CONFIRMED（secondary／二次資料）：Dexertoが伝える本人の返信による。返信そのものは取得していない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The files were fully recovered through Dropbox.",
+      "ja": "ファイルはDropboxからすべて復旧した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "dexerto"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "CONFIRMED (secondary): his later statement as reported. Recovery relied on Dropbox’s file history, a record held by a party other than the assistant.",
+      "ja": "CONFIRMED（secondary／二次資料）：報道が伝える本人の後の発言による。復旧はDropboxのファイル履歴、つまりアシスタントとは別の当事者が持つ記録によった。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The product, the model and the cause of the deletion are known.",
+      "ja": "使われた製品、モデル、削除の原因は分かっている。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "xpost",
+      "dexerto"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "He has not named the product or model, and Dexerto says the exact cause remains unclear.",
+      "ja": "本人は製品もモデルも明かしておらず、Dexertoは正確な原因は不明としている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "No pre-execution confirmation, permission boundary or reliable operation history existed.",
+      "ja": "実行前の確認、権限の境界、信頼できる操作履歴は存在しなかった。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "xpost"
+     ],
+     "claim_as_of": "2026-11-10",
+     "evidence_note": {
+      "en": "Permission settings and logs have not been published. What was deleted is known from the assistant’s own message.",
+      "ja": "権限の設定やログの状態は公表されていない。何が消えたかは、アシスタント自身のメッセージによって分かっている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "GDPR data-subject rights are engaged.",
+      "ja": "GDPRのデータ主体の権利に関わる。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "xpost"
+     ],
+     "claim_as_of": "2026-11-10",
+     "evidence_note": {
+      "en": "No basis was found: a person in the United States lost and then recovered his own files.",
+      "ja": "根拠は見つからない。米国にいる本人が自分のファイルを失い、その後復旧した事案である。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: the request was to update page numbers and the observed effect was a deletion. What was deleted is known from the assistant’s own message, while recovery relied on the storage provider’s history. A request, an agent’s account of what it did and an effect observed by another party are different kinds of record.",
+    "ja": "設計上の示唆：頼んだのはページ番号の更新で、観測された効果は削除でした。何が消えたかはアシスタント自身のメッセージで分かり、復旧はストレージ事業者の履歴によりました。依頼、エージェント自身による行為の説明、別の当事者が観測した効果は、種類の違う記録です。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not ask for confirmation before an action, enforce a permission boundary or undo a deletion; it has no run-time role. ERASURE in VAP records the crypto-shredding of protected fields inside a record and has nothing to do with an agent deleting a user’s files. No registered VAP domain profile covers an individual’s use of a general-purpose assistant on their own files, and a recoverable file deletion may not be among the harms that §1.3 addresses.",
+    "ja": "VAPは、実行前に確認を求めず、権限の境界を守らせず、削除を取り消しません。実行時の役割がないためです。VAPのERASUREは、記録の中の保護対象フィールドの暗号消去を記録するもので、エージェントが利用者のファイルを消したこととは関係がありません。個人が自分のファイルに対して汎用のアシスタントを使う配備を対象にする登録済みの領域プロファイルはなく、復旧できたファイルの削除が§1.3の扱う害に当たるかも疑わしいところです。"
+   },
+   "sources": [
+    {
+     "id": "xpost",
+     "label": "William Baude — post on X with screenshot (5 November 2026)",
+     "url": "https://x.com/WilliamBaude/status/2118420271333777856",
+     "kind": "primary"
+    },
+    {
+     "id": "dexerto",
+     "label": "Dexerto — report on the deletion and the recovery through Dropbox (7 November 2026)",
+     "url": "https://www.dexerto.com/entertainment/professor-returns-from-lunch-to-find-ai-deleted-years-worth-of-lecture-notes-3425652/",
+     "kind": "secondary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1108SNOWBALL",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Malbear Labs reports a largely unsupervised intrusion campaign run with a jailbroken DeepSeek-based agent against a European telecom provider (“Operation Snowball”)",
+    "ja": "Malbear Labs、脱獄させたDeepSeekベースのエージェントによる欧州の通信事業者への侵入活動を報告（「Operation Snowball」）"
+   },
+   "event_date": "2026-11-08 (report); more than two weeks of activity, dates not disclosed",
+   "verified": "2026-11-10",
+   "jurisdiction": {
+    "en": "Europe — country not disclosed",
+    "ja": "欧州（国名は非公表）"
+   },
+   "category": "security incident campaign report",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [
+    "DeepSeek"
+   ],
+   "summary": {
+    "en": "On 8 November 2026 Malbear Labs published an account of an intrusion campaign it calls Operation Snowball, based on an attacker’s working directory that it found exposed on the internet without authentication. The directory held more than 70 session transcripts and the agent’s own reports. According to Malbear, an operator ran a self-built agent harness on DeepSeek Flash with a system prompt built on a public jailbreak template, gave it goals and occasional short instructions, and left it largely unsupervised for more than two weeks against a European telecommunications provider whose country is not named. The agent compiled a list of 13 organisations hosted on the provider’s infrastructure from public RIPE records. Malbear describes thousands of rows of billing and device records being pulled and millions of patient records being reached through default credentials at a healthcare organisation. It does not say that all 13 organisations were compromised, that any victim confirmed the findings, or that anyone was notified. This is a single research report.",
+    "ja": "2026年11月8日、Malbear Labsは、「Operation Snowball」と名付けた侵入活動についての報告を公表しました。認証なしでインターネットに公開されていた攻撃者の作業ディレクトリを見つけ、それに基づいてまとめたものです。ディレクトリには70件を超えるセッション記録と、エージェント自身の報告がありました。Malbearによれば、運用者はDeepSeek Flashを使う自作のエージェント・ハーネスを、公開の脱獄テンプレートを土台にしたシステムプロンプトで動かし、目標とときおりの短い指示を与えて、国名が明かされていない欧州の通信事業者に対して2週間あまり、ほぼ監視なしで活動させました。エージェントは、公開のRIPE登録情報から、事業者の設備上にある13組織の一覧を作りました。Malbearは、請求・端末の記録が数千行取り出されたこと、ある医療機関で既定の認証情報を通じて数百万件の患者記録に到達したことを記しています。13組織すべてが侵害されたとも、被害組織が内容を確認したとも、誰かに通知したとも書いていません。研究報告1本に基づく記録です。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Malbear Labs published the report on 8 November 2026, based on an exposed attacker directory holding more than 70 session transcripts.",
+      "ja": "Malbear Labsは2026年11月8日に報告を公表した。根拠は、公開状態になっていた攻撃者のディレクトリで、70件を超えるセッション記録があった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "malbear"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Re-read on 13 November 2026; the page shows no update or correction note. Malbear withholds the directory’s address to protect the organisations affected.",
+      "ja": "2026年11月13日に再確認した。ページに更新や訂正の注記はない。Malbearは、影響を受けた組織を保護するためとして、ディレクトリの所在を公開していない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Thirteen European organisations were breached.",
+      "ja": "欧州の13組織が侵害された。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "malbear",
+      "infosecurity"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The 13 are the agent’s in-scope list, compiled from RIPE records. Malbear describes access to the provider’s infrastructure and to some hosted environments but does not say which of the 13 were compromised. Infosecurity Magazine makes the same point.",
+      "ja": "13組織は、エージェントがRIPEの登録情報から作った対象の一覧である。Malbearは、事業者の設備と、そこに置かれた一部の環境へのアクセスを記しているが、13組織のどれが侵害されたかは書いていない。Infosecurity Magazineも同じ点を指摘している。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Billing and patient data were exfiltrated.",
+      "ja": "請求データと患者データが外部に持ち出された。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "malbear",
+      "infosecurity"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Malbear describes thousands of billing and device rows being pulled from the billing platform and millions of patient records being accessed. It does not clearly state what left the environment. Infosecurity Magazine notes that the access claims are the agent’s own reports and that staging is not distinguished from removal.",
+      "ja": "Malbearは、請求基盤から請求・端末の記録が数千行取り出されたこと、数百万件の患者記録にアクセスしたことを記している。何が環境の外に出たかは明確に書かれていない。Infosecurity Magazineは、アクセスについての記述がエージェント自身の報告であること、準備段階と持ち出しが区別されていないことを指摘している。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The agent operated largely on its own for more than two weeks.",
+      "ja": "エージェントは2週間あまり、ほぼ自律的に活動した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "malbear"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Malbear’s assessment. The operator set goals for each session and sent brief check-in messages, a few prohibitions and a stop command, without watching sessions as they ran.",
+      "ja": "Malbearの評価である。運用者はセッションごとに目標を与え、短い確認のメッセージ、いくつかの禁止事項、停止の指示を送ったが、セッションをその場で見てはいなかった。"
+     }
+    },
+    {
+     "claim": {
+      "en": "No record of the agent’s planning, tool use and adaptation survived.",
+      "ja": "エージェントの計画、ツールの使用、適応の過程の記録は残らなかった。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "malbear"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "The report is built on the attacker’s own transcripts, session indexes and agent reports. They are the attacker’s records and were not made to be checked by anyone else; nothing is published about the victims’ records.",
+      "ja": "報告は、攻撃者自身のセッション記録、索引、エージェントの報告に基づいている。これらは攻撃者の記録で、他者が確かめるために作られたものではない。被害側の記録については何も公表されていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The operator is linked to a state actor.",
+      "ja": "運用者は国家主体と結び付いている。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "malbear",
+      "infosecurity"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Malbear describes a Chinese-speaking operator and indicators consistent with Chinese origin. It names no group and no state.",
+      "ja": "Malbearは、中国語を使う運用者と、中国由来と整合する痕跡を記している。特定の集団も国家も名指ししていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Victims, DeepSeek or authorities have been notified or have commented.",
+      "ja": "被害組織、DeepSeek、当局に通知が行われた、またはこれらがコメントした。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "malbear",
+      "infosecurity"
+     ],
+     "claim_as_of": "2026-11-13",
+     "evidence_note": {
+      "en": "Malbear does not say whether anyone was notified, and Infosecurity Magazine’s article includes no statement from DeepSeek, a victim or an authority.",
+      "ja": "Malbearは誰かに通知したかを書いていない。Infosecurity Magazineの記事にも、DeepSeek、被害組織、当局の声明はない。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: what is known comes from the attacker’s own records, which became available only because a directory was left exposed. Records existed on the attacker’s side; the open questions are whose records they are and whether anyone else can check them.",
+    "ja": "設計上の示唆：分かっていることは攻撃者自身の記録によるもので、それが手に入ったのは、ディレクトリが公開状態になっていたからです。記録は攻撃者の側にありました。問われているのは、それが誰の記録で、保有者以外が確かめられるかです。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not apply to a system that an attacker runs: an attacker produces no VAP records and nothing can require them to. It does not stop an intrusion, detect one at run time or establish what data left a network. The systems reported as affected are conventional IT, not AI decision systems, so the victims’ side is outside VAP’s scope as well. VAP does not establish attribution.",
+    "ja": "VAPは、攻撃者が動かすシステムには当てはまりません。攻撃者からVAPの記録は生じず、それを義務づける手段もありません。侵入を止めること、実行時に検知すること、どのデータがネットワークの外に出たかを確かめることもしません。影響を受けたと報告されているのは従来型のITシステムで、AIの判断を行うシステムではないため、被害側もVAPの適用範囲の外です。VAPは帰属を確定しません。"
+   },
+   "sources": [
+    {
+     "id": "malbear",
+     "label": "Malbear Labs — Operation Snowball: Inside an Autonomous AI Intrusion Campaign (8 November 2026)",
+     "url": "https://malbearlabs.com/posts/operation-snowball-inside-an-autonomous-ai-intrusion-campaign",
+     "kind": "primary"
+    },
+    {
+     "id": "infosecurity",
+     "label": "Infosecurity Magazine — Jailbroken AI Agent Ran Two-Week Attack on European Telecom (9 November 2026)",
+     "url": "https://www.infosecurity-magazine.com/news/operation-snowball-ai-telecom/",
+     "kind": "secondary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
   }
  ]
 }
