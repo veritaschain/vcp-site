@@ -17,6 +17,7 @@ def url(path, lang):
 def render(page, lang):
     ja = lang == 'ja'
     d = page[lang]
+    heading = ''.join('<span class="title-chunk">' + esc(part) + '</span>' for part in d.get('heading_parts', [])) or esc(d['title'])
     path = url(page['path'], lang)
     absolute = ORIGIN + path
     title = d['title'] + ' | VCP / VSO'
@@ -49,7 +50,7 @@ def render(page, lang):
 <script type="application/ld+json">{json.dumps(schema,ensure_ascii=False)}</script><script defer src="/assets/js/analytics.js?v=20261103"></script></head>
 <body><a class="skip" href="#main">{'本文へ' if ja else 'Skip to content'}</a><header class="site-header"><div class="nav-wrap"><a class="brand" href="{home}"><img src="/press/logo-transparent.png" width="36" height="36" alt="">VSO / {label}</a><nav class="site-nav" aria-label="{'主なナビゲーション' if ja else 'Main navigation'}"><a href="{hub}">{label}</a><a href="/vap/{'ja/' if ja else ''}">VAP</a><a href="/vcp/developers/{'ja/' if ja else ''}">{'開発者向け' if ja else 'Developers'}</a>{langlinks}</nav></div></header>
 <main class="wrap" id="main"><nav class="breadcrumb" aria-label="{'パンくず' if ja else 'Breadcrumb'}"><ol><li><a href="{home}">VSO</a></li><li><a href="{hub}">{label}</a></li>{'' if page['path']=='research' else '<li>'+esc(d['title'])+'</li>'}</ol></nav>
-<div class="hero"><p class="eyebrow">VSO · Public research resources</p><h1>{esc(d['title'])}</h1><p class="lead">{esc(d['lead'])}</p><p class="byline">{'公開資料の確認日' if ja else 'Public-source review'}: <time datetime="{DATA['reviewed']}">{DATA['reviewed']}</time> · {'解説・非規範' if ja else 'Informative, non-normative'}</p></div>
+<div class="hero"><p class="eyebrow">VSO · Public research resources</p><h1>{heading}</h1><p class="lead">{esc(d['lead'])}</p><p class="byline">{'公開資料の確認日' if ja else 'Public-source review'}: <time datetime="{DATA['reviewed']}">{DATA['reviewed']}</time> · {'解説・非規範' if ja else 'Informative, non-normative'}</p></div>
 <aside class="callout" aria-label="{'研究の状態と限界' if ja else 'Research status and limits'}"><p>{status}</p></aside>
 <div class="layout"><aside class="toc"><nav aria-label="{'目次' if ja else 'On this page'}"><strong>{'このページの内容' if ja else 'On this page'}</strong><ol>{toc}</ol></nav></aside><article class="content">{''.join(sections)}</article></div></main>
 <footer class="footer"><div class="wrap"><strong>VeritasChain Standards Organization (VSO)</strong><p>{'記録の検証は、AIの判断の正しさ・安全性・法令適合を保証しません。' if ja else 'Verification of records does not guarantee correct, safe or legally compliant decisions.'}</p><nav class="footer-links"><a href="{hub}">{label}</a><a href="/guides/{'ja/' if ja else ''}">{'実務ガイド' if ja else 'Practical guides'}</a><a href="/vap/limits/{'ja/' if ja else ''}">{'検証の限界' if ja else 'Verification limits'}</a><a href="/support/{'ja/' if ja else ''}">{'相談・問い合わせ' if ja else 'Contact'}</a><a href="/sitemap/">{'サイト内の全資料' if ja else 'Site directory'}</a></nav></div></footer></body></html>
