@@ -5,12 +5,14 @@ on:
     # Path filtering also covers stacked release PRs before their base merges.
     paths:
       - 'tools/browser-recorder/**'
+      - 'tools/browser-observation-python-verifier/**'
       - '.github/workflows/browser-recorder.yml'
       - 'vso/announcements/2026-10-31-vap-browser-recorder-preview/**'
   push:
     branches: [main]
     paths:
       - 'tools/browser-recorder/**'
+      - 'tools/browser-observation-python-verifier/**'
       - '.github/workflows/browser-recorder.yml'
       - 'vso/announcements/2026-10-31-vap-browser-recorder-preview/**'
   workflow_dispatch:
@@ -54,6 +56,10 @@ jobs:
           node-version: '24.22.1'
           cache: npm
           cache-dependency-path: tools/browser-recorder/package-lock.json
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        if: matrix.chrome.full_suite
+        with:
+          python-version: '3.12'
 
       - name: Install locked browser-test dependencies
         run: |
@@ -149,6 +155,14 @@ jobs:
       - name: Run unpacked-extension lifecycle regression tests
         if: matrix.chrome.full_suite
         run: npm run test:browser-extension | tee "$BROWSER_EVIDENCE_DIR/extension-browser-tests.txt"
+      - name: Independently verify the actual browser download and saved checkpoint
+        if: matrix.chrome.full_suite
+        run: |
+          python -m pip install --no-input -r ../browser-observation-python-verifier/requirements.txt
+          python ../browser-observation-python-verifier/verify_observation.py \
+            "$BROWSER_EVIDENCE_DIR/synthetic-browser-pack.json" \
+            --checkpoint "$BROWSER_EVIDENCE_DIR/synthetic-browser-checkpoint.json" \
+            | tee "$BROWSER_EVIDENCE_DIR/independent-python-verification.json"
       - name: Run both historical unpacked-extension upgrade suites
         if: matrix.chrome.full_suite
         run: |
