@@ -41,6 +41,13 @@ async function checkSkipLink(page) {
 }
 
 async function checkNavigation(page, language, viewport, name) {
+  // Keep the initial screenshots and skip-link check in the first-visit state,
+  // then use the normal decline action before testing links behind the banner.
+  const consent = page.locator('#vso-analytics-panel');
+  if (await consent.isVisible()) {
+    await consent.locator('button').first().click();
+    await consent.waitFor({ state: 'hidden' });
+  }
   const dropdowns = page.locator('vcp-header .nav-item.dropdown');
   assert.equal(await dropdowns.count(), 5, 'Five navigation groups');
   const mobile = viewport.width <= 1024;
@@ -114,7 +121,9 @@ async function checkNavigation(page, language, viewport, name) {
     assert.equal(await toggle.getAttribute('aria-expanded'), 'false', 'Escape closes mobile navigation');
     assert.equal(await toggle.evaluate(element => element === document.activeElement), true, 'Closing returns focus to the mobile toggle');
   } else {
-    await page.locator('#vap-home-title').click();
+    // The expanded panel can cover the heading; use visible text below it.
+    await page.locator('.home-intro').click();
+    assert.equal(await page.locator('vcp-header .dropdown.active').count(), 0, 'Clicking outside closes the desktop panel');
   }
   const languageLinks = await page.locator('vcp-header .lang-link').evaluateAll(links => links.map(link => link.getAttribute('href')));
   assert.deepEqual([...languageLinks].sort(), ['/', '/ja/', '/zh/'].sort());
