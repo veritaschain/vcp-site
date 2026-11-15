@@ -24,6 +24,17 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 FORMAT = "vap-browser-observation/0.1.0"
 POLICY = "org.veritaschain.experimental.browser-selected-text.v1"
 MAX_BYTES = 4 * 1024 * 1024
+ED25519_FIELD = 2**255 - 19
+# All eight small-order points have one of these five y coordinates. Ignoring
+# the x-sign bit also rejects the two invalid sign aliases for x=0. This is a
+# local admission check, not a change to VAP/VCP or the browser byte contract.
+ED25519_SMALL_ORDER_Y = {
+    0, 1, ED25519_FIELD - 1,
+    int.from_bytes(bytes.fromhex(
+        "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05"), "little"),
+    int.from_bytes(bytes.fromhex(
+        "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a"), "little"),
+}
 # Match the shipped browser format's ECMAScript String.prototype.trim predicate:
 # WhiteSpace plus LineTerminator. Python's default strip also removes U+0085 and
 # U+001C..U+001F, but leaves U+FEFF. Keep this set explicit rather than depending
@@ -159,6 +170,14 @@ def uuid4(value) -> None:
     require(type(value) is str and UUID4.fullmatch(value) is not None, "Invalid UUIDv4")
 
 
+def admitted_public_key(value) -> bytes:
+    public = base64_exact(value, 32)
+    y = int.from_bytes(public, "little") & ((1 << 255) - 1)
+    require(y < ED25519_FIELD, "Noncanonical Ed25519 public key")
+    require(y not in ED25519_SMALL_ORDER_Y, "Small-order Ed25519 public key")
+    return public
+
+
 def hash256(value) -> None:
     require(type(value) is str and SHA256.fullmatch(value) is not None, "Invalid SHA-256")
 
@@ -228,7 +247,7 @@ def verify(pack: dict, pin: dict | None = None) -> dict:
     count = manifest["event_count"]
     require(type(count) is int and 1 <= count <= 500 and type(pack["events"]) is list
             and len(pack["events"]) == count, "Invalid event count")
-    public = base64_exact(manifest["public_key"], 32)
+    public = admitted_public_key(manifest["public_key"])
     key = Ed25519PublicKey.from_public_bytes(public)
     fingerprint = digest(public)
 

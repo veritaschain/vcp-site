@@ -52,8 +52,8 @@ Visit: **https://veritaschain.org/vap/at/vap-at-portal/**
 
 ```bash
 # Clone the repository
-git clone https://github.com/veritaschain/vap-at-portal.git
-cd vap-at-portal
+git clone https://github.com/veritaschain/vcp-site.git
+cd vcp-site
 
 # Serve locally (any HTTP server)
 python -m http.server 8000
@@ -61,7 +61,7 @@ python -m http.server 8000
 npx serve .
 
 # Open browser
-open http://localhost:8000
+open http://localhost:8000/vap/at/vap-at-portal/
 ```
 
 ## 📁 Project Structure
@@ -110,13 +110,15 @@ This self-assessment tool (VAP-AT Level 1) produces **preliminary results** that
 
 Content licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
-Code licensed under [MIT License](LICENSE).
+The repository publishes a [CC BY 4.0 license](../../../LICENSE).
+The earlier link to a portal-local MIT license pointed to a file that is absent
+from this tree; a separate code-license grant remains unresolved here.
 
 ## 🔗 Related
 
 - [VeritasChain Standards Organization](https://veritaschain.org)
-- [VAP Framework](https://github.com/veritaschain/vap)
-- [VCP Specification](https://github.com/veritaschain/vcp)
+- [VAP Framework](https://github.com/veritaschain/vap-spec)
+- [VCP Specification](https://github.com/veritaschain/vcp-spec)
 - [IETF Draft](https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/)
 
 ---

@@ -44,10 +44,7 @@ RUNTIME_SOURCES = {
         'img-src': {'https://www.googletagmanager.com', 'https://*.google-analytics.com'},
     },
     'assets/js/main.js': {'script-src': {'https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js'}},
-    'explorer/app/assets/index-CQ5DI-3r.js': {
-        'connect-src': {'https://veritaschain-evidence-demo.kamimura0000.chatgpt.site'},
-    },
-    'explorer/app/assets/index-DSg3jIFl.js': {
+    'explorer/app/assets/index-DVSuhA4q.js': {
         'connect-src': {'https://veritaschain-evidence-demo.kamimura0000.chatgpt.site'},
     },
 }

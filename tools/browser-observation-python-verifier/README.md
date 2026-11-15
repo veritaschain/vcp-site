@@ -32,8 +32,31 @@ The verifier does not establish source attribution, collection completeness, ori
 
 Python's JSON parser and canonicalizer independently reproduce the *restricted* browser format's UTF-16 object key ordering, Unicode restrictions, integer-only representation, duplicate-key rejection and input size/depth constraints. Internationalized origin edge cases and every browser runtime have not been exhaustively tested. Origin comparison is conservative; valid unusual browser origins may be rejected until covered by fixed cross-language vectors.
 
+### Local public-key admission — 15 November 2026
+
+The Python verifier rejects the eight small-order Ed25519 public keys, their two
+invalid zero-x sign aliases, and encodings with y outside the field before it
+calls the signature backend. With the pinned `cryptography==46.0.4`, the previous
+implementation accepted an identity-key pack with signatures constructed without
+a private key. Recomputing the hashes, Merkle root and a matching supplied
+checkpoint did not fix this weakness. A pre-existing checkpoint for an ordinary
+key still prevented replacement; the reproduction does not bypass such a pin.
+
+This is a local defensive admission rule. It does not change VAP/VCP normative
+requirements or redefine the published Browser Recorder format. Other point and
+signature checks, including R/S and the verification equation, remain delegated
+to `cryptography`; this guard is not a prime-subgroup membership check. The
+historical JavaScript implementation and distribution ZIPs remain unchanged,
+so rejection of every malformed signature is not claimed to match every browser
+or Node backend.
+
+`tests/test_public_keys.py` covers all eight small-order keys, two zero-x sign
+aliases and all 38 out-of-field encodings before a deliberately permissive
+backend, plus two complete forged messages with and without matching supplied
+checkpoints. These checks run normally and with Python assertions disabled.
+
 ## Dependency and scope
 
-The only runtime dependency is `cryptography==46.0.4`; pinned for reproducible CI. This is a separate reference verifier, not a replacement for the browser extension. It does not change previously signed evidence, the manifest schema, or any Browser Recorder distribution ZIP. CI exercises the shipped fixed sample, negative controls and shared text vectors on Python 3.12 with Node 24.22.1, and reruns when either verifier or the browser's core modules change.
+The only runtime dependency is `cryptography==46.0.4`; pinned for reproducible CI. This is a separate reference verifier, not a replacement for the browser extension. It does not change previously signed evidence, the manifest schema, or any Browser Recorder distribution ZIP. CI exercises the shipped fixed sample, negative controls and shared text vectors on Python 3.12 with both Node 22.23.4 and Node 24.22.1, and reruns when either verifier or the browser's core modules change.
 
 Source: VeritasChain Standards Organization (VSO), CC BY 4.0. Please report mismatches as an issue with a non-sensitive synthetic test vector.
