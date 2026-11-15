@@ -12,6 +12,7 @@ import binascii
 from datetime import datetime
 import hashlib
 import hmac
+from ipaddress import IPv4Address, IPv6Address
 import json
 from pathlib import Path
 import re
@@ -192,7 +193,32 @@ def origin(value) -> None:
                 and not u.path and not u.query and not u.fragment, "Invalid origin")
         hostname = u.hostname
         require(hostname.isascii() and hostname == hostname.lower(), "Noncanonical hostname")
-        hostname = f"[{hostname}]" if ":" in hostname else hostname
+        if ":" in hostname:
+            # urlsplit accepts expanded IPv6 and scoped addresses. A browser
+            # origin serializes the address in compressed hex, without a zone.
+            require("%" not in hostname, "IPv6 zone identifier rejected")
+            address = IPv6Address(hostname)
+            compressed = address.compressed
+            if address.ipv4_mapped is not None:
+                # Some Python versions render mapped addresses with dotted
+                # IPv4, whereas URL.origin always uses hexadecimal pieces.
+                mapped = int(address.ipv4_mapped)
+                compressed = f"::ffff:{mapped >> 16:x}:{mapped & 0xFFFF:x}"
+            equal(hostname, compressed, "IPv6 origin")
+            hostname = f"[{hostname}]"
+        else:
+            # urlsplit separates components; it does not validate WHATWG hosts.
+            # Canonical special-scheme domains are ASCII and contain none of
+            # the forbidden domain code points (including percent escapes).
+            require(all(ord(ch) > 0x20 and ord(ch) != 0x7F
+                        and ch not in "#%/:<>?@[\\]^|" for ch in hostname),
+                    "Forbidden domain character")
+            last = hostname.removesuffix(".").rsplit(".", 1)[-1]
+            if re.fullmatch(r"(?:[0-9]+|0x[0-9a-f]*)", last):
+                # WHATWG's ends-in-a-number check routes these hosts to IPv4.
+                # Only the four decimal octets can equal URL.origin; aliases
+                # (short/octal/hex/integer/trailing-dot) cannot be signed as-is.
+                equal(hostname, str(IPv4Address(hostname)), "IPv4 origin")
         reconstructed = f"{u.scheme}://{hostname}"
         port = u.port
         if port is not None and (u.scheme, port) not in {("http", 80), ("https", 443)}:
