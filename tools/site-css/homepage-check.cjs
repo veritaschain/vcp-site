@@ -41,6 +41,13 @@ async function checkSkipLink(page) {
 }
 
 async function checkNavigation(page, language, viewport, name) {
+  // Keep the initial screenshots and skip-link check in the first-visit state,
+  // then use the normal decline action before testing links behind the banner.
+  const consent = page.locator('#vso-analytics-panel');
+  if (await consent.isVisible()) {
+    await consent.locator('button').first().click();
+    await consent.waitFor({ state: 'hidden' });
+  }
   const dropdowns = page.locator('vcp-header .nav-item.dropdown');
   assert.equal(await dropdowns.count(), 5, 'Five navigation groups');
   const mobile = viewport.width <= 1024;
@@ -49,12 +56,14 @@ async function checkNavigation(page, language, viewport, name) {
 
   if (mobile) {
     assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+    assert.equal(await nav.evaluate(element => element.inert), true, 'Closed mobile links are excluded from keyboard focus');
     const closed = await nav.boundingBox();
     assert.ok(closed && closed.x + closed.width <= 0, 'Closed mobile menu is outside the viewport');
     await toggle.focus();
     await page.keyboard.press('Enter');
     await page.locator('vcp-header .nav-menu.active').waitFor();
     assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
+    assert.equal(await nav.evaluate(element => element.inert), false, 'Open mobile links are interactive');
     const opened = await nav.boundingBox();
     assert.ok(opened && opened.x >= 0 && opened.x + opened.width <= viewport.width, 'Open menu fits the viewport');
   }
@@ -69,8 +78,16 @@ async function checkNavigation(page, language, viewport, name) {
     await firstLink.waitFor({ state: 'visible' });
     await firstLink.focus();
     assert.equal(await firstLink.evaluate(element => element === document.activeElement), true, 'Group ' + (i + 1) + ' is keyboard reachable');
+    assert.equal(await button.getAttribute('aria-expanded'), 'true', 'Expanded state is announced');
     if (mobile) assert.equal(await page.locator('vcp-header .dropdown.active').count(), 1, 'One mobile group expanded');
     await assertNoHorizontalOverflow(page, language + ' ' + viewport.width + ' menu ' + (i + 1));
+    await page.keyboard.press('Escape');
+    await firstLink.waitFor({ state: 'hidden' });
+    assert.equal(await button.getAttribute('aria-expanded'), 'false', 'Escape collapses the group');
+    assert.equal(await button.evaluate(element => element === document.activeElement), true, 'Escape restores focus without reopening the group');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await button.getAttribute('aria-expanded'), 'true');
+    assert.equal(await firstLink.evaluate(element => element === document.activeElement), true, 'ArrowDown reopens and focuses the first link');
   }
 
   const hrefs = await page.locator('vcp-header .dropdown-menu a').evaluateAll(links => links.map(link => link.getAttribute('href')));
@@ -86,12 +103,27 @@ async function checkNavigation(page, language, viewport, name) {
 
   if (mobile) {
     await page.screenshot({ path: path.join(output, name + '-menu.png'), animations: 'disabled' });
+    // A single pointer click must switch groups even when the previous panel
+    // collapses and changes the next button's vertical position.
+    for (let i = 0; i < 5; i++) {
+      const button = dropdowns.nth(i).locator('.dropdown-toggle');
+      await button.click();
+      assert.equal(await button.getAttribute('aria-expanded'), 'true', 'One click opens mobile group ' + (i + 1));
+      assert.equal(await page.locator('vcp-header .dropdown.active').count(), 1);
+    }
     await toggle.click();
     assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
     assert.equal(await page.locator('vcp-header .nav-menu.active').count(), 0);
     assert.equal(await page.locator('vcp-header .dropdown.active').count(), 0, 'Closing menu resets expanded groups');
+    assert.equal(await nav.evaluate(element => element.inert), true, 'Closing removes links from keyboard focus again');
+    await toggle.click();
+    await page.keyboard.press('Escape');
+    assert.equal(await toggle.getAttribute('aria-expanded'), 'false', 'Escape closes mobile navigation');
+    assert.equal(await toggle.evaluate(element => element === document.activeElement), true, 'Closing returns focus to the mobile toggle');
   } else {
-    await page.locator('#vap-home-title').click();
+    // The expanded panel can cover the heading; use visible text below it.
+    await page.locator('.home-intro').click();
+    assert.equal(await page.locator('vcp-header .dropdown.active').count(), 0, 'Clicking outside closes the desktop panel');
   }
   const languageLinks = await page.locator('vcp-header .lang-link').evaluateAll(links => links.map(link => link.getAttribute('href')));
   assert.deepEqual([...languageLinks].sort(), ['/', '/ja/', '/zh/'].sort());
