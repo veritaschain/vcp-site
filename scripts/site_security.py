@@ -44,7 +44,7 @@ RUNTIME_SOURCES = {
         'img-src': {'https://www.googletagmanager.com', 'https://*.google-analytics.com'},
     },
     'assets/js/main.js': {'script-src': {'https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js'}},
-    'explorer/app/assets/index-DV4r5owp.js': {
+    'explorer/app/assets/index-DbnwJhL9.js': {
         'connect-src': {'https://veritaschain-evidence-demo.kamimura0000.chatgpt.site'},
     },
 }
