@@ -1,5 +1,5 @@
 {
- "as_of": "2026-11-17",
+ "as_of": "2026-11-18",
  "license": "CC BY 4.0",
  "excluded_counts": [
   {
@@ -8502,6 +8502,335 @@
      "ja": "EUの高リスクAIのログ・監督義務に関する主張を「反証あり」から「未確認」に変更しました。カリフォルニア州法に基づく請求であることは、EU法が適用されない証拠にはなりません。AI Actの適用範囲と適用日程の出典を追加しました。EU法違反や準拠を認定するものではありません。"
     }
    ]
+  },
+  {
+   "id": "V1110BARRACUDA",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Barracuda discloses an intrusion into its cloud environment through a vendor’s unretired access key, with tooling that matches the ARTEX framework",
+    "ja": "Barracuda、委託先の失効していないアクセスキーによる自社クラウド環境への侵入を公表（ツールはARTEXの特徴と一致）"
+   },
+   "event_date": "2026-11-01 to 2026-11-02 (activity, UTC); disclosed 2026-11-10, technical account 2026-11-11, notice updated 2026-11-13",
+   "verified": "2026-11-18",
+   "jurisdiction": {
+    "en": "United States company (Barracuda Networks); locations of the affected cloud environments not disclosed",
+    "ja": "米国企業（Barracuda Networks）。影響を受けたクラウド環境の所在地は非公表"
+   },
+   "category": "security incident",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "On 10 November 2026 Barracuda Networks published a Trust Center notice, and on 11 November its CISO Arve Kjoelen published a technical account, of an intrusion into Barracuda’s cloud environment on 1–2 November. The attacker used a cloud access key that Barracuda had given a vendor, described as a company working in AI, for an earlier project and had not retired. The key was stored in a configuration file in the vendor’s GitHub repository, and the vendor’s development environment had been compromised. Barracuda says the attacker touched about 10 cloud accounts in roughly 44 hours, moving from cloud accounts to a data-analysis system, source-code access tokens and Kubernetes clusters. It read stored secrets, had build jobs print encoded secrets into CI job logs, deployed a read-only container that mounted a host’s file system to collect that host’s credentials, and tried without success to create a new administrative cloud identity. It reached a system holding customers’ XDR integration credentials. Barracuda found no direct evidence that those credentials were viewed or accessed, says logging in that environment was not detailed enough to rule it out, and asked the customers it contacted to revoke and recreate them. Barracuda says the tooling matches the open-source ARTEX framework, which shows how the attacker operated, not who it was. It detected the activity on 4 November, after it had stopped.",
+    "ja": "2026年11月10日、Barracuda NetworksはTrust Centerで通知を公表し、11月11日には同社CISOのArve Kjoelen氏が、11月1〜2日に自社のクラウド環境が侵入を受けた件の技術的な説明を公表しました。攻撃者が使ったのは、Barracudaが以前のプロジェクトのために委託先（AI関連の企業とされる）へ渡し、失効させていなかったクラウドのアクセスキーです。キーは委託先のGitHubリポジトリ内の設定ファイルに保存されており、委託先の開発環境が侵害されていました。Barracudaによれば、攻撃者は約44時間で約10のクラウドアカウントに触れ、クラウドアカウントからデータ分析システム、ソースコードのアクセストークン、Kubernetesクラスタへと移りました。保存された秘密情報を読み、ビルドジョブにエンコードした秘密情報をCIのジョブログへ出力させ、ホストのファイルシステムをマウントする読み取り専用のコンテナを置いてそのホストの認証情報を集め、新しいクラウド管理者IDの作成も試みましたが失敗しました。顧客のXDR連携認証情報を保管するシステムにも到達しました。Barracudaは、それらの認証情報が閲覧・アクセスされた直接の証拠は見つかっていないとしつつ、その環境のログは否定できるほど詳細ではなかったと述べ、連絡した顧客に認証情報の失効と再作成を求めました。Barracudaは、ツールがオープンソースのARTEXの特徴と一致するとし、それが示すのは攻撃者の手口であって正体ではないとしています。活動を検知したのは、活動が止まった後の11月4日でした。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "The attacker used a cloud access key that remained valid after the vendor’s work for Barracuda had ended.",
+      "ja": "攻撃者は、委託先の業務終了後も有効だったクラウドのアクセスキーを使った。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "barracuda-blog",
+      "barracuda-trust"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "Barracuda says it did not retire the key when the vendor finished. The 13 November update says the key was stored in a configuration file in the vendor’s GitHub repository and that the vendor’s environment was compromised; the blog dates that compromise to October. The vendor is not named and is described as a company working in AI.",
+      "ja": "Barracudaは、委託先の業務終了時にキーを失効させなかったとしている。11月13日の更新は、キーが委託先のGitHubリポジトリ内の設定ファイルに保存されており、委託先の環境が侵害されたとする。ブログはその侵害を10月としている。委託先の名称は公表されておらず、AI関連の企業とされている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The attacker reached about 10 cloud accounts in about 44 hours and moved on to data-analysis, source-code and Kubernetes systems.",
+      "ja": "攻撃者は約44時間で約10のクラウドアカウントに到達し、データ分析、ソースコード、Kubernetesの各システムへ横展開した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "barracuda-blog"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "Barracuda’s figures. It records the first call with the key at 04:33 UTC on 1 November and the last activity at 23:31 UTC on 2 November, and says the activity crossed five platforms.",
+      "ja": "Barracudaの数字である。キーによる最初の呼び出しを11月1日04:33（UTC）、最後の活動を11月2日23:31（UTC）と記録し、活動は5つの基盤にまたがったとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The attacker had CI jobs print secrets into job logs and placed a credential-harvesting container in Kubernetes.",
+      "ja": "攻撃者は、CIのジョブログに秘密情報を出力させ、Kubernetesに認証情報を集めるコンテナを置いた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "barracuda-blog"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "Short-lived branches pushed to several repositories triggered a build workflow that printed the build system’s secrets, encoded so that log masking would not hide them. The container was read-only and mounted the host server’s file system. An attempt to create a new administrative cloud identity was blocked.",
+      "ja": "複数のリポジトリに短命のブランチをpushしてビルドのワークフローを起動し、ビルド基盤の秘密情報を出力させた。ログのマスキングで隠れないようエンコードしていた。コンテナは読み取り専用で、ホストサーバーのファイルシステムをマウントしていた。新しいクラウド管理者IDの作成の試みは阻止された。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Barracuda attributes the tooling to ARTEX.",
+      "ja": "Barracudaは、使われたツールをARTEXとしている。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "barracuda-blog",
+      "barracuda-trust"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "Barracuda’s assessment. The blog says the probe names, indicators, order of work and search routines all match ARTEX; the notice says the activity is consistent with publicly reported characteristics of ARTEX. The brief VSO checked said Barracuda had confirmed an intrusion by ARTEX. Barracuda says that, because many groups use ARTEX, the match shows how the attacker operated, not who it was.",
+      "ja": "Barracudaの評価である。ブログは、プローブの名前、痕跡、作業の順序、探索の手順がいずれもARTEXと一致するとし、通知は公に報告されているARTEXの特徴と整合するとしている。VSOが確認したブリーフは「ARTEXによる不正侵入を確認した」と書いていた。Barracudaは、ARTEXは多くのグループが使うため、一致が示すのは攻撃者の手口であって正体ではないとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Barracuda found no evidence that customers’ XDR integration credentials were viewed or taken.",
+      "ja": "顧客のXDR連携認証情報が閲覧・窃取された証拠は見つかっていない。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "barracuda-blog",
+      "barracuda-trust"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "Barracuda says its investigation found no direct evidence that the attacker viewed or accessed those credentials, and that logging in that environment was not detailed enough to rule it out. It is adding data-access logging where it was missing.",
+      "ja": "Barracudaは、攻撃者がそれらの認証情報を閲覧・アクセスした直接の証拠は調査で見つかっていないとし、同時に、その環境のログは否定できるほど詳細ではなかったとしている。データアクセスのログを、欠けていた箇所に追加しているとする。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Barracuda asked potentially affected customers to reissue their credentials.",
+      "ja": "Barracudaは、影響を受けた可能性のある顧客に認証情報の再発行を求めた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "barracuda-trust",
+      "barracuda-blog"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "Scope as stated by Barracuda: customers using an API integration for Barracuda Managed XDR Cloud or Monitored Endpoint whom Barracuda contacted are asked to revoke and recreate their integration credentials and to review connected systems’ activity logs since 1 November 2026. Barracuda says it would rather have some customers rotate keys that were never touched than leave one exposed.",
+      "ja": "Barracudaが示す範囲：Barracuda Managed XDR CloudまたはMonitored EndpointのAPI連携を使い、Barracudaから連絡を受けた顧客に、連携認証情報の失効と再作成、および2026年11月1日以降の接続先システムの活動ログの確認を求めている。Barracudaは、一度も触れられていないキーの更新を一部の顧客に求めるほうが、1つでも露出したままにするよりよいとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "This is the same incident as the unnamed customer case Cloudflare described on 13 November.",
+      "ja": "本件は、Cloudflareが11月13日に記述した匿名顧客の事案と同じ事件である。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "barracuda-blog",
+      "cloudflare"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "Neither account mentions the other, and the entry points differ: in Cloudflare’s account, a compromised account-level API token previously used for CI/CD; in Barracuda’s, a vendor’s cloud access key. Shared tooling does not establish a shared incident or actor.",
+      "ja": "どちらの説明も相手に触れておらず、侵入口も異なる。Cloudflareの説明では、CI/CDで使われていたアカウントレベルのAPIトークンが侵害されていた。Barracudaの説明では、委託先のクラウドのアクセスキーである。ツールが共通であることは、同じ事件・同じ攻撃者であることを示さない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The attacker has been identified.",
+      "ja": "攻撃者は特定されている。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "barracuda-blog",
+      "barracuda-trust"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "Barracuda does not identify the attacker. It says searches for wallet-related variables and files are consistent with a financially motivated attacker, that no wallet material existed on those systems, and that a motive involving the AI-service credentials within reach cannot be ruled out.",
+      "ja": "Barracudaは攻撃者を特定していない。暗号資産ウォレットに関する変数やファイルの探索は金銭目的の攻撃者と整合するとし、それらのシステムにウォレットの資料はなかったこと、手の届く範囲にあったAIサービスの認証情報が目的だった可能性も否定できないことを述べている。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: Barracuda reconstructed a 44-hour timeline across five platforms from its own records, so most of the intrusion was recorded. The gap it reports is in one environment: logging there was not detailed enough to rule out access to customers’ XDR integration credentials, and data-access logging is being added where it was missing. Access that was never logged at that level is a pre-measurement drop (Appendix A); no provenance mechanism, VAP included, can recover it. The brief’s point that a valid key does not show authorisation concerns how a credential’s issue, expiry and revocation are recorded and tied to the actions taken with it. VAP v1.2 does not specify that; it remains in unadopted proposals.",
+    "ja": "設計上の示唆：Barracudaは自社の記録から、5つの基盤にまたがる44時間の経過を再構成しました。侵入の大部分は記録されていたことになります。同社が挙げる欠落は1つの環境にあります。そこではログが、顧客のXDR連携認証情報へのアクセスを否定できるほど詳細ではなく、データアクセスのログは欠けていた箇所に追加されているところです。その粒度で一度も記録されなかったアクセスは、計測前の欠落（Appendix A、Pre-measurement drop）にあたり、VAPを含め、どの来歴の仕組みでも復元できません。正規のキーによる操作だからといって権限が正当とは限らない、というブリーフの指摘は、認証情報の発行・有効期限・失効をどう記録し、それを使った操作とどう結び付けるかの問題です。VAP v1.2はこれを定めておらず、未採択の提案の段階にあります。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not retire unused credentials, refuse a valid key, detect an intrusion at run time or recover access events that were never logged. It does not identify the attacker or establish whether customer credentials were viewed. Barracuda’s lessons about short-lived, narrowly scoped credentials are its own assessment of credential practice, not a statement about VAP.",
+    "ja": "VAPは、使われなくなった認証情報を失効させず、正規のキーを拒否せず、侵入を実行時に検知せず、記録されなかったアクセスを復元しません。攻撃者を特定せず、顧客の認証情報が閲覧されたかどうかも立証しません。短命で範囲を絞った認証情報についての教訓は、Barracuda自身の認証情報の運用に関する評価であり、VAPについての記述ではありません。"
+   },
+   "sources": [
+    {
+     "id": "barracuda-blog",
+     "label": "Barracuda (Arve Kjoelen, CISO) — Forty-four hours: Anatomy of a machine-speed intrusion (11 November 2026)",
+     "url": "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion",
+     "kind": "primary"
+    },
+    {
+     "id": "barracuda-trust",
+     "label": "Barracuda Trust Center — Barracuda XDR Integration Credentials (published 10 November 2026, updated 13 November 2026)",
+     "url": "https://trust.barracuda.com/security/barracuda-xdr-integration-credentials",
+     "kind": "primary"
+    },
+    {
+     "id": "cloudflare",
+     "label": "Cloudflare (Cloudforce One) — Adapting to AI penetration testing orchestrators: The Modern Security Model (13 November 2026)",
+     "url": "https://blog.cloudflare.com/adapting-to-ai-penetration-testing-orchestrators/",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1116EXPLOITAGENT",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Google Threat Intelligence Group reports exploit_agent, an attacker framework that turned web-application patches into exploits and ran them without a human in the loop",
+    "ja": "Google Threat Intelligence Group、ウェブアプリのパッチ差分から攻撃コードを作り、人の介在なしに実行する攻撃者のフレームワーク「exploit_agent」を報告"
+   },
+   "event_date": "2026-11-16 (report; 22:00 UTC); activity in the preceding quarter, dates not disclosed",
+   "verified": "2026-11-18",
+   "jurisdiction": {
+    "en": "Not disclosed — GTIG reports an interest in French websites; operator not identified",
+    "ja": "非公表 — GTIGはフランスのWebサイトへの関心を報告。運用者は特定されていない"
+   },
+   "category": "security incident campaign report",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "On 16 November 2026 Google Threat Intelligence Group (GTIG) published its quarterly AI threat tracker, ‘Agentic Threat Activity Crosses a Significant Threshold’, prepared with Mandiant. GTIG says that in the past quarter it identified, for the first time, threat actors using LLM frameworks to fully automate vulnerability discovery and exploitation without a human in the loop. It found an exposed staging server hosting a multi-agent framework it calls exploit_agent, which integrates multiple frontier and local LLMs and runs continuous differential analysis of popular web-application software: it compares code before and after patch announcements, identifies potential vulnerabilities, drafts exploits and executes them without human intervention. The server also held data exfiltrated from targeted victims and scripts for internal reconnaissance, brute-forcing, installing webshells and removing other attackers’ webshells. GTIG says victim telemetry on the server suggests the operator was interested in French websites in the media and entertainment industries and in the education sector. A configuration file carried Russian-language comments. GTIG does not give the number of victims, the volume of data taken, the models used or the operator’s identity. The report’s sections on ARTEX, CAIRN, PentAGI and other frameworks are not recorded here as new incidents.",
+    "ja": "2026年11月16日、Google Threat Intelligence Group（GTIG）は、Mandiantと共同でまとめた四半期のAI脅威トラッカー「Agentic Threat Activity Crosses a Significant Threshold」を公表しました。GTIGは、この四半期に初めて、攻撃者がLLMのフレームワークを使い、脆弱性の発見から悪用までを人の介在なしに完全に自動化している例を確認したとしています。GTIGは外部から到達できる状態のステージングサーバーを見つけました。そこにはexploit_agentと呼ぶマルチエージェントのフレームワークがあり、複数のフロンティアLLMとローカルLLMを組み込み、広く使われているWebアプリケーションの差分解析を継続的に行っていました。パッチ公表の前後でコードを比較し、潜在的な脆弱性を特定し、攻撃コードを作成し、人の介在なしに実行します。サーバーには、標的から持ち出したデータと、内部の偵察、総当たり、Webシェルの設置、他の攻撃者のWebシェルの除去のためのスクリプトもありました。GTIGは、サーバー上の被害テレメトリーから、運用者はメディア・エンターテインメント業界と教育分野のフランスのWebサイトに関心を持っていたとみられるとしています。設定ファイルにはロシア語のコメントがありました。GTIGは、被害の件数、持ち出されたデータの量、使われたモデル、運用者の正体を示していません。同じ報告のARTEX、CAIRN、PentAGIなどの節は、ここでは新しい事件として記録していません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "GTIG found a publicly exposed relay server run by the attacker.",
+      "ja": "GTIGは、攻撃者が運用する公開状態の中継サーバーを発見した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "gtig"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "With a correction. GTIG describes an exposed staging server hosting the framework, not a relay server.",
+      "ja": "訂正付きで確認した。GTIGが記述しているのは、フレームワークを置いた外部から到達可能なステージングサーバーであり、中継サーバーではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "exploit_agent integrates multiple LLMs and, without human intervention, analyses patch differences, finds vulnerabilities, generates exploit code and executes it.",
+      "ja": "exploit_agentは複数のLLMを統合し、更新前後の差分解析、脆弱性の発見、攻撃コードの生成、実行までを人の介在なしに進める。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "gtig"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "GTIG’s description: the framework integrates multiple frontier and local LLMs, compares code before and after patch announcements, drafts exploits and automatically executes them without human intervention. GTIG does not name the models.",
+      "ja": "GTIGの記述による。フレームワークは複数のフロンティアLLMとローカルLLMを組み込み、パッチ公表の前後でコードを比較し、攻撃コードを作成して人の介在なしに自動で実行する。GTIGはモデル名を示していない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The attacks were carried out fully autonomously by AI.",
+      "ja": "攻撃はAIによって完全に自律的に行われた。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "gtig"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "GTIG’s ‘without a human in the loop’ covers the pipeline from vulnerability discovery to exploitation. It does not say that the post-compromise scripts were run by an AI or how much of any intrusion an AI performed. ‘Fully autonomous’ is not GTIG’s wording for this framework.",
+      "ja": "GTIGの「人の介在なし」は、脆弱性の発見から悪用までの工程についての記述である。侵入後のスクリプトをAIが実行したとも、個々の侵入のどこまでをAIが行ったとも述べていない。「完全自律型」は、このフレームワークについてのGTIGの表現ではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The server held exfiltrated data and attack scripts for tasks such as internal reconnaissance and installing webshells.",
+      "ja": "サーバーには、持ち出されたデータと、内部探索やWebシェル設置などの攻撃用スクリプトがあった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "gtig"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "GTIG lists data exfiltrated from targeted victims and scripts for internal reconnaissance, brute-forcing, installing webshells and removing other attackers’ webshells.",
+      "ja": "GTIGは、標的から持ち出されたデータと、内部の偵察、総当たり、Webシェルの設置、他の攻撃者のWebシェルの除去のためのスクリプトを挙げている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "French media and education organisations were the main targets.",
+      "ja": "フランスのメディア・教育関連組織が主な標的だった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "gtig"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "As GTIG’s inference, with a correction to scope. GTIG says victim telemetry on the server suggests the operator was interested in French websites associated with the media and entertainment industries and the education sector. It names no organisation and gives no count of confirmed victims.",
+      "ja": "GTIGの推定として確認した。ただし範囲は訂正が要る。GTIGは、サーバー上の被害テレメトリーから、運用者がメディア・エンターテインメント業界と教育分野に関係するフランスのWebサイトに関心を持っていたとみられるとしている。組織名は示さず、確認された被害の件数も示していない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Mandiant took part in finding exploit_agent.",
+      "ja": "exploit_agentの発見にMandiantが関与した。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "gtig"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "The report as a whole is by GTIG and Mandiant, but the exploit_agent passage attributes the finding to GTIG.",
+      "ja": "報告全体はGTIGとMandiantによるものだが、exploit_agentの節は発見をGTIGによるものとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The operator has been identified.",
+      "ja": "運用者は特定されている。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "gtig"
+     ],
+     "claim_as_of": "2026-11-18",
+     "evidence_note": {
+      "en": "GTIG names no actor, group or country for exploit_agent. It shows Russian-language comments in a configuration file for the LLM API keys but does not present them as attribution.",
+      "ja": "GTIGはexploit_agentについて、攻撃者、グループ、国を示していない。LLMのAPIキーを設定するファイルにロシア語のコメントがあったことを示しているが、それを帰属の根拠とはしていない。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: exploit_agent is the attacker’s own system, and GTIG’s account rests on the attacker’s exposed server and the victim telemetry it held. An attacker who runs their own framework produces no VAP records. What VAP could bear on afterwards is what the operators of the targeted websites recorded on their own systems. The brief’s point that an agent’s report of success differs from what the target system observed concerns those target-side records: VAP can make them checkable as records, but does not decide which account is true.",
+    "ja": "設計上の示唆：exploit_agentは攻撃者自身のシステムで、GTIGの説明は攻撃者の公開状態のサーバーと、そこにあった被害テレメトリーに基づいています。自前のフレームワークを動かす攻撃者はVAPの記録を作りません。事後にVAPが関わりうるのは、標的になったWebサイトの運用者が自らのシステムで記録したものです。エージェントの成功報告と標的のシステムで観測された結果は別物だ、というブリーフの指摘は、その標的側の記録に関わります。VAPはそれらを記録として確かめられるようにしますが、どちらの説明が正しいかは判断しません。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not detect or interrupt exploitation, shorten the window between a patch and its exploitation, or identify an operator. It places no obligation on an attacker’s framework and cannot reveal actions nobody recorded. Record integrity is not record truth: an agent’s success report kept in a record would remain a claim.",
+    "ja": "VAPは、悪用を検知・中断せず、パッチの公表から悪用までの期間を縮めず、運用者を特定しません。攻撃者のフレームワークには何の義務も課さず、誰も記録しなかった操作を明らかにすることもできません。記録の完全性は記録の真実性ではありません。記録に残ったエージェントの成功報告は、主張のままです。"
+   },
+   "sources": [
+    {
+     "id": "gtig",
+     "label": "Google Threat Intelligence Group (Aurora Blum, Kelli Vanderlee, Jess Xia, David Mainor) — GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold (16 November 2026)",
+     "url": "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
   }
  ]
 }
