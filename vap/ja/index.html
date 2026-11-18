@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="ja"><head><script defer src="https://veritaschain.org/assets/js/analytics.js?v=20261028"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VAPとは？AIの来歴・監査証拠フレームワーク | VSO</title>
+<meta name="description" content="VAP（Verifiable AI Provenance Framework）はAIの来歴・操作記録を事後検証する枠組みです。公開ドラフト、プロファイル、証拠の限界を解説。実験的拡張は未採択、第三者による独立再現は未成立です。">
+<link rel="canonical" href="https://vap.veritaschain.org/ja/">
+<link rel="alternate" hreflang="en" href="https://vap.veritaschain.org/">
+<link rel="alternate" hreflang="ja" href="https://vap.veritaschain.org/ja/">
+<link rel="alternate" hreflang="x-default" href="https://vap.veritaschain.org/">
+<link rel="alternate" type="application/atom+xml" title="VAP Blog" href="https://vap.veritaschain.org/feed.xml">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<meta name="theme-color" content="#131316">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:site_name" content="Verifiable AI Provenance Framework (VAP)">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vap.veritaschain.org/ja/">
+<meta property="og:title" content="VAPとは？AIの来歴・監査証拠フレームワーク | VSO">
+<meta property="og:description" content="VAP（Verifiable AI Provenance Framework）はAIの来歴・操作記録を事後検証する枠組みです。公開ドラフト、プロファイル、証拠の限界を解説。実験的拡張は未採択、第三者による独立再現は未成立です。">
+<meta property="og:image" content="https://vap.veritaschain.org/assets/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="VAP — Verifiable AI Provenance Framework. A chain of ledger blocks with one hollow block.">
+<meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VAPとは？AIの来歴・監査証拠フレームワーク | VSO">
+<meta name="twitter:description" content="VAP（Verifiable AI Provenance Framework）はAIの来歴・操作記録を事後検証する枠組みです。公開ドラフト、プロファイル、証拠の限界を解説。実験的拡張は未採択、第三者による独立再現は未成立です。">
+<meta name="twitter:image" content="https://vap.veritaschain.org/assets/og-image.png">
+<!-- google-site-verification: paste your Search Console meta tag here -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://vap.veritaschain.org/#website", "url": "https://vap.veritaschain.org/", "name": "検証可能なAIプロビナンス・フレームワーク（VAP）", "alternateName": "VAP", "inLanguage": "ja", "publisher": {"@id": "https://vap.veritaschain.org/#vso"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://vap.veritaschain.org/#vso", "name": "VeritasChain Standards Organization", "alternateName": "VSO", "url": "https://vap.veritaschain.org/", "logo": "https://vap.veritaschain.org/assets/og-image.png", "email": "standards@veritaschain.org", "sameAs": ["https://github.com/veritaschain", "https://veritaschain.org"]}</script>
+<style>
+:root{--bg:#131316;--panel:#1A1A1F;--panel2:#1E1E24;--line:#2A2A31;--ink:#E9E9EC;
+--muted:#9A9AA3;--brand:#C8102E;--brand-ink:#FA5A6E;--mono:ui-monospace,SFMono-Regular,Menlo,
+Consolas,"Cascadia Code",monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,
+"Hiragino Sans","Noto Sans JP",Meiryo,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 var(--sans);
+-webkit-font-smoothing:antialiased}
+a{color:var(--brand-ink);text-underline-offset:3px}a:hover{color:#fff}
+.skip{position:absolute;left:-999px;top:0;background:var(--brand);color:#fff;padding:.5rem 1rem;z-index:9}
+.skip:focus{left:0}
+:focus-visible{outline:2px solid var(--brand-ink);outline-offset:2px}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+header.site{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(19,19,22,.92);
+backdrop-filter:blur(6px);z-index:5}
+header.site .wrap{display:flex;align-items:center;gap:1.2rem;min-height:58px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--ink);
+font-weight:800;letter-spacing:.02em}
+.brand svg{width:38px;height:24px}
+.brand small{color:var(--muted);font-weight:400;font-size:.72rem;letter-spacing:.06em}
+nav.main{margin-left:auto;display:flex;gap:.15rem;flex-wrap:wrap;align-items:center}
+nav.main a{color:var(--muted);text-decoration:none;padding:.35rem .6rem;border-radius:6px;font-size:.92rem}
+nav.main a[aria-current]{color:var(--ink);background:var(--panel2)}
+nav.main a:hover{color:var(--ink)}
+.lang{font-family:var(--mono);font-size:.8rem;border:1px solid var(--line);border-radius:6px;
+padding:.3rem .55rem;color:var(--ink)!important;text-decoration:none;margin-left:.4rem}
+.lang:hover{border-color:var(--brand)}
+main{padding:2.6rem 0 3.5rem}
+.crumbs{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin:0 0 1.4rem}
+.crumbs a{color:var(--muted)}
+h1{font-size:clamp(1.9rem,4.6vw,2.9rem);line-height:1.14;letter-spacing:-.015em;margin:.2rem 0 1rem;
+font-weight:800}
+h1 .thin{font-weight:300;color:var(--muted)}
+h2{font-size:1.42rem;letter-spacing:-.01em;margin:2.6rem 0 .8rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .45rem}
+p{margin:.7rem 0}.lead{font-size:1.12rem;color:#C9C9D0;max-width:64ch}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;
+color:var(--brand-ink);margin:0 0 .3rem}
+section{margin:0 0 2.8rem}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:2.2rem;align-items:center;
+padding:1.4rem 0 .6rem}
+.chain-hero{width:100%;height:auto}
+@media(max-width:840px){.hero{grid-template-columns:1fr}}
+.badges{display:flex;gap:.45rem;flex-wrap:wrap;margin:1rem 0}
+.chip{font-family:var(--mono);font-size:.74rem;padding:.22rem .6rem;border-radius:999px;
+white-space:nowrap}
+.chip-released{background:var(--brand);color:#fff;border:1.5px solid var(--brand)}
+.chip-rc{color:var(--brand-ink);border:1.5px solid var(--brand)}
+.chip-wd{color:var(--muted);border:1.5px dashed #4A4A55}
+.chip-concept{color:var(--muted);border:1.5px dotted #4A4A55}
+.cta{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem}
+.btn{display:inline-block;background:var(--brand);color:#fff;text-decoration:none;font-weight:700;
+padding:.6rem 1.1rem;border-radius:8px;font-size:.95rem}
+.btn:hover{background:#E0243F;color:#fff}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--brand)}
+.chain-div{margin:.4rem 0 2.4rem;text-align:center}.chain-div svg{width:200px;height:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;margin:1.2rem 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.15rem}
+.card h3{margin:.35rem 0 .3rem}.card p{margin:.3rem 0;color:#C4C4CC;font-size:.94rem}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
+.pid{font-family:var(--mono);font-weight:700;color:var(--brand-ink);letter-spacing:.05em}
+.alias{font-weight:400;color:var(--muted);font-size:.85em}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem}
+@media(max-width:760px){.twocol{grid-template-columns:1fr}}
+ul,ol{padding-left:1.3rem}li{margin:.4rem 0}ul.plain{list-style:none;padding-left:0}
+table.ledger{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.93rem;
+background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+table.ledger caption{caption-side:top;text-align:left;font-family:var(--mono);font-size:.76rem;
+letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.6rem .9rem;
+background:var(--panel2)}
+table.ledger th,table.ledger td{padding:.65rem .9rem;border-top:1px solid var(--line);
+text-align:left;vertical-align:top}
+table.ledger thead th{background:var(--panel2);border-top:none;font-family:var(--mono);
+font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+table.ledger tr.hollow td{border-top:1.5px dashed var(--brand);border-bottom:1.5px dashed var(--brand);
+background:rgba(200,16,46,.05)}
+blockquote.clause{border-left:3px solid var(--brand);background:var(--panel);margin:1.6rem 0;
+padding:1rem 1.2rem;border-radius:0 10px 10px 0}
+blockquote.clause p{margin:.3rem 0;color:#D6D6DC}
+blockquote.clause .trans{color:var(--muted);font-size:.92rem}
+blockquote.clause footer{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin-top:.5rem}
+pre{background:#0E0E11;border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem;
+overflow-x:auto;font-size:.85rem;line-height:1.55}
+code{font-family:var(--mono)}p code,li code,td code{background:var(--panel2);border:1px solid var(--line);
+border-radius:5px;padding:.06rem .35rem;font-size:.85em}
+.note{color:var(--muted);font-size:.92rem}
+.status{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brand);
+border-radius:10px;padding:1.2rem 1.4rem}
+.more{font-family:var(--mono);font-size:.88rem}
+details.faq{border:1px solid var(--line);border-radius:10px;background:var(--panel);
+margin:.7rem 0;padding:.2rem 1.1rem}
+details.faq summary{cursor:pointer;list-style:none;display:flex;gap:.6rem;align-items:baseline}
+details.faq summary::before{content:"+";font-family:var(--mono);color:var(--brand-ink);font-size:1.2rem}
+details.faq[open] summary::before{content:"–"}
+details.faq h2{display:inline;font-size:1.02rem;margin:0}
+details.faq summary{padding:.7rem 0}
+details.faq p{color:#C4C4CC;margin:.2rem 0 1rem}
+.post-card h2{margin:.4rem 0}
+footer.site{border-top:1px solid var(--line);padding:1.8rem 0 2.4rem;color:var(--muted);
+font-size:.86rem}
+footer.site .disclosure{font-family:var(--mono);font-size:.76rem;border:1px dashed #4A4A55;
+border-radius:8px;padding:.6rem .9rem;margin-bottom:1.1rem;color:#B8B8C0}
+footer.site nav{display:flex;gap:1rem;flex-wrap:wrap;margin:.6rem 0}
+footer.site a{color:var(--muted)}footer.site a:hover{color:var(--ink)}
+
+/* ---- motion (fully disabled under prefers-reduced-motion) ---- */
+nav.main a,footer.site a,a{transition:color .15s ease}
+.card{transition:border-color .2s ease}
+@media(prefers-reduced-motion:no-preference){
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:48}to{stroke-dashoffset:0}}
+@keyframes march{to{stroke-dashoffset:-9}}
+@keyframes marchr{to{stroke-dashoffset:-26}}
+main h1{animation:rise .45s ease-out both}
+.hero .eyebrow,.hero h1,.hero .lead,.hero .badges,.hero .cta{opacity:0;animation:rise .55s ease-out forwards}
+.hero .eyebrow{animation-delay:.05s}.hero h1{animation-delay:.12s}.hero .lead{animation-delay:.22s}
+.hero .badges{animation-delay:.34s}.hero .cta{animation-delay:.46s}
+.chain-hero .cb{opacity:0;animation:rise .5s ease-out forwards}
+.chain-hero .cb1{animation-delay:.15s}.chain-hero .cb2{animation-delay:.4s}
+.chain-hero .cb4{animation-delay:.9s}.chain-hero .cb5{animation-delay:1.15s}
+.chain-hero .hollow{opacity:0;animation:rise .5s .65s ease-out forwards,marchr 4.5s 1.3s linear infinite}
+.chain-hero .cls{stroke-dasharray:48;stroke-dashoffset:48}
+.chain-hero .cl1{animation:draw .35s .34s ease-out forwards}
+.chain-hero .cl4{animation:draw .35s 1.09s ease-out forwards}
+.chain-hero .cld{opacity:0}
+.chain-hero .cl2{animation:fade .35s .59s forwards,march 1.4s .59s linear infinite}
+.chain-hero .cl3{animation:fade .35s .84s forwards,march 1.4s .84s linear infinite}
+.chain-hero .lbl{opacity:0;animation:fade .6s 1.35s forwards}
+.chain-hero .cap{opacity:0;animation:fade .8s 1.7s forwards}
+.chain-div .march{animation:march 1.6s linear infinite}
+.card{transition:transform .2s ease,border-color .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--brand)}
+.btn{transition:transform .15s ease,background .15s ease,border-color .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:none}
+}
+
+/* ---- motion v2: pulses, marquee, stats, pipeline, link underline, progress ---- */
+.progress{position:fixed;top:0;left:0;right:0;height:2px;background:var(--brand);
+transform:scaleX(0);transform-origin:0 0;z-index:9;pointer-events:none}
+.tickwrap{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+margin:2.4rem 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.tick{display:flex;width:max-content;font-family:var(--mono);font-size:.78rem;
+color:var(--muted);padding:.55rem 0}
+.tickrow{display:flex;gap:2.4rem;padding-right:2.4rem;white-space:nowrap}
+.tick .sep{color:var(--brand)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1.3rem 0 1.6rem}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1rem .6rem;text-align:center}
+.stat.zero{border-style:dashed;border-color:#4A4A55}
+.stat .num{display:block;font-family:var(--mono);font-size:2.1rem;font-weight:700;color:var(--ink);line-height:1.1}
+.stat .nzero{color:var(--brand-ink)}
+.stat .slbl{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+.pipe{margin:1.6rem auto;max-width:680px}
+.pipe svg{width:100%;height:auto;display:block;background:#17171B;border:1px solid var(--line);border-radius:10px}
+.pl .flowdot{opacity:0}
+@media(prefers-reduced-motion:no-preference){
+@keyframes vpulse{0%{transform:translateX(14px);opacity:0}4%{opacity:1}
+46%{transform:translateX(540px);opacity:1}52%,100%{transform:translateX(540px);opacity:0}}
+.chain-hero .vpulse{animation:vpulse 7s 2.4s linear infinite}
+@keyframes dpulse{0%{transform:translateX(28px);opacity:0}8%{opacity:1}
+70%{transform:translateX(168px);opacity:1}78%,100%{opacity:0}}
+.chain-div .dpulse{animation:dpulse 4.5s linear infinite}
+@keyframes tick{to{transform:translateX(-50%)}}
+.tick{animation:tick 38s linear infinite}
+main p a,main li a,main td a{text-decoration:none;
+background:linear-gradient(currentColor,currentColor) left bottom/0% 1.5px no-repeat;
+transition:background-size .25s ease,color .15s ease;padding-bottom:1px}
+main p a:hover,main li a:hover,main td a:hover{background-size:100% 1.5px}
+@keyframes plst{to{opacity:1}}
+.pl .st{opacity:.22}
+.pl .st1{animation:plst .4s linear 1.0s forwards}
+.pl .st2{animation:plst .4s linear 3.0s forwards}
+.pl .st3{animation:plst .4s linear 5.2s forwards}
+.pl .st4{animation:plst .4s linear 7.4s forwards}
+.pl .st5{transform-origin:585px 72px;animation:plst .4s linear 9.6s forwards}
+@keyframes plflow{0%,6%{transform:translateX(55px);opacity:0}10%{opacity:1}
+24%{transform:translateX(185px)}42%{transform:translateX(320px)}
+60%{transform:translateX(455px)}80%{transform:translateX(585px);opacity:1}
+86%,100%{transform:translateX(585px);opacity:0}}
+.pl .flowdot{animation:plflow 12s 1s linear infinite}
+}
+
+
+/* ---- animated figures ---- */
+.fig{margin:1.8rem auto;max-width:680px}
+.fig svg{width:100%;height:auto;display:block;background:#17171B;border:1px solid var(--line);border-radius:10px}
+.fig figcaption{font-family:var(--mono);font-size:.76rem;color:var(--muted);margin-top:.55rem;line-height:1.55}
+/* transient actors are hidden in the static frame */
+.d1 .sweep,.d1 .ok2,.d1 .alth0,.d2 .t1dot,.d2 .t2dot,.d2 .t3dot,.d2 .t3solid,.d3 .s3fill,.d3 .n5{opacity:0}
+@media(prefers-reduced-motion:no-preference){
+/* D1 — chain verification, 12s cycle */
+@keyframes d1sweep{0%,6%{transform:translateX(0);opacity:0}8%{opacity:1}30%{transform:translateX(450px);opacity:1}33%,48%{opacity:0}50%{transform:translateX(0);opacity:1}72%{transform:translateX(450px);opacity:1}75%,100%{opacity:0}}
+@keyframes d1ok1{0%,11%{opacity:0}13%,96%{opacity:1}100%{opacity:0}}
+@keyframes d1ok2{0%,18%{opacity:0}20%,58%{opacity:1}60%,100%{opacity:0}}
+@keyframes d1ok3{0%,27%{opacity:0}29%,96%{opacity:1}100%{opacity:0}}
+@keyframes d1alt{0%,38%{opacity:0}42%{opacity:1}44%{opacity:.4}46%,96%{opacity:1}100%{opacity:0}}
+@keyframes d1h0{0%,40%{opacity:1}42%,100%{opacity:0}}
+@keyframes d1h1{0%,40%{opacity:0}42%,96%{opacity:1}100%{opacity:0}}
+@keyframes d1bad{0%,60%{opacity:0}63%,96%{opacity:1}100%{opacity:0}}
+@keyframes d1det{0%,66%{opacity:0}69%,96%{opacity:1}100%{opacity:0}}
+.d1 .sweep{animation:d1sweep 12s linear infinite}
+.d1 .ok1{animation:d1ok1 12s linear infinite}
+.d1 .ok2{opacity:1;animation:d1ok2 12s linear infinite}
+.d1 .ok3{animation:d1ok3 12s linear infinite}
+.d1 .altfill,.d1 .altlbl{animation:d1alt 12s linear infinite}
+.d1 .alth0{opacity:1;animation:d1h0 12s linear infinite}
+.d1 .alth1{animation:d1h1 12s linear infinite}
+.d1 .bad2{animation:d1bad 12s linear infinite}
+.d1 .det{animation:d1det 12s linear infinite}
+/* D2 — three tiers, 14s cycle */
+@keyframes d2t1{0%,4%{transform:translateX(0);opacity:0}6%{opacity:1}22%{transform:translateX(150px);opacity:1}28%,100%{transform:translateX(170px);opacity:0}}
+@keyframes d2t2{0%,10%{transform:translateX(0);opacity:0}12%{opacity:1}34%{transform:translateX(240px);opacity:1}42%,100%{transform:translateX(300px);opacity:0}}
+@keyframes d2t3{0%,16%{transform:translateX(0);opacity:0}18%{opacity:1}52%{transform:translateX(470px);opacity:1}54%,100%{opacity:0}}
+@keyframes d2solid{0%,52%{opacity:0}54%,68%{opacity:1}72%,100%{opacity:0}}
+@keyframes d2hollow{0%,52%{opacity:0}54%,100%{opacity:1}}
+@keyframes d2ring{0%,72%{opacity:0;transform:scale(.6)}76%{opacity:1;transform:scale(1)}84%{opacity:.25;transform:scale(1.25)}88%{opacity:1;transform:scale(1)}96%{opacity:1}100%{opacity:0}}
+@keyframes d2l1{0%,24%{opacity:0}27%,97%{opacity:1}100%{opacity:0}}
+@keyframes d2l2{0%,38%{opacity:0}41%,97%{opacity:1}100%{opacity:0}}
+@keyframes d2l3{0%,74%{opacity:0}77%,97%{opacity:1}100%{opacity:0}}
+.d2 .t1dot{animation:d2t1 14s linear infinite}
+.d2 .t2dot{animation:d2t2 14s linear infinite}
+.d2 .t3dot{animation:d2t3 14s linear infinite}
+.d2 .t3solid{animation:d2solid 14s linear infinite}
+.d2 .t3hollow{opacity:1;animation:d2hollow 14s linear infinite}
+.d2 .t3ring{transform-origin:530px 184px;animation:d2ring 14s linear infinite}
+.d2 .t1lbl{animation:d2l1 14s linear infinite}
+.d2 .t2lbl{animation:d2l2 14s linear infinite}
+.d2 .t3lbl{animation:d2l3 14s linear infinite}
+/* D3 — INT-008, 12s cycle */
+@keyframes d3sl1{0%,6%{opacity:0}9%,96%{opacity:1}100%{opacity:0}}
+@keyframes d3sl2{0%,11%{opacity:0}14%,96%{opacity:1}100%{opacity:0}}
+@keyframes d3s3f{0%,16%{opacity:0}19%,44%{opacity:1}50%,100%{opacity:0}}
+@keyframes d3sl4{0%,21%{opacity:0}24%,96%{opacity:1}100%{opacity:0}}
+@keyframes d3sl5{0%,26%{opacity:0}29%,96%{opacity:1}100%{opacity:0}}
+@keyframes d3n5{0%,30%{opacity:0}33%,52%{opacity:1}55%,100%{opacity:0}}
+@keyframes d3n4{0%,52%{opacity:0}55%,96%{opacity:1}100%{opacity:0}}
+@keyframes d3ring{0%,56%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1)}68%{opacity:.25;transform:scale(1.2)}72%{opacity:1;transform:scale(1)}94%{opacity:1}100%{opacity:0}}
+@keyframes d3det{0%,62%{opacity:0}65%,96%{opacity:1}100%{opacity:0}}
+.d3 .sl1{animation:d3sl1 12s linear infinite}
+.d3 .sl2{animation:d3sl2 12s linear infinite}
+.d3 .s3fill{animation:d3s3f 12s linear infinite}
+.d3 .sl4{animation:d3sl4 12s linear infinite}
+.d3 .sl5{animation:d3sl5 12s linear infinite}
+.d3 .n5{animation:d3n5 12s linear infinite}
+.d3 .n4{opacity:1;animation:d3n4 12s linear infinite}
+.d3 .ring3{transform-origin:460px 106px;animation:d3ring 12s linear infinite}
+.d3 .det3{animation:d3det 12s linear infinite}
+/* D4 — Merkle proof, 12s cycle */
+@keyframes d4lf{0%,5%{opacity:.15}9%,96%{opacity:1}100%{opacity:.15}}
+@keyframes d4nd{0%,16%{opacity:.15}20%,96%{opacity:1}100%{opacity:.15}}
+@keyframes d4rt{0%,26%{opacity:.15}30%,96%{opacity:1}100%{opacity:.15}}
+@keyframes d4p1{0%,42%{opacity:0}46%,95%{opacity:1}100%{opacity:0}}
+@keyframes d4p2{0%,50%{opacity:0}54%,95%{opacity:1}100%{opacity:0}}
+@keyframes d4p3{0%,58%{opacity:0}62%,95%{opacity:1}100%{opacity:0}}
+@keyframes d4p4{0%,66%{opacity:0}70%,95%{opacity:1}100%{opacity:0}}
+@keyframes d4lbl{0%,72%{opacity:0}76%,95%{opacity:1}100%{opacity:0}}
+.d4 .lf{animation:d4lf 12s linear infinite}
+.d4 .nd{animation:d4nd 12s linear infinite}
+.d4 .rt{animation:d4rt 12s linear infinite}
+.d4 .pe1{animation:d4p1 12s linear infinite}
+.d4 .po1,.d4 .pe2{animation:d4p2 12s linear infinite}
+.d4 .po2,.d4 .pe3{animation:d4p3 12s linear infinite}
+.d4 .po3,.d4 .pe4{animation:d4p4 12s linear infinite}
+.d4 .plbl{animation:d4lbl 12s linear infinite}
+}
+
+</style><link rel="stylesheet" href="/assets/vap-navigation-20261115.css"><link rel="stylesheet" href="https://veritaschain.org/assets/css/news-archive.css"><style>.vap-news a,.vap-news .archive-eyebrow{color:var(--brand-ink)}.vap-news .news-row{border-color:var(--line)}.vap-news .news-heading h2{margin:0}.vap-news{margin:2.5rem 0}.vap-news .news-row h3{margin:0 0 7px}.vap-news .news-meta time{white-space:nowrap}.vap-news .archive-original .status{margin:0!important}.hero{margin-bottom:2rem}@media(max-width:640px){.vap-news .news-row{scroll-margin-top:12rem}}</style><script src="https://veritaschain.org/assets/js/news-archive.js" defer></script></head><body><a class="skip" href="#main">本文へ移動</a><header class="site"><div class="wrap">
+<a class="brand" href="/ja/" aria-label="VAP — Verifiable AI Provenance Framework"><svg viewBox="0 0 76 48" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g stroke="#C8102E" stroke-width="4" fill="none"><rect x="2" y="14" width="18" height="20" rx="4" fill="#C8102E"/><rect x="56" y="14" width="18" height="20" rx="4" fill="#C8102E"/><rect x="29" y="14" width="18" height="20" rx="4" stroke-dasharray="6 5"/><line x1="20" y1="24" x2="29" y2="24"/><line x1="47" y1="24" x2="56" y2="24" stroke-dasharray="3 4"/></g></svg><span class="brand-name">VAP<small>VERIFIABLE AI PROVENANCE</small></span></a>
+<button class="nav-toggle" type="button" aria-controls="vap-navigation" aria-expanded="false" aria-label="メニューを開く" data-open="メニューを開く" data-close="メニューを閉じる"><svg class="nav-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><svg class="nav-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+<nav class="vap-nav" id="vap-navigation" aria-label="メインメニュー"><details class="nav-group"><summary>VAPを知る</summary><div class="nav-panel"><a href="/ja/" aria-current="page"><span class="nav-title">概要</span><span class="nav-desc">フレームワークの目的と範囲</span><span class="nav-arrow" aria-hidden="true">→</span></a><a href="/ja/profiles/"><span class="nav-title">プロファイル</span><span class="nav-desc">分野別の仕様と公開状態</span><span class="nav-arrow" aria-hidden="true">→</span></a><a href="/ja/faq/"><span class="nav-title">よくある質問</span><span class="nav-desc">できること・できないこと</span><span class="nav-arrow" aria-hidden="true">→</span></a><a href="/ja/about/"><span class="nav-title">VSOについて</span><span class="nav-desc">組織・ガバナンス・連絡先</span><span class="nav-arrow" aria-hidden="true">→</span></a></div></details><details class="nav-group"><summary>仕様・研究</summary><div class="nav-panel"><a href="/ja/specification/"><span class="nav-title">仕様</span><span class="nav-desc">公開ドラフトと参照資料</span><span class="nav-arrow" aria-hidden="true">→</span></a><a href="/ja/research/"><span class="nav-title">研究資料</span><span class="nav-desc">目的から検証資料を探す</span><span class="nav-arrow" aria-hidden="true">→</span></a><a href="/ja/code/"><span class="nav-title">コード</span><span class="nav-desc">コード例・実装と検証の範囲</span><span class="nav-arrow" aria-hidden="true">→</span></a></div></details><details class="nav-group"><summary>読みもの・更新</summary><div class="nav-panel"><a href="/ja/updates/"><span class="nav-title">お知らせ</span><span class="nav-desc">最新の更新と過去の試験記録</span><span class="nav-arrow" aria-hidden="true">→</span></a><a href="/ja/blog/"><span class="nav-title">ブログ</span><span class="nav-desc">証拠・来歴を読み解く記事</span><span class="nav-arrow" aria-hidden="true">→</span></a></div></details><a class="nav-language" href="/" hreflang="en" lang="en">English</a></nav>
+</div></header><script src="/assets/vap-navigation-20261115.js" defer></script><main id="main"><div class="wrap">
+<section class="hero">
+  <div>
+    <p class="eyebrow">VeritasChain Standards Organization（VSO）</p>
+    <h1 class="hero-title-ja"><span style="display:inline-block;white-space:nowrap">検証可能なAI</span><wbr><span style="display:inline-block;white-space:nowrap">プロビナンス・</span><wbr><span style="display:inline-block;white-space:nowrap">フレームワーク</span> <span class="thin" style="display:inline-block;white-space:nowrap">（VAP）</span></h1>
+    <p class="lead">AIシステムの記録を、事後的に<strong>改ざん検知可能</strong>・<strong>欠落検知可能</strong>・
+    <strong>帰属可能</strong>にするためのオープンなメタフレームワーク。</p>
+    <p class="badges"><span class="chip chip-wd">VAP v1.2.0 Draft 3</span><span class="chip chip-wd">プロファイルごとに成熟度が異なる</span><span class="chip chip-wd">IETF Internet-Draft</span><span class="chip chip-released">CC BY 4.0</span></p>
+    <p class="cta"><a class="btn" href="/ja/specification/">仕様を読む</a>
+    <a class="btn ghost" href="https://github.com/veritaschain" rel="external">GitHub</a>
+    <a class="btn ghost" href="/ja/blog/">ブログ</a></p>
+  </div>
+  
+<svg class="chain-hero" viewBox="0 0 560 120" role="img" aria-label="台帳ブロックの連鎖。1つだけ中空の破線ブロックがあり、欠落した記録を示す" xmlns="http://www.w3.org/2000/svg">
+  <g stroke-width="2">
+    <rect class="cb cb1" x="8"   y="34" width="72" height="52" rx="6" fill="#1E1E24" stroke="#C8102E"/>
+    <rect class="cb cb2" x="128" y="34" width="72" height="52" rx="6" fill="#1E1E24" stroke="#C8102E"/>
+    <rect class="cb hollow" x="248" y="34" width="72" height="52" rx="6" fill="none" stroke="#C8102E" stroke-dasharray="7 6"/>
+    <rect class="cb cb4" x="368" y="34" width="72" height="52" rx="6" fill="#1E1E24" stroke="#C8102E"/>
+    <rect class="cb cb5" x="488" y="34" width="64" height="52" rx="6" fill="#1E1E24" stroke="#C8102E"/>
+    <line class="cls cl1" x1="80"  y1="60" x2="128" y2="60" stroke="#C8102E"/>
+    <line class="cld cl2" x1="200" y1="60" x2="248" y2="60" stroke="#C8102E" stroke-dasharray="4 5"/>
+    <line class="cld cl3" x1="320" y1="60" x2="368" y2="60" stroke="#C8102E" stroke-dasharray="4 5"/>
+    <line class="cls cl4" x1="440" y1="60" x2="488" y2="60" stroke="#C8102E"/>
+  </g>
+  <circle class="vpulse" cx="0" cy="66" r="4" fill="#FA5A6E"/>
+  <g class="lbl" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#9A9AA3" text-anchor="middle">
+    <text x="44"  y="64">e₁</text><text x="164" y="64">e₂</text>
+    <text x="284" y="64" fill="#C8102E">?</text>
+    <text x="404" y="64">e₄</text><text x="520" y="64">e₅</text>
+  </g>
+  <text class="cap" x="284" y="106" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#C8102E" text-anchor="middle">作られなかった記録</text>
+</svg>
+</section><section class="vap-news" id="latest-updates"><div class="news-heading"><h2>最新のお知らせ</h2><a href="/ja/updates/">すべてのお知らせを見る →</a></div><aside class="news-status"><p>実験的拡張は未採択、第三者による独立再現は未成立です。自社CIや保存証拠の再検証と、独立した新規実行を区別します。</p></aside><ul class="news-list"><li class="news-row" id="verasnap-verify-sdk-20261118" data-news-record data-month="2026-11" data-category="research"><div class="news-meta"><time datetime="2026-11-18">2026-11-18</time></div><div><h3><a href="https://veritaschain.org/vso/announcements/2026-11-18-verasnap-verify-sdk-0-1-0/ja/">VeraSnap Verify SDK 0.1.0を公開 — CPPの撮影証明をサーバー側で検証するオープンソースSDK</a></h3><p class="news-summary">VeritasChain株式会社は、VeraSnapの撮影証明の検証と端末鍵の登録をサーバー側で行うPythonのSDKを、Apache-2.0で公開しました。保険金請求の写真を受け取る保険会社を主な対象とします。自社によるアルファ版で、第三者の監査は受けていません。</p></div></li><li class="news-row" id="verification-hardening-20261115" data-news-record data-month="2026-11" data-category="research"><div class="news-meta"><time datetime="2026-11-15">2026-11-15</time></div><div><h3><a href="https://veritaschain.org/vso/announcements/2026-11-15-verification-hardening-explorer-update/ja/">VSO、証拠検証・SDK・Explorerの改善23件を報告</a></h3><p class="news-summary">弱い信頼鍵の拒否、入力・出力と不明判定の改善、証拠レビュー研究、公開Explorerの更新を5項目で紹介。mainと固定配布物、自社CIと独立再現を区別します。</p></div></li><li class="news-row" id="cursor-apify-epoch-20261114" data-news-record data-month="2026-11" data-category="research"><div class="news-meta"><time datetime="2026-11-14">2026-11-14</time></div><div><h3><a href="https://veritaschain.org/vso/announcements/2026-11-14-cursor-apify-epoch-source-review/ja/">Cursor続報・Apify・Epoch AI：秘密情報、権限と評価範囲の境界</a></h3><p class="news-summary">11月13日付の公表・更新3件を照合。Cursorは既報の続報として、公式報告・関係者の説明・報道・VSOの考察を区別します。実験的拡張は未採択、独立再現は未成立です。</p></div></li></ul><a class="news-more" href="/ja/updates/">すべてのお知らせを見る →</a></section><section class="status"><h2>公開研究・検証の入口</h2><p>証拠検証・クラウド資格情報・決済承認・VCP整合性研究・SDKを用途別に探せます。実験的拡張は未採択、独立再現は未成立です。</p><p><a href="/ja/research/">研究資料一覧を開く →</a></p></section><section aria-labelledby="practical-guides-title"><h2 id="practical-guides-title">AIの権限と監査証拠を整理する実務ガイド</h2><p>予防策、操作の記録、提出証拠の検証を分けて説明します。仕様の規範要件を追加するものではありません。</p><ul><li><a href="https://veritaschain.org/guides/ai-agent-security/ja/">AIエージェントのセキュリティ・MCP</a></li><li><a href="https://veritaschain.org/guides/ai-audit-trail/ja/">AI監査ログの記録例・検証チェックリスト</a></li><li><a href="https://veritaschain.org/guides/ai-governance/ja/">AIガバナンス：責任と証拠</a></li></ul></section>
+
+
+<div class="chain-div" aria-hidden="true"><svg viewBox="0 0 200 18" xmlns="http://www.w3.org/2000/svg"><g stroke="#3A3A44" stroke-width="1.5"><rect x="30" y="4" width="24" height="10" rx="2" fill="#1B1B21"/><rect x="88" y="4" width="24" height="10" rx="2" fill="none" stroke-dasharray="4 4"/><rect x="146" y="4" width="24" height="10" rx="2" fill="#1B1B21"/><line x1="54" y1="9" x2="88" y2="9"/><line class="march" x1="112" y1="9" x2="146" y2="9" stroke-dasharray="4 5"/><circle class="dpulse" cx="0" cy="9" r="2.5" fill="#FA5A6E"/></g></svg></div>
+
+<section>
+<p class="eyebrow">なぜ存在するのか</p>
+<div class="tickwrap" aria-hidden="true"><div class="tick"><div class="tickrow"><span>AnchorRecord</span><span class="sep">▪</span><span>PrevHash</span><span class="sep">▪</span><span>Merkle root</span><span class="sep">▪</span><span>RFC 3161</span><span class="sep">▪</span><span>Ed25519</span><span class="sep">▪</span><span>INT-008</span><span class="sep">▪</span><span>ScopeManifest</span><span class="sep">▪</span><span>Evidence Pack</span><span class="sep">▪</span><span>XREF</span><span class="sep">▪</span><span>ERASURE</span><span class="sep">▪</span><span>ACTION_PROPOSED</span><span class="sep">▪</span><span>ACTION_EXECUTED</span><span class="sep">▪</span><span>ACTION_DENIED</span><span class="sep">▪</span><span>DELEGATION</span><span class="sep">▪</span><span>POLICY_OVERRIDE</span><span class="sep">▪</span></div><div class="tickrow"><span>AnchorRecord</span><span class="sep">▪</span><span>PrevHash</span><span class="sep">▪</span><span>Merkle root</span><span class="sep">▪</span><span>RFC 3161</span><span class="sep">▪</span><span>Ed25519</span><span class="sep">▪</span><span>INT-008</span><span class="sep">▪</span><span>ScopeManifest</span><span class="sep">▪</span><span>Evidence Pack</span><span class="sep">▪</span><span>XREF</span><span class="sep">▪</span><span>ERASURE</span><span class="sep">▪</span><span>ACTION_PROPOSED</span><span class="sep">▪</span><span>ACTION_EXECUTED</span><span class="sep">▪</span><span>ACTION_DENIED</span><span class="sep">▪</span><span>DELEGATION</span><span class="sep">▪</span><span>POLICY_OVERRIDE</span><span class="sep">▪</span></div></div></div><h2>証拠のギャップ</h2>
+<p>各法域の法制度・ガバナンス文書は、AIシステムに対するログ保存と人間による監督（human oversight）を
+ますます要求している。しかしそれらが定めるのは<em>義務</em>であって、その履行を<em>事後に独立検証する方法</em>ではない。
+そして検証の最難関は、改ざんされた記録の検知ではない。<strong>そもそも作られなかった記録</strong>の検知である。</p>
+<p>署名・WORMストレージ・監査ログといった古典的な完全性技術は、「存在する記録」については証明できる。
+VAPが設計の中心に据えるのはもう一方の問題 — 記録の<em>不存在</em>を、宣言された粒度で、限界を開示した上で、
+第三者が検査可能にすることである。</p>
+
+<table class="ledger">
+<caption>欠落データの三層分類（VAPファミリー共通）</caption>
+<thead><tr><th>Tier</th><th>状態</th><th>VAP上の扱い</th></tr></thead>
+<tbody>
+<tr class="hollow"><td><strong>Tier&nbsp;1</strong></td><td>イベントが<strong>一度も計測されなかった</strong> — 観測境界を何も越えていない</td><td><strong>設計上、恒久的に復元不能。</strong>VAPは沈黙する。いかなる機構もこれを再構成せず、いかなる実装もそう装ってはならない</td></tr>
+<tr><td><strong>Tier&nbsp;2</strong></td><td>計測されたが、<strong>アンカリング前に</strong>記録が失われた</td><td>有界かつ開示される — 欠落そのものがアンカーギャップ・イベントとして境界付きで記録される</td></tr>
+<tr><td><strong>Tier&nbsp;3</strong></td><td>アンカーされた後、提示時に<strong>省略</strong>された</td><td>完全性インバリアント（INT-008）により第三者が検知可能：省略／スプリットビュー検知</td></tr>
+</tbody></table>
+</section>
+
+<section>
+<p class="eyebrow">スコープを率直に</p>
+<h2>VAPであるもの・ないもの</h2>
+<div class="twocol">
+<div>
+<h3>VAPであるもの</h3>
+<ul>
+<li><strong>メタフレームワーク</strong>：高リスクAIに共通する、暗号学的に検証可能な意思決定プロビナンスの構造要件を定める上位層。ドメインプロファイル（VCP・CAP・CPP・MAP・OAP…）が各分野の意味論に結び付ける。</li>
+<li><strong>事後的（ポストホック）な法科学的・証拠的インフラ。</strong>その能力は正確にこれだけである：AI処理記録を監査可能かつ帰属可能にする。</li>
+<li>確立された基礎技術の組み合わせ：SHA-256ハッシュチェーン、Ed25519署名（RFC 8032）、Merkleバッチング、RFC 3161タイムスタンプ等の外部アンカリング。</li>
+</ul>
+</div>
+<div>
+<h3>VAPがしないこと</h3>
+<ul>
+<li>実行時に何かを防止・遮断・介入することは<strong>しない</strong>。リアルタイム監視・制御でもない。</li>
+<li><strong>改ざん検知可能（tamper-evident）であって、改ざん不能（tamper-proof）ではない</strong>：改変を不可能にするのではなく、検知可能にする。</li>
+<li>Tier&nbsp;1のイベントは復元できない。計測前境界（pre-measurement boundary）は設計上の恒久的なハードリミットである。</li>
+<li>いかなるAIの判断も、正しく・公平に・安全にはしない。</li>
+</ul>
+</div>
+</div>
+<blockquote class="clause"><p>“…does <strong>not</strong> warrant the correctness, fairness, or safety of the underlying AI decisions — only the integrity, completeness (at anchor granularity), and attributability of their records. VAP generates evidence; competent authorities and courts evaluate it.”</p>
+<p class="trans">〔参考訳〕…基盤となるAIの判断の正しさ・公平性・安全性を保証するものでは<strong>ない</strong> — 保証するのは、その記録の完全性（アンカー粒度における）、完全性検証可能性、および帰属可能性のみである。VAPは証拠を生成する。それを評価するのは、権限ある当局および裁判所である。</p>
+<footer>— VAP v1.2 §1.6「Legal Scope and Non-Guarantee Statement」（規範。英語原文が正文）</footer></blockquote>
+</section>
+
+<section>
+<p class="eyebrow">メカニズム</p>
+<h2>中核メカニズム</h2><div class="pipe" role="img" aria-label="パイプライン：イベントがハッシュチェーン化され、Merkleルートにバッチされ、RFC 3161で外部アンカーされ、誰でも検証可能になる。">
+<svg class="pl" viewBox="0 0 640 148" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#2A2A31" stroke-width="2">
+    <line x1="70" y1="72" x2="158" y2="72"/><line x1="212" y1="72" x2="296" y2="72"/>
+    <line x1="344" y1="72" x2="430" y2="72"/><line x1="480" y1="72" x2="566" y2="72"/>
+  </g>
+  <g class="st st1"><circle cx="55" cy="72" r="8" fill="#FA5A6E"/></g>
+  <g class="st st2" stroke="#C8102E" stroke-width="2" fill="#1E1E24">
+    <rect x="158" y="61" width="24" height="22" rx="4"/><rect x="188" y="61" width="24" height="22" rx="4"/>
+    <line x1="182" y1="72" x2="188" y2="72"/></g>
+  <g class="st st3" stroke="#C8102E" stroke-width="2" fill="#1E1E24">
+    <line x1="308" y1="84" x2="320" y2="62" stroke="#2A2A31"/><line x1="332" y1="84" x2="320" y2="62" stroke="#2A2A31"/>
+    <rect x="300" y="80" width="16" height="12" rx="3"/><rect x="324" y="80" width="16" height="12" rx="3"/>
+    <rect x="312" y="52" width="16" height="12" rx="3"/></g>
+  <g class="st st4" stroke="#C8102E" stroke-width="2" fill="#1E1E24">
+    <rect x="437" y="58" width="36" height="28" rx="5"/>
+    <circle cx="455" cy="72" r="8" fill="none"/>
+    <line x1="455" y1="72" x2="455" y2="66"/><line x1="455" y1="72" x2="460" y2="74"/></g>
+  <g class="st st5">
+    <circle cx="585" cy="72" r="13" fill="none" stroke="#C8102E" stroke-width="2"/>
+    <text x="585" y="77" fill="#FA5A6E" font-size="13" text-anchor="middle">✓</text></g>
+  <circle class="flowdot" cx="0" cy="72" r="4.5" fill="#FA5A6E"/>
+  <g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="10" text-anchor="middle"><text x="55" y="120" fill="#C9C9D0">イベント</text><text x="185" y="120" fill="#C9C9D0">チェーン</text><text x="320" y="120" fill="#C9C9D0">Merkle</text><text x="455" y="120" fill="#C9C9D0">アンカー</text><text x="585" y="120" fill="#C9C9D0">検証</text><text x="185" y="136" fill="#9A9AA3" font-size="9">PrevHash</text><text x="320" y="136" fill="#9A9AA3" font-size="9">バッチルート</text><text x="455" y="136" fill="#9A9AA3" font-size="9">RFC 3161</text><text x="585" y="136" fill="#9A9AA3" font-size="9">誰でも</text></g>
+</svg></div>
+<div class="grid">
+<article class="card"><h3>暗号学的順序検証可能性</h3><p>記録されたイベントの順序と帰属を第三者が検証できること。ハッシュチェーンは許容される機構の一つであり、唯一の機構ではない。</p></article>
+<article class="card"><h3>外部アンカリング — 必須</h3><p>v1.2では、署名済みルートのMerkleバッチングと外部アンカリングが<em>全</em>適合レベルでMUST。アンカー継続計画の文書化も要求される。</p></article>
+<article class="card"><h3>完全性インバリアント（INT-008）</h3><p>アンカーを保持する検証者は、アンカー後の省略やスプリットビュー提示を検知できる：各AnchorRecordはイベント件数・先頭／末尾イベントID・適用ポリシー識別子を拘束する。</p></article>
+<article class="card"><h3>拒否対称性（denial-symmetry）</h3><p>拒否・否認・却下といった負の判断も、承認と同じ厳密さで記録する。成功しか記録しないシステムは、何を退けたかについて何も証明しない。</p></article>
+<article class="card"><h3>Evidence Pack</h3><p>オフラインで第三者検証が可能な、自己完結・自己検証型の持ち運び可能バンドル — 記録・証明・アンカー・鍵情報を、生成元システムへのアクセスなしに検証できる。</p></article>
+<article class="card"><h3>ScopeManifest と XREF</h3><p>宣言スコープの事前コミットは未採択の実験です。XREFは当事者間の参照を記録し、観測の独立性・真実性は別途評価します。</p></article>
+</div>
+</section>
+
+<section>
+<p class="eyebrow">ファミリー</p>
+<h2>ドメインプロファイル</h2>
+<p>VAP自体は決してプロトコルではない。プロファイルがフレームワークを各分野の意味論に結び付ける。
+〈Protocol〉の呼称を持つのはただ一つの文書 — VCPである。</p>
+<p class="note"><strong>レジストリ上の状態と本文の公開状況は別です。</strong><a href="https://github.com/veritaschain/vap-spec/blob/81fa81e01ef9418c3fb7a02ddfc7fd72d993b6b1/README.md">現在のリポジトリ開示</a>では、OAP・MAP・PAP Track B・DAP・SMPは草案として記載されていますが、本文はVSOの公開リポジトリに掲載されていません。以下の公開済み／草案の6項目は、6仕様のリリース済みを意味しません。ほかに発表済み・計画段階の4項目があります。登録状態は完全適合や独立再現の証明ではありません。</p>
+<div class="grid"><article class="card">
+<div class="card-head"><span class="pid">VCP</span><span class="chip chip-released">v1.2 Released</span></div>
+<h3>VeritasChain Protocol</h3><p>金融・アルゴリズム取引 — 資本市場AIの監査標準プロファイル。ファミリーで唯一〈Protocol〉の呼称を持つ文書。</p></article><article class="card">
+<div class="card-head"><span class="pid">CAP</span><span class="chip chip-released">v1.0 リリース済</span></div>
+<h3>Content / Creative AI Profile</h3><p>コンテンツ・知的財産に関わるAIワークフロー（取り込み・学習・生成・変換・出力）に検証可能な証拠レイヤーを与える。ゲーム・映画・アニメ・出版・音楽が対象領域。</p></article><article class="card">
+<div class="card-head"><span class="pid">CPP</span><span class="chip chip-released">v1.4 リリース済</span></div>
+<h3>Capture Provenance Profile</h3><p>操作者が保持するデバイスで撮影・取得されたメディアのプロビナンス（一次取得）。OAPの姉妹プロファイル。</p></article><article class="card">
+<div class="card-head"><span class="pid">MAP</span><span class="chip chip-wd">v0.1.2 作業草案</span></div>
+<h3>Medical AI Profile</h3><p>臨床・給付ワークフロー：AI出力、人間によるレビュー、オーバーライド、署名確定の記録を改ざん検知可能かつ第三者検査可能にする。</p></article><article class="card">
+<div class="card-head"><span class="pid">OAP</span><span class="chip chip-wd">v0.1.1 作業草案</span></div>
+<h3>Observed Artifact Provenance</h3><p>URLで観測された第三者ウェブ資源の記録 — 他者が公開し、後に争われ・削除され・編集され・否認されうるがゆえに保全される素材。</p></article><article class="card">
+<div class="card-head"><span class="pid">PAP</span><span class="chip chip-wd">部分草案 · Track B v0.2.0</span></div>
+<h3>Public Administration Profile</h3><p>与信スコアリング、給付判定、出入国、採用AI。レジストリではTrack B（捜査判断語彙）が部分草案とされているが、その本文は公開されていない。</p></article></div>
+<p class="more"><a href="/ja/profiles/">全プロファイル・横断ケイパビリティ・レジストリ →</a></p>
+</section>
+
+<section id="vap-lap" aria-labelledby="vap-lap-title">
+<h2 id="vap-lap-title">関連する外部提案：LAP（提案者の名称：VAP-LAP）</h2>
+<article class="card">
+<div class="card-head"><span class="pid">VAP-LAP</span><span class="chip chip-wd">外部提案</span></div>
+<h3>Legal AI Profile — 法律AI</h3>
+<p>VAP-LAPは、法律相談・書面の下書き・ファクトチェック・人による確認など、法律AIの業務過程を検証可能な記録につなぐ提案です。2026年10月26日公開の<a href="https://datatracker.ietf.org/doc/draft-ailex-vap-legal-ai-provenance/05/">個人Internet-Draft -05</a>が、プロファイルv0.6.0を記述しています。</p>
+<p><strong>AILEX</strong>を、法律実務における証跡設計を考えるための製品・ユースケースのリファレンスとして紹介しています。<a href="https://veritaschain.org/vap/lap/ja/#ailex">AILEXの紹介</a>と<a href="https://ailex.co.jp/service/">公開サービス情報</a>をご覧ください。</p>
+<p class="note">LAPはVAP v1.2 §4.5.2の登録表の外にある関連提案です。VAP-LAPは提案者の名称で、登録済みのVSOプロファイル名ではありません。上村十勝は、AILEX合同会社と、VSOを運営するVeritasChain株式会社の双方の代表です。LAP -05の編集者は、所属をAILEX LLC / VSOと記載しています。AILEXはこの製品リファレンスについて商業上の利害を持つため、独立した第三者による採用例として扱いません。この掲載は、LAP/VAPへの適合、認証、独立検証済み実装を示すものではありません。</p>
+<p class="more"><a href="https://veritaschain.org/vap/lap/ja/">VAP-LAPの概要を見る →</a> · <a href="https://github.com/veritaschain/vap-spec/blob/main/proposals/legal-ai-profile/README.md">GitHubの提案紹介 →</a></p>
+</article>
+</section>
+
+<section>
+<p class="eyebrow">標準化活動</p>
+<h2>IETF Internet-Draft</h2>
+<p>以下の5本は、VAP関連の有効な個人提出Internet-Draftです。IETF標準化・ワーキンググループ採択・IETFによる承認を示すものではありません。以下の版番号は2026年10月26日に確認しました。</p>
+<ul class="plain"><li><a href="https://datatracker.ietf.org/doc/draft-kamimura-vap-framework/" rel="external"><code>draft-kamimura-vap-framework-02</code></a> — The VAP framework event and anchoring model</li><li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-vcp/" rel="external"><code>draft-kamimura-scitt-vcp-05</code></a> — VCP alignment with the SCITT architecture</li><li><a href="https://datatracker.ietf.org/doc/draft-kamimura-scitt-refusal-events/" rel="external"><code>draft-kamimura-scitt-refusal-events-04</code></a> — Refusal / denial events in transparency services</li><li><a href="https://datatracker.ietf.org/doc/draft-kamimura-rats-behavioral-evidence/" rel="external"><code>draft-kamimura-rats-behavioral-evidence-02</code></a> — Behavioral evidence in the RATS architecture</li><li><a href="https://datatracker.ietf.org/doc/draft-vso-cpp-core/" rel="external"><code>draft-vso-cpp-core-04</code></a> — CPP core (capture provenance)</li></ul>
+</section>
+
+<section class="status">
+<p class="eyebrow">正直なベースライン</p>
+<h2>プロジェクト状況</h2><div class="stats"><div class="stat"><span class="num" data-count="6">6</span><span class="slbl">公開済み／草案の登録項目</span></div><div class="stat"><span class="num" data-count="2">2</span><span class="slbl">横断ケイパビリティ</span></div><div class="stat"><span class="num" data-count="5">5</span><span class="slbl">IETF一覧に掲載した草案</span></div><div class="stat zero"><span class="num nzero">0</span><span class="slbl">外部実装 — 開示どおり</span></div></div>
+<p>VSOの2026年10月25日時点の公開開示：<strong>外部実装ゼロ、商業数値は原資料照合まで取り下げ（2026年10月24日訂正。ゼロとの認定ではない）、法的手続で受理された Evidence Pack ゼロ。</strong>
+本ページでは日付付き訂正文を優先する。まだ存在しないものを、存在するものと同じ明瞭さで公表する —
+自らの実績を誇張するプロビナンス・フレームワークは、それ自体が自己否定だからである。</p>
+<p>仕様はオープン（CC BY 4.0）で、<a href="https://github.com/veritaschain" rel="external">GitHub</a>上で
+開発されている。実装者・レビュアーを歓迎する：<a href="mailto:standards@veritaschain.org">standards@veritaschain.org</a></p>
+</section>
+<span class="news-legacy-anchor" aria-hidden="true" id="snowball-grok-20261114"></span><span class="news-legacy-anchor" aria-hidden="true" id="registry-release-20261113"></span><span class="news-legacy-anchor" aria-hidden="true" id="signature-source-20261112"></span><span class="news-legacy-anchor" aria-hidden="true" id="cloud-evidence-20261108"></span><span class="news-legacy-anchor" aria-hidden="true" id="payment-research-20261107"></span><span class="news-legacy-anchor" aria-hidden="true" id="research-sdk-20261105"></span><span class="news-legacy-anchor" aria-hidden="true" id="github-corrections-20261103"></span><span class="news-legacy-anchor" aria-hidden="true" id="github-update-20261102"></span><span class="news-legacy-anchor" aria-hidden="true" id="github-update-20261101"></span><span class="news-legacy-anchor" aria-hidden="true" id="github-update-20261031"></span><span class="news-legacy-anchor" aria-hidden="true" id="github-update-20261030-evening"></span><span class="news-legacy-anchor" aria-hidden="true" id="github-update-20261030"></span><span class="news-legacy-anchor" aria-hidden="true" id="github-update-20261029"></span><span class="news-legacy-anchor" aria-hidden="true" id="github-update-20261028"></span><span class="news-legacy-anchor" aria-hidden="true" id="explorer-update-20261027"></span><span class="news-legacy-anchor" aria-hidden="true" id="status-update-20261026"></span></div></main><footer class="site"><div class="wrap">
+<p class="disclosure">プロジェクト状況（VSOの公開開示・2026年10月25日時点）：外部実装ゼロ ／ 商業数値は原資料照合まで取り下げ（2026年10月24日訂正。ゼロとの認定ではない） ／ 法的手続で受理された Evidence Pack ゼロ</p>
+<p>VAPは改ざん検知可能（tamper-evident）であって改ざん不能（tamper-proof）ではない — 事後的な証拠インフラであり、実行時制御ではない。</p>
+<nav aria-label="Footer"><a href="/ja/specification/">仕様</a><a href="/ja/profiles/">プロファイル</a><a href="/ja/code/">コード</a><a href="/ja/blog/">ブログ</a><a href="/ja/faq/">FAQ</a><a href="/ja/about/">About</a>
+<a href="https://github.com/veritaschain" rel="external">GitHub</a>
+<a href="https://veritaschain.org" rel="external">veritaschain.org</a>
+<a href="/feed.xml">Atom</a>
+<a href="mailto:standards@veritaschain.org">standards@veritaschain.org</a></nav>
+<p>VeritasChain Standards Organization ／ 事務局：VeritasChain株式会社（東京都渋谷区恵比寿西2-4-8） · Specifications CC BY 4.0 · © 2025–2026 VeritasChain Standards Organization</p>
+</div></footer><script id="news-legacy-map" type="application/json">{"snowball-grok-20261114": "/ja/updates/#snowball-grok-20261114", "registry-release-20261113": "/ja/updates/#registry-release-20261113", "signature-source-20261112": "/ja/updates/#signature-source-20261112", "cloud-evidence-20261108": "/ja/updates/#cloud-evidence-20261108", "payment-research-20261107": "/ja/updates/#payment-research-20261107", "research-sdk-20261105": "/ja/updates/#research-sdk-20261105", "github-corrections-20261103": "/ja/updates/#github-corrections-20261103", "github-update-20261102": "/ja/updates/#github-update-20261102", "github-update-20261101": "/ja/updates/#github-update-20261101", "github-update-20261031": "/ja/updates/#github-update-20261031", "github-update-20261030-evening": "/ja/updates/#github-update-20261030-evening", "github-update-20261030": "/ja/updates/#github-update-20261030", "github-update-20261029": "/ja/updates/#github-update-20261029", "github-update-20261028": "/ja/updates/#github-update-20261028", "explorer-update-20261027": "/ja/updates/#explorer-update-20261027", "status-update-20261026": "/ja/updates/#status-update-20261026"}</script><script>(function(){var m=matchMedia("(prefers-reduced-motion: no-preference)").matches;
+if(m){var bar=document.createElement("div");bar.className="progress";document.body.appendChild(bar);
+var tk=false;addEventListener("scroll",function(){if(tk)return;tk=true;requestAnimationFrame(function(){var h=document.documentElement,s=h.scrollTop/((h.scrollHeight-h.clientHeight)||1);bar.style.transform="scaleX("+s+")";tk=false})},{passive:true});}
+if(!m||!("IntersectionObserver"in window))return;
+function count(el){var to=+el.dataset.count,d=900,s=performance.now();
+function f(n){var p=Math.min((n-s)/d,1);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)}
+requestAnimationFrame(f)}
+var els=document.querySelectorAll("main h2,.grid .card,table.ledger,blockquote.clause,main pre,details.faq,.status,.stats .stat,.fig,.pipe");
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");
+var c=e.target.querySelector("[data-count]");if(c&&!c.dataset.done){c.dataset.done=1;count(c)}
+io.unobserve(e.target)}})},{rootMargin:"0px 0px -10% 0px",threshold:.08});
+els.forEach(function(el,i){el.classList.add("reveal");el.style.transitionDelay=(i%5)*70+"ms";io.observe(el)})})();</script></body></html>
