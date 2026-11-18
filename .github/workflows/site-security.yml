@@ -18,6 +18,8 @@ on:
       - 'incidents/incidents.json'
       - 'vap/limits/limits.json'
       - 'tests/analytics.test.cjs'
+      - 'tests/veracheck.test.cjs'
+      - 'tests/test_analytics_scope.py'
       - 'sitemap.xml'
       - '.github/workflows/site-security.yml'
   push:
@@ -38,6 +40,8 @@ on:
       - 'incidents/incidents.json'
       - 'vap/limits/limits.json'
       - 'tests/analytics.test.cjs'
+      - 'tests/veracheck.test.cjs'
+      - 'tests/test_analytics_scope.py'
       - 'sitemap.xml'
       - '.github/workflows/site-security.yml'
 
@@ -64,7 +68,8 @@ jobs:
           npm run check:assets --prefix tools/site-security
           npm run check:policy --prefix tools/site-security
           npm run test:policy --prefix tools/site-security
-          node --test tests/analytics.test.cjs
+          node --test tests/analytics.test.cjs tests/veracheck.test.cjs
+          python3 -m unittest discover -s tests -p 'test_analytics_scope.py' -v
       - name: Verify HTML generators preserve policies and committed output
         run: |
           python3 scripts/build_corrections.py
