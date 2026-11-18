@@ -189,7 +189,7 @@ async function vcc(page) {
 }
 
 // Exercise the real JSON input with ordinary markup-like text; proof data
-// must remain literal while the viewer's own badge still renders normally.
+// must remain literal while incomplete and unsupported packs remain unverified.
 async function veraCheck(page) {
   const device = 'Test camera <em>west</em> & unit 7';
   const code = 'case <b>12</b>';
@@ -205,8 +205,18 @@ async function veraCheck(page) {
   assert.ok(displayed.includes(code), 'Verification code is displayed verbatim');
   assert.ok(displayed.includes(device), 'Device name is displayed verbatim');
   assert.equal(await fields.locator('em, b').count(), 0, 'Input text creates no markup');
-  assert.equal(await fields.locator('span.conformance-level.bronze').textContent(), 'Bronze');
-  return { literalMetadata: 'pass', applicationBadge: 'pass' };
+  assert.equal(await fields.locator('span.conformance-level.unassessed').textContent(), 'Not assessed');
+  assert.equal(await page.locator('#summary').getAttribute('class'), 'summary incomplete');
+  assert.equal(await page.locator('.conformance-level.bronze, .conformance-level.silver, .conformance-level.gold').count(), 0);
+  for (const pack of [{}, { capture_event: { captureContext: { humanAttestation: {} } }, external_anchor: {} }]) {
+    await page.locator('#jsonInput').fill(JSON.stringify(pack));
+    await page.locator('#verifyJsonBtn').click();
+    await page.waitForFunction(pack => document.getElementById('rawData').textContent === JSON.stringify(pack, null, 2), pack);
+    assert.equal(await page.locator('#summary').getAttribute('class'), 'summary invalid');
+    assert.equal(await page.locator('.conformance-level').textContent(), 'Not assessed');
+  }
+  assert.equal(await page.evaluate(() => window.__vsoAnalyticsInitialized), undefined, 'Evidence viewer never loads the analytics bootstrap');
+  return { literalMetadata: 'pass', incompleteInput: 'pass', unsupportedInput: 'pass', conformanceNotAssessed: 'pass', analyticsAbsent: 'pass' };
 }
 
 async function main() {

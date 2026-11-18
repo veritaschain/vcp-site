@@ -16,7 +16,19 @@ Web-based verification tool for cryptographic evidence captured with [VeraSnap](
 | **Layer 2** | Collection integrity: Merkle proof + completeness field | Reports presence only; the Merkle root and the completeness value are not recomputed |
 | **Layer 3** | External verifiability: RFC 3161 TSA timestamp token | Reports presence only; the token is not validated |
 
-Results that are not verified are shown as "present — not verified", never as passed checks.
+Results that are not verified are shown as "present — not verified", never as passed checks. An ES256/ECDSA-P256 signature match checks the embedded key only; it does not establish who controls that key. Other signature algorithms are displayed as unverified.
+
+### Overall result and input limits
+
+The overall result is always one of these states:
+
+- **Invalid input or failed check:** unsupported/malformed event input, or a performed signature check failed.
+- **Required event fields missing:** a recognized event lacks fields required for this viewer's basic inspection.
+- **Pack not fully verified:** basic event fields are present, but the complete pack and its trust conditions have not been verified. A matching embedded-key signature does not change this overall state.
+
+The viewer checks that the input is an object and recognizes CPP v1.0 event types or VeraSnap `INGEST`, `EXPORT` and `TOMBSTONE` events, whether standalone or wrapped in `capture_event`/`captureEvent`. It checks the types/presence of event ID, timestamp, previous hash and signature; TDS also requires an event hash, and CPP v1.0 additionally requires version, device ID, sequence number, payload and signature fields. These are limited inspection checks, not complete JSON Schema validation or cryptographic verification of those fields.
+
+**Conformance is always "Not assessed".** This web viewer does not assign Bronze, Silver or Gold from supplied attestation or anchor fields, including when a signature matches. Claimed capture time and device identity remain supplied metadata.
 
 ### Supported Languages (10)
 
@@ -35,9 +47,9 @@ Results that are not verified are shown as "present — not verified", never as 
 
 ### Privacy-First Design
 
-- ✅ **100% client-side processing** - No data sent to any server
+- ✅ **Client-side evidence processing** - Uploaded/pasted evidence is not sent to a server
 - ✅ **No tracking or analytics**
-- ✅ **Works offline** after initial page load
+- ✅ **Works offline** after initial page load; opening the page normally still requests website assets
 - ✅ **Open source** under CC BY 4.0
 
 ## 🚀 Deployment to GitHub Pages
@@ -124,14 +136,12 @@ VeraCheck accepts `.veripack` or `.json` files following the CPP specification a
 
 > **Provenance ≠ Truth**
 >
-> VeraCheck displays capture provenance data: **when**, and **by what device**, the media is recorded as having been captured. It does **NOT** verify:
+> VeraCheck displays the capture information supplied in the pack. It does not establish capture time, device identity or CPP conformance. It also does **NOT** verify:
 > - Content truthfulness
 > - Scene authenticity  
 > - Whether content was staged or manipulated before capture
 
-This aligns with CPP UI Guidelines (Section 11):
-- ✅ USE: "Provenance Available"
-- ❌ AVOID: "Verified", "Authenticated"
+The summary states whether input is invalid, incomplete or not fully verified. It does not call an empty or unchecked pack "Verified", "Authenticated" or "Provenance Available".
 
 ## 🔗 Related Resources
 

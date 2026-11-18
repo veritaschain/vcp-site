@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com 'sha256-KRUOxcJsm42MmWW3bZr3sT6bZZq9D1vHbuQzN0hHQdY='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self' data:; connect-src 'self' https://*.google-analytics.com https://*.google.com https://www.googletagmanager.com; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'sha256-Ko3eTngQh4TkxQwyqlQ8Z1h+XK151gki0Pq6NFQQhGE='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VeraCheck: CPP Evidence Pack Viewer (Beta) | VSO</title>
     <meta name="description" content="Inspect CPP evidence packs created with VeraSnap in a beta web viewer. View provenance and structure checks; full signature, Merkle and timestamp verification is not provided.">
@@ -367,9 +367,14 @@
             text-align: center;
         }
 
-        .summary.valid {
-            background: linear-gradient(135deg, rgba(56, 161, 105, 0.1) 0%, rgba(56, 161, 105, 0.05) 100%);
-            border: 1px solid var(--success);
+        .summary.unchecked {
+            background: rgba(49, 130, 206, 0.1);
+            border: 1px solid var(--accent);
+        }
+
+        .summary.incomplete {
+            background: rgba(214, 158, 46, 0.1);
+            border: 1px solid var(--warning);
         }
 
         .summary.invalid {
@@ -567,9 +572,7 @@
             font-weight: 600;
         }
 
-        .conformance-level.bronze { background: #cd7f32; color: white; }
-        .conformance-level.silver { background: #c0c0c0; color: #333; }
-        .conformance-level.gold { background: #ffd700; color: #333; }
+        .conformance-level.unassessed { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
 
         @media (max-width: 600px) {
             header h1 {
@@ -599,7 +602,6 @@
     <meta name="robots" content="index, follow, max-image-preview:large">
     <script id="site-webpage" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://veritaschain.org/vap/cpp/veracheck/#webpage", "url": "https://veritaschain.org/vap/cpp/veracheck/", "name": "VeraCheck - CPP Evidence Verification", "description": "Beta web viewer for CPP verification packs created with VeraSnap. It shows the provenance data and checks the structure of a pack; it does not fully verify signatures, Merkle proofs or timestamps.", "inLanguage": "en", "isPartOf": {"@id": "https://veritaschain.org/#website"}, "publisher": {"@id": "https://veritaschain.org/#organization"}}</script>
 
-<script defer src="/assets/js/analytics.js?v=20261103"></script>
 </head>
 <body>
     <header>
@@ -669,7 +671,7 @@
             </div>
             
             <p style="margin-top: 15px; font-size: 0.875rem; color: var(--text-muted);" data-i18n="upload.privacy">
-                All verification is performed locally in your browser. No data is sent to any server.
+                Evidence is processed in your browser. No evidence or analytics is sent. Loading this page still requests website assets.
             </p>
         </div>
         
@@ -701,7 +703,7 @@
                 <span class="icon">ℹ️</span>
                 <div>
                     <strong data-i18n="disclaimer.title">Important Notice</strong>
-                    <p data-i18n="disclaimer.text">This shows capture provenance data. It does NOT verify content truthfulness. Provenance makes it verifiable when, and by what device, this media was captured — not whether the captured content is authentic or unmanipulated.</p>
+                    <p data-i18n="disclaimer.text">Displayed capture information is supplied by the pack. This viewer does not establish capture time, device identity, content truthfulness or CPP conformance. A valid signature only matches the embedded public key.</p>
                 </div>
             </div>
         </div>
@@ -751,7 +753,7 @@
             "upload.instruction": "Drag & drop your .veripack or .json file here",
             "upload.or": "or",
             "upload.browse": "Browse Files",
-            "upload.privacy": "All verification is performed locally in your browser. No data is sent to any server.",
+            "upload.privacy": "Evidence is processed in your browser. No evidence or analytics is sent. Loading this page still requests website assets.",
             "paste.placeholder": "Paste your verification pack JSON here...",
             "paste.pasteClipboard": "📋 Paste from Clipboard",
             "paste.clear": "Clear",
@@ -763,7 +765,7 @@
             "info.hideRaw": "Hide raw data ▲",
             "verification.title": "Verification Results",
             "disclaimer.title": "Important Notice",
-            "disclaimer.text": "This shows capture provenance data. It does NOT verify content truthfulness. Provenance makes it verifiable when, and by what device, this media was captured — not whether the captured content is authentic or unmanipulated.",
+            "disclaimer.text": "Displayed capture information is supplied by the pack. This viewer does not establish capture time, device identity, content truthfulness or CPP conformance. A valid signature only matches the embedded public key.",
             "footer.poweredBy": "Powered by",
             "footer.license": "Licensed under CC BY 4.0",
             "beta.message": "This is a beta web version. For full verification features, please use the iOS app.",
@@ -771,9 +773,7 @@
             "contribute.title": "🤝 Contributions Welcome",
             "contribute.message": "VeraCheck is open source. We welcome contributions, bug reports, and feature requests from the community.",
             "contribute.contact": "Contact Us",
-            "summary.valid.title": "ℹ️ Provenance Available",
-            "summary.valid.text": "The verification pack contains the expected provenance fields. This beta web version does not fully verify signatures, Merkle proofs or RFC 3161 timestamps.",
-            "summary.invalid.title": "⚠️ Verification Failed",
+            "summary.invalid.title": "⚠️ Invalid input or failed check",
             "summary.invalid.text": "Some verification checks did not pass. See details below.",
             "result.signature.title": "Event Signature",
             "result.signature.pass": "Digital signature is valid (ES256/P-256)",
@@ -821,7 +821,17 @@
             "meta.location.private": "Location private",
             "layer1": "Layer 1",
             "layer2": "Layer 2",
-            "layer3": "Layer 3"
+            "layer3": "Layer 3",
+            "summary.unchecked.title": "ℹ️ Pack not fully verified",
+            "summary.unchecked.text": "Limited checks and recorded fields are shown. Even a matching signature does not establish the trust, completeness or conformance of the whole pack.",
+            "summary.incomplete.title": "⚠️ Required event fields missing",
+            "summary.incomplete.text": "This event lacks fields needed for inspection. Check the original pack.",
+            "result.structure.title": "Basic input structure",
+            "result.structure.invalid": "Unsupported CPP v1.0 or VeraSnap event, or malformed event fields.",
+            "result.structure.incomplete": "Missing required fields:",
+            "result.structure.unchecked": "Basic event fields checked; complete schema validation and conformance assessment are not performed.",
+            "result.signature.missing": "No signature supplied",
+            "meta.conformanceLevel.unassessed": "Not assessed",
         },
         ja: {
             "header.subtitle": "VeraSnapで撮影された証拠の暗号学的来歴を検証",
@@ -831,7 +841,7 @@
             "upload.instruction": ".veripack または .json ファイルをここにドラッグ＆ドロップ",
             "upload.or": "または",
             "upload.browse": "ファイルを選択",
-            "upload.privacy": "すべての検証はブラウザ内でローカルに実行されます。データはサーバーに送信されません。",
+            "upload.privacy": "証拠データはブラウザ内で処理します。証拠データやアクセス解析情報は送信しません。ページを開く際にはサイトのファイルを取得します。",
             "paste.placeholder": "検証パックのJSONをここに貼り付けてください...",
             "paste.pasteClipboard": "📋 クリップボードから貼り付け",
             "paste.clear": "クリア",
@@ -843,7 +853,7 @@
             "info.hideRaw": "生データを非表示 ▲",
             "verification.title": "検証結果",
             "disclaimer.title": "重要な注意事項",
-            "disclaimer.text": "これは撮影来歴データを表示しています。コンテンツの真実性を検証するものではありません。来歴は、このメディアがいつ、どのデバイスで撮影されたかを検証可能にしますが、撮影されたコンテンツが本物か、改変されていないかを証明するものではありません。",
+            "disclaimer.text": "表示する撮影情報はパックに記録された内容です。このビューアでは撮影時刻・端末の識別情報の正しさ・内容の真実性・CPP適合性を確定しません。署名の一致は、同梱された公開鍵との一致のみを示します。",
             "footer.poweredBy": "提供",
             "footer.license": "CC BY 4.0 ライセンス",
             "beta.message": "これはベータ版のWeb版です。完全な検証機能をご利用いただくには、iOSアプリをご使用ください。",
@@ -851,9 +861,7 @@
             "contribute.title": "🤝 開発への参加を歓迎します",
             "contribute.message": "VeraCheckはオープンソースです。コミュニティからの貢献、バグ報告、機能リクエストを歓迎します。",
             "contribute.contact": "お問い合わせ",
-            "summary.valid.title": "ℹ️ 来歴情報あり",
-            "summary.valid.text": "検証パックに所定の来歴項目が含まれています。このベータ版Web版では、署名・Merkle証明・RFC 3161タイムスタンプの検証は完全には実行されません。",
-            "summary.invalid.title": "⚠️ 検証失敗",
+            "summary.invalid.title": "⚠️ 入力形式が不正、または検査に失敗",
             "summary.invalid.text": "一部の検証チェックに合格しませんでした。詳細は以下をご覧ください。",
             "result.signature.title": "イベント署名",
             "result.signature.pass": "デジタル署名は有効です（ES256/P-256）",
@@ -901,7 +909,17 @@
             "meta.location.private": "位置情報非公開",
             "layer1": "レイヤー1",
             "layer2": "レイヤー2",
-            "layer3": "レイヤー3"
+            "layer3": "レイヤー3",
+            "summary.unchecked.title": "ℹ️ パック全体は未検証",
+            "summary.unchecked.text": "限定的な検査と記録項目を表示しています。署名が一致しても、パック全体の信頼性・完全性・適合性は確定しません。",
+            "summary.incomplete.title": "⚠️ 必須のイベント項目が不足",
+            "summary.incomplete.text": "イベントを調べるために必要な項目がありません。元のパックを確認してください。",
+            "result.structure.title": "入力の基本構造",
+            "result.structure.invalid": "対応するCPP v1.0またはVeraSnapイベントではないか、項目の形式が不正です。",
+            "result.structure.incomplete": "不足している必須項目：",
+            "result.structure.unchecked": "基本的なイベント項目を確認しました。完全なスキーマ検証や適合性評価は行っていません。",
+            "result.signature.missing": "署名がありません",
+            "meta.conformanceLevel.unassessed": "未評価",
         },
         "zh-Hans": {
             "header.subtitle": "验证使用VeraSnap拍摄的证据的加密来源",
@@ -911,7 +929,7 @@
             "upload.instruction": "将 .veripack 或 .json 文件拖放到此处",
             "upload.or": "或",
             "upload.browse": "浏览文件",
-            "upload.privacy": "所有验证均在浏览器本地进行。不会向服务器发送任何数据。",
+            "upload.privacy": "证据在浏览器中处理，不发送证据或分析数据。加载此页面仍会请求网站文件。",
             "paste.placeholder": "在此粘贴验证包JSON...",
             "paste.pasteClipboard": "📋 从剪贴板粘贴",
             "paste.clear": "清除",
@@ -923,7 +941,7 @@
             "info.hideRaw": "隐藏原始数据 ▲",
             "verification.title": "验证结果",
             "disclaimer.title": "重要提示",
-            "disclaimer.text": "这显示的是拍摄来源数据。它不验证内容的真实性。来源可用于验证此媒体是何时、由哪个设备拍摄的，而不是证明拍摄的内容是否真实或未经篡改。",
+            "disclaimer.text": "显示的拍摄信息由验证包提供。此查看器不确定拍摄时间、设备身份、内容真实性或CPP合规性。有效签名仅表示与内嵌公钥匹配。",
             "footer.poweredBy": "技术支持",
             "footer.license": "基于 CC BY 4.0 许可",
             "beta.message": "这是Beta测试版Web版本。如需完整验证功能，请使用iOS应用。",
@@ -931,9 +949,7 @@
             "contribute.title": "🤝 欢迎参与开发",
             "contribute.message": "VeraCheck是开源项目。我们欢迎社区的贡献、错误报告和功能请求。",
             "contribute.contact": "联系我们",
-            "summary.valid.title": "ℹ️ 来源信息可用",
-            "summary.valid.text": "验证包包含预期的来源字段。此测试版Web版本不会完整验证签名、Merkle证明或RFC 3161时间戳。",
-            "summary.invalid.title": "⚠️ 验证失败",
+            "summary.invalid.title": "⚠️ 输入无效或检查失败",
             "summary.invalid.text": "部分验证检查未通过。详情请见下方。",
             "result.signature.title": "事件签名",
             "result.signature.pass": "数字签名有效（ES256/P-256）",
@@ -981,7 +997,17 @@
             "meta.location.private": "位置已隐私保护",
             "layer1": "第1层",
             "layer2": "第2层",
-            "layer3": "第3层"
+            "layer3": "第3层",
+            "summary.unchecked.title": "ℹ️ 整个验证包尚未验证",
+            "summary.unchecked.text": "这里显示有限的检查结果和记录字段。即使签名匹配，也不能确定整个验证包的可信性、完整性或合规性。",
+            "summary.incomplete.title": "⚠️ 缺少必需的事件字段",
+            "summary.incomplete.text": "此事件缺少检查所需的字段。请检查原始验证包。",
+            "result.structure.title": "基本输入结构",
+            "result.structure.invalid": "不支持的CPP v1.0或VeraSnap事件，或事件字段格式错误。",
+            "result.structure.incomplete": "缺少必需字段：",
+            "result.structure.unchecked": "已检查基本事件字段；未执行完整的模式验证或合规评估。",
+            "result.signature.missing": "未提供签名",
+            "meta.conformanceLevel.unassessed": "未评估",
         },
         "zh-Hant": {
             "header.subtitle": "驗證使用VeraSnap拍攝的證據的加密來源",
@@ -991,7 +1017,7 @@
             "upload.instruction": "將 .veripack 或 .json 檔案拖放到此處",
             "upload.or": "或",
             "upload.browse": "瀏覽檔案",
-            "upload.privacy": "所有驗證均在瀏覽器本地進行。不會向伺服器發送任何資料。",
+            "upload.privacy": "證據在瀏覽器中處理，不傳送證據或分析資料。載入此頁面仍會請求網站檔案。",
             "paste.placeholder": "在此貼上驗證包JSON...",
             "paste.pasteClipboard": "📋 從剪貼簿貼上",
             "paste.clear": "清除",
@@ -1003,7 +1029,7 @@
             "info.hideRaw": "隱藏原始資料 ▲",
             "verification.title": "驗證結果",
             "disclaimer.title": "重要提示",
-            "disclaimer.text": "這顯示的是拍攝來源資料。它不驗證內容的真實性。來源可用於驗證此媒體是何時、由哪個裝置拍攝的，而不是證明拍攝的內容是否真實或未經篡改。",
+            "disclaimer.text": "顯示的拍攝資訊由驗證包提供。此檢視器不確定拍攝時間、裝置身分、內容真實性或CPP符合性。有效簽章僅表示與內嵌公開金鑰相符。",
             "footer.poweredBy": "技術支援",
             "footer.license": "基於 CC BY 4.0 授權",
             "beta.message": "這是Beta測試版Web版本。如需完整驗證功能，請使用iOS應用程式。",
@@ -1011,9 +1037,7 @@
             "contribute.title": "🤝 歡迎參與開發",
             "contribute.message": "VeraCheck是開源專案。我們歡迎社群的貢獻、錯誤回報和功能請求。",
             "contribute.contact": "聯絡我們",
-            "summary.valid.title": "ℹ️ 來源資訊可用",
-            "summary.valid.text": "驗證包包含預期的來源欄位。此測試版Web版本不會完整驗證簽名、Merkle證明或RFC 3161時間戳記。",
-            "summary.invalid.title": "⚠️ 驗證失敗",
+            "summary.invalid.title": "⚠️ 輸入無效或檢查失敗",
             "summary.invalid.text": "部分驗證檢查未通過。詳情請見下方。",
             "result.signature.title": "事件簽名",
             "result.signature.pass": "數位簽名有效（ES256/P-256）",
@@ -1061,7 +1085,17 @@
             "meta.location.private": "位置已隱私保護",
             "layer1": "第1層",
             "layer2": "第2層",
-            "layer3": "第3層"
+            "layer3": "第3層",
+            "summary.unchecked.title": "ℹ️ 整個驗證包尚未驗證",
+            "summary.unchecked.text": "這裡顯示有限的檢查結果和記錄欄位。即使簽章相符，也不能確定整個驗證包的可信性、完整性或符合性。",
+            "summary.incomplete.title": "⚠️ 缺少必要的事件欄位",
+            "summary.incomplete.text": "此事件缺少檢查所需的欄位。請檢查原始驗證包。",
+            "result.structure.title": "基本輸入結構",
+            "result.structure.invalid": "不支援的CPP v1.0或VeraSnap事件，或事件欄位格式錯誤。",
+            "result.structure.incomplete": "缺少必要欄位：",
+            "result.structure.unchecked": "已檢查基本事件欄位；未執行完整的結構描述驗證或符合性評估。",
+            "result.signature.missing": "未提供簽章",
+            "meta.conformanceLevel.unassessed": "未評估",
         },
         ko: {
             "header.subtitle": "VeraSnap로 촬영된 증거의 암호화 출처 검증",
@@ -1071,7 +1105,7 @@
             "upload.instruction": ".veripack 또는 .json 파일을 여기에 드래그 앤 드롭",
             "upload.or": "또는",
             "upload.browse": "파일 찾아보기",
-            "upload.privacy": "모든 검증은 브라우저에서 로컬로 수행됩니다. 서버로 데이터가 전송되지 않습니다.",
+            "upload.privacy": "증거는 브라우저에서 처리됩니다. 증거나 분석 데이터는 전송되지 않습니다. 페이지를 불러올 때는 웹사이트 파일을 요청합니다.",
             "paste.placeholder": "여기에 검증 패키지 JSON을 붙여넣으세요...",
             "paste.pasteClipboard": "📋 클립보드에서 붙여넣기",
             "paste.clear": "지우기",
@@ -1083,7 +1117,7 @@
             "info.hideRaw": "원시 데이터 숨기기 ▲",
             "verification.title": "검증 결과",
             "disclaimer.title": "중요 공지",
-            "disclaimer.text": "이것은 촬영 출처 데이터를 표시합니다. 콘텐츠의 진실성을 검증하는 것이 아닙니다. 출처는 이 미디어가 언제, 어떤 장치로 촬영되었는지를 검증 가능하게 하며, 촬영된 콘텐츠가 진본인지 또는 조작되지 않았는지를 증명하는 것이 아닙니다.",
+            "disclaimer.text": "표시된 촬영 정보는 팩이 제공한 내용입니다. 이 뷰어는 촬영 시각, 기기 신원, 내용의 진실성 또는 CPP 적합성을 확립하지 않습니다. 유효한 서명은 내장 공개 키와의 일치만 의미합니다.",
             "footer.poweredBy": "제공",
             "footer.license": "CC BY 4.0 라이선스",
             "beta.message": "이것은 베타 웹 버전입니다. 전체 검증 기능을 사용하려면 iOS 앱을 사용하세요.",
@@ -1091,9 +1125,7 @@
             "contribute.title": "🤝 개발 참여를 환영합니다",
             "contribute.message": "VeraCheck는 오픈 소스입니다. 커뮤니티의 기여, 버그 리포트, 기능 요청을 환영합니다。",
             "contribute.contact": "문의하기",
-            "summary.valid.title": "ℹ️ 출처 정보 확인됨",
-            "summary.valid.text": "검증 팩에 예상되는 출처 필드가 포함되어 있습니다. 이 베타 웹 버전은 서명, Merkle 증명, RFC 3161 타임스탬프를 완전히 검증하지 않습니다.",
-            "summary.invalid.title": "⚠️ 검증 실패",
+            "summary.invalid.title": "⚠️ 잘못된 입력 또는 검사 실패",
             "summary.invalid.text": "일부 검증 확인에 통과하지 못했습니다. 아래 세부 정보를 참조하세요.",
             "result.signature.title": "이벤트 서명",
             "result.signature.pass": "디지털 서명 유효 (ES256/P-256)",
@@ -1141,7 +1173,17 @@
             "meta.location.private": "위치 비공개",
             "layer1": "레이어 1",
             "layer2": "레이어 2",
-            "layer3": "레이어 3"
+            "layer3": "레이어 3",
+            "summary.unchecked.title": "ℹ️ 팩 전체가 검증되지 않음",
+            "summary.unchecked.text": "제한적인 검사와 기록된 필드를 표시합니다. 서명이 일치해도 팩 전체의 신뢰성, 완전성 또는 적합성은 확립되지 않습니다.",
+            "summary.incomplete.title": "⚠️ 필수 이벤트 필드 누락",
+            "summary.incomplete.text": "이 이벤트에는 검사에 필요한 필드가 없습니다. 원본 팩을 확인하세요.",
+            "result.structure.title": "기본 입력 구조",
+            "result.structure.invalid": "지원하지 않는 CPP v1.0 또는 VeraSnap 이벤트이거나 이벤트 필드 형식이 잘못되었습니다.",
+            "result.structure.incomplete": "누락된 필수 필드:",
+            "result.structure.unchecked": "기본 이벤트 필드를 확인했습니다. 전체 스키마 검증이나 적합성 평가는 수행하지 않습니다.",
+            "result.signature.missing": "서명이 제공되지 않음",
+            "meta.conformanceLevel.unassessed": "평가하지 않음",
         },
         de: {
             "header.subtitle": "Kryptographische Herkunft von mit VeraSnap aufgenommenen Beweisen überprüfen",
@@ -1151,7 +1193,7 @@
             "upload.instruction": "Ziehen Sie Ihre .veripack- oder .json-Datei hierher",
             "upload.or": "oder",
             "upload.browse": "Dateien durchsuchen",
-            "upload.privacy": "Alle Überprüfungen werden lokal in Ihrem Browser durchgeführt. Es werden keine Daten an Server gesendet.",
+            "upload.privacy": "Beweise werden im Browser verarbeitet. Es werden keine Beweis- oder Analysedaten gesendet. Beim Laden der Seite werden weiterhin Websitedateien angefordert.",
             "paste.placeholder": "Fügen Sie hier Ihr Verifizierungspaket-JSON ein...",
             "paste.pasteClipboard": "📋 Aus Zwischenablage einfügen",
             "paste.clear": "Löschen",
@@ -1163,7 +1205,7 @@
             "info.hideRaw": "Rohdaten ausblenden ▲",
             "verification.title": "Überprüfungsergebnisse",
             "disclaimer.title": "Wichtiger Hinweis",
-            "disclaimer.text": "Dies zeigt Aufnahme-Herkunftsdaten an. Es überprüft NICHT die Wahrhaftigkeit des Inhalts. Herkunft macht überprüfbar, wann und mit welchem Gerät diese Medien aufgenommen wurden, nicht ob der aufgenommene Inhalt authentisch oder unmanipuliert ist.",
+            "disclaimer.text": "Die angezeigten Aufnahmeinformationen stammen aus dem Paket. Dieser Betrachter belegt weder Aufnahmezeit noch Geräteidentität, inhaltliche Wahrheit oder CPP-Konformität. Eine gültige Signatur passt lediglich zum eingebetteten öffentlichen Schlüssel.",
             "footer.poweredBy": "Bereitgestellt von",
             "footer.license": "Lizenziert unter CC BY 4.0",
             "beta.message": "Dies ist eine Beta-Webversion. Für vollständige Verifizierungsfunktionen verwenden Sie bitte die iOS-App.",
@@ -1171,9 +1213,7 @@
             "contribute.title": "🤝 Beiträge willkommen",
             "contribute.message": "VeraCheck ist Open Source. Wir begrüßen Beiträge, Fehlermeldungen und Funktionswünsche aus der Community.",
             "contribute.contact": "Kontakt",
-            "summary.valid.title": "ℹ️ Herkunft verfügbar",
-            "summary.valid.text": "Das Verifizierungspaket enthält die erwarteten Herkunftsfelder. Diese Beta-Webversion prüft Signaturen, Merkle-Beweise und RFC-3161-Zeitstempel nicht vollständig.",
-            "summary.invalid.title": "⚠️ Überprüfung fehlgeschlagen",
+            "summary.invalid.title": "⚠️ Ungültige Eingabe oder fehlgeschlagene Prüfung",
             "summary.invalid.text": "Einige Überprüfungen wurden nicht bestanden. Siehe Details unten.",
             "result.signature.title": "Ereignissignatur",
             "result.signature.pass": "Digitale Signatur ist gültig (ES256/P-256)",
@@ -1221,7 +1261,17 @@
             "meta.location.private": "Standort privat",
             "layer1": "Schicht 1",
             "layer2": "Schicht 2",
-            "layer3": "Schicht 3"
+            "layer3": "Schicht 3",
+            "summary.unchecked.title": "ℹ️ Paket nicht vollständig geprüft",
+            "summary.unchecked.text": "Begrenzte Prüfungen und aufgezeichnete Felder werden angezeigt. Auch eine passende Signatur belegt weder Vertrauen noch Vollständigkeit oder Konformität des gesamten Pakets.",
+            "summary.incomplete.title": "⚠️ Erforderliche Ereignisfelder fehlen",
+            "summary.incomplete.text": "Diesem Ereignis fehlen Felder für die Prüfung. Prüfen Sie das ursprüngliche Paket.",
+            "result.structure.title": "Grundlegende Eingabestruktur",
+            "result.structure.invalid": "Nicht unterstütztes CPP-v1.0- oder VeraSnap-Ereignis oder fehlerhafte Ereignisfelder.",
+            "result.structure.incomplete": "Fehlende Pflichtfelder:",
+            "result.structure.unchecked": "Grundlegende Ereignisfelder geprüft; keine vollständige Schemavalidierung oder Konformitätsbewertung.",
+            "result.signature.missing": "Keine Signatur angegeben",
+            "meta.conformanceLevel.unassessed": "Nicht bewertet",
         },
         fr: {
             "header.subtitle": "Vérifier la provenance cryptographique des preuves capturées avec VeraSnap",
@@ -1231,7 +1281,7 @@
             "upload.instruction": "Glissez-déposez votre fichier .veripack ou .json ici",
             "upload.or": "ou",
             "upload.browse": "Parcourir les fichiers",
-            "upload.privacy": "Toutes les vérifications sont effectuées localement dans votre navigateur. Aucune donnée n'est envoyée à un serveur.",
+            "upload.privacy": "Les preuves sont traitées dans votre navigateur. Aucune preuve ni donnée analytique n’est envoyée. Le chargement de la page demande toutefois des fichiers du site.",
             "paste.placeholder": "Collez votre JSON de paquet de vérification ici...",
             "paste.pasteClipboard": "📋 Coller depuis le presse-papiers",
             "paste.clear": "Effacer",
@@ -1243,7 +1293,7 @@
             "info.hideRaw": "Masquer les données brutes ▲",
             "verification.title": "Résultats de vérification",
             "disclaimer.title": "Avis important",
-            "disclaimer.text": "Ceci affiche les données de provenance de capture. Cela NE vérifie PAS la véracité du contenu. La provenance permet de vérifier quand et par quel appareil ce média a été capturé, pas si le contenu capturé est authentique ou non manipulé.",
+            "disclaimer.text": "Les informations de capture affichées proviennent du paquet. Ce lecteur n’établit ni l’heure de capture, ni l’identité de l’appareil, ni la véracité du contenu, ni la conformité CPP. Une signature valide correspond seulement à la clé publique intégrée.",
             "footer.poweredBy": "Propulsé par",
             "footer.license": "Sous licence CC BY 4.0",
             "beta.message": "Ceci est une version web bêta. Pour les fonctionnalités de vérification complètes, veuillez utiliser l'application iOS.",
@@ -1251,9 +1301,7 @@
             "contribute.title": "🤝 Contributions bienvenues",
             "contribute.message": "VeraCheck est open source. Nous accueillons les contributions, rapports de bugs et demandes de fonctionnalités de la communauté.",
             "contribute.contact": "Nous contacter",
-            "summary.valid.title": "ℹ️ Provenance disponible",
-            "summary.valid.text": "Le paquet de vérification contient les champs de provenance attendus. Cette version web bêta ne vérifie pas entièrement les signatures, les preuves de Merkle ni les horodatages RFC 3161.",
-            "summary.invalid.title": "⚠️ Échec de la vérification",
+            "summary.invalid.title": "⚠️ Entrée invalide ou contrôle échoué",
             "summary.invalid.text": "Certaines vérifications n'ont pas réussi. Voir les détails ci-dessous.",
             "result.signature.title": "Signature d'événement",
             "result.signature.pass": "Signature numérique valide (ES256/P-256)",
@@ -1301,7 +1349,17 @@
             "meta.location.private": "Emplacement privé",
             "layer1": "Couche 1",
             "layer2": "Couche 2",
-            "layer3": "Couche 3"
+            "layer3": "Couche 3",
+            "summary.unchecked.title": "ℹ️ Paquet non entièrement vérifié",
+            "summary.unchecked.text": "Des contrôles limités et les champs enregistrés sont affichés. Même une signature correspondante ne démontre pas la confiance, la complétude ni la conformité du paquet entier.",
+            "summary.incomplete.title": "⚠️ Champs obligatoires de l’événement manquants",
+            "summary.incomplete.text": "Il manque à cet événement des champs nécessaires à son examen. Vérifiez le paquet original.",
+            "result.structure.title": "Structure de base de l’entrée",
+            "result.structure.invalid": "Événement CPP v1.0 ou VeraSnap non pris en charge, ou champs mal formés.",
+            "result.structure.incomplete": "Champs obligatoires manquants :",
+            "result.structure.unchecked": "Champs de base examinés ; aucune validation complète du schéma ni évaluation de conformité.",
+            "result.signature.missing": "Aucune signature fournie",
+            "meta.conformanceLevel.unassessed": "Non évaluée",
         },
         es: {
             "header.subtitle": "Verificar la procedencia criptográfica de evidencia capturada con VeraSnap",
@@ -1311,7 +1369,7 @@
             "upload.instruction": "Arrastra y suelta tu archivo .veripack o .json aquí",
             "upload.or": "o",
             "upload.browse": "Buscar archivos",
-            "upload.privacy": "Toda la verificación se realiza localmente en tu navegador. No se envía ningún dato a ningún servidor.",
+            "upload.privacy": "Las pruebas se procesan en el navegador. No se envían pruebas ni datos analíticos. Al cargar la página se solicitan archivos del sitio.",
             "paste.placeholder": "Pega tu JSON de paquete de verificación aquí...",
             "paste.pasteClipboard": "📋 Pegar desde portapapeles",
             "paste.clear": "Borrar",
@@ -1323,7 +1381,7 @@
             "info.hideRaw": "Ocultar datos sin procesar ▲",
             "verification.title": "Resultados de verificación",
             "disclaimer.title": "Aviso importante",
-            "disclaimer.text": "Esto muestra datos de procedencia de captura. NO verifica la veracidad del contenido. La procedencia permite verificar cuándo y con qué dispositivo se capturó este medio, no si el contenido capturado es auténtico o no manipulado.",
+            "disclaimer.text": "La información de captura mostrada procede del paquete. Este visor no establece la hora de captura, identidad del dispositivo, veracidad del contenido ni conformidad CPP. Una firma válida solo coincide con la clave pública incluida.",
             "footer.poweredBy": "Desarrollado por",
             "footer.license": "Licenciado bajo CC BY 4.0",
             "beta.message": "Esta es una versión web beta. Para funciones de verificación completas, utiliza la aplicación iOS.",
@@ -1331,9 +1389,7 @@
             "contribute.title": "🤝 Contribuciones bienvenidas",
             "contribute.message": "VeraCheck es código abierto. Damos la bienvenida a contribuciones, informes de errores y solicitudes de funciones de la comunidad.",
             "contribute.contact": "Contáctanos",
-            "summary.valid.title": "ℹ️ Procedencia disponible",
-            "summary.valid.text": "El paquete de verificación contiene los campos de procedencia esperados. Esta versión web beta no verifica por completo las firmas, las pruebas de Merkle ni las marcas de tiempo RFC 3161.",
-            "summary.invalid.title": "⚠️ Verificación fallida",
+            "summary.invalid.title": "⚠️ Entrada inválida o comprobación fallida",
             "summary.invalid.text": "Algunas verificaciones no pasaron. Ver detalles a continuación.",
             "result.signature.title": "Firma de evento",
             "result.signature.pass": "Firma digital válida (ES256/P-256)",
@@ -1381,7 +1437,17 @@
             "meta.location.private": "Ubicación privada",
             "layer1": "Capa 1",
             "layer2": "Capa 2",
-            "layer3": "Capa 3"
+            "layer3": "Capa 3",
+            "summary.unchecked.title": "ℹ️ Paquete no verificado por completo",
+            "summary.unchecked.text": "Se muestran comprobaciones limitadas y campos registrados. Una firma coincidente tampoco establece la confianza, integridad ni conformidad del paquete completo.",
+            "summary.incomplete.title": "⚠️ Faltan campos obligatorios del evento",
+            "summary.incomplete.text": "A este evento le faltan campos necesarios para su inspección. Revise el paquete original.",
+            "result.structure.title": "Estructura básica de entrada",
+            "result.structure.invalid": "Evento CPP v1.0 o VeraSnap no compatible, o campos de evento mal formados.",
+            "result.structure.incomplete": "Campos obligatorios ausentes:",
+            "result.structure.unchecked": "Se comprobaron los campos básicos; no se realiza una validación completa del esquema ni una evaluación de conformidad.",
+            "result.signature.missing": "No se proporcionó firma",
+            "meta.conformanceLevel.unassessed": "No evaluada",
         },
         pt: {
             "header.subtitle": "Verificar a procedência criptográfica de evidências capturadas com VeraSnap",
@@ -1391,7 +1457,7 @@
             "upload.instruction": "Arraste e solte seu arquivo .veripack ou .json aqui",
             "upload.or": "ou",
             "upload.browse": "Procurar arquivos",
-            "upload.privacy": "Toda a verificação é realizada localmente no seu navegador. Nenhum dado é enviado a qualquer servidor.",
+            "upload.privacy": "As evidências são processadas no navegador. Nenhuma evidência ou dado analítico é enviado. O carregamento da página ainda solicita arquivos do site.",
             "paste.placeholder": "Cole seu JSON de pacote de verificação aqui...",
             "paste.pasteClipboard": "📋 Colar da área de transferência",
             "paste.clear": "Limpar",
@@ -1403,7 +1469,7 @@
             "info.hideRaw": "Ocultar dados brutos ▲",
             "verification.title": "Resultados da verificação",
             "disclaimer.title": "Aviso importante",
-            "disclaimer.text": "Isto mostra dados de procedência de captura. NÃO verifica a veracidade do conteúdo. A procedência permite verificar quando e por qual dispositivo esta mídia foi capturada, não se o conteúdo capturado é autêntico ou não manipulado.",
+            "disclaimer.text": "As informações de captura exibidas vêm do pacote. Este visualizador não estabelece horário de captura, identidade do dispositivo, veracidade do conteúdo ou conformidade CPP. Uma assinatura válida apenas corresponde à chave pública incluída.",
             "footer.poweredBy": "Desenvolvido por",
             "footer.license": "Licenciado sob CC BY 4.0",
             "beta.message": "Esta é uma versão web beta. Para recursos completos de verificação, use o aplicativo iOS.",
@@ -1411,9 +1477,7 @@
             "contribute.title": "🤝 Contribuições são bem-vindas",
             "contribute.message": "VeraCheck é código aberto. Aceitamos contribuições, relatórios de bugs e solicitações de recursos da comunidade.",
             "contribute.contact": "Fale conosco",
-            "summary.valid.title": "ℹ️ Procedência disponível",
-            "summary.valid.text": "O pacote de verificação contém os campos de procedência esperados. Esta versão web beta não verifica totalmente assinaturas, provas de Merkle ou carimbos de tempo RFC 3161.",
-            "summary.invalid.title": "⚠️ Verificação falhou",
+            "summary.invalid.title": "⚠️ Entrada inválida ou verificação falhou",
             "summary.invalid.text": "Algumas verificações não passaram. Veja detalhes abaixo.",
             "result.signature.title": "Assinatura do evento",
             "result.signature.pass": "Assinatura digital válida (ES256/P-256)",
@@ -1461,7 +1525,17 @@
             "meta.location.private": "Localização privada",
             "layer1": "Camada 1",
             "layer2": "Camada 2",
-            "layer3": "Camada 3"
+            "layer3": "Camada 3",
+            "summary.unchecked.title": "ℹ️ Pacote não totalmente verificado",
+            "summary.unchecked.text": "São mostradas verificações limitadas e campos registrados. Mesmo uma assinatura correspondente não estabelece a confiança, completude ou conformidade do pacote inteiro.",
+            "summary.incomplete.title": "⚠️ Faltam campos obrigatórios do evento",
+            "summary.incomplete.text": "Faltam neste evento campos necessários para a inspeção. Confira o pacote original.",
+            "result.structure.title": "Estrutura básica da entrada",
+            "result.structure.invalid": "Evento CPP v1.0 ou VeraSnap não suportado, ou campos de evento malformados.",
+            "result.structure.incomplete": "Campos obrigatórios ausentes:",
+            "result.structure.unchecked": "Campos básicos verificados; não há validação completa do esquema nem avaliação de conformidade.",
+            "result.signature.missing": "Nenhuma assinatura fornecida",
+            "meta.conformanceLevel.unassessed": "Não avaliada",
         },
         ar: {
             "header.subtitle": "التحقق من مصدر التشفير للأدلة الملتقطة باستخدام VeraSnap",
@@ -1471,7 +1545,7 @@
             "upload.instruction": "اسحب وأفلت ملف .veripack أو .json هنا",
             "upload.or": "أو",
             "upload.browse": "تصفح الملفات",
-            "upload.privacy": "يتم إجراء جميع عمليات التحقق محليًا في متصفحك. لا يتم إرسال أي بيانات إلى أي خادم.",
+            "upload.privacy": "تُعالَج الأدلة في متصفحك. لا تُرسَل أدلة أو بيانات تحليلية. تحميل الصفحة يطلب ملفات الموقع.",
             "paste.placeholder": "الصق JSON حزمة التحقق هنا...",
             "paste.pasteClipboard": "📋 لصق من الحافظة",
             "paste.clear": "مسح",
@@ -1483,7 +1557,7 @@
             "info.hideRaw": "إخفاء البيانات الخام ▲",
             "verification.title": "نتائج التحقق",
             "disclaimer.title": "ملاحظة مهمة",
-            "disclaimer.text": "هذا يعرض بيانات مصدر الالتقاط. لا يتحقق من صحة المحتوى. المصدر يتيح التحقق من متى وبأي جهاز تم التقاط هذه الوسائط، وليس ما إذا كان المحتوى الملتقط أصليًا أو غير معدل.",
+            "disclaimer.text": "معلومات الالتقاط المعروضة واردة في الحزمة. هذا العارض لا يثبت وقت الالتقاط أو هوية الجهاز أو صدق المحتوى أو مطابقة CPP. التوقيع الصالح يعني فقط التطابق مع المفتاح العام المضمّن.",
             "footer.poweredBy": "مدعوم من",
             "footer.license": "مرخص بموجب CC BY 4.0",
             "beta.message": "هذه نسخة ويب تجريبية. للحصول على ميزات التحقق الكاملة، يرجى استخدام تطبيق iOS.",
@@ -1491,9 +1565,7 @@
             "contribute.title": "🤝 نرحب بالمساهمات",
             "contribute.message": "VeraCheck مفتوح المصدر. نرحب بالمساهمات وتقارير الأخطاء وطلبات الميزات من المجتمع.",
             "contribute.contact": "اتصل بنا",
-            "summary.valid.title": "ℹ️ المصدر متاح",
-            "summary.valid.text": "تحتوي حزمة التحقق على حقول المصدر المتوقعة. هذه النسخة التجريبية على الويب لا تتحقق بالكامل من التوقيعات أو إثباتات Merkle أو الطوابع الزمنية RFC 3161.",
-            "summary.invalid.title": "⚠️ فشل التحقق",
+            "summary.invalid.title": "⚠️ إدخال غير صالح أو فشل الفحص",
             "summary.invalid.text": "لم تنجح بعض فحوصات التحقق. انظر التفاصيل أدناه.",
             "result.signature.title": "توقيع الحدث",
             "result.signature.pass": "التوقيع الرقمي صالح (ES256/P-256)",
@@ -1541,7 +1613,17 @@
             "meta.location.private": "الموقع خاص",
             "layer1": "الطبقة 1",
             "layer2": "الطبقة 2",
-            "layer3": "الطبقة 3"
+            "layer3": "الطبقة 3",
+            "summary.unchecked.title": "ℹ️ لم تُتحقق الحزمة بالكامل",
+            "summary.unchecked.text": "تُعرض فحوص محدودة والحقول المسجلة. حتى تطابق التوقيع لا يثبت موثوقية الحزمة بالكامل أو اكتمالها أو مطابقتها.",
+            "summary.incomplete.title": "⚠️ حقول الحدث المطلوبة مفقودة",
+            "summary.incomplete.text": "يفتقر هذا الحدث إلى حقول لازمة للفحص. راجع الحزمة الأصلية.",
+            "result.structure.title": "البنية الأساسية للإدخال",
+            "result.structure.invalid": "حدث CPP v1.0 أو VeraSnap غير مدعوم، أو حقول حدث غير سليمة.",
+            "result.structure.incomplete": "الحقول المطلوبة المفقودة:",
+            "result.structure.unchecked": "فُحصت حقول الحدث الأساسية فقط؛ لم يُجرَ تحقق كامل من المخطط أو تقييم للمطابقة.",
+            "result.signature.missing": "لم يُقدَّم توقيع",
+            "meta.conformanceLevel.unassessed": "لم تُقيَّم",
         }
     };
 
@@ -1590,7 +1672,7 @@
     }
 
     function base64ToArrayBuffer(base64) {
-        const binaryString = atob(base64);
+        const binaryString = atob(base64.replace(/^base64:/, ''));
         const bytes = new Uint8Array(binaryString.length);
         for (let i = 0; i < binaryString.length; i++) {
             bytes[i] = binaryString.charCodeAt(i);
@@ -1651,15 +1733,81 @@
     // ============================================================
     // Verification Logic
     // ============================================================
+    function isRecord(value) {
+        return value !== null && typeof value === 'object' && !Array.isArray(value);
+    }
+
+    function captureEventFrom(pack) {
+        if (!isRecord(pack)) return null;
+        // A malformed wrapper must not silently fall back to another event.
+        if (Object.hasOwn(pack, 'capture_event')) return pack.capture_event;
+        if (Object.hasOwn(pack, 'captureEvent')) return pack.captureEvent;
+        return pack;
+    }
+
+    // Limited event-field checks, not complete CPP schema or conformance validation.
+    function inspectInput(pack) {
+        const event = captureEventFrom(pack);
+        const invalid = { outcome: 'invalid', missing: [], event: null };
+        if (!isRecord(pack) || !isRecord(event)) return invalid;
+        if (Object.hasOwn(pack, 'capture_event') && Object.hasOwn(pack, 'captureEvent')) return invalid;
+        if (Object.hasOwn(pack, 'verification_pack_version') && pack.verification_pack_version !== '1.0') return invalid;
+
+        const tdsTypes = ['INGEST', 'EXPORT', 'TOMBSTONE'];
+        const cppTypes = ['CPP_CAPTURE', 'CPP_CAPTURE_ATT', 'CPP_SEAL', 'CPP_SHARE', 'CPP_VERIFY', 'CPP_DELETE'];
+        const isTDS = tdsTypes.includes(event.eventType);
+        const isCPP = cppTypes.includes(event.event_type);
+        if ((!isTDS && !isCPP) || (isTDS && isCPP)) return invalid;
+        if (isCPP && Object.hasOwn(event, 'cpp_version') && event.cpp_version !== '1.0') return invalid;
+
+        const nonempty = value => typeof value === 'string' && value.trim().length > 0;
+        const fields = isTDS ? {
+            eventId: nonempty,
+            timestamp: value => nonempty(value) && Number.isFinite(Date.parse(value)),
+            prevHash: nonempty,
+            eventHash: nonempty,
+            signature: value => nonempty(value) && value.length > 20
+        } : {
+            cpp_version: value => value === '1.0',
+            event_id: nonempty,
+            timestamp: value => nonempty(value) && Number.isFinite(Date.parse(value)),
+            device_id: nonempty,
+            sequence_number: value => Number.isSafeInteger(value) && value >= 1,
+            prev_hash: nonempty,
+            payload: isRecord,
+            signature: isRecord
+        };
+        const missing = [];
+        for (const [field, valid] of Object.entries(fields)) {
+            if (!Object.hasOwn(event, field)) missing.push(field);
+            else if (!valid(event[field])) return invalid;
+        }
+        if (isCPP && isRecord(event.signature)) {
+            for (const field of ['algorithm', 'public_key', 'value']) {
+                if (!Object.hasOwn(event.signature, field)) missing.push('signature.' + field);
+                else if (!nonempty(event.signature[field])) return invalid;
+            }
+        }
+        return { outcome: missing.length ? 'incomplete' : 'unchecked', missing, event, isTDS };
+    }
+
     async function verifyPack(pack) {
-        const results = [];
-        let allValid = true;
+        const input = inspectInput(pack);
+        const results = [{
+            layer: 1,
+            type: 'structure',
+            status: input.outcome === 'invalid' ? 'fail' : input.outcome === 'incomplete' ? 'warn' : 'info',
+            title: t('result.structure.title'),
+            message: t('result.structure.' + input.outcome) + (input.missing.length ? ' ' + input.missing.join(', ') : '')
+        }];
+        let outcome = input.outcome;
+        if (outcome === 'invalid') return { results, outcome };
         
         // Support both CPP 1.0 format and VeraSnap TDS format
         // CPP 1.0: capture_event, seal_event
         // VeraSnap TDS: Single CPPEvent with eventType: INGEST/EXPORT
         
-        const captureEvent = pack.capture_event || pack.captureEvent || pack;
+        const captureEvent = input.event;
         const sealEvent = pack.seal_event || pack.sealEvent;
         const merkleProof = pack.merkle_proof || pack.merkleProof;
         const externalAnchor = pack.external_anchor || pack.externalAnchor || 
@@ -1667,9 +1815,7 @@
                               pack.anchor;
         
         // Detect format
-        const isVeraSnapTDS = captureEvent?.eventType && 
-                                 ['INGEST', 'EXPORT', 'TOMBSTONE'].includes(captureEvent.eventType);
-        const isCPP10 = captureEvent?.cpp_version || captureEvent?.event_type?.startsWith('CPP_');
+        const isVeraSnapTDS = input.isTDS;
         
         // Layer 1: Event Signature Verification
         if (captureEvent) {
@@ -1686,11 +1832,8 @@
                     
                     if (isVeraSnapTDS) {
                         // VeraSnap TDS: signature is Base64 ES256.
-                        // This web version checks the structure only; it does not verify the signature.
-                        const hasEventHash = !!captureEvent.eventHash;
-                        const hasSignatureString = typeof signature === 'string' && signature.length > 20;
-                        if (!(hasEventHash && hasSignatureString)) checked = true;   // malformed: report as failed
-                    } else if (signature.value && signature.public_key) {
+                        // Input shape was checked above; cryptographic validity is not established.
+                    } else if (signature.value && signature.public_key && ['ES256', 'ECDSA-P256'].includes(signAlgo)) {
                         // CPP 1.0 format: verify with the embedded public key
                         const eventWithoutSig = { ...captureEvent };
                         delete eventWithoutSig.signature;
@@ -1711,7 +1854,7 @@
                         message: checked ? (isValid ? t('result.signature.pass') : t('result.signature.fail')) : t('result.signature.present')
                     });
                     
-                    if (checked && !isValid) allValid = false;
+                    if (checked && !isValid) outcome = 'invalid';
                 } catch (e) {
                     results.push({
                         layer: 1,
@@ -1720,7 +1863,7 @@
                         title: t('result.signature.title'),
                         message: t('result.signature.fail')
                     });
-                    allValid = false;
+                    outcome = 'invalid';
                 }
             } else {
                 results.push({
@@ -1728,7 +1871,7 @@
                     type: 'signature',
                     status: 'warn',
                     title: t('result.signature.title'),
-                    message: 'No signature found'
+                    message: t('result.signature.missing')
                 });
             }
         }
@@ -1825,15 +1968,17 @@
             });
         }
         
-        return { results, allValid };
+        // Even a matching embedded-key signature does not establish pack trust,
+        // Merkle/anchor validity, completeness or conformance in this web viewer.
+        return { results, outcome };
     }
 
     function extractMetadata(pack) {
         // Support both CPP 1.0 format and VeraSnap TDS format
-        const captureEvent = pack.capture_event || pack.captureEvent || pack;
+        const captureEvent = captureEventFrom(pack);
+        const metadata = { conformanceLevel: t('meta.conformanceLevel.unassessed') };
+        if (!isRecord(pack) || !isRecord(captureEvent)) return metadata;
         const sealEvent = pack.seal_event || pack.sealEvent;
-        
-        const metadata = {};
         
         // Verification Code
         if (pack.verification_code) {
@@ -1873,23 +2018,10 @@
             metadata.eventType = captureEvent.eventType;
         }
         
-        // Conformance Level
+        // Presence of attestation/anchor fields cannot establish an assessed tier.
         const ci = pack.completeness_invariant || 
                    sealEvent?.payload?.completeness_invariant;
-        const tsa = pack.external_anchor || 
-                    sealEvent?.payload?.external_anchor ||
-                    pack.anchor;
-        
-        // Check for Human Attestation (ACE) for Gold level
         const humanAttestation = captureContext?.humanAttestation;
-        
-        if (humanAttestation && tsa) {
-            metadata.conformanceLevel = 'Gold';
-        } else if (tsa && (tsa.timestamp_token || tsa.tsaResponse)) {
-            metadata.conformanceLevel = 'Silver';
-        } else {
-            metadata.conformanceLevel = 'Bronze';
-        }
         
         // Media Type - VeraSnap TDS: asset.mimeType, CPP 1.0: payload.media_type
         const mediaType = captureEvent?.asset?.mimeType || 
@@ -1976,11 +2108,12 @@
         const rawDataPre = document.getElementById('rawData');
         
         // Summary
-        summaryDiv.className = `summary ${verification.allValid ? 'valid' : 'invalid'}`;
+        const outcome = ['invalid', 'incomplete', 'unchecked'].includes(verification.outcome) ? verification.outcome : 'invalid';
+        summaryDiv.className = `summary ${outcome}`;
         document.getElementById('summaryTitle').textContent = 
-            verification.allValid ? t('summary.valid.title') : t('summary.invalid.title');
+            t(`summary.${outcome}.title`);
         document.getElementById('summaryText').textContent = 
-            verification.allValid ? t('summary.valid.text') : t('summary.invalid.text');
+            t(`summary.${outcome}.text`);
         
         // Metadata
         metadataDiv.replaceChildren();
@@ -2003,7 +2136,6 @@
             signatureAlgo: t('meta.signatureAlgo')
         };
         
-        const tierClasses = new Map([['Bronze', 'bronze'], ['Silver', 'silver'], ['Gold', 'gold']]);
         for (const [key, value] of Object.entries(metadata)) {
             const item = document.createElement('div');
             item.className = 'metadata-item';
@@ -2011,10 +2143,9 @@
             label.textContent = metaLabels[key] || key;
             const field = document.createElement('div');
             field.className = 'value';
-            const tierClass = key === 'conformanceLevel' && tierClasses.get(value);
-            if (tierClass) {
+            if (key === 'conformanceLevel') {
                 const badge = document.createElement('span');
-                badge.classList.add('conformance-level', tierClass);
+                badge.classList.add('conformance-level', 'unassessed');
                 badge.textContent = value;
                 field.appendChild(badge);
             } else {

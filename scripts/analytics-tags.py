@@ -3,6 +3,7 @@
 
 No app/demo, redirect, source, maintenance or fixed distribution is instrumented.
 The live docs/brokers landing pages are public content, not fixed distributions.
+The VeraCheck evidence viewer is explicitly excluded even when in the sitemap.
 Run after page generators: python3 scripts/analytics-tags.py write | check
 """
 import re
@@ -20,9 +21,13 @@ PUBLIC_DOC_PAGES = {
     'docs/brokers/ja/index.html',
     'docs/brokers/zh/index.html',
 }
+NO_ANALYTICS_PAGES = {'vap/cpp/veracheck/index.html'}
+ANALYTICS_LOADER = re.compile(r'<script\b[^>]*src=[\"\x27]/assets/js/analytics\.js(?:\?[^\"\x27]*)?[\"\x27]', re.I)
 
 def eligible(path):
     rel = path.relative_to(ROOT)
+    if rel.as_posix() in NO_ANALYTICS_PAGES:
+        return False
     excluded = EXCLUDED - {'docs'} if rel.as_posix() in PUBLIC_DOC_PAGES else EXCLUDED
     if any(x in excluded for x in rel.parts) or 'app' in rel.parts or 'demo' in rel.parts:
         return False
@@ -61,6 +66,15 @@ def main():
         raise SystemExit('Usage: analytics-tags.py write | check')
     errors = []; count = 0
     for path in ROOT.rglob('*.html'):
+        if path.relative_to(ROOT).as_posix() in NO_ANALYTICS_PAGES:
+            text = path.read_text(encoding='utf-8')
+            if write:
+                clean = SCRIPT.sub(lambda match: '' if ANALYTICS_LOADER.search(match[0]) else match[0], text)
+                if clean != text:
+                    path.write_text(clean, encoding='utf-8')
+            elif ANALYTICS_LOADER.search(text) or 'G-XTK1LJKRGV' in text or 'googletagmanager.com/gtag/js' in text:
+                errors.append(str(path.relative_to(ROOT)) + ' must not load analytics')
+            continue
         if not eligible(path):
             continue
         count += 1
