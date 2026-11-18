@@ -153,6 +153,29 @@ async function geometry(page) {
   for (const width of [320, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(url + '#/events/' + eventId + '/proof');
+    const leafCopy = page.getByRole('button', { name: 'Copy event hash', exact: true });
+    await leafCopy.waitFor();
+    assert.equal(await page.getByRole('link', { name: 'Back to event', exact: true }).count(), 1);
+    assert.equal(await page.getByRole('button', { name: 'Copy Merkle root', exact: true }).count(), 1);
+    const auditHeading = await page.getByText(/^Audit Path \(\d+ siblings\)$/).textContent();
+    const siblings = Number(auditHeading.match(/\((\d+) siblings\)/)[1]);
+    assert.ok(siblings > 0);
+    for (let i = 0; i < siblings; i++) {
+      assert.equal(await page.getByRole('button', { name: 'Copy audit path hash L' + i, exact: true }).count(), 1);
+    }
+    // Exercise the bundle's failed-write feedback at a stubbed API boundary;
+    // no host clipboard or external API is accessed.
+    await page.evaluate(() => {
+      window.__copyAttempts = 0;
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {
+        writeText: async () => { window.__copyAttempts++; throw new DOMException('Denied', 'NotAllowedError'); },
+      } });
+    });
+    await leafCopy.focus(); await leafCopy.press('Enter');
+    await page.waitForFunction(() => window.__copyAttempts === 1);
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    assert.equal(await leafCopy.locator('svg.lucide-copy').count(), 1);
+    assert.equal(await leafCopy.locator('svg.text-verify-400').count(), 0);
     await page.getByRole('button', { name: 'Verify Inclusion', exact: true }).click();
     await page.getByText('Inclusion proof matches supplied root', { exact: true }).waitFor();
     const fit = await page.evaluate(() => ({ width: innerWidth, scrollWidth: document.documentElement.scrollWidth,
@@ -162,12 +185,65 @@ async function geometry(page) {
     assert.ok(fit.scrollWidth <= width && fit.buttons.every(b => b.left >= 0 && b.right <= width), JSON.stringify(fit));
     if (width === 390) {
       await page.screenshot({ path: path.join(out, 'inclusion-390.png'), fullPage: true });
-      await page.evaluate(() => { document.querySelector('#explorer-proof-mobile-layout').sheet.disabled = true; });
+      // The GUI now fixes this header itself. Reproduce both the old source
+      // classes and the absence of the historical site-only workaround;
+      // disabling that workaround alone must no longer break the new bundle.
+      const previousClasses = await page.evaluate(() => {
+        const header = document.querySelector('#root .space-y-6 > .flex:has(> div > button.btn-verify)');
+        const left = header.firstElementChild;
+        const nodes = [header, left, left.querySelector('a'), left.lastElementChild, header.lastElementChild];
+        const saved = nodes.map(node => node.getAttribute('class'));
+        header.className = 'flex items-center justify-between';
+        left.className = 'flex items-center gap-4';
+        left.querySelector('a').classList.remove('shrink-0');
+        left.lastElementChild.classList.remove('min-w-0');
+        header.lastElementChild.className = 'flex items-center gap-3';
+        document.querySelector('#explorer-proof-mobile-layout').sheet.disabled = true;
+        return saved;
+      });
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), 'Prior button layout must reproduce overflow');
+      await page.evaluate(saved => {
+        const header = document.querySelector('#root .space-y-6 > .flex:has(> div > button.btn-verify)');
+        const left = header.firstElementChild;
+        const nodes = [header, left, left.querySelector('a'), left.lastElementChild, header.lastElementChild];
+        nodes.forEach((node, index) => saved[index] === null ? node.removeAttribute('class') : node.setAttribute('class', saved[index]));
+      }, previousClasses);
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+        'The new GUI header must fit without the historical site-only workaround');
       await page.evaluate(() => { document.querySelector('#explorer-proof-mobile-layout').sheet.disabled = false; });
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     }
     report.checks.push({ name: 'mobile-inclusion-controls', width, passed: true, fit });
+
+    await page.goto(url + '#/events/' + eventId);
+    await page.getByRole('heading', { name: 'Event Details', exact: true }).waitFor();
+    assert.equal(await page.getByRole('link', { name: 'Back to dashboard', exact: true }).count(), 1);
+    for (const name of ['Copy Event ID', 'Copy Trace ID', 'Copy event hash', 'Copy previous hash']) {
+      assert.equal(await page.getByRole('button', { name, exact: true }).count(), 1);
+    }
+    const eventFit = await page.locator('#root main').evaluate(main => ({
+      viewport: innerWidth, documentWidth: document.documentElement.scrollWidth,
+      actionsFit: Array.from(main.querySelectorAll('a, button')).every(action => {
+        const box = action.getBoundingClientRect();
+        return !box.width || (box.left >= 0 && box.right <= innerWidth);
+      }),
+    }));
+    assert.ok(eventFit.documentWidth <= width && eventFit.actionsFit, JSON.stringify(eventFit));
+    await page.evaluate(() => {
+      window.__copiedValues = [];
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {
+        writeText: async value => { window.__copiedValues.push(value); },
+      } });
+    });
+    const eventCopy = page.getByRole('button', { name: 'Copy Event ID', exact: true });
+    await eventCopy.focus(); await eventCopy.press('Space');
+    await page.waitForFunction(() => window.__copiedValues.length === 1);
+    assert.equal(await page.evaluate(() => window.__copiedValues[0]), eventId);
+    assert.equal(await eventCopy.evaluate(button => button === document.activeElement), true);
+    await eventCopy.locator('svg.text-verify-400').waitFor();
+    report.checks.push({ name: 'named-detail-controls-and-copy-feedback', width, passed: true,
+      eventFit, namedProofSiblings: siblings, rejectedProofWriteShowsSuccess: false,
+      eventIdKeyboardCopyMatches: true, clipboardScope: 'Test-only Clipboard API stub; not the native OS clipboard.' });
   }
 
   for (const width of [320, 390, 768, 1024, 1280, 1440, 1920]) {
