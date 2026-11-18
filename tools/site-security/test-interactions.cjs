@@ -188,13 +188,35 @@ async function vcc(page) {
   return { react: runtime.react, runtimeBabel: 'absent', eventAnchorVerify: 'pass', qrRoundtrip: 'pass', qrModules: modules, qrViewports, certificateBytes: Buffer.byteLength(payload) };
 }
 
+// Exercise the real JSON input with ordinary markup-like text; proof data
+// must remain literal while the viewer's own badge still renders normally.
+async function veraCheck(page) {
+  const device = 'Test camera <em>west</em> & unit 7';
+  const code = 'case <b>12</b>';
+  await page.locator('.tab-btn[data-tab="paste"]').click();
+  await page.locator('#jsonInput').fill(JSON.stringify({
+    verification_code: code,
+    capture_event: { eventType: 'INGEST', captureContext: { deviceModel: device } }
+  }));
+  await page.locator('#verifyJsonBtn').click();
+  await page.locator('#results.visible').waitFor();
+  const fields = page.locator('#metadata .metadata-item .value');
+  const displayed = await fields.allTextContents();
+  assert.ok(displayed.includes(code), 'Verification code is displayed verbatim');
+  assert.ok(displayed.includes(device), 'Device name is displayed verbatim');
+  assert.equal(await fields.locator('em, b').count(), 0, 'Input text creates no markup');
+  assert.equal(await fields.locator('span.conformance-level.bronze').textContent(), 'Bronze');
+  return { literalMetadata: 'pass', applicationBadge: 'pass' };
+}
+
 async function main() {
   const browser = await launch();
   const report = { browser: browser.version(), mode: 'Offline focused CSP interaction checks', cases: [] };
   try {
     const allCases = [
       ['blog/index.html', blog], ['blog/ja/index.html', blog], ['blog/zh/index.html', blog],
-      ['vap/at/vap-at-portal/index.html#assessment', portal], ['vcc/demo/index.html', vcc]
+      ['vap/at/vap-at-portal/index.html#assessment', portal], ['vcc/demo/index.html', vcc],
+      ['vap/cpp/veracheck/index.html', veraCheck]
     ];
     const cases = process.env.SECURITY_TEST_FILTER
       ? allCases.filter(([file]) => file.includes(process.env.SECURITY_TEST_FILTER)) : allCases;
