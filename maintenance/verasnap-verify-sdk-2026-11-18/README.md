@@ -26,4 +26,8 @@ Local checks run:
 
 The browser render tests and hosted workflows run separately in CI.
 
-No VAP subsite (vap.veritaschain.org) patch is included. No fixed release, signed data, normative requirement or historical notice is changed.
+Follow-up (same day): the notice links the Medium article, the LinkedIn post (VSO page) and the X post (@Veritas_chain) published after the notice went live.
+
+The VAP subsite (vap.veritaschain.org) received the EN/JA entry through its own generator, `tools/build.py`. The local rebuild first reproduced the live `index.html`, `ja/index.html`, `updates/index.html` and `ja/updates/index.html` byte for byte; the entry was then added. `sitemap.xml` changes only the four lastmod dates. `xserver.patch` and `xserver-manifest.json` describe the prepared bytes. After upload, all six served files matched the manifest's after-hashes.
+
+No fixed release, signed data, normative requirement or historical notice is changed.
