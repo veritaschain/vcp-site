@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com 'sha256-SKR4xkp4BZv9789u2cWpRPxgKAY9WI+e0GVD7nFH1YQ='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self' data:; connect-src 'self' https://*.google-analytics.com https://*.google.com https://www.googletagmanager.com; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com 'sha256-KRUOxcJsm42MmWW3bZr3sT6bZZq9D1vHbuQzN0hHQdY='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self' data:; connect-src 'self' https://*.google-analytics.com https://*.google.com https://www.googletagmanager.com; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VeraCheck: CPP Evidence Pack Viewer (Beta) | VSO</title>
     <meta name="description" content="Inspect CPP evidence packs created with VeraSnap in a beta web viewer. View provenance and structure checks; full signature, Merkle and timestamp verification is not provided.">
@@ -1983,7 +1983,7 @@
             verification.allValid ? t('summary.valid.text') : t('summary.invalid.text');
         
         // Metadata
-        metadataDiv.innerHTML = '';
+        metadataDiv.replaceChildren();
         const metaLabels = {
             verificationCode: t('meta.verificationCode'),
             captureTime: t('meta.captureTime'),
@@ -2003,22 +2003,27 @@
             signatureAlgo: t('meta.signatureAlgo')
         };
         
+        const tierClasses = new Map([['Bronze', 'bronze'], ['Silver', 'silver'], ['Gold', 'gold']]);
         for (const [key, value] of Object.entries(metadata)) {
             const item = document.createElement('div');
             item.className = 'metadata-item';
-            
-            let displayValue = value;
-            if (key === 'conformanceLevel') {
-                displayValue = `<span class="conformance-level ${value.toLowerCase()}">${value}</span>`;
+            const label = document.createElement('label');
+            label.textContent = metaLabels[key] || key;
+            const field = document.createElement('div');
+            field.className = 'value';
+            const tierClass = key === 'conformanceLevel' && tierClasses.get(value);
+            if (tierClass) {
+                const badge = document.createElement('span');
+                badge.classList.add('conformance-level', tierClass);
+                badge.textContent = value;
+                field.appendChild(badge);
+            } else {
+                field.textContent = String(value);
             }
-            
-            item.innerHTML = `
-                <label>${metaLabels[key] || key}</label>
-                <div class="value">${displayValue}</div>
-            `;
+            item.append(label, field);
             metadataDiv.appendChild(item);
         }
-        
+
         // Verification Results
         verificationResultsDiv.innerHTML = '';
         for (const result of verification.results) {
