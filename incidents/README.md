@@ -58,5 +58,6 @@ python3 scripts/build_incidents.py --check
 
 ## Source review notes
 
+- [AI patching, US service outages and Java4Shell — 19 November 2026](reviews/2026-11-19-ai-patching-and-java4shell.md). Separates attributed outage reporting from vulnerability research, leaves causality and log-absence claims unconfirmed, and records current regulatory sources. This standalone review adds no verified AI-harm incident and changes neither record totals nor historical exclusion counters.
 - [Claude Code approval-file report — primary article unavailable, 8 November 2026](reviews/2026-11-08-claude-code-secrets.md). This review note is not a verified incident record and does not change historical exclusion counters.
 - [Retail, autonomous-driving and agent-scope reports — 8 November 2026](reviews/2026-11-08-retail-autonomy-agent-scope.md). H-E-B remains on hold; Grab and Railway records preserve attributed accounts and evidentiary limits. The H-E-B note does not add a verified incident or change historical exclusion counters.
