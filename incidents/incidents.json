@@ -1,5 +1,5 @@
 {
- "as_of": "2026-11-20",
+ "as_of": "2026-11-21",
  "license": "CC BY 4.0",
  "excluded_counts": [
   {
@@ -9212,6 +9212,236 @@
      "label": "Meta — Muse is now available in Australia (17 November 2026)",
      "url": "https://about.fb.com/news/2026/11/muse-is-now-available-in-australia/",
      "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1117AGENTFRAMEWORK",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Unauthorised releases of Microsoft’s agent-framework package on PyPI carried a credential stealer; Wiz finds three distinct exfiltrations of victim data in the requests it could examine",
+    "ja": "MicrosoftのPyPIパッケージagent-frameworkに無許可の版が公開され、認証情報を窃取するコードを含んでいた（Wizは確認できた送信のうち、被害データの流出を3件と特定）"
+   },
+   "event_date": "2026-11-17, about 20:35 to 21:30 UTC (unauthorised versions 1.26.1 and 1.26.2 published at about 20:35 and 21:08; both unavailable by about 21:30, per Wiz); disclosed 2026-11-17 by Wiz and in PyPA advisory PYSEC-2026-4388; Wiz update on root cause and exfiltrated data 2026-11-18 14:00 UTC",
+   "verified": "2026-11-21",
+   "jurisdiction": {
+    "en": "United States company (Microsoft); package distributed worldwide through PyPI; locations of affected environments not disclosed",
+    "ja": "米国企業（Microsoft）。パッケージはPyPIを通じて世界中に配布。影響を受けた環境の所在地は非公表"
+   },
+   "category": "security incident",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [
+    "Microsoft"
+   ],
+   "summary": {
+    "en": "On 17 November 2026 two versions of agent-framework, the PyPI package for Microsoft Agent Framework (Microsoft’s open-source SDK for building AI agents), were published without authorisation: 1.26.1 at about 20:35 UTC and 1.26.2 at about 21:08 UTC. Both were repackaged from the legitimate 1.26.0 wheel and added a .pth startup file, so the payload ran whenever a Python interpreter started in an environment where the package was installed, without any import. It collected environment variables with credential-like names, secrets read from other processes, credential and configuration files (including Azure CLI, package-registry, Git, Docker and Hugging Face credentials), Azure DevOps and Azure managed-identity tokens and instance metadata; 1.26.2 also requested GitHub Actions OIDC tokens. The data was sent in a single HTTPS request to a webhook.site address. Wiz reported the releases, which were unavailable on PyPI by about 21:30 UTC; the PyPA advisory says PyPI Security worked with Microsoft to review the project’s accounts and that both versions were removed. In an update on 18 November Wiz analysed the 50 requests stored at the webhook.site endpoint: 4 came from the attacker’s own machines, 29 from sandboxes, vendor scanning and tests, and 17 corresponded to 3 distinct successful exfiltrations of victim data. Wiz assesses that the attacker appears to have compromised a client certificate and private key for Microsoft’s Engineering System Release Pipeline (ESRP), used to sign and publish the package, and says how they were obtained is not yet known. Microsoft has not published a root cause. Wiz also reports that the attacker’s tooling identified itself as Cairn, an open-source AI penetration-testing framework. Version 1.26.0 is not affected.",
+    "ja": "2026年11月17日、Microsoft Agent Framework（MicrosoftがAIエージェントの開発用に公開しているオープンソースのSDK）のPyPIパッケージagent-frameworkに、無許可の版が2つ公開されました。1.26.1が20:35頃（UTC）、1.26.2が21:08頃（UTC）です。どちらも正規の1.26.0のwheelを作り直したもので、.pthの起動ファイルを追加していたため、パッケージをインストールした環境でPythonのインタプリタが起動するたびに、importしなくても不正なコードが動きました。収集したのは、認証情報らしい名前の環境変数、他のプロセスから読み取った秘密情報、認証情報や設定のファイル（Azure CLI、パッケージレジストリ、Git、Docker、Hugging Faceの認証情報を含む）、Azure DevOpsとAzureマネージドIDのトークン、インスタンスのメタデータで、1.26.2はGitHub ActionsのOIDCトークンも要求しました。データはwebhook.siteのアドレスへ1回のHTTPSリクエストで送られました。Wizがこれらの版を報告し、21:30頃（UTC）までにPyPIから入手できなくなりました。PyPAの勧告は、PyPI SecurityがMicrosoftと協力してプロジェクトのアカウントを確認し、両方の版を削除したとしています。Wizは11月18日の更新で、webhook.siteの受け口に保存されていた50件のリクエストを分析しました。攻撃者自身の端末からが4件、サンドボックス・ベンダーの検査・テストからが29件で、17件が被害データの流出の成功3件にあたります。Wizは、パッケージの署名と公開に使われるMicrosoftのEngineering System Release Pipeline（ESRP）のクライアント証明書と秘密鍵を攻撃者が侵害したとみられると評価し、その入手経路はまだ分かっていないとしています。Microsoftは根本原因を公表していません。Wizはまた、攻撃者のツールがオープンソースのAIペネトレーションテスト用フレームワークCairnを名乗っていたと報告しています。1.26.0は影響を受けていません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Unauthorised versions 1.26.1 and 1.26.2 of the PyPI package agent-framework were published on 17 November 2026 and carried credential-stealing code; 1.26.0 is not affected.",
+      "ja": "PyPIパッケージagent-frameworkの無許可の版1.26.1と1.26.2が2026年11月17日に公開され、認証情報を窃取するコードを含んでいた。1.26.0は影響を受けていない。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "wiz",
+      "pysec",
+      "ghsa"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "The affected package is the agent-framework meta-package only. The brief VSO checked described the versions as “tampered”; they were new releases uploaded without authorisation, repackaged from the 1.26.0 wheel, not alterations of an existing release. Wiz gives publication at about 20:35 and 21:08 UTC and says both were unavailable by about 21:30 UTC.",
+      "ja": "影響を受けたのはメタパッケージagent-frameworkだけである。VSOが確認したブリーフはこれらを「改ざんされたバージョン」としていたが、既存の版の書き換えではなく、1.26.0のwheelを作り直して無許可でアップロードされた新しい版である。Wizは公開を20:35頃と21:08頃（UTC）、両版が21:30頃（UTC）までに入手できなくなったとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The payload ran whenever Python started, without the package being imported.",
+      "ja": "不正なコードは、パッケージがimportされなくても、Pythonの起動時に動いた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "wiz",
+      "pysec",
+      "ghsa"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "A .pth file in site-packages ran the payload on every interpreter start in an environment where the package was installed (agent_framework_meta.pth in 1.26.1, af_runtime_diag.pth in 1.26.2).",
+      "ja": "site-packagesに置かれた.pthファイルが、パッケージをインストールした環境でのインタプリタの起動ごとに不正なコードを実行した（1.26.1はagent_framework_meta.pth、1.26.2はaf_runtime_diag.pth）。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The code collected Azure, GitHub Actions, Azure DevOps and OpenAI credentials, among others, and sent them to an external endpoint.",
+      "ja": "コードは、Azure、GitHub Actions、Azure DevOps、OpenAIなどの認証情報を集め、外部へ送信した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "wiz",
+      "pysec",
+      "ghsa"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "The brief’s list was incomplete. GitHub Actions OIDC tokens were requested by 1.26.2 only. OpenAI appears as one of the name patterns used to select environment variables. The sources also list secrets read from other processes and credential files for Azure CLI, npm, pip, Git, Docker and Hugging Face. The endpoint was a fixed webhook.site address, reached with one HTTPS POST and no fallback channel.",
+      "ja": "ブリーフの列挙は不完全だった。GitHub ActionsのOIDCトークンを要求したのは1.26.2だけである。OpenAIは、環境変数を選ぶ名前のパターンの1つとして現れる。情報源は、他のプロセスから読み取った秘密情報や、Azure CLI、npm、pip、Git、Docker、Hugging Faceの認証情報ファイルも挙げている。送信先はwebhook.siteの固定アドレスで、1回のHTTPS POSTで送られ、予備の経路はなかった。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The 50 requests Wiz analysed were stored at the attack target.",
+      "ja": "Wizが分析した50件の通信は、攻撃先に保存されていた。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "wiz"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Wiz says the 50 requests were stored on the free tier of webhook.site, the public request-inspection service the attacker used as the exfiltration endpoint, which keeps at most 100 requests. Of the 50, 4 came from the attacker’s own machines and attack process and 29 from sandboxes, vendor scanning and tests; 17 represented 3 unique successful exfiltrations of victim data. The 50 are the stored requests, not a count of victims or installations.",
+      "ja": "Wizによれば、50件は、攻撃者が流出先に使った公開のリクエスト確認サービスwebhook.siteの無料枠（最大100件を保存）に保存されていたリクエストである。50件のうち、4件は攻撃者自身の端末と攻撃の処理から、29件はサンドボックス・ベンダーの検査・テストからで、17件が被害データの流出の成功3件にあたる。50件は保存されていたリクエストの数であり、被害者や導入件数の数ではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The number of affected organisations, downloads of the two versions and any follow-on use of the stolen credentials are unknown.",
+      "ja": "影響を受けた組織の数、2つの版のダウンロード数、窃取された認証情報による二次被害の有無は分かっていない。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "wiz",
+      "securityweek"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "No source checked gives these figures. Wiz’s three cases come from the requests still stored at the endpoint. SecurityWeek gives about 190,000 monthly downloads for the package as a whole, which is not a count of installations of the two versions.",
+      "ja": "確認した情報源のいずれも、これらの数字を示していない。Wizの3件は、受け口に保存されていたリクエストから得たものである。SecurityWeekはパッケージ全体の月間ダウンロード数を約19万としているが、これは2つの版の導入件数ではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Wiz assesses that the attacker appears to have compromised a client certificate and private key for Microsoft’s ESRP, used to sign and publish the package.",
+      "ja": "Wizは、パッケージの署名と公開に使われるMicrosoftのESRPのクライアント証明書と秘密鍵を、攻撃者が侵害したとみられると評価している。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "wiz"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Wiz’s assessment, stated with “appears to”. Wiz reports that a first publication attempt from AWS was rejected by ESRP’s IP filtering and a second, from Microsoft-owned IP space, succeeded, and that how the credentials were obtained is not yet known. The reporter of GitHub issue #10411 put forward a compromised PyPI upload credential as a hypothesis.",
+      "ja": "Wizの評価で、「とみられる」という限定付きの表現である。Wizは、AWSからの最初の公開の試みがESRPのIPフィルタで拒否され、Microsoftが保有するIPアドレス空間からの2回目が成功したと報告し、認証情報の入手経路はまだ分かっていないとしている。GitHubのissue #10411の報告者は、PyPIのアップロード用認証情報の侵害を仮説として挙げていた。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Microsoft has confirmed the root cause.",
+      "ja": "Microsoftは根本原因を確認している。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "issue",
+      "securityweek"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "An Agent Framework maintainer said on 17 November that the versions had been pulled and that Microsoft was investigating. VSO found no Microsoft statement of root cause and no CVE. The GitHub advisory is a malware advisory in the GitHub Advisory Database, not an advisory issued by Microsoft.",
+      "ja": "Agent Frameworkのメンテナーは11月17日、2つの版を取り下げ、調査中であると述べた。VSOは、根本原因についてのMicrosoftの声明もCVEも見つけていない。GitHubの勧告は、GitHub Advisory Databaseのマルウェア勧告で、Microsoftが発行したものではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The attacker’s tooling identified itself as Cairn.",
+      "ja": "攻撃者のツールはCairnを名乗っていた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "wiz"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Wiz’s observation, from requests the tooling sent to the same endpoint: it described itself as Cairn, staged the package under /tmp/cairn_pkg and used a probe string CAIRN_ESRP_PROBE2. The brief VSO checked called these the attacker’s operation records. Wiz does not describe how autonomous the attack was.",
+      "ja": "同じ受け口へツールが送ったリクエストに基づくWizの観察である。ツールはCairnを名乗り、/tmp/cairn_pkgでパッケージを組み、CAIRN_ESRP_PROBE2という疎通確認の文字列を使っていた。VSOが確認したブリーフはこれを攻撃側の操作記録と呼んでいた。Wizは攻撃の自律性について述べていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "This incident is linked to the earlier Cairn incidents VSO has recorded, or to Black October.",
+      "ja": "本件は、VSOが記録した過去のCairn関連の事件、またはBlack Octoberと関連している。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "wiz"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Wiz does not connect this incident to V1026CAIRN, to Unit 42’s report on Cairn, or to V1030BLACKOCTOBER. Cairn is open-source software, and a shared tool does not establish a shared actor. The brief VSO checked also said such links were unconfirmed. Wiz mentions an earlier compromise of another Microsoft Python package, durabletask, and says it has not linked the two.",
+      "ja": "Wizは本件を、V1026CAIRN、Unit 42のCairnに関する報告、V1030BLACKOCTOBERのいずれとも結び付けていない。Cairnはオープンソースのソフトウェアであり、ツールが共通であることは攻撃者が共通であることを示さない。VSOが確認したブリーフも、これらとの関連は未確定としていた。Wizは、Microsoftの別のPythonパッケージdurabletaskが以前に侵害されたことに触れ、両者を結び付けていないとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The case had not been reported when the brief VSO checked was written on 20 November.",
+      "ja": "VSOが確認したブリーフを書いた11月20日の時点で、本件は報告されていなかった。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "wiz",
+      "pysec",
+      "ghsa",
+      "securityweek"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Wiz and the PyPA advisory published on 17 November (UTC), the GitHub advisory on 18 November, and SecurityWeek and other outlets reported it on 18 November. It had not been recorded by VSO, so it is recorded here as a new incident, not as a follow-up.",
+      "ja": "Wizの記事とPyPAの勧告は11月17日（UTC）、GitHubの勧告は11月18日に公開され、SecurityWeekなども11月18日に報じている。VSOは未記録だったため、続報ではなく新しい事件としてここに記録する。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: no AI decision is at issue. The payload is credential-stealing code delivered through the distribution channel of an SDK for building AI agents, and it ran in the environments of people who installed it. Whether a distributed package came from its publisher’s build is the subject of software supply-chain provenance (for example PyPI Trusted Publishing and attestations, SLSA, Sigstore), not of VAP. VCP, the finance profile, does not apply: no trading system is involved. One point bears on VAP. Wiz assesses that the releases went through with what appears to be Microsoft’s own release credential, so the credential was valid and showed nothing about who was using it. VAP v1.2 §1.6(c) speaks of the attributability of records, and that attributability rests on keys. The current text does not define how a verifier receives and assesses a declaration that a signing key was compromised, or what “attributable” means beyond verification under a supplied key. Both are candidate rows (F11, F12) in the CHANGE-002 preparation register, an administrative discussion draft that is not a change proposal and has not been adopted. Credential reads on affected hosts that no system measured would be pre-measurement drops (Appendix A); the sources do not establish whether any were.",
+    "ja": "設計上の示唆：AIの判断は問題になっていません。不正なコードは、AIエージェントを開発するためのSDKの配布経路で届いた認証情報窃取のコードで、それをインストールした人の環境で動きました。配布されたパッケージが公開者のビルドに由来するかどうかは、ソフトウェア供給網の来歴（たとえばPyPIのTrusted Publishingとattestation、SLSA、Sigstore）の問題で、VAPの対象ではありません。金融のプロファイルであるVCPも当てはまりません。取引システムは関わっていないからです。VAPに関わる点が1つあります。Wizは、これらの版がMicrosoft自身のリリース用の認証情報とみられるもので通ったと評価しています。認証情報は正規のもので、誰が使っているかについては何も示しませんでした。VAP v1.2 §1.6(c)は記録の帰属性に言及しており、その帰属性は鍵に依存します。現行の本文は、署名鍵が侵害されたという宣言を検証者がどう受け取り評価するかも、「帰属可能」が、与えられた鍵で検証できること以上に何を意味するかも定めていません。どちらもCHANGE-002の準備用登録簿（変更提案ではなく、採択もされていない事務的な討議用草案）の候補（F11、F12）です。影響を受けたホストでの認証情報の読み取りのうち、どのシステムも計測しなかったものは、計測前の欠落（Appendix A、Pre-measurement drop）にあたります。情報源は、そうした読み取りがあったかどうかを示していません。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not vet packages, stop a .pth hook from running, block or detect exfiltration, detect a stolen signing or publishing credential, revoke tokens or identify the attacker. It places no obligation on the attacker’s tooling and cannot recover credential reads that no system recorded.",
+    "ja": "VAPは、パッケージを審査せず、.pthフックの実行を止めず、流出を阻止も検知もせず、盗まれた署名・公開用の認証情報を検知せず、トークンを失効させず、攻撃者を特定しません。攻撃者のツールには何の義務も課さず、どのシステムも記録しなかった認証情報の読み取りを復元することもできません。"
+   },
+   "sources": [
+    {
+     "id": "wiz",
+     "label": "Wiz — Microsoft agent-framework Compromised: Credential Stealer Targets Azure and CI Pipelines (17 November 2026, updated 18 November 2026 14:00 UTC)",
+     "url": "https://www.wiz.io/blog/malicious-version-of-microsofts-agent-framework-published-to-pypi",
+     "kind": "primary"
+    },
+    {
+     "id": "pysec",
+     "label": "PyPA advisory PYSEC-2026-4388 — agent-framework 1.26.1 and 1.26.2 contain credential-stealing code (OSV; published 17 November 2026, modified 18 November 2026)",
+     "url": "https://osv.dev/vulnerability/PYSEC-2026-4388",
+     "kind": "primary"
+    },
+    {
+     "id": "ghsa",
+     "label": "GitHub Advisory Database — GHSA-764m-3ppc-5m73: Malicious code in agent-framework (PyPI) (18 November 2026)",
+     "url": "https://github.com/advisories/GHSA-764m-3ppc-5m73",
+     "kind": "primary"
+    },
+    {
+     "id": "issue",
+     "label": "microsoft/agent-framework issue #10411 — report that agent-framework 1.26.1 on PyPI is malicious, with a maintainer’s reply (17 November 2026)",
+     "url": "https://github.com/microsoft/agent-framework/issues/10411",
+     "kind": "primary"
+    },
+    {
+     "id": "securityweek",
+     "label": "SecurityWeek (Eduard Kovacs) — Microsoft Agent Framework Releases Poisoned With Credential Stealer (18 November 2026)",
+     "url": "https://www.securityweek.com/microsoft-agent-framework-releases-poisoned-with-credential-stealer/",
+     "kind": "secondary"
     }
    ],
    "references_without_url": [],
