@@ -75,6 +75,8 @@ class VCPHeader extends HTMLElement {
                 evidectDescription: "Security research and evidence design.",
                 veraSnap: "VeraSnap for business",
                 veraSnapDescription: "Photo evidence for business and insurance teams.",
+                veraSnapSdk: "VeraSnap Verify SDK (alpha)",
+                veraSnapSdkDescription: "Receiver-side checks, key registration and limits.",
                 vapDescription: "The framework, its scope and status.",
                 specDescription: "Read the published VCP specification.",
                 sdkDescription: "Source, examples and development status.",
@@ -180,6 +182,8 @@ class VCPHeader extends HTMLElement {
                 evidectDescription: "セキュリティ調査と証拠設計",
                 veraSnap: "VeraSnap 法人・保険向け",
                 veraSnapDescription: "写真の撮影・受領・検証をつなぐ",
+                veraSnapSdk: "VeraSnap Verify SDK（alpha）",
+                veraSnapSdkDescription: "受領側の検証・鍵登録・制約を確認",
                 vapDescription: "フレームワークの構成・範囲・状態",
                 specDescription: "公開されているVCPの仕様を読む",
                 sdkDescription: "ソース・実行例・開発状況を確認",
@@ -284,6 +288,8 @@ class VCPHeader extends HTMLElement {
                 exchangeDescription: "交易基础设施的证据设计。",
                 evidectDescription: "安全研究与证据设计（日文）。",
                 veraSnap: "VeraSnap 企业与保险应用",
+                veraSnapSdk: "VeraSnap Verify SDK（alpha）",
+                veraSnapSdkDescription: "接收方验证、密钥注册与适用限制。",
                 veraSnapDescription: "连接照片拍摄、接收与验证流程。",
                 vapDescription: "框架的结构、范围与状态。",
                 specDescription: "阅读已公开的VCP规范。",
@@ -294,7 +300,7 @@ class VCPHeader extends HTMLElement {
                 researchGuides: "研究与指南",
                 aboutVsoNav: "关于VSO",
                 vapSpec: "VAP框架（GitHub）",
-                sdk: "VCP SDK（开发版）",
+                sdk: "VCP SDK（开发版·英文）",
                 announcements: "最新公告",
                 corrections: "更正日志",
                 policies: "政策与披露",
@@ -440,7 +446,8 @@ class VCPHeader extends HTMLElement {
                             <div class="nav-group"><p class="nav-group-label">${t.buildGroup}</p>
                                 <a href="/vcp/specification/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.specification}</span><span class="nav-item-description">${t.specDescription}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
                                 <a href="https://github.com/veritaschain/vap-spec" class="dropdown-item" target="_blank" rel="noopener noreferrer"><span class="nav-item-copy"><span class="nav-item-title">${t.vapSpec}</span></span><span class="nav-item-arrow" aria-hidden="true">↗</span></a>
-                                <a href="https://github.com/veritaschain/vcp-sdk" class="dropdown-item" target="_blank" rel="noopener noreferrer"><span class="nav-item-copy"><span class="nav-item-title">${t.sdk}</span><span class="nav-item-description">${t.sdkDescription}</span></span><span class="nav-item-arrow" aria-hidden="true">↗</span></a>
+                                <a href="/vcp/sdk/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.sdk}</span><span class="nav-item-description">${t.sdkDescription}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
+                                <a href="/verasnap/#implementation" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.veraSnapSdk}</span><span class="nav-item-description">${t.veraSnapSdkDescription}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
                             </div>
                             <div class="nav-group"><p class="nav-group-label">${t.integrateGroup}</p>
                                 <a href="/vcp/developers/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.developersIntegration}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
@@ -528,8 +535,8 @@ class VCPHeader extends HTMLElement {
         // Only route to translations that exist; English-only tools keep their working URL.
         const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/lap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/verasnap/", "/vso/", "/vso/announcements/", "/vso/corrections/", "/vso/policies/", "/what-is-vcp/"]);
         this.querySelectorAll('.dropdown-menu a[href^="/"]').forEach(link => {
-            const path = link.getAttribute('href');
-            if (translatedRoutes.has(path) || (lang === 'ja' && ['/guides/', '/guides/ai-agent-audit-log/', '/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/'].includes(path))) link.setAttribute('href', `${path}${lang}/`);
+            const [path, fragment] = link.getAttribute('href').split('#');
+            if (translatedRoutes.has(path) || (lang === 'ja' && ['/vcp/sdk/', '/guides/', '/guides/ai-agent-audit-log/', '/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/'].includes(path))) link.setAttribute('href', `${path}${lang}/${fragment ? `#${fragment}` : ''}`);
         });
     }
 
