@@ -73,6 +73,8 @@ class VCPHeader extends HTMLElement {
                 useCasesDescription: "Find an application by context.",
                 exchangeDescription: "Evidence for trading infrastructure.",
                 evidectDescription: "Security research and evidence design.",
+                veraSnap: "VeraSnap for business",
+                veraSnapDescription: "Photo evidence for business and insurance teams.",
                 vapDescription: "The framework, its scope and status.",
                 specDescription: "Read the published VCP specification.",
                 sdkDescription: "Source, examples and development status.",
@@ -176,6 +178,8 @@ class VCPHeader extends HTMLElement {
                 useCasesDescription: "利用場面から適用例を探す",
                 exchangeDescription: "取引基盤の証拠設計を知る",
                 evidectDescription: "セキュリティ調査と証拠設計",
+                veraSnap: "VeraSnap 法人・保険向け",
+                veraSnapDescription: "写真の撮影・受領・検証をつなぐ",
                 vapDescription: "フレームワークの構成・範囲・状態",
                 specDescription: "公開されているVCPの仕様を読む",
                 sdkDescription: "ソース・実行例・開発状況を確認",
@@ -279,6 +283,8 @@ class VCPHeader extends HTMLElement {
                 useCasesDescription: "按使用场景查找应用。",
                 exchangeDescription: "交易基础设施的证据设计。",
                 evidectDescription: "安全研究与证据设计（日文）。",
+                veraSnap: "VeraSnap 企业与保险应用",
+                veraSnapDescription: "连接照片拍摄、接收与验证流程。",
                 vapDescription: "框架的结构、范围与状态。",
                 specDescription: "阅读已公开的VCP规范。",
                 sdkDescription: "源码、示例与开发状态。",
@@ -457,6 +463,7 @@ class VCPHeader extends HTMLElement {
                                 <a href="/explorer/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.explorer}</span><span class="nav-item-description">${t.explorerAboutDescription}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
                                 <a href="/use-cases/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.useCases}</span><span class="nav-item-description">${t.useCasesDescription}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
                                 <a href="/solutions/exchanges/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.forExchanges}</span><span class="nav-item-description">${t.exchangeDescription}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
+                                <a href="/verasnap/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.veraSnap}</span><span class="nav-item-description">${t.veraSnapDescription}</span></span></a>
                                 <a href="https://evidect.veritaschain.org/" class="dropdown-item" target="_blank" rel="noopener noreferrer"><span class="nav-item-copy"><span class="nav-item-title">${t.evidect}</span><span class="nav-item-description">${t.evidectDescription}</span></span><span class="nav-item-arrow" aria-hidden="true">↗</span></a>
                             </div>
                         </div>
@@ -519,7 +526,7 @@ class VCPHeader extends HTMLElement {
     localizeNavigation(lang) {
         if (!['ja', 'zh'].includes(lang)) return;
         // Only route to translations that exist; English-only tools keep their working URL.
-        const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/lap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/vso/", "/vso/announcements/", "/vso/corrections/", "/vso/policies/", "/what-is-vcp/"]);
+        const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/lap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/verasnap/", "/vso/", "/vso/announcements/", "/vso/corrections/", "/vso/policies/", "/what-is-vcp/"]);
         this.querySelectorAll('.dropdown-menu a[href^="/"]').forEach(link => {
             const path = link.getAttribute('href');
             if (translatedRoutes.has(path) || (lang === 'ja' && ['/guides/', '/guides/ai-agent-audit-log/', '/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/'].includes(path))) link.setAttribute('href', `${path}${lang}/`);

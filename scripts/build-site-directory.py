@@ -39,7 +39,7 @@ def category(url):
         return 'Certification'
     if path.startswith(('/explorer/', '/benchmark/', '/vcc/', '/vap/at/vap-at-portal/', '/vap/cpp/veracheck/')):
         return 'Tools and demonstrations'
-    if path.startswith(('/use-cases/', '/solutions/', '/docs/brokers/', '/propfirms/', '/regtech/', '/sec/')):
+    if path.startswith(('/use-cases/', '/solutions/', '/docs/brokers/', '/propfirms/', '/regtech/', '/sec/', '/verasnap/')):
         return 'Use cases and industry resources'
     if path.startswith(('/vap/', '/vcp/', '/what-is-vcp/')):
         return 'Frameworks, profiles and developer resources'
