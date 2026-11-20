@@ -154,7 +154,8 @@ Each homepage has eight sections inside `<main>`, with shared navigation and foo
 ### Cryptographic Standards
 
 - **Default:** Ed25519
-- **Alternatives:** ECDSA, Dilithium (Post-Quantum Cryptography)
+- **Also supported:** ECDSA secp256k1
+- **Experimental in v1.2 (not a certification requirement):** DILITHIUM2 (ML-DSA), FALCON512 (FN-DSA)
 - **Verification:** Merkle Tree + Chain Validation
 
 ### Storage Formats
@@ -193,8 +194,8 @@ VCP produces evidence relevant to the regimes below. Conformance to VCP does not
 1. **Developers** - Implement VCP from the open specification (an offline core for VCP v1.2, [vcp-sdk](https://github.com/veritaschain/vcp-sdk) v0.1.0, is published as a pre-release; it is not an implementation of vcp-sdk-spec)
 2. **Exchanges & Brokers** - Deploy as FIX protocol sidecar
 3. **Regulators** - Review the open specification
-4. **HFT Firms** - Platinum-tier compliance
-5. **Institutional Investors** - Gold-tier compliance
+4. **HFT Firms** - Platinum tier
+5. **Institutional Investors** - Gold tier
 6. **Retail Platforms** - Silver-tier transparency
 
 ---
