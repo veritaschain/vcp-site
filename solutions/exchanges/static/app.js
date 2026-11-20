@@ -193,7 +193,7 @@ window.VCP = {
   version: '1.0',
   page: 'Solutions for Exchanges & Brokers',
   tiers: ['Platinum', 'Gold'],
-  regulations: ['MiFID II RTS 25', 'MiFID II RTS 27/28', 'EU AI Act', 'GDPR'],
+  regulations: ['Delegated Regulation (EU) 2025/1155 (formerly MiFID II RTS 25)', 'MiFID II RTS 27/28', 'EU AI Act', 'GDPR'],
   targetMarkets: ['CEX', 'DEX', 'FX/CFD Brokers', 'DeFi', 'Dark Pools'],
   technicalFeatures: [
     'UUID v7 for time-series integrity',
