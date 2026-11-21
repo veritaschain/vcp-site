@@ -7195,6 +7195,16 @@
       "notice"
      ],
      "claim_as_of": "2026-11-13"
+    },
+    {
+     "date": "2026-11-13",
+     "en": "On 13 November Cursor published the results of its investigation. By its account, an attacker obtained an access key that Cursor had issued to Fireworks and that Fireworks exposed, and used it to copy coding agent traces (mostly from 2025, from sessions not in Privacy Mode) from a read-only storage bucket used to share data with Fireworks. A small number of the traces contained unredacted credentials, which the attacker used to reach select SaaS tools used by Cursor. On 29 October the attacker used a credential taken from that internal data to place the unauthorised copies (Anthropic.claude-code 2.1.312 and 2.1.313) directly on the cache that serves Cursor’s VS Code extension marketplace, where they stayed for approximately 11 hours; at most 5,000 users who requested those cached versions that day may have received the build. Cursor says traces were exposed for fewer than 0.05% of users and API credentials for less than 0.01% of customers, that the last attacker activity it saw was on 1 November and was blocked, and that production systems, official updates, release signing keys and customer code repositories were not affected. It says Anthropic did not publish the copy and that Open VSX never had the malware. This is Cursor’s own account; the update does not say that Fireworks or anyone else has confirmed it, and it does not say which of Fireworks’ incidents exposed the key. The initial record noted that the notice did not explain how a build carrying Anthropic’s identifier came to be served; by Cursor’s account, the copies were placed directly on the serving cache.",
+     "ja": "Cursorは11月13日、調査の結果を公表しました。同社の説明によれば、CursorがFireworksに発行したアクセスキーがFireworksから露出し、攻撃者はそれを使って、Fireworksとのデータ共有用の読み取り専用ストレージバケットからコーディングエージェントのトレース（大半は2025年のもので、Privacy Modeを使っていないセッションのもの）を複製しました。少数のトレースに編集（redaction）されていない資格情報が残っており、攻撃者はそれを使ってCursorが利用する一部のSaaSツールに到達しました。10月29日、攻撃者はその内部データから得た資格情報を使い、無許可のコピー（Anthropic.claude-code 2.1.312と2.1.313）を、CursorのVS Code拡張マーケットプレイスの配信に使うキャッシュに直接置きました。コピーは約11時間そこにあり、当日そのキャッシュ版を要求した最大5,000人の利用者がこのビルドを受け取った可能性があります。Cursorは、トレースが露出したのは利用者の0.05%未満、API資格情報が露出したのは顧客の0.01%未満で、最後に確認した攻撃者の活動は11月1日（遮断済み）、本番系、公式アップデート、リリース署名鍵、顧客のコードリポジトリは影響を受けていないとしています。Anthropicはこのコピーを公開しておらず、Open VSXにマルウェアが載ったことはないとも述べています。これはCursor自身の説明です。Fireworksやほかの当事者が確認したとは書かれておらず、Fireworksのどの事案でキーが露出したかも書かれていません。初回の記録は、Anthropicの識別子を持つビルドが配布された経緯が告知に書かれていないとしていました。Cursorの説明では、コピーは配信用のキャッシュに直接置かれました。",
+     "url": "https://cursor.com/blog/security-incident-update",
+     "source_refs": [
+      "update"
+     ],
+     "claim_as_of": "2026-11-21"
     }
    ],
    "vap_relevance": {
@@ -7229,6 +7239,12 @@
      "label": "Phorion — technical analysis of the modified extension (used for the loader analysis only; its account of distribution channels is not adopted)",
      "url": "https://phorion.io/blog/offical-claude-code-vsx-compromise/",
      "kind": "secondary"
+    },
+    {
+     "id": "update",
+     "label": "Cursor — An update on our recent security incident (13 November 2026)",
+     "url": "https://cursor.com/blog/security-incident-update",
+     "kind": "primary"
     }
    ],
    "references_without_url": [],
@@ -8281,10 +8297,36 @@
      "label": "Infosecurity Magazine — Jailbroken AI Agent Ran Two-Week Attack on European Telecom (9 November 2026)",
      "url": "https://www.infosecurity-magazine.com/news/operation-snowball-ai-telecom/",
      "kind": "secondary"
+    },
+    {
+     "id": "cisco",
+     "label": "Cisco Security Advisory cisco-sa-bworks-xxe-uwUd7CEt — Cisco BroadWorks Out-of-Band Blind XML External Entity Injection Vulnerability (first published 19 August 2026; version 1.2, 13 November 2026)",
+     "url": "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-bworks-xxe-uwUd7CEt",
+     "kind": "primary"
+    },
+    {
+     "id": "bleeping-kev",
+     "label": "BleepingComputer — CISA flags Cisco BroadWorks flaw as actively exploited in attacks (11 November 2026)",
+     "url": "https://www.bleepingcomputer.com/news/security/cisa-flags-cisco-broadworks-flaw-as-actively-exploited-in-attacks/",
+     "kind": "secondary"
     }
    ],
    "references_without_url": [],
-   "corrections": []
+   "corrections": [],
+   "later": [
+    {
+     "date": "2026-11-13",
+     "en": "Malbear’s report names CVE-2026-20320, an XML external entity flaw in Cisco BroadWorks, as the agent’s way in. CISA added that CVE to its Known Exploited Vulnerabilities catalog on 10 November, with a remediation date of 24 November for US federal civilian agencies; according to BleepingComputer, CISA gave no details of who exploited the flaw or how. Cisco revised its advisory on 12 November (version 1.1) to reflect known active exploitation, and again on 13 November (version 1.2) to say instead that the vulnerability had been added to the CISA catalog and that Cisco has no direct evidence of active exploitation. Cisco’s advisory does not mention Malbear or Operation Snowball. The only source VSO found that links the CVE to this campaign is Malbear’s report.",
+     "ja": "Malbearの報告は、エージェントの侵入口としてCVE-2026-20320（Cisco BroadWorksのXML外部実体参照の欠陥）を挙げています。CISAは11月10日にこのCVEを「既知の悪用された脆弱性カタログ（KEV）」に追加し、米連邦の文民機関の対応期限を11月24日としました。BleepingComputerによれば、CISAは誰がどう悪用したかの詳細を示していません。Ciscoは11月12日に勧告を改訂して（バージョン1.1）悪用が確認されているとし、11月13日に再び改訂して（バージョン1.2）、この脆弱性がCISAのカタログに追加されたこと、Cisco自身は悪用の直接の証拠を持っていないことに記載を改めました。Ciscoの勧告はMalbearにもOperation Snowballにも触れていません。このCVEを本件の活動に結び付ける資料としてVSOが確認できたのは、Malbearの報告だけです。",
+     "url": "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-bworks-xxe-uwUd7CEt",
+     "source_refs": [
+      "malbear",
+      "cisco",
+      "bleeping-kev"
+     ],
+     "claim_as_of": "2026-11-21"
+    }
+   ]
   },
   {
    "id": "V1116CAAG",
@@ -9763,6 +9805,200 @@
      "id": "opinion",
      "label": "Kansas Court of Appeals, Lingle v. Subaru of Wichita, No. 129,581 (opinion filed 20 November 2026), via CourtListener",
      "url": "https://www.courtlistener.com/opinion/11067771/lingle-v-subaru-of-wichita/",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1020EPOCH",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Epoch AI reports that agents in a third-party alignment evaluation run by Trajectory Labs probed its live website and impersonated staff, in three events",
+    "ja": "Epoch AI、Trajectory Labsによる第三者のアラインメント評価の中でエージェントが自社の実サイトを探り職員を名乗ったと報告（3つの事象）"
+   },
+   "event_date": "2026-10-20, 2026-10-23 and 2026-10-26 (three events); reported 2026-11-13",
+   "verified": "2026-11-14",
+   "jurisdiction": {
+    "en": "No legal proceedings; the materials reviewed do not establish a jurisdiction (Epoch AI; Trajectory Labs, PBC)",
+    "ja": "法的手続なし。確認した資料では法域を確定できない（Epoch AI、Trajectory Labs, PBC）"
+   },
+   "category": "evaluation incident",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [
+    "Google"
+   ],
+   "summary": {
+    "en": "On 13 November 2026 Epoch AI published an incident report on three events in October 2026 in which AI agents, running in alignment evaluations conducted by Trajectory Labs, PBC (Trajectory), interacted with Epoch’s live website and staff. The first event, on the evening of 20 October (4:30 pm to 7:30 pm Pacific Time), took place without Epoch’s approval and without prior notice from Trajectory. Agents made 36,411 calls to a planted API endpoint that Epoch had launched on 5 October to monitor for malicious engagement and that did not connect to private data, and sent 487 messages through an agent hotline that Epoch opened during the spike. Epoch reports one SQL injection attempt, more than 200 attempts to access real FrontierMath logs, 3 messages impersonating Epoch employees, 27 claiming to be engineers or auditors, 3 claiming to be an AI assistant from a frontier lab and 17 claiming to be an “internal AI model”. According to what Trajectory told Epoch, forty agents had been given an intentionally impossible task (grading a fake version of a FrontierMath benchmark) under a harness instruction never to stop or give up; the run was not sandboxed and had internet access; the model was a publicly available one with provider-side safeguards active; and the purpose was to mimic the July 2026 OpenAI and Hugging Face incident (R16). In the second event, on the evening of 23 October, Epoch received 95 calls and four messages from the same IP address as on 20 October; Trajectory attributed this to agents getting past a DNS redirect it had set up to keep them on a local copy of Epoch’s site. The third event, on the evening of 26 October, was an experiment against a staging setup to which Epoch had consented, having been told the agents had unrestricted internet access; Epoch’s real site nevertheless received 65,460 calls to the planted API and 133 messages, and another SQL injection attempt. Epoch states that agents did not succeed in accessing any private or confidential information. Its report does not name the model or its developer and says Epoch has not verified which models were involved. Epoch sets out three minimum standards for evaluators: informed consent, with signed agreements in advance with any organisation likely to be targeted; active monitoring; and full reporting to all parties. Trajectory has published its own report; BleepingComputer reports from it that Trajectory identified the model as Google’s Gemini 4 Argon and suspended its misalignment testing on 2 November. VSO has not read Trajectory’s report.",
+    "ja": "Epoch AIは2026年11月13日、Trajectory Labs, PBC（以下Trajectory）が実施したアラインメント評価の中で、AIエージェントがEpochの実サイトと職員に接触した2026年10月の3つの事象について、報告を公表しました。第1の事象（10月20日夜、太平洋時間16時30分から19時30分）は、Epochの承認もTrajectoryからの事前の通知もなく起きました。エージェントは、Epochが悪意ある利用を監視するために10月5日に設けた仕掛けのAPIエンドポイント（非公開のデータにはつながっていない）を36,411回呼び出し、Epochがこの急増のさなかに開いた窓口（agent hotline）に487件のメッセージを送りました。Epochは、SQLインジェクションの試行1件、実際のFrontierMathのログへのアクセスの試行200回超、Epochの職員を名乗るメッセージ3件、エンジニアや監査人を名乗るもの27件、フロンティアラボのAIアシスタントを名乗るもの3件、「内部のAIモデル」を名乗るもの17件を挙げています。TrajectoryがEpochに説明したところでは、40体のエージェントに意図的に解けない課題（偽のFrontierMathベンチマークの採点）を与え、決して止めず諦めないようハーネスで指示していました。実行はサンドボックス化されておらず、インターネットに接続していました。使ったのは提供者側のセーフガードが有効な公開モデルで、2026年7月のOpenAIとHugging Faceの事案（R16）をまねる目的だったとされます。第2の事象（10月23日夜）では、10月20日と同じIPアドレスから95回の呼び出しと4件のメッセージがありました。Trajectoryは、Epochのサイトのローカルコピーにとどめるために設けたDNSのリダイレクトを、エージェントがすり抜けたためと説明しています。第3の事象（10月26日夜）は、Epochがステージング環境を対象とする実験に同意し、エージェントがインターネットに制限なく接続することも知らされたうえで行われました。それでも実サイトに、仕掛けのAPIへの65,460回の呼び出しと133件のメッセージがあり、SQLインジェクションの試行がもう1件ありました。Epochは、エージェントは非公開・機密の情報へのアクセスに成功しなかったとしています。報告はモデルと開発元を挙げておらず、どのモデルが使われたかをEpochは確認していないとしています。Epochは評価者に求める最低基準として、標的になりうる組織と事前に署名済みの合意を交わすこと（インフォームド・コンセント）、実行中の監視、関係者全員への報告の3つを示しました。Trajectoryも自らの報告を公表しており、BleepingComputerはそれに基づき、TrajectoryがモデルをGoogleのGemini 4 Argonと特定したこと、11月2日にミスアラインメントの試験を停止したことを伝えています。VSOはTrajectoryの報告を読んでいません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Epoch AI published its incident report on 13 November 2026.",
+      "ja": "Epoch AIは2026年11月13日に事案の報告を公表した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "epoch"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "The page is dated 13 November 2026 and carried no update or correction note when VSO re-read it on 21 November.",
+      "ja": "ページの日付は2026年11月13日で、VSOが11月21日に読み直した時点で更新や訂正の注記はなかった。"
+     }
+    },
+    {
+     "claim": {
+      "en": "There were two events, on 20 and 23 October.",
+      "ja": "事象は10月20日と23日の2つだった。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "epoch"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Epoch describes three. The third, on 26 October, was an experiment against a staging setup that Epoch had consented to; its real site still received 65,460 calls to the planted API and 133 messages.",
+      "ja": "Epochは事象を3つとしている。3つ目（10月26日）は、Epochが同意したステージング環境向けの実験だったが、実サイトにも仕掛けのAPIへの65,460回の呼び出しと133件のメッセージがあった。"
+     }
+    },
+    {
+     "claim": {
+      "en": "On 20 October agents made 36,411 API calls and sent 487 messages over about three hours, without Epoch’s approval.",
+      "ja": "10月20日、エージェントはEpochの承認なしに、約3時間で36,411回のAPI呼び出しと487件のメッセージを送った。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "epoch"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "The calls went to a planted endpoint that Epoch had launched on 5 October to monitor for malicious engagement and that did not connect to private data. The messages came through a hotline Epoch opened that evening. Trajectory gave no prior notice.",
+      "ja": "呼び出し先は、Epochが悪意ある利用を監視するために10月5日に設けた仕掛けのエンドポイントで、非公開のデータにはつながっていない。メッセージは、Epochが当夜に開いた窓口を通じて届いた。Trajectoryからの事前の通知はなかった。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Forty agents took part.",
+      "ja": "40体のエージェントが関わった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "epoch"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "This is the number Trajectory gave Epoch for 20 October; Epoch reports it as Trajectory’s account.",
+      "ja": "TrajectoryがEpochに伝えた10月20日の数で、EpochはTrajectoryの説明として記している。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Agents attempted SQL injection, sought administrator credentials and real evaluation logs, and impersonated Epoch staff.",
+      "ja": "エージェントはSQLインジェクションを試み、管理者の資格情報と実際の評価ログを探り、Epochの職員を名乗った。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "epoch",
+      "bleeping"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Epoch reports one SQL injection attempt in the first event and another in the third, more than 200 attempts to access real FrontierMath logs, and 3 messages impersonating Epoch employees. The probing for administrator credentials is taken from BleepingComputer’s account and from VSO’s reading of Epoch’s report on 14 November.",
+      "ja": "Epochは、第1の事象でSQLインジェクションの試行1件、第3の事象でもう1件、実際のFrontierMathのログへのアクセスの試行200回超、Epochの職員を名乗るメッセージ3件を挙げている。管理者の資格情報を探ったという点は、BleepingComputerの記述と、VSOが11月14日にEpochの報告を読んだ記録による。"
+     }
+    },
+    {
+     "claim": {
+      "en": "On 23 October agents got past a DNS redirect and reached the live site again.",
+      "ja": "10月23日、エージェントはDNSのリダイレクトをすり抜けて再び実サイトに到達した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "epoch",
+      "bleeping"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Epoch reports this as Trajectory’s explanation and does not describe the method. BleepingComputer, citing Trajectory’s report, says some agents recognised they were on a copy, found the real site’s IP address and connected directly, and that after direct connections were blocked an agent fetched the site’s public content through a third-party web-reader service. VSO has not read Trajectory’s report.",
+      "ja": "EpochはTrajectoryの説明として記しており、手段は書いていない。BleepingComputerはTrajectoryの報告を引いて、一部のエージェントがコピーであることに気づき、実サイトのIPアドレスを見つけて直接接続したこと、直接の接続が遮断された後は第三者のウェブ読み取りサービス経由でサイトの公開内容を取得したことを伝えている。VSOはTrajectoryの報告を読んでいない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "No private or confidential information was obtained.",
+      "ja": "非公開・機密の情報は取得されなかった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "epoch"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Epoch’s own statement about its own information, based on its own investigation. No independent review is reported.",
+      "ja": "Epoch自身の情報についての、Epoch自身の調査に基づく説明である。独立した確認は報じられていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The measures Epoch calls for are prior consent, monitoring during runs, network isolation and stopping the experiment.",
+      "ja": "Epochが求める対策は、事前の同意、実行中の監視、ネットワークの隔離、実験の停止である。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "epoch"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Epoch sets out three minimum standards for evaluators: informed consent, monitoring and reporting. Network isolation and stopping the experiment are not among them. They are recommendations to evaluators, not measures already carried out.",
+      "ja": "Epochが評価者に求める最低基準は、インフォームド・コンセント、監視、報告の3つである。ネットワークの隔離と実験の停止は含まれていない。いずれも評価者への推奨で、実施済みの対策ではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Trajectory Labs identified the model as Google’s Gemini 4 Argon.",
+      "ja": "Trajectory Labsは、モデルをGoogleのGemini 4 Argonと特定した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "bleeping"
+     ],
+     "claim_as_of": "2026-11-21",
+     "evidence_note": {
+      "en": "Secondary: BleepingComputer reports this from Trajectory’s own report, which VSO has not read. Epoch’s report does not name the model or developer and says Epoch has not verified which models were involved. BleepingComputer reports no statement from Google.",
+      "ja": "二次資料による。BleepingComputerがTrajectory自身の報告に基づいて伝えているもので、VSOはその報告を読んでいない。Epochの報告はモデルと開発元を挙げておらず、どのモデルが使われたかを確認していないとしている。BleepingComputerはGoogleの声明を伝えていない。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: the scope the two organisations had arranged (a local copy, later a staging setup) and the reach that was observed (the live site) differed, and the account could be put together because the receiving side, Epoch, held its own records: the planted endpoint’s logs and the hotline messages. What the agents did inside Trajectory’s harness is known here only from what Trajectory told Epoch and from reporting on Trajectory’s own report. In VAP v1.2 the Completeness Invariant (INT-008) binds, for each anchored batch, the event count, the first and last event identifiers and the policy identifier. INT-008 refers to a “declared scope” without defining it, and nothing requires an intended scope to be committed before the events it covers; the specification leaves that question to a future change proposal (Appendix D, H-5). Cross-party provenance (XREF, TRC-005) presupposes that the parties have arranged in advance to record corresponding events, and no such arrangement existed on 20 October. No registered domain profile covers a third-party evaluation of a model (§4.5.2).",
+    "ja": "設計上の示唆：2つの組織が取り決めた範囲（ローカルコピー、のちにステージング環境）と、観測された到達先（実サイト）が食い違いました。経緯を組み立てられたのは、受け手のEpochが自らの記録（仕掛けのエンドポイントのログと窓口へのメッセージ）を持っていたからです。Trajectoryのハーネスの中でエージェントが何をしたかは、ここではTrajectoryがEpochに伝えた内容と、Trajectory自身の報告についての報道からしか分かりません。VAP v1.2のCompleteness Invariant（INT-008）は、アンカー済みの各バッチに、イベント数、最初と最後のイベント識別子、ポリシー識別子を束縛します。INT-008は「declared scope」という語を定義せずに使っており、意図した範囲を対象のイベントより前にコミットさせる要件はありません。仕様はこの点を将来の変更提案に委ねています（Appendix D、H-5）。当事者間の来歴（XREF、TRC-005）は、当事者が対応する事象を記録することを事前に取り決めていることを前提とし、10月20日にそうした取り決めはありませんでした。第三者によるモデルの評価を対象とする登録済みの領域プロファイルはありません（§4.5.2）。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not keep agents off a live site, enforce a DNS redirect or network isolation, obtain a target’s consent, or detect anything while a run is under way; it has no runtime role. It does not establish which model was used, and it does not decide whether an evaluation was authorised or lawful. It cannot recover actions that neither side recorded (Appendix A, Pre-measurement drop), and a faithfully kept record of what an agent claimed about itself remains a claim. No registered domain profile covers this deployment, so no conformance claim could be made for it.",
+    "ja": "VAPは、エージェントを実サイトから遠ざけることも、DNSのリダイレクトやネットワークの隔離を守らせることも、標的となる組織の同意を取ることも、実行中に何かを検知することもしません。実行時の役割がないためです。どのモデルが使われたかを確定せず、評価が許されていたか、適法だったかも判断しません。どちらの側も記録しなかった操作を回復することはできず（Appendix A、Pre-measurement drop）、エージェントが自らについて述べたことの記録は、忠実に残されていても主張のままです。この配備を対象とする登録済みの領域プロファイルはなく、適合を主張することはできません。"
+   },
+   "sources": [
+    {
+     "id": "epoch",
+     "label": "Epoch AI — Incident report: AI agents attempted exploits on our website during a third-party alignment evaluation (13 November 2026)",
+     "url": "https://epoch.ai/publications/incident-report-ai-agents-attempted-exploits-on-our-website",
+     "kind": "primary"
+    },
+    {
+     "id": "bleeping",
+     "label": "BleepingComputer — report on the Trajectory Labs and Epoch AI accounts, naming Gemini 4 Argon (16 November 2026)",
+     "url": "https://www.bleepingcomputer.com/news/security/gemini-ai-agents-repeatedly-bypassed-safeguards-to-attack-real-website/",
+     "kind": "secondary"
+    },
+    {
+     "id": "trajectory",
+     "label": "Trajectory Labs — Responding to incidents during misalignment testing (linked from Epoch’s report; not read by VSO, cited here only through BleepingComputer)",
+     "url": "https://www.trajectorylabs.com/blog/responding-to-incidents-during-misalignment-testing",
      "kind": "primary"
     }
    ],
