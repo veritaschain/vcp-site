@@ -118,7 +118,7 @@ def a(label, url):
     return f'<a href="{esc(url)}">{esc(label)}</a>'
 
 
-def head(lang, title, desc, url, alt_urls, ld, extra_style=''):
+def head(lang, title, desc, url, alt_urls, ld, extra_style='', extra_assets=''):
     alternates = ''.join(f'<link rel="alternate" hreflang="{code}" href="{SITE}{alt_urls[code]}">' for code in ('en', 'ja'))
     alternates += f'<link rel="alternate" hreflang="x-default" href="{SITE}{alt_urls["en"]}">'
     return (
@@ -136,16 +136,17 @@ def head(lang, title, desc, url, alt_urls, ld, extra_style=''):
         f'<meta name="twitter:description" content="{esc(desc)}">\n'
         '<meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">\n'
         f'<link rel="canonical" href="{SITE}{url}">\n{alternates}\n'
-        f'<link rel="icon" href="/favicon.ico"><style>{STYLE}{extra_style}</style>\n'
+        f'<link rel="icon" href="/favicon.ico"><style>{STYLE}{extra_style}</style>\n{extra_assets}'
         f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script><script defer src="/assets/js/analytics.js?v=20261103"></script></head>\n')
 
 
-def top(lang, alt_urls):
+def top(lang, alt_urls, body_class=''):
     c = COMMON[lang]
     nav = ''.join(
         f'<a href="{alt_urls[code]}" lang="{code}"' + (' aria-current="page"' if code == lang else '') +
         f'>{COMMON[code]["langname"]}</a>' for code in ('en', 'ja'))
-    return f'<body><header>{a(*c["back"])}<nav aria-label="Language">{nav}</nav></header>\n'
+    body_attr = f' class="{esc(body_class)}"' if body_class else ''
+    return f'<body{body_attr}><header>{a(*c["back"])}<nav aria-label="Language">{nav}</nav></header>\n'
 
 
 def footer():
@@ -600,7 +601,7 @@ def library_page(lang, data, vmap, limits):
                      + ' '.join(f'{chip(q)} {esc(qdefs[q]["label"][lang])}' for q in m['questions']) + '</p>')
             body += f'<p class="small">{a(t["full"], inc["url"] + "#" + r["id"])}</p>'
             items.append(
-                f'<li id="lib-{esc(r["id"])}"><details><summary><span class="meta">{esc(r["id"])} · {t["event"]} {esc(event)} · '
+                f'<li id="lib-{esc(r["id"])}" data-reveal><details><summary><span class="meta">{esc(r["id"])} · {t["event"]} {esc(event)} · '
                 f'{esc(r["jurisdiction"][lang])}</span><span class="t">{esc(r["title"][lang])}</span>'
                 f'<span class="chips">{"".join(chip(q, link=False) for q in m["questions"])}{alleg}</span></summary>'
                 f'<div class="body">{body}</div></details></li>')
@@ -619,12 +620,15 @@ def library_page(lang, data, vmap, limits):
             f'<h2 id="questions">{t["q_h"]}</h2><p class="small">{q_intro}</p>'
             f'<table class="qtab"><tr>{head_row}</tr>{qtab}</table>'
             f'<ol class="questions">{"".join(qitems)}</ol>\n'
-            f'<h2 id="library">{t["lib_h"]} ({len(records)})</h2><ul class="toc">{"".join(area_toc)}</ul>'
+            f'<h2 id="library">{t["lib_h"]} ({len(records)})</h2><ul class="toc" data-reveal>{"".join(area_toc)}</ul>'
             + ''.join(sections) +
             (f'<p class="small">{esc(t["excluded"].format(items=excluded))}</p>' if excluded else '') +
             f'<section class="box"><h3>{t["method_h"]}</h3><p>{esc(method)}</p></section>\n'
             + section_16(lang) + status(lang) + '</main>\n')
-    return head(lang, t['title'], t['desc'], t['url'], alt, ld, LIB_STYLE) + top(lang, alt) + body + footer()
+    assets = ('<link rel="stylesheet" href="/assets/css/incident-library-motion.css?v=20261121">\n'
+              '<script defer src="/assets/js/site-motion.js?v=20261121"></script>\n')
+    return (head(lang, t['title'], t['desc'], t['url'], alt, ld, LIB_STYLE, assets)
+            + top(lang, alt, 'incident-library') + body + footer())
 
 
 # ---------------------------------------------------------------- limits

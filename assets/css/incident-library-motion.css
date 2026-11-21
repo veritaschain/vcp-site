@@ -1,0 +1,81 @@
+/* Reading-first motion. Content is visible without JavaScript; native details stay native. */
+.incident-library {
+  --library-ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+.incident-library main > .eyebrow::after {
+  content: "";
+  display: inline-block;
+  width: 3rem;
+  height: 2px;
+  margin-left: .8rem;
+  vertical-align: middle;
+  background: linear-gradient(90deg, #6ee7b7, #7dd3fc);
+  transform-origin: left;
+}
+
+.incident-library :is(.entry, .area, .lib > li, h2[id]) {
+  scroll-margin-top: 24px;
+}
+.incident-library :is(.entry, .lib > li):target {
+  border-color: #6ee7b7;
+}
+.incident-library :is(a, summary):focus-visible {
+  outline: 3px solid #7dd3fc;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.incident-library .lib details > summary {
+  border-radius: 11px;
+}
+.incident-library :is(.entry, .lib > li):focus-within {
+  border-color: #7dd3fc;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .incident-library main > .eyebrow::after {
+    animation: incident-library-rule .75s var(--library-ease) 1;
+  }
+  .incident-library :is(.entry, .lib > li) {
+    transition: border-color .22s ease;
+  }
+  .incident-library .lib summary {
+    transition: background-color .2s ease;
+  }
+  .incident-library a.chip {
+    transition: translate .2s var(--library-ease), border-color .2s ease, color .2s ease;
+  }
+  .incident-library .lib details[open] > .body {
+    animation: incident-library-detail .28s var(--library-ease) 1;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .incident-library .entry:hover { border-color: #526b85; }
+    .incident-library .lib summary:hover { background-color: #182b43; }
+    .incident-library a.chip:hover { translate: 0 -2px; }
+    .incident-library a.chip:active { translate: 0 0; }
+  }
+  @keyframes incident-library-rule {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes incident-library-detail {
+    from { opacity: .55; translate: 0 6px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce), print {
+  .incident-library *, .incident-library *::before, .incident-library *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Important declarations also override any in-flight Web Animations API reveal. */
+@media print {
+  .incident-library main :is(h2, [data-reveal]) {
+    opacity: 1 !important;
+    translate: none !important;
+    transform: none !important;
+  }
+}
