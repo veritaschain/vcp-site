@@ -9959,6 +9959,258 @@
    ],
    "references_without_url": [],
    "corrections": []
+  },
+  {
+   "id": "V1120MONAILABEL",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Amazon reports that a threat actor it assesses as Chinese-nexus used Cairn AI agents that found and exploited a zero-day in MONAI Label, an open-source server for annotating medical images, and obtained root on a university server in East Asia",
+    "ja": "Amazon、中国系と評価する攻撃者がCairnのAIエージェントを使い、医用画像の注釈用オープンソースサーバーMONAI Labelのゼロデイを見つけて悪用し、東アジアの大学のサーバーでroot権限を得たと報告"
+   },
+   "event_date": "about 48 hours from 2026-09-08 (per Amazon); exposed Cairn server identified 2026-09-10; reported 2026-11-20 on the AWS Security Blog",
+   "verified": "2026-11-22",
+   "jurisdiction": {
+    "en": "Country not disclosed — Amazon says the targets were universities in East Asia outside mainland China; the actor is assessed with moderate confidence as Chinese-nexus",
+    "ja": "国名は非公表 — Amazonによれば標的は中国本土以外の東アジアの大学。攻撃者は中程度の確度で中国系と評価されている"
+   },
+   "category": "security incident campaign report",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "On 20 November 2026 Amazon Threat Intelligence published findings on the AWS Security Blog (CJ Moses) about a threat actor it assesses with moderate confidence as Chinese-nexus, citing prompts written in Simplified Chinese, script timestamps set to China Standard Time and the choice of targets. On 10 September Amazon identified a server hosting an instance of Cairn, an open-source autonomous AI penetration-testing framework, running without authentication, so that its project configurations, the actor’s prompts and the AI output could be seen. For about 48 hours from 8 September the actor directed Cairn’s agents at universities in East Asia outside mainland China, giving them target IP addresses and variations of the goal “obtain shell access”. Against one server the agents mapped the API of an open-source medical imaging AI application, found a path traversal flaw in an upload endpoint, and went from mapping the API to writing arbitrary files in about 11 minutes. In a later session they used the same flaw to write a Python reverse shell into sitecustomize.py and started a new process through a training endpoint, which gave them a shell running as root. In another session the actor supplied a proxy into a second university’s network; Amazon infers that a server there running the same software was compromised in the same way, and says the actor then directed the agents at other machines on that network. Amazon assesses with high confidence that the flaw was a zero-day. The application is MONAI Label, a server for AI-assisted annotation of medical images, whose authentication is disabled by default. The maintainers merged a fix to the source on 19 October and published a GitHub security advisory on 18 November; CVE-2026-133968 was published on 20 November with a CVSS 3.1 score of 9.8 assigned by its numbering authority. On 19 November the maintainers added a notice to the project’s README that MONAI Label is not intended to be run as an internet-facing application. As of 22 November no release containing the fix had been published; the latest release on PyPI is 0.8.5, from November 2024. Amazon gives no count of victims and says nothing about patient data, clinical systems or data being taken. The affected organisations were not AWS customers, and Amazon notified them through a government partner. Amazon does not name the models behind the agents.",
+    "ja": "2026年11月20日、Amazon Threat IntelligenceはAWS Security Blog（CJ Moses）で、中程度の確度で中国系と評価する攻撃者についての調査結果を公表しました。根拠として、簡体字で書かれたプロンプト、中国標準時に設定されたスクリプトのタイムスタンプ、標的の選び方を挙げています。Amazonは9月10日、オープンソースの自律型AIペネトレーションテスト基盤Cairnのインスタンスを、認証なしで動かしているサーバーを見つけました。そのため、プロジェクトの設定、攻撃者のプロンプト、AIの出力を見ることができました。攻撃者は9月8日から約48時間、Cairnのエージェントを中国本土以外の東アジアの大学に向け、標的のIPアドレスと「obtain shell access（シェルアクセスの取得）」という目標の言い換えを与えました。あるサーバーに対して、エージェントはオープンソースの医用画像AIアプリケーションのAPIを把握し、アップロード用エンドポイントのパストラバーサルの欠陥を見つけ、APIの把握から任意のファイル書き込みまで約11分で到達しました。その後のセッションで、同じ欠陥を使ってPythonのリバースシェルをsitecustomize.pyに書き込み、学習用エンドポイントから新しいプロセスを起動させ、rootで動くシェルを得ました。別のセッションでは、攻撃者が2校目の大学のネットワークに入るプロキシを与えました。Amazonは、そこで同じソフトウェアを動かしていたサーバーが同じ方法で侵害されたと推定しており、攻撃者はその後、そのネットワーク上の他の機器にエージェントを向けたとしています。Amazonは、この欠陥がゼロデイだったと高い確度で評価しています。対象のアプリケーションはMONAI Labelで、AIの支援で医用画像に注釈を付けるためのサーバーです。認証は既定で無効になっています。保守者は10月19日にソースへ修正をマージし、11月18日にGitHubのセキュリティアドバイザリを公表しました。CVE-2026-133968は11月20日に公表され、採番機関が付けたCVSS 3.1のスコアは9.8です。保守者は11月19日、MONAI Labelはインターネットに公開して動かすことを想定していないという注意書きをREADMEに加えました。11月22日時点で、修正を含むリリースはまだ出ていません。PyPIの最新リリースは2024年11月の0.8.5です。Amazonは被害組織の数を示しておらず、患者データ、臨床システム、データの持ち出しには触れていません。影響を受けた組織はAWSの顧客ではなく、Amazonは政府のパートナーを通じて通知しました。エージェントを動かしたモデルの名前は示していません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Amazon Threat Intelligence published the report on 20–21 November 2026.",
+      "ja": "Amazon Threat Intelligenceは2026年11月20〜21日ごろに報告を公表した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "aws",
+      "securityweek"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "Published on 20 November on the AWS Security Blog, by CJ Moses (21 November in Japan time). The brief’s first listed source, “Amazon: China-Linked Hackers’ AI Agents Exploited Medical Software Zero-Day”, is SecurityWeek’s headline of 21 November, not the title of Amazon’s post.",
+      "ja": "11月20日にAWS Security BlogでCJ Mosesが公表した（日本時間では11月21日）。ブリーフが最初に挙げた出典「Amazon: China-Linked Hackers’ AI Agents Exploited Medical Software Zero-Day」は、11月21日のSecurityWeekの記事の見出しで、Amazonの投稿の題名ではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The campaign took place in September and was carried out by autonomous AI agents running on the Cairn framework.",
+      "ja": "攻撃は9月に、Cairnフレームワーク上で動く自律型のAIエージェントによって行われた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "aws"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "About 48 hours from 8 September; Amazon identified the exposed Cairn server on 10 September. Amazon does not name the models behind the agents.",
+      "ja": "9月8日から約48時間。Amazonは公開状態のCairnのサーバーを9月10日に見つけた。エージェントを動かしたモデルの名前は示していない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The actor is a China-linked threat actor.",
+      "ja": "攻撃者は中国系の脅威アクターである。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "aws"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "Amazon’s assessment, with moderate confidence, based on Simplified Chinese prompts, China Standard Time timestamps and targeting. No group is named.",
+      "ja": "Amazonによる中程度の確度の評価で、根拠は簡体字のプロンプト、中国標準時のタイムスタンプ、標的の選び方である。グループ名は示されていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The target was MONAI Label, an open-source tool for annotating medical images, whose authentication is off by default.",
+      "ja": "標的は医用画像の注釈用オープンソースツールMONAI Labelで、認証は既定で無効になっている。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "aws",
+      "ghsa",
+      "monai-config"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "Amazon’s post describes an open-source medical imaging AI application and links the MONAI Label advisory. The project’s configuration sets MONAI_LABEL_AUTH_ENABLE to False by default. Amazon describes the servers as university servers, not clinical systems.",
+      "ja": "Amazonの投稿は、オープンソースの医用画像AIアプリケーションと説明し、MONAI Labelのアドバイザリにリンクしている。プロジェクトの設定では、MONAI_LABEL_AUTH_ENABLE の既定値がFalseである。Amazonはサーバーを大学のサーバーとしており、臨床システムとはしていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The flaw is a path traversal vulnerability, CVE-2026-133968, with a CVSS score of 9.8.",
+      "ja": "欠陥はパストラバーサルの脆弱性（CVE-2026-133968）で、CVSSスコアは9.8である。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "cve",
+      "ghsa"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "The CVE record (numbering authority MITRE, published 20 November) gives a CVSS 3.1 base score of 9.8 and describes directory traversal through the image parameter of PUT /datastore/image in versions through 0.8.5. The score is the numbering authority’s. The record’s CISA entry lists exploitation as none, while its own description says the flaw was exploited in the wild from September 2026, and it spells the vendor “Project-MONIA”. Amazon’s post does not mention the CVE.",
+      "ja": "CVEレコード（採番機関はMITRE、11月20日公表）は、CVSS 3.1の基本スコアを9.8とし、0.8.5までの版でPUT /datastore/image のimageパラメータを通じたディレクトリトラバーサルがあると記載している。このスコアは採番機関によるものである。レコードのCISAの欄は悪用を「none」としているが、レコード自身の説明は2026年9月から実際に悪用されたとしている。ベンダー名は「Project-MONIA」と誤記されている。Amazonの投稿はCVEに触れていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The flaw was a zero-day.",
+      "ja": "この欠陥はゼロデイだった。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "aws",
+      "monai-fix",
+      "ghsa",
+      "pypi"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "Amazon’s assessment, with high confidence, based on the absence of any fix, issue, advisory or vulnerability-database entry when the flaw was found. The fix was merged to the source on 19 October (pull request #1915) and the advisory followed on 18 November. Amazon says the maintainers released a fix; as of 22 November no release contains it, and the latest PyPI release is 0.8.5.",
+      "ja": "Amazonによる高い確度の評価で、欠陥が見つかった時点で修正、issue、アドバイザリ、脆弱性データベースの登録がなかったことを根拠とする。修正は10月19日にソースへマージされ（プルリクエスト#1915）、アドバイザリは11月18日に出た。Amazonは保守者が修正をリリースしたとしているが、11月22日時点で修正を含むリリースはなく、PyPIの最新リリースは0.8.5である。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The agents found the flaw in about 11 minutes.",
+      "ja": "エージェントは約11分で欠陥を見つけた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "aws"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "Amazon’s 11 minutes runs from mapping the application’s API to writing arbitrary files. It does not include obtaining root, which happened in a later session.",
+      "ja": "Amazonの約11分は、アプリケーションのAPIの把握から任意のファイル書き込みまでである。root権限の取得は含まず、それは後のセッションで起きた。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The agents obtained root on a university server in East Asia.",
+      "ja": "エージェントは東アジアの大学のサーバーでroot権限を得た。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "aws"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "In a later session, through a reverse shell written into sitecustomize.py with the same flaw and started through a training endpoint. Root is reported on one server; the compromise of a second university’s server is Amazon’s inference. Amazon’s account comes from the actor’s exposed Cairn instance.",
+      "ja": "後のセッションで、同じ欠陥を使ってsitecustomize.pyに書き込んだリバースシェルを、学習用エンドポイントから起動させて得た。rootの取得が報告されているのは1台で、2校目の大学のサーバーの侵害はAmazonの推定である。Amazonの説明は、攻撃者の公開状態のCairnのインスタンスに由来する。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The operator gave the agents only the goal “obtain shell access”, and the agents chose their methods themselves.",
+      "ja": "運用者はエージェントに「シェルアクセスの取得」という目標だけを与え、手法はエージェントが自ら選んだ。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "aws"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "The goal is confirmed, in variations. The actor also supplied target IP addresses, and in another session supplied a proxy into a second university’s network and then directed the agents at other machines on it. Within a session the agents chose and tried techniques themselves.",
+      "ja": "目標は、言い換えを含めて確認できる。ただし攻撃者は標的のIPアドレスも与えており、別のセッションでは2校目の大学のネットワークに入るプロキシを与え、その後そのネットワーク上の他の機器にエージェントを向けた。セッションの中では、エージェントが自ら手法を選んで試していた。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The agents’ tool calls, reasoning and intermediate output were a black box, and only alterable logs existed, so the exploitation could not be fully reconstructed.",
+      "ja": "エージェントのツール呼び出し、判断の過程、中間出力はブラックボックスで、改ざんできるログしかなく、悪用の完全な再現ができなかった。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "aws"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "Amazon reconstructed the activity from the actor’s exposed Cairn instance, which showed configurations, prompts and AI output, and reports step-level detail such as 148 sequential actions over about 16 hours against one target. Whether those records could have been altered is not discussed.",
+      "ja": "Amazonは、設定、プロンプト、AIの出力が見えていた攻撃者の公開状態のCairnのインスタンスから活動を再構成しており、ある標的に対する約16時間・148の連続した操作など、手順単位の詳細を報告している。それらの記録が改変されえたかどうかは論じられていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Medical or research data was affected, and universities and medical institutions face shutdowns and litigation.",
+      "ja": "医療・研究データが影響を受け、大学や医療機関は運用停止や訴訟のおそれに直面している。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "aws",
+      "ghsa"
+     ],
+     "claim_as_of": "2026-11-22",
+     "evidence_note": {
+      "en": "Amazon does not mention patient data, clinical systems, data being taken, shutdowns or litigation. The organisations it reports are universities.",
+      "ja": "Amazonは、患者データ、臨床システム、データの持ち出し、運用停止、訴訟に触れていない。Amazonが報告している組織は大学である。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: the AI system at issue is the attacker’s. Cairn and its agents were run by the actor, and Amazon’s account rests on the actor’s own exposed Cairn instance; VAP places no obligation on an attacker’s tools and cannot require them to keep or disclose records. What VAP could bear on afterwards is what the targeted universities recorded on their own servers. MONAI Label annotates medical images, and imaging AI falls within VAP’s medical domain (§2.2.2), but the flaw was in a datastore upload endpoint and the training endpoint was used only to start a process; no AI decision made by the server is reported to be at issue. The medical profile, MAP, is a v0.1.2 Working Draft, which is not for production conformance claims (§4.5.2). Once the attacker had root, records kept on the same server could be changed before they were anchored. For anchored batches, VAP makes alteration detectable, and post-anchor omission or split-view presentation detectable at anchor granularity (§4.1, INT-008); it does not reveal events that were never recorded or never anchored. The brief’s description of VAP needs correcting. VAP records are tamper-evident, not immutable. Its abstract provenance model has fields for the actor and its version, inputs, context including environment, the action and the outcome (§4.2.2), and per-event hash chaining is optional (INT-004a). Records of agent tool invocation are the subject of DAP, a v0.1.0 Working Draft (§4.6.2). VAP provides no monitoring, intervention or override capability (§4.4.4).",
+    "ja": "設計上の示唆：問題のAIシステムは攻撃者のものです。Cairnとそのエージェントを動かしたのは攻撃者で、Amazonの説明は攻撃者自身の公開状態のCairnのインスタンスに基づいています。VAPは攻撃者のツールに何の義務も課さず、記録の保持や開示を求めることもできません。事後にVAPが関わりうるのは、標的になった大学が自らのサーバーで残した記録です。MONAI Labelは医用画像に注釈を付けるもので、画像AIはVAPの医療領域（§2.2.2）に入りますが、欠陥はデータストアのアップロード用エンドポイントにあり、学習用エンドポイントはプロセスの起動に使われただけです。サーバーが行うAIの判断が問題になったとは報じられていません。医療のプロファイルMAPはv0.1.2のWorking Draftで、実運用での適合の主張には使えません（§4.5.2）。攻撃者がrootを得た後は、同じサーバーに置かれた記録はアンカーされる前に書き換えられえます。アンカー済みのバッチについて、VAPは改変を検出可能にし、アンカー後の省略やsplit-viewの提示をアンカーの粒度で検出可能にします（§4.1、INT-008）。記録されなかった事象やアンカーされなかった事象は明らかにしません。ブリーフのVAPの説明は直す必要があります。VAPの記録は改ざん検知可能（tamper-evident）であって、不変ではありません。抽象的なプロベナンスのデータモデルには、行為者とその版、入力、環境を含む文脈、行為、結果の欄があり（§4.2.2）、イベントごとのハッシュ連鎖は任意です（INT-004a）。エージェントのツール呼び出しの記録はDAPが扱うもので、DAPはv0.1.0のWorking Draftです（§4.6.2）。VAPは監視、介入、上書きの機能を持ちません（§4.4.4）。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not detect, block or interrupt exploitation, find or fix the path traversal flaw, change an insecure default, identify the operator or raise the confidence of an attribution. It places no obligation on the attacker’s Cairn agents and would not have recorded their plans or reasoning; those became visible because the actor left Cairn exposed. It cannot recover events on the compromised servers that were never recorded or never anchored, and it does not establish whether any data was taken.",
+    "ja": "VAPは、悪用を検知・遮断・中断せず、パストラバーサルの欠陥を見つけも直しもせず、安全でない既定の設定を変えず、運用者を特定せず、帰属の評価の確度を上げることもしません。攻撃者のCairnのエージェントには何の義務も課さず、その計画や判断の過程を記録することもありませんでした。それらが見えたのは、攻撃者がCairnを公開状態にしていたからです。侵害されたサーバーで記録されなかった事象やアンカーされなかった事象は回復できず、データが持ち出されたかどうかも立証しません。"
+   },
+   "sources": [
+    {
+     "id": "aws",
+     "label": "AWS Security Blog (CJ Moses) — Chinese-nexus actor’s Cairn AI agents found a zero-day on their own (20 November 2026)",
+     "url": "https://aws.amazon.com/blogs/security/chinese-nexus-actors-cairn-ai-agents-found-a-zero-day-on-their-own/",
+     "kind": "primary"
+    },
+    {
+     "id": "ghsa",
+     "label": "Project MONAI — GitHub security advisory GHSA-qc22-rmgc-vg94, path traversal in MONAI Label datastore upload endpoints (18 November 2026)",
+     "url": "https://github.com/Project-MONAI/MONAILabel/security/advisories/GHSA-qc22-rmgc-vg94",
+     "kind": "primary"
+    },
+    {
+     "id": "cve",
+     "label": "CVE Program — CVE-2026-133968 (published 20 November 2026)",
+     "url": "https://www.cve.org/CVERecord?id=CVE-2026-133968",
+     "kind": "primary"
+    },
+    {
+     "id": "monai-fix",
+     "label": "Project MONAI — MONAI Label pull request #1915, “fix: confine datastore write paths” (merged 19 October 2026)",
+     "url": "https://github.com/Project-MONAI/MONAILabel/pull/1915",
+     "kind": "primary"
+    },
+    {
+     "id": "monai-config",
+     "label": "Project MONAI — MONAI Label configuration, MONAI_LABEL_AUTH_ENABLE default (main branch at commit c09d997, 21 November 2026)",
+     "url": "https://github.com/Project-MONAI/MONAILabel/blob/c09d99787cbcfa6810dd9bfeb34558bcb050fea2/monailabel/config.py",
+     "kind": "primary"
+    },
+    {
+     "id": "pypi",
+     "label": "PyPI — monailabel release history (latest release 0.8.5, 25 November 2024)",
+     "url": "https://pypi.org/project/monailabel/#history",
+     "kind": "primary"
+    },
+    {
+     "id": "securityweek",
+     "label": "SecurityWeek — Amazon: China-Linked Hackers’ AI Agents Exploited Medical Software Zero-Day (21 November 2026)",
+     "url": "https://www.securityweek.com/amazon-china-linked-hackers-ai-agents-exploited-medical-software-zero-day/",
+     "kind": "secondary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
   }
  ]
 }
