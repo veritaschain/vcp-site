@@ -31,6 +31,7 @@ LIMITS = ROOT / 'vap' / 'limits' / 'limits.json'
 # which one of them is a party or the subject carry a note saying so.
 VSO_USES_MODELS_FROM = {'Anthropic'}
 
+LOCALES = {'en': 'en_US', 'ja': 'ja_JP'}
 VERDICTS = ('CONFIRMED', 'UNCONFIRMED', 'CONTRADICTED', 'UNVERIFIABLE')
 PUBLICATION_VERDICTS = ('VERIFIED', 'PARTIALLY VERIFIED', 'PUBLISH WITH CAVEATS', 'PUBLISH WITH HEAVY CAVEATS',
                         'PUBLISH WITH CORRECTIONS', 'PUBLISH AS NEW', 'PROCEDURAL FACTS ONLY')
@@ -130,6 +131,9 @@ def head(lang, title, desc, url, alt_urls, ld, extra_style=''):
         f'<meta property="og:description" content="{esc(desc)}">\n'
         f'<meta property="og:url" content="{SITE}{url}">\n'
         '<meta property="og:type" content="website">\n'
+        '<meta property="og:site_name" content="VeritasChain Standards Organization (VSO)">\n'
+        f'<meta property="og:locale" content="{LOCALES[lang]}">\n'
+        + ''.join(f'<meta property="og:locale:alternate" content="{LOCALES[code]}">\n' for code in ('en', 'ja') if code != lang) +
         '<meta property="og:image" content="https://veritaschain.org/assets/OGP.png">\n'
         '<meta name="twitter:card" content="summary_large_image">\n'
         f'<meta name="twitter:title" content="{esc(title)}">\n'
@@ -175,8 +179,8 @@ INC = {
         'title': 'AI incident verification records | VSO — VeritasChain',
         'h1': 'AI incident verification records',
         'eyebrow': 'VSO · INCIDENT VERIFICATION',
-        'desc': ('Reported AI incidents that VSO checked against primary sources where available, and otherwise against reliable reporting: what was confirmed, what was not, '
-                 'the jurisdiction, and what VAP would not have done. Each record states what VSO verified on the date shown.'),
+        'desc': ('AI incidents VSO checked against primary sources or reliable reporting: what was confirmed, what was not, '
+                 'the jurisdiction, and what VAP would not have done.'),
         'intro': ('Before VSO writes about a reported AI incident, it checks the report against primary sources where it '
                   'can obtain them — court filings, regulators’ releases and the parties’ own statements — and otherwise '
                   'against the most reliable reporting, and each record says which. This page publishes the records of '
@@ -393,8 +397,8 @@ LIB = {
         'title': 'AI incident library and VAP mapping | VSO — VeritasChain',
         'h1': 'AI incident library and VAP mapping',
         'eyebrow': 'VSO · INCIDENT LIBRARY',
-        'desc': ('Every AI incident VSO has verified, grouped by area and mapped to the evidence questions it raised: '
-                 'what VAP v1.2 makes auditable, what it does not, and which related candidate work remains unadopted.'),
+        'desc': ('Every AI incident VSO has verified, by area and evidence question: what VAP v1.2 makes auditable, '
+                 'what it does not, and related unadopted work.'),
         'intro': ('This library lists every record on the incident verification records page and maps each one to the '
                   'questions about evidence that it raised. For each question it sets out what VAP v1.2 makes auditable and '
                   'attributable, what the current specification does not address, and the related candidate work, none of '
@@ -403,6 +407,7 @@ LIB = {
         'links_records': 'Verification records',
         'data': 'Records (JSON)',
         'map_data': 'Mapping (JSON, CC BY 4.0)',
+        'dataset_name': 'VSO AI incident library: areas and evidence questions for each verified record',
         'read_h': 'How to read this page',
         'read': [
             'Areas and the labels T1–T13 are VSO’s editorial classification. They are navigation aids, not registry fields, ledger entries or identifiers in the VAP specification.',
@@ -450,14 +455,15 @@ LIB = {
         'title': 'AI事件ライブラリとVAPの対応 | VSO — VeritasChain',
         'h1': 'AI事件ライブラリとVAPの対応',
         'eyebrow': 'VSO · 事件ライブラリ',
-        'desc': ('VSO が検証したすべての AI 事件を区分ごとにまとめ、それぞれが投げかけた証拠の問いに対応づけています。'
-                 'VAP v1.2 で監査可能になること、ならないこと、採択されていない関連の候補作業を示します。'),
+        'desc': ('VSO が検証したすべての AI 事件を区分と証拠の問いで整理し、VAP v1.2 で監査可能になること、'
+                 'ならないこと、未採択の関連作業を示します。'),
         'intro': ('このライブラリは、事件検証記録のページに載せたすべての記録を一覧にし、それぞれが投げかけた証拠についての問いに対応づけています。'
                   '問いごとに、VAP v1.2 が監査可能・帰属可能にすること、現行の仕様が扱っていないこと、関連する候補作業（いずれも未採択）を示します。'
                   'これは読むための手引きです。何が検証されたかの典拠は事件検証記録であり、このページはどの事件についても VAP が使われていたことを仮定していません。'),
         'links_records': '事件検証記録',
         'data': '記録データ（JSON）',
         'map_data': '対応データ（JSON、CC BY 4.0）',
+        'dataset_name': 'VSO AI事件ライブラリ：検証記録ごとの区分と証拠の問い',
         'read_h': 'このページの読み方',
         'read': [
             '区分と T1〜T13 のラベルは VSO の編集上の分類です。案内のためのもので、レジストリの欄、台帳の登録、VAP 仕様の識別子ではありません。',
@@ -535,10 +541,26 @@ def library_page(lang, data, vmap, limits):
     order = sorted(records.values(), key=lambda r: (r['verified'], r['id']), reverse=True)
     by_q = {q['id']: [r['id'] for r in order if q['id'] in vmap['records'][r['id']]['questions']] for q in vmap['questions']}
     limit_ids = {p['id'] for p in limits['patterns']}
-    ld = {'@context': 'https://schema.org', '@type': 'WebPage', 'name': t['h1'], 'description': t['desc'],
-          'url': SITE + t['url'], 'inLanguage': lang, 'dateModified': max(data['as_of'], vmap['updated']),
-          'isBasedOn': SITE + '/incidents/incidents.json',
-          'publisher': {'@type': 'Organization', 'name': 'VeritasChain Standards Organization (VSO)'}}
+    modified = max(data['as_of'], vmap['updated'])
+    org = {'@type': 'Organization', '@id': SITE + '/#organization', 'name': 'VeritasChain Standards Organization (VSO)', 'url': SITE + '/'}
+    page_id = SITE + t['url']
+    ld = {'@context': 'https://schema.org', '@graph': [
+        {'@type': 'CollectionPage', '@id': page_id, 'url': page_id, 'name': t['h1'], 'description': t['desc'],
+         'inLanguage': lang, 'dateModified': modified, 'isPartOf': {'@type': 'WebSite', 'url': SITE + '/', 'name': org['name']},
+         'publisher': org, 'license': 'https://creativecommons.org/licenses/by/4.0/',
+         'isBasedOn': SITE + '/incidents/incidents.json',
+         'breadcrumb': {'@id': page_id + '#breadcrumb'}, 'mainEntity': {'@id': page_id + '#records'}},
+        {'@type': 'BreadcrumbList', '@id': page_id + '#breadcrumb', 'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': 'VeritasChain', 'item': SITE + ('/ja/' if lang == 'ja' else '/')},
+            {'@type': 'ListItem', 'position': 2, 'name': INC[lang]['h1'], 'item': SITE + inc['url']},
+            {'@type': 'ListItem', 'position': 3, 'name': t['h1'], 'item': page_id}]},
+        {'@type': 'ItemList', '@id': page_id + '#records', 'name': t['lib_h'], 'numberOfItems': len(order),
+         'itemListElement': [{'@type': 'ListItem', 'position': i, 'name': r['title'][lang], 'url': SITE + inc['url'] + '#' + r['id']}
+                             for i, r in enumerate(order, 1)]},
+        {'@type': 'Dataset', '@id': SITE + '/incidents/vap-map.json', 'name': t['dataset_name'], 'description': vmap['about'][lang],
+         'url': page_id, 'inLanguage': lang, 'dateModified': vmap['updated'], 'creator': org,
+         'license': 'https://creativecommons.org/licenses/by/4.0/', 'isBasedOn': SITE + '/incidents/incidents.json',
+         'distribution': {'@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': SITE + '/incidents/vap-map.json'}}]}
 
     def chip(qid, link=True):
         label = qdefs[qid]['label'][lang]
