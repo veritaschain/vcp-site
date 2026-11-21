@@ -124,6 +124,7 @@ class VCPHeader extends HTMLElement {
                 vapAt: 'VAP-AT',
                 vapLimits: 'What VAP does not do',
                 vapIncidents: 'AI incident verification records',
+                vapIncidentLibrary: 'AI incident library and VAP mapping',
                 faq: 'FAQ (Scope / Limitations)',
                 applyCertification: 'Certification status & enquiries',
                 standards: 'Standards',
@@ -231,6 +232,7 @@ class VCPHeader extends HTMLElement {
                 vapAt: 'VAP-AT',
                 vapLimits: 'VAPにできないこと',
                 vapIncidents: 'AI事件の検証記録',
+                vapIncidentLibrary: 'AI事件ライブラリとVAPの対応',
                 faq: 'FAQ（範囲と制限）',
                 applyCertification: '認証の状況・お問い合わせ',
                 standards: '標準規格',
@@ -338,6 +340,7 @@ class VCPHeader extends HTMLElement {
                 vapAt: 'VAP-AT',
                 vapLimits: 'VAP 的限制（英文）',
                 vapIncidents: 'AI 事件核查记录（英文）',
+                vapIncidentLibrary: 'AI 事件库与 VAP 对应（英文）',
                 faq: '常见问题（范围/限制）',
                 applyCertification: '认证状态与咨询',
                 standards: '标准',
@@ -489,6 +492,7 @@ class VCPHeader extends HTMLElement {
                             <div class="nav-group"><p class="nav-group-label">${t.researchGroup}</p>
                                 <a href="/vso/announcements/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.announcements}</span><span class="nav-item-description">${t.announcementsDescription}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
                                 <a href="/incidents/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.vapIncidents}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
+                                <a href="/incidents/library/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.vapIncidentLibrary}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
                                 <a href="/standardization/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.standardizationRoadmap}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
                                 <a href="/vso/corrections/" class="dropdown-item"><span class="nav-item-copy"><span class="nav-item-title">${t.corrections}</span></span><span class="nav-item-arrow" aria-hidden="true">→</span></a>
                             </div>
@@ -536,7 +540,7 @@ class VCPHeader extends HTMLElement {
         const translatedRoutes = new Set(["/about/", "/benchmark/", "/blog/", "/certified/", "/certified/apply/", "/certified/cab/", "/certified/faq/", "/company/", "/distributed-organization/", "/docs/brokers/", "/explorer/", "/impressum/", "/law/", "/media/", "/overview/", "/privacy/", "/propfirms/", "/regtech/", "/sec/", "/solutions/exchanges/", "/standardization/", "/support/", "/terms/", "/use-cases/", "/v1-1/", "/vap/", "/vap/at/", "/vap/cap/", "/vap/cpp/", "/vap/dvp/", "/vap/eip/", "/vap/gam/", "/vap/iap/", "/vap/lap/", "/vap/map/", "/vap/pap/", "/vcc/", "/vcp/developers/", "/verasnap/", "/vso/", "/vso/announcements/", "/vso/corrections/", "/vso/policies/", "/what-is-vcp/"]);
         this.querySelectorAll('.dropdown-menu a[href^="/"]').forEach(link => {
             const [path, fragment] = link.getAttribute('href').split('#');
-            if (translatedRoutes.has(path) || (lang === 'ja' && ['/vcp/sdk/', '/guides/', '/guides/ai-agent-audit-log/', '/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/'].includes(path))) link.setAttribute('href', `${path}${lang}/${fragment ? `#${fragment}` : ''}`);
+            if (translatedRoutes.has(path) || (lang === 'ja' && ['/vcp/sdk/', '/guides/', '/guides/ai-agent-audit-log/', '/guides/ai-governance/', '/guides/ai-audit-trail/', '/vap/limits/', '/incidents/', '/incidents/library/'].includes(path))) link.setAttribute('href', `${path}${lang}/${fragment ? `#${fragment}` : ''}`);
         });
     }
 

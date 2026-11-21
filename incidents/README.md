@@ -5,6 +5,21 @@ pages. Edit the JSON, add a dated correction when changing an existing account,
 then run `python3 scripts/build_incidents.py`. CI uses `--check` to detect stale
 output without overwriting it.
 
+## Incident library and VAP mapping
+
+`vap-map.json` classifies every record in `incidents.json` for the incident
+library at `/incidents/library/` and `/incidents/library/ja/`: one area and one
+or more evidence questions (`T1`–`T13`). When you add a record to
+`incidents.json`, add its entry to `vap-map.json` in the same change; the build
+and `--check` fail while any record is unclassified or an entry names an
+unknown record, area or question.
+
+Areas and question labels are VSO's editorial navigation aids. They are not
+registry fields, ledger entries or VAP specification identifiers, and a
+question's "candidate" rows point to unadopted work in the vap-spec CHANGE-002
+preparation register. Each question's text describes VAP v1.2 as written; if
+the specification changes, update the question text and its pinned spec link.
+
 ## Registration labels
 
 Website publication and source review do not by themselves register a record in
