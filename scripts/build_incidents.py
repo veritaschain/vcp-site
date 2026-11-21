@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""Build the incident verification records and the "What VAP does not do" page.
+"""Build the incident verification records, the incident library and the "What VAP does not do" page.
 
 Sources (edit these, then run `python3 scripts/build_incidents.py`):
     incidents/incidents.json  -- the only source for /incidents/ and /incidents/ja/ (published, CC BY 4.0)
+    incidents/vap-map.json    -- VSO's area and evidence-question classification of every record in
+                                 incidents.json, for /incidents/library/ and /incidents/library/ja/
     vap/limits/limits.json    -- the only source for /vap/limits/ and /vap/limits/ja/
 
 Each record states what VSO verified on the date shown. Correct a record by
-editing it and adding a dated entry to its "corrections" list.
+editing it and adding a dated entry to its "corrections" list. A record added to
+incidents.json must also be given an entry in vap-map.json; the build fails until
+it has one.
 """
 import argparse
 import html
@@ -20,6 +24,7 @@ from incident_evidence import binding_html, followups_html, source_id, validate_
 ROOT = Path(__file__).resolve().parents[1]
 SITE = 'https://veritaschain.org'
 INCIDENTS = ROOT / 'incidents' / 'incidents.json'
+VAP_MAP = ROOT / 'incidents' / 'vap-map.json'
 LIMITS = ROOT / 'vap' / 'limits' / 'limits.json'
 
 # AI developers whose models VSO uses in its own verification work. Records in
@@ -83,6 +88,7 @@ COMMON = {
         'status_link': ('Dated correction', 'https://github.com/veritaschain/vap-spec/blob/main/disclosures/2026-10-24-commercial-contracts.md'),
         'corrections': ('Corrections log', '/vso/corrections/'),
         'records_page': ('Incident verification records', '/incidents/'),
+        'library_page': ('Incident library and VAP mapping', '/incidents/library/'),
         'limits_page': ('What VAP does not do', '/vap/limits/'),
         'back': ('VAP overview', '/vap/'),
     },
@@ -96,6 +102,7 @@ COMMON = {
         'status_link': ('日付入りの訂正（英語）', 'https://github.com/veritaschain/vap-spec/blob/main/disclosures/2026-10-24-commercial-contracts.md'),
         'corrections': ('訂正記録', '/vso/corrections/ja/'),
         'records_page': ('事件検証記録', '/incidents/ja/'),
+        'library_page': ('事件ライブラリとVAPの対応', '/incidents/library/ja/'),
         'limits_page': ('VAPにできないこと', '/vap/limits/ja/'),
         'back': ('VAP の概要', '/vap/ja/'),
         'ref_tr': '参考訳',
@@ -111,7 +118,7 @@ def a(label, url):
     return f'<a href="{esc(url)}">{esc(label)}</a>'
 
 
-def head(lang, title, desc, url, alt_urls, ld):
+def head(lang, title, desc, url, alt_urls, ld, extra_style=''):
     alternates = ''.join(f'<link rel="alternate" hreflang="{code}" href="{SITE}{alt_urls[code]}">' for code in ('en', 'ja'))
     alternates += f'<link rel="alternate" hreflang="x-default" href="{SITE}{alt_urls["en"]}">'
     return (
@@ -129,7 +136,7 @@ def head(lang, title, desc, url, alt_urls, ld):
         f'<meta name="twitter:description" content="{esc(desc)}">\n'
         '<meta name="twitter:image" content="https://veritaschain.org/assets/OGP.png">\n'
         f'<link rel="canonical" href="{SITE}{url}">\n{alternates}\n'
-        f'<link rel="icon" href="/favicon.ico"><style>{STYLE}</style>\n'
+        f'<link rel="icon" href="/favicon.ico"><style>{STYLE}{extra_style}</style>\n'
         f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script><script defer src="/assets/js/analytics.js?v=20261103"></script></head>\n')
 
 
@@ -353,7 +360,7 @@ def incidents_page(lang, data):
     c = COMMON[lang]
     body = (f'<main><div class="eyebrow">{t["eyebrow"]} · {data["as_of"]}</div><h1>{t["h1"]}</h1>'
             f'<p class="intro">{esc(t["intro"])}</p>'
-            f'<p class="small">{a(t["data"], "/incidents/incidents.json")} · {a(*c["limits_page"])} · {a(*c["corrections"])}</p>\n'
+            f'<p class="small">{a(*c["library_page"])} · {a(t["data"], "/incidents/incidents.json")} · {a(*c["limits_page"])} · {a(*c["corrections"])}</p>\n'
             f'<section class="box"><h3>{t["rules_h"]}</h3><ul>{rules}</ul>'
             f'<h3 id="registration-criteria">{t["registration_h"]}</h3><p>{esc(t["registration"])}</p>'
             f'<h3>{t["method_h"]}</h3><p>{esc(t["method"])}</p>'
@@ -362,6 +369,262 @@ def incidents_page(lang, data):
             f'<h2>{t["index"]} ({len(records)})</h2><ul class="toc">{toc}</ul>\n'
             f'<ol class="records">{"".join(record_html(lang, r) for r in records)}</ol></main>\n')
     return head(lang, t['title'], t['desc'], t['url'], alt, ld) + top(lang, alt) + body + footer()
+
+
+# ---------------------------------------------------------------- library
+
+LIB_STYLE = ('ol.questions{list-style:none;padding:0;margin:20px 0 0}ul.lib{list-style:none;padding:0;margin:12px 0 0}'
+             'ul.lib>li{margin:0 0 10px;border:1px solid #334155;border-radius:12px;background:#111f33}'
+             'ul.lib details>summary{cursor:pointer;padding:12px 16px 10px 40px;list-style:none;position:relative}'
+             'ul.lib details>summary::-webkit-details-marker{display:none}'
+             'ul.lib details>summary:before{content:"+";position:absolute;left:18px;top:12px;color:#6ee7b7}'
+             'ul.lib details[open]>summary:before{content:"−"}ul.lib .body{padding:0 18px 14px 40px}'
+             'ul.lib .meta{display:block}ul.lib .chips{display:block}'
+             'ul.lib .t{display:block;color:#f8fafc;font-weight:600;line-height:1.5;margin:2px 0 4px}'
+             '.chip{display:inline-block;margin:0 6px 4px 0;padding:0 8px;border:1px solid #475569;border-radius:6px;'
+             'font-size:.75rem;color:#bae6fd;text-decoration:none}a.chip:hover{border-color:#7dd3fc;color:white}'
+             'section.area{margin:36px 0 0}section.area>h2{font-size:1.1rem}'
+             'table.qtab td,table.qtab th{border-top:1px solid #334155;padding:6px 8px;vertical-align:top;text-align:left}'
+             'table.qtab th{color:#94a3b8;font-weight:500;font-size:.85rem}table.qtab td.n{text-align:right;white-space:nowrap}')
+
+LIB = {
+    'en': {
+        'url': '/incidents/library/',
+        'title': 'AI incident library and VAP mapping | VSO — VeritasChain',
+        'h1': 'AI incident library and VAP mapping',
+        'eyebrow': 'VSO · INCIDENT LIBRARY',
+        'desc': ('Every AI incident VSO has verified, grouped by area and mapped to the evidence questions it raised: '
+                 'what VAP v1.2 makes auditable, what it does not, and which related candidate work remains unadopted.'),
+        'intro': ('This library lists every record on the incident verification records page and maps each one to the '
+                  'questions about evidence that it raised. For each question it sets out what VAP v1.2 makes auditable and '
+                  'attributable, what the current specification does not address, and the related candidate work, none of '
+                  'which has been adopted. It is a reading aid. The verification records remain the authority for what was '
+                  'verified, and nothing here assumes that VAP was in use in any incident.'),
+        'links_records': 'Verification records',
+        'data': 'Records (JSON)',
+        'map_data': 'Mapping (JSON, CC BY 4.0)',
+        'read_h': 'How to read this page',
+        'read': [
+            'Areas and the labels T1–T13 are VSO’s editorial classification. They are navigation aids, not registry fields, ledger entries or identifiers in the VAP specification.',
+            'A record can raise several questions. Assigning a question is VSO’s reading of the record, not a finding about any party.',
+            'Litigation: every claim made in a case is an untested allegation unless a court has decided it. Each record is read under its own jurisdiction only.',
+            'Where a record describes VAP’s relevance, it is a design inference, not an implemented capability. “Not in VAP v1.2” describes the current text; related candidate work is listed so that readers can follow it, and none of it is adopted or scheduled for a release.',
+            'Records are added here when they are added to the verification records. The build that publishes both pages fails if a record has not been classified.',
+        ],
+        'find_h': 'What the records show so far',
+        'findings': [
+            'The records almost always existed. In most incidents an operator, a developer or an affected party held logs and used them to reconstruct what happened.',
+            'What outsiders could not check recurs: whose record it was ({T1}), whether a review found everything ({T2}), what was in scope and observed ({T3}), whether requests, alerts and remedies took effect ({T4}), and whether a valid credential meant authorisation ({T5}).',
+            'In VSO’s reading of these {n} records, none turned on what the core of VAP v1.2 is built to detect: omission or alteration of anchored records by the party holding them, after anchoring (INT-008). Where records were erased, it was the actor erasing records that had not been anchored. The case these records make is therefore for parts that are not yet in the specification.',
+            'The number of records is not evidence of need. VSO chose which reports to check, the choice leans towards cases that look relevant to VAP, and many records come from a few disclosing companies.',
+        ],
+        'count_fmt': 'T{q}: {n} records',
+        'n_fmt': '{n} records',
+        'q_h': 'Evidence questions and VAP v1.2',
+        'q_intro': 'Clause references are to {spec} (SHA-256 {sha}). Candidate rows are in the {reg}.',
+        'q_table': ('Label', 'Question', 'Records'),
+        'v12': 'What VAP v1.2 makes auditable',
+        'not_v12': 'Not in VAP v1.2',
+        'cand': 'Related candidate work (unadopted)',
+        'cand_none': 'None. This is outside VAP by design.',
+        'cand_none_neutral': 'None.',
+        'limits_ref': 'See also',
+        'records': 'Records',
+        'lib_h': 'Library',
+        'relevance': 'Where VAP is relevant',
+        'would_not': 'What VAP would not have done',
+        'questions': 'Questions raised',
+        'full': 'Full verification record, with checked claims and sources',
+        'event': 'Event',
+        'undisclosed': 'date not disclosed',
+        'allegations': 'Allegations — untested',
+        'excluded': 'Not listed, as on the verification records page: {items}.',
+        'method_h': 'Method and interests',
+        'method': ('This classification was prepared by VSO with AI assistance, using Anthropic’s Claude. Anthropic is a party '
+                   'to, or its models are central in, {n} of these records ({ids}). The classification has not been reviewed '
+                   'by anyone outside VSO. VSO develops VAP and has an interest in how these incidents are read; that is why '
+                   'each question states what the current specification does not address.'),
+    },
+    'ja': {
+        'url': '/incidents/library/ja/',
+        'title': 'AI事件ライブラリとVAPの対応 | VSO — VeritasChain',
+        'h1': 'AI事件ライブラリとVAPの対応',
+        'eyebrow': 'VSO · 事件ライブラリ',
+        'desc': ('VSO が検証したすべての AI 事件を区分ごとにまとめ、それぞれが投げかけた証拠の問いに対応づけています。'
+                 'VAP v1.2 で監査可能になること、ならないこと、採択されていない関連の候補作業を示します。'),
+        'intro': ('このライブラリは、事件検証記録のページに載せたすべての記録を一覧にし、それぞれが投げかけた証拠についての問いに対応づけています。'
+                  '問いごとに、VAP v1.2 が監査可能・帰属可能にすること、現行の仕様が扱っていないこと、関連する候補作業（いずれも未採択）を示します。'
+                  'これは読むための手引きです。何が検証されたかの典拠は事件検証記録であり、このページはどの事件についても VAP が使われていたことを仮定していません。'),
+        'links_records': '事件検証記録',
+        'data': '記録データ（JSON）',
+        'map_data': '対応データ（JSON、CC BY 4.0）',
+        'read_h': 'このページの読み方',
+        'read': [
+            '区分と T1〜T13 のラベルは VSO の編集上の分類です。案内のためのもので、レジストリの欄、台帳の登録、VAP 仕様の識別子ではありません。',
+            '1 件の記録が複数の問いにかかわることがあります。問いの割り当ては VSO による記録の読みであり、どの当事者についての認定でもありません。',
+            '訴訟：裁判所が判断していない限り、事件で主張されている内容はすべて未検証の主張です。各記録はその法域の枠内でだけ扱います。',
+            '記録に示す VAP との関連は設計上の推論であり、実装された機能ではありません。「VAP v1.2 にないこと」は現行の本文についての記述です。関連する候補作業は追えるように挙げていますが、いずれも採択されておらず、リリースの予定もありません。',
+            '記録は事件検証記録に追加された時点でここにも加わります。両ページを生成する処理は、分類されていない記録があると失敗します。',
+        ],
+        'find_h': 'これまでの記録から見えること',
+        'findings': [
+            '記録はほぼ常に存在していました。大半の事件で、運営者、開発者、または影響を受けた当事者がログを持っており、それを使って経緯を再構成しています。',
+            '外部から確かめられなかった点は繰り返し現れます。誰の記録だったか（{T1}）、見直しで全部見つかったか（{T2}）、何が対象でどこを観測していたか（{T3}）、要求・警報・是正が効いたか（{T4}）、有効な資格情報が認可を意味したか（{T5}）。',
+            'VSO の読みでは、ここにある {n} 件のいずれも、VAP v1.2 の中核が検出の対象とするもの（記録を持つ当事者による、アンカー後のアンカー済み記録の省略や改変。INT-008）が争点になってはいません。記録が消された事件では、消したのは行為者自身で、消された記録はアンカーされていませんでした。したがって、これらの記録が必要性を示しているのは、まだ仕様にない部分についてです。',
+            '件数は必要性の証拠ではありません。どの報道を検証するかは VSO が選んでおり、その選択は VAP に関係しそうな事件に偏ります。多くの記録は少数の企業の開示に由来します。',
+        ],
+        'count_fmt': 'T{q}：{n}件',
+        'n_fmt': '{n}件',
+        'q_h': '証拠の問いと VAP v1.2',
+        'q_intro': '条項の参照先は {spec}（SHA-256 {sha}）です。候補の行は{reg}にあります。',
+        'q_table': ('ラベル', '問い', '件数'),
+        'v12': 'VAP v1.2 で監査可能になること',
+        'not_v12': 'VAP v1.2 にないこと',
+        'cand': '関連する候補作業（未採択）',
+        'cand_none': 'ありません。設計上、VAP の外にあります。',
+        'cand_none_neutral': 'ありません。',
+        'limits_ref': 'あわせて参照',
+        'records': '記録',
+        'lib_h': 'ライブラリ',
+        'relevance': 'VAP が関わる点',
+        'would_not': 'VAPにできないこと',
+        'questions': 'かかわる問い',
+        'full': '検証した主張と情報源を含む検証記録の全文',
+        'event': '発生',
+        'undisclosed': '時期は非公表',
+        'allegations': '主張（未検証）',
+        'excluded': '事件検証記録のページと同じく、次のものは掲載していません：{items}。',
+        'method_h': '方法と利害',
+        'method': ('この分類は、Anthropic の Claude を使い、AI の支援を受けて VSO が作成しました。Anthropic は、これらの記録のうち {n} 件（{ids}）で'
+                   '当事者であるか、そのモデルが記録の中心にあります。分類は VSO の外部の査読を受けていません。VSO は VAP を開発しており、'
+                   'これらの事件がどう読まれるかに利害があります。各問いに現行の仕様が扱っていないことを示しているのはそのためです。'),
+    },
+}
+
+
+def validate_map(vmap, records):
+    """Every record must be classified once, into a known area, with known questions."""
+    areas = {x['id'] for x in vmap['areas']}
+    questions = {q['id'] for q in vmap['questions']}
+    for q in vmap['questions']:
+        for field in ('label', 'question', 'v12', 'not_v12'):
+            assert q[field]['en'].strip() and q[field]['ja'].strip(), (q['id'], field)
+        for row in q['candidates']:
+            assert row in vmap['candidates'], (q['id'], 'unknown candidate row', row)
+    missing = sorted(set(records) - set(vmap['records']))
+    if missing:
+        raise SystemExit('vap-map.json: records not classified (add an area and questions): ' + ', '.join(missing))
+    unknown = sorted(set(vmap['records']) - set(records))
+    if unknown:
+        raise SystemExit('vap-map.json: classifies unknown records: ' + ', '.join(unknown))
+    for rid, m in vmap['records'].items():
+        assert m['area'] in areas, (rid, 'unknown area', m['area'])
+        assert m['questions'], (rid, 'no questions')
+        assert len(set(m['questions'])) == len(m['questions']), (rid, 'duplicate question')
+        for q in m['questions']:
+            assert q in questions, (rid, 'unknown question', q)
+
+
+def library_page(lang, data, vmap, limits):
+    t = LIB[lang]
+    c = COMMON[lang]
+    inc = INC[lang]
+    alt = {code: LIB[code]['url'] for code in ('en', 'ja')}
+    records = {r['id']: r for r in data['records']}
+    qdefs = {q['id']: q for q in vmap['questions']}
+    order = sorted(records.values(), key=lambda r: (r['verified'], r['id']), reverse=True)
+    by_q = {q['id']: [r['id'] for r in order if q['id'] in vmap['records'][r['id']]['questions']] for q in vmap['questions']}
+    limit_ids = {p['id'] for p in limits['patterns']}
+    ld = {'@context': 'https://schema.org', '@type': 'WebPage', 'name': t['h1'], 'description': t['desc'],
+          'url': SITE + t['url'], 'inLanguage': lang, 'dateModified': max(data['as_of'], vmap['updated']),
+          'isBasedOn': SITE + '/incidents/incidents.json',
+          'publisher': {'@type': 'Organization', 'name': 'VeritasChain Standards Organization (VSO)'}}
+
+    def chip(qid, link=True):
+        label = qdefs[qid]['label'][lang]
+        if link:
+            return f'<a class="chip" href="#{esc(qdefs[qid]["slug"])}" title="{esc(label)}">{esc(qid)}</a>'
+        return f'<span class="chip" title="{esc(label)}">{esc(qid)}</span>'
+
+    links = (f'<p class="small">{a(t["links_records"], inc["url"])} · {a(t["data"], "/incidents/incidents.json")} · '
+             f'{a(t["map_data"], "/incidents/vap-map.json")} · {a(*c["limits_page"])} · {a(*c["corrections"])}</p>\n')
+    read = ''.join(f'<li>{esc(x)}</li>' for x in t['read'])
+    counts = {qid: t['count_fmt'].format(q=qid[1:], n=len(by_q[qid])) for qid in ('T1', 'T2', 'T3', 'T4', 'T5')}
+    findings = ''.join(f'<li>{esc(x.format(n=len(records), **counts))}</li>' for x in t['findings'])
+    reg = vmap['register']
+    spec = vmap['spec']
+    q_intro = esc(t['q_intro']).format(spec=a(spec['label'], spec['url']), sha=esc(spec['sha256'][:8] + '…' + spec['sha256'][-4:]),
+                                       reg=a(reg['label'][lang], reg['url']))
+    head_row = ''.join(f'<th>{esc(x)}</th>' for x in t['q_table'])
+    qtab = ''.join(f'<tr><td>{chip(q["id"])}</td><td><a href="#{esc(q["slug"])}">{esc(q["label"][lang])}</a></td>'
+                   f'<td class="n">{len(by_q[q["id"]])}</td></tr>' for q in vmap['questions'])
+    qitems = []
+    for q in vmap['questions']:
+        if q['candidates']:
+            cand = ' · '.join(a(vmap['candidates'][row][lang], reg['url'] + '#' + vmap['candidates'][row]['anchor'])
+                              for row in q['candidates'])
+        else:
+            cand = esc(t['cand_none'] if q['limits'] in ('attacker-run', 'people-procedure') else t['cand_none_neutral'])
+        see = ''
+        if q['limits']:
+            assert q['limits'] in limit_ids, (q['id'], 'unknown limits pattern', q['limits'])
+            sep = '：' if lang == 'ja' else ': '
+            see = f'<p class="small">{t["limits_ref"]}{sep}{a(c["limits_page"][0], c["limits_page"][1] + "#" + q["limits"])}</p>'
+        recs = ' '.join(f'<a class="chip" href="#lib-{esc(rid)}" title="{esc(records[rid]["title"][lang])}">{esc(rid)}</a>'
+                        for rid in by_q[q['id']])
+        qitems.append(
+            f'<li class="entry" id="{esc(q["slug"])}"><div class="meta">{esc(q["id"])} · '
+            f'{esc(t["n_fmt"].format(n=len(by_q[q["id"]])))}</div>'
+            f'<h2>{esc(q["label"][lang])}</h2><p>{esc(q["question"][lang])}</p>'
+            f'<h3>{t["v12"]}</h3><p>{esc(q["v12"][lang])}</p>'
+            f'<h3>{t["not_v12"]}</h3><p>{esc(q["not_v12"][lang])}</p>'
+            f'<h3>{t["cand"]}</h3><p>{cand}</p>{see}'
+            f'<h3>{t["records"]}</h3><p>{recs}</p></li>')
+    area_toc = []
+    sections = []
+    for area in vmap['areas']:
+        members = [r for r in order if vmap['records'][r['id']]['area'] == area['id']]
+        if not members:
+            continue
+        area_toc.append(f'<li><a href="#area-{esc(area["id"])}">{esc(area[lang])}</a> ({len(members)})</li>')
+        items = []
+        for r in members:
+            m = vmap['records'][r['id']]
+            event = t['undisclosed'] if r['event_date'] == 'undisclosed' else r['event_date']
+            alleg = f' <span class="badge alleg">{t["allegations"]}</span>' if r.get('allegations') else ''
+            body = ''
+            if r.get('vap_relevance', {}).get(lang, '').strip():
+                body += f'<h3>{t["relevance"]}</h3><p>{esc(r["vap_relevance"][lang])}</p>'
+            body += f'<h3>{t["would_not"]}</h3><p>{esc(r["vap_would_not"][lang])}</p>'
+            body += (f'<h3>{t["questions"]}</h3><p>'
+                     + ' '.join(f'{chip(q)} {esc(qdefs[q]["label"][lang])}' for q in m['questions']) + '</p>')
+            body += f'<p class="small">{a(t["full"], inc["url"] + "#" + r["id"])}</p>'
+            items.append(
+                f'<li id="lib-{esc(r["id"])}"><details><summary><span class="meta">{esc(r["id"])} · {t["event"]} {esc(event)} · '
+                f'{esc(r["jurisdiction"][lang])}</span><span class="t">{esc(r["title"][lang])}</span>'
+                f'<span class="chips">{"".join(chip(q, link=False) for q in m["questions"])}{alleg}</span></summary>'
+                f'<div class="body">{body}</div></details></li>')
+        sections.append(f'<section class="area" id="area-{esc(area["id"])}"><h2>{esc(area[lang])} ({len(members)})</h2>'
+                        f'<ul class="lib">{"".join(items)}</ul></section>')
+    fmt = '{r}（{n}件）' if lang == 'ja' else '{r} ({n})'
+    excluded = ('、' if lang == 'ja' else ', ').join(
+        fmt.format(r=inc['reasons'].get(x['reason'], x['reason']), n=x['count'])
+        for x in data.get('excluded_counts', []) if x['count'])
+    anthropic = [r['id'] for r in order if 'Anthropic' in (r.get('ai_provider_party') or [])]
+    method = t['method'].format(n=len(anthropic), ids=('、' if lang == 'ja' else ', ').join(anthropic))
+    body = (f'<main><div class="eyebrow">{t["eyebrow"]} · {max(data["as_of"], vmap["updated"])}</div><h1>{t["h1"]}</h1>'
+            f'<p class="intro">{esc(t["intro"])}</p>' + links +
+            f'<section class="box"><h3>{t["read_h"]}</h3><ul>{read}</ul></section>\n'
+            f'<section class="box"><h2>{t["find_h"]}</h2><ol>{findings}</ol></section>\n'
+            f'<h2 id="questions">{t["q_h"]}</h2><p class="small">{q_intro}</p>'
+            f'<table class="qtab"><tr>{head_row}</tr>{qtab}</table>'
+            f'<ol class="questions">{"".join(qitems)}</ol>\n'
+            f'<h2 id="library">{t["lib_h"]} ({len(records)})</h2><ul class="toc">{"".join(area_toc)}</ul>'
+            + ''.join(sections) +
+            (f'<p class="small">{esc(t["excluded"].format(items=excluded))}</p>' if excluded else '') +
+            f'<section class="box"><h3>{t["method_h"]}</h3><p>{esc(method)}</p></section>\n'
+            + section_16(lang) + status(lang) + '</main>\n')
+    return head(lang, t['title'], t['desc'], t['url'], alt, ld, LIB_STYLE) + top(lang, alt) + body + footer()
 
 
 # ---------------------------------------------------------------- limits
@@ -428,7 +691,7 @@ def limits_page(lang, limits, records):
     spec = limits['spec']
     body = (f'<main><div class="eyebrow">{t["eyebrow"]} · {limits["updated"]}</div><h1>{t["h1"]}</h1>'
             f'<p class="intro">{esc(t["intro"])}</p>'
-            f'<p class="small">{a(spec["label"], spec["url"])} · {a(*c["records_page"])} · {a(*c["corrections"])}</p>\n'
+            f'<p class="small">{a(spec["label"], spec["url"])} · {a(*c["records_page"])} · {a(*c["library_page"])} · {a(*c["corrections"])}</p>\n'
             + decl + f'<ol class="patterns">{"".join(items)}</ol>\n' + section_16(lang) + status(lang) + '</main>\n')
     return head(lang, t['title'], t['desc'], t['url'], alt, ld) + top(lang, alt) + body + footer()
 
@@ -450,14 +713,17 @@ def main():
     parser.add_argument('--check', action='store_true', help='Check generated pages without writing them')
     args = parser.parse_args()
     data = json.loads(INCIDENTS.read_text(encoding='utf-8'))
+    vmap = json.loads(VAP_MAP.read_text(encoding='utf-8'))
     limits = json.loads(LIMITS.read_text(encoding='utf-8'))
     ids = validate_incidents(data)
     records = {r['id']: r for r in data['records']}
+    validate_map(vmap, records)
     for p in limits['patterns']:
         for e in p['examples']:
             if e['record'] not in ids:
                 sys.exit(f'limits.json: pattern {p["id"]} cites unknown record {e["record"]}')
     out = [write(INC[lang]['url'], incidents_page(lang, data), args.check) for lang in ('en', 'ja')]
+    out += [write(LIB[lang]['url'], library_page(lang, data, vmap, limits), args.check) for lang in ('en', 'ja')]
     out += [write(LIM[lang]['url'], limits_page(lang, limits, records), args.check) for lang in ('en', 'ja')]
     print(('Checked ' if args.check else 'Wrote ') + ', '.join(str(p) for p in out) + f' ({len(ids)} records)')
 
