@@ -1,5 +1,5 @@
 {
- "as_of": "2026-11-22",
+ "as_of": "2026-11-23",
  "license": "CC BY 4.0",
  "excluded_counts": [
   {
@@ -10206,6 +10206,374 @@
      "id": "securityweek",
      "label": "SecurityWeek — Amazon: China-Linked Hackers’ AI Agents Exploited Medical Software Zero-Day (21 November 2026)",
      "url": "https://www.securityweek.com/amazon-china-linked-hackers-ai-agents-exploited-medical-software-zero-day/",
+     "kind": "secondary"
+    },
+    {
+     "id": "monai-086",
+     "label": "Project MONAI — MONAI Label release 0.8.6 (22 November 2026)",
+     "url": "https://github.com/Project-MONAI/MONAILabel/releases/tag/0.8.6",
+     "kind": "primary"
+    },
+    {
+     "id": "pypi-086",
+     "label": "PyPI — monailabel release history, 0.8.6 uploaded 22 November 2026 (checked 23 November 2026)",
+     "url": "https://pypi.org/project/monailabel/0.8.6/",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": [],
+   "later": [
+    {
+     "date": "2026-11-22",
+     "claim_as_of": "2026-11-23",
+     "source_refs": [
+      "monai-086",
+      "pypi-086",
+      "cve",
+      "ghsa"
+     ],
+     "en": "MONAI Label 0.8.6 was released on 22 November (uploaded to PyPI at 01:27 UTC). Its release notes list the fix for CVE-2026-133968 / GHSA-qc22-rmgc-vg94 (pull request #1915) and a second path traversal, in session upload with archive extraction (PUT /session/?uncompress=true, pull request #1942), and the release requires Python 3.11 or newer. The CVE record was updated the same day to read “before 0.8.6”; it still spells the vendor “Project-MONIA”, and its CISA entry still lists exploitation as none. When VSO checked on 23 November, the GitHub advisory still listed no patched version.",
+     "ja": "MONAI Label 0.8.6が11月22日にリリースされました（PyPIへの登録は01:27 UTC）。リリースノートは、CVE-2026-133968／GHSA-qc22-rmgc-vg94の修正（プルリクエスト#1915）と、2件目のパストラバーサル（アーカイブを展開するセッションのアップロード、PUT /session/?uncompress=true、プルリクエスト#1942）の修正を挙げており、Python 3.11以上が必要です。CVEレコードは同じ日に「0.8.6より前」に更新されましたが、ベンダー名は「Project-MONIA」のままで、CISAの欄も悪用を「none」としたままです。VSOが11月23日に確認した時点で、GitHubのアドバイザリは修正版を挙げていませんでした。",
+     "evidence_note": {
+      "en": "A follow-up to the record verified on 22 November, not a new incident. The brief VSO checked on 23 November repeated this case without new facts and is not recorded again.",
+      "ja": "11月22日に検証した記録の続報で、新しい事件ではない。VSOが11月23日に確認したブリーフは新しい事実なしに本件を再掲しており、改めて記録していない。"
+     }
+    }
+   ]
+  },
+  {
+   "id": "V1121TOGETHERAI",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Together AI discloses that a credential committed by an AI coding agent to a public GitHub repository let an unauthorised party download stored samples of customer prompts from June and July 2026",
+    "ja": "Together AI、AIコーディングエージェントが公開GitHubリポジトリにコミットしたクレデンシャルを第三者が入手し、2026年6〜7月の顧客プロンプトの保存サンプルをダウンロードしたと公表"
+   },
+   "event_date": "exposure window not disclosed; the samples come mainly from requests on 2026-06-24 and 2026-07-04, 07-08 and 07-14; disclosed 2026-11-21",
+   "verified": "2026-11-23",
+   "jurisdiction": {
+    "en": "Not established by the reviewed sources (Together AI, a US company); where the affected customers are located has not been disclosed",
+    "ja": "確認した情報源からは特定できない（Together AIは米国の企業）。影響を受けた顧客の所在地は開示されていない"
+   },
+   "category": "security incident",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [
+    "Together AI"
+   ],
+   "summary": {
+    "en": "On 21 November 2026 Together AI disclosed, in a post by its chief executive Vipul Ved Prakash, that an unauthorised party had downloaded stored samples of prompts sent to its serverless inference service in June and July 2026. The company kept the samples, which it describes as stored for routine software testing, in a private Hugging Face repository. During development of Together AI’s public GitHub repository, xorl, an AI coding agent committed a credential that gave access to that private repository. Together AI’s automated scanning detected the exposed credential and the commit was reverted, but during the exposure window an unauthorised party obtained the credential and downloaded the samples. The samples come mainly from requests on 24 June and 4, 8 and 14 July 2026 to three models: MiniMax M3, GLM-5.2 and Kimi K2.6. The party then searched the samples for credentials to other services and tested whether those credentials were valid; five of the credentials it tested were canary credentials from a Dragos security experiment. The post does not give the dates or length of the exposure window, the number of prompts or customers affected, or whether the exposed credential was revoked, and it does not name the coding agent. Together AI says its review of the affected prompt contents is ongoing, that it will contact affected customers directly as needed, and that it has found no evidence of prompt leakage beyond this incident. It worked with an external forensic investigation firm and with law enforcement, naming neither. Its stated remediation is scoped or short-lived credentials, keyless where supported; checking every pull request for credentials; zero data retention by default for new accounts; and updated development processes for AI coding agents.",
+    "ja": "2026年11月21日、Together AIは最高経営責任者Vipul Ved Prakashの名義の投稿で、2026年6〜7月にサーバーレス推論サービスへ送られたプロンプトの保存サンプルを、権限のない第三者がダウンロードしたと公表しました。同社はこのサンプルを、通常のソフトウェアテストのために保存していたものと説明しており、プライベートのHugging Faceリポジトリに置いていました。Together AIの公開GitHubリポジトリxorlの開発中に、AIコーディングエージェントが、そのプライベートリポジトリにアクセスできるクレデンシャルをコミットしました。Together AIの自動スキャンが露出したクレデンシャルを検出し、コミットはリバートされましたが、露出していた間に第三者がクレデンシャルを入手し、サンプルをダウンロードしました。サンプルは主に、2026年6月24日と7月4日・8日・14日の、MiniMax M3、GLM-5.2、Kimi K2.6の3モデルへのリクエストです。第三者はさらに、サンプルの中から他のサービスのクレデンシャルを探し、有効かどうかを試しました。試されたクレデンシャルのうち5件は、Dragosのセキュリティ実験のカナリア用クレデンシャルでした。投稿は、露出していた期間の日時や長さ、影響を受けたプロンプトや顧客の数、露出したクレデンシャルを失効させたかどうかを示しておらず、コーディングエージェントの名前も挙げていません。Together AIは、影響を受けたプロンプトの内容を確認中で、必要に応じて影響を受けた顧客に直接連絡するとし、本件以外にプロンプト流出の証拠は見つかっていないとしています。外部のフォレンジック調査会社と法執行機関と連携したとしていますが、どちらも名前は挙げていません。再発防止策として、範囲を限った短命のクレデンシャル（可能な場合はキーレス）への移行、すべてのプルリクエストでのクレデンシャル検査、新規アカウントでのデータ非保持（ZDR）の既定化、AIコーディングエージェントを使う開発手順の見直しを挙げています。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Together AI disclosed the incident on 21 November 2026.",
+      "ja": "Together AIは2026年11月21日に本件を公表した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "together"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "Post by Vipul Ved Prakash, dated 21 November 2026, with no update note when VSO checked it on 23 November.",
+      "ja": "Vipul Ved Prakashの名義の投稿で、日付は2026年11月21日。VSOが11月23日に確認した時点で更新の注記はない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "An AI coding agent called “xorl” committed the credential.",
+      "ja": "「xorl」というAIコーディングエージェントがクレデンシャルをコミットした。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "together"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "xorl is the name of Together AI’s public GitHub repository, during whose development the agent committed the credential. The post does not name the agent.",
+      "ja": "xorlはTogether AIの公開GitHubリポジトリの名前で、エージェントはその開発中にクレデンシャルをコミットした。投稿はエージェントの名前を挙げていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The agent committed a credential for a private Hugging Face repository to a public GitHub repository.",
+      "ja": "エージェントは、プライベートのHugging Faceリポジトリ用のクレデンシャルを、公開GitHubリポジトリにコミットした。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "together"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "Together AI’s own account. The post says the credential gave access to the private Hugging Face repository; it does not say what kind of credential it was.",
+      "ja": "Together AI自身の説明による。投稿は、そのクレデンシャルでプライベートのHugging Faceリポジトリにアクセスできたとしているが、クレデンシャルの種類は示していない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "A third party obtained the credential before it was detected and the commit reverted.",
+      "ja": "検出とリバートの前に、第三者がクレデンシャルを入手した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "together"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "Automated scanning detected the exposed credential and the commit was reverted; the unauthorised party obtained it during the exposure window. The post gives no times for the exposure, the detection or the access.",
+      "ja": "自動スキャンが露出したクレデンシャルを検出し、コミットはリバートされた。第三者は露出していた間にそれを入手した。投稿は、露出、検出、アクセスの時刻を示していない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The third party downloaded customer prompt samples from June and July 2026, for models such as MiniMax M3, GLM-5.2 and Kimi K2.6.",
+      "ja": "第三者は、MiniMax M3、GLM-5.2、Kimi K2.6などのモデルへの、2026年6〜7月の顧客プロンプトのサンプルをダウンロードした。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "together"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "The data were samples stored for routine software testing, not all prompts. The post names only these three models, and the requests are mainly from 24 June and 4, 8 and 14 July 2026. It gives no number of prompts or customers.",
+      "ja": "データは通常のソフトウェアテストのために保存していたサンプルで、すべてのプロンプトではない。投稿が挙げるモデルはこの3つだけで、リクエストは主に2026年6月24日と7月4日・8日・14日のもの。プロンプトや顧客の数は示されていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The third party also probed the prompts for credentials to other services.",
+      "ja": "第三者は、プロンプトに含まれる他のサービスのクレデンシャルも探った。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "together"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "It searched the samples for credentials to other services and tested whether they were valid. Five of the credentials tested were canary credentials from a Dragos security experiment.",
+      "ja": "サンプルの中から他のサービスのクレデンシャルを探し、有効かどうかを試した。試されたクレデンシャルのうち5件は、Dragosのセキュリティ実験のカナリア用クレデンシャルだった。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The agent’s decisions and actions were a black box, and real-time monitoring and a tamper-evident audit trail were lacking, so the commit could not be stopped at once or examined afterwards.",
+      "ja": "エージェントの判断と行動はブラックボックスで、リアルタイムの監視と改ざん検知可能な監査証跡が不十分だったため、コミットを即座に止めることも、事後に検証することもできなかった。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "together"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "The post identifies the agent’s commit as the cause and says automated scanning detected the credential. It does not describe the agent’s logs or say that any record was missing.",
+      "ja": "投稿は、エージェントのコミットを原因として特定し、自動スキャンがクレデンシャルを検出したとしている。エージェントのログについては説明しておらず、記録が欠けていたとも書いていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The incident creates exposure under the GDPR and US data protection laws, and lawsuits are possible.",
+      "ja": "本件はGDPRや米国のデータ保護法に反するおそれがあり、訴訟の可能性がある。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "together"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "Nothing disclosed shows that EU personal data were involved, so the GDPR’s territorial scope is not established; Together AI’s review of the prompt contents is ongoing. No regulatory notification or lawsuit was found as of 23 November.",
+      "ja": "EUの個人データが含まれていたことを示す開示はなく、GDPRの地理的な適用範囲に入るかは確認できない。プロンプトの内容はTogether AIが確認中である。11月23日時点で、規制当局への届出や訴訟は見つからない。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: the AI system at issue is a coding agent used in Together AI’s own software development, a general-purpose tool that no registered domain profile covers. VAP is not a general-purpose logging framework (§1.3), and a deployment invokes capabilities alongside exactly one domain profile (§4.6.3). Agent tool invocation and action under delegated authority are the subject of DAP, a v0.1.0 Working Draft (§4.6.2), so no conformance claim could be made for such a deployment today. If an operator did record an agent’s actions as VAP events, anchored records would make later alteration detectable, and post-anchor omission or split-view presentation detectable at anchor granularity (§4.1, INT-008), and a signature would bind each record to a key (INT-005). A valid signature or credential does not show that an act was authorised: here the unauthorised party used a genuine credential, and the downloads took place on Hugging Face, outside anything Together AI’s own records would hold unless a counterparty record were brought in (TRC-005). The case also shows the reverse risk, that records can carry secrets: the credential leaked through commit history, and the leaked prompt samples themselves held credentials for other services. VAP v1.2 has no rule keeping reusable secrets out of signed or anchored records. ERASURE covers only fields the implementation encrypted before they were committed (§6.3, §7.4), and a rule on secret values is an unadopted candidate in the CHANGE-002 preparation register. The brief’s description of VAP needs correcting: VAP records are tamper-evident, not immutable; VAP provides no monitoring or intervention capability (§4.4.4); and it does not reconstruct events that were never recorded (Appendix A, Pre-measurement drop).",
+    "ja": "設計上の示唆：問題のAIシステムは、Together AIが自社のソフトウェア開発で使ったコーディングエージェントで、どの登録済みの領域プロファイルにも入らない汎用のツールです。VAPは汎用のログの枠組みではなく（§1.3）、配備は1つの領域プロファイルと組み合わせて機能（capability）を使います（§4.6.3）。委任された権限のもとでのエージェントのツール呼び出しと行為はDAPが扱うもので、DAPはv0.1.0のWorking Draftです（§4.6.2）。そのため、このような配備について今日適合を主張することはできません。運用者がエージェントの行為をVAPのイベントとして記録していれば、アンカー済みの記録については後からの改変が検出可能になり、アンカー後の省略やsplit-viewの提示がアンカーの粒度で検出可能になります（§4.1、INT-008）。署名は各記録を鍵に結び付けます（INT-005）。有効な署名やクレデンシャルは、その行為が認められていたことを示しません。本件では、権限のない第三者が本物のクレデンシャルを使っており、ダウンロードはHugging Face側で起きました。相手方の記録を取り込まない限り（TRC-005）、Together AI自身の記録の外にある出来事です。本件は逆向きの危険も示しています。記録がシークレットを抱え込むことです。クレデンシャルはコミット履歴から漏れ、流出したプロンプトのサンプル自体にも他のサービスのクレデンシャルが含まれていました。VAP v1.2には、再利用できるシークレットを署名済み・アンカー済みの記録に入れないための規則がありません。ERASUREが扱えるのは、実装が記録に入れる前に暗号化していた欄だけです（§6.3、§7.4）。シークレットの値についての規則は、CHANGE-002準備用登録簿にある未採択の候補です。ブリーフのVAPの説明は直す必要があります。VAPの記録は改ざん検知可能（tamper-evident）であって不変ではなく、VAPは監視や介入の機能を持たず（§4.4.4）、記録されなかった事象を再構成することもありません（Appendix A、Pre-measurement drop）。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not scan commits, detect or revoke an exposed credential, stop an agent from committing, or decide whether an agent may act. It does not show that a valid credential was used with authorisation, does not record what happened on another party’s systems unless that party records it, and cannot recover events that were never recorded. It does not establish what the leaked prompts contained or whom they affect.",
+    "ja": "VAPは、コミットを検査せず、露出したクレデンシャルを検出も失効もさせず、エージェントのコミットを止めず、エージェントが行為してよいかを決めません。有効なクレデンシャルが権限に基づいて使われたことを示さず、相手方が記録しない限り相手方のシステムで起きたことを記録せず、記録されなかった事象を回復することもできません。流出したプロンプトに何が含まれ、誰に影響するかも立証しません。"
+   },
+   "sources": [
+    {
+     "id": "together",
+     "label": "Together AI (Vipul Ved Prakash) — Security event: Prompt leakage for requests in June and July of 2026 (21 November 2026)",
+     "url": "https://www.together.ai/blog/security-event-prompt-leakage-for-requests-in-june-and-july-of-2026",
+     "kind": "primary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
+  },
+  {
+   "id": "V1119KCAMEDS",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Korea Consumer Agency survey: 22% of 500 adults who bought or took medicines on AI information had stopped or changed a prescription drug without professional advice, and about half of them reported side effects",
+    "ja": "韓国消費者院の調査：AIの情報で医薬品等を購入・服用した成人500人の22%が専門家に相談せず処方薬を中断・変更し、その約半数が副作用を経験"
+   },
+   "event_date": "survey results published 2026-11-19 by the Korea Consumer Agency; survey period not stated in the sources reviewed",
+   "verified": "2026-11-23",
+   "jurisdiction": {
+    "en": "Republic of Korea",
+    "ja": "大韓民国"
+   },
+   "category": "consumer agency survey (self-reported harms)",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [
+    "OpenAI",
+    "Google",
+    "Anthropic",
+    "Perplexity"
+   ],
+   "summary": {
+    "en": "On 19 November 2026 the Korea Consumer Agency (KCA) published the results of a safety survey on consumers’ use of generative AI for information on medicines and health supplements. It surveyed 500 adults who had bought or taken medicines or supplements on the basis of AI information within the past year, and examined how four generative AI services — ChatGPT, Gemini, Claude and Perplexity — answered questions about medicines. 22.0% of respondents (110) said they had stopped or changed a prescription drug they were taking on the basis of AI information, without consulting a professional; 50.9% of them (56) reported side effects such as a worsened condition or adverse reactions. Most were mild (27.3%), but they included a diagnosed setback to treatment (19.1%) and serious reactions that needed further treatment or medication (14.5%). Of all respondents, 7.2% (36) reported an adverse reaction to an AI-recommended product, 26.6% (133) had delayed or given up a visit to a medical institution because they trusted AI information, and only 30.0% (150) had consulted a doctor or pharmacist before buying. All four services advised users to consult a professional, but the placement, size and emphasis of those notices made them easy to miss. As reported, two of the four services (ChatGPT and Perplexity) gave medicine information from symptoms alone without asking about age, underlying conditions or other medicines, and when asked how to buy a hair-loss drug that may not be sold online, three pointed to proxy-purchase sites: ChatGPT and Perplexity in all three attempts, Claude in one of three; Gemini did not. The KCA recommended that the operators improve their notices on medicine and supplement information and stop directing users to sites that sell medicines illegally. As reported, OpenAI and Anthropic said they would consider strengthening information filtering and notices, Google said it would keep its current notices, and Perplexity did not reply. The figures are respondents’ own reports; the survey does not establish that a particular answer caused a particular harm.",
+    "ja": "2026年11月19日、韓国消費者院（KCA）は、医薬品と健康機能食品の情報に生成AIを使う消費者についての安全実態調査の結果を公表しました。最近1年以内にAIの情報をもとに医薬品や健康機能食品を購入・服用した成人500人へのアンケートと、4つの生成AIサービス（ChatGPT、Gemini、Claude、Perplexity）が医薬品についての質問にどう答えたかの分析です。回答者の22.0%（110人）は、服用中の処方薬を、AIの情報をもとに専門家に相談せず中断または変更したと答え、そのうち50.9%（56人）が、病状の悪化や異常反応などの副作用を経験したと答えました。多くは軽いもの（27.3%）でしたが、治療に支障が出たと診断されたもの（19.1%）や、追加の治療や服薬が必要な深刻な異常反応（14.5%）もありました。回答者全体では、7.2%（36人）がAIの推薦した製品で異常反応を経験し、26.6%（133人）がAIの情報を信じて医療機関の受診を遅らせたかあきらめ、購入前に医師や薬剤師に相談したのは30.0%（150人）にとどまりました。4サービスとも専門家への相談を勧めていましたが、その注意書きは表示位置、文字の大きさ、強調の仕方のために見落としやすいものでした。報道によれば、4サービスのうち2つ（ChatGPTとPerplexity）は年齢、基礎疾患、服用中の薬を尋ねずに症状だけから医薬品の情報を出し、オンラインで販売できない脱毛治療薬の買い方を尋ねると、3つが購入代行サイトを案内しました（ChatGPTとPerplexityは3回すべて、Claudeは3回中1回。Geminiは案内しなかった）。消費者院は事業者に、医薬品・健康機能食品の情報での注意表示の改善と、違法に医薬品を売るサイトへの案内をやめることを勧告しました。報道によれば、OpenAIとAnthropicは情報のフィルタリングと注意表示の強化を検討すると回答し、Googleは現行の告知方式を維持するとし、Perplexityは回答しませんでした。数値は回答者自身の申告で、特定の回答が特定の被害を引き起こしたことを立証するものではありません。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "The KCA findings were released on 22 November 2026.",
+      "ja": "韓国消費者院の調査結果は2026年11月22日に公表された。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "kca",
+      "joongang"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "The KCA posted the press release on 19 November 2026. The English-language Financial News URL the brief cited could not be retrieved.",
+      "ja": "消費者院は2026年11月19日に報道資料を掲載した。ブリーフが出典とした英語版Financial NewsのURLは取得できなかった。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Some people whom generative AI told their symptoms were mild took over-the-counter medicine and were later diagnosed with a severe condition.",
+      "ja": "生成AIに症状を相談して軽症とされ、市販薬を服用した結果、重症と診断された事例がある。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "sedaily"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "One case is reported: a man in his 30s took a medicine AI had recommended, had persistent abdominal pain and diarrhoea, and was diagnosed with a severe condition, unlike the AI’s mild assessment. The report describes the medicine as AI-recommended, not as over-the-counter.",
+      "ja": "報じられているのは1件で、30代の男性がAIの推薦した薬を服用したが腹痛と下痢が続き、AIの軽症という判断と異なり重症と診断された。報道はその薬をAIが推薦した薬としており、市販薬とはしていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Some people stopped or changed medication on AI information alone and had side effects.",
+      "ja": "AIの情報だけで服薬を中断・変更し、副作用を経験した人がいる。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "kca",
+      "joongang",
+      "sedaily"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "56 of the 110 respondents who stopped or changed a prescription drug without professional advice reported side effects.",
+      "ja": "専門家に相談せず処方薬を中断・変更した110人のうち56人が副作用を経験したと答えた。"
+     }
+    },
+    {
+     "claim": {
+      "en": "22% of those surveyed changed their medication without checking with a professional.",
+      "ja": "調査対象の22%が、専門家の確認なしに服薬を変更した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "kca",
+      "joongang",
+      "sedaily"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "Precisely: 22.0% (110 of 500) stopped or changed a prescription drug they were taking, on the basis of AI information and without consulting a professional. The 500 were adults who had bought or taken medicines or supplements on AI information within the past year, not the general public.",
+      "ja": "正確には、服用中の処方薬を、AIの情報をもとに専門家に相談せず中断・変更した人が22.0%（500人中110人）。500人は最近1年以内にAIの情報で医薬品や健康機能食品を購入・服用した成人で、一般の人々ではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The basis for the AI’s recommendations was a black box, with no verifiable record that took the individual’s health into account.",
+      "ja": "AIの推奨の根拠はブラックボックスで、個人の健康状態を考慮した検証可能な記録がなかった。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "kca",
+      "joongang"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "The survey reports that two of the four services gave medicine information without asking about age, underlying conditions or other medicines, and that the notices were easy to miss. It says nothing about the services’ records.",
+      "ja": "調査は、4サービスのうち2つが年齢、基礎疾患、服用中の薬を尋ねずに医薬品の情報を出したこと、注意書きが見落としやすかったことを報告している。サービスの記録については何も述べていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Product and advice liability law, consumer protection law and GDPR-style duties to explain automated decisions may be engaged.",
+      "ja": "医療機器・助言に関する責任法、消費者保護法、GDPRのような自動化された意思決定の説明義務に抵触しうる。"
+     },
+     "verdict": "UNCONFIRMED",
+     "source_refs": [
+      "kca",
+      "joongang"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "The KCA made recommendations; no finding that any law was broken is reported. The GDPR does not govern a Korean consumer survey with no EU connection, and how Korean law, including its rules on automated decisions, would apply to consumers’ own questions to a chatbot is not established.",
+      "ja": "消費者院は勧告を出しただけで、法令違反の認定は報じられていない。EUとの接点のない韓国の消費者調査にGDPRは当たらない。消費者が自らチャットボットに尋ねた場合に、自動化された決定についての規定を含む韓国法がどう適用されるかは確認できていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The harms arose from autonomous action by AI agents.",
+      "ja": "この被害はAIエージェントの自律的な行動から生じた。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "kca",
+      "joongang"
+     ],
+     "claim_as_of": "2026-11-23",
+     "evidence_note": {
+      "en": "The survey concerns people who asked chatbots questions and then made their own decisions about medicines; no agent acted on their behalf.",
+      "ja": "調査の対象は、チャットボットに質問し、そのうえで自ら服薬を判断した人々である。利用者の代わりに行動したエージェントはいない。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: the systems at issue are general-purpose AI assistants answering consumers’ questions. VAP’s medical domain lists medication recommendation within its scope (§2.2.2), but its profile, MAP, is a v0.1.2 Working Draft that cannot support a production conformance claim (§4.5.2), and whether a general-purpose assistant falls under a medical profile at all is not settled; VAP is not a general-purpose logging framework (§1.3). The questions the survey raises are about what each service showed a particular user: whether it asked about health status, what notice it displayed and how prominently, and whether it pointed to an illegal sales site. Where an operator records its answers and the notices it displayed, anchored records would let that be checked afterwards: alteration becomes detectable, and post-anchor omission or split-view presentation becomes detectable at anchor granularity (§4.1, INT-008). What a generation service did with a request, including refusals, is the subject matter of CAP v1.0, a released profile; this case is adjacent to that scope, and VSO knows of no service here that implements it. VAP does not warrant the correctness, fairness or safety of the recorded decisions — only the integrity, completeness (at anchor granularity) and attributability of their records (§1.6(c)). What happened after an answer — whether a person stopped a medicine, delayed seeing a doctor or had a reaction — lies outside any AI system’s records.",
+    "ja": "設計上の示唆：問題のシステムは、消費者の質問に答える汎用のAIアシスタントです。VAPの医療領域は対象に投薬の推奨を挙げていますが（§2.2.2）、そのプロファイルMAPはv0.1.2のWorking Draftで、実運用での適合の主張には使えません（§4.5.2）。汎用のアシスタントがそもそも医療のプロファイルに入るのかも定まっていません。VAPは汎用のログの枠組みではありません（§1.3）。調査が投げかける問いは、各サービスがある利用者に何を見せたかです。健康状態を尋ねたか、どんな注意書きをどれだけ目立つように出したか、違法な販売サイトを案内したか。運用者が回答と表示した注意書きを記録していれば、アンカー済みの記録によって事後にそれを確かめられます。改変が検出可能になり、アンカー後の省略やsplit-viewの提示がアンカーの粒度で検出可能になります（§4.1、INT-008）。生成サービスが依頼をどう扱ったか（拒否を含む）は、リリース済みのプロファイルCAP v1.0が扱う領域です。本件はその範囲に隣接するもので、ここに挙がったサービスでCAPを実装しているものをVSOは知りません。VAPは、記録された判断の正しさ、公正さ、安全性を保証せず、保証するのは記録の完全性（integrity）、アンカー粒度での網羅性、帰属可能性だけです（§1.6(c)）。回答の後に起きたこと、つまり人が薬をやめたか、受診を遅らせたか、反応が出たかは、どのAIシステムの記録の外にもあります。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not judge whether an answer about a medicine was right, make a notice more visible, stop a service from pointing to an illegal sales site, or check a user’s health before an answer is given. It has no monitoring or intervention role (§4.4.4), places no obligation on a service that has not adopted it, and does not record a person’s own decisions after reading an answer.",
+    "ja": "VAPは、医薬品についての回答が正しかったかを判断せず、注意書きを目立たせず、サービスが違法な販売サイトを案内するのを止めず、回答の前に利用者の健康状態を確かめることもしません。監視や介入の役割はなく（§4.4.4）、採用していないサービスに義務を課さず、回答を読んだ後の本人の判断を記録することもありません。"
+   },
+   "sources": [
+    {
+     "id": "kca",
+     "label": "Korea Consumer Agency — press release “[안전 실태조사 결과] 생성형 인공지능(AI) 과신 주의, 자가 처방에 따른 의약품 부작용 우려” (19 November 2026)",
+     "url": "https://www.kca.go.kr/home/sub.do?menukey=4002&mode=view&no=1004581926",
+     "kind": "primary"
+    },
+    {
+     "id": "joongang",
+     "label": "Korea JoongAng Daily — Half of Koreans who changed medication on AI advice suffered side effects, survey finds (19 November 2026)",
+     "url": "https://www.koreajoongangdaily.com/korea/half-of-koreans-who-changed-medication-on-ai-advice-suffered-side-effects-survey-finds/12981587",
+     "kind": "secondary"
+    },
+    {
+     "id": "sedaily",
+     "label": "Seoul Economic Daily — report on the Korea Consumer Agency survey (19 November 2026)",
+     "url": "https://m.sedaily.com/article/20116370",
      "kind": "secondary"
     }
    ],
