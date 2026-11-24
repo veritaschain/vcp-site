@@ -1,8 +1,9 @@
 # 24 November 2026: IETF draft revisions on vap.veritaschain.org
 
-**Status: prepared; not published.** This package was built from the live pages
-fetched on 24 November 2026 at 02:43 UTC. Nothing on the XServer host was
-changed by preparing it.
+**Status: published on 24 November 2026.** The eight files were placed on the
+XServer host between 13:04 and 13:06 JST and verified on the public site at
+04:06 UTC (see "Deployment record" below). The package was built from the live
+pages fetched on 24 November 2026 at 02:43 UTC.
 
 It **supersedes** `maintenance/xserver-vap-ietf-revisions-2026-11-21/`. That
 package had not been applied when the live pages were fetched: each of the five
@@ -85,3 +86,34 @@ The same pull request updates the SCITT/VCP profile label on
 - https://www.ietf.org/archive/id/draft-kamimura-scitt-vcp-07.txt
 - https://datatracker.ietf.org/doc/draft-kamimura-rats-behavioral-evidence/
 - https://www.ietf.org/archive/id/draft-kamimura-rats-behavioral-evidence-03.txt
+
+## Deployment record
+
+Placed on the owner's instruction, through the XServer file manager in the
+owner's signed-in browser session. The owner signed in; the assistant that
+prepared this package did the uploads and did not handle credentials.
+
+1. 04:02 UTC: all eight public files still equalled `before_sha256`.
+2. Backup: a ZIP of those eight files, as fetched from the public site, was
+   uploaded to
+   `/veritaschain.org/vap-backup-20261124-before-ietf-revisions/vap-site-before-2026-11-24.zip`
+   (outside the public directory; SHA-256
+   `bc1dfbb029e8787b696f88ce9a656f9e42b3592e0c764a83c8479a1a8afb9643`).
+3. Uploads, each into its own directory, overwriting the existing file. No
+   archive was extracted on the host.
+
+| Directory | Files | Host time (JST) |
+| --- | --- | --- |
+| `tools/` | `content_en.py`, `content_ja.py`, `build.py` | 13:04 |
+| `ja/specification/` | `index.html` | 13:04 |
+| `specification/` | `index.html` | 13:05 |
+| `ja/` | `index.html` | 13:05 |
+| site root | `index.html`, `sitemap.xml` | 13:06 |
+
+4. 04:06 UTC, public site: all eight files equal `after_sha256`. All 30 sitemap
+   URLs return HTTP 200. No served page contains `draft-kamimura-scitt-vcp-05`,
+   `-06` or `draft-kamimura-rats-behavioral-evidence-02`.
+
+Not done: the generator was not run; page rendering was not checked in a
+browser; no corrections-log entry was added (the change updates revision
+labels that had gone stale; whether that needs an entry is the owner's call).
