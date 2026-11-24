@@ -1,6 +1,8 @@
 # 21 November 2026: IETF draft revisions on vap.veritaschain.org
 
-**Status: prepared; not published.** This package was built from the live pages
+**Status: superseded on 24 November 2026; not applied.** Use
+`maintenance/xserver-vap-ietf-revisions-2026-11-24/` instead: the SCITT/VCP
+profile moved to -07 before this package was applied. This package was built from the live pages
 fetched on 21 November 2026 at 14:27 UTC. Nothing on the XServer host was
 changed by preparing it.
 
