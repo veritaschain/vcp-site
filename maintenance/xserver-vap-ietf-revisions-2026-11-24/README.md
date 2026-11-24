@@ -39,30 +39,40 @@ Compared with the 21 November package, the differences are the SCITT/VCP label
 
 ## Applying it
 
-1. Back up the five files.
+1. Back up the eight files (five generated files and three generator sources).
 2. Compare each file's SHA-256 with `before_sha256` in
-   `xserver-manifest.json`. Stop if any differs; the live site has moved and
-   the patch must be rebuilt.
-3. Apply `xserver.patch` (`patch -p1`) and compare with `after_sha256`.
+   `xserver-manifest.json` (`files` and `generator_files`). Stop if any
+   differs; the live site has moved and the patches must be rebuilt.
+3. Apply `xserver.patch` and `generator.patch` (`patch -p1` from the site
+   root) and compare with `after_sha256`.
 
 The patch was applied to a copy of the fetched pages and produced the
 `after_sha256` values. It has not been applied to the host.
 
 ## Generator source
 
-The site generator (`tools/content_en.py`, `tools/content_ja.py`,
-`tools/build.py`) is not in a public repository and was not available when
-this package was prepared, so the patch covers the generated pages only.
-Make the same replacements in the generator before the next rebuild, or the
-rebuild will restore the old labels:
+Added later on 24 November 2026. The site generator is not in a public
+repository, but the host serves its sources under `/tools/`. The three files
+that carry these labels were fetched from there at 03:46 UTC, and
+`generator.patch` makes the same replacements in them, so that the next
+rebuild does not restore the old labels:
 
-- `draft-kamimura-scitt-vcp-05` to `draft-kamimura-scitt-vcp-07`
-- `draft-kamimura-rats-behavioral-evidence-02` to
-  `draft-kamimura-rats-behavioral-evidence-03`
-- the English and Japanese sentence above `{ietf_list()}` (new text is in the
-  patch)
-- the sitemap date for `/`, `/ja/`, `/specification/` and
-  `/ja/specification/`
+- `tools/content_en.py`: `draft-kamimura-scitt-vcp-05` to `-07`,
+  `draft-kamimura-rats-behavioral-evidence-02` to `-03`, and the English
+  sentence above `{ietf_list()}`.
+- `tools/content_ja.py`: the Japanese sentence above `{ietf_list()}`.
+- `tools/build.py`: one added line that sets the sitemap date of `/`, `/ja/`,
+  `/specification/` and `/ja/specification/` to 2026-11-24. That table is
+  used only for the sitemap `lastmod`.
+
+What was checked: each replaced string occurs exactly once; the patched files
+parse as Python; the list markup that the patched `ietf_list()` returns and
+the two patched sentences appear byte for byte in the patched pages. **The
+generator was not run**, because its other modules and inputs were not
+fetched. A rebuild can still change other bytes of these pages.
+
+The earlier statement in this package that the generator "was not available"
+was wrong about availability: it had not been looked for on the host.
 
 ## Related change on veritaschain.org
 
