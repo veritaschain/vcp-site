@@ -114,6 +114,10 @@ prepared this package did the uploads and did not handle credentials.
    URLs return HTTP 200. No served page contains `draft-kamimura-scitt-vcp-05`,
    `-06` or `draft-kamimura-rats-behavioral-evidence-02`.
 
-Not done: the generator was not run; page rendering was not checked in a
-browser; no corrections-log entry was added (the change updates revision
-labels that had gone stale; whether that needs an entry is the owner's call).
+5. 04:08 UTC, browser: `/ja/` at desktop width shows the new sentence and the
+   five-item list with `-07` and RATS `-03`. Other pages and mobile width were
+   not looked at.
+
+Not done: the generator was not run; no corrections-log entry was added (the
+change updates revision labels that had gone stale; whether that needs an
+entry is the owner's call).
