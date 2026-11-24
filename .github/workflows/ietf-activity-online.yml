@@ -1,0 +1,25 @@
+name: IETF activity record (online check)
+
+# Compares standardization/ietf-activity/activity.json with the IETF mail archive:
+# date, subject and sender of every record, and any message from the sender in the
+# current month's archive index that is not recorded yet. It uses the network, so it
+# is not part of the pull-request checks; a failure means the record needs updating
+# (or the archive was unreachable).
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 1 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Compare the record with the IETF archive
+        run: python3 scripts/build_ietf_activity.py --verify-online
