@@ -1,8 +1,9 @@
 # 24 November 2026: IETF draft revisions on vap.veritaschain.org
 
-**Status: prepared; not published.** This package was built from the live pages
-fetched on 24 November 2026 at 02:43 UTC. Nothing on the XServer host was
-changed by preparing it.
+**Status: published on 24 November 2026.** The eight files were placed on the
+XServer host between 13:04 and 13:06 JST and verified on the public site at
+04:06 UTC (see "Deployment record" below). The package was built from the live
+pages fetched on 24 November 2026 at 02:43 UTC.
 
 It **supersedes** `maintenance/xserver-vap-ietf-revisions-2026-11-21/`. That
 package had not been applied when the live pages were fetched: each of the five
@@ -39,30 +40,40 @@ Compared with the 21 November package, the differences are the SCITT/VCP label
 
 ## Applying it
 
-1. Back up the five files.
+1. Back up the eight files (five generated files and three generator sources).
 2. Compare each file's SHA-256 with `before_sha256` in
-   `xserver-manifest.json`. Stop if any differs; the live site has moved and
-   the patch must be rebuilt.
-3. Apply `xserver.patch` (`patch -p1`) and compare with `after_sha256`.
+   `xserver-manifest.json` (`files` and `generator_files`). Stop if any
+   differs; the live site has moved and the patches must be rebuilt.
+3. Apply `xserver.patch` and `generator.patch` (`patch -p1` from the site
+   root) and compare with `after_sha256`.
 
 The patch was applied to a copy of the fetched pages and produced the
 `after_sha256` values. It has not been applied to the host.
 
 ## Generator source
 
-The site generator (`tools/content_en.py`, `tools/content_ja.py`,
-`tools/build.py`) is not in a public repository and was not available when
-this package was prepared, so the patch covers the generated pages only.
-Make the same replacements in the generator before the next rebuild, or the
-rebuild will restore the old labels:
+Added later on 24 November 2026. The site generator is not in a public
+repository, but the host serves its sources under `/tools/`. The three files
+that carry these labels were fetched from there at 03:46 UTC, and
+`generator.patch` makes the same replacements in them, so that the next
+rebuild does not restore the old labels:
 
-- `draft-kamimura-scitt-vcp-05` to `draft-kamimura-scitt-vcp-07`
-- `draft-kamimura-rats-behavioral-evidence-02` to
-  `draft-kamimura-rats-behavioral-evidence-03`
-- the English and Japanese sentence above `{ietf_list()}` (new text is in the
-  patch)
-- the sitemap date for `/`, `/ja/`, `/specification/` and
-  `/ja/specification/`
+- `tools/content_en.py`: `draft-kamimura-scitt-vcp-05` to `-07`,
+  `draft-kamimura-rats-behavioral-evidence-02` to `-03`, and the English
+  sentence above `{ietf_list()}`.
+- `tools/content_ja.py`: the Japanese sentence above `{ietf_list()}`.
+- `tools/build.py`: one added line that sets the sitemap date of `/`, `/ja/`,
+  `/specification/` and `/ja/specification/` to 2026-11-24. That table is
+  used only for the sitemap `lastmod`.
+
+What was checked: each replaced string occurs exactly once; the patched files
+parse as Python; the list markup that the patched `ietf_list()` returns and
+the two patched sentences appear byte for byte in the patched pages. **The
+generator was not run**, because its other modules and inputs were not
+fetched. A rebuild can still change other bytes of these pages.
+
+The earlier statement in this package that the generator "was not available"
+was wrong about availability: it had not been looked for on the host.
 
 ## Related change on veritaschain.org
 
@@ -75,3 +86,38 @@ The same pull request updates the SCITT/VCP profile label on
 - https://www.ietf.org/archive/id/draft-kamimura-scitt-vcp-07.txt
 - https://datatracker.ietf.org/doc/draft-kamimura-rats-behavioral-evidence/
 - https://www.ietf.org/archive/id/draft-kamimura-rats-behavioral-evidence-03.txt
+
+## Deployment record
+
+Placed on the owner's instruction, through the XServer file manager in the
+owner's signed-in browser session. The owner signed in; the assistant that
+prepared this package did the uploads and did not handle credentials.
+
+1. 04:02 UTC: all eight public files still equalled `before_sha256`.
+2. Backup: a ZIP of those eight files, as fetched from the public site, was
+   uploaded to
+   `/veritaschain.org/vap-backup-20261124-before-ietf-revisions/vap-site-before-2026-11-24.zip`
+   (outside the public directory; SHA-256
+   `bc1dfbb029e8787b696f88ce9a656f9e42b3592e0c764a83c8479a1a8afb9643`).
+3. Uploads, each into its own directory, overwriting the existing file. No
+   archive was extracted on the host.
+
+| Directory | Files | Host time (JST) |
+| --- | --- | --- |
+| `tools/` | `content_en.py`, `content_ja.py`, `build.py` | 13:04 |
+| `ja/specification/` | `index.html` | 13:04 |
+| `specification/` | `index.html` | 13:05 |
+| `ja/` | `index.html` | 13:05 |
+| site root | `index.html`, `sitemap.xml` | 13:06 |
+
+4. 04:06 UTC, public site: all eight files equal `after_sha256`. All 30 sitemap
+   URLs return HTTP 200. No served page contains `draft-kamimura-scitt-vcp-05`,
+   `-06` or `draft-kamimura-rats-behavioral-evidence-02`.
+
+5. 04:08 UTC, browser: `/ja/` at desktop width shows the new sentence and the
+   five-item list with `-07` and RATS `-03`. Other pages and mobile width were
+   not looked at.
+
+Not done: the generator was not run; no corrections-log entry was added (the
+change updates revision labels that had gone stale; whether that needs an
+entry is the owner's call).
