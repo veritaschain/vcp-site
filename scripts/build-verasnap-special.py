@@ -16,6 +16,23 @@ def path(lang):
     return '/verasnap/' + ('' if lang == 'en' else lang + '/')
 
 
+def practical_guides(lang):
+    """Guide navigation for the two published guide languages; no product claims."""
+    if lang not in ('en', 'ja'):
+        return ''
+    ja = lang == 'ja'
+    suffix = 'ja/' if ja else ''
+    heading = '評価・受領の前に確認する実務ガイド' if ja else 'Practical guides before evaluation and receipt'
+    intro = 'SDKの実行手順、受領した証拠の読み方、公開版と既知問題を目的別に確認できます。' if ja else 'Choose a guide for running the SDK, interpreting received evidence, or checking release status and known issues.'
+    items = [
+        ('verasnap/verify-sdk/', 'Verify SDKの実行手順' if ja else 'Run VeraSnap Verify SDK', '固定したソースと合成データで、検証結果・部分検証・不一致を確認する。' if ja else 'Use pinned source and synthetic inputs to inspect results, partial verification and failures.', 'alpha · 開発者向け' if ja else 'Alpha · for developers'),
+        ('verasnap/receiving-evidence/', '証拠を受け取る担当者向け' if ja else 'Review received evidence', '確認できた事項と未確認事項を分け、追加確認が必要な場合を整理する。' if ja else 'Separate verified and unverified items and identify where additional review is needed.', '受領・審査の案内' if ja else 'Receiving-side review'),
+        ('software/status/', '公開ソフトウェア・固定版・既知問題' if ja else 'Releases and known issues', '固定した配布物と後続mainの違い、評価する版と制約を確認する。' if ja else 'Distinguish fixed distributions from later main and check the evaluation revision and limits.', '版を選ぶ前に' if ja else 'Before selecting a revision'),
+    ]
+    links = ''.join('<a class="vs-link" href="/' + route + suffix + '"><strong>' + e(title) + '</strong><span>' + e(description) + '</span><small>' + e(label) + '</small></a>' for route, title, description, label in items)
+    return '<section id="practical-guides" class="vs-section"><div class="vs-section-head"><h2>' + heading + '</h2><p>' + intro + '</p></div><div class="vs-links">' + links + '</div><p class="vs-caption">' + ('案内追加：' if ja else 'Guide links added: ') + '<time datetime="2026-11-26">2026-11-26</time></p></section>\n'
+
+
 def build(lang, d):
     url = ORIGIN + path(lang)
     home = '/' if lang == 'en' else '/' + lang + '/'
@@ -26,7 +43,7 @@ def build(lang, d):
     sdk_limits_label = 'SDKの限界と未対応事項（日本語）' if lang == 'ja' else 'SDK limitations'
     links = ''.join(f'<a class="vs-link" href="{e(x[0], quote=True)}"><strong>{e(x[1])}</strong><span>{e(x[2])}</span><small>{e(x[3])}</small></a>' for x in d['links'])
     structured = {'@context': 'https://schema.org', '@graph': [
-        {'@type': 'WebPage', '@id': url+'#page', 'url': url, 'name': d['title'], 'description': d['description'], 'inLanguage': lang, 'datePublished': '2026-11-20', 'dateModified': '2026-11-20', 'publisher': {'@type': 'Organization', 'name': 'VeritasChain Standards Organization (VSO)', 'url': ORIGIN+'/vso/'}, 'about': {'@type': 'SoftwareApplication', 'name': 'VeraSnap', 'url': 'https://lp.verasnap.net/', 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'iOS, Android'}},
+        {'@type': 'WebPage', '@id': url+'#page', 'url': url, 'name': d['title'], 'description': d['description'], 'inLanguage': lang, 'datePublished': '2026-11-20', 'dateModified': '2026-11-26' if lang in ('en', 'ja') else '2026-11-20', 'publisher': {'@type': 'Organization', 'name': 'VeritasChain Standards Organization (VSO)', 'url': ORIGIN+'/vso/'}, 'about': {'@type': 'SoftwareApplication', 'name': 'VeraSnap', 'url': 'https://lp.verasnap.net/', 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'iOS, Android'}},
         {'@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'VSO', 'item': ORIGIN+home}, {'@type': 'ListItem', 'position': 2, 'name': d['breadcrumb'], 'item': url}]}
     ]}
     alternates = ''.join(f'<link rel="alternate" hreflang="{l}" href="{ORIGIN+path(l)}">\n' for l in ('en', 'ja', 'zh'))
@@ -59,7 +76,7 @@ def build(lang, d):
 <section id="verification" class="vs-section"><div class="vs-section-head"><h2>{e(d['verifyTitle'])}</h2><p>{e(d['verifyLead'])}</p></div><div class="vs-table-wrap" role="region" aria-label="{e(d['tableLabel'])}" tabindex="0"><table class="vs-table"><thead><tr>{''.join('<th scope="col">'+e(x)+'</th>' for x in d['columns'])}</tr></thead><tbody>{rows}</tbody></table></div><p class="vs-caption">{e(d['verifyNote'])}</p></section>
 <section id="implementation" class="vs-section"><div class="vs-section-head"><h2>{e(d['choiceTitle'])}</h2><p>{e(d['choiceLead'])}</p></div><div class="vs-choices">{choices}</div><aside class="vs-note"><p><strong>{e(d['keyTitle'])}</strong> {e(d['keyNote'])}</p><p>{e(d['captureNote'])}</p></aside></section>
 <section id="links" class="vs-section"><div class="vs-section-head"><h2>{e(d['linksTitle'])}</h2><p>{e(d['linksLead'])}</p></div><div class="vs-links">{links}</div></section>
-<section id="evaluation" class="vs-section vs-evaluation"><div><p class="vs-eyebrow">EVALUATION</p><h2>{e(d['evaluationTitle'])}</h2><p>{e(d['evaluationLead'])}</p></div><ol class="vs-steps">{steps}</ol></section>
+{practical_guides(lang)}<section id="evaluation" class="vs-section vs-evaluation"><div><p class="vs-eyebrow">EVALUATION</p><h2>{e(d['evaluationTitle'])}</h2><p>{e(d['evaluationLead'])}</p></div><ol class="vs-steps">{steps}</ol></section>
 <section class="vs-section vs-faq" id="questions"><h2>{e(d['faqTitle'])}</h2>{faqs}</section>
 <section class="vs-contact" id="contact"><p class="vs-eyebrow">{e(d['contactLabel'])}</p><h2>{e(d['contactTitle'])}</h2><p>{e(d['contactLead'])}</p><div class="vs-actions"><a class="vs-button" href="mailto:enterprise@veritaschain.org?subject={quote(d['mailSubject'])}">{e(d['contactCta'])}</a><a class="vs-button secondary" href="{tech}">{e(d['techCta'])}</a></div><p class="vs-fine">enterprise@veritaschain.org · {e(d['contactNote'])}</p></section>
 <aside class="vs-status" aria-label="{e(d['statusLabel'])}"><p><strong>{e(d['statusTitle'])}</strong></p><p>{e(d['status'])}</p><p>{e(d['researchStatus'])} <a href="/vap/limits/{'ja/' if lang == 'ja' else ''}">{e(d['limitsLink'])}</a></p><p>{e(d['sourceLabel'])} <a href="{sdk_readme_url}">{e(sdk_readme_label)}</a> · <a href="{sdk_limits_url}">{e(sdk_limits_label)}</a> · <a href="{tech}">{e(d['techCta'])}</a></p></aside>
