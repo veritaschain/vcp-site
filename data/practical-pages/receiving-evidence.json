@@ -1,0 +1,124 @@
+{
+  "sources": {
+    "receive_results": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/docs/RESULTS.md",
+      "title": "VeraSnap Verify SDK — result reference",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "receive_enrollment": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/docs/ENROLLMENT.md",
+      "title": "VeraSnap Verify SDK — device key enrollment",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "receive_limits": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/docs/LIMITATIONS.md",
+      "title": "VeraSnap Verify SDK — limitations",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "receive_verifier": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/src/verasnap_verify/verifier.py",
+      "title": "VeraSnap Verify SDK — signer-key lookup and check implementation",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    }
+  },
+  "page": {
+    "path": "verasnap/receiving-evidence",
+    "reviewed": "2026-11-26",
+    "sources": [
+      "receive_results",
+      "receive_enrollment",
+      "receive_limits",
+      "receive_verifier"
+    ],
+    "ja": {
+      "title": "写真・証明の受領担当者ガイド",
+      "heading_parts": [
+        "写真・証明の",
+        "受領担当者ガイド"
+      ],
+      "lead": "法人・保険会社向けに、VeraSnapの写真と証明の受領、原本保存、検証結果の読み方、不足資料の確認を整理。技術的な一致と業務判断を分けます。",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "写真と証明を受け取る担当者へ",
+          "html": "<p>保険会社の受付担当、企業の現場記録担当、技術支援担当が、VeraSnapの写真と撮影証明を受け取った後の確認を揃えるためのガイドです。<strong>暗号学的な検証結果と、事故・損害の事実認定や支払い判断は別に記録します。</strong>本ページは推奨する受領手順であり、新しい規範要件や保険金支払い基準ではありません。</p><p>このページにファイルをアップロードする機能はありません。組織が承認した受領経路と保存先を使用してください。操作する技術担当者は<a href=\"/verasnap/verify-sdk/ja/\">Verify SDK実行ガイド</a>、使用する版は<a href=\"/software/status/ja/\">版・配布物・既知問題一覧</a>で確認できます。</p><p>対象SDKは自社開発のalpha版です。実験的拡張・修正案は未採択で、第三者による独立再現は未成立です。</p>"
+        },
+        {
+          "id": "receive",
+          "title": "1. 原本と受付情報を保存する",
+          "html": "<ol><li><strong>写真・証明・送付時の説明を分けて受領。</strong>画像ファイル、対応する共有用証明JSONまたはエクスポートZIP、提出目的と対象を記録します。画像だけの場合は証明を受領済みとはしません。</li><li><strong>原本は加工しない。</strong>受領時刻（タイムゾーン付き）、ファイル名、バイト数、SHA-256、受領経路、担当者を保存し、作業用コピーを作ります。画像の圧縮・再保存・スクリーンショット化はハッシュを変えることがあります。</li><li><strong>送付者の説明とファイルの内容を区別。</strong>撮影対象・日時・場所・人物の申告を、暗号学的に確認済みの事実に置き換えません。不要な個人情報は作業記録に複製しません。</li><li><strong>検証条件を保存。</strong>SDKの完全コミットSHA、依存関係、鍵台帳の識別情報と適用ポリシー、信頼するTSAルート、検証日時を記録します。秘密鍵や認証情報は記録へ添付しません。</li></ol><p>受領時のSHA-256は、その後同じバイト列を扱っているかを照合する手掛かりです。送付者の身元や、受領前の履歴を単独で証明するものではありません。</p>"
+        },
+        {
+          "id": "verify",
+          "title": "2. 写真を渡し、個別の検証結果を読む",
+          "html": "<ol><li>原本を残したまま、技術担当者が固定したSDK版で作業用コピーを検証します。写真の照合が目的なら、<strong>証明だけでなく写真ファイルも入力</strong>します。</li><li>終了コード・標準エラーとJSON結果を保存し、<code>status</code>・<code>level</code>に加えて<code>media_verified</code>、<code>checks</code>の<code>id</code>・<code>status</code>・<code>code</code>を読みます。</li><li>使用した鍵登録経路を確認します。<code>known_unattested</code>は手動登録です。<code>known</code>は、渡した台帳上で証明付きとして扱われる有効な登録鍵を示します。検証時に登録時のハードウェア証明を再検証したという意味ではありません。登録手順の証拠と台帳の管理を別途確認します。</li><li>不足項目・不一致・未検証事項を残し、必要な原本や説明を追加で依頼します。評価条件を変える場合は理由と再実行結果を別記録にします。</li></ol><p>受領後に証明中の公開鍵を台帳へ追加して「緑にする」運用にはしません。鍵と顧客の対応は、事前に決めた登録・本人認証の手順から確認します。{{source:receive_enrollment}}</p><p>この版の署名鍵チェックは、提供された台帳を参照します。{{source:receive_verifier}}</p>"
+        },
+        {
+          "id": "results",
+          "title": "3. 色と業務判断を切り分ける",
+          "html": "<div class=\"table-wrap\"><table><caption>VeraSnap Verify SDK main 66d1875の結果の読み方</caption><thead><tr><th scope=\"col\">出力</th><th scope=\"col\">確認すること・次の対応</th></tr></thead><tbody><tr><td>緑 / <code>ANCHOR_VERIFIED</code></td><td>検証対象になったチェックの結果です。写真未入力でも緑になるため、写真の確認には<code>media_verified=true</code>と<code>media_hash/passed/match</code>を確認します。事故・被写体・撮影者の真正性を保証しません。</td></tr><tr><td>黄 / <code>PARTIALLY_VERIFIED</code></td><td>警告の理由を個別に確認。未知の鍵、未検証の時刻などを区別します。「偽造確定」でも「必要な項目を全て確認済み」でもありません。</td></tr><tr><td>黄 / <code>ANCHOR_PENDING</code></td><td>完全に検証されたタイムスタンプがない状態。何が不足しているかを確認し、予定や期待だけで時刻を確定しません。</td></tr><tr><td>赤 / <code>HASH_MISMATCH</code>、<code>SIGNATURE_INVALID</code>、<code>ERROR</code></td><td>失敗したチェックを保存。別ファイル、再圧縮、形式不備、改変等を切り分けます。技術的な失敗を理由に不正行為を即断せず、対応する原本を再取得して比較します。</td></tr><tr><td><code>skipped</code> / <code>info</code></td><td>合格に読み替えません。写真なしの<code>not_provided</code>や、証明内端末情報の<code>attestation/info/stated</code>を明記します。これらは総合色を変えません。</td></tr></tbody></table></div><p>タイムスタンプの欠落は入力形式によって扱いが異なります。同じ版の合成例では、内部形式のトークン不足は黄、共有形式からタイムスタンプを削除した入力は赤でした。「タイムスタンプなしは常に黄」と決めつけず、<code>checks</code>を確認してください。コードと集約規則：{{source:receive_results}}</p>"
+        },
+        {
+          "id": "limits",
+          "title": "4. 証明できる範囲を記録する",
+          "html": "<ul><li><strong>写真の一致：</strong>入力写真と署名で結び付いたハッシュの一致を確認しても、写った損害が実際の事故によるものか、画面や印刷物の再撮影でないかは別の確認が必要です。</li><li><strong>時刻：</strong><code>capture_time_device</code>は端末時計の値です。検証されたRFC 3161時刻は対象ダイジェストがその時刻までに存在したことに関する証拠であり、撮影時刻そのものの独立証明ではありません。</li><li><strong>人物・場所：</strong>生体認証の記録から撮影者の身元は特定できません。GPSも端末の申告です。顧客IDと登録鍵の対応、対象物の同一性は業務側で別途確認します。</li><li><strong>履歴：</strong><code>chain_context</code>の削除件数等は署名対象外の参考情報です。全操作を捕捉した証明には使用しません。</li><li><strong>信頼と失効：</strong>この版はTSAのCRL/OCSP失効確認を行いません。証明内の端末証明や撮影ごとのアサーションも、記載されているだけで検証済みにはなりません。</li></ul><p>{{source:receive_limits}}。本ガイドの確認は自社による合成例の実行と公開資料の照合です。独立した第三者による再現・監査・本番適合を示しません。</p>"
+        },
+        {
+          "id": "record",
+          "title": "5. 受付記録のひな形",
+          "html": "<p>以下を組織の管理記録へ転記して使用できます。原本ファイルと結果JSONは別に保存し、記録から参照します。個人情報そのものではなく、アクセス制限した保管先の識別子を使ってください。</p><pre><code>案件ID／提出目的：\n受領日時・タイムゾーン／受領経路／担当者：\n原本保管先ID（写真・証明・ZIP）：\nファイル名／バイト数／受領時SHA-256：\n作業用コピーID：\nSDKコミットSHA／依存関係記録／検証日時：\n鍵台帳・信頼設定の識別子／登録経路：\n入力した写真：あり・なし\n終了コード／status／level：\nmedia_verified／media_hashチェック：\n署名・鍵登録・TSA・時刻の個別結果：\nskipped・info・warning・failedの項目：\n不足資料／説明依頼／次の担当者：\n技術確認の結論（範囲と留保）：\n業務判断とその根拠（技術確認とは別）：\n設定変更・支援内容・再実行履歴：\n共有・公開許可の範囲（未確認なら未確認）：</code></pre>"
+        },
+        {
+          "id": "handoff",
+          "title": "6. 調査へ引き継ぐ",
+          "html": "<p>不一致がある場合は、原本を保持し、再取得したファイルを別の受領物として記録します。結果を揃えるために元証明を書き換えたり、信頼設定を無記録で変更したりしません。</p><p>問い合わせには、使用版、入力形式、チェックID・コード、個人情報を除いた再現条件を先に伝えます。顧客写真、鍵台帳、業務用認証情報を公開Issueに投稿しないでください。機密資料が必要な場合は承認された共有経路と範囲を別途決めます。<a href=\"/support/ja/\">相談・問い合わせ</a></p><p>手順を実行する担当者には<a href=\"/verasnap/verify-sdk/ja/\">実行ガイド</a>、変更版の選択には<a href=\"/software/status/ja/\">版・既知問題一覧</a>を引き継いでください。固定配布物は書き換えず、別版での確認を別の実行記録として扱います。</p>"
+        }
+      ]
+    },
+    "en": {
+      "title": "Receiving VeraSnap Photos and Proofs",
+      "lead": "A guide for enterprise and insurance teams: preserve original photos and proofs, read verification checks, request missing evidence, and separate technical findings from business decisions.",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "For teams receiving photos and proofs",
+          "html": "<p>This guide helps insurance intake, field-record and technical support teams handle a photo and its VeraSnap proof consistently. <strong>Keep cryptographic findings separate from findings about an incident, damage or a payment decision.</strong> This is a recommended receiving workflow, not a new normative requirement or an insurance claims rule.</p><p>This page has no file-upload facility. Use your organization's approved intake and storage channels. Technical operators can follow the <a href=\"/verasnap/verify-sdk/\">Verify SDK execution guide</a> and choose a revision from the <a href=\"/software/status/\">versions, distributions and known issues</a> page.</p><p>The SDK is a first-party alpha implementation. Experimental extensions and proposed repairs remain unadopted; independent third-party reproduction has not been established.</p>"
+        },
+        {
+          "id": "receive",
+          "title": "1. Preserve the original and intake context",
+          "html": "<ol><li><strong>Receive the photo, proof and accompanying explanation separately.</strong> Record the image file, corresponding shareable proof JSON or export ZIP, purpose and subject of submission. A photo alone is not receipt of its proof.</li><li><strong>Do not transform the original.</strong> Save receipt time with time zone, filename, byte count, SHA-256, receiving channel and handler; create a working copy. Compression, resaving and screenshots can change the hash.</li><li><strong>Separate statements from verified evidence.</strong> Do not relabel assertions about the subject, time, location or person as cryptographically established facts. Avoid duplicating unnecessary personal data in the working record.</li><li><strong>Record verification conditions.</strong> Keep the full SDK commit SHA, dependency record, key-registry identifier and applicable policy, trusted TSA roots and verification time. Do not attach private keys or credentials to the record.</li></ol><p>A receipt-time SHA-256 helps identify the same bytes later. By itself, it does not establish the sender's identity or the history before receipt.</p>"
+        },
+        {
+          "id": "verify",
+          "title": "2. Supply the photo and read individual checks",
+          "html": "<ol><li>Keep the originals while a technical operator verifies working copies with a pinned SDK revision. If the task is to check a photo, <strong>supply the photo as well as its proof</strong>.</li><li>Save the exit code, standard error and JSON result. Read <code>media_verified</code> and every check's <code>id</code>, <code>status</code> and <code>code</code>, alongside overall <code>status</code> and <code>level</code>.</li><li>Check how the signing key was enrolled. <code>known_unattested</code> means manual registration. <code>known</code> identifies an active key treated as attested in the supplied registry; it does not mean that enrollment-time hardware evidence was reverified during this proof check. Check the enrollment record and registry controls separately.</li><li>Retain missing, mismatched and unassessed items. Request the necessary originals or explanation. If evaluation settings change, record the reason and rerun as a separate result.</li></ol><p>Do not add a public key from an incoming proof merely to turn the result green. Establish the key-to-customer relationship through your pre-agreed enrollment and authentication process. {{source:receive_enrollment}}</p><p>This revision looks up signing keys in the supplied registry. {{source:receive_verifier}}</p>"
+        },
+        {
+          "id": "results",
+          "title": "3. Separate result colors from business decisions",
+          "html": "<div class=\"table-wrap\"><table><caption>Reading results from VeraSnap Verify SDK main 66d1875</caption><thead><tr><th scope=\"col\">Output</th><th scope=\"col\">Checks and next steps</th></tr></thead><tbody><tr><td>Green / <code>ANCHOR_VERIFIED</code></td><td>Describes the checks performed. Green is possible without an image input: require <code>media_verified=true</code> and <code>media_hash/passed/match</code> to establish the supplied file's match. It does not prove the incident, scene or photographer's identity.</td></tr><tr><td>Yellow / <code>PARTIALLY_VERIFIED</code></td><td>Read the warning: an unknown key and unverified time are different issues. Neither confirmed forgery nor completion of every required check follows from yellow.</td></tr><tr><td>Yellow / <code>ANCHOR_PENDING</code></td><td>No fully verified timestamp. Determine what is missing; do not substitute a planned or expected timestamp for evidence.</td></tr><tr><td>Red / <code>HASH_MISMATCH</code>, <code>SIGNATURE_INVALID</code>, <code>ERROR</code></td><td>Retain the failed check. Investigate a different file, re-encoding, malformed input or modification. A technical failure alone is not a finding of fraud; request the corresponding original and compare.</td></tr><tr><td><code>skipped</code> / <code>info</code></td><td>Do not count these as successful checks. Record <code>not_provided</code> for a missing photo and <code>attestation/info/stated</code> for attestation merely stated in a proof. These checks do not change the overall color.</td></tr></tbody></table></div><p>Missing timestamps are format-dependent. Synthetic examples at this revision return yellow for an internal proof lacking a token and red when a timestamp is stripped from a shareable proof. Do not assume “no timestamp always means yellow”; inspect <code>checks</code>. Codes and aggregation rules: {{source:receive_results}}</p>"
+        },
+        {
+          "id": "limits",
+          "title": "4. Record the limits of what was established",
+          "html": "<ul><li><strong>File match:</strong> matching an input image to a signed hash does not establish whether damage resulted from the claimed incident, or whether a real camera photographed a screen or print.</li><li><strong>Time:</strong> <code>capture_time_device</code> is a device-clock value. A verified RFC 3161 timestamp is evidence about the target digest's existence no later than that time, not independent proof of the capture time itself.</li><li><strong>People and location:</strong> a recorded biometric check does not identify the photographer. GPS is device-reported. Check the customer-to-key relationship and the identity of the subject separately in your business workflow.</li><li><strong>History:</strong> deletion counts and other <code>chain_context</code> information are unsigned context; do not use them as proof that every action was captured.</li><li><strong>Trust and revocation:</strong> this revision does not check TSA CRL/OCSP revocation. Attestation and per-capture assertions stated in a proof are not thereby verified.</li></ul><p>{{source:receive_limits}}. The supporting work for this guide is a first-party execution of synthetic examples and a review of public materials. It is not independent third-party reproduction, audit or production conformance.</p>"
+        },
+        {
+          "id": "record",
+          "title": "5. Intake record template",
+          "html": "<p>Copy this into your organization's controlled record. Store original files and JSON results separately and refer to them by restricted-storage identifiers instead of repeating personal information.</p><pre><code>Case ID / purpose of submission:\nReceipt time and time zone / channel / handler:\nOriginal storage IDs (photo, proof, ZIP):\nFilename / byte count / receipt SHA-256:\nWorking-copy ID:\nSDK commit SHA / dependency record / verification time:\nKey-registry and trust-setting identifiers / enrollment route:\nPhoto supplied: yes / no\nExit code / status / level:\nmedia_verified / media_hash check:\nIndividual signature, key, TSA and time results:\nSkipped, info, warning and failed items:\nMissing materials / clarification request / next owner:\nTechnical finding (scope and reservations):\nBusiness decision and grounds (recorded separately):\nConfiguration changes / assistance / rerun history:\nSharing and publication permissions (unknown if unconfirmed):</code></pre>"
+        },
+        {
+          "id": "handoff",
+          "title": "6. Hand off for investigation",
+          "html": "<p>Keep mismatching originals. Treat replacement submissions as separate receipts. Do not rewrite a proof or silently alter trust settings to obtain an expected result.</p><p>Start a support request with the revision, input format, check IDs/codes and reproduction conditions without personal data. Do not post customer photos, key registries or business credentials in a public issue. Agree an approved channel and scope before sharing confidential material. <a href=\"/support/\">Contact support</a>.</p><p>Give the next operator the <a href=\"/verasnap/verify-sdk/\">execution guide</a> and the <a href=\"/software/status/\">versions and known-issues page</a>. Preserve fixed distributions and record a run against a different revision as a separate run.</p>"
+        }
+      ]
+    }
+  }
+}
