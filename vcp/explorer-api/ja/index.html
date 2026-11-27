@@ -5,8 +5,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self' data: https://cdn.jsdelivr.net; connect-src 'self' https://*.google-analytics.com https://*.google.com https://www.googletagmanager.com; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VCP Explorer API v1.1：検索・検証・監査ガイド | VSO</title>
-    <meta name="description" content="VCP Explorer API v1.1 - 暗号学的証明によるVCPイベントチェーンの検索、検証、監査">
+    <title>VCP Explorer API v1.1 サンプルデータ | VSO</title>
+    <meta name="description" content="VCPのサンプルイベントを検索し、Explorer APIが返す証明データと証明書JSONを確認できます。">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
@@ -36,14 +36,14 @@
     <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vcp/explorer-api/ja/" />
     <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vcp/explorer-api/zh/" />
     <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vcp/explorer-api/" />
-    <meta property="og:title" content="VCP Explorer API v1.1：検索・検証・監査ガイド | VSO">
-    <meta property="og:description" content="VCP Explorer API v1.1 - 暗号学的証明によるVCPイベントチェーンの検索、検証、監査">
+    <meta property="og:title" content="VCP Explorer API v1.1 サンプルデータ | VSO">
+    <meta property="og:description" content="VCPのサンプルイベントを検索し、Explorer APIが返す証明データと証明書JSONを確認できます。">
     <meta property="og:url" content="https://veritaschain.org/vcp/explorer-api/ja/">
     <meta property="og:site_name" content="VeritasChain Standards Organization (VSO)">
-    <meta name="twitter:title" content="VCP Explorer API v1.1：検索・検証・監査ガイド | VSO">
-    <meta name="twitter:description" content="VCP Explorer API v1.1 - 暗号学的証明によるVCPイベントチェーンの検索、検証、監査">
+    <meta name="twitter:title" content="VCP Explorer API v1.1 サンプルデータ | VSO">
+    <meta name="twitter:description" content="VCPのサンプルイベントを検索し、Explorer APIが返す証明データと証明書JSONを確認できます。">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <script id="site-webpage" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://veritaschain.org/vcp/explorer-api/ja/#webpage", "url": "https://veritaschain.org/vcp/explorer-api/ja/", "name": "VCP Explorer API v1.1：検索・検証・監査ガイド | VSO", "description": "VCP Explorer API v1.1 - 暗号学的証明によるVCPイベントチェーンの検索、検証、監査", "inLanguage": "ja", "isPartOf": {"@id": "https://veritaschain.org/#website"}, "publisher": {"@id": "https://veritaschain.org/#organization"}}</script>
+    <script id="site-webpage" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://veritaschain.org/vcp/explorer-api/ja/#webpage", "url": "https://veritaschain.org/vcp/explorer-api/ja/", "name": "VCP Explorer API v1.1 サンプルデータ | VSO", "description": "VCPのサンプルイベントを検索し、Explorer APIが返す証明データと証明書JSONを確認できます。", "inLanguage": "ja", "isPartOf": {"@id": "https://veritaschain.org/#website"}, "publisher": {"@id": "https://veritaschain.org/#organization"}}</script>
 
 <script defer src="/assets/js/analytics.js?v=20261103"></script>
 <link rel="stylesheet" href="/assets/css/site-readability.css?v=20261031-2">
@@ -58,7 +58,7 @@
     <div class="header">
         <div class="container">
             <h1>VCP Explorer API</h1><p style="font-weight:700;margin:1rem 0">過去のインターフェース設計例 — 本番提供サービスではありません</p>
-            <p class="subtitle">暗号学的証明によるVCPイベントチェーンの検索、検証、監査</p>
+            <p class="subtitle">VCPのサンプルイベントを検索し、Explorer APIが返す証明データと証明書JSONを確認できます。</p>
             <a href="https://github.com/veritaschain/vcp-explorer-api" class="btn" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-github"></i> GitHubでAPIを見る
             </a>
@@ -69,20 +69,20 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">概要</h2>
-            <p>VCP Explorer APIは、VeritasChain Protocol (VCP)のイベント検索、Merkle証明取得、イベント証明書生成を提供します。<strong>VCP仕様v1.0</strong>を基準に設計されており（外部アンカリングとポリシー識別を必須とするv1.1およびv1.2には未対応）、規制当局、ブローカー、プロップファーム、監査人などの外部関係者が、記録されたイベントを独立して検証することを可能にします。</p>
+            <p>リファレンスAPIはメモリ上のサンプル取引データを返します。過去のインターフェース設計はVCP v1.0に基づいています。</p>
             
             <div class="feature-grid">
                 <div class="feature-card">
-                    <h3><i class="fas fa-lock"></i> 暗号学的検証</h3>
-                    <p>RFC 6962のドメイン分離ハッシュを用いるMerkle証明は、APIを信頼せずに外部検証できるよう設計されています。「検証せよ、信頼するな」の原則を実践。</p>
+                    <h3><i class="fas fa-lock"></i> 証明データ</h3>
+                    <p>保存済みのイベントハッシュ、葉の位置、監査パス、ルートを参照できます。</p>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-search"></i> 高度な検索</h3>
-                    <p>TraceIDで完全なトランザクションライフサイクルを追跡。シンボル、時間範囲、イベントタイプ、アルゴリズムIDでフィルタリング。</p>
+                    <p>サンプルイベントをトレースID、銘柄、期間、イベント種別、アルゴリズムIDで検索できます。</p>
                 </div>
                 <div class="feature-card">
-                    <h3><i class="fas fa-certificate"></i> 規制証明書</h3>
-                    <p>イベントデータ、Merkle証明、暗号署名を含むコンプライアンス対応の監査証明書を生成。</p>
+                    <h3><i class="fas fa-certificate"></i> イベント証明書JSON</h3>
+                    <p>保存済みのイベントと証明データを1つのJSONにまとめます。</p>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-cubes"></i> VCPモジュール構造</h3>
@@ -105,10 +105,10 @@
         <div class="container">
             <h2 class="section-title">ベースURL</h2>
             <div class="base-url">
-                <code>https://explorer.veritaschain.org/api/v1</code>
+                <code>http://localhost:3001/v1</code>
             </div>
             <div class="alert alert-warning">
-                <strong>注意:</strong> Explorer APIのソースは公開済みです。通常のAPIルートはモックを返し、別のSDK Evidence Demoを公開Explorerで利用できます。ここに例示する本番URLやSDK仕様のワークフローは本番提供サービスではありません。公開APIに認証ミドルウェアは実装されていません。
+                以下の例はリファレンスAPIをローカルで起動してから実行できます。標準構成では、これらの読み取りリクエストにAPIキーは不要です。 <a href="https://github.com/veritaschain/vcp-explorer-api/blob/1f708ada55f12e609c343264201603ccc4f1568c/README.md#quick-start">ローカルでの起動手順</a>
             </div>
         </div>
     </section>
@@ -196,19 +196,33 @@
                                 <td>Integer</td>
                                 <td>いいえ</td>
                                 <td>最大結果数(1-500)</td>
-                                <td>20 (デフォルト)</td>
+                                <td>50 (デフォルト)</td>
                             </tr>
                         </tbody>
                     </table></div>
                 </div>
-
-                <h3 class="section-subtitle">リクエスト例</h3>
-                <div class="code-block">
-                    <pre><code>GET https://explorer.veritaschain.org/api/v1/events?symbol=XAUUSD&limit=20
-
-curl -H "X-VCP-API-Key: your_api_key" \\
-  "https://explorer.veritaschain.org/api/v1/events?symbol=XAUUSD&limit=20"</code></pre>
-                </div>
+                <p>ローカルでのリクエスト例</p>
+                <div class="code-block"><pre><code>curl --fail "http://localhost:3001/v1/events?symbol=XAUUSD&amp;limit=1"</code></pre></div>
+                <p>応答の抜粋（一部フィールド）</p>
+                <div class="code-block"><pre><code>{
+  "events": [
+    {
+      "event_id": "01934e3a-7b2c-7f93-8f2a-1234567890ab",
+      "type": "ORD",
+      "event_type_code": 2,
+      "timestamp": "2025-11-24T14:02:05.123456789Z",
+      "venue": "XAUUSD_PROP",
+      "symbol": "XAUUSD",
+      "hash_prefix": "8f2a7b",
+      "status": "ANCHORED"
+    }
+  ],
+  "query": {
+    "symbol": "XAUUSD",
+    "limit": 1
+  },
+  "total": 1
+}</code></pre></div>
             </div>
 
             <!-- GET /v1/events/{event_id} -->
@@ -218,6 +232,25 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                     <span class="endpoint-path">/v1/events/{event_id}</span>
                 </div>
                 <p class="endpoint-description">IDで完全なイベント詳細を取得。ヘッダー、ペイロード(VCP-TRADE, VCP-RISK, VCP-GOV)、セキュリティメタデータを含む。</p>
+                <p>ローカルでのリクエスト例</p>
+                <div class="code-block"><pre><code>curl --fail "http://localhost:3001/v1/events/01934e3a-7b2c-7f93-8f2a-1234567890ab"</code></pre></div>
+                <p>応答の抜粋（一部フィールド）</p>
+                <div class="code-block"><pre><code>{
+  "header": {
+    "event_id": "01934e3a-7b2c-7f93-8f2a-1234567890ab",
+    "event_type": "ORD",
+    "symbol": "XAUUSD"
+  },
+  "payload": {
+    "trade_data": {
+      "symbol": "XAUUSD",
+      "side": "BUY",
+      "order_type": "MARKET",
+      "price": "2350.500",
+      "order_size": "5.00"
+    }
+  }
+}</code></pre></div>
             </div>
 
             <!-- GET /v1/events/{event_id}/proof -->
@@ -226,11 +259,32 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                     <span class="http-method get">GET</span>
                     <span class="endpoint-path">/v1/events/{event_id}/proof</span>
                 </div>
-                <p class="endpoint-description">APIを信頼することなく外部検証を可能にするVCP Merkleインクルージョン証明(RFC 6962スタイル)を返す。</p>
-
-                <div class="alert alert-success">
-                    <strong>「検証せよ、信頼するな」:</strong> このエンドポイントは、暗号学的証明を使用したイベント真正性の独立検証を可能にします。
-                </div>
+                <p class="endpoint-description">保存済みの証明サンプルとアンカーのメタデータを返します。</p>
+                <p>同梱サンプルには <code>tree_size</code> がありません。ルートとアンカー情報は同じサンプルに由来します。</p>
+                <p>ローカルでのリクエスト例</p>
+                <div class="code-block"><pre><code>curl --fail "http://localhost:3001/v1/events/01934e3a-7b2c-7f93-8f2a-1234567890ab/proof"</code></pre></div>
+                <p>応答の抜粋（一部フィールド）</p>
+                <div class="code-block"><pre><code>{
+  "event_id": "01934e3a-7b2c-7f93-8f2a-1234567890ab",
+  "event_hash": "8f2a7b9d1b0c3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f",
+  "merkle_proof": {
+    "root_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    "leaf_index": 42,
+    "audit_path": [
+      "7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b",
+      "9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d",
+      "1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f"
+    ]
+  },
+  "anchor_info": {
+    "network": "ethereum-mainnet",
+    "tx_hash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcd",
+    "block_number": 1942055,
+    "anchored_at": "2025-11-24T14:10:00Z"
+  },
+  "hash_algo": "SHA256",
+  "verification_hint": "Unverified demo fixture. Tree size and authenticated anchor evidence are not supplied; this response does not establish Merkle inclusion or external anchoring."
+}</code></pre></div>
             </div>
 
             <!-- GET /v1/events/{event_id}/certificate -->
@@ -239,15 +293,26 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                     <span class="http-method get">GET</span>
                     <span class="endpoint-path">/v1/events/{event_id}/certificate</span>
                 </div>
-                <p class="endpoint-description">イベントデータ、Merkle証明、署名メタデータ、検証結果を含む検証証明書を生成。</p>
-
-                <h3 class="section-subtitle">使用ケース</h3>
-                <ul>
-                    <li><strong>規制監査:</strong> アルゴリズム取引イベントの検証可能な証拠を提供</li>
-                    <li><strong>支払い紛争:</strong> 実行の真正性とタイミングを検証可能な証拠で提示</li>
-                    <li><strong>コンプライアンスレポート:</strong> 金融当局向けの監査証跡を生成</li>
-                    <li><strong>第三者検証:</strong> 外部関係者による独立検証を可能に</li>
-                </ul>
+                <p class="endpoint-description">イベントと証明の各フィールドをまとめたJSONを返します。このルートは署名検証やアンカー検証を実行しません。</p>
+                <p>ローカルでのリクエスト例</p>
+                <div class="code-block"><pre><code>curl --fail "http://localhost:3001/v1/events/01934e3a-7b2c-7f93-8f2a-1234567890ab/certificate"</code></pre></div>
+                <p>応答の抜粋（一部フィールド）</p>
+                <div class="code-block"><pre><code>{
+  "event_id": "01934e3a-7b2c-7f93-8f2a-1234567890ab",
+  "system": {
+    "vcp_version": "1.0",
+    "tier": "PLATINUM"
+  },
+  "merkle_proof": {
+    "root_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    "leaf_index": 42,
+    "audit_path": [
+      "7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b",
+      "9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d",
+      "1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f"
+    ]
+  }
+}</code></pre></div>
             </div>
         </div>
     </section>
@@ -342,34 +407,12 @@ curl -H "X-VCP-API-Key: your_api_key" \\
     </section>
 
     <!-- Merkle Proof Verification Guide -->
-    <section class="section" style="background-color: #f9fafb;">
+    <section class="section">
         <div class="container">
-            <h2 class="section-title">Merkle証明検証ガイド</h2>
-            <p>VCP Explorer APIは、RFC 6962（Certificate Transparency）のドメイン分離ハッシュを用いたMerkle証明を使用します。これにより、誰でもAPIを信頼することなくイベントの真正性を独立して検証できます。</p>
-
-            <h3 class="section-subtitle">検証ステップ</h3>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>1. イベント取得</h3>
-                    <p><code>GET /v1/events/:id</code>を使用して完全なイベント詳細を取得。セキュリティセクションから<code>event_hash</code>を抽出。</p>
-                </div>
-                <div class="feature-card">
-                    <h3>2. 証明取得</h3>
-                    <p><code>GET /v1/events/:id/proof</code>を使用してMerkle証明を取得。これには監査パスとルートハッシュが含まれます。</p>
-                </div>
-                <div class="feature-card">
-                    <h3>3. ルート計算</h3>
-                    <p>バイナリMerkleツリー構造でSHA-256を使用して、event_hashとaudit_pathを結合。</p>
-                </div>
-                <div class="feature-card">
-                    <h3>4. ルート検証</h3>
-                    <p>計算されたルートと返されたmerkle_rootを比較。一致すれば、イベントは検証されます。</p>
-                </div>
-            </div>
-
-            <div class="alert alert-success">
-                <strong>重要性:</strong> この検証プロセスにより、Merkleルートが公開またはアンカーされた後のイベント改ざんが検知可能になります。Merkleルートの外部アンカリング（Ethereum）は計画中であり、Explorerではまだ提供されていません。
-            </div>
+            <h2 class="section-title">証明データの読み方</h2>
+            <p>証明ルートが返すのはデモデータです。木のサイズと、独立して認証されたチェックポイントが欠けているため、このサンプルからMerkle木への包含や外部アンカリングは確認できません。</p>
+            <p>包含を検証するには、イベント、葉の位置、木のサイズ、監査パスから再計算したルートを、その木について信頼できるチェックポイントで認証されたルートと照合します。同じ応答に含まれるルートとの一致から分かるのは、入力間の整合性までです。包含の確認だけで、取引の真正性や実際の執行まで立証することはできません。</p>
+            <p><a href="https://github.com/veritaschain/vcp-explorer-api/blob/1f708ada55f12e609c343264201603ccc4f1568c/README.md#L187-L201">実装上の制約</a> · <a href="/explorer/app/#/evidence-demo">SDK Evidence Demo</a></p>
         </div>
     </section>
 
@@ -396,11 +439,6 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                             <td><span class="badge">400</span></td>
                             <td>Bad Request</td>
                             <td>無効なリクエストパラメータまたは不正なJSON</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge">401</span></td>
-                            <td>Unauthorized</td>
-                            <td>無効または欠落したAPIキー</td>
                         </tr>
                         <tr>
                             <td><span class="badge">404</span></td>
@@ -451,9 +489,9 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-certificate"></i> VeritasChain認証(VC-Certified)</h3>
-                    <p>VC-Certified認証を申請して、システムの透明性とVCP準拠を独立して検証可能にしましょう。</p>
+                    <p>現在、独立した適合性評価機関（CAB）の登録はありません。制度の運用状況とお問い合わせ先を確認できます。</p>
                     <a href="https://veritaschain.org/certified/ja/" target="_blank" rel="noopener noreferrer" style="color: #1e40af; font-weight: 600;">
-                        認証について学ぶ <i class="fas fa-external-link-alt"></i>
+                        認証制度の現況・お問い合わせ <i class="fas fa-external-link-alt"></i>
                     </a>
                 </div>
                 <div class="feature-card">

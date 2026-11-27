@@ -5,8 +5,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" data-site-csp="1" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self' data: https://cdn.jsdelivr.net; connect-src 'self' https://*.google-analytics.com https://*.google.com https://www.googletagmanager.com; frame-src 'self' blob:; media-src 'self' data: blob:; worker-src 'self' blob:; form-action 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VCP Explorer API v1.1：查询、验证与审计指南 | VSO</title>
-    <meta name="description" content="VCP Explorer API v1.1 - 通过密码学证明搜索、验证和审计VCP事件链">
+    <title>VCP Explorer API v1.1 示例数据 | VSO</title>
+    <meta name="description" content="搜索VCP示例事件，查看Explorer API返回的证明数据和证书JSON。">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://veritaschain.org/assets/OGP.png">
@@ -36,14 +36,14 @@
     <link rel="alternate" hreflang="ja" href="https://veritaschain.org/vcp/explorer-api/ja/" />
     <link rel="alternate" hreflang="zh-CN" href="https://veritaschain.org/vcp/explorer-api/zh/" />
     <link rel="alternate" hreflang="x-default" href="https://veritaschain.org/vcp/explorer-api/" />
-    <meta property="og:title" content="VCP Explorer API v1.1：查询、验证与审计指南 | VSO">
-    <meta property="og:description" content="VCP Explorer API v1.1 - 通过密码学证明搜索、验证和审计VCP事件链">
+    <meta property="og:title" content="VCP Explorer API v1.1 示例数据 | VSO">
+    <meta property="og:description" content="搜索VCP示例事件，查看Explorer API返回的证明数据和证书JSON。">
     <meta property="og:url" content="https://veritaschain.org/vcp/explorer-api/zh/">
     <meta property="og:site_name" content="VeritasChain Standards Organization (VSO)">
-    <meta name="twitter:title" content="VCP Explorer API v1.1：查询、验证与审计指南 | VSO">
-    <meta name="twitter:description" content="VCP Explorer API v1.1 - 通过密码学证明搜索、验证和审计VCP事件链">
+    <meta name="twitter:title" content="VCP Explorer API v1.1 示例数据 | VSO">
+    <meta name="twitter:description" content="搜索VCP示例事件，查看Explorer API返回的证明数据和证书JSON。">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <script id="site-webpage" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://veritaschain.org/vcp/explorer-api/zh/#webpage", "url": "https://veritaschain.org/vcp/explorer-api/zh/", "name": "VCP Explorer API v1.1：查询、验证与审计指南 | VSO", "description": "VCP Explorer API v1.1 - 通过密码学证明搜索、验证和审计VCP事件链", "inLanguage": "zh", "isPartOf": {"@id": "https://veritaschain.org/#website"}, "publisher": {"@id": "https://veritaschain.org/#organization"}}</script>
+    <script id="site-webpage" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://veritaschain.org/vcp/explorer-api/zh/#webpage", "url": "https://veritaschain.org/vcp/explorer-api/zh/", "name": "VCP Explorer API v1.1 示例数据 | VSO", "description": "搜索VCP示例事件，查看Explorer API返回的证明数据和证书JSON。", "inLanguage": "zh", "isPartOf": {"@id": "https://veritaschain.org/#website"}, "publisher": {"@id": "https://veritaschain.org/#organization"}}</script>
 
 <script defer src="/assets/js/analytics.js?v=20261103"></script>
 <link rel="stylesheet" href="/assets/css/site-readability.css?v=20261031-2">
@@ -58,7 +58,7 @@
     <div class="header">
         <div class="container">
             <h1>VCP Explorer API</h1><p style="font-weight:700;margin:1rem 0">历史接口设计示例 — 并非生产服务</p>
-            <p class="subtitle">通过密码学证明搜索、验证和审计VCP事件链</p>
+            <p class="subtitle">搜索VCP示例事件，查看Explorer API返回的证明数据和证书JSON。</p>
             <a href="https://github.com/veritaschain/vcp-explorer-api" class="btn" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-github"></i> 在GitHub查看API
             </a>
@@ -69,20 +69,20 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">概述</h2>
-            <p>VCP Explorer API为VeritasChain Protocol (VCP)提供事件搜索、Merkle证明检索和事件证书生成。基于<strong>VCP规范v1.0</strong>设计(尚未针对强制要求外部锚定和策略识别的v1.1及v1.2更新),使外部方(监管机构、经纪商、自营交易公司、审计员)能够独立验证记录的事件。</p>
+            <p>参考API从内存中的示例数据集读取交易事件。历史接口设计以VCP v1.0为基础。</p>
             
             <div class="feature-grid">
                 <div class="feature-card">
-                    <h3><i class="fas fa-lock"></i> 密码学验证</h3>
-                    <p>采用RFC 6962域分离哈希的Merkle证明旨在支持无需信任API的外部验证。实践"验证,不信任"原则。</p>
+                    <h3><i class="fas fa-lock"></i> 证明数据</h3>
+                    <p>查看已保存的事件哈希、叶节点索引、审计路径和根哈希。</p>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-search"></i> 高级搜索</h3>
-                    <p>通过TraceID追踪完整交易生命周期。按符号、时间范围、事件类型和算法ID过滤。</p>
+                    <p>可按跟踪ID、交易品种、时间范围、事件类型或算法ID搜索示例事件。</p>
                 </div>
                 <div class="feature-card">
-                    <h3><i class="fas fa-certificate"></i> 监管证书</h3>
-                    <p>生成包含事件数据、Merkle证明和密码签名的合规审计证书。</p>
+                    <h3><i class="fas fa-certificate"></i> 事件证书JSON</h3>
+                    <p>API将已保存的事件和证明数据组合为一个JSON响应。</p>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-cubes"></i> VCP模块结构</h3>
@@ -105,10 +105,10 @@
         <div class="container">
             <h2 class="section-title">基础URL</h2>
             <div class="base-url">
-                <code>https://explorer.veritaschain.org/api/v1</code>
+                <code>http://localhost:3001/v1</code>
             </div>
             <div class="alert alert-warning">
-                <strong>注意:</strong> Explorer API源代码已公开。普通API路由返回模拟数据，单独的SDK Evidence Demo可在公开Explorer中使用。此处示例的生产URL与SDK规范流程并非已提供的生产服务。公开API尚未实现认证中间件。
+                运行以下示例前，请先在本地启动参考API。默认配置下，这些只读请求无需API密钥。 <a href="https://github.com/veritaschain/vcp-explorer-api/blob/1f708ada55f12e609c343264201603ccc4f1568c/README.md#quick-start">本地运行说明</a>
             </div>
         </div>
     </section>
@@ -196,19 +196,33 @@
                                 <td>Integer</td>
                                 <td>否</td>
                                 <td>最大结果数(1-500)</td>
-                                <td>20 (默认)</td>
+                                <td>50 (默认)</td>
                             </tr>
                         </tbody>
                     </table></div>
                 </div>
-
-                <h3 class="section-subtitle">请求示例</h3>
-                <div class="code-block">
-                    <pre><code>GET https://explorer.veritaschain.org/api/v1/events?symbol=XAUUSD&limit=20
-
-curl -H "X-VCP-API-Key: your_api_key" \\
-  "https://explorer.veritaschain.org/api/v1/events?symbol=XAUUSD&limit=20"</code></pre>
-                </div>
+                <p>本地请求示例</p>
+                <div class="code-block"><pre><code>curl --fail "http://localhost:3001/v1/events?symbol=XAUUSD&amp;limit=1"</code></pre></div>
+                <p>响应摘录（部分字段）</p>
+                <div class="code-block"><pre><code>{
+  "events": [
+    {
+      "event_id": "01934e3a-7b2c-7f93-8f2a-1234567890ab",
+      "type": "ORD",
+      "event_type_code": 2,
+      "timestamp": "2025-11-24T14:02:05.123456789Z",
+      "venue": "XAUUSD_PROP",
+      "symbol": "XAUUSD",
+      "hash_prefix": "8f2a7b",
+      "status": "ANCHORED"
+    }
+  ],
+  "query": {
+    "symbol": "XAUUSD",
+    "limit": 1
+  },
+  "total": 1
+}</code></pre></div>
             </div>
 
             <!-- GET /v1/events/{event_id} -->
@@ -218,6 +232,25 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                     <span class="endpoint-path">/v1/events/{event_id}</span>
                 </div>
                 <p class="endpoint-description">通过ID检索完整事件详情,包括头部、载荷(VCP-TRADE, VCP-RISK, VCP-GOV)和安全元数据。</p>
+                <p>本地请求示例</p>
+                <div class="code-block"><pre><code>curl --fail "http://localhost:3001/v1/events/01934e3a-7b2c-7f93-8f2a-1234567890ab"</code></pre></div>
+                <p>响应摘录（部分字段）</p>
+                <div class="code-block"><pre><code>{
+  "header": {
+    "event_id": "01934e3a-7b2c-7f93-8f2a-1234567890ab",
+    "event_type": "ORD",
+    "symbol": "XAUUSD"
+  },
+  "payload": {
+    "trade_data": {
+      "symbol": "XAUUSD",
+      "side": "BUY",
+      "order_type": "MARKET",
+      "price": "2350.500",
+      "order_size": "5.00"
+    }
+  }
+}</code></pre></div>
             </div>
 
             <!-- GET /v1/events/{event_id}/proof -->
@@ -226,11 +259,32 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                     <span class="http-method get">GET</span>
                     <span class="endpoint-path">/v1/events/{event_id}/proof</span>
                 </div>
-                <p class="endpoint-description">返回VCP Merkle包含证明(RFC 6962样式),支持无需信任API的外部验证。</p>
-
-                <div class="alert alert-success">
-                    <strong>"验证,不信任":</strong> 此端点通过密码学证明支持事件真实性的独立验证。
-                </div>
+                <p class="endpoint-description">返回已保存的证明样例及其锚定元数据。</p>
+                <p>内置样例缺少 <code>tree_size</code>。根哈希与锚定信息均来自同一样例。</p>
+                <p>本地请求示例</p>
+                <div class="code-block"><pre><code>curl --fail "http://localhost:3001/v1/events/01934e3a-7b2c-7f93-8f2a-1234567890ab/proof"</code></pre></div>
+                <p>响应摘录（部分字段）</p>
+                <div class="code-block"><pre><code>{
+  "event_id": "01934e3a-7b2c-7f93-8f2a-1234567890ab",
+  "event_hash": "8f2a7b9d1b0c3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f",
+  "merkle_proof": {
+    "root_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    "leaf_index": 42,
+    "audit_path": [
+      "7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b",
+      "9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d",
+      "1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f"
+    ]
+  },
+  "anchor_info": {
+    "network": "ethereum-mainnet",
+    "tx_hash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcd",
+    "block_number": 1942055,
+    "anchored_at": "2025-11-24T14:10:00Z"
+  },
+  "hash_algo": "SHA256",
+  "verification_hint": "Unverified demo fixture. Tree size and authenticated anchor evidence are not supplied; this response does not establish Merkle inclusion or external anchoring."
+}</code></pre></div>
             </div>
 
             <!-- GET /v1/events/{event_id}/certificate -->
@@ -239,15 +293,26 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                     <span class="http-method get">GET</span>
                     <span class="endpoint-path">/v1/events/{event_id}/certificate</span>
                 </div>
-                <p class="endpoint-description">生成包含事件数据、Merkle证明、签名元数据和验证结果的验证证书。</p>
-
-                <h3 class="section-subtitle">使用场景</h3>
-                <ul>
-                    <li><strong>监管审计:</strong> 提供算法交易事件的可验证证据</li>
-                    <li><strong>支付争议:</strong> 以可验证证据说明执行的真实性和时间</li>
-                    <li><strong>合规报告:</strong> 为金融监管机构生成审计跟踪</li>
-                    <li><strong>第三方验证:</strong> 支持外部方的独立验证</li>
-                </ul>
+                <p class="endpoint-description">将事件和证明字段组合为JSON对象。该接口不验证签名或外部锚点。</p>
+                <p>本地请求示例</p>
+                <div class="code-block"><pre><code>curl --fail "http://localhost:3001/v1/events/01934e3a-7b2c-7f93-8f2a-1234567890ab/certificate"</code></pre></div>
+                <p>响应摘录（部分字段）</p>
+                <div class="code-block"><pre><code>{
+  "event_id": "01934e3a-7b2c-7f93-8f2a-1234567890ab",
+  "system": {
+    "vcp_version": "1.0",
+    "tier": "PLATINUM"
+  },
+  "merkle_proof": {
+    "root_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    "leaf_index": 42,
+    "audit_path": [
+      "7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b",
+      "9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d",
+      "1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f"
+    ]
+  }
+}</code></pre></div>
             </div>
         </div>
     </section>
@@ -342,34 +407,12 @@ curl -H "X-VCP-API-Key: your_api_key" \\
     </section>
 
     <!-- Merkle Proof Verification Guide -->
-    <section class="section" style="background-color: #f9fafb;">
+    <section class="section">
         <div class="container">
-            <h2 class="section-title">Merkle证明验证指南</h2>
-            <p>VCP Explorer API使用采用RFC 6962（证书透明度）域分离哈希的Merkle证明。这使任何人都能独立验证事件真实性而无需信任API。</p>
-
-            <h3 class="section-subtitle">验证步骤</h3>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>1. 获取事件</h3>
-                    <p>使用<code>GET /v1/events/:id</code>检索完整事件详情。从安全部分提取<code>event_hash</code>。</p>
-                </div>
-                <div class="feature-card">
-                    <h3>2. 获取证明</h3>
-                    <p>使用<code>GET /v1/events/:id/proof</code>获取Merkle证明。包含审计路径和根哈希。</p>
-                </div>
-                <div class="feature-card">
-                    <h3>3. 计算根</h3>
-                    <p>在二叉Merkle树结构中使用SHA-256组合event_hash和audit_path。</p>
-                </div>
-                <div class="feature-card">
-                    <h3>4. 验证根</h3>
-                    <p>比较计算的根与返回的merkle_root。如果匹配,事件已验证。</p>
-                </div>
-            </div>
-
-            <div class="alert alert-success">
-                <strong>重要性:</strong> 在Merkle根被公布或锚定之后,此验证过程可使对事件的篡改被检测到。Merkle根的外部锚定(以太坊)尚在计划中,Explorer目前尚未提供。
-            </div>
+            <h2 class="section-title">如何解读证明数据</h2>
+            <p>证明接口返回演示数据。样例缺少树大小和经独立认证的检查点，因此不能确认Merkle树包含关系或外部锚定。</p>
+            <p>验证包含关系时，应使用事件、叶节点索引、树大小和审计路径重建根哈希，并与该树的可信检查点所认证的根哈希比较。只与同一响应中的根哈希比较，至多能检查数据的内部一致性。包含关系本身不能证明交易的真实性或实际执行情况。</p>
+            <p><a href="https://github.com/veritaschain/vcp-explorer-api/blob/1f708ada55f12e609c343264201603ccc4f1568c/README.md#L187-L201">实现限制</a> · <a href="/explorer/app/#/evidence-demo">SDK Evidence Demo</a></p>
         </div>
     </section>
 
@@ -396,11 +439,6 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                             <td><span class="badge">400</span></td>
                             <td>Bad Request</td>
                             <td>无效的请求参数或格式错误的JSON</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge">401</span></td>
-                            <td>Unauthorized</td>
-                            <td>无效或缺少API密钥</td>
                         </tr>
                         <tr>
                             <td><span class="badge">404</span></td>
@@ -451,9 +489,9 @@ curl -H "X-VCP-API-Key: your_api_key" \\
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-certificate"></i> VeritasChain认证(VC-Certified)</h3>
-                    <p>申请VC-Certified认证，使您系统的透明度和VCP合规性可被独立验证。</p>
+                    <p>目前尚无已注册的独立合格评定机构。可查阅认证制度的现状与咨询方式。</p>
                     <a href="https://veritaschain.org/certified/zh/" target="_blank" rel="noopener noreferrer" style="color: #1e40af; font-weight: 600;">
-                        了解认证 <i class="fas fa-external-link-alt"></i>
+                        认证制度现状与咨询 <i class="fas fa-external-link-alt"></i>
                     </a>
                 </div>
                 <div class="feature-card">
