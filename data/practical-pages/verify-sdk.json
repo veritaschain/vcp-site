@@ -1,0 +1,173 @@
+{
+  "sources": {
+    "sdk_main_readme": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/README.md",
+      "title": "VeraSnap Verify SDK: pinned source and status",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "sdk_fixture_manifest": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/tests/fixtures/scenarios/manifest.json",
+      "title": "Seven selected cases from the public synthetic fixture manifest",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "sdk_scenarios": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/tests/test_scenarios.py",
+      "title": "Existing scenario tests and manual test-key setup",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "sdk_cli": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/src/verasnap_verify/cli.py",
+      "title": "CLI commands and exit-code implementation",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "sdk_results": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/docs/RESULTS.md",
+      "title": "Result fields, status priority and check codes",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "sdk_enrollment": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/docs/ENROLLMENT.md",
+      "title": "Device-key enrollment and registry responsibilities",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "sdk_limits": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/blob/66d1875b5977feacb755c3bb92c38d2f2ba39665/docs/LIMITATIONS.md",
+      "title": "Limitations and unsupported checks",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "66d1875b5977feacb755c3bb92c38d2f2ba39665"
+    },
+    "sdk_release": {
+      "url": "https://github.com/veritaschain/verasnap-verify-sdk/releases/tag/v0.1.0",
+      "title": "Historical v0.1.0 alpha release: 125-test record",
+      "repo": "veritaschain/verasnap-verify-sdk",
+      "commit": "0caa054b074b09524045b8ee948f63d450b5b7db"
+    }
+  },
+  "page": {
+    "path": "verasnap/verify-sdk",
+    "reviewed": "2026-11-26",
+    "sources": [
+      "sdk_main_readme",
+      "sdk_fixture_manifest",
+      "sdk_scenarios",
+      "sdk_cli",
+      "sdk_results",
+      "sdk_enrollment",
+      "sdk_limits",
+      "sdk_release"
+    ],
+    "en": {
+      "title": "VeraSnap Verify SDK: a reproducible offline walkthrough",
+      "lead": "Run seven synthetic photo-proof cases with a pinned SDK, inspect partial verification and failures, and retain the full results.",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "What this walkthrough checks",
+          "html": "<p>Run the existing VeraSnap Verify SDK against seven published synthetic cases and save the full JSON, standard error and exit code for each. This is the photo-proof SDK, not the <a href=\"/vcp/sdk/\">VCP trading-log SDK</a>. The app, the server-side Verify SDK and the planned Capture SDK are different components.</p><p><strong>Alpha, first-party implementation.</strong> This walkthrough does not establish production readiness, regulatory or insurance acceptance, independent security audit, VAP/CPP full conformance, or independent third-party reproduction. Experimental extensions and proposed repairs remain unadopted.</p><p>The samples use synthetic media bytes and public test keys, with stored RFC 3161 tokens originally obtained on 18 November 2026. They are not customer photos or evidence of an actual insurance event. The steps reuse those tokens offline; do not run <code>tools/make_fixtures.py</code>, which requests new timestamps. See the <a href=\"{{source:sdk_fixture_manifest}}\">fixed fixture manifest</a>.</p>"
+        },
+        {
+          "id": "version",
+          "title": "Select the exact source, not just the package version",
+          "html": "<p>This guide pins the main-branch snapshot <code>66d1875b5977feacb755c3bb92c38d2f2ba39665</code>, checked on 26 November 2026. It contains the post-release repeat-registration and Android attestation-path fixes. The README recommends the earlier implementation snapshot <code>4eaa3b73e049bf14dbff0dcea30cf18c627ee617</code>; the selected main snapshot also includes subsequent documentation changes.</p><p>The historical <a href=\"{{source:sdk_release}}\">v0.1.0 alpha release</a> points to <code>0caa054b074b09524045b8ee948f63d450b5b7db</code> and records 125 first-party tests. The README records 186 first-party tests for its later pinned implementation. Both code revisions still identify as package version <code>0.1.0</code>; that string alone cannot identify the installed code. This guide neither replaces the tag/ZIP nor updates the historical result.</p>"
+        },
+        {
+          "id": "install",
+          "title": "1. Start in a new directory and virtual environment",
+          "html": "<p>Use Git, Python 3.10 or later, and Bash on macOS/Linux (or a compatible shell in WSL). This walkthrough was actually checked on macOS with Python 3.14.3 and the dependency versions below; other environments were not re-executed for this page. Clone/download and package installation need network access. The seven verification commands below use local files and the SDK’s bundled TSA roots.</p><p>Run the following from a location where <code>verasnap-sdk-guide</code> does not already exist. Do not use a production registry, private keys or customer evidence.</p><pre><code>git clone https://github.com/veritaschain/verasnap-verify-sdk.git verasnap-sdk-guide\ncd verasnap-sdk-guide\ngit checkout --detach 66d1875b5977feacb755c3bb92c38d2f2ba39665\ngit rev-parse HEAD\npython3 -m venv .venv\n. .venv/bin/activate\npython -m pip install &quot;cryptography==50.0.2&quot; &quot;asn1crypto==1.5.1&quot; &quot;cbor2==6.3.0&quot; .\nverasnap-verify --version</code></pre><p><code>git rev-parse HEAD</code> must print <code>66d1875b5977feacb755c3bb92c38d2f2ba39665</code>. The version command prints <code>verasnap-verify 0.1.0</code>; keep the commit as well. Continue in this same directory with the virtual environment active.</p>"
+        },
+        {
+          "id": "inputs",
+          "title": "2. Record the environment and input hashes",
+          "html": "<p>The following creates a new <code>guide-output</code> directory and records the source commit, dependency versions and SHA-256 digests of the fixture inputs. If that directory already exists, keep it as the previous run and begin in a fresh clone; do not silently overwrite evidence.</p><pre><code>mkdir guide-output\npython - &lt;&lt;&#x27;PY&#x27;\nfrom pathlib import Path\nimport hashlib, importlib.metadata, json, platform, subprocess\nsource = Path(&#x27;tests/fixtures/scenarios&#x27;)\nfiles = [source/&#x27;manifest.json&#x27;] + sorted(source.rglob(&#x27;proof.json&#x27;)) + [source/&#x27;S28/proof.zip&#x27;, source/&#x27;media/photo.jpg&#x27;, source/&#x27;media/photo_edited.jpg&#x27;]\nrecord = {\n    &#x27;commit&#x27;: subprocess.check_output([&#x27;git&#x27;, &#x27;rev-parse&#x27;, &#x27;HEAD&#x27;], text=True).strip(),\n    &#x27;python&#x27;: platform.python_version(),\n    &#x27;platform&#x27;: platform.platform(),\n    &#x27;dependencies&#x27;: {p: importlib.metadata.version(p) for p in (&#x27;verasnap-verify&#x27;, &#x27;cryptography&#x27;, &#x27;asn1crypto&#x27;, &#x27;cbor2&#x27;)},\n    &#x27;input_sha256&#x27;: {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in files},\n}\nPath(&#x27;guide-output/environment-and-inputs.json&#x27;).write_text(json.dumps(record, indent=2)+&#x27;\\n&#x27;)\nPY</code></pre><p>Also save the complete installed dependency list:</p><pre><code>python -m pip freeze &gt; guide-output/pip-freeze.txt</code></pre><p>This identifies the bytes used in this run. It does not authenticate the host or turn this execution into independent reproduction.</p>"
+        },
+        {
+          "id": "test-key",
+          "title": "3. Register the public test key for this exercise only",
+          "html": "<p>The source’s scenario tests use a manually registered public fixture key. Reproduce that setup below. This is deliberately <strong>not</strong> Android Key Attestation or Apple App Attest enrollment. It is only a local trust configuration for testing result handling.</p><pre><code>trial_key=$(python - &lt;&lt;&#x27;PY&#x27;\nimport json\nfrom pathlib import Path\nprint(json.loads(Path(&#x27;tests/fixtures/scenarios/manifest.json&#x27;).read_text())[&#x27;keys&#x27;][&#x27;device_enrolled&#x27;])\nPY\n)\nverasnap-verify keys --registry guide-output/test-keys.sqlite add \\\n  --public-key &quot;$trial_key&quot; --account fixture-only \\\n  --note &#x27;Public synthetic fixture; manual registration, not device attestation&#x27; \\\n  &gt; guide-output/test-key-fingerprint.txt\nunset trial_key</code></pre><p>The resulting <code>signer_key</code> check is <code>passed / known_unattested</code>, not <code>known</code> from hardware-attested enrollment. Never register an arbitrary key from a customer’s proof just to obtain a green result. Production enrollment requires a separate authenticated workflow, challenge/account binding and registry/revocation management described in the <a href=\"{{source:sdk_enrollment}}\">enrollment documentation</a>. The public test private keys must never be reused for real signing.</p>"
+        },
+        {
+          "id": "run",
+          "title": "4. Run seven cases and keep nonzero exits",
+          "html": "<p>These commands invoke the existing CLI; the shell helper only saves its output and exit code. Expected yellow and red results are not shell success. Do not use <code>--allow-unknown-signer</code> or weaken trust settings. The fixture source files are read, not edited.</p><pre><code>run_case() {\n  case_name=$1\n  shift\n  if verasnap-verify verify &quot;$@&quot; --json \\\n    &gt; &quot;guide-output/$case_name.json&quot; 2&gt; &quot;guide-output/$case_name.stderr.txt&quot;; then\n    case_exit=0\n  else\n    case_exit=$?\n  fi\n  printf &#x27;%s\\n&#x27; &quot;$case_exit&quot; &gt; &quot;guide-output/$case_name.exit.txt&quot;\n}\nfixtures=tests/fixtures/scenarios\nrun_case S01 &quot;$fixtures/S01/proof.json&quot; --media &quot;$fixtures/media/photo.jpg&quot; --registry guide-output/test-keys.sqlite\nrun_case S02 &quot;$fixtures/S02/proof.json&quot; --media &quot;$fixtures/media/photo.jpg&quot;\nrun_case S03 &quot;$fixtures/S03/proof.json&quot; --media &quot;$fixtures/media/photo_edited.jpg&quot; --registry guide-output/test-keys.sqlite\nrun_case S27 &quot;$fixtures/S27/proof.json&quot; --media &quot;$fixtures/media/photo.jpg&quot; --registry guide-output/test-keys.sqlite\nrun_case S13 &quot;$fixtures/S13/proof.json&quot; --media &quot;$fixtures/media/photo.jpg&quot; --registry guide-output/test-keys.sqlite\nrun_case S20 &quot;$fixtures/S20/proof.json&quot; --registry guide-output/test-keys.sqlite\nrun_case S28 &quot;$fixtures/S28/proof.zip&quot; --registry guide-output/test-keys.sqlite</code></pre><p>S01 is the fixture baseline; S02 omits the registry; S03 supplies a media file with one bit changed. S27 lacks the token in the internal proof format; S13 removes the timestamp section in the shareable format. S20 supplies no media, and S28 uses an Evidence Pack ZIP containing media and proof. These cases intentionally have different expected outcomes.</p>"
+        },
+        {
+          "id": "expected",
+          "title": "5. Compare the complete results with the expected outcomes",
+          "html": "<pre><code>python - &lt;&lt;&#x27;PY&#x27;\nfrom pathlib import Path\nimport json\nfor name in (&#x27;S01&#x27;, &#x27;S02&#x27;, &#x27;S03&#x27;, &#x27;S27&#x27;, &#x27;S13&#x27;, &#x27;S20&#x27;, &#x27;S28&#x27;):\n    result = json.loads(Path(f&#x27;guide-output/{name}.json&#x27;).read_text())\n    code = Path(f&#x27;guide-output/{name}.exit.txt&#x27;).read_text().strip()\n    print(name, &#x27;exit=&#x27;+code, result[&#x27;level&#x27;], result[&#x27;status&#x27;], &#x27;media_verified=&#x27;+str(result[&#x27;media_verified&#x27;]).lower())\nPY</code></pre><div class=\"table-wrap\"><table><thead><tr><th>Case</th><th>Exit</th><th>level</th><th>status</th><th>media_verified</th><th>Check to inspect</th></tr></thead><tbody><tr><td><code>S01</code></td><td><code>0</code></td><td><code>green</code></td><td><code>ANCHOR_VERIFIED</code></td><td><code>true</code></td><td><code>signer_key: passed / known_unattested</code></td></tr><tr><td><code>S02</code></td><td><code>1</code></td><td><code>yellow</code></td><td><code>PARTIALLY_VERIFIED</code></td><td><code>true</code></td><td><code>signer_key: warning / unknown</code></td></tr><tr><td><code>S03</code></td><td><code>2</code></td><td><code>red</code></td><td><code>HASH_MISMATCH</code></td><td><code>false</code></td><td><code>media_hash: failed / mismatch</code></td></tr><tr><td><code>S27</code></td><td><code>1</code></td><td><code>yellow</code></td><td><code>PARTIALLY_VERIFIED</code></td><td><code>true</code></td><td><code>timestamp: warning / missing_token</code></td></tr><tr><td><code>S13</code></td><td><code>2</code></td><td><code>red</code></td><td><code>ERROR</code></td><td><code>true</code></td><td><code>timestamp: failed / missing</code></td></tr><tr><td><code>S20</code></td><td><code>0</code></td><td><code>green</code></td><td><code>ANCHOR_VERIFIED</code></td><td><code>false</code></td><td><code>media_hash: skipped / not_provided</code></td></tr><tr><td><code>S28</code></td><td><code>0</code></td><td><code>green</code></td><td><code>ANCHOR_VERIFIED</code></td><td><code>true</code></td><td><code>ZIP: supplied media matched; manual test key</code></td></tr></tbody></table></div><p>The local run recorded the following summary:</p><pre><code>S01 exit=0 green ANCHOR_VERIFIED media_verified=true\nS02 exit=1 yellow PARTIALLY_VERIFIED media_verified=true\nS03 exit=2 red HASH_MISMATCH media_verified=false\nS27 exit=1 yellow PARTIALLY_VERIFIED media_verified=true\nS13 exit=2 red ERROR media_verified=true\nS20 exit=0 green ANCHOR_VERIFIED media_verified=false\nS28 exit=0 green ANCHOR_VERIFIED media_verified=true</code></pre><p><strong>Do not route claims using the color alone.</strong> S20 is green with <code>media_verified=false</code> because no media file was supplied; <code>media_hash</code> is skipped. S01/S28 use manual test-key trust, which does not demonstrate a genuine device or a person’s identity. In all these samples, attestation written inside the proof is <code>info / stated</code>, not a per-capture attestation that this SDK has verified.</p><p>S27 and S13 demonstrate why “timestamp missing” cannot be reduced to one generic status: the input format and missing field produce different named checks. Read <code>checks[].id/status/code</code>, <code>media_verified</code>, the signer and the verified <code>timestamp_time</code>. A green result is not proof that a scene is true or that an insurer should pay. <a href=\"{{source:sdk_results}}\">Result-field reference</a>.</p>"
+        },
+        {
+          "id": "errors",
+          "title": "If your result differs",
+          "html": "<p>Keep the JSON, stderr and exit files before investigating. Exit 0, 1 and 2 mean green, yellow and red for this CLI; they are not the exit-code contracts of the VAP research verifier or VCP SDK. The CLI documents exit 3 for input errors, but an unexpected traceback or non-JSON output must be recorded as an execution problem, not reclassified as a yellow verification result.</p><p>Check the full source commit, dependency list, fixture hashes and registry path. An already-registered test key is rejected rather than overwritten; start a separate run directory/clone. Do not modify expected results, add arbitrary trust roots or replace a failed sample to make a run look successful. Preserve environment differences and seek technical review when needed.</p>"
+        },
+        {
+          "id": "record",
+          "title": "What to retain and what this local run establishes",
+          "html": "<p>Keep the source commit, <code>environment-and-inputs.json</code>, <code>pip-freeze.txt</code>, the test registry/fingerprint, each result JSON, stderr and exit file. Results can contain key fingerprints, account references and device statements; review them before sharing. Use a working copy when preparing a public report and keep the original separately.</p><p>On 26 November 2026 the seven CLI outcomes above matched the published scenario expectations; the unchanged SDK test suite also completed with <strong>186 passed</strong> in the same isolated virtual environment. This is a first-party local check of the selected snapshot and stored fixtures, not a new independent timestamp issuance, hardware enrollment test, production deployment or independent third-party reproduction. The source implementation, fixed release and historical test records were not changed.</p><p>The SDK does not check TSA CRL/OCSP revocation, prove the physical scene, identify the photographer, or verify per-capture attestation. Capture time is a device statement; a verified timestamp binds evidence to the token’s time, not absolute shooting-time truth. See <a href=\"{{source:sdk_main_readme}}\">Pinned SDK README</a> · <a href=\"{{source:sdk_results}}\">Result codes</a> · <a href=\"{{source:sdk_limits}}\">Limitations</a>.</p><p><a href=\"/verasnap/\">Return to VeraSnap for enterprises and insurers</a> · <a href=\"/vcp/sdk/\">Compare the separate VCP SDK</a> · <a href=\"mailto:developers@veritaschain.org\">Technical questions</a>. Do not attach sensitive claim files or credentials to the first message.</p><p><a href=\"/verasnap/receiving-evidence/\">Guide for staff receiving photo evidence</a> · <a href=\"/software/status/\">Current versions, distributions and known issues</a></p>"
+        }
+      ]
+    },
+    "ja": {
+      "title": "VeraSnap Verify SDK 実行ガイド：合成データで検証する",
+      "lead": "固定したSDKで写真証跡の合成7ケースを実行し、部分検証・不一致・未確認項目と結果の保存を確かめます。",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "この手順で確認すること",
+          "html": "<p>公開済みの合成データ7ケースを既存のVeraSnap Verify SDKで検証し、各ケースのJSON全文・標準エラー・終了コードを保存します。写真の証跡を受領側で確認するSDKであり、取引ログ向けの<a href=\"/vcp/sdk/ja/\">VCP SDK</a>とは別です。撮影アプリ、受領側のVerify SDK、設計段階のCapture SDKも区別します。</p><p><strong>自社開発のalpha版です。</strong> この手順は、本番適合、法令適合、保険での受理、独立したセキュリティ監査、VAP／CPPへの完全適合、第三者による独立再現の成立を示しません。実験的拡張・修正案は未採択のままです。</p><p>試験入力は合成メディアのバイト列と公開試験鍵です。顧客の実写真や、実際の保険事故の証拠ではありません。2026年11月18日に取得して保存された実際のRFC 3161トークンをオフラインで再検証します。新しいタイムスタンプを要求する<code>tools/make_fixtures.py</code>は実行しません。<a href=\"{{source:sdk_fixture_manifest}}\">固定した入力一覧</a>を参照してください。</p>"
+        },
+        {
+          "id": "version",
+          "title": "パッケージ番号だけでなく、ソースの版を固定する",
+          "html": "<p>このガイドは2026年11月26日に確認したmainのスナップショット<code>66d1875b5977feacb755c3bb92c38d2f2ba39665</code>を固定します。リリース後の鍵の再登録・Android鍵証明パスの修正を含みます。READMEの推奨導入版は先行する実装コミット<code>4eaa3b73e049bf14dbff0dcea30cf18c627ee617</code>で、今回のmainにはその後の文書修正も含まれています。</p><p>過去の<a href=\"{{source:sdk_release}}\">v0.1.0 alphaリリース</a>は<code>0caa054b074b09524045b8ee948f63d450b5b7db</code>を指し、自社試験125件の記録を保持しています。READMEは後続の固定実装で自社CI186件の成功を記録しています。どちらもパッケージの版表示は<code>0.1.0</code>なので、それだけでは実際のコードを識別できません。このガイドでタグ・固定ZIPを差し替えたり、過去の結果を更新したりはしません。</p>"
+        },
+        {
+          "id": "install",
+          "title": "1. 新しいディレクトリと仮想環境を用意する",
+          "html": "<p>Git、Python 3.10以降、macOS／LinuxのBash、またはWSLなどの互換シェルを使います。このページの手順を実行確認した環境はmacOS・Python 3.14.3と下記の依存バージョンです。他の環境を今回すべて再実行したわけではありません。取得・パッケージのインストールには通信が必要ですが、後の7ケースはローカル入力とSDK同梱のTSAルート証明書を使います。</p><p><code>verasnap-sdk-guide</code>がまだ存在しない場所から実行してください。本番用の鍵台帳・秘密鍵・顧客の証拠は使いません。</p><pre><code>git clone https://github.com/veritaschain/verasnap-verify-sdk.git verasnap-sdk-guide\ncd verasnap-sdk-guide\ngit checkout --detach 66d1875b5977feacb755c3bb92c38d2f2ba39665\ngit rev-parse HEAD\npython3 -m venv .venv\n. .venv/bin/activate\npython -m pip install &quot;cryptography==50.0.2&quot; &quot;asn1crypto==1.5.1&quot; &quot;cbor2==6.3.0&quot; .\nverasnap-verify --version</code></pre><p><code>git rev-parse HEAD</code>が<code>66d1875b5977feacb755c3bb92c38d2f2ba39665</code>を返すことを確認します。版表示は<code>verasnap-verify 0.1.0</code>ですが、コミットも残してください。以降は同じディレクトリ・有効化した仮想環境で続けます。</p>"
+        },
+        {
+          "id": "inputs",
+          "title": "2. 環境と入力のハッシュを記録する",
+          "html": "<p>新しい<code>guide-output</code>ディレクトリを作り、ソースのコミット、依存バージョン、入力のSHA-256を記録します。すでにこのディレクトリがある場合は前回分として保持し、新しいクローンで開始してください。実行証拠を黙って上書きしません。</p><pre><code>mkdir guide-output\npython - &lt;&lt;&#x27;PY&#x27;\nfrom pathlib import Path\nimport hashlib, importlib.metadata, json, platform, subprocess\nsource = Path(&#x27;tests/fixtures/scenarios&#x27;)\nfiles = [source/&#x27;manifest.json&#x27;] + sorted(source.rglob(&#x27;proof.json&#x27;)) + [source/&#x27;S28/proof.zip&#x27;, source/&#x27;media/photo.jpg&#x27;, source/&#x27;media/photo_edited.jpg&#x27;]\nrecord = {\n    &#x27;commit&#x27;: subprocess.check_output([&#x27;git&#x27;, &#x27;rev-parse&#x27;, &#x27;HEAD&#x27;], text=True).strip(),\n    &#x27;python&#x27;: platform.python_version(),\n    &#x27;platform&#x27;: platform.platform(),\n    &#x27;dependencies&#x27;: {p: importlib.metadata.version(p) for p in (&#x27;verasnap-verify&#x27;, &#x27;cryptography&#x27;, &#x27;asn1crypto&#x27;, &#x27;cbor2&#x27;)},\n    &#x27;input_sha256&#x27;: {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in files},\n}\nPath(&#x27;guide-output/environment-and-inputs.json&#x27;).write_text(json.dumps(record, indent=2)+&#x27;\\n&#x27;)\nPY</code></pre><p>インストールされた依存関係の一覧も保存します。</p><pre><code>python -m pip freeze &gt; guide-output/pip-freeze.txt</code></pre><p>これは今回使ったバイト列を特定する記録です。実行ホストの真正性や、独立再現の成立を証明するものではありません。</p>"
+        },
+        {
+          "id": "test-key",
+          "title": "3. この演習に限って公開試験鍵を登録する",
+          "html": "<p>ソースの既存試験は、公開された試験鍵を手動登録して使っています。以下で同じ設定を作ります。これは<strong>Android Key AttestationやApple App Attestによる端末鍵登録ではありません</strong>。判定の扱いを試すためのローカルな信頼設定です。</p><pre><code>trial_key=$(python - &lt;&lt;&#x27;PY&#x27;\nimport json\nfrom pathlib import Path\nprint(json.loads(Path(&#x27;tests/fixtures/scenarios/manifest.json&#x27;).read_text())[&#x27;keys&#x27;][&#x27;device_enrolled&#x27;])\nPY\n)\nverasnap-verify keys --registry guide-output/test-keys.sqlite add \\\n  --public-key &quot;$trial_key&quot; --account fixture-only \\\n  --note &#x27;Public synthetic fixture; manual registration, not device attestation&#x27; \\\n  &gt; guide-output/test-key-fingerprint.txt\nunset trial_key</code></pre><p>この鍵の<code>signer_key</code>は<code>passed / known_unattested</code>となり、ハードウェア証明で登録した<code>known</code>とは異なります。緑にするために、顧客が送った証明の鍵をそのまま登録しないでください。本番の登録には、別の認証手順、チャレンジとアカウントの結び付け、鍵台帳・失効管理が必要です。<a href=\"{{source:sdk_enrollment}}\">鍵登録の資料</a>を確認してください。公開されている試験用秘密鍵を、実際の署名に流用してはいけません。</p>"
+        },
+        {
+          "id": "run",
+          "title": "4. 7ケースを実行し、非ゼロ終了も保存する",
+          "html": "<p>以下は既存CLIを呼び出します。シェル関数は出力と終了コードを保存するだけで、新しい検証器ではありません。期待する黄・赤の判定を、シェルの成功終了に読み替えません。<code>--allow-unknown-signer</code>や信頼条件の緩和は使いません。入力原本は読み取るだけで編集しません。</p><pre><code>run_case() {\n  case_name=$1\n  shift\n  if verasnap-verify verify &quot;$@&quot; --json \\\n    &gt; &quot;guide-output/$case_name.json&quot; 2&gt; &quot;guide-output/$case_name.stderr.txt&quot;; then\n    case_exit=0\n  else\n    case_exit=$?\n  fi\n  printf &#x27;%s\\n&#x27; &quot;$case_exit&quot; &gt; &quot;guide-output/$case_name.exit.txt&quot;\n}\nfixtures=tests/fixtures/scenarios\nrun_case S01 &quot;$fixtures/S01/proof.json&quot; --media &quot;$fixtures/media/photo.jpg&quot; --registry guide-output/test-keys.sqlite\nrun_case S02 &quot;$fixtures/S02/proof.json&quot; --media &quot;$fixtures/media/photo.jpg&quot;\nrun_case S03 &quot;$fixtures/S03/proof.json&quot; --media &quot;$fixtures/media/photo_edited.jpg&quot; --registry guide-output/test-keys.sqlite\nrun_case S27 &quot;$fixtures/S27/proof.json&quot; --media &quot;$fixtures/media/photo.jpg&quot; --registry guide-output/test-keys.sqlite\nrun_case S13 &quot;$fixtures/S13/proof.json&quot; --media &quot;$fixtures/media/photo.jpg&quot; --registry guide-output/test-keys.sqlite\nrun_case S20 &quot;$fixtures/S20/proof.json&quot; --registry guide-output/test-keys.sqlite\nrun_case S28 &quot;$fixtures/S28/proof.zip&quot; --registry guide-output/test-keys.sqlite</code></pre><p>S01は基準ケース、S02は鍵台帳なし、S03はメディアを1ビット変更したケースです。S27は内部形式のTSAトークン不足、S13は共有形式のタイムスタンプ欄削除です。S20はメディア未提出、S28はメディアと証跡を含むEvidence Pack ZIPを使います。意図的に異なる判定を確認します。</p>"
+        },
+        {
+          "id": "expected",
+          "title": "5. 期待結果と、項目別の判定を照合する",
+          "html": "<pre><code>python - &lt;&lt;&#x27;PY&#x27;\nfrom pathlib import Path\nimport json\nfor name in (&#x27;S01&#x27;, &#x27;S02&#x27;, &#x27;S03&#x27;, &#x27;S27&#x27;, &#x27;S13&#x27;, &#x27;S20&#x27;, &#x27;S28&#x27;):\n    result = json.loads(Path(f&#x27;guide-output/{name}.json&#x27;).read_text())\n    code = Path(f&#x27;guide-output/{name}.exit.txt&#x27;).read_text().strip()\n    print(name, &#x27;exit=&#x27;+code, result[&#x27;level&#x27;], result[&#x27;status&#x27;], &#x27;media_verified=&#x27;+str(result[&#x27;media_verified&#x27;]).lower())\nPY</code></pre><div class=\"table-wrap\"><table><thead><tr><th>ケース</th><th>終了コード</th><th>level</th><th>status</th><th>media_verified</th><th>確認する項目</th></tr></thead><tbody><tr><td><code>S01</code></td><td><code>0</code></td><td><code>green</code></td><td><code>ANCHOR_VERIFIED</code></td><td><code>true</code></td><td><code>signer_key: passed / known_unattested</code></td></tr><tr><td><code>S02</code></td><td><code>1</code></td><td><code>yellow</code></td><td><code>PARTIALLY_VERIFIED</code></td><td><code>true</code></td><td><code>signer_key: warning / unknown</code></td></tr><tr><td><code>S03</code></td><td><code>2</code></td><td><code>red</code></td><td><code>HASH_MISMATCH</code></td><td><code>false</code></td><td><code>media_hash: failed / mismatch</code></td></tr><tr><td><code>S27</code></td><td><code>1</code></td><td><code>yellow</code></td><td><code>PARTIALLY_VERIFIED</code></td><td><code>true</code></td><td><code>timestamp: warning / missing_token</code></td></tr><tr><td><code>S13</code></td><td><code>2</code></td><td><code>red</code></td><td><code>ERROR</code></td><td><code>true</code></td><td><code>timestamp: failed / missing</code></td></tr><tr><td><code>S20</code></td><td><code>0</code></td><td><code>green</code></td><td><code>ANCHOR_VERIFIED</code></td><td><code>false</code></td><td><code>media_hash: skipped / not_provided</code></td></tr><tr><td><code>S28</code></td><td><code>0</code></td><td><code>green</code></td><td><code>ANCHOR_VERIFIED</code></td><td><code>true</code></td><td><code>ZIP内メディア一致。試験鍵は手動登録</code></td></tr></tbody></table></div><p>今回のローカル実行では、次の要約が得られました。</p><pre><code>S01 exit=0 green ANCHOR_VERIFIED media_verified=true\nS02 exit=1 yellow PARTIALLY_VERIFIED media_verified=true\nS03 exit=2 red HASH_MISMATCH media_verified=false\nS27 exit=1 yellow PARTIALLY_VERIFIED media_verified=true\nS13 exit=2 red ERROR media_verified=true\nS20 exit=0 green ANCHOR_VERIFIED media_verified=false\nS28 exit=0 green ANCHOR_VERIFIED media_verified=true</code></pre><p><strong>色だけで受領後の処理を決めないでください。</strong> S20は緑でも<code>media_verified=false</code>です。メディアを渡していないため、<code>media_hash</code>はスキップされています。S01／S28も手動登録した試験鍵を信頼した結果であり、本物の端末や撮影者本人を証明したわけではありません。これらの入力に書かれたattestationは<code>info / stated</code>で、SDKが撮影ごとの証明を検証した結果ではありません。</p><p>S27とS13の違いは、「タイムスタンプ不足」を一律の色にまとめられない例です。形式と不足した欄により、名前付きの確認項目が変わります。<code>checks[].id/status/code</code>、<code>media_verified</code>、署名鍵の状態、検証できた<code>timestamp_time</code>を確認します。緑は、写真の内容が真実であることや、保険金を支払うべきことを示しません。<a href=\"{{source:sdk_results}}\">結果フィールドの資料</a>。</p>"
+        },
+        {
+          "id": "errors",
+          "title": "結果が異なる場合",
+          "html": "<p>調査前にJSON・標準エラー・終了コードのファイルを保持します。このCLIの0／1／2は緑／黄／赤であり、VAP研究用検証器やVCP SDKの終了コードとは別です。CLIは入力エラーを終了コード3と説明していますが、予期しないトレースバックやJSONでない出力が出た場合は、実行上の問題として記録してください。黄の検証結果に読み替えません。</p><p>完全なコミット、依存バージョン、入力ハッシュ、鍵台帳のパスを照合します。すでに登録した試験鍵の再登録は、上書きせず拒否されます。新しいクローン・実行ディレクトリでやり直してください。成功に見せるための期待結果の変更、任意の信頼ルート追加、不合格入力の差し替えはしません。環境差分と失敗を残し、必要な点を技術担当へ確認します。</p>"
+        },
+        {
+          "id": "record",
+          "title": "残す記録と、今回の確認範囲",
+          "html": "<p>コミット、<code>environment-and-inputs.json</code>、<code>pip-freeze.txt</code>、試験用台帳と鍵のフィンガープリント、各JSON・標準エラー・終了コードを保持します。出力には鍵のフィンガープリント、アカウント参照、端末の申告値が含まれる場合があるため、共有前に確認します。公開用に加工する場合は、原本を残して作業用コピーを使ってください。</p><p>2026年11月26日、上記7ケースのCLI結果が公開試験の期待判定と一致し、同じ隔離仮想環境で未変更のSDK試験も<strong>186件成功</strong>しました。選んだ版と保存済み入力の自社ローカル確認です。新しい第三者タイムスタンプの発行、ハードウェアを使う鍵登録、本番導入、第三者による独立再現を確かめたものではありません。SDKの実装・固定リリース・過去の試験記録は変更していません。</p><p>このSDKはTSAのCRL／OCSP失効確認、被写体の真実性、撮影者本人の特定、撮影ごとのattestation検証を行いません。撮影時刻は端末の申告値です。検証できたタイムスタンプが示す証跡と時刻の結び付きを、絶対的な撮影時刻の正しさと同一視しません。<a href=\"{{source:sdk_main_readme}}\">Pinned SDK README</a> · <a href=\"{{source:sdk_results}}\">Result codes</a> · <a href=\"{{source:sdk_limits}}\">Limitations</a>。</p><p><a href=\"/verasnap/ja/\">法人・保険会社向けVeraSnap案内へ</a> · <a href=\"/vcp/sdk/ja/\">別製品のVCP SDKを確認</a> · <a href=\"mailto:developers@veritaschain.org\">技術的な問い合わせ</a>。最初のメールに機密の請求書類や認証情報を添付する必要はありません。</p><p><a href=\"/verasnap/receiving-evidence/ja/\">写真・証跡を受け取る担当者向けガイド</a> · <a href=\"/software/status/ja/\">現行版・配布物・既知問題一覧</a></p>"
+        }
+      ],
+      "heading_parts": [
+        "VeraSnap Verify SDK",
+        "実行ガイド：",
+        "合成データで検証する"
+      ]
+    }
+  }
+}
