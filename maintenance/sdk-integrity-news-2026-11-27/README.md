@@ -1,0 +1,9 @@
+# 27 November 2026: SDK seal recovery, Explorer source and incident update
+
+Prepared for publication; this directory does not assert that XServer publication is complete. It adds one EN/JA dated notice to the home previews and archives. The notice distinguishes SDK seal output recovery and policy matching, Explorer source changes versus actual deployment, 40 event-validation CLI tests in first-party CI, and the incident library's 85 records with two separately identified follow-ups.
+
+No new fixed release is claimed. The SDK's two output-file replacements are not described as a single atomic transaction. Current VAP specification references and hashes, all 22 older notice payloads per language, prior test counts and the new practical-guide navigation are retained. Source CI and saved-evidence checks remain separate from independent fresh execution. Experimental extensions and proposals remain unadopted; independent third-party VAP reproduction is not established.
+
+Save a server backup outside the public root, then match every before SHA-256 in `xserver-manifest.json`. Apply with `patch --batch --fuzz=0 -p1` against those exact originals and verify all after hashes. Upload only the six manifest files: four HTML pages, `tools/build.py`, and `sitemap.xml` (only those four dates change). The HTML is patched by matching generated fragments, not replaced by a full-site rebuild; generator and fragments are checked together. A displaced preview retains its old anchor and archive route.
+
+Verify the two main-site article URLs are published before this patch. After upload, retrieve all six files and compare hashes; record PC/mobile display checks separately. Normative requirements, existing implementations, signed data, fixed tags/ZIPs, K3 and previous records are unchanged. Local HTTP backups and private preflight/post-publication input files accompany the task outputs.
