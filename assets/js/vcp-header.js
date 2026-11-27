@@ -412,7 +412,7 @@ class VCPHeader extends HTMLElement {
         <nav class="main-nav ${themeClass}" aria-label="${t.mainNavigation}">
             <div class="nav-container">
                 <a href="${lang === 'en' ? '/' : `/${lang}/`}" class="nav-logo" aria-label="VeritasChain Standards Organization (VSO)">
-                    <img class="logo-image" src="/press/logo-transparent.png" width="40" height="40" alt="" decoding="async">
+                    <span class="logo-mark" aria-hidden="true"><img class="logo-image" src="/press/logo-transparent.png" width="64" height="64" alt="" decoding="async"></span>
                     <span class="logo-wordmark"><span class="logo-text">VeritasChain</span><span class="logo-subtitle">VSO · VAP / VCP</span></span>
                 </a>
 
