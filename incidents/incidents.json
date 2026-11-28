@@ -13264,6 +13264,266 @@
    ],
    "references_without_url": [],
    "corrections": []
+  },
+  {
+   "id": "V1104MITTWALD",
+   "evidence_schema_version": 1,
+   "title": {
+    "en": "Mittwald traces an intrusion into its hosting platform to a shell injection in its own MCP server, which it says was largely built with AI coding agents; it classifies 56 projects as compromised and reports a second intrusion through a zero-day in Neos",
+    "ja": "独ホスティング事業者Mittwald、基盤への侵入の入口は自社MCPサーバーのshell injectionだったと報告。同サーバーは大部分をAIコーディングエージェントで構築したと説明。56プロジェクトを侵害されたものと分類し、Neosのゼロデイによる2回目の侵入も報告"
+   },
+   "event_date": "first test of the flaw 2026-10-21; exploited from 2026-10-27; detected 2026-11-04; first account published 2026-11-07; second phase from 2026-11-09, with an intrusion into mittwald.de in the night to 2026-11-12; postmortem published 2026-11-25",
+   "verified": "2026-11-28",
+   "jurisdiction": {
+    "en": "Germany (Mittwald, a hosting provider based in Espelkamp, North Rhine-Westphalia; Mittwald says it brought in law enforcement and data protection authorities, which it does not name)",
+    "ja": "ドイツ（ノルトライン＝ヴェストファーレン州エスペルカンプのホスティング事業者Mittwald。同社は捜査機関とデータ保護当局に連絡したとしているが、機関名は示していない）"
+   },
+   "category": "security incident",
+   "registry_status": "verified, pending registration",
+   "publication_verdict": "PUBLISH WITH CORRECTIONS",
+   "allegations": false,
+   "ai_provider_party": [],
+   "summary": {
+    "en": "On 25 November 2026 the German hosting provider Mittwald published a postmortem, written by Martin Helmich, of an intrusion it detected on 4 November. The entry point was Mittwald's own MCP server, which let customers connect AI assistants to its mStudio control panel and held OAuth tokens in order to act for them. A tool for generating SSH keys built a shell command from its inputs, so a crafted input ran commands in the server's container (shell injection). Mittwald dates a first test of the flaw to 21 October and targeted use to 27 October, eight days before detection. From the container's session store the attacker took several thousand tokens belonging to users, Mittwald employees among them; most had already expired and a few hundred were still valid. With valid tokens the attacker then worked through Mittwald's regular API. Mittwald says everyone who had used the MCP server was affected, together with the projects their accounts could reach, including projects whose owners had never used the server. It classifies as compromised the 56 projects in which the attacker demonstrably acted. Mittwald states that the MCP server was largely built with AI coding agents, as a deliberate decision, and that its review practice and guardrails for agent-written code were not yet adequate at the time; no static analysis had been set up for the project. The server ran as a separate project in Mittwald's own container hosting and was not connected to its usual logging and SIEM systems. When a routine deployment recreated the container on 2 November, traces inside it were lost. Mittwald reconstructed the earlier period from mStudio's event store and from API and project logs. On detection it shut the MCP server down and revoked all tokens; the server remains offline. A second phase began on 9 November. In the night to 12 November the attacker broke into the company website mittwald.de through a previously unknown flaw in Flow, the framework beneath the Neos CMS, and uploaded a web shell. The Neos project published advisory GHSA-7wrr-qcrp-4hhf with fixed releases on 13 November and credits Mittwald with reporting the flaw. Mittwald says isolated attempts have continued since 18 November. It assumes, from the speed and parallelism of the steps in its logs, that the attacker used AI tools, and names no tool or model. It says it brought in law enforcement and data protection authorities on 4 November.",
+    "ja": "2026年11月25日、ドイツのホスティング事業者Mittwaldは、11月4日に検知した侵入についてのポストモーテム（Martin Helmich執筆）を公表しました。入口は同社が自ら開発したMCPサーバーです。このサーバーは、顧客がAIアシスタントを管理画面mStudioに接続するためのもので、利用者の代わりに操作するためのOAuthトークンを保持していました。SSH鍵を生成するツールが入力値からシェルコマンドを組み立てていたため、細工した入力でサーバーのコンテナ内のコマンドを実行できました（shell injection）。Mittwaldによれば、この欠陥が最初に試されたのは10月21日、狙って使われたのは10月27日からで、検知の8日前です。攻撃者はコンテナのセッションストアから、Mittwaldの従業員を含む利用者のトークンを数千件取得しました。大半はすでに失効しており、有効だったのは数百件です。攻撃者はその後、有効なトークンを使って同社の通常のAPI経由で操作しました。Mittwaldは、MCPサーバーを使ったことのある全員と、そのアカウントが到達できたプロジェクト（所有者がMCPサーバーを一度も使っていないものを含む）が影響を受けたとしています。そのうち、攻撃者が行為したことを確認できた56プロジェクトを、侵害されたものと分類しています。Mittwaldは、MCPサーバーの大部分をAIコーディングエージェントで構築したこと、それは意図した判断だったこと、エージェントが書いたコードに対するレビューの運用とガードレールが当時は十分でなかったことを述べています。このプロジェクトには静的解析も設定されていませんでした。サーバーは同社のコンテナホスティング上の独立したプロジェクトとして動いており、通常のログ基盤とSIEMには接続されていませんでした。11月2日の通常のデプロイでコンテナが作り直された際、コンテナ内の痕跡が失われました。Mittwaldは、それより前の期間を、mStudioのイベントストアと、APIおよびプロジェクトのログから再構成しています。検知後、同社はMCPサーバーを停止し、すべてのトークンを失効させました。サーバーは停止したままです。11月9日からは第2段階が始まりました。11月12日未明、攻撃者は、CMSのNeosの基盤であるFlowの未知の欠陥を使って同社のウェブサイトmittwald.deに侵入し、ウェブシェルを置きました。Neosプロジェクトは11月13日にアドバイザリGHSA-7wrr-qcrp-4hhfと修正版を公開し、報告者としてMittwaldを挙げています。Mittwaldによれば、11月18日以降も散発的な試みが続いています。同社は、ログに残った手順の速さと並行性から、攻撃者がAIツールを使ったと推定していますが、ツール名やモデル名は示していません。捜査機関とデータ保護当局には11月4日に連絡したとしています。"
+   },
+   "claims": [
+    {
+     "claim": {
+      "en": "Mittwald's MCP server was exploited from 27 October 2026 and the intrusion was detected on 4 November, eight days later.",
+      "ja": "MittwaldのMCPサーバーは2026年10月27日から悪用され、侵入は8日後の11月4日に検知された。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem",
+      "blog-1107"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "Mittwald counts the eight days from the first targeted access. It dates a first test of the flaw to 21 October, and its account of 7 November says the attacker moved on the platform as an ordinary user from 23 October.",
+      "ja": "Mittwaldは、狙った最初のアクセスから数えて8日としている。欠陥が最初に試されたのは10月21日で、11月7日の説明では、攻撃者は10月23日から通常の利用者として基盤上で活動していた。"
+     }
+    },
+    {
+     "claim": {
+      "en": "56 projects were compromised.",
+      "ja": "56件のプロジェクトが侵害された。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "56 is the number of projects in which Mittwald found that the attacker demonstrably acted, and which it therefore classifies as compromised. The group it describes as affected is wider: everyone who had used the MCP server and the projects their accounts could reach.",
+      "ja": "56は、攻撃者が行為したことをMittwaldが確認し、そのために侵害されたものと分類したプロジェクトの数である。同社が影響を受けたとする範囲はそれより広く、MCPサーバーを使ったことのある全員と、そのアカウントが到達できたプロジェクトに及ぶ。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Several thousand authentication tokens were stolen.",
+      "ja": "数千件の認証トークンが窃取された。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "Mittwald says the attacker took several thousand tokens in total, that most had already expired and that a few hundred were still valid. They were OAuth tokens of users, including Mittwald employees, held in the MCP server's session store.",
+      "ja": "Mittwaldは、攻撃者が取得したトークンは合計で数千件、大半はすでに失効しており、有効だったのは数百件だとしている。MCPサーバーのセッションストアにあった利用者（Mittwaldの従業員を含む）のOAuthトークンである。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Mittwald built most of the MCP server with AI coding agents.",
+      "ja": "MittwaldはMCPサーバーの大部分をAIコーディングエージェントで開発した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "Mittwald's own statement, which it calls a deliberate decision. VSO's review did not identify a named coding agent or model provider, and this record names none.",
+      "ja": "Mittwald自身の説明で、同社は意図した判断だったとしている。VSOの確認では、コーディングエージェントやモデル提供者の名前は確認できておらず、本記録も挙げていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The vulnerability reached production because the generated code was not adequately reviewed.",
+      "ja": "生成されたコードの審査が不十分だったため、脆弱性が本番環境に入った。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "Mittwald says its review practice and guardrails for agent-written code were not yet adequate at the time and that no static analysis had been set up for this project. It also says the same error is one that people make; it does not present AI authorship as the sole cause.",
+      "ja": "Mittwaldは、エージェントが書いたコードに対するレビューの運用とガードレールが当時は十分でなく、このプロジェクトに静的解析を設定していなかったとしている。同じ誤りは人も犯すとも述べており、AIが書いたことを唯一の原因とはしていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The attacker used valid tokens through Mittwald's regular API to obtain credentials and configuration files.",
+      "ja": "攻撃者は有効なトークンを使い、Mittwaldの通常のAPI経由で認証情報や設定ファイルを取得した。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "Mittwald says the attacker worked through its regular API with valid tokens. As Mittwald describes it, the files themselves were collected by short-lived containers started with those rights, not by API reads alone.",
+      "ja": "Mittwaldは、攻撃者が有効なトークンで通常のAPIを使って活動したとしている。同社の説明では、ファイルそのものを集めたのは、その権限で起動された短命のコンテナであり、APIの読み出しだけではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Projects of customers who had never used the MCP server were also affected.",
+      "ja": "MCPサーバーを一度も使っていない顧客のプロジェクトにも影響が及んだ。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem",
+      "webhostingtoday"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "The postmortem counts as affected the projects that MCP users' accounts could reach, even where the project owners had never used the server. On 9 November webhosting.today reported Mittwald's assessment at that time that customers who had never used the MCP server were not affected.",
+      "ja": "ポストモーテムは、MCP利用者のアカウントが到達できたプロジェクトを、所有者がサーバーを一度も使っていなくても影響を受けたものに数えている。11月9日の時点では、webhosting.todayが、MCPサーバーを使ったことのない顧客は影響を受けていないというMittwaldの当時の評価を伝えていた。"
+     }
+    },
+    {
+     "claim": {
+      "en": "A routine deployment on 2 November recreated the MCP container, and traces from the early part of the attack were lost.",
+      "ja": "11月2日の通常のデプロイでMCPのコンテナが作り直され、攻撃初期の痕跡が失われた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "What was lost were traces inside the container, which was not connected to Mittwald's usual logging and SIEM systems. Mittwald says traces from the container itself exist only from that day on.",
+      "ja": "失われたのはコンテナ内の痕跡で、このコンテナはMittwaldの通常のログ基盤とSIEMに接続されていなかった。Mittwaldは、コンテナ自体の痕跡はその日以降の分しかないとしている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Because of that loss, the early part of the attack is left without records.",
+      "ja": "その消失により、攻撃初期については記録が残っていない。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "postmortem"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "Mittwald says it reconstructed the period before 2 November from mStudio's event store and from API and project logs. The loss affected one source, not the whole account.",
+      "ja": "Mittwaldは、11月2日より前の期間を、mStudioのイベントストアと、APIおよびプロジェクトのログから再構成したとしている。失われたのは一つの記録源であり、経過の全体ではない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Mittwald assumes that the attacker used AI tools; the tool, the model and the degree of autonomy are not known.",
+      "ja": "Mittwaldは攻撃者がAIツールを使ったと推定している。ツール、モデル、自律の程度は分かっていない。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "This is Mittwald's inference from the speed and parallelism of the steps in its logs. It names no tool or model, and VSO found no independent confirmation.",
+      "ja": "ログに残った手順の速さと並行性からのMittwaldの推定である。ツール名もモデル名も示されておらず、独立した確認はVSOは見つけていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "Mittwald revoked all tokens and shut the MCP server down, and plans to separate tools from sessions and to use short-lived, narrowly scoped tokens.",
+      "ja": "Mittwaldはすべてのトークンを失効させてMCPサーバーを停止し、ツールとセッションの分離、短命で範囲の狭いトークンの採用を予定している。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "Revocation and shutdown were carried out on detection, and the server remains offline. The postmortem presents the separation of tools and sessions and the short-lived, narrow tokens as part of a new architecture, without a date. It also says binding review rules for agent-written code are in place and that logs from all relevant sources are now secured separately and continuously.",
+      "ja": "失効と停止は検知時に実施済みで、サーバーは停止したままである。ツールとセッションの分離、短命で範囲の狭いトークンは、新しいアーキテクチャの内容として示されており、時期は書かれていない。ポストモーテムは、エージェントが書いたコードに対する拘束力のあるレビュー規則を設けたこと、関連するすべての記録源のログを別の場所に継続して保全していることも述べている。"
+     }
+    },
+    {
+     "claim": {
+      "en": "A second intrusion used a previously unknown vulnerability in Neos.",
+      "ja": "2回目の侵入にはNeosの未知の脆弱性が使われた。"
+     },
+     "verdict": "CONFIRMED",
+     "source_refs": [
+      "postmortem",
+      "neos"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "In the night to 12 November the attacker uploaded a web shell to mittwald.de through an unauthenticated file upload flaw in Flow, the framework beneath Neos. The Neos project's advisory of 13 November (GHSA-7wrr-qcrp-4hhf) lists fixed Flow releases and credits Mittwald with the report. Neos is the project that fixed the flaw; it is not described as a victim.",
+      "ja": "11月12日未明、攻撃者は、Neosの基盤であるFlowの、認証なしでファイルをアップロードできる欠陥を使い、mittwald.deにウェブシェルを置いた。Neosプロジェクトの11月13日のアドバイザリ（GHSA-7wrr-qcrp-4hhf）は修正済みのFlowの版を示し、報告者としてMittwaldを挙げている。Neosは欠陥を修正したプロジェクトであり、被害者とはされていない。"
+     }
+    },
+    {
+     "claim": {
+      "en": "The incident had not been reported before 28 November 2026.",
+      "ja": "この事案は2026年11月28日より前には報告されていなかった。"
+     },
+     "verdict": "CONTRADICTED",
+     "source_refs": [
+      "blog-1107",
+      "webhostingtoday"
+     ],
+     "claim_as_of": "2026-11-28",
+     "evidence_note": {
+      "en": "Mittwald published its own account on 7 November, and trade press reported it in the following days. What is new in the postmortem of 25 November is the root cause, the wider statement of who was affected, the loss of container traces and the second phase.",
+      "ja": "Mittwaldは11月7日に自ら経過を公表し、その後の数日に業界メディアが報じている。11月25日のポストモーテムで新しいのは、根本原因、影響範囲についてのより広い説明、コンテナ内の痕跡の消失、第2段階である。"
+     }
+    }
+   ],
+   "vap_relevance": {
+    "en": "Design inference: Mittwald is not known to implement VAP, and nothing here is a conformance claim. A hosting provider's MCP server is not an AI decision system in a domain VAP targets, VAP is not a general-purpose logging framework (§1.3), and no registered domain profile covers it (§4.5.2). The server did exercise delegated authority: it held users' OAuth tokens so that AI assistants could act for them. Records of agent access under delegated authority are the subject of DAP, which the capability registry lists as a v0.1.0 Working Draft (§4.6.2) and which is invoked alongside a domain profile (§4.6.3). Four points in Mittwald's account bear on what records can and cannot show afterwards. First, the attacker worked through the regular API with valid tokens. A record of those calls shows which token was presented, not who controlled it. v1.2 lets a record carry a delegation chain with scope and validity period (§4.4.3) and binds a record to a key by signature (INT-005, §6.1.2), but it does not define what makes an operation attributable beyond verification under a supplied key; that question is a candidate row (F11) in the CHANGE-002 preparation register, which is not adopted. Second, the container sat outside Mittwald's usual logging and SIEM, and traces in it were lost when a routine deployment recreated it; Mittwald rebuilt the earlier period from its event store and from API and project logs kept elsewhere. Under VAP, an event that never entered an anchored batch is not revealed by the Completeness Invariant alone (INT-008; Appendix A, Omission-evidence). Its absence shows only against another record that implies it, which is in substance how Mittwald reconstructed its timeline. What no system recorded is a pre-measurement drop (Appendix A). INT-008 speaks of a batch's declared scope without defining it, so v1.2 gives no way to state in advance that a component such as this container was reachable but not instrumented (candidate P2, not adopted). Third, Mittwald's statement of who was affected widened between the assessment reported on 9 November and the postmortem; v1.2 has no record type that links a later judgement to the one it replaces (candidate F14, not adopted). Fourth, the review of agent-written code: where a deployment records a review step, that step can be made attributable (§4.4.3), but whether the review was adequate is not something a record establishes (§1.6(c)), and who or what wrote, reviewed and released a piece of software is the subject of software supply-chain provenance tooling, not of VAP v1.2.",
+    "ja": "設計上の示唆：MittwaldがVAPを実装しているという情報はなく、以下は適合性についての主張ではありません。ホスティング事業者のMCPサーバーは、VAPが対象とする領域のAIの判断を行うシステムではなく、VAPは汎用のログの枠組みでもありません（§1.3）。登録済みのどの領域プロファイルもこれを扱っていません（§4.5.2）。一方、このサーバーは委任された権限を行使していました。AIアシスタントが利用者の代わりに操作できるよう、利用者のOAuthトークンを保持していたからです。委任された権限のもとでのエージェントのアクセスの記録はDAPの対象で、capabilityの登録簿はDAPをv0.1.0 Working Draftとして挙げており（§4.6.2）、DAPは領域プロファイルと併せて用いるものです（§4.6.3）。Mittwaldの説明のうち4点が、記録で事後に何が示せて何が示せないかに関わります。第一に、攻撃者は有効なトークンで通常のAPIを使いました。その呼び出しの記録が示すのは、どのトークンが提示されたかであり、誰がそれを制御していたかではありません。v1.2は、範囲と有効期間を持つ委任の連鎖を記録に載せることができ（§4.4.3）、署名で記録を鍵に結び付けますが（INT-005、§6.1.2）、与えられた鍵のもとでの検証を超えて、何をもって操作がattributableだと言えるのかを定義していません。この点はCHANGE-002準備用登録簿の候補行（F11）で、採択されていません。第二に、このコンテナはMittwaldの通常のログ基盤とSIEMの外にあり、通常のデプロイで作り直されたときにコンテナ内の痕跡が失われました。Mittwaldはそれ以前の期間を、別の場所にあったイベントストアと、APIおよびプロジェクトのログから組み立て直しています。VAPのもとでも、アンカー済みのバッチに一度も入らなかった事象は、Completeness Invariantだけでは明らかになりません（INT-008、Appendix AのOmission-evidence）。その欠落が示せるのは、その事象の存在を含意する別の記録と照らしたときだけで、Mittwaldが経過を再構成した方法は実質的にこれにあたります。どのシステムも記録しなかったものはpre-measurement dropです（Appendix A）。INT-008はバッチの「declared scope」という語を使いますが定義しておらず、v1.2には、このコンテナのような部品について「到達可能だが計測していない」と事前に示す手段がありません（候補P2、未採択）。第三に、誰が影響を受けたかについてのMittwaldの説明は、11月9日に報じられた評価からポストモーテムまでの間に広がりました。v1.2には、後の判断を、それが置き換える前の判断に結び付ける記録の型がありません（候補F14、未採択）。第四に、エージェントが書いたコードのレビューです。配備がレビューの手順を記録していれば、その手順は帰属可能にできますが（§4.4.3）、レビューが十分だったかどうかは記録が立証するものではありません（§1.6(c)）。あるソフトウェアを誰が、あるいは何が書き、レビューし、リリースしたかは、ソフトウェア供給網の来歴を扱う仕組みの対象であり、VAP v1.2の対象ではありません。"
+   },
+   "vap_would_not": {
+    "en": "VAP does not find or fix a shell injection, review or scan code, isolate a container, shorten or revoke tokens, refuse a valid token, detect an intrusion while it happens or restore traces lost when a container is recreated. It does not establish whether the attacker used AI or who the attacker was, and it cannot recover actions that nobody recorded.",
+    "ja": "VAPは、shell injectionを見つけも直しもせず、コードのレビューや検査をせず、コンテナを隔離せず、トークンを短命にも失効もさせず、有効なトークンを拒否せず、進行中の侵入を検知せず、コンテナの作り直しで失われた痕跡を復元しません。攻撃者がAIを使ったかどうか、攻撃者が誰かも明らかにせず、誰も記録しなかった行為を回復することもできません。"
+   },
+   "sources": [
+    {
+     "id": "postmortem",
+     "label": "Mittwald — Postmortem: Wie ein Angreifer über unseren MCP-Server und Neos eindrang, by Martin Helmich (25 November 2026, in German)",
+     "url": "https://www.mittwald.de/blog/mittwald/postmortem-wie-ein-angreifer-ueber-unseren-mcp-server-und-neos-eindrang",
+     "kind": "primary"
+    },
+    {
+     "id": "blog-1107",
+     "label": "Mittwald — Sicherheitsvorfall am MCP-Server (7 November 2026, in German)",
+     "url": "https://www.mittwald.de/blog/mittwald/sicherheitsvorfall-am-mcp-server",
+     "kind": "primary"
+    },
+    {
+     "id": "neos",
+     "label": "Neos project — Critical remote code execution vulnerabilities in Flow and Neos, advisory GHSA-7wrr-qcrp-4hhf (13 November 2026)",
+     "url": "https://www.neos.io/blog/2026/security-advisory-critical-remote-code-execution-vulnerabilities-in-flow-and-neos.html",
+     "kind": "primary"
+    },
+    {
+     "id": "webhostingtoday",
+     "label": "webhosting.today — Mittwald traces a breach of 56 customer projects to its MCP server (9 November 2026)",
+     "url": "https://webhosting.today/2026/11/09/mittwald-traces-a-breach-of-56-customer-projects-to-its-mcp-server/",
+     "kind": "secondary"
+    }
+   ],
+   "references_without_url": [],
+   "corrections": []
   }
  ]
 }
