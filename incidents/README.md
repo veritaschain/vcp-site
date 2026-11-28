@@ -73,6 +73,7 @@ python3 scripts/build_incidents.py --check
 
 ## Source review notes
 
+- [EU AI Office requests and Swiss AI-agent attacks: follow-ups, and other European government statements — 28 November 2026](reviews/2026-11-28-aioffice-bacs-followups.md). DO-NOT-PUBLISH-AS-NEW: no new primary facts on V1125AIOFFICE or V1124BACS, which are unchanged. CSIRT Italia's bulletin is recorded as V1123CSIRTITA; the Dutch NCSC report is a threat assessment and is not recorded as an incident. This review note does not change historical exclusion counters.
 - [CIA and ODNI unclassified OSINT system breach — 26 November 2026](reviews/2026-11-26-cia-odni-osint-hold.md). HOLD: the breach is reported by Reuters, AP, CNN and CyberScoop, but AI involvement rests only on anonymous officials quoted by The New York Times and no party has described it. This review note does not add a verified incident and does not change historical exclusion counters.
 - [AI patching, US service outages and Java4Shell — 19 November 2026](reviews/2026-11-19-ai-patching-and-java4shell.md). Separates attributed outage reporting from vulnerability research, leaves causality and log-absence claims unconfirmed, and records current regulatory sources. This standalone review adds no verified AI-harm incident and changes neither record totals nor historical exclusion counters.
 - [Claude Code approval-file report — primary article unavailable, 8 November 2026](reviews/2026-11-08-claude-code-secrets.md). This review note is not a verified incident record and does not change historical exclusion counters.
