@@ -1,0 +1,162 @@
+{
+  "sources": {
+    "terms_security": {
+      "url": "https://www.rfc-editor.org/rfc/rfc4949.html",
+      "title": "RFC 4949 — security terminology (Informational; author interpretations)"
+    },
+    "terms_signature": {
+      "url": "https://www.rfc-editor.org/rfc/rfc8032.html#section-5.1.7",
+      "title": "RFC 8032 §5.1.7 — Ed25519 signature verification"
+    },
+    "terms_jcs": {
+      "url": "https://www.rfc-editor.org/rfc/rfc8785.html#section-3",
+      "title": "RFC 8785 §3 — JSON canonicalization"
+    },
+    "terms_time": {
+      "url": "https://www.rfc-editor.org/rfc/rfc3161.html#section-2.1",
+      "title": "RFC 3161 §2.1 — timestamp authority requirements"
+    },
+    "terms_merkle": {
+      "url": "https://www.rfc-editor.org/rfc/rfc9162.html#section-2.1.3",
+      "title": "RFC 9162 §2.1.3 — Merkle inclusion proofs"
+    },
+    "terms_scope": {
+      "url": "https://github.com/veritaschain/vap-spec/blob/519edaf95cb8a3dbc275c295700bdb9334984f6e/proposals/declared-scope-precommit/README.md",
+      "title": "Declared scope and advance commitment — unadopted discussion draft",
+      "repo": "veritaschain/vap-spec",
+      "commit": "519edaf95cb8a3dbc275c295700bdb9334984f6e"
+    },
+    "terms_verifier": {
+      "url": "https://github.com/veritaschain/vap-spec/blob/519edaf95cb8a3dbc275c295700bdb9334984f6e/experiments/declared-scope-verifier/README.md",
+      "title": "Declared-scope research verifier — modes, results and limits",
+      "repo": "veritaschain/vap-spec",
+      "commit": "519edaf95cb8a3dbc275c295700bdb9334984f6e"
+    },
+    "terms_interop": {
+      "url": "https://github.com/veritaschain/vap-spec/blob/519edaf95cb8a3dbc275c295700bdb9334984f6e/interop/vap-evidence-pack-demo/README.md",
+      "title": "Experimental interoperability demo — local contract and release boundaries",
+      "repo": "veritaschain/vap-spec",
+      "commit": "519edaf95cb8a3dbc275c295700bdb9334984f6e"
+    },
+    "terms_kit": {
+      "url": "https://github.com/veritaschain/vap-spec/blob/519edaf95cb8a3dbc275c295700bdb9334984f6e/research-distribution/2026-10-24/README.md",
+      "title": "Fixed research kit — preservation, first-party evidence and reproduction status",
+      "repo": "veritaschain/vap-spec",
+      "commit": "519edaf95cb8a3dbc275c295700bdb9334984f6e"
+    }
+  },
+  "page": {
+    "path": "guides/evidence-glossary",
+    "reviewed": "2026-11-28",
+    "published": "2026-11-28",
+    "sources": [
+      "terms_security",
+      "terms_signature",
+      "terms_jcs",
+      "terms_time",
+      "terms_merkle",
+      "terms_scope",
+      "terms_verifier",
+      "terms_interop",
+      "terms_kit"
+    ],
+    "ja": {
+      "title": "AI監査・暗号学的証拠の用語集",
+      "heading_parts": [
+        "AI監査・暗号学的証拠の",
+        "用語集"
+      ],
+      "lead": "ハッシュ・署名・時刻証明・Merkle証明・認可・証拠の充足性を、業務上の例で整理。検証結果、固定版とmain、自社CIと独立再現の違いを説明します。",
+      "sources_note": "RFCと公開研究資料に基づく非規範の解説です。RFCの公開区分はそれぞれ異なります。研究資料は記載した固定コミットを参照し、用語集の作成は試験の新規実行や独立再現の報告ではありません。",
+      "sections": [
+        {
+          "id": "bytes-and-signatures",
+          "title": "1. 同じデータか、どの鍵で署名されたか",
+          "html": "<p>AIの記録や写真の証明を読む担当者に向けた、実務上の用語集です。例は説明用で、新しい規範要件・判定コード・保険の受理基準を定めません。<strong>署名の検証、必要な証拠の充足、操作の許可、業務判断は、それぞれ分けて確認します。</strong></p>\n<h3 id=\"hash\">ハッシュ（ダイジェスト）</h3><p>データのバイト列から計算する値です。例えば受領した写真のSHA-256を保存し、後日の作業用コピーと比較します。不一致なら同じバイト列ではありません。一致も、写真の内容の真実性や送付者の身元を証明するものではなく、照合元の値の信頼性も必要です。</p>\n<h3 id=\"canonicalization\">正規化（canonicalization）</h3><p>構造化データから、合意した規則でハッシュ・署名用の表現を作ることです。例えばJSONのキー順や空白が違っても、選んだ正規化規則に従って照合します。数値<code>1</code>と文字列<code>\"1\"</code>は別の値です。意味を推測して型・単位を書き換える処理ではありません。{{source:terms_jcs}}</p>\n<h3 id=\"signature\">デジタル署名</h3><p>対象メッセージ、署名、公開鍵が、指定した方式の検証規則を満たすか確認する仕組みです。例えば署名付き受領記録の金額を変えると、元の署名とは整合しなくなります。鍵と組織・担当者の対応、鍵の失効、署名された項目の範囲は別途確認します。署名が正しくても、記録の内容が真実とは限りません。{{source:terms_signature}}</p>"
+        },
+        {
+          "id": "time-and-collections",
+          "title": "2. 時刻と集合への結び付き",
+          "html": "<h3 id=\"timestamp\">タイムスタンプ</h3><p>RFC 3161のTSA（時刻認証局）のトークンは、対象ダイジェストと時刻を結び付けます。信頼設定と必要な検証が適切なら、そのデータが当該時刻までに存在したことに関する証拠になります。例えば写真ファイルに時刻証明があっても、写った事故がその時刻に起きたと確定するものではありません。端末時計の値とも区別します。{{source:terms_time}}</p>\n<h3 id=\"merkle-proof\">Merkle包含証明</h3><p>ある項目が、特定のMerkle木のルートに結び付くことを、経路のハッシュ等から確認する証明です。木サイズ、位置、ハッシュ規則などは採用方式に従います。例えば提出した1件が指定バッチに含まれることを確認しても、実世界の全操作が最初から記録されたとは分かりません。{{source:terms_merkle}}</p>\n<h3 id=\"anchor\">アンカー／外部コミットメント</h3><p>記録のハッシュや集合のルートを、別の保管先・時刻証明等に結び付けた確認点として扱うことです。何を、誰が、いつ受け付けた証拠かを読みます。例えば試験鍵で署名した模擬受領証を検証できても、実在する第三者による受領や時刻証明にはなりません。研究実装での具体的な境界：{{source:terms_verifier}}</p>"
+        },
+        {
+          "id": "identity-and-permission",
+          "title": "3. 認証と認可を分ける",
+          "html": "<h3 id=\"authentication\">認証（authentication）</h3><p>主張された身元や属性を、対応する証拠で確かめることです。例えばAPIトークンを検査して接続元アカウントを認証しても、その担当者が個別の支払いを承認したとは分かりません。</p>\n<h3 id=\"authorization\">認可（authorization）</h3><p>その主体に、対象操作を行う許可があるかという問題です。例えば「記録の閲覧」は許可されても「削除」は許可されないことがあります。委任元、対象、期限、取消しと、実際の操作を照合します。正しい署名やログインの成功を、そのまま操作の許可に置き換えません。</p><p>用語の参考：{{source:terms_security}}。このRFCはInformationalで、著者による用語解説を含みます。本ページも認証方式や権限モデルを新たに定めるものではありません。<a href=\"/guides/ai-agent-security/ja/\">AIエージェントのセキュリティガイド</a></p>"
+        },
+        {
+          "id": "scope-and-completeness",
+          "title": "4. 何を全部と数えるか",
+          "html": "<p>以下は宣言スコープの研究案を読むための説明です。現行仕様に新しい必須条件を追加するものではありません。</p>\n<h3 id=\"declared-scope\">宣言スコープ</h3><p>評価対象とするシステム・期間・操作・除外条件・観測境界等の明示です。例えば「試験環境Aの午前中の支払い要求」と限定します。範囲を宣言しただけでは、そこで起きた全操作を観測した証明にはなりません。</p>\n<h3 id=\"expected-set\">期待集合</h3><p>必要な証拠項目を、合意した資料と導出規則から定めた集合です。「届いたものを全件とする」だけでは不足の検出基準になりません。例えば実行側の締め記録等から、要求ごとの結果記録が必要か照合します。</p>\n<h3 id=\"completeness\">充足性／完全性</h3><p>合意した証拠要件に対し、必要なものが揃っているかという評価です。署名の整合性とは別に扱います。例えば必要な結果記録の欠落を根拠付きで示せれば不充足ですが、期待集合や観測範囲の根拠が足りなければ全体を充足とは判定できません。</p><p>用語と観測限界の出典：{{source:terms_scope}}。原文の提案状態と対象版を保持してください。詳しくは<a href=\"/research/evidence-verification/ja/\">証拠検証器の選び方</a>と<a href=\"/vap/limits/ja/\">VAPの限界</a>へ。</p>"
+        },
+        {
+          "id": "disclosure",
+          "title": "5. 提出されていない理由を分ける",
+          "html": "<h3 id=\"withheld-unavailable-missing\">非開示・取得不能・欠落</h3><p>同じ「受領していない」でも、理由と証拠を分けます。<strong>非開示</strong>は提出対象から意図的に留保したもの、<strong>取得不能</strong>は必要な資料を取得できない状態、<strong>欠落</strong>は基準上必要な項目が提出集合に見当たらない状態として記録します。理由の申告だけで、許可された非開示や確定した欠落と判断しません。</p><p>例えば通知の到達証拠を受け取っていない場合、非開示、取得障害、未記録などの可能性を区別します。「通知されなかった」とは即断しません。評価ポリシーに照らし、裏付けと未解決点を残します。研究案の処置区分：{{source:terms_scope}}。受領時の記録は<a href=\"/verasnap/receiving-evidence/ja/\">写真・証明の受領ガイド</a>も参照してください。</p>"
+        },
+        {
+          "id": "result-language",
+          "title": "6. 失敗・処理エラー・不明を読む",
+          "html": "<p><strong>この3項目は、結果を混同しないための読み方です。全検証器に共通する出力コードの定義ではありません。</strong>実際の名前・終了コード・集約方法は、使用したツールの固定版と実行コマンドの契約を確認してください。</p>\n<h3 id=\"fail\">FAIL／要件不成立</h3><p>適用した検査で要件が成立しなかったという判断を指す場合があります。例えば対応する原本と計算済みハッシュが不一致だったケースです。どの検査が失敗したかを保存し、それだけで故意の改変や不正行為を断定しません。</p>\n<h3 id=\"error\">ERROR／処理上の問題</h3><p>形式、入力の読取り、依存関係などにより、必要な評価を完了できなかった可能性を確認します。証拠が偽造されたという結論とは別です。エラーを成功扱いせず、原本と診断を残して原因を調べます。</p>\n<h3 id=\"unknown\">不明・未評価・未検証</h3><p>判断材料が足りない、対象外、未対応などの状態です。理由は同じではないため、未知の鍵と未実装の検査を別に記録します。例えば署名が照合できても、期待件数が不明なら集合全体の充足性までは確認できません。</p><p>宣言スコープ検証器の<code>verify</code>は、否定的・不確定なレポートを作成した場合も終了コード0になります。一方、相互運用デモは別の結果契約です。コードを流用せず、各結果軸を読みます。{{source:terms_verifier}} ／ {{source:terms_interop}}。VeraSnapの色・チェックは<a href=\"/verasnap/receiving-evidence/ja/#results\">SDK固有の説明</a>で確認してください。</p>"
+        },
+        {
+          "id": "versions-and-passes",
+          "title": "7. 版と「成功」の範囲",
+          "html": "<h3 id=\"fixed-release-main\">固定配布物とmain</h3><p>固定配布物は、特定の公開版として保持するZIP等です。<code>main</code>は開発により進むブランチです。mainの修正が既存ZIPへ自動で入ることはありません。例えば同じ製品名でも、使用したファイルのハッシュ、完全コミットSHA、配布版を分けて記録します。訂正や追加の実行結果も、過去の記録を黙って差し替えず残します。<a href=\"/software/status/ja/\">公開版・配布物・既知問題</a></p>\n<h3 id=\"local-pass\">ローカルなPASS／試験成功</h3><p>選択した入力・信頼設定・ルールに対して、その検査が期待した結果になったという限定的な成功です。例えば改変した合成データを期待どおり拒否すれば試験は成功ですが、その証拠自体が合格したわけではありません。完全適合、本番安全性、実世界の全操作の捕捉に広げません。</p><p>限定した成功と固定版の違いの具体例：{{source:terms_interop}}。実行の手順例は<a href=\"/verasnap/verify-sdk/ja/\">Verify SDKガイド</a>、現行文書への入口は<a href=\"/vcp/specification/\">VCP仕様案内（英語）</a>と<a href=\"https://vap.veritaschain.org/ja/specification/\">VAP仕様案内</a>です。</p>"
+        },
+        {
+          "id": "reproduction",
+          "title": "8. 誰が、どの環境で確認したか",
+          "html": "<h3 id=\"first-party-ci\">自社CI</h3><p>開発側が用意・管理する自動試験での確認です。対象コミット、環境、試験範囲、スキップや失敗を含む結果が根拠になります。例えばGitHub Actionsが成功しても、実装者と別の評価者が新たに実行した証拠にはなりません。</p>\n<h3 id=\"independent-reproduction\">第三者による独立再現</h3><p>実装者とは別の実行者による新規実行の記録に加え、実装・修正への関与、資金・契約関係、環境の管理者、支援の範囲等を確認して扱います。別の人が保存ログを読んだだけの確認や、VSOが代行した実行を、独立した新規実行と数えません。結果の公開許可、氏名・組織名の公開許可も別途確認します。</p><p>保存済み証拠の再検証、新規実行、支援付き実行を区別する例：{{source:terms_kit}}。機械出力の<code>independence: not_assessed</code>は変更せず、独立性の評価と支援履歴は別の報告・確認記録に残します。</p><p><strong>実験的拡張・修正案は未採択で、第三者による独立再現は未成立です。</strong>本ページは用語の解説であり、規範要件、既存実装、署名済みデータ、固定配布物、K3を変更しません。過去の試験記録と、自社CI・独立再現の区別を維持します。</p>"
+        }
+      ]
+    },
+    "en": {
+      "title": "AI Audit and Cryptographic Evidence Glossary",
+      "lead": "Plain-language definitions of hashes, signatures, timestamps, Merkle proofs, authorization and evidence completeness, with examples for reading results, releases and reproduction claims.",
+      "sources_note": "Informative explanations based on RFCs and public research records; RFC publication categories differ. Research references are pinned to the stated commit. Creating this glossary is not a new execution or independent reproduction report.",
+      "sections": [
+        {
+          "id": "bytes-and-signatures",
+          "title": "1. Matching data and checking signatures",
+          "html": "<p>A practical glossary for people reviewing AI records and photo evidence. Examples explain concepts; they introduce no new normative requirements, result codes or insurance acceptance rules. <strong>Check signature integrity, evidence fulfillment, permission to act and the business decision separately.</strong></p>\n<h3 id=\"hash\">Hash / digest</h3><p>A value calculated from a sequence of bytes. For example, retain a photo's SHA-256 at receipt and compare it with a later working copy. Different values mean different bytes. A match does not establish the scene's truth or the sender's identity; the reference digest also needs a trustworthy origin.</p>\n<h3 id=\"canonicalization\">Canonicalization</h3><p>A specified way to turn structured data into a representation for hashing or signing. JSON key order or whitespace can differ while a chosen canonicalization rule produces the same bytes. The number <code>1</code> and string <code>\"1\"</code> remain different. This is not permission to guess and rewrite types or units. {{source:terms_jcs}}</p>\n<h3 id=\"signature\">Digital signature</h3><p>A mechanism for checking a message, signature and public key against the chosen algorithm's rules. Changing a signed receipt's amount, for example, makes it inconsistent with the original signature. Separately establish who controls the key, its validity or revocation, and which fields were signed. A valid signature does not make the recorded claim true. {{source:terms_signature}}</p>"
+        },
+        {
+          "id": "time-and-collections",
+          "title": "2. Time and membership in a collection",
+          "html": "<h3 id=\"timestamp\">Timestamp</h3><p>An RFC 3161 timestamp authority token binds a digest to a time. With appropriate trust and verification, it provides evidence that the data existed by that time. A timestamp on a photo does not establish when the pictured incident happened. Keep it separate from a device-clock value. {{source:terms_time}}</p>\n<h3 id=\"merkle-proof\">Merkle inclusion proof</h3><p>Evidence that an item is bound to a particular tree root, checked using a hash path and the selected construction's size and position rules. Proving one submitted item belongs to a batch does not establish that every real-world action was recorded in the first place. {{source:terms_merkle}}</p>\n<h3 id=\"anchor\">Anchor / external commitment</h3><p>A reference point binding a record digest or collection root to another store, receipt or time service. Identify what was accepted, by whom and when. Verifying a simulated receipt signed with a test key does not establish real third-party receipt or time. Research implementation boundaries: {{source:terms_verifier}}</p>"
+        },
+        {
+          "id": "identity-and-permission",
+          "title": "3. Identity is separate from permission",
+          "html": "<h3 id=\"authentication\">Authentication</h3><p>Checking evidence for a claimed identity or attribute. Authenticating an API account through a token, for example, does not establish that its user approved an individual payment.</p>\n<h3 id=\"authorization\">Authorization</h3><p>Whether the actor has permission for the particular operation. Reading a record may be permitted while deleting it is not. Compare the actual action with delegation, target, expiry and revocation. A valid signature or successful login does not by itself grant that permission.</p><p>Terminology reference: {{source:terms_security}}. This Informational RFC includes its author's interpretations; neither it nor this glossary establishes a new authentication method or permission model for VSO products. Continue with the <a href=\"/guides/ai-agent-security/\">AI agent security guide</a>.</p>"
+        },
+        {
+          "id": "scope-and-completeness",
+          "title": "4. Defining what counts as the whole set",
+          "html": "<p>These explanations help readers understand the declared-scope research proposal. They add no new requirement to the current specification.</p>\n<h3 id=\"declared-scope\">Declared scope</h3><p>The stated systems, period, operations, exclusions and observation boundaries for an evaluation. Example: payment requests in test environment A during one morning. Declaring that boundary does not prove every action within it was observed.</p>\n<h3 id=\"expected-set\">Expected set</h3><p>The evidence obligations derived from agreed sources and rules. Defining it as only what arrived cannot establish what is absent. An execution-side closure record, for example, may support checking which requests need outcome records.</p>\n<h3 id=\"completeness\">Fulfillment / completeness</h3><p>Whether the agreed evidence requirements are met, separate from signature integrity. An evidenced missing required outcome can establish non-fulfillment. Insufficient grounds for the expected set or observation boundary prevent a favorable conclusion about the whole set.</p><p>Definitions and boundaries: {{source:terms_scope}}. Preserve the draft's status and baseline. See <a href=\"/research/evidence-verification/\">choosing an evidence verifier</a> and <a href=\"/vap/limits/\">VAP's limits</a>.</p>"
+        },
+        {
+          "id": "disclosure",
+          "title": "5. Explain why evidence was not delivered",
+          "html": "<h3 id=\"withheld-unavailable-missing\">Withheld, unavailable and missing</h3><p>Record reasons for non-delivery separately. <strong>Withheld</strong> identifies intentional non-disclosure; <strong>unavailable</strong> records inability to obtain material; <strong>missing</strong> identifies a required item absent from the delivered set. A claimed reason alone establishes neither permitted non-disclosure nor confirmed omission.</p><p>No delivery receipt for a notification does not establish that the notification was never sent. Record the evidence, applicable policy and unresolved question. Proposed disposition handling: {{source:terms_scope}}. For practical intake records, see <a href=\"/verasnap/receiving-evidence/\">receiving photos and proofs</a>.</p>"
+        },
+        {
+          "id": "result-language",
+          "title": "6. Read failures, errors and unknowns separately",
+          "html": "<p><strong>These are reading distinctions, not shared output-code definitions for every verifier.</strong> Check the exact tool revision and command contract for names, exit codes and aggregation rules.</p>\n<h3 id=\"fail\">FAIL / requirement not met</h3><p>A label may indicate that an applied check did not meet its requirement, such as a mismatch between an original file and the expected hash. Retain the failed check. That alone is not a finding of deliberate tampering or fraud.</p>\n<h3 id=\"error\">ERROR / processing problem</h3><p>Check whether input format, reading failures or dependencies prevented the required evaluation. This is different from concluding that evidence was forged. Preserve the original and diagnostic information; investigate rather than counting an error as success.</p>\n<h3 id=\"unknown\">Unknown, unassessed or unverified</h3><p>Evidence may be insufficient, outside scope or unsupported. These reasons differ: record an unknown key separately from an unimplemented check. A signature match with an unknown expected count does not establish fulfillment of the whole set.</p><p>The declared-scope verifier's <code>verify</code> command can return exit 0 with a negative or indeterminate report. The interoperability demo has a different result contract. Read named result axes rather than transferring codes between tools. {{source:terms_verifier}} / {{source:terms_interop}}. VeraSnap colors and checks have <a href=\"/verasnap/receiving-evidence/#results\">their own result guide</a>.</p>"
+        },
+        {
+          "id": "versions-and-passes",
+          "title": "7. Versions and the scope of a successful check",
+          "html": "<h3 id=\"fixed-release-main\">Fixed distribution and main</h3><p>A fixed distribution is a retained published artifact such as a ZIP. <code>main</code> is a development branch that moves forward. A fix on main does not automatically enter an existing ZIP. Record the artifact digest, full source commit and release separately, even for the same product name. Preserve corrections and subsequent runs alongside historical records. <a href=\"/software/status/\">Versions, distributions and known issues</a></p>\n<h3 id=\"local-pass\">Local PASS / successful test</h3><p>A limited result for selected inputs, trust settings and rules. Rejecting a modified synthetic input as expected makes the test successful; it does not make that evidence pass. Do not extend the result to full conformance, production safety or capture of all real-world activity.</p><p>A concrete example of a bounded contract and release differences: {{source:terms_interop}}. See the <a href=\"/verasnap/verify-sdk/\">Verify SDK walkthrough</a>, <a href=\"/vcp/specification/\">VCP specification directory</a> and <a href=\"https://vap.veritaschain.org/specification/\">VAP specification directory</a>.</p>"
+        },
+        {
+          "id": "reproduction",
+          "title": "8. Who ran it, and who controlled the environment?",
+          "html": "<h3 id=\"first-party-ci\">First-party CI</h3><p>Automated checks prepared or controlled by the developer. The commit, environment, scope, skips and failures are part of the evidence. A successful GitHub Actions run does not establish a fresh run by an evaluator independent of the implementer.</p>\n<h3 id=\"independent-reproduction\">Independent third-party reproduction</h3><p>Assess a separate evaluator's fresh execution together with involvement in implementation or fixes, funding or contracts, environment control and assistance. Reading saved logs or having VSO run the steps is different from an independent fresh execution. Permission to publish results, a person's name and an organization name also requires separate confirmation.</p><p>The distinction between saved-evidence rechecks, fresh runs and assisted execution is illustrated in {{source:terms_kit}}. Keep the machine output's <code>independence: not_assessed</code> unchanged; record the independence assessment and assistance separately.</p><p><strong>Experimental extensions and proposed repairs remain unadopted; independent third-party reproduction has not been established.</strong> This glossary changes no normative requirement, existing implementation, signed data, fixed distribution or K3 condition. Historical test records and the distinction between first-party CI and independent reproduction remain intact.</p>"
+        }
+      ]
+    }
+  }
+}

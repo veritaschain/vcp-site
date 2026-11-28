@@ -153,7 +153,7 @@ def render(document, lang, documents):
     toc += '<li><a href="#sources">' + ('参照資料' if ja else 'Sources') + '</a></li>'
     organization = {'@type': 'Organization', '@id': ORIGIN + '/#organization', 'name': 'VeritasChain Standards Organization (VSO)', 'url': ORIGIN + '/'}
     schema = {'@context': 'https://schema.org', '@graph': [
-        {'@type': 'TechArticle', '@id': absolute + '#page', 'url': absolute, 'name': title, 'headline': d['title'], 'description': description, 'inLanguage': lang, 'datePublished': published, 'dateModified': reviewed, 'author': organization, 'publisher': {'@id': ORIGIN + '/#organization'}, 'image': ORIGIN + '/assets/OGP.png', 'mainEntityOfPage': absolute, 'citation': [source['url'] for source in sources]},
+        {'@type': page.get('schema_type', 'TechArticle'), '@id': absolute + '#page', 'url': absolute, 'name': title, 'headline': d['title'], 'description': description, 'inLanguage': lang, 'datePublished': published, 'dateModified': reviewed, 'author': organization, 'publisher': {'@id': ORIGIN + '/#organization'}, 'image': ORIGIN + '/assets/OGP.png', 'mainEntityOfPage': absolute, 'citation': [source['url'] for source in sources]},
         {'@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'VSO', 'item': ORIGIN + home}, {'@type': 'ListItem', 'position': 2, 'name': label, 'item': ORIGIN + guides}, {'@type': 'ListItem', 'position': 3, 'name': d['title'], 'item': absolute}]}
     ]}
     alternates = ''.join('<link rel="alternate" hreflang="' + language + '" href="' + ORIGIN + page_url(page['path'], 'en' if language == 'x-default' else language) + '">' for language in ['en', 'ja', 'x-default'])
