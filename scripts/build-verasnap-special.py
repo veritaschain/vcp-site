@@ -28,9 +28,10 @@ def practical_guides(lang):
         ('verasnap/verify-sdk/', 'Verify SDKの実行手順' if ja else 'Run VeraSnap Verify SDK', '固定したソースと合成データで、検証結果・部分検証・不一致を確認する。' if ja else 'Use pinned source and synthetic inputs to inspect results, partial verification and failures.', 'alpha · 開発者向け' if ja else 'Alpha · for developers'),
         ('verasnap/receiving-evidence/', '証拠を受け取る担当者向け' if ja else 'Review received evidence', '確認できた事項と未確認事項を分け、追加確認が必要な場合を整理する。' if ja else 'Separate verified and unverified items and identify where additional review is needed.', '受領・審査の案内' if ja else 'Receiving-side review'),
         ('software/status/', '公開ソフトウェア・固定版・既知問題' if ja else 'Releases and known issues', '固定した配布物と後続mainの違い、評価する版と制約を確認する。' if ja else 'Distinguish fixed distributions from later main and check the evaluation revision and limits.', '版を選ぶ前に' if ja else 'Before selecting a revision'),
+        ('trust/', '製品別のデータ取扱い' if ja else 'Product data handling', '保存・送信・鍵管理の公開情報と、導入前の確認事項。' if ja else 'Public information about storage, transmission and keys, with questions to resolve before deployment.', '法人向け確認事項' if ja else 'Enterprise review'),
     ]
     links = ''.join('<a class="vs-link" href="/' + route + suffix + '"><strong>' + e(title) + '</strong><span>' + e(description) + '</span><small>' + e(label) + '</small></a>' for route, title, description, label in items)
-    return '<section id="practical-guides" class="vs-section"><div class="vs-section-head"><h2>' + heading + '</h2><p>' + intro + '</p></div><div class="vs-links">' + links + '</div><p class="vs-caption">' + ('案内追加：' if ja else 'Guide links added: ') + '<time datetime="2026-11-26">2026-11-26</time></p></section>\n'
+    return '<section id="practical-guides" class="vs-section"><div class="vs-section-head"><h2>' + heading + '</h2><p>' + intro + '</p></div><div class="vs-links">' + links + '</div><p class="vs-caption">' + ('案内更新：' if ja else 'Guide links updated: ') + '<time datetime="2026-11-28">2026-11-28</time></p></section>\n'
 
 
 def build(lang, d):
